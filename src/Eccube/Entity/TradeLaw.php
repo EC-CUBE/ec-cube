@@ -14,6 +14,10 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 if (!class_exists('\Eccube\Entity\TradeLaw')) {
     /**
@@ -63,6 +67,12 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          * @ORM\Column(name="display_order_screen", type="boolean")
          */
         private bool $displayOrderScreen = false;
+
+        public static function loadValidatorMetadata(ClassMetadata $metadata)
+        {
+            $metadata->addConstraint(new Assert\Callback('validateActivation'));
+        }
+
 
         /**
          * @return string
@@ -160,6 +170,20 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         public function isDisplayOrderScreen(): bool
         {
             return $this->displayOrderScreen;
+        }
+
+        public function validateActivation(ExecutionContextInterface $context, $payload)
+        {
+            // check if the name is actually a fake name
+            if (
+                $this->isDisplayOrderScreen() === true &&
+                (empty($this->getName()) ||
+                empty($this->getDescription()))
+            ) {
+                $context->buildViolation(trans('admin.setting.shop.tax.apply_date.available_error'))
+                    ->atPath('displayOrderScreen')
+                    ->addViolation();
+            }
         }
     }
 }

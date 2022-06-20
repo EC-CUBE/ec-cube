@@ -1146,6 +1146,7 @@ admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レー�
 admin.setting.shop.trade_law.header.name: 名称
 admin.setting.shop.trade_law.header.description: 説明
 admin.setting.shop.trade_law.header.confirm_page_show: 注文確認画面に表示
+admin.setting.shop.trade_law.error.activation_error: 名称・説明を両方入力してください。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：支払方法設定

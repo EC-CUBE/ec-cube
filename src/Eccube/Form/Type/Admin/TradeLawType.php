@@ -6,10 +6,12 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\ToggleSwitchType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class TradeLawType extends AbstractType
 {
@@ -37,7 +39,7 @@ class TradeLawType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('description', TextType::class, [
+            ->add('description', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([

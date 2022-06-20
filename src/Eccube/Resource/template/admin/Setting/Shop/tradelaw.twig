@@ -32,16 +32,16 @@ file that was distributed with this source code.
                         <table class="table tabel-sm">
                             <thead>
                             <tr>
-                                <th  class="align-middle text-center"><span>{{ 'admin.setting.shop.trade_law.header.name'|trans }}</span></th>
+                                <th  class="align-middle text-center" width="600"><span>{{ 'admin.setting.shop.trade_law.header.name'|trans }}</span></th>
                                 <th  class="align-middle text-center"><span>{{ 'admin.setting.shop.trade_law.header.description'|trans }}</span></th>
-                                <th  class="align-middle text-center"><span>{{ 'admin.setting.shop.trade_law.header.confirm_page_show'|trans }}</span></th>
+                                <th  class="align-middle text-center" width="300"><span>{{ 'admin.setting.shop.trade_law.header.confirm_page_show'|trans }}</span></th>
                             </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     {% for TradeLaw in form.TradeLaws %}
                                 <tr>
-                                    <td class="align-middle">
+                                    <td class="align-middle" width="600">
                                         {{ form_widget(TradeLaw.name) }}
                                         {{ form_errors(TradeLaw.name) }}
                                     </td>
@@ -49,7 +49,7 @@ file that was distributed with this source code.
                                         {{ form_widget(TradeLaw.description) }}
                                         {{ form_errors(TradeLaw.description) }}
                                     </td>
-                                    <td class="align-middle text-center">
+                                    <td class="align-middle text-center" width="300">
                                         {{ form_widget(TradeLaw.displayOrderScreen) }}
                                         {{ form_errors(TradeLaw.displayOrderScreen) }}
                                     </td>
