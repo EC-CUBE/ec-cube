@@ -104,9 +104,9 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          * @param string $name
          * @return TradeLaw
          */
-        public function setName(string $name): TradeLaw
+        public function setName(?string $name): TradeLaw
         {
-            $this->name = $name;
+            $this->name = $name ?: "";
             return $this;
         }
 
@@ -180,7 +180,7 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
                 (empty($this->getName()) ||
                 empty($this->getDescription()))
             ) {
-                $context->buildViolation(trans('admin.setting.shop.tax.apply_date.available_error'))
+                $context->buildViolation(trans('admin.setting.shop.trade_law.error.activation_error'))
                     ->atPath('displayOrderScreen')
                     ->addViolation();
             }
