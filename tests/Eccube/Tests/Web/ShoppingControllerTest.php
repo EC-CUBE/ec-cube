@@ -678,7 +678,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     public function testDeliveryPageWithTradeLawsEnabled() {
         // Enable all trade laws
-        $tradeLaws = $this->tradeLawRepository->findAll();
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
         foreach($tradeLaws as $tradeLaw) {
             $tradeLaw->setName(sprintf('Trade名称_%s', $id));
@@ -697,9 +697,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
+        $headerId = 5;
+
         foreach($tradeLaws as $tradeLaw) {
-            $this->assertStringContainsString($tradeLaw->getName(), $crawler->outerHtml());
             $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            // Check sort order
+            $this->assertEquals(
+                $tradeLaw->getName(),
+                $crawler->filter('.ec-rectHeading')->eq($headerId)->filter('h2')->first()->text()
+            );
+            $headerId++;
         }
     }
 
@@ -751,7 +758,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     public function testConfirmationPageWithTradeLawsEnabled() {
         // Disable all trade laws
-        $tradeLaws = $this->tradeLawRepository->findAll();
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
         foreach($tradeLaws as $tradeLaw) {
             $tradeLaw->setName(sprintf('Trade名称_%s', $id));
@@ -783,9 +790,15 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
+        $headerId = 5;
         foreach($tradeLaws as $tradeLaw) {
-            $this->assertStringContainsString($tradeLaw->getName(), $crawler->outerHtml());
             $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            // Check sort order
+            $this->assertEquals(
+                $tradeLaw->getName(),
+                $crawler->filter('.ec-rectHeading')->eq($headerId)->filter('h2')->first()->text()
+            );
+            $headerId++;
         }
     }
 
