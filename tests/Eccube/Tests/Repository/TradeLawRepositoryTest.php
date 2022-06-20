@@ -20,7 +20,7 @@ class TradeLawRepositoryTest extends EccubeTestCase
 
     public function testInitialDataCount()
     {
-        $initialTradeLawRows = $this->tradeLawRepository->findAll();
+        $initialTradeLawRows = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
 
         // Check initial row count equals 15.
         $this->assertEquals(15, count($initialTradeLawRows));
@@ -32,15 +32,17 @@ class TradeLawRepositoryTest extends EccubeTestCase
 
         $foundTimes = 1;
 
-        foreach($initialTradeLawRows as $sortOrder => $initialTradeLawRow) {
+        foreach($initialTradeLawRows as $initialTradeLawRow) {
             // Check that all fields are turned off initially.
             $this->assertEquals(false, $initialTradeLawRow->isDisplayOrderScreen());
-            $this->assertEquals($sortOrder, $initialTradeLawRow->getSortNo());
-            $this->assertContains($initialTradeLawRow->getName(), $notFoundNames);
+            $this->assertEquals($foundTimes, $initialTradeLawRow->getSortNo());
+            if($foundTimes < 10) {
+                $this->assertContains($initialTradeLawRow->getName(), $notFoundNames);
+            }
             $this->assertNull($initialTradeLawRow->getDescription());
             $foundTimes++;
         }
         // Check that initial key values are found.
-        $this->assertEquals(10, $foundTimes);
+        $this->assertEquals(16, $foundTimes);
     }
 }
