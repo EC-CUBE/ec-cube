@@ -708,7 +708,41 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      * @return void
      */
     public function testConfirmationPageWithNoTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(false);
+            $id++;
+        }
+        $this->entityManager->flush();
 
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
     }
 
     /**
@@ -716,7 +750,43 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      * @return void
      */
     public function testConfirmationPageWithTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(true);
+            $id++;
+        }
+        $this->entityManager->flush();
 
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        foreach($tradeLaws as $tradeLaw) {
+            $this->assertStringContainsString($tradeLaw->getName(), $crawler->outerHtml());
+            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+        }
     }
 
     /**
