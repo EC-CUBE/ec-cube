@@ -642,6 +642,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * 取引法を無効にすると、配信設定ページに取引法テスト文字が表示されないことを確認すること。
      * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
      * @return void
      */
@@ -671,7 +672,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
-     * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
+     * Check that with all trade laws enabled that trade law text will appear on the delivery settings page.
+     * すべての取引法を有効にすると、取引法のテキストがご注文手続きページに表示されることを確認すること。
      * @return void
      */
     public function testDeliveryPageWithTradeLawsEnabled() {
