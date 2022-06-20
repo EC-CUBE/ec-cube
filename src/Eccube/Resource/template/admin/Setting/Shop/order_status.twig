@@ -72,8 +72,8 @@ file that was distributed with this source code.
                                             {{ form_errors(OrderStatus.name) }}
                                         </td>
                                         <td class="align-middle">
-                                            <div class="input-group color-picker" >
-                                                {{ form_widget(OrderStatus.color) }}
+                                            <div class="input-group" >
+                                                {{ form_widget(OrderStatus.color, {'attr': {'class': 'form-control-color'}}) }}
                                             </div>
                                             {{ form_errors(OrderStatus.color) }}
                                         </td>
