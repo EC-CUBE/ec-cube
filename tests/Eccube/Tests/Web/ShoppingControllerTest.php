@@ -803,6 +803,177 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     *  Delivery Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when name is empty or null
+     *
+     * @return void
+     */
+    public function testDeliveryPageInvalidTradeLawDataEmptyName() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('');
+                $tradeLaw->setDescription('Trade：テスト説明');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Delivery Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when description is empty or null
+     *
+     * @return void
+     */
+    public function testDeliveryPageInvalidTradeLawDataEmptyDescription() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('Trade：テスト名称');
+                $tradeLaw->setDescription('');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+    }
+
+
+    /**
+     * Confirmation Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when name is empty or null
+     *
+     * @return void
+     */
+    public function testConfirmationPageInvalidTradeLawDataEmptyName() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('Trade：テスト名称');
+                $tradeLaw->setDescription('');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+    }
+
+    /**
+     * Confirmation Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when description is empty or null
+     * @return void
+     */
+    public function testConfirmationPageInvalidTradeLawDataEmptyDescription() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('');
+                $tradeLaw->setDescription('Trade：テスト説明');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+    }
+
+    /**
      * Check can use point when has payment limit
      * https://github.com/EC-CUBE/ec-cube/issues/3916
      */

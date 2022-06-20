@@ -165,14 +165,16 @@ file that was distributed with this source code.
                 </div>
             </div>
             {% for activeTradeLaw in activeTradeLaws %}
-                <div class="ec-orderConfirm">
-                    <div class="ec-rectHeading">
-                        <h2>{{ activeTradeLaw.name|raw|purify }}</h2>
+                {% if activeTradeLaw.name and activeTradeLaw.description %}
+                    <div class="ec-orderConfirm">
+                        <div class="ec-rectHeading">
+                            <h2>{{ activeTradeLaw.name|raw|purify }}</h2>
+                        </div>
+                        <div class="ec-input">
+                            {{ activeTradeLaw.description|raw|purify }}
+                        </div>
                     </div>
-                    <div class="ec-input">
-                        {{ activeTradeLaw.description|raw|purify }}
-                    </div>
-                </div>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="ec-orderRole__summary">
