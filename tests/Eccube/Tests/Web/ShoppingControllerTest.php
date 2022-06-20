@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
@@ -21,6 +23,7 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Mime\Email;
@@ -41,11 +44,17 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $paymentRepository;
 
+    /**
+     * @var EntityRepository|ObjectRepository|TradeLawRepository
+     */
+    private $tradeLawRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
         $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->tradeLawRepository = $this->entityManager->getRepository(\Eccube\Entity\TradeLaw::class);
     }
 
     public function testRoutingShoppingLogin()
@@ -633,8 +642,83 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testDeliveryPageWithNoTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(false);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testDeliveryPageWithTradeLawsEnabled() {
+        // Enable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(true);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        foreach($tradeLaws as $tradeLaw) {
+            $this->assertStringContainsString($tradeLaw->getName(), $crawler->outerHtml());
+            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+        }
+    }
+
+    /**
+     * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testConfirmationPageWithNoTradeLawsEnabled() {
+
+    }
+
+    /**
+     * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testConfirmationPageWithTradeLawsEnabled() {
+
+    }
+
+    /**
      * Check can use point when has payment limit
-     *
      * https://github.com/EC-CUBE/ec-cube/issues/3916
      */
     public function testPaymentLimitAndPointCombination()
