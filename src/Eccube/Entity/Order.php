@@ -128,7 +128,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         {
             $tax = [];
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
-                $tax[$rate] = ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / 100);
+                $tax[$rate] = ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate));
             }
 
             ksort($tax);

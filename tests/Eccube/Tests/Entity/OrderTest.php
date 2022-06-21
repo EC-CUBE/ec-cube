@@ -245,8 +245,8 @@ class OrderTest extends EccubeTestCase
     {
         $Order = $this->createTestOrder();
 
-        self::assertSame(5213.0, $this->taxRuleService->roundByRoundingType($Order->getTaxByTaxRate()[8], $this->TaxRule->getRoundingType()->getId()), '8%対象値引き後消費税額');
-        self::assertSame(71787.0, $this->taxRuleService->roundByRoundingType($Order->getTaxByTaxRate()[10], $this->TaxRule->getRoundingType()->getId()), '10%対象値引き後消費税額');
+        self::assertSame(4827.0, $this->taxRuleService->roundByRoundingType($Order->getTaxByTaxRate()[8], $this->TaxRule->getRoundingType()->getId()), '8%対象値引き後消費税額');
+        self::assertSame(65261.0, $this->taxRuleService->roundByRoundingType($Order->getTaxByTaxRate()[10], $this->TaxRule->getRoundingType()->getId()), '10%対象値引き後消費税額');
     }
 
     protected function createTestOrder()
