@@ -201,7 +201,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="invoice_registration_number", type="string", length=4000, nullable=true)
+         * @ORM\Column(name="invoice_registration_number", type="string", length=255, nullable=true)
          */
         private $invoice_registration_number;
 

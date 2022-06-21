@@ -173,7 +173,12 @@ class ShopMasterType extends AbstractType
             ->add('option_nostock_hidden', ToggleSwitchType::class)
             // 適格請求書発行事業者登録番号
             ->add('invoice_registration_number', TextType::class, [
-                'required' => false
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
             ])
             // 個別税率設定
             ->add('option_product_tax_rule', ToggleSwitchType::class)
