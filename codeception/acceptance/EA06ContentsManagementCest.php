@@ -383,7 +383,9 @@ class EA06ContentsManagementCest
         $I->reloadPage();
         $I->dontSee('お気に入り', '.ec-headerNaviRole');
 
-        CssManagePage::go($I)->入力('//')->登録();
+        CssManagePage::go($I)
+            ->入力('.ec-headerNaviRole { }')
+            ->登録();
         $I->amOnPage('/');
         $I->reloadPage();
         $I->see('お気に入り', '.ec-headerNaviRole');
@@ -402,7 +404,7 @@ class EA06ContentsManagementCest
         $I->reloadPage();
         $I->see($test_text, '.ec-headerNaviRole');
 
-        JavaScriptManagePage::go($I)->入力('//')->登録();
+        JavaScriptManagePage::go($I)->入力('/* */')->登録();
         $I->amOnPage('/');
         $I->reloadPage();
         $I->dontSee($test_text, '.ec-headerNaviRole');
