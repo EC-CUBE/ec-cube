@@ -11,6 +11,7 @@ services:
     environment:
       DATABASE_URL: "postgres://dbuser:secret@postgres/eccubedb"
       DATABASE_SERVER_VERSION: 14
+      DATABASE_CHARSET: 'utf8'
 
   postgres:
     image: postgres:14
