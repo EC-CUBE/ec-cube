@@ -670,17 +670,21 @@ class ProductController extends AbstractController
 
                 $this->entityManager->flush();
 
-                $product_image = $request->request->get('admin_product')['product_image'];
-                foreach ($product_image as $sortNo => $filename) {
-                    $ProductImage = $this->productImageRepository
-                        ->findOneBy([
-                            'file_name' => pathinfo($filename, PATHINFO_BASENAME),
-                            'Product' => $Product,
-                        ]);
-                    $ProductImage->setSortNo($sortNo);
-                    $this->entityManager->persist($ProductImage);
+                if (array_key_exists('product_image', $request->request->get('admin_product'))) {
+                    $product_image = $request->request->get('admin_product')['product_image'];
+                    foreach ($product_image as $sortNo => $filename) {
+                        $ProductImage = $this->productImageRepository
+                            ->findOneBy([
+                                'file_name' => pathinfo($filename, PATHINFO_BASENAME),
+                                'Product' => $Product,
+                            ]);
+                        if ($ProductImage !== null) {
+                            $ProductImage->setSortNo($sortNo);
+                            $this->entityManager->persist($ProductImage);
+                        }
+                    }
+                    $this->entityManager->flush();
                 }
-                $this->entityManager->flush();
 
                 // 商品タグの登録
                 // 商品タグを一度クリア
