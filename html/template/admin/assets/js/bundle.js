@@ -78,4 +78,5 @@ require('ladda/dist/ladda-themeless.min.css');
 const Ladda = require('ladda');
 global.Ladda = Ladda;
 
-require('bootstrap');
+const bootstrap = require('bootstrap');
+global.bootstrap = bootstrap;

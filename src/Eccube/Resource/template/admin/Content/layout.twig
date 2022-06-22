@@ -75,7 +75,8 @@ file that was distributed with this source code.
                     }
                 });
                 $('.context-movesection').on('click', block, function() {
-                    $('#clickStreamConfirm').modal();
+                    var bootstrapModal = new bootstrap.Modal($('#clickStreamConfirm').get(0));
+                    bootstrapModal.show();
                     $('#target-block').val($(block.current).attr('id'));
                     block.menu.popover('hide');
                 });
@@ -105,7 +106,8 @@ file that was distributed with this source code.
                 });
 
                 $('.context-preview').on('click', block, function() {
-                    $('#codePreview').modal();
+                    var bootstrapModal = new bootstrap.Modal($('#codePreview').get(0));
+                    bootstrapModal.show();
                     block.menu.popover('hide');
                 });
 
