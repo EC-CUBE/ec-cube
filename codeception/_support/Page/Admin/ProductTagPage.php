@@ -78,7 +78,7 @@ class ProductTagPage extends AbstractAdminPageStyleGuide
     public function タグ削除($row)
     {
         $row = $row + 2;
-        $this->tester->click(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) a[data-target='#DeleteModal']"]);
+        $this->tester->click(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) a[data-bs-target='#DeleteModal']"]);
         $this->tester->waitForElementVisible(['id' => 'DeleteModal']);
         $this->tester->wait(1);
         return $this;
