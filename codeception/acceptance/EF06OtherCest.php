@@ -142,6 +142,7 @@ class EF06OtherCest
         $I->amOnPage('/');
 
         $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(1) a', 0, 200);
+        $I->wait(1);
         $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(1) a');
         $I->see('当サイトについて', 'div.ec-pageHeader h1');
         $baseinfo = Fixtures::get('baseinfo');
@@ -157,6 +158,7 @@ class EF06OtherCest
         $I->amOnPage('/');
 
         $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(2) a', 0, 200);
+        $I->wait(1);
         $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(2) a');
         $I->see('プライバシーポリシー', 'div.ec-pageHeader h1');
         $I->see('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 'div.ec-layoutRole__main p:nth-child(1)');
@@ -171,6 +173,7 @@ class EF06OtherCest
         $I->amOnPage('/');
 
         $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(3) a', 0, 200);
+        $I->wait(1);
         $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(3) a');
         $I->see('特定商取引法に基づく表記', 'div.ec-pageHeader h1');
     }
@@ -188,6 +191,7 @@ class EF06OtherCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
+        $I->wait(1);
         $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
         $I->see('お問い合わせ', 'div.ec-pageHeader h1');
 
@@ -231,6 +235,7 @@ class EF06OtherCest
         $BaseInfo = Fixtures::get('baseinfo');
 
         $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
+        $I->wait(1);
         $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
         $I->see('お問い合わせ', 'div.ec-pageHeader h1');
 
@@ -288,6 +293,7 @@ class EF06OtherCest
         $I->amOnPage('/');
 
         $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
+        $I->wait(1);
         $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
         $I->see('お問い合わせ', 'div.ec-pageHeader h1');
 
