@@ -16,9 +16,11 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
+use Eccube\Service\TaxRuleService;
 
 if (!class_exists('\Eccube\Entity\Order')) {
     /**
@@ -47,7 +49,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * 課税対象の明細を返す.
          *
-         * @return array
+         * @return OrderItem[]
          */
         public function getTaxableItems()
         {
@@ -108,9 +110,13 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTotalByTaxRate()
         {
+            $roundingTypes = $this->getRoundingTypeByTaxRate();
             $total = [];
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
-                $total[$rate] = $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal();
+                $total[$rate] = TaxRuleService::roundByRoundingType(
+                    $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal(),
+                    $roundingTypes[$rate]->getId()
+                );
             }
 
             ksort($total);
@@ -126,9 +132,13 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxByTaxRate()
         {
+            $roundingTypes = $this->getRoundingTypeByTaxRate();
             $tax = [];
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
-                $tax[$rate] = ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate));
+                $tax[$rate] = TaxRuleService::roundByRoundingType(
+                    ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)),
+                    $roundingTypes[$rate]->getId()
+                );
             }
 
             ksort($tax);
@@ -181,6 +191,21 @@ if (!class_exists('\Eccube\Entity\Order')) {
             return array_reduce($this->getTaxFreeDiscountItems(), function ($sum, OrderItem $Item) {
                 return $sum += $Item->getTotalPrice();
             }, 0);
+        }
+
+        /**
+         * 税率ごとの丸め規則を取得する.
+         *
+         * @return array<string, RoundingType>
+         */
+        public function getRoundingTypeByTaxRate()
+        {
+            $roundingTypes = [];
+            foreach ($this->getTaxableItems() as $Item) {
+                $roundingTypes[$Item->getTaxRate()] = $Item->getRoundingType();
+            }
+
+            return $roundingTypes;
         }
 
         /**
