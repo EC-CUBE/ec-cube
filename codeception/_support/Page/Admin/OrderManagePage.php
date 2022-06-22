@@ -46,7 +46,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_order_multi'], $value);
-        $this->tester->scrollTo('#search_submit');
+        $this->tester->scrollTo('#search_submit', 0, -100);
         $this->tester->wait(1);
         $this->tester->click('#search_form #search_submit');
 
