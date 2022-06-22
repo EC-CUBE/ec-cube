@@ -78,7 +78,7 @@ class ForgotController extends AbstractController
      */
     public function index(Request $request)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
 
@@ -150,7 +150,7 @@ class ForgotController extends AbstractController
      */
     public function complete(Request $request)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
 
@@ -165,7 +165,7 @@ class ForgotController extends AbstractController
      */
     public function reset(Request $request, $reset_key)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
 

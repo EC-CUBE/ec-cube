@@ -399,6 +399,9 @@ class EA04OrderCest
         $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         $OrderListPage->すべてチェック();
+        $I->scrollTo('#page_admin_order', 0, 0);
+        $I->wait(1);
+
         $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
 
         // 別ウィンドウ
@@ -409,6 +412,8 @@ class EA04OrderCest
         $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note1'], 'Test note first');
         $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note2'], 'Test note second');
         $OrderListPage->PDFフォームを入力(['id' => 'order_pdf_note3'], 'Test note third');
+        $I->scrollTo('#order_pdf_default', 0, 200);
+        $I->wait(1);
         $OrderListPage->要素をクリック('#order_pdf_default');
         $OrderListPage->要素をクリック('#order_pdf_form .c-conversionArea .justify-content-end button.btn-ec-conversion');
         // make sure wait to download file completely

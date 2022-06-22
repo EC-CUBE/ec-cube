@@ -4,7 +4,8 @@
         // モーダルの表示を制御
         $('#bulkSendMail, .confirmationModal').on('click', function (e) {
             var modal = $('#sentUpdateModal');
-            modal.modal();
+            var bootstrapModal = new bootstrap.Modal(modal.get(0));
+            bootstrapModal.show();
             var eventTarget = $(e.currentTarget);
             var type = eventTarget.data('type');
             switch (type) {
@@ -43,6 +44,8 @@
             var eventTarget = $(e.currentTarget);
             var type = eventTarget.data('type');
             var modal = $('#sentUpdateModal');
+            var bootstrapModal = new bootstrap.Modal(modal.get(0));
+            bootstrapModal.show();
             switch (type) {
                 case 'mail':
                     updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);

@@ -139,10 +139,8 @@ class EF06OtherCest
     public function other_当サイトについて(AcceptanceTester $I)
     {
         $I->wantTo('EF0604-UC01-T01 当サイトについて');
-        $I->amOnPage('/');
+        $I->amOnPage('/help/about');
 
-        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(1) a', 0, 200);
-        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(1) a');
         $I->see('当サイトについて', 'div.ec-pageHeader h1');
         $baseinfo = Fixtures::get('baseinfo');
         $I->see($baseinfo->getShopName(), '#help_about_box__shop_name');
@@ -154,10 +152,8 @@ class EF06OtherCest
     public function other_プライバシーポリシー(AcceptanceTester $I)
     {
         $I->wantTo('EF0605-UC01-T01 プライバシーポリシー');
-        $I->amOnPage('/');
+        $I->amOnPage('/help/privacy');
 
-        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(2) a', 0, 200);
-        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(2) a');
         $I->see('プライバシーポリシー', 'div.ec-pageHeader h1');
         $I->see('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 'div.ec-layoutRole__main p:nth-child(1)');
     }
@@ -168,10 +164,8 @@ class EF06OtherCest
     public function other_特定商取引法に基づく表記(AcceptanceTester $I)
     {
         $I->wantTo('EF0606-UC01-T01 特定商取引法に基づく表記');
-        $I->amOnPage('/');
+        $I->amOnPage('/help/tradelaw');
 
-        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(3) a', 0, 200);
-        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(3) a');
         $I->see('特定商取引法に基づく表記', 'div.ec-pageHeader h1');
     }
 
@@ -181,14 +175,12 @@ class EF06OtherCest
     public function other_お問い合わせ1(AcceptanceTester $I)
     {
         $I->wantTo('EF0607-UC01-T01 お問い合わせ');
-        $I->amOnPage('/');
+        $I->amOnPage('/contact');
         $I->resetEmails();
         $faker = Fixtures::get('faker');
         $new_email = microtime(true).'.'.$faker->safeEmail;
         $BaseInfo = Fixtures::get('baseinfo');
 
-        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
-        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
         $I->see('お問い合わせ', 'div.ec-pageHeader h1');
 
         $I->fillField(['id' => 'contact_name_name01'], '姓');
@@ -224,14 +216,12 @@ class EF06OtherCest
     public function other_お問い合わせ2(AcceptanceTester $I)
     {
         $I->wantTo('EF0607-UC01-T02 お問い合わせ 戻るボタン');
-        $I->amOnPage('/');
+        $I->amOnPage('/contact');
         $I->resetEmails();
         $faker = Fixtures::get('faker');
         $new_email = microtime(true).'.'.$faker->safeEmail;
         $BaseInfo = Fixtures::get('baseinfo');
 
-        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
-        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
         $I->see('お問い合わせ', 'div.ec-pageHeader h1');
 
         $I->fillField(['id' => 'contact_name_name01'], '姓');
@@ -285,10 +275,8 @@ class EF06OtherCest
     public function other_お問い合わせ_異常(AcceptanceTester $I)
     {
         $I->wantTo('EF0607-UC01-T03 お問い合わせ 異常');
-        $I->amOnPage('/');
+        $I->amOnPage('/contact');
 
-        $I->scrollTo('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a', 0, 200);
-        $I->click('.ec-footerNavi .ec-footerNavi__link:nth-child(4) a');
         $I->see('お問い合わせ', 'div.ec-pageHeader h1');
 
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
