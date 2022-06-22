@@ -64,7 +64,7 @@ $cursor-disabled: not-allowed !default;
     @include box-shadow(none);
   }
 
-  @include button-variant($color, $background, $border);
+  @include button-variant($background, $border, $color);
   // [converter] extracted a& to a.btn
 
   .ec-icon img {
