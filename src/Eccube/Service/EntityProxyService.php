@@ -192,7 +192,7 @@ class EntityProxyService
             foreach ($traits as $trait) {
                 $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
                 if ($anno) {
-                    $proxies[$anno->value][] = $trait;
+                    $proxies[preg_match('/^\\\/i',$anno->value) ? $anno->value : '\\'.$anno->value][] = $trait;
                 }
             }
             $proxySets[] = $proxies;
