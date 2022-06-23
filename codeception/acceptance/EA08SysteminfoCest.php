@@ -593,6 +593,22 @@ class EA08SysteminfoCest
     }
 
     /**
+     * @group restrict-fileupload
+     */
+    public function systeminfo_テンプレート管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/store/template/install');
+        $I->see('この機能は管理者によって制限されています。');
+    }
+
+    /**
      * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
      */
     public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
