@@ -14,7 +14,6 @@ file that was distributed with this source code.
 {% block sub_title %}{% endblock %}
 
 {% block javascript %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script>
         $(function() {
             var options = {
@@ -37,7 +36,7 @@ file that was distributed with this source code.
                     }
                 },
                 scales: {
-                    yAxes: [
+                    y: [
                         {
                             id: 'y-axis-1',
                             display: true,
