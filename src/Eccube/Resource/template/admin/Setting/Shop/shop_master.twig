@@ -277,6 +277,15 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_tax'|trans }}</span></div>
                         <div id="ex-shop-tax" class="card-body">
+                             <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_product_tax'|trans }}"><span>{{ 'admin.setting.shop.shop.option_invoice_registration_number'|trans }}</span></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.invoice_registration_number) }}
+                                    {{ form_errors(form.invoice_registration_number) }}
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_product_tax'|trans }}"><span>{{ 'admin.setting.shop.shop.option_product_tax'|trans }}</span></div>

@@ -3752,6 +3752,7 @@ Styleguide 7.3.8
     font-size: 14px;
     font-weight: bold; }
 .ec-totalBox .ec-totalBox__paymentTotal {
+    border-top: 1px dotted #ccc;
     padding: 8px 0;
     text-align: right;
     font-size: 14px;
