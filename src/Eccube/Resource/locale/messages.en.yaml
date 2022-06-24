@@ -64,6 +64,7 @@ common.payment_total: 'Payment Total'
 common.reduced_tax_rate_symbol: '*'
 common.reduced_tax_rate_messeage: '* is subject to reduced tax rate.'
 common.tax_rate_target: '%rate% %'
+common.tax_amount: Tax amount
 common.delivery_fee: Shipping Charge
 common.charge: Charges
 common.discount: Discount
@@ -1133,6 +1134,7 @@ admin.setting.shop.shop.option_remember_me: Auto Sign-in
 admin.setting.shop.shop.option_product: Product Settings
 admin.setting.shop.shop.nostock_hidden: Hide out-of-stock products
 admin.setting.shop.shop.option_tax: Taxes
+admin.setting.shop.shop.option_invoice_registration_number: Invoice registration number
 admin.setting.shop.shop.option_product_tax: Taxes by Product
 admin.setting.shop.shop.option_point: Point Settings
 admin.setting.shop.shop.option_point_enabled: Points

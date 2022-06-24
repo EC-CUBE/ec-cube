@@ -64,6 +64,7 @@ common.payment_total: お支払い合計
 common.reduced_tax_rate_symbol: ※
 common.reduced_tax_rate_messeage: ※ は軽減税率対象商品です。
 common.tax_rate_target: '税率 %rate% %対象'
+common.tax_amount: 内消費税
 common.delivery_fee: 送料
 common.charge: 手数料
 common.discount: 値引き
@@ -1133,6 +1134,7 @@ admin.setting.shop.shop.option_remember_me: 自動ログイン機能
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
 admin.setting.shop.shop.option_tax: 税設定
+admin.setting.shop.shop.option_invoice_registration_number: 適格請求書発行事業者登録番号
 admin.setting.shop.shop.option_product_tax: 商品別税率機能
 admin.setting.shop.shop.option_point: ポイント設定
 admin.setting.shop.shop.option_point_enabled: ポイント機能

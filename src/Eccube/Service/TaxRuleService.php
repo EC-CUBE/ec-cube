@@ -97,7 +97,7 @@ class TaxRuleService
     public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = 0)
     {
         $tax = $price * $taxRate / 100;
-        $roundTax = $this->roundByRoundingType($tax, $RoundingType);
+        $roundTax = self::roundByRoundingType($tax, $RoundingType);
 
         return $roundTax + $taxAdjust;
     }
@@ -116,7 +116,7 @@ class TaxRuleService
     {
         $tax = ($price - $taxAdjust) * $taxRate / (100 + $taxRate);
 
-        return $this->roundByRoundingType($tax, $RoundingType);
+        return self::roundByRoundingType($tax, $RoundingType);
     }
 
     /**
@@ -127,7 +127,7 @@ class TaxRuleService
      *
      * @return double        端数処理後の数値
      */
-    public function roundByRoundingType($value, $RoundingType)
+    public static function roundByRoundingType($value, $RoundingType)
     {
         switch ($RoundingType) {
             // 四捨五入
