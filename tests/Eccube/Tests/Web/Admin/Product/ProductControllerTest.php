@@ -681,6 +681,58 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->client->request('GET', $csvExportUrl);
     }
 
+    /**
+     * Test search + export product with list product order by product_id
+     */
+    public function testExportWithOrderByProduct()
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $productName = 'Product name ' . $i;
+            $this->createProduct($productName, 0);
+        }
+
+        $this->entityManager->flush();
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = 'Product name';
+
+        /* @var $crawler Crawler*/
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
+        $this->verify('検索結果件数の確認テスト');
+
+        // get list product after insert to dtb_product
+        $AllProducts = $this->productRepository->findBy([], ['id' => 'DESC'], 10);
+        $arrBefore = [];
+        foreach ($AllProducts as $product){
+            $arrBefore[] = $product->getId();
+        }
+
+        $this->expectOutputRegex('/Product name [10-1]/');
+        $csvExportUrl = $crawler->filter('.btn-ec-regular')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->request('GET', $csvExportUrl);
+
+        // get list product after call admin_product_export function
+        $data = ob_get_contents();
+        $arr = explode("\n", $data);
+        // unset header
+        unset($arr[0]);
+        $arrAfter = [];
+        foreach ($arr as $v){
+            if(!empty($v)){
+                $data = explode(",", $v);
+                $arrAfter[] = $data[0];
+            }
+        }
+        $this->assertEqualsCanonicalizing($arrBefore, $arrAfter);
+    }
+
     public function dataNewProductProvider()
     {
         return [

@@ -929,7 +929,7 @@ class ProductController extends AbstractController
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select')
                 ->resetDQLPart('orderBy')
-                ->orderBy('p.update_date', 'DESC');
+                ->orderBy('p.id', 'DESC');
 
             if ($isOutOfStock) {
                 $qb->select('p, pc')
