@@ -100,7 +100,20 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     {
         ini_set('auto_detect_line_endings', true);
 
-        $this->file = $file;
+        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
+            $tempFile = tmpfile();
+            foreach ($file as $line) {
+                $encoded = mb_convert_encoding($line, 'UTF-8', 'SJIS-win');
+                fwrite($tempFile, $encoded);
+            }
+
+            $meta = stream_get_meta_data($tempFile);
+            $this->file = new \SplFileObject($meta['uri'], 'r');
+            fclose($tempFile);
+        } else {
+            $this->file = $file;
+        }
+
         $this->file->setFlags(
             \SplFileObject::READ_CSV |
             \SplFileObject::SKIP_EMPTY |
@@ -130,8 +143,8 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         // Since the CSV has column headers use them to construct an associative array for the columns in this line
         if ($this->valid()) {
             $current = $this->file->current();
-            $current = $this->convertEncodingRows($current);
 
+            $current =('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) ? $current: $this->convertEncodingRows($current);
             $line = $current;
 
             // See if values for duplicate headers should be merged
@@ -167,7 +180,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     public function setColumnHeaders(array $columnHeaders)
     {
-        $columnHeaders = $this->convertEncodingRows($columnHeaders);
+        $columnHeaders = ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000)? $columnHeaders: $this->convertEncodingRows($columnHeaders);
         $this->columnHeaders = array_count_values($columnHeaders);
         $this->headersCount = count($columnHeaders);
     }
