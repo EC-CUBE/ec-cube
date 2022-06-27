@@ -44,7 +44,7 @@ $(function() {
                             {#TODO: readme of plugin #}
                             {#{% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
                                 <br>
-                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal"
+                                <a href="#" class="view_readme" data-bs-toggle="modal" data-bs-target="#readmeModal"
                                    data-name="{{ Plugin.name }}"
                                    data-readme="{{ attribute(app.config[Plugin.code].const, 'readme') }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
                             {% endif %}#}
@@ -75,8 +75,8 @@ $(function() {
                                         {% if Plugin.enabled == false %}
                                         <div class="col-6 px-0">
                                             <a href="#" class="btn btn-ec-actionIcon"
-                                               data-toggle="modal"
-                                               data-target="#localPluginDeleteModal"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#localPluginDeleteModal"
                                                data-delete-url="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}">
                                                 <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="削除"></i>
                                             </a>
@@ -133,8 +133,8 @@ $(function() {
                 <h5 class="modal-title font-weight-bold">
                     {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
                 <button class="close" type="button"
-                        data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span>
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
                 </button>
             </div>
             <div class="modal-body text-left">
@@ -143,7 +143,7 @@ $(function() {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ec-sub" type="button"
-                        data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
+                        data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                 </button>
                 <a href="#" {{ csrf_token_for_anchor() }}
                    class="btn btn-ec-delete"

@@ -105,7 +105,7 @@ file that was distributed with this source code.
                 });
             });
 
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
                 var activated_tab = e.target;
                 var id = $(activated_tab).attr('id');
                 if (id == 'menu__{{ form.html_tpl_data.vars.id }}') {
@@ -152,17 +152,17 @@ file that was distributed with this source code.
                                     {% if id is not null %}
                                     <ul class="nav nav-tabs text-center" role="tablist">
                                         <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
-                                            <a id="menu__{{ form.tpl_data.vars.id }}" href="#detail_box__tpl_data" class="nav-link active" data-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_text'|trans }}</span></a>
+                                            <a id="menu__{{ form.tpl_data.vars.id }}" href="#detail_box__tpl_data" class="nav-link active" data-bs-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_text'|trans }}</span></a>
                                         </li>
                                         {% if form.html_tpl_data.vars.value %}
                                         <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
-                                            <a id="menu__{{ form.html_tpl_data.vars.id }}" href="#detail_box__html_tpl_data" class="nav-link" data-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_html'|trans }}</span></a>
+                                            <a id="menu__{{ form.html_tpl_data.vars.id }}" href="#detail_box__html_tpl_data" class="nav-link" data-bs-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_html'|trans }}</span></a>
                                         </li>
                                         {% endif %}
                                         <div class="col-1">
                                             <div class="d-inline-block">
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" id="preview_button" class="btn btn-block text-nowrap btn-ec-regular" style="display:none;" data-toggle="modal" data-target="#htmlPreviewModal">
+                                                    <button type="button" id="preview_button" class="btn btn-block text-nowrap btn-ec-regular" style="display:none;" data-bs-toggle="modal" data-bs-target="#htmlPreviewModal">
                                                         {{ 'admin.setting.shop.mail.preview'|trans }}
                                                     </button>
                                                 </div>
@@ -171,14 +171,14 @@ file that was distributed with this source code.
                                     </ul>
                                     {% endif %}
                                     <div class="tab-content">
-                                        <div id="detail_box__tpl_data" class="form-group tab-pane active">
+                                        <div id="detail_box__tpl_data" class="mb-3 tab-pane active">
                                             {{ form_label(form.tpl_data) }}
                                             <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
                                             <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
                                             {{ form_errors(form.tpl_data) }}
                                         </div>
                                         {% if form.html_tpl_data.vars.value %}
-                                        <div id="detail_box__html_tpl_data" class="form-group tab-pane">
+                                        <div id="detail_box__html_tpl_data" class="mb-3 tab-pane">
                                             {{ form_label(form.html_tpl_data) }}
                                             <div id="html_editor" style="height: 480px" class="form-control{{ has_errors(form.html_tpl_data) ? ' is-invalid' }}"></div>
                                             <div style="display: none">{{ form_widget(form.html_tpl_data) }}</div>
@@ -233,7 +233,7 @@ file that was distributed with this source code.
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title font-weight-bold">{{ 'admin.setting.shop.mail.preview'|trans }}</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="bg-light p-4 bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
@@ -241,7 +241,7 @@ file that was distributed with this source code.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
                 </div>
             </div>
         </div>

@@ -210,7 +210,7 @@ file that was distributed with this source code.
                                         {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv', 'class': 'd-none'}}) }}
                                         {{ form_errors(form.import_file) }}
                                     </div>
-                                    <button class="btn btn-ec-conversion" id="upload-button" type="button" data-toggle="modal" data-target="#importCsvModal" disabled>{{ 'admin.common.bulk_registration'|trans }}</button>
+                                    <button class="btn btn-ec-conversion" id="upload-button" type="button" data-bs-toggle="modal" data-bs-target="#importCsvModal" disabled>{{ 'admin.common.bulk_registration'|trans }}</button>
                                     {% for error in errors %}
                                         <div class="text-danger">{{ error }}</div>
                                     {% endfor %}
@@ -259,7 +259,7 @@ file that was distributed with this source code.
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title font-weight-bold">{{ 'admin.product.product_csv_upload__title'|trans }}</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-left">
                     <span class="badge"></span>
@@ -273,9 +273,9 @@ file that was distributed with this source code.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                     <button class="btn btn-ec-conversion" type="button" id="importCsv">{{ 'admin.common.bulk_registration' | trans }}</button>
-                    <button class="btn btn-ec-regular" id="importCsvDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                    <button class="btn btn-ec-regular" id="importCsvDone" style="display: none" type="button" data-bs-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
                 </div>
             </div>
         </div>

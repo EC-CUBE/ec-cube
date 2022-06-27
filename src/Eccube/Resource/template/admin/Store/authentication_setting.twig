@@ -103,7 +103,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#captcha" type="button">
                                         {{ 'admin.store.setting.get_api_key'|trans }}
                                     </button>
                                 </div>
@@ -169,7 +169,7 @@ file that was distributed with this source code.
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title font-weight-bold">{{ 'admin.store.setting.get_api_key'|trans }}</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-left">
                         <p>新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。</p>
@@ -184,7 +184,7 @@ file that was distributed with this source code.
                         </span>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.cancel'|trans }}</button>
+                        <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'common.cancel'|trans }}</button>
                         <button id="generate_key" class="btn btn-ec-conversion" type="button">{{ 'admin.store.setting.get_api_key'|trans }}</button>
                     </div>
                 </div>

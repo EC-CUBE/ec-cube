@@ -77,3 +77,6 @@ global.Chart = Chart;
 require('ladda/dist/ladda-themeless.min.css');
 const Ladda = require('ladda');
 global.Ladda = Ladda;
+
+const bootstrap = require('bootstrap');
+global.bootstrap = bootstrap;
