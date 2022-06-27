@@ -176,7 +176,7 @@ class OrderRepository extends AbstractRepository
         if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
             $clean_kana = preg_replace('/\s+|[　]+/u', '', $searchData['kana']);
             $qb
-                ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
+                ->andWhere("CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :kana")
                 ->setParameter('kana', '%'.$clean_kana.'%');
         }
 
