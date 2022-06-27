@@ -412,56 +412,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add", methods={"POST"})
-     *
-     * @deprecated jQuery-File-Upload で利用していたメソッドのため非推奨
-     */
-    public function addImage(Request $request)
-    {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
-            throw new BadRequestHttpException();
-        }
-
-        $images = $request->files->get('admin_product');
-
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
-        $files = [];
-        if (count($images) > 0) {
-            foreach ($images as $img) {
-                foreach ($img as $image) {
-                    //ファイルフォーマット検証
-                    $mimeType = $image->getMimeType();
-                    if (0 !== strpos($mimeType, 'image')) {
-                        throw new UnsupportedMediaTypeHttpException();
-                    }
-
-                    // 拡張子
-                    $extension = $image->getClientOriginalExtension();
-                    if (!in_array(strtolower($extension), $allowExtensions)) {
-                        throw new UnsupportedMediaTypeHttpException();
-                    }
-
-                    $filename = date('mdHis').uniqid('_').'.'.$extension;
-                    $image->move($this->eccubeConfig['eccube_temp_image_dir'], $filename);
-                    $files[] = $filename;
-                }
-            }
-        }
-
-        $event = new EventArgs(
-            [
-                'images' => $images,
-                'files' => $files,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE);
-        $files = $event->getArgument('files');
-
-        return $this->json(['files' => $files], 200);
-    }
-
-    /**
      * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/product.twig")

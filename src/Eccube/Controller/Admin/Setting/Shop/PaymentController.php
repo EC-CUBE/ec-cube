@@ -255,50 +255,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add", methods={"POST"})
-     * @deprecated jQuery-File-Upload で利用していたメソッドのため非推奨
-     */
-    public function imageAdd(Request $request)
-    {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
-            throw new BadRequestHttpException();
-        }
-
-        $images = $request->files->get('payment_register');
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
-        $filename = null;
-        if (isset($images['payment_image_file'])) {
-            $image = $images['payment_image_file'];
-
-            //ファイルフォーマット検証
-            $mimeType = $image->getMimeType();
-            if (0 !== strpos($mimeType, 'image')) {
-                throw new UnsupportedMediaTypeHttpException();
-            }
-
-            // 拡張子
-            $extension = $image->getClientOriginalExtension();
-            if (!in_array(strtolower($extension), $allowExtensions)) {
-                throw new UnsupportedMediaTypeHttpException();
-            }
-
-            $filename = date('mdHis').uniqid('_').'.'.$extension;
-            $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
-        }
-        $event = new EventArgs(
-            [
-                'images' => $images,
-                'filename' => $filename,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE);
-        $filename = $event->getArgument('filename');
-
-        return $this->json(['filename' => $filename], 200);
-    }
-
-    /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
      *
      * @param Request $request
