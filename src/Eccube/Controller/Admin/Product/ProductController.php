@@ -377,7 +377,9 @@ class ProductController extends AbstractController
         }
 
         $image = $this->getParameter('kernel.project_dir').$request->query->get('source');
-        if (file_exists($image) && stripos(realpath($image), $this->getParameter('kernel.project_dir')) === 0) {
+        if (file_exists($image)
+            && (stripos(realpath($image), $this->eccubeConfig['eccube_save_image_dir']) === 0
+                || stripos(realpath($image), $this->eccubeConfig['eccube_temp_image_dir']) === 0)) {
             $file = new \SplFileObject($image);
 
             return $this->file($file, $file->getBasename());
