@@ -263,6 +263,25 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
+    public function testMultiWithKanaNull()
+    {
+        $this->Customer->setKana01(null)
+            ->setKana02('メイ');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'multi' => 'メイ',
+        ];
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 'メイ';
+        $this->actual = $this->Results[0]->getKana02();
+        $this->verify();
+    }
+
     public function testMultiWithKanaHasWhiteSpaceEn()
     {
         $this->Customer->setKana01('セイ')

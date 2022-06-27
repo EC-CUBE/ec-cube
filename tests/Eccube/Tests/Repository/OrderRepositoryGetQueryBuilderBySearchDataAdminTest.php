@@ -133,6 +133,23 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
+    public function testMultiWithKanaNull()
+    {
+        $this->Order2
+            ->setKana01(null)
+            ->setKana02('タイチョウ');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'multi' => 'タイチョウ',
+        ];
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
     public function testMultiWithNo()
     {
         $this->searchData = [
@@ -264,11 +281,28 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         $this->Order1
             ->setKana01('セイ')
-            ->setKana02('メイ'); // XXX いずれかが NULL だと無視されてしまう
+            ->setKana02('メイ');
         $this->entityManager->flush();
 
         $this->searchData = [
             'kana' => 'メ',
+        ];
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testKanaWithNull()
+    {
+        $this->Order1
+            ->setKana01(null)
+            ->setKana02('メイ');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'kana' => 'メイ',
         ];
         $this->scenario();
 
