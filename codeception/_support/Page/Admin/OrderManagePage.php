@@ -46,6 +46,8 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_order_multi'], $value);
+        $this->tester->scrollTo('#search_submit', 0, -100);
+        $this->tester->wait(1);
         $this->tester->click('#search_form #search_submit');
 
         return $this;
@@ -249,10 +251,13 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 出荷済にする($rowNum)
     {
+        $this->tester->scrollTo('#search_result');
+        $this->tester->wait(1);
         $this->tester->click("#search_result > tbody > tr:nth-child($rowNum) a[data-type='status']");
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->click(['id' => 'notificationMail']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->wait(1);
         $this->tester->click(['id' => 'bulkChange']);
         $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
 

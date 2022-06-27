@@ -78,6 +78,9 @@ require('ladda/dist/ladda-themeless.min.css');
 const Ladda = require('ladda');
 global.Ladda = Ladda;
 
+const bootstrap = require('bootstrap');
+global.bootstrap = bootstrap;
+
 require('filepond/dist/filepond.min.css');
 require('filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css');
 const FilePondPluginImagePreview = require('filepond-plugin-image-preview/dist/filepond-plugin-image-preview');

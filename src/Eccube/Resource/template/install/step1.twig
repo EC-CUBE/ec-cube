@@ -23,7 +23,7 @@ file that was distributed with this source code.
                           {% for message in app.session.flashBag.get('eccube.install.danger') %}
                           <div class="row">
                             <div class="alert alert-danger alert-dismissable">
-                              <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                               <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="https://www.ec-cube.net/product/system.php">{{ 'install.system_requirement'|trans }}</a>
                             </div>
                           </div>
@@ -33,7 +33,7 @@ file that was distributed with this source code.
                           {% for message in app.session.flashBag.get('eccube.install.warning') %}
                           <div class="row">
                             <div class="alert alert-warning alert-dismissable">
-                              <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                               <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
                             </div>
                           </div>
@@ -44,7 +44,7 @@ file that was distributed with this source code.
                                 {% for message in app.session.flashBag.get('eccube.install.info') %}
                                     <div class="row">
                                         <div class="alert alert-info alert-dismissable alert-section">
-                                            <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                                             <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.agree, { 'label': 'install.accept_infomation_provision' }) }}
                                 </div>
                                 <ul class="btn_area">
-                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
+                                    <li class="d-grid gap-2"><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
                                 </ul>
                             </form>
                         </div><!-- /.col -->

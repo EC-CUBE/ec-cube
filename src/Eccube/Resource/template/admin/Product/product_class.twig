@@ -126,8 +126,8 @@ file that was distributed with this source code.
                                 <div class="col-4 text-right">
                                     {# 規格の初期化ボタン #}
                                     <button class="btn btn-ec-delete" type="button"
-                                            data-toggle="modal"
-                                            data-target="#initializationConfirm">{{ 'admin.product.product_class__reset'|trans }}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#initializationConfirm">{{ 'admin.product.product_class__reset'|trans }}
                                     </button>
                                     {# 規格の初期化モーダル #}
                                     <div class="modal fade" id="initializationConfirm" tabindex="-1"
@@ -137,8 +137,8 @@ file that was distributed with this source code.
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title font-weight-bold">{{ 'admin.product.product_class__reset_confirm_title'|trans }}</h5>
-                                                    <button class="close" type="button" data-dismiss="modal"
-                                                            aria-label="Close"><span aria-hidden="true">×</span>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                            aria-label="Close">
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
@@ -147,7 +147,7 @@ file that was distributed with this source code.
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-ec-sub" type="button"
-                                                            data-dismiss="modal">
+                                                            data-bs-dismiss="modal">
                                                         {{ 'admin.common.cancel'|trans }}
                                                     </button>
                                                     <form method="post"

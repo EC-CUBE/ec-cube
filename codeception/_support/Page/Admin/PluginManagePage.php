@@ -92,7 +92,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     private function ストアプラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
+        $xpath = ['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
 
         return $this;
@@ -139,7 +139,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     private function 独自プラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[6]//i[@data-original-title="'.$label.'"]/parent::node()'];
+        $xpath = ['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
 
         return $this;

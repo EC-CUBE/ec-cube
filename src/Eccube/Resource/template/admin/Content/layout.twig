@@ -75,7 +75,8 @@ file that was distributed with this source code.
                     }
                 });
                 $('.context-movesection').on('click', block, function() {
-                    $('#clickStreamConfirm').modal();
+                    var bootstrapModal = new bootstrap.Modal($('#clickStreamConfirm').get(0));
+                    bootstrapModal.show();
                     $('#target-block').val($(block.current).attr('id'));
                     block.menu.popover('hide');
                 });
@@ -105,7 +106,8 @@ file that was distributed with this source code.
                 });
 
                 $('.context-preview').on('click', block, function() {
-                    $('#codePreview').modal();
+                    var bootstrapModal = new bootstrap.Modal($('#codePreview').get(0));
+                    bootstrapModal.show();
                     block.menu.popover('hide');
                 });
 
@@ -189,7 +191,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.content.layout__card_title'|trans }}</span></div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#layoutOverview" aria-expanded="false" aria-controls="layoutOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#layoutOverview" aria-expanded="false" aria-controls="layoutOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="layoutOverview">
@@ -239,7 +241,7 @@ file that was distributed with this source code.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.layout_edit'|trans }}"><span class="card-title">{{ 'admin.content.layout_edit__card_title'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="layoutBlockEdit">
@@ -441,8 +443,8 @@ file that was distributed with this source code.
                                                         <div class="row justify-content-between">
                                                             <div class="col">
                                                                 <i class="fa fa-bars text-ec-gray mr-3"></i>
-                                                                <span class="view_readme" data-toggle="modal"
-                                                                   data-target="#blockModal"
+                                                                <span class="view_readme" data-bs-toggle="modal"
+                                                                   data-bs-target="#blockModal"
                                                                    data-id="{{ UnusedBlock.id }}"
                                                                    data-name="{{ UnusedBlock.name }}"
                                                                    title="{{ UnusedBlock.name }}"
@@ -476,7 +478,7 @@ file that was distributed with this source code.
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">{{ 'admin.content.layout_move_to__confirm_title'|trans }}</h5>
-                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <p>{{ 'admin.content.layout_move_to__confirm_message'|trans }}</p>
@@ -487,8 +489,8 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-ec-regular w-25" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                <button id="move-to-section" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_move_to__execute'|trans }}</button>
+                                                <button class="btn btn-ec-regular w-25" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                <button id="move-to-section" class="btn btn-ec-conversion w-25" type="button" data-bs-dismiss="modal">{{ 'admin.content.layout_move_to__execute'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -498,15 +500,15 @@ file that was distributed with this source code.
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">{{ 'admin.content.layout_preview_code__confirm_title'|trans }}</h5>
-                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <p>{{ 'admin.content.layout_preview_code__confirm_message'|trans }}</p>
                                                 <div id="block-source-code" class="d-block border bg-ec-lightGray p-2"></div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-ec-regular" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                <button id="block-edit" onclick="location.href='{{ url('admin_content_block_edit', {id: constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID')}) }}'" class="btn btn-ec-conversion w-25" type="button" data-dismiss="modal">{{ 'admin.content.layout_preview_code__confirm_move_to_block'|trans }}</button>
+                                                <button class="btn btn-ec-regular" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                <button id="block-edit" onclick="location.href='{{ url('admin_content_block_edit', {id: constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID')}) }}'" class="btn btn-ec-conversion w-25" type="button" data-bs-dismiss="modal">{{ 'admin.content.layout_preview_code__confirm_move_to_block'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>
