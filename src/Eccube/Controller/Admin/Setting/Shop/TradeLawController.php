@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TradeLawController extends AbstractController
 {
-    private TradeLawRepository $tradeLawRepository;
+    protected TradeLawRepository $tradeLawRepository;
 
     /**
      * @param TradeLawRepository $tradeLawRepository
