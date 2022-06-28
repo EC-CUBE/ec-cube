@@ -156,6 +156,19 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $this->assertEquals($expected, $current);
     }
 
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5252
+     */
+    public function testImportWithSJIS()
+    {
+        $csv = new CsvImportService(new \SplFileObject(__DIR__ . '/../../../Fixtures/sjis.csv'));
+        $this->assertCount(4, $csv);
+
+        foreach ($csv as $row) {
+            $this->assertCount(3, $row, var_export($row, true));
+        }
+    }
+
     protected function getReader($filename)
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/'.$filename);
