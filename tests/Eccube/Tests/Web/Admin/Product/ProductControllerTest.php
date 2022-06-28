@@ -686,13 +686,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithOrderByProduct()
     {
+        $expectedIds = [];
         for ($i = 1; $i <= 10; $i++) {
             $productName = 'Product name ' . $i;
-            $this->createProduct($productName, 0);
+            $Product = $this->createProduct($productName, 0);
+            array_unshift($expectedIds, $Product->getId());
         }
 
-        $this->entityManager->flush();
+        // 更新日をすべて同一日時に更新
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->update(Product::class, 'p')
+            ->set('p.update_date', ':update_date')
+            ->where('p.name LIKE :name')
+            ->setParameter('update_date', new \DateTime())
+            ->setParameter('name', 'Product name%')
+            ->getQuery()
+            ->execute();
 
+        // 商品名：Product nameで検索
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product name';
 
@@ -707,13 +718,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
-        // get list product after insert to dtb_product
-        $AllProducts = $this->productRepository->findBy([], ['id' => 'DESC'], 10);
-        $arrBefore = [];
-        foreach ($AllProducts as $product){
-            $arrBefore[] = $product->getId();
-        }
-
         $this->expectOutputRegex('/Product name [10-1]/');
         $csvExportUrl = $crawler->filter('.btn-ec-regular')->selectLink('CSVダウンロード')->link()->getUri();
         $this->client->request('GET', $csvExportUrl);
@@ -723,14 +727,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $arr = explode("\n", $data);
         // unset header
         unset($arr[0]);
-        $arrAfter = [];
+        $actualIds = [];
         foreach ($arr as $v){
             if(!empty($v)){
                 $data = explode(",", $v);
-                $arrAfter[] = $data[0];
+                $actualIds[] = (int) $data[0];
             }
         }
-        $this->assertEqualsCanonicalizing($arrBefore, $arrAfter);
+
+        $this->assertSame($expectedIds, $actualIds);
     }
 
     public function dataNewProductProvider()
