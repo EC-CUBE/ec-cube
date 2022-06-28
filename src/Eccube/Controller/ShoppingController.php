@@ -71,7 +71,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * @var TradeLawRepository
      */
-    private TradeLawRepository $tradeLawRepository;
+    protected TradeLawRepository $tradeLawRepository;
 
     public function __construct(
         CartService $cartService,
