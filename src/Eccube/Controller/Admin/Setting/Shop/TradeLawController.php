@@ -28,7 +28,7 @@ class TradeLawController extends AbstractController
     }
 
     /**
-     * 税率設定の初期表示・登録
+     * 特定商取引法設定の初期表示・登録
      *
      * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/tradelaw.twig")
@@ -64,8 +64,8 @@ class TradeLawController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form['TradeLaws'] as $child) {
-                $OrderStatus = $child->getData();
-                $this->entityManager->persist($OrderStatus);
+                $TradeLaw = $child->getData();
+                $this->entityManager->persist($TradeLaw);
             }
             $this->entityManager->flush();
 
