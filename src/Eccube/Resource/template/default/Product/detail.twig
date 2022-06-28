@@ -398,7 +398,7 @@ file that was distributed with this source code.
                             </div>
                         </form>
                     {% endif %}
-                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
+                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br|purify }}
                     </div>
                 </div>
             </div>

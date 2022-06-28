@@ -1001,7 +1001,7 @@ file that was distributed with this source code.
                                                                 <div class="modal-body">
                                                                     <p>
                                                                         {% if MailHistory.mail_html_body|length > 0 %}
-                                                                            {{ MailHistory.mail_html_body|trans|raw }}
+                                                                            {{ MailHistory.mail_html_body|raw|purify }}
                                                                         {% else %}
                                                                             {{ MailHistory.mail_body|nl2br }}
                                                                         {% endif %}
