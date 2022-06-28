@@ -17,48 +17,9 @@ file that was distributed with this source code.
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
-    <style type="text/css">
-        .datepicker-days th.dow:first-child,
-        .datepicker-days td:first-child {
-            color: #f00;
-        }
-
-        .datepicker-days th.dow:last-child,
-        .datepicker-days td:last-child {
-            color: #00f;
-        }
-    </style>
-{% endblock stylesheet %}
-
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}"></script>
-
     <script>
         $(function() {
-            // datetimepicker で value が消えてしまうので data-value に保持しておく
-            $('input.datetimepicker-input').each(function() {
-                $(this).data('value', $(this).val());
-            });
-
-            $('input.datetimepicker-input').datetimepicker({
-                locale: '{{ eccube_config.locale }}',
-                format: 'YYYY-MM-DD HH:mm:ss',
-                useCurrent: false,
-                buttons: {
-                    showToday: true,
-                    showClose: true
-                },
-            });
-
-            // datetimepicker で value が消えてしまうので更新
-            $('input.datetimepicker-input').each(function() {
-                $(this).val($(this).data('value'));
-            });
-
             $('#bulkDelete').on('click', function() {
 
                 var modal = $('#bulkDeleteModal');
@@ -195,7 +156,7 @@ file that was distributed with this source code.
                             {{ form_widget(searchForm.id) }}
                             {{ form_errors(searchForm.id) }}
                         </div>
-                        <div class="d-inline-block mb-3" data-toggle="collapse" href="#searchDetail"
+                        <div class="d-inline-block mb-3" data-bs-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
                                         class="fa fa-plus-square-o font-weight-bold mr-1"></i><span
                                         class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span></a>
@@ -323,7 +284,7 @@ file that was distributed with this source code.
                                     <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
                                         {{ 'admin.product.display_status__abolished'|trans }}
                                     </button>
-                                    <button type="button" data-toggle="modal" data-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.permanently_delete'|trans }}</button>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.permanently_delete'|trans }}</button>
                                 </div>
                             </div>
                             <div class="col-5 text-right">
@@ -435,8 +396,8 @@ file that was distributed with this source code.
                                                          data-placement="top"
                                                          title="{{ 'admin.common.copy'|trans }}">
                                                         <a href="#" class="btn btn-ec-actionIcon"
-                                                           data-toggle="modal"
-                                                           data-target="#confirmModal-{{ Product.id }}">
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#confirmModal-{{ Product.id }}">
                                                             <i class="fa fa-files-o fa-lg text-secondary"
                                                                aria-hidden="true"></i></a>
                                                         <div class="modal fade" id="confirmModal-{{ Product.id }}" tabindex="-1"
@@ -448,7 +409,7 @@ file that was distributed with this source code.
                                                                         <h5 class="modal-title font-weight-bold">
                                                                             {{ 'admin.product.copy__confirm_title'|trans }}</h5>
                                                                         <button class="close" type="button"
-                                                                                data-dismiss="modal"
+                                                                                data-bs-dismiss="modal"
                                                                                 aria-label="Close"><span
                                                                                     aria-hidden="true">×</span>
                                                                         </button>
@@ -459,7 +420,7 @@ file that was distributed with this source code.
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button"
-                                                                                data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
+                                                                                data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                                                                         </button>
                                                                         <a
                                                                                 href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"
@@ -513,7 +474,7 @@ file that was distributed with this source code.
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title font-weight-bold">{{ 'admin.product.permanently_delete__confirm_title'|trans }}</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-left">
                             <p class="text-left">{{ 'admin.product.permanently_delete__confirm_message'|trans }}</p>
@@ -523,9 +484,9 @@ file that was distributed with this source code.
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                            <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                             <button class="btn btn-ec-delete" type="button" id="bulkDelete">{{ 'admin.product.permanently_delete' | trans }}</button>
-                            <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-dismiss="modal">{{ 'admin.product.permanently_delete__complete'|trans }}</button>
+                            <button class="btn btn-ec-regular" id="bulkDeleteDone" style="display: none" type="button" data-bs-dismiss="modal">{{ 'admin.product.permanently_delete__complete'|trans }}</button>
                         </div>
                     </div>
                 </div>
@@ -539,14 +500,14 @@ file that was distributed with this source code.
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title font-weight-bold">{# Title #}</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body">
                     {# Append data list #}
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-v-sub" type="button" data-dismiss="modal">
+                    <button class="btn btn-v-sub" type="button" data-bs-dismiss="modal">
                         {{ 'admin.common.cancel'|trans }}
                     </button>
                     <a class="btn btn-ec-conversion"

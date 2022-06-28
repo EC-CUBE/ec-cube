@@ -62,7 +62,8 @@ file that was distributed with this source code.
                  btn.toggleClass('btn-default');
                  var statusText = $(this).find('.btn-success').text();
                  var modal = $('#PluginProgressModal');
-                 modal.modal();
+                 var bootstrapModal = new bootstrap.Modal(modal.get(0));
+                 bootstrapModal.show();
                  var progress = $('div.progress', modal).show();
                  var progress_message = $('#progress_message');
                  modal.find('.modal-footer').hide();

@@ -128,8 +128,8 @@ class OrderRepository extends AbstractRepository
             }
             $qb
                 ->andWhere('o.id = :multi OR CONCAT(o.name01, o.name02) LIKE :likemulti OR '.
-                            'CONCAT(o.kana01, o.kana02) LIKE :likemulti OR o.company_name LIKE :company_name OR '.
-                            'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
+                    "CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :likemulti OR o.company_name LIKE :company_name OR ".
+                    'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$clean_key_multi.'%')
                 ->setParameter('company_name', '%'.$searchData['multi'].'%'); // 会社名はスペースを除去せず検索
@@ -176,7 +176,7 @@ class OrderRepository extends AbstractRepository
         if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
             $clean_kana = preg_replace('/\s+|[　]+/u', '', $searchData['kana']);
             $qb
-                ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
+                ->andWhere("CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :kana")
                 ->setParameter('kana', '%'.$clean_kana.'%');
         }
 

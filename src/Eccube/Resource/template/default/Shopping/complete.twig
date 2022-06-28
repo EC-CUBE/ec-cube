@@ -72,7 +72,7 @@ file that was distributed with this source code.
                 {% endif %}
             </p>
             {% if Order.complete_message is not empty %}
-                {{ Order.complete_message|raw }}
+                {{ Order.complete_message|raw|purify }}
             {% endif %}
         </div>
     </div>

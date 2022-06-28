@@ -148,7 +148,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8"><span class="card-title">{{ 'admin.content.file.file_list__card_title'|trans }}</span></div>
-                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                    <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
                             <div class="collapse show ec-cardCollapse" id="fileList">
@@ -208,7 +208,7 @@ file that was distributed with this source code.
                                                             <div class="px-1 d-inline-block">
                                                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
-                                                                   data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
+                                                                   data-bs-toggle="modal" data-bs-target="#confirmModal-{{ loop.index }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
                                                                 </div>
                                                                 <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
@@ -216,13 +216,13 @@ file that was distributed with this source code.
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
                                                                                 <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                             </div>
                                                                             <div class="modal-body text-left">
                                                                                 <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                                <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                                 <a class="btn btn-ec-delete" data-confirm="false"
                                                                                    href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                                     {{ 'admin.common.delete'|trans }}
@@ -254,7 +254,7 @@ file that was distributed with this source code.
                                                             </div>
                                                             <div class="px-1 d-inline-block">
                                                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                                    <a class="btn btn-ec-actionIcon action-delete" data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
+                                                                    <a class="btn btn-ec-actionIcon action-delete" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ loop.index }}">
                                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>
@@ -263,13 +263,13 @@ file that was distributed with this source code.
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
                                                                                 <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                             </div>
                                                                             <div class="modal-body text-left">
                                                                                 <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                                <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                                 <a class="btn btn-ec-delete" data-confirm="false"
                                                                                    href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                                     {{ 'admin.common.delete'|trans }}
@@ -297,7 +297,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8"><span class="card-title">{{ 'admin.content.file.directory_tree'|trans }}</span></div>
-                                    <div class="col-4 text-right"><a data-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
+                                    <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
                                 </div>
                             </div>
                             <div class="collapse show ec-cardCollapse" id="folderDirectory">
@@ -305,7 +305,7 @@ file that was distributed with this source code.
                                     <div class="c-directoryTree--folder mb-3">
                                         <ul id="directory_userdata" class="list-unstyled">
                                             <li>
-                                                <label class="collapsed" data-toggle="collapse" href="#directory_userdata" aria-expanded="false" aria-controls="directory_userdata">user_data</label>
+                                                <label class="collapsed" data-bs-toggle="collapse" href="#directory_userdata" aria-expanded="false" aria-controls="directory_userdata">user_data</label>
                                             </li>
                                         </ul>
                                     </div>

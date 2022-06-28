@@ -219,6 +219,8 @@ class TemplateController extends AbstractController
      */
     public function install(Request $request)
     {
+        $this->addInfo('admin.common.restrict_file_upload_info', 'admin');
+
         $form = $this->formFactory
             ->createBuilder(TemplateType::class)
             ->getForm();
