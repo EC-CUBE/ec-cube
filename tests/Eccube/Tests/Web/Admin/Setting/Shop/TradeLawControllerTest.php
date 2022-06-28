@@ -231,7 +231,6 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $editedName = $responseCrawler->filter('#form_TradeLaws_10_name');
         $editedDescription = $responseCrawler->filter('#form_TradeLaws_10_description');
         $editedToggle = $responseCrawler->filter('#form_TradeLaws_10_displayOrderScreen');
-        var_dump($responseCrawler->outerHtml());
 
         // Check that the correct cell is *not* failing validation with red border and contains registered value
         $this->assertStringNotContainsString('is-invalid', $editedName->attr('class'));
