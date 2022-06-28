@@ -823,9 +823,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         }
         $this->entityManager->flush();
 
-
-        $this->entityManager->flush();
-
         // Create case for delivery screen to appear
         $Customer = $this->createCustomer();
 
@@ -859,9 +856,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             }
             $id++;
         }
-        $this->entityManager->flush();
-
-
         $this->entityManager->flush();
 
         // Create case for delivery screen to appear
