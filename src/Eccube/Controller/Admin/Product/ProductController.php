@@ -927,9 +927,7 @@ class ProductController extends AbstractController
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
             // distinctのmysqlとpgsqlの挙動をあわせる.
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
-            $qb->resetDQLPart('select')
-                ->resetDQLPart('orderBy')
-                ->orderBy('p.id', 'DESC');
+            $qb->resetDQLPart('select');
 
             if ($isOutOfStock) {
                 $qb->select('p, pc')
