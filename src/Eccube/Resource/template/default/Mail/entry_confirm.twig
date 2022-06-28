@@ -27,10 +27,23 @@ file that was distributed with this source code.
 
 この度は会員登録依頼をいただきまして、有り難うございます。
 
-{% if existFlg %}
-入力頂きましたメールアドレスで既に登録されていますので、
-マイページよりログイン頂けます。
+{% if existCustomer is defined and existCustomer and existCustomer.status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}{# 仮会員登録済 #}
+入力いただきましたメールアドレスは、現在仮登録の状態です。
+本会員登録を完了するには下記URLにアクセスしてください。
 
+{{ activateUrl }}
+
+上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認
+メールをお送り致します。
+{% elseif existCustomer is defined and existCustomer and existCustomer.status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::REGULAR') %}{# 本会員登録済 #}
+入力いただきましたメールアドレスは、既に会員としてご登録いただいております。
+マイページよりログイン頂き、会員情報をご確認ください。
+
+{{ url('mypage') }}
+
+パスワードがわからない場合は、パスワードの再発行をご利用ください。
+
+{{ url('forgot') }}
 {% else %}
 現在は仮登録の状態です。
 　　　~~~~~~

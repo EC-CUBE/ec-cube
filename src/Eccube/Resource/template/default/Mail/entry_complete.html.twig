@@ -32,6 +32,17 @@ file that was distributed with this source code.
                             <br>
                             {{ BaseInfo.shop_name }}でございます。<br/>
                             この度は会員登録依頼をいただきましてまことに有り難うございます。<br/>
+                            {% if existCustomer is defined and existCustomer and existCustomer.status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::REGULAR') %}{# 本会員登録済 #}
+                            入力いただきましたメールアドレスは、既に会員としてご登録いただいております。<br/>
+                            マイページよりログイン頂き、会員情報をご確認ください。<br/>
+                            <br/>
+                            <a href="{{ url('mypage') }}">{{ url('mypage') }}</a><br/>
+                            <br/>
+                            パスワードがわからない場合は、パスワードの再発行をご利用ください。<br/>
+                            <br/>
+                            <a href="{{ url('mypage') }}">{{ url('mypage') }}</a><br/>
+                            <br/>
+                            {% else %}
                             ショッピングをお楽しみくださいませ。<br/>
                             <br/>
                             今後ともどうぞ{{ BaseInfo.shop_name }}をよろしくお願い申し上げます。<br/>
