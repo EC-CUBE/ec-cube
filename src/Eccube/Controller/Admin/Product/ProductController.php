@@ -401,7 +401,7 @@ class ProductController extends AbstractController
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (file_exists($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 
