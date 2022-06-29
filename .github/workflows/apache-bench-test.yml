@@ -83,15 +83,21 @@ jobs:
           ab -n 100 -c 10 -w -g ab_results/home.html http://127.0.0.1:8000/
       - name: Request product page
         run: |
-          ab -n 100 -c 10 -w -g ab_results/list.data http://127.0.0.1:8000/list
+          ab -n 100 -c 10 -w -g ab_results/list.html http://127.0.0.1:8000/list
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload evidence
+      - name: Upload home page evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: ab-${{ env.ARTIFACT_NAME }}-session
-          path: ab_results
+          name: ab-${{ env.ARTIFACT_NAME }}-home-session
+          path: ab_results/home.html
+      - name: Upload list page evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ab-${{ env.ARTIFACT_NAME }}-list-session
+          path: ab_results/list.html
