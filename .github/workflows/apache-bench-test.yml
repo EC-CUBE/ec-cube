@@ -74,16 +74,13 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           XDEBUG_MODE: coverage
         run: php -S 127.0.0.1:8000 &
-      - name: Create result folder
-        run: |
-          sudo mkdir -m 777 ab_results
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -w -g ab_results/home.html http://127.0.0.1:8000/
+          ab -n 100 -c 10 -w -g home.html http://127.0.0.1:8000/
       - name: Request product page
         run: |
-          ab -n 100 -c 10 -w -g ab_results/list.html http://127.0.0.1:8000/list
+          ab -n 100 -c 10 -w -g list.html http://127.0.0.1:8000/list
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
@@ -94,10 +91,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-home-session
-          path: ab_results/home.html
+          path: home.html
       - name: Upload list page evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-list-session
-          path: ab_results/list.html
+          path: list.html
