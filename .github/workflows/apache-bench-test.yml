@@ -35,53 +35,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Setup PHP
-        uses: nanasess/setup-php@master
-        with:
-          php-version: '7.4'
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-      - name: Install to Composer
-        run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
-      - name: Translate to templates
-        run: php bin/template_jp.php
       - name: Setup to EC-CUBE
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
         run: |
-          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
-          echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
-        # Home Page Request
-      - name: Start PHP Development Server
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          XDEBUG_MODE: coverage
-        run: php -S 127.0.0.1:8000 &
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube bin/console eccube:fixtures:generate --products=10000 --customers=1 --orders=5
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d ec-cube
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -w http://127.0.0.1:8000/ > home.html
+          ab -n 100 -c 10 -w http://localhost:8080/ > home.html
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -w http://127.0.0.1:8000/list > list.html
+          ab -n 100 -c 10 -w http://localhost:8080/list > list.html
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
