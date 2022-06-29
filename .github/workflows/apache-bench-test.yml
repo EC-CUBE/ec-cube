@@ -4,7 +4,7 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  LoadTest:
+  Load-test:
     name: Apache bench (HTTP load speed) testing for EC-CUBE
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -18,6 +18,8 @@ jobs:
           ref: 4.2
       - name: Setup to EC-CUBE
         run: |
+          "sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose"
+          "sudo chmod +x /usr/local/bin/docker-compose"
           "docker-compose up -d"
           "docker-compose exec -u www-data ec-cube bin/console eccube:install -n"
         # Home Page Request
