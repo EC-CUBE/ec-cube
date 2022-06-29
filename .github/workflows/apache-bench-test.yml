@@ -8,6 +8,15 @@ jobs:
   load-test:
     name: Apache bench (HTTP load speed) testing for EC-CUBE
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.4 ]
+        db: [ pgsql ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 14
     services:
       postgres:
         image: postgres:14
@@ -18,9 +27,12 @@ jobs:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
     steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
       - name: Checkout
         uses: actions/checkout@master
       - name: Setup PHP
@@ -53,6 +65,15 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
         # Home Page Request
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          XDEBUG_MODE: coverage
+        run: php -S 127.0.0.1:8000 &
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
