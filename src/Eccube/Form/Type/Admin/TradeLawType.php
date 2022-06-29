@@ -3,6 +3,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\TradeLaw;
 use Eccube\Form\Type\ToggleSwitchType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -60,15 +61,7 @@ class TradeLawType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\TradeLaw',
+            'data_class' => TradeLaw::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'admin_template';
     }
 }
