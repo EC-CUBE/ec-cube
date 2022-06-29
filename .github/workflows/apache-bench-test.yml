@@ -8,13 +8,50 @@ jobs:
   load-test:
     name: Apache bench (HTTP load speed) testing for EC-CUBE
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup to EC-CUBE
+        uses: actions/checkout@master
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: '7.4'
+      - name: Get Composer Cache Directory
+        id: composer-cache
         run: |
-          "docker-compose up -d"
-          "docker-compose exec -u www-data ec-cube bin/console eccube:install -n"
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Install to Composer
+        run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+      - name: Translate to templates
+        run: php bin/template_jp.php
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 14
+        run: |
+          rm -rf $GITHUB_WORKSPACE/app/Plugin/*
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
         # Home Page Request
       - name: Request home page
         run: |
