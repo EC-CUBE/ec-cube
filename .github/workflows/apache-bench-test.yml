@@ -55,7 +55,6 @@ jobs:
         # Home Page Request
       - name: Request home page
         run: |
-          sudo apt-get update
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 http://localhost/
         # Upload Evidence
