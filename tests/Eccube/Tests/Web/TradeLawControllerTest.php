@@ -30,55 +30,29 @@ class TradeLawControllerTest extends AbstractWebTestCase
         parent::setUp();
         $this->tradeLawRepository = $this->entityManager->getRepository(TradeLaw::class);
     }
+
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('tradelaw'));
+        $this->client->request('GET', $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
-     * 取引法を無効にすると、特定商取引法ページに取引法テスト文字が表示されないことを確認すること。
-     * Check that with no trade law enabled, no trade law test will appear on the tradelaw page.
+     * Ensure that the line with both the name/description registered appears on the specific transaction law page.
+     * 名称/説明の両方が登録されている行が、特定商取引法ページに表示されることを確認する。
      * @return void
      */
-    public function testNoTradeLawsEnabled() {
-        // Disable all trade laws
-        $tradeLaws = $this->tradeLawRepository->findAll();
-        $id = 0;
-        foreach($tradeLaws as $tradeLaw) {
-            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
-            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
-            $tradeLaw->setDisplayOrderScreen(false);
-            $id++;
-        }
-        $this->entityManager->flush();
-
-        $crawler = $this->client->request('GET', $this->generateUrl('tradelaw'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-        for ($i = 0; $i < $id; $i++) {
-            $this->assertStringNotContainsString('Trade名称_'.$i, $crawler->outerHtml());
-            $this->assertStringNotContainsString('Trade説明_'.$i, $crawler->outerHtml());
-        }
-    }
-
-    /**
-     * Check that with all trade laws enabled that trade law text will appear on the tradelaw page.
-     * すべての取引法を有効にすると、取引法のテキストが特定商取引法ページに表示されることを確認すること。
-     * @return void
-     */
-    public function testTradeLawsEnabled() {
-        // Enable all trade laws
+    public function testTradeLawsNotEmpty() {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
         foreach($tradeLaws as $tradeLaw) {
             $tradeLaw->setName(sprintf('Trade名称_%s', $id));
             $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
-            $tradeLaw->setDisplayOrderScreen(true);
             $id++;
         }
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('tradelaw'));
+        $crawler = $this->client->request('GET', $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         for ($i = 0; $i < $id; $i++) {
             $this->assertStringContainsString('Trade名称_'.$i, $crawler->outerHtml());
@@ -86,4 +60,25 @@ class TradeLawControllerTest extends AbstractWebTestCase
         }
     }
 
+    /**
+     * Ensure that lines that do not have both a name/description registered do not appear on the specific transaction law page.
+     * 名称/説明の両方が登録されていない行は、特定商取引法ページに表示されないことを確認する。
+     * @return void
+     */
+    public function testTradeLawsEmpty() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription('');
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        for ($i = 0; $i < $id; $i++) {
+            $this->assertStringNotContainsString('Trade名称_'.$i, $crawler->outerHtml());
+        }
+    }
 }
