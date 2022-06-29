@@ -210,14 +210,14 @@ class EntryControllerTest extends AbstractWebTestCase
         $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::PROVISIONAL);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
         $client = $this->client;
         $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isRedirection());
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
@@ -239,7 +239,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isRedirection());
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);

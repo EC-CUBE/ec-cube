@@ -26,8 +26,19 @@ file that was distributed with this source code.
 
 この度は会員登録依頼をいただきましてまことに有り難うございます。
 
+{% if existCustomer is defined and existCustomer and existCustomer.status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::REGULAR') %}{# 本会員登録済 #}
+入力いただきましたメールアドレスは、既に会員としてご登録いただいております。
+マイページよりログイン頂き、会員情報をご確認ください。
+
+{{ url('mypage') }}
+
+パスワードがわからない場合は、パスワードの再発行をご利用ください。
+
+{{ url('forgot') }}
+{% else %}
 本会員登録が完了いたしました。
 ショッピングをお楽しみくださいませ。
 
 今後ともどうぞ{{ BaseInfo.shop_name }}をよろしくお願い申し上げます。
+{% endif %}
 {% endautoescape %}

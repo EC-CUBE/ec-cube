@@ -110,8 +110,9 @@ class MailService
      *
      * @param $Customer 会員情報
      * @param string $activateUrl アクティベート用url
+     * @param Customer $existCustomer
      */
-    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl)
+    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl, Customer $existCustomer = null)
     {
         log_info('仮会員登録メール送信開始');
 
@@ -121,6 +122,7 @@ class MailService
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
+            'existCustomer' => $existCustomer,
         ]);
 
         $message = (new Email())
@@ -138,6 +140,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'activateUrl' => $activateUrl,
+                'existCustomer' => $existCustomer,
             ]);
 
             $message
@@ -169,8 +172,9 @@ class MailService
      * Send customer complete mail.
      *
      * @param $Customer 会員情報
+     * @param Customer $existCustomer
      */
-    public function sendCustomerCompleteMail(Customer $Customer)
+    public function sendCustomerCompleteMail(Customer $Customer, Customer $existCustomer = null)
     {
         log_info('会員登録完了メール送信開始');
 
@@ -178,6 +182,7 @@ class MailService
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'Customer' => $Customer,
+            'existCustomer' => $existCustomer,
             'BaseInfo' => $this->BaseInfo,
         ]);
 
@@ -194,6 +199,7 @@ class MailService
         if (!is_null($htmlFileName)) {
             $htmlBody = $this->twig->render($htmlFileName, [
                 'Customer' => $Customer,
+                'existCustomer' => $existCustomer,
                 'BaseInfo' => $this->BaseInfo,
             ]);
 
