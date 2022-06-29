@@ -67,7 +67,7 @@ jobs:
         # Home Page Request
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
@@ -77,15 +77,25 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -w http://127.0.0.1:8000/ > output.html
+          ab -n 100 -c 10 -w http://127.0.0.1:8000/ > home.html
+      - name: Request list page
+        run: |
+          sudo apt-get install apache2-utils
+          ab -n 100 -c 10 -w http://127.0.0.1:8000/list > list.html
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload evidence
+      - name: Upload homepage evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: ab-${{ env.ARTIFACT_NAME }}-session
-          path: output.html
+          name: ab-${{ env.ARTIFACT_NAME }}-home-session
+          path: home.html
+      - name: Upload product list evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ab-${{ env.ARTIFACT_NAME }}-list-session
+          path: list.html
