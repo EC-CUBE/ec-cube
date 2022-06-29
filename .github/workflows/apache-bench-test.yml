@@ -8,39 +8,23 @@ jobs:
   load-test:
     name: Apache bench (HTTP load speed) testing for EC-CUBE
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php: [ 7.4 ]
-        db: [ pgsql ]
-        include:
-          - db: pgsql
-            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Setup to EC-CUBE
+      - name: Setup base EC-CUBE
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+      - name: Setup database schema
+        run: |
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
+      - name: Setup base fixtures
+        run: |
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+      - name: Setup test Data
+        run: |
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube bin/console eccube:fixtures:generate --products=10000 --customers=1 --orders=5
+      - name: Load EC-CUBE
+        run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d ec-cube
       - name: Request home page
