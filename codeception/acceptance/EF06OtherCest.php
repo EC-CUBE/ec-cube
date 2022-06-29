@@ -164,7 +164,7 @@ class EF06OtherCest
     public function other_特定商取引法に基づく表記(AcceptanceTester $I)
     {
         $I->wantTo('EF0606-UC01-T01 特定商取引法に基づく表記');
-        $I->amOnPage('/tradelaw');
+        $I->amOnPage('/help/tradelaw');
 
         $I->see('特定商取引法に基づく表記', 'div.ec-pageHeader h1');
     }

@@ -32,8 +32,8 @@ class TradeLawController extends AbstractController
     }
 
     /**
-     * @Route("/tradelaw", name="tradelaw", methods={"GET"})
-     * @Template("tradelaw.twig")
+     * @Route("/help/tradelaw", name="help_tradelaw", methods={"GET"})
+     * @Template("Help/tradelaw.twig")
      */
     public function index()
     {

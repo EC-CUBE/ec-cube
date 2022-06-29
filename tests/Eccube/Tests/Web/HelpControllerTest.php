@@ -16,6 +16,16 @@ namespace Eccube\Tests\Web;
 class HelpControllerTest extends AbstractWebTestCase
 {
     /**
+     * 特定商取引法のテスト
+     */
+    public function testRoutingHelpTradelaw()
+    {
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('help_tradelaw'));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
      * 当サイトについてのテスト
      */
     public function testRoutingHelpAbout()

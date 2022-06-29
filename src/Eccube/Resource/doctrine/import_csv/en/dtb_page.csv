@@ -17,7 +17,7 @@ id,page_name,url,file_name,edit_type,author,description,keyword,create_date,upda
 17,Inquiry (Thank-you),contact_complete,Contact/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 18,Registration (Form),entry,Entry/index,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 20,Registration (Thank-you),entry_complete,Entry/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
-21,Shipping & Returns,tradelaw,tradelaw,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
+21,Shipping & Returns,help_tradelaw,Help/tradelaw,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,,,page,
 22,Regular Customer Registration (Thank-you),entry_activate,Entry/activate,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 24,Shopping / Delivery Address,shopping_shipping,Shopping/shipping,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
 28,Shopping / Thank you for your order,shopping_complete,Shopping/complete,2,,,,2017-03-07 10:14:52,2017-03-07 10:14:52,noindex,,page,
