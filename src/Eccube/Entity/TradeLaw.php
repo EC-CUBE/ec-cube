@@ -68,12 +68,6 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          */
         private bool $displayOrderScreen = false;
 
-        public static function loadValidatorMetadata(ClassMetadata $metadata)
-        {
-            $metadata->addConstraint(new Assert\Callback('validateActivation'));
-        }
-
-
         /**
          * @return string
          */
@@ -170,20 +164,6 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         public function isDisplayOrderScreen(): bool
         {
             return $this->displayOrderScreen;
-        }
-
-        public function validateActivation(ExecutionContextInterface $context, $payload)
-        {
-            // check if the name is actually a fake name
-            if (
-                $this->isDisplayOrderScreen() === true &&
-                (empty($this->getName()) ||
-                empty($this->getDescription()))
-            ) {
-                $context->buildViolation(trans('admin.setting.shop.trade_law.error.activation_error'))
-                    ->atPath('displayOrderScreen')
-                    ->addViolation();
-            }
         }
     }
 }
