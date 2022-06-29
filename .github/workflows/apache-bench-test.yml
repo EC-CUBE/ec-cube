@@ -77,24 +77,15 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -w -g home.html http://127.0.0.1:8000/
-      - name: Request product page
-        run: |
-          ab -n 100 -c 10 -w -g list.html http://127.0.0.1:8000/list
+          ab -n 100 -c 10 -g output.data http://127.0.0.1:8000/
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload home page evidence
+      - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: ab-${{ env.ARTIFACT_NAME }}-home-session
-          path: home.html
-      - name: Upload list page evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-list-session
-          path: list.html
+          name: ab-${{ env.ARTIFACT_NAME }}-session
+          path: output.data
