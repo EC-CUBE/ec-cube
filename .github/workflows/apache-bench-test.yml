@@ -56,7 +56,7 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 http://localhost/
+          ab -n 100 -c 10 http://127.0.0.1:8000/
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
