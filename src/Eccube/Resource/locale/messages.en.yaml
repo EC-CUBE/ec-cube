@@ -1143,6 +1143,15 @@ admin.setting.shop.shop.option_point_rate: Point Return Rate
 admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
 
 #------------------------------------------------------------------------------------
+# Settings：Store Settings：Trade Law Settings
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.trade_law.header.name: Label
+admin.setting.shop.trade_law.header.description: Description
+admin.setting.shop.trade_law.header.confirm_page_show: Visible on order confirmation page
+admin.setting.shop.trade_law.error.activation_error: Please enter both the label and description
+
+#------------------------------------------------------------------------------------
 # Settings : Store Settings : Payment Methods
 #------------------------------------------------------------------------------------
 

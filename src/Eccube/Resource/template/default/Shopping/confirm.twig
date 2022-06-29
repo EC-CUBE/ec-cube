@@ -164,6 +164,16 @@ file that was distributed with this source code.
                     {{ Order.message|nl2br }}
                 </div>
             </div>
+            {% for activeTradeLaw in activeTradeLaws|filter(t => t.name and t.description) %}
+                <div class="ec-orderConfirm">
+                    <div class="ec-rectHeading">
+                        <h2>{{ activeTradeLaw.name }}</h2>
+                    </div>
+                    <div class="ec-input">
+                        {{ activeTradeLaw.description|raw|purify }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="ec-orderRole__summary">
             <div class="ec-totalBox">

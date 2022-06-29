@@ -26,17 +26,6 @@ class HelpController extends AbstractController
     }
 
     /**
-     * 特定商取引法.
-     *
-     * @Route("/help/tradelaw", name="help_tradelaw", methods={"GET"})
-     * @Template("Help/tradelaw.twig")
-     */
-    public function tradelaw()
-    {
-        return [];
-    }
-
-    /**
      * ご利用ガイド.
      *
      * @Route("/guide", name="help_guide", methods={"GET"})

@@ -455,26 +455,6 @@ class EA07BasicinfoCest
         $I->assertEquals('0', $I->grabTextFrom(OrderEditPage::$加算ポイント));
     }
 
-    public function basicinfo_特定商取引法(AcceptanceTester $I)
-    {
-        $I->wantTo('EA0702-UC01-T01 特定商取引法の設定');
-
-        PageManagePage::go($I);
-        $I->click(['xpath' => '//a[contains(text(), "特定商取引")]']);
-
-        $test_text = uniqid('テストテキスト');
-        $before = PageEditPage::at($I)->出力_内容();
-        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", $before);
-        PageEditPage::at($I)
-            ->入力_内容($after)
-            ->登録();
-
-        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
-
-        $I->amOnPage('/help/tradelaw');
-        $I->see($test_text);
-    }
-
     public function basicinfo_会員規約(AcceptanceTester $I)
     {
         $I->wantTo('EA0703-UC01-T01 会員規約の設定');
