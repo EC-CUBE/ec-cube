@@ -34,7 +34,7 @@ jobs:
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -w http://localhost:8080/list > list.html
+          ab -n 100 -c 10 -w http://localhost:8080/products/list > list.html
         # Upload Evidence
       - env:
           GROUP: ${{ matrix.group }}
