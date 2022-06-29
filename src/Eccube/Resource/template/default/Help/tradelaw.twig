@@ -18,10 +18,10 @@ file that was distributed with this source code.
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
                 <div class="ec-borderedDefs">
-                    {% for tradelaw in tradelaws|filter(f => f.display_order_screen) %}
+                    {% for tradelaw in tradelaws|filter(t => t.name and t.description)  %}
                     <dl>
                         <dt>
-                            <label class="ec-label">{{ tradelaw.name|raw|purify }}</label>
+                            <label class="ec-label">{{ tradelaw.name }}</label>
                         </dt>
                         <dd>{{ tradelaw.description|raw|purify }}</dd>
                     </dl>

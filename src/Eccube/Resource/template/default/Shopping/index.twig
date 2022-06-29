@@ -382,17 +382,15 @@ file that was distributed with this source code.
                         {{ form_errors(form.message) }}
                     </div>
                 </div>
-                {% for activeTradeLaw in activeTradeLaws %}
-                    {% if activeTradeLaw.name and activeTradeLaw.description %}
-                        <div class="ec-orderConfirm">
-                            <div class="ec-rectHeading">
-                                <h2>{{ activeTradeLaw.name|raw|purify }}</h2>
-                            </div>
-                            <div class="ec-input">
-                                {{ activeTradeLaw.description|raw|purify }}
-                            </div>
+                {% for activeTradeLaw in activeTradeLaws|filter(t => t.name and t.description) %}
+                    <div class="ec-orderConfirm">
+                        <div class="ec-rectHeading">
+                            <h2>{{ activeTradeLaw.name }}</h2>
                         </div>
-                    {% endif %}
+                        <div class="ec-input">
+                            {{ activeTradeLaw.description|raw|purify }}
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
             <div class="ec-orderRole__summary">
