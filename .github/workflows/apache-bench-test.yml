@@ -13,10 +13,7 @@ jobs:
         operating-system: [ ubuntu-20.04 ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          ref: 4.2
+        uses: actions/checkout@v3
       - name: Setup to EC-CUBE
         run: |
           "sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose"
