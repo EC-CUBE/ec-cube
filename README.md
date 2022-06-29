@@ -10,7 +10,7 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-**4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1.0)をご確認ください。**
+**4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1.0)をご確認ください。** 
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。
 + パッケージ版は[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布しています。
