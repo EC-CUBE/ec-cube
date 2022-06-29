@@ -325,3 +325,16 @@ Styleguide 12.7
     }
   }
 }
+
+/*
+画像アップロードパネル
+
+画像アップロード用のクラスを定義しています
+*/
+.filepond--item {
+    width: 170px;
+}
+.filepond--panel-root {
+    background-color: #fff;
+    border: dashed 1px #ccc;
+}

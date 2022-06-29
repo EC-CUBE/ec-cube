@@ -17,45 +17,11 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
-    <style>
-        #thumb div {
-            float: left;
-            margin: 4px
-        }
-
-        .ui-state-highlight {
-            height: 70px;
-            width: 70px;
-            border: dashed 1px #ccc;
-            background: #fff;
-        }
-    </style>
-{% endblock stylesheet %}
-
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.iframe-transport.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-process.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
     <script>var bootstrapTooltip = $.fn.tooltip.noConflict();</script>
     <script>
         $.fn.tooltip = bootstrapTooltip;
-        $(document).on('drop dragover', function(e) {
-            e.preventDefault();
-        });
         $(function() {
-            // Todo: fix drag&drop style
-            $("#thumb").sortable({
-                cursor: 'move',
-                opacity: 0.7,
-                placeholder: 'ui-state-highlight',
-                update: function(event, ui) {
-                    updateSortNo();
-                }
-            });
             {% if has_class == false %}
             if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
                 $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
@@ -70,112 +36,125 @@ file that was distributed with this source code.
                 }
             });
             {% endif %}
-            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
-                '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
-                '</div>';
-            var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
-            var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
-            {% for image in form.images %}
-            var $img = $(proto_img.replace(/__path__/g, '{{ asset(image.vars.value, 'save_image') }}'));
-            var $widget = $('{{ form_widget(image) }}');
-            $widget.val('{{ image.vars.value }}');
-            $("#thumb").append($img.append($widget));
-            {% endfor %}
-            {% for add_image in form.add_images %}
-            var $img = $(proto_img.replace(/__path__/g, '{{ asset(add_image.vars.value, 'temp_image') }}'));
-            var $widget = $('{{ form_widget(add_image) }}');
-            $widget.val('{{ add_image.vars.value }}');
-            $("#thumb").append($img.append($widget));
-            {% endfor %}
-            {% for delete_image in form.delete_images %}
-            $("#thumb").append('{{ form_widget(delete_image) }}');
-            {% endfor %}
-            var hideThumbnail = function() {
-                if ($("#thumb div").length > 0) {
-                    $("#icon_no_image").css("display", "none");
-                    $('#message').html("{{ 'admin.common.drag_and_drop_description'|trans }}");
-                } else {
-                    $("#icon_no_image").css("display", "");
-                    $('#message').empty();
-                }
-            };
-            // Todo: fix update sort by drag&drop
-            var updateSortNo = function() {
-                $("#thumb div").each(function(index) {
-                    $(this).find(".sort_no_images").remove();
-                    filename = $(this).find("input[type='hidden']").val();
-                    $sortNo = $('<input type="hidden" class="sort_no_images" name="sort_no_images[]" />');
-                    $sortNo.val(filename + '//' + parseInt(index + 1));
-                    $(this).append($sortNo);
-                });
-            };
-            hideThumbnail();
-            updateSortNo();
-            // Delete of images
-            var count_del = 0;
-            $("#thumb").on("click", '.delete-image', function() {
-                var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
-                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
-                var src = $(thumbnail).find('input').val();
-                $new_delete_image.val(src);
-                $("#thumb").append($new_delete_image);
-                $(thumbnail).remove();
-                hideThumbnail();
-                updateSortNo();
-                count_del++;
-            });
-            var count_add = {{ form.add_images|length|default(0) }};
-            $('#{{ form.product_image.vars.id }}').fileupload({
-                url: "{{ url('admin_product_image_add') }}",
-                type: "post",
-                sequentialUploads: true,
-                dataType: 'json',
-                dropZone: $('#upload-zone'),
-                done: function(e, data) {
-                    $('.progress').hide();
-                    $.each(data.result.files, function(index, file) {
-                        var path = '{{ asset('', 'temp_image') }}' + file;
-                        var $img = $(proto_img.replace(/__path__/g, path));
-                        var $new_img = $(proto_add.replace(/__name__/g, count_add));
-                        $new_img.val(file);
-                        $child = $img.append($new_img);
-                        $('#thumb').append($child);
-                        count_add++;
-                    });
-                    hideThumbnail();
-                    updateSortNo();
-                },
-                fail: function(e, data) {
-                    alert("{{ 'admin.common.upload_error'|trans }}");
-                },
-                always: function(e, data) {
-                    $('.progress').hide();
-                    $('.progress .progress-bar').width('0%');
-                },
-                start: function(e, data) {
-                    $('.progress').show();
-                },
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 10000000,
-                maxNumberOfFiles: 10,
-                progressall: function(e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('.progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                },
-                processalways: function(e, data) {
-                    if (data.files.error) {
-                        alert("{{ 'admin.common.upload_error'|trans }}");
+
+            // ファイルアップロード
+            // see https://pqina.nl/filepond/
+            var inputFileElement = document.querySelector('input[type=file]');
+            FilePond.setOptions({
+                server: {
+                    process: {
+                        url: '{{ path('admin_product_image_process') }}',
+                        headers: {
+                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    },
+                    load: {
+                        url: '{{ path('admin_product_image_load') }}?source=',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    },
+                    revert: {
+                        url: '{{ path('admin_product_image_revert') }}',
+                        headers: {
+                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
                     }
                 }
             });
-            // 画像アップロード
-            $('#file_upload').on('click', function() {
-                $('#{{ form.product_image.vars.id }}').click();
+            var pond = FilePond.create(inputFileElement, {
+                allowFileTypeValidation: true,
+                acceptedFileTypes: [
+                    'image/gif',
+                    'image/png',
+                    'image/jpeg'
+                ],
+                allowFileSizeValidation: true,
+                maxFileSize: 10000000,
+                maxFiles: 10,
+                allowBrowse: true,
+                allowDrop: true,
+                allowReorder: true,
+                labelIdle: '<i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true" style="font-size: 40px"></i>{{ 'admin.common.drag_and_drop_image_description'|trans }}<span class="filepond--label-action">{{ 'admin.common.file_select'|trans }}</span>',
+                // 保存されている画像のロード
+                files: [
+                    {% for image in form.images %}
+                    {
+                        source: '{{ asset(image.vars.value, 'save_image') }}',
+                        options: {
+                            type: 'local'
+                        }
+                    },
+                    {% endfor %}
+                    // 追加してすぐの画像のロード. バリデーションエラーの場合など.
+                    {% for add_image in form.add_images %}
+                    {
+                        source: '{{ asset(add_image.vars.value, 'temp_image') }}',
+                        options: {
+                            type: 'local'
+                        }
+                    },
+                    {% endfor %}
+                ]
             });
+            // 画像が追加されたら add_images にファイル名を追加する
+            var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
+            pond.on('processfile', function(error, file) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    $('#upload-zone').append(
+                        $(proto_add.replace(/__name__/g, file.id))
+                            .val(file.serverId)
+                            .addClass('add_images')
+                    );
+                }
+            });
+            // 画像が削除されたら delete_images にファイル名を追加する
+            var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
+            pond.on('removefile', function(error, file) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    // file.serverId にはアップロードしたファイル名が格納される.
+                    // DBに登録されると URL path が入るためファイル名のみ抜き出す.
+                    if (file.serverId) {
+                        $('#upload-zone').append(
+                            $(proto_del.replace(/__name__/g, file.id))
+                                .val(file.serverId.split('/').pop())
+                                .addClass('del_images')
+                        );
+                    }
+                    // 追加してすぐ削除した画像があれば削除する
+                    $('#upload-zone').find('#admin_product_add_images_' + file.id).remove(); // 追加してすぐ削除した画像
+                    $('#upload-zone').find('.add_images[value="' + file.filename + '"]').remove(); // 追加後, バリデーションエラーが発生した後に削除した画像
+                }
+            });
+            // バリデーションエラーが出た場合に画像を保持するための hidden を追加しておく
+            var proto_image = '{{ form_widget(form.images.vars.prototype) }}';
+            {% for image in form.images %}
+                $('#upload-zone').append(
+                    $(proto_image.replace(/__name__/g, '{{ loop.index0 }}'))
+                        .val('{{ asset(image.vars.value, 'save_image') }}')
+                        .addClass('images')
+                );
+            {% endfor %}
+            {% for add_image in form.add_images %}
+                $('#upload-zone').append(
+                    $('{{ form_widget(add_image) }}')
+                        .val('{{ add_image.vars.value }}')
+                        .addClass('add_images')
+                );
+            {% endfor %}
+            {% for delete_image in form.delete_images %}
+                $('#upload-zone').append(
+                    $('{{ form_widget(delete_image) }}').addClass('del_images')
+                );
+            {% endfor %}
 
+            // タグ管理
             var mainTags = $('#allTags');
             var adminProductTag = $('#admin_product_Tag');
             $('input', adminProductTag).each(function() {
@@ -329,20 +308,11 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="col mb-2">
-                                        <div class="progress" style="display: none;">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div id="thumb" class="c-form__fileUploadThumbnails clearfix"></div>
                                         <p id="message"></p>
-                                        <div id="upload-zone" class="media py-5 border-ec-dashed mb-2 rounded">
+                                        <div id="upload-zone" class="media rounded">
                                             <div class="media-body">
-                                                <i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true"></i>
-                                                {{ 'admin.common.drag_and_drop_image_description'|trans }}
-                                                {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                                {{ form_widget(form.product_image, { attr : { style : 'display:none;' } }) }}
                                                 {{ form_errors(form.product_image) }}
-                                                <a class="btn btn-ec-regular mr-2" onclick="$('#admin_product_product_image').click()">
-                                                    {{ 'admin.common.file_select'|trans }}
-                                                </a>
                                             </div><!-- /.media-body -->
                                         </div><!-- /.media -->
                                     </div>
