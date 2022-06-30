@@ -11,23 +11,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Setup base EC-CUBE
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
-      - name: Setup database schema
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
-      - name: Setup base fixtures
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
-      - name: Setup test Data
-        # ループを書きたかったがループバグがあるようのため、重複コマンドを作ります。
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube bin/console eccube:fixtures:generate --without-image --products=1000 --customers=1 --orders=1
       - name: Load EC-CUBE
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d ec-cube
+          docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml up -d
+      - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
+        run: sleep 120s
+        shell: bash
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
