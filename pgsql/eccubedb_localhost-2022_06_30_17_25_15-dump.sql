@@ -145,6 +145,7 @@ CREATE TABLE public.dtb_base_info (
     option_product_delivery_fee boolean DEFAULT false NOT NULL,
     option_product_tax_rule boolean DEFAULT false NOT NULL,
     option_customer_activate boolean DEFAULT true NOT NULL,
+    invoice_registration_number character varying(255) DEFAULT NULL::character varying,
     option_remember_me boolean DEFAULT true NOT NULL,
     authentication_key character varying(255) DEFAULT NULL::character varying,
     php_path character varying(255) DEFAULT NULL::character varying,
