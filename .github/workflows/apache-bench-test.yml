@@ -23,7 +23,7 @@ jobs:
       - name: Setup test Data
         # ループを書きたかったがループバグがあるようのため、重複コマンドを作ります。
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube bin/console eccube:fixtures:generate --without-image --products=100 --customers=1 --orders=1
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube bin/console eccube:fixtures:generate --without-image --products=1000 --customers=1 --orders=1
       - name: Load EC-CUBE
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
