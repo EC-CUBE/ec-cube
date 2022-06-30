@@ -22,6 +22,7 @@ jobs:
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
       - name: Setup test Data
         run: |
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube for i in `seq 1 9`; do bin/console eccube:fixtures:generate --products=1000; done
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube for i in {1..9}; do bin/console eccube:fixtures:generate --products=1000;done
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T bin/console eccube:fixtures:generate --products=1000 --customers=1 --orders=5
       - name: Load EC-CUBE
