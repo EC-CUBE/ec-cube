@@ -82,7 +82,7 @@ file that was distributed with this source code.
                 files: [
                     {% for image in form.images %}
                     {
-                        source: '{{ asset(image.vars.value, 'save_image') }}',
+                        source: '{{ image.vars.value }}',
                         options: {
                             type: 'local'
                         }
@@ -91,7 +91,7 @@ file that was distributed with this source code.
                     // 追加してすぐの画像のロード. バリデーションエラーの場合など.
                     {% for add_image in form.add_images %}
                     {
-                        source: '{{ asset(add_image.vars.value, 'temp_image') }}',
+                        source: '{{ add_image.vars.value }}',
                         options: {
                             type: 'local'
                         }
@@ -119,11 +119,10 @@ file that was distributed with this source code.
                     console.log(error);
                 } else {
                     // file.serverId にはアップロードしたファイル名が格納される.
-                    // DBに登録されると URL path が入るためファイル名のみ抜き出す.
                     if (file.serverId) {
                         $('#upload-zone').append(
                             $(proto_del.replace(/__name__/g, file.id))
-                                .val(file.serverId.split('/').pop())
+                                .val(file.serverId)
                                 .addClass('del_images')
                         );
                     }
@@ -137,7 +136,7 @@ file that was distributed with this source code.
             {% for image in form.images %}
                 $('#upload-zone').append(
                     $(proto_image.replace(/__name__/g, '{{ loop.index0 }}'))
-                        .val('{{ asset(image.vars.value, 'save_image') }}')
+                        .val('{{ image.vars.value }}')
                         .addClass('images')
                 );
             {% endfor %}
