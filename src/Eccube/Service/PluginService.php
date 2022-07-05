@@ -16,6 +16,8 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\MappingException as ORMMappingException;
+use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -593,18 +595,22 @@ class PluginService
         }
         $this->unregisterPlugin($plugin);
 
-        // スキーマを更新する
-        $this->generateProxyAndUpdateSchema($plugin, $config, true);
+        try {
+            // スキーマを更新する
+            $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
-        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
-        $this->schemaService->dropTable($namespace);
+            // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+            $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+            $this->schemaService->dropTable($namespace);
+        } catch (PersistenceMappingException $e) {
+        } catch (ORMMappingException $e) {
+            // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
+        }
 
         if ($force) {
             $this->deleteFile($pluginDir);
             $this->removeAssets($plugin->getCode());
         }
-
         $this->pluginApiService->pluginUninstalled($plugin);
 
         return true;
