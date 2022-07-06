@@ -13,7 +13,7 @@ services:
       DATABASE_SERVER_VERSION: 5.7
       DATABASE_CHARSET: 'utf8mb4'
 
-  postgres:
+  mysql:
     build:
       context: .github/workflows/mysql
       dockerfile: Dockerfile
