@@ -25,11 +25,13 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.txt
+          PG_4_1_HOME="$(tail -n +23 pg-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.txt
+          PG_4_1_LIST="$(tail -n +23 pg-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
@@ -49,11 +51,13 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.2-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.2-home.txt
+          PG_4_2_HOME="$(tail -n +23 pg-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.2-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.2-list.txt
+          PG_4_2_LIST="$(tail -n +23 pg-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
         run: |
@@ -74,11 +78,13 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.1-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.1-home.txt
+          MY_4_1_HOME="$(tail -n +23 mysql-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.1-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.1-list.txt
+          MY_4_1_LIST="$(tail -n +23 mysql-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
@@ -97,14 +103,19 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.2-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.2-home.txt
+          MY_4_2_HOME="$(tail -n +23 mysql-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.2-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.2-list.txt
+          MY_4_2_LIST="$(tail -n +23 mysql-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
+      - name: Bundle Average Results to CSV
+        run: |
+          echo $PG_4_1_HOME, $PG_4_1_LIST, $PG_4_2_HOME, $PG_4_2_LIST, $MY_4_1_HOME, $MY_4_1_LIST, $MY_4_2_HOME, $MY_4_2_LIST >> total.csv
       # Upload Evidence
       ## FINALISE
       - env:
@@ -159,4 +170,10 @@ jobs:
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-list-session
           path: mysql-4.2-list.html
+      - name: Upload complete evidence (ALL)
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ab-${{ env.ARTIFACT_NAME }}-complete
+          path: total.csv
 
