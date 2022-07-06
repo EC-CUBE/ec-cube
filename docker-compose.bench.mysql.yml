@@ -6,8 +6,6 @@ volumes:
 
 services:
   ec-cube:
-    depends_on:
-      - mysql
     environment:
       DATABASE_URL: "mysql://dbuser:secret@mysql/eccubedb"
       DATABASE_SERVER_VERSION: 5.7
