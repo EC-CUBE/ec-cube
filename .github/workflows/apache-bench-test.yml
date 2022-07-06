@@ -25,11 +25,11 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/ > pg-4.1-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.html
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > pg-4.1-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.html
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
@@ -49,11 +49,11 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/ > pg-4.2-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.2-home.html
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > pg-4.2-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.2-list.html
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
         run: |
@@ -74,11 +74,11 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/ > mysql-4.1-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.1-home.html
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > mysql-4.1-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.1-list.html
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
@@ -97,11 +97,11 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/ > mysql-4.2-home.html
+          ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.2-home.html
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > mysql-4.2-list.html
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.2-list.html
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
