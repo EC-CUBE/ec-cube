@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  pg-database:
+  mysql-database:
     driver: local
 
 services:
