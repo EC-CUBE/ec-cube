@@ -35,7 +35,7 @@ jobs:
       - name: Checkout 4.2 Branch
         uses: actions/checkout@master
         with:
-          ref: "4.2"
+          ref: "feature/ab_testing"
       - name: Start Load EC-CUBE on 4.2
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
