@@ -11,7 +11,7 @@ jobs:
     steps:
       # POSTGRES SQL
       ## 4.1
-      - name: Checkout 4.1 Branch
+      - name: Checkout 4.1 Branch (POSTGRES)
         uses: actions/checkout@master
         with:
           ref: "4.1"
@@ -35,7 +35,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
       ## 4.2
-      - name: Checkout 4.2 Branch
+      - name: Checkout 4.2 Branch (POSTGRES)
         uses: actions/checkout@master
         with:
           ref: "feature/ab_testing"
@@ -60,8 +60,30 @@ jobs:
           docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
       ## MYSQL
       # 4.1
+      - name: Checkout 4.1 Branch (MYSQL)
+        uses: actions/checkout@master
+        with:
+          ref: "4.1"
+      - name: Start Load EC-CUBE on 4.1
+        run: |
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml up -d
+      - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
+        run: sleep 120s
+        shell: bash
+      - name: Request home page
+        run: |
+          sudo apt-get install apache2-utils
+          ab -n 100 -c 10 -l -w http://localhost:8080/ > mysql-4.1-home.html
+      - name: Request list page
+        run: |
+          sudo apt-get install apache2-utils
+          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > mysql-4.1-list.html
+      - name: Drop MYSQL ECCUBE for 4.1
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
       # 4.2
-      - name: Checkout 4.2 Branch
+      - name: Checkout 4.2 Branch  (MYSQL)
         uses: actions/checkout@master
         with:
           ref: "feature/ab_testing"
@@ -80,10 +102,10 @@ jobs:
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l -w http://localhost:8080/products/list > mysql-4.2-list.html
-        # Upload Evidence
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
+      # Upload Evidence
       ## FINALISE
       - env:
           GROUP: ${{ matrix.group }}
