@@ -9,9 +9,11 @@ jobs:
     name: Apache bench (HTTP load speed) testing for EC-CUBE
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout 4.1 Branch
         uses: actions/checkout@master
-      - name: Load EC-CUBE
+        with:
+          ref: "4.1"
+      - name: Start Load EC-CUBE
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml up -d
@@ -21,12 +23,38 @@ jobs:
       - name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/ > home.html
+          ab -n 100 -c 10 -l -w http://localhost:8080/ > pg-4.1-home.html
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > list.html
+          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > pg-4.2-list.html
         # Upload Evidence
+      - name: Drop PGSQL ECCUBE for 4.1
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
+      - name: Checkout 4.2 Branch
+        uses: actions/checkout@master
+        with:
+          ref: "4.2"
+      - name: Start Load EC-CUBE on 4.2
+        run: |
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml up -d
+      - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
+        run: sleep 120s
+        shell: bash
+      - name: Request home page
+        run: |
+          sudo apt-get install apache2-utils
+          ab -n 100 -c 10 -l -w http://localhost:8080/ > pg-4.2-home.html
+      - name: Request list page
+        run: |
+          sudo apt-get install apache2-utils
+          ab -n 100 -c 10 -l -w http://localhost:8080/products/list > pg-4.2-list.html
+        # Upload Evidence
+      - name: Drop PGSQL ECCUBE for 4.2
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
@@ -36,10 +64,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-home-session
-          path: home.html
+          path: pg-4.2-home.html
       - name: Upload product list evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-list-session
-          path: list.html
+          path: pg-4.2-list.html
