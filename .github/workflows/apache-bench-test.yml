@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 jobs:
   load-test-4-1-pg:
-    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.1 for Postgresql
+    name: EC-CUBE 4.1 for Postgresql
     runs-on: ubuntu-latest
     steps:
       # POSTGRES SQL
@@ -58,7 +58,7 @@ jobs:
       home_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-pg-list.outputs.list_avg }}
   load-test-4-2-pg:
-    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for Postgresql
+    name: EC-CUBE 4.2 for Postgresql
     runs-on: ubuntu-latest
     steps:
       ## 4.2
@@ -102,7 +102,7 @@ jobs:
             pg-4.2-home.txt
             pg-4.2-list.txt
   load-test-4-1-mysql:
-    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.1 for MySQL
+    name: EC-CUBE 4.1 for MySQL
     runs-on: ubuntu-latest
     steps:
       ## MYSQL
@@ -146,7 +146,7 @@ jobs:
             mysql-4.1-home.txt
             mysql-4.1-list.txt
   load-test-4-2-mysql:
-    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for MySQL
+    name: EC-CUBE 4.2 for MySQL
     runs-on: ubuntu-latest
     steps:
       # 4.2
@@ -191,7 +191,7 @@ jobs:
             mysql-4.2-home.txt
             mysql-4.2-list.txt
   calculate_total_result:
-    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for MySQL
+    name: Total Calculation Result
     runs-on: ubuntu-latest
     needs: [load-test-4-1-pg, load-test-4-2-pg, load-test-4-1-mysql, load-test-4-2-mysql]
     steps:
