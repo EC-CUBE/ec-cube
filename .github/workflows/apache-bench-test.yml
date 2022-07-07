@@ -26,18 +26,40 @@ jobs:
         name: Request home page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.txt
-          export PG_4_1_HOME="$(tail -n +23 pg-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          echo "::set-output name=home_avg::${PG_4_1_HOME}"
-          echo $PG_4_1_HOME
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home_1.txt
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home_2.txt
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home_3.txt
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home_4.txt
+          ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home_5.txt
+          export PG_4_1_HOME_1="$(tail -n +23 pg-4.1-home_1.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME_2="$(tail -n +23 pg-4.1-home_2.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME_3="$(tail -n +23 pg-4.1-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME_4="$(tail -n +23 pg-4.1-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME_5="$(tail -n +23 pg-4.1-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          SUM="$PG_4_1_HOME_1 + PG_4_1_HOME_2 + PG_4_1_HOME_3 + PG_4_1_HOME_4 + PG_4_1_HOME_5" | bc -l
+          COUNT=5
+          export RESULT=$(echo "scale=2; ($SUM / $COUNT) * 100" | bc -l)
+          echo "::set-output name=home_avg::${RESULT}"
+          echo $RESULT
       - id: ec-four-one-pg-list
         name: Request list page
         run: |
           sudo apt-get install apache2-utils
-          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.txt
-          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          echo "::set-output name=list_avg::${PG_4_1_LIST}"
-          echo $PG_4_1_LIST
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_1.txt
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_2.txt
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_3.txt
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_4.txt
+          ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_5.txt
+          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_1.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_2.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          SUM="$PG_4_1_HOME_1 + PG_4_1_HOME_2 + PG_4_1_HOME_3 + PG_4_1_HOME_4 + PG_4_1_HOME_5" | bc -l
+          COUNT=5
+          export RESULT=$(echo "scale=2; ($SUM / $COUNT) * 100" | bc -l)
+          echo "::set-output name=list_avg::${RESULT}"
+          echo $RESULT
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
@@ -52,8 +74,16 @@ jobs:
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg
           path: |
-            pg-4.1-home.txt
-            pg-4.1-list.txt
+            pg-4.1-home_1.txt
+            pg-4.1-home_2.txt
+            pg-4.1-home_3.txt
+            pg-4.1-home_4.txt
+            pg-4.1-home_5.txt
+            pg-4.1-list_1.txt
+            pg-4.1-list_2.txt
+            pg-4.1-list_3.txt
+            pg-4.1-list_4.txt
+            pg-4.1-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-pg-list.outputs.list_avg }}
