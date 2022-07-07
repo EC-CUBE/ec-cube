@@ -27,11 +27,13 @@ jobs:
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.txt
           PG_4_1_HOME="$(tail -n +23 pg-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $PG_4_1_HOME
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.txt
           PG_4_1_LIST="$(tail -n +23 pg-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $PG_4_1_LIST
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
@@ -53,11 +55,13 @@ jobs:
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.2-home.txt
           PG_4_2_HOME="$(tail -n +23 pg-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $PG_4_2_HOME
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.2-list.txt
           PG_4_2_LIST="$(tail -n +23 pg-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $PG_4_2_LIST
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
         run: |
@@ -80,11 +84,13 @@ jobs:
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.1-home.txt
           MY_4_1_HOME="$(tail -n +23 mysql-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $MY_4_1_HOME
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.1-list.txt
           MY_4_1_LIST="$(tail -n +23 mysql-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $MY_4_1_LIST
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
@@ -105,11 +111,13 @@ jobs:
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.2-home.txt
           MY_4_2_HOME="$(tail -n +23 mysql-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $MY_4_2_HOME
       - name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.2-list.txt
           MY_4_2_LIST="$(tail -n +23 mysql-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo $MY_4_2_LIST
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
@@ -162,13 +170,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-home-session
+          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql-home-session
           path: mysql-4.2-home.txt
       - name: Upload product list evidence (4.2 - MYSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-list-session
+          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql-list-session
           path: mysql-4.2-list.txt
       - name: Upload complete evidence (ALL)
         if: always()
