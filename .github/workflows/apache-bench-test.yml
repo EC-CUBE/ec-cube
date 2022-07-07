@@ -36,7 +36,7 @@ jobs:
           export PG_4_1_HOME_3="$(tail -n +23 pg-4.1-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_HOME_4="$(tail -n +23 pg-4.1-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_HOME_5="$(tail -n +23 pg-4.1-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          SUM="$PG_4_1_HOME_1 + PG_4_1_HOME_2 + PG_4_1_HOME_3 + PG_4_1_HOME_4 + PG_4_1_HOME_5" | bc -l
+          SUM="$PG_4_1_HOME_1 + $PG_4_1_HOME_2 + $PG_4_1_HOME_3 + $PG_4_1_HOME_4 + $PG_4_1_HOME_5" | bc -l
           COUNT=5
           export RESULT=$(echo "scale=2; ($SUM / $COUNT) * 100" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
@@ -50,12 +50,12 @@ jobs:
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_3.txt
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_4.txt
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list_5.txt
-          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_1.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_2.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
-          SUM="$PG_4_1_HOME_1 + PG_4_1_HOME_2 + PG_4_1_HOME_3 + PG_4_1_HOME_4 + PG_4_1_HOME_5" | bc -l
+          export PG_4_1_LIST_1="$(tail -n +23 pg-4.1-list_1.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST_2="$(tail -n +23 pg-4.1-list_2.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST_3="$(tail -n +23 pg-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST_4="$(tail -n +23 pg-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST_5="$(tail -n +23 pg-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          SUM="$PG_4_1_LIST_1 + $PG_4_1_LIST_2 + $PG_4_1_LIST_3 + $PG_4_1_LIST_4 + $PG_4_1_LIST_5" | bc -l
           COUNT=5
           export RESULT=$(echo "scale=2; ($SUM / $COUNT) * 100" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
