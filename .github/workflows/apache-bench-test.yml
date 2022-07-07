@@ -694,7 +694,7 @@ jobs:
     steps:
       - name: Bundle All Average Results to CSV
         run: |
-          export LINE=$(echo "Type, 4.1 Postgres - Home, 4.1 Postgres - List,  4.2 Postgres - Home, 4.2 Postgres - List, 4.1 MySQL - Home, 4.1 MySQL - List, 4.2 MySQL - Home, 4.2 MySQL - List \r\n Base Install Results, ${{ needs.calculate-total-result-base.outputs.base_avg }} \r\n 10000 Product Results, ${{ needs.calculate-total-result-products.outputs.products_avg }}")
+          export LINE=$(echo -e "Type, 4.1 Postgres - Home, 4.1 Postgres - List,  4.2 Postgres - Home, 4.2 Postgres - List, 4.1 MySQL - Home, 4.1 MySQL - List, 4.2 MySQL - Home, 4.2 MySQL - List \r\n Base Install Results, ${{ needs.calculate-total-result-base.outputs.base_avg }} \r\n 10000 Product Results, ${{ needs.calculate-total-result-products.outputs.products_avg }}")
           echo $LINE >> total.csv
       - name: Upload complete evidence (ALL)
         if: always()
