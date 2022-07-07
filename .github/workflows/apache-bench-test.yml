@@ -339,7 +339,7 @@ jobs:
       - id: calculate-product-avg
         name: Bundle Average Results to CSV
         run: |
-          export LINE=$(echo "${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }}, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
+          export LINE=$(echo -e "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }} \r\n 10000 Product Result, MYSQL, HOME, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
           echo $LINE >> total.csv
           echo "::set-output name=products_avg::${LINE}"
       - name: Upload complete evidence (Products Only)
@@ -702,7 +702,7 @@ jobs:
       - id: calculate-base-avg
         name: Bundle Average Results to CSV
         run: |
-          export LINE=$(echo "${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
+          export LINE=$(echo -e "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }} \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
           echo $LINE >> total.csv
           echo "::set-output name=base_avg::${LINE}"
       - name: Upload complete evidence (Base Only)
@@ -720,7 +720,7 @@ jobs:
     steps:
       - name: Bundle All Average Results to CSV
         run: |
-          export LINE=$(echo -e "Type, 4.1 Postgres - Home, 4.1 Postgres - List,  4.2 Postgres - Home, 4.2 Postgres - List, 4.1 MySQL - Home, 4.1 MySQL - List, 4.2 MySQL - Home, 4.2 MySQL - List \r\n Base Install Results, ${{ needs.calculate-total-result-base.outputs.base_avg }} \r\n 10000 Product Results, ${{ needs.calculate-total-result-products.outputs.products_avg }}")
+          export LINE=$(echo -e "Pattern, DB, Page,4.1.2,4.2 \r\n ${{ needs.calculate-total-result-base.outputs.base_avg }} \r\n ${{ needs.calculate-total-result-products.outputs.products_avg }}")
           echo $LINE >> total.csv
       - name: Upload complete evidence (ALL)
         if: always()
