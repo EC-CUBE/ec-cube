@@ -341,7 +341,8 @@ jobs:
         run: |
           export LINE=$(echo -e "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }} \r\n 10000 Product Result, MYSQL, HOME, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
           echo $LINE >> total.csv
-          echo "::set-output name=products_avg::${LINE}"
+          export RESULT=$(echo "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }} \r\n 10000 Product Result, MYSQL, HOME, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
+          echo "::set-output name=products_avg::${RESULT}"
       - name: Upload complete evidence (Products Only)
         if: always()
         uses: actions/upload-artifact@v2
@@ -704,7 +705,8 @@ jobs:
         run: |
           export LINE=$(echo -e "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }} \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
           echo $LINE >> total.csv
-          echo "::set-output name=base_avg::${LINE}"
+          export OUTPUT=$(echo "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }} \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
+          echo "::set-output name=base_avg::${OUTPUT}"
       - name: Upload complete evidence (Base Only)
         if: always()
         uses: actions/upload-artifact@v2
