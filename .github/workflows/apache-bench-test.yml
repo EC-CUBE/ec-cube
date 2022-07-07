@@ -139,7 +139,7 @@ jobs:
           SUM=$(echo "$PG_4_2_LIST_1 + $PG_4_2_LIST_2 + $PG_4_2_LIST_3 + $PG_4_2_LIST_4 + $PG_4_2_LIST_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
-          echo "::set-output name=home_avg::${RESULT}"
+          echo "::set-output name=list_avg::${RESULT}"
           echo $RESULT
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
@@ -221,7 +221,7 @@ jobs:
           SUM=$(echo "$MY_4_1_LIST_1 + $MY_4_1_LIST_2 + $MY_4_1_LIST_3 + $MY_4_1_LIST_4 + $MY_4_1_LIST_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
-          echo "::set-output name=home_avg::${RESULT}"
+          echo "::set-output name=list_avg::${RESULT}"
           echo $RESULT
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
@@ -301,7 +301,7 @@ jobs:
           SUM=$(echo "$MY_4_2_LIST_1 + $MY_4_2_LIST_2 + $MY_4_2_LIST_3 + $MY_4_2_LIST_4 + $MY_4_2_LIST_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
-          echo "::set-output name=home_avg::${RESULT}"
+          echo "::set-output name=list_avg::${RESULT}"
           echo $RESULT
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
