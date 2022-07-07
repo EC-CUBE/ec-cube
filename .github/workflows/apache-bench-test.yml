@@ -22,16 +22,16 @@ jobs:
       - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
         run: sleep 120s
         shell: bash
-      - name: Request home page
-        id: 41_pg_hp
+      - id: 41-pg-hp
+        name: Request home page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.txt
           export PG_4_1_HOME="$(tail -n +23 pg-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           echo "::set-output name=home_avg::${PG_4_1_HOME}"
           echo $PG_4_1_HOME
-      - name: Request list page
-        id: 41_pg_list
+      - id: 41-pg-list
+        name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.txt
@@ -55,8 +55,8 @@ jobs:
             pg-4.1-home.txt
             pg-4.1-list.txt
     outputs:
-      home_avg: ${{ steps.41_pg_hp.outputs.home_avg }}
-      list_avg: ${{ steps.41_pg_list.outputs.list_avg }}
+      home_avg: ${{ steps.41-pg-hp.outputs.home_avg }}
+      list_avg: ${{ steps.41-pg-list.outputs.list_avg }}
   load-test-4-2-pg:
     name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for Postgresql
     runs-on: ubuntu-latest
