@@ -38,6 +38,18 @@ jobs:
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
+      - env:
+          GROUP: ${{ matrix.group }}
+        if: always()
+        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
+      - name: Upload ECCUBE 4.1 - PGSQL evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg
+          path: |
+            pg-4.1-home.txt
+            pg-4.1-list.txt
       ## 4.2
       - name: Checkout 4.2 Branch (POSTGRES)
         uses: actions/checkout@master
@@ -66,6 +78,18 @@ jobs:
       - name: Drop PGSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
+      - env:
+          GROUP: ${{ matrix.group }}
+        if: always()
+        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
+      - name: Upload ECCUBE 4.2 - PGSQL evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-home-session
+          path: |
+            pg-4.2-home.txt
+            pg-4.2-list.txt
       ## MYSQL
       # 4.1
       - name: Checkout 4.1 Branch (MYSQL)
@@ -94,6 +118,18 @@ jobs:
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
+      - env:
+          GROUP: ${{ matrix.group }}
+        if: always()
+        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
+      - name: Upload ECCUBE 4.1 - MYSQL evidence
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-home-session
+          path: |
+            mysql-4.1-home.txt
+            mysql-4.1-list.txt
       # 4.2
       - name: Checkout 4.2 Branch  (MYSQL)
         uses: actions/checkout@master
@@ -126,58 +162,14 @@ jobs:
           echo $PG_4_1_HOME, $PG_4_1_LIST, $PG_4_2_HOME, $PG_4_2_LIST, $MY_4_1_HOME, $MY_4_1_LIST, $MY_4_2_HOME, $MY_4_2_LIST >> total.csv
       # Upload Evidence
       ## FINALISE
-      - env:
-          GROUP: ${{ matrix.group }}
-        if: always()
-        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload homepage evidence (4.1 - PGSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg-home-session
-          path: pg-4.1-home.txt
-      - name: Upload product list evidence (4.1 - PGSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg-list-session
-          path: pg-4.1-list.txt
-      - name: Upload homepage evidence (4.2 - PGSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-home-session
-          path: pg-4.2-home.txt
-      - name: Upload product list evidence (4.2 - PGSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-list-session
-          path: pg-4.2-list.txt
-      - name: Upload homepage evidence (4.1 - MYSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-home-session
-          path: mysql-4.1-home.txt
-      - name: Upload product list evidence (4.1 - MYSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-list-session
-          path: mysql-4.1-list.txt
-      - name: Upload homepage evidence (4.2 - MYSQL)
+      - name: Upload ECCUBE 4.2 - MYSQL evidence
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql-home-session
-          path: mysql-4.2-home.txt
-      - name: Upload product list evidence (4.2 - MYSQL)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql-list-session
-          path: mysql-4.2-list.txt
+          path: |
+            mysql-4.2-home.txt
+            mysql-4.2-list.txt
       - name: Upload complete evidence (ALL)
         if: always()
         uses: actions/upload-artifact@v2
