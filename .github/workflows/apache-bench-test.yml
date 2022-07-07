@@ -364,7 +364,12 @@ jobs:
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -t ec-cube composer run-script compile
+      - name: Setup database schema
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
+      - name: Setup base fixtures
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=prod
       - id: ec-four-one-pg-hp
         name: Request home page
         run: |
@@ -443,7 +448,12 @@ jobs:
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -t ec-cube composer run-script compile
+      - name: Setup database schema
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
+      - name: Setup base fixtures
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=prod
       - id: ec-four-two-pg-hp
         name: Request home page
         run: |
@@ -523,7 +533,12 @@ jobs:
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -t ec-cube composer run-script compile
+      - name: Setup database schema
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
+      - name: Setup base fixtures
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=prod
       - id: ec-four-one-my-hp
         name: Request home page
         run: |
@@ -601,7 +616,12 @@ jobs:
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml  exec -t ec-cube composer run-script compile
+      - name: Setup database schema
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
+      - name: Setup base fixtures
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=prod
       - id: ec-four-two-my-hp
         name: Request home page
         run: |
