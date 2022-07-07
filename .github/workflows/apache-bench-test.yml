@@ -127,49 +127,49 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg-home-session
-          path: pg-4.1-home.html
+          path: pg-4.1-home.txt
       - name: Upload product list evidence (4.1 - PGSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg-list-session
-          path: pg-4.1-list.html
+          path: pg-4.1-list.txt
       - name: Upload homepage evidence (4.2 - PGSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-home-session
-          path: pg-4.2-home.html
+          path: pg-4.2-home.txt
       - name: Upload product list evidence (4.2 - PGSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-list-session
-          path: pg-4.2-list.html
+          path: pg-4.2-list.txt
       - name: Upload homepage evidence (4.1 - MYSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-home-session
-          path: mysql-4.1-home.html
+          path: mysql-4.1-home.txt
       - name: Upload product list evidence (4.1 - MYSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-list-session
-          path: mysql-4.1-list.html
+          path: mysql-4.1-list.txt
       - name: Upload homepage evidence (4.2 - MYSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-home-session
-          path: mysql-4.2-home.html
+          path: mysql-4.2-home.txt
       - name: Upload product list evidence (4.2 - MYSQL)
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-list-session
-          path: mysql-4.2-list.html
+          path: mysql-4.2-list.txt
       - name: Upload complete evidence (ALL)
         if: always()
         uses: actions/upload-artifact@v2
