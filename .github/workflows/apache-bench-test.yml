@@ -533,6 +533,9 @@ jobs:
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
+      - name: Wait for 30 seconds minutes for the database to load, (because MySQL is slow to initialize)
+        run: sleep 30s
+        shell: bash
       - name: Setup database schema
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
@@ -616,6 +619,9 @@ jobs:
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
+      - name: Wait for 30 seconds minutes for the database to load, (because MySQL is slow to initialize)
+        run: sleep 30s
+        shell: bash
       - name: Setup database schema
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
