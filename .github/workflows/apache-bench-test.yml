@@ -5,8 +5,8 @@ on:
   push:
   workflow_dispatch:
 jobs:
-  load-test:
-    name: Apache bench (HTTP load speed) testing for EC-CUBE
+  load-test-4-1-pg:
+    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.1 for Postgresql
     runs-on: ubuntu-latest
     steps:
       # POSTGRES SQL
@@ -23,16 +23,20 @@ jobs:
         run: sleep 120s
         shell: bash
       - name: Request home page
+        id: 41_pg_hp
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.1-home.txt
-          PG_4_1_HOME="$(tail -n +23 pg-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME="$(tail -n +23 pg-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=home_avg::${PG_4_1_HOME}"
           echo $PG_4_1_HOME
       - name: Request list page
+        id: 41_pg_list
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.txt
           PG_4_1_LIST="$(tail -n +23 pg-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=list_avg::${PG_4_1_LIST}"
           echo $PG_4_1_LIST
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
@@ -50,6 +54,13 @@ jobs:
           path: |
             pg-4.1-home.txt
             pg-4.1-list.txt
+    outputs:
+      home_avg: ${{ steps.41_pg_hp.outputs.home_avg }}
+      list_avg: ${{ steps.41_pg_list.outputs.list_avg }}
+  load-test-4-2-pg:
+    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for Postgresql
+    runs-on: ubuntu-latest
+    steps:
       ## 4.2
       - name: Checkout 4.2 Branch (POSTGRES)
         uses: actions/checkout@master
@@ -90,6 +101,10 @@ jobs:
           path: |
             pg-4.2-home.txt
             pg-4.2-list.txt
+  load-test-4-1-mysql:
+    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.1 for MySQL
+    runs-on: ubuntu-latest
+    steps:
       ## MYSQL
       # 4.1
       - name: Checkout 4.1 Branch (MYSQL)
@@ -130,6 +145,10 @@ jobs:
           path: |
             mysql-4.1-home.txt
             mysql-4.1-list.txt
+  load-test-4-2-mysql:
+    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for MySQL
+    runs-on: ubuntu-latest
+    steps:
       # 4.2
       - name: Checkout 4.2 Branch  (MYSQL)
         uses: actions/checkout@master
@@ -157,11 +176,12 @@ jobs:
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
-      - name: Bundle Average Results to CSV
-        run: |
-          echo $PG_4_1_HOME, $PG_4_1_LIST, $PG_4_2_HOME, $PG_4_2_LIST, $MY_4_1_HOME, $MY_4_1_LIST, $MY_4_2_HOME, $MY_4_2_LIST >> total.csv
       # Upload Evidence
       ## FINALISE
+      - env:
+          GROUP: ${{ matrix.group }}
+        if: always()
+        run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
       - name: Upload ECCUBE 4.2 - MYSQL evidence
         if: always()
         uses: actions/upload-artifact@v2
@@ -170,6 +190,14 @@ jobs:
           path: |
             mysql-4.2-home.txt
             mysql-4.2-list.txt
+  calculate_total_result:
+    name: Apache bench (HTTP load speed) testing for EC-CUBE 4.2 for MySQL
+    runs-on: ubuntu-latest
+    needs: [load-test-4-1-pg, load-test-4-2-pg, load-test-4-1-mysql, load-test-4-2-mysql]
+    steps:
+      - name: Bundle Average Results to CSV
+        run: |
+          echo "${{ needs.load-test-4-1-pg.outputs.home_avg }}", "${{ needs.load-test-4-1-pg.outputs.list_avg }}", $PG_4_2_HOME, $PG_4_2_LIST, $MY_4_1_HOME, $MY_4_1_LIST, $MY_4_2_HOME, $MY_4_2_LIST >> total.csv
       - name: Upload complete evidence (ALL)
         if: always()
         uses: actions/upload-artifact@v2
