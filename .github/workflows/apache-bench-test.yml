@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.1-list.txt
-          PG_4_1_LIST="$(tail -n +23 pg-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST="$(tail -n +23 pg-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           echo "::set-output name=list_avg::${PG_4_1_LIST}"
           echo $PG_4_1_LIST
         # Upload Evidence
@@ -73,17 +73,21 @@ jobs:
       - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
         run: sleep 120s
         shell: bash
-      - name: Request home page
+      - id: ec-four-two-pg-hp
+        name: Request home page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > pg-4.2-home.txt
-          PG_4_2_HOME="$(tail -n +23 pg-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_2_HOME="$(tail -n +23 pg-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=home_avg::${PG_4_2_HOME}"
           echo $PG_4_2_HOME
-      - name: Request list page
+      - id: ec-four-two-pg-list
+        name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > pg-4.2-list.txt
-          PG_4_2_LIST="$(tail -n +23 pg-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_2_LIST="$(tail -n +23 pg-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=list_avg::${PG_4_2_LIST}"
           echo $PG_4_2_LIST
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
@@ -101,6 +105,9 @@ jobs:
           path: |
             pg-4.2-home.txt
             pg-4.2-list.txt
+    outputs:
+      home_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_avg }}
+      list_avg: ${{ steps.ec-four-two-pg-list.outputs.list_avg }}
   load-test-4-1-mysql:
     name: EC-CUBE 4.1 for MySQL
     runs-on: ubuntu-latest
@@ -118,17 +125,21 @@ jobs:
       - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
         run: sleep 120s
         shell: bash
-      - name: Request home page
+      - id: ec-four-one-my-hp
+        name: Request home page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.1-home.txt
-          MY_4_1_HOME="$(tail -n +23 mysql-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_1_HOME="$(tail -n +23 mysql-4.1-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=home_avg::${MY_4_1_HOME}"
           echo $MY_4_1_HOME
-      - name: Request list page
+      - id: ec-four-one-my-list
+        name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.1-list.txt
-          MY_4_1_LIST="$(tail -n +23 mysql-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_1_LIST="$(tail -n +23 mysql-4.1-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=list_avg::${MY_4_1_LIST}"
           echo $MY_4_1_LIST
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
@@ -145,6 +156,9 @@ jobs:
           path: |
             mysql-4.1-home.txt
             mysql-4.1-list.txt
+    outputs:
+      home_avg: ${{ steps.ec-four-one-my-hp.outputs.home_avg }}
+      list_avg: ${{ steps.ec-four-one-my-list.outputs.list_avg }}
   load-test-4-2-mysql:
     name: EC-CUBE 4.2 for MySQL
     runs-on: ubuntu-latest
@@ -161,17 +175,21 @@ jobs:
       - name: Wait 2 minutes for the database to load, (as I do not know the databases active state)
         run: sleep 120s
         shell: bash
-      - name: Request home page
+      - id: ec-four-two-my-hp
+        name: Request home page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/ > mysql-4.2-home.txt
-          MY_4_2_HOME="$(tail -n +23 mysql-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_2_HOME="$(tail -n +23 mysql-4.2-home.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=home_avg::${MY_4_2_HOME}"
           echo $MY_4_2_HOME
-      - name: Request list page
+      - id: ec-four-two-my-list
+        name: Request list page
         run: |
           sudo apt-get install apache2-utils
           ab -n 100 -c 10 -l http://localhost:8080/products/list > mysql-4.2-list.txt
-          MY_4_2_LIST="$(tail -n +23 mysql-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_2_LIST="$(tail -n +23 mysql-4.2-list.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          echo "::set-output name=list_avg::${MY_4_2_LIST}"
           echo $MY_4_2_LIST
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
@@ -190,6 +208,9 @@ jobs:
           path: |
             mysql-4.2-home.txt
             mysql-4.2-list.txt
+    outputs:
+      home_avg: ${{ steps.ec-four-two-my-hp.outputs.home_avg }}
+      list_avg: ${{ steps.ec-four-two-my-list.outputs.list_avg }}
   calculate_total_result:
     name: Total Calculation Result
     runs-on: ubuntu-latest
@@ -197,7 +218,7 @@ jobs:
     steps:
       - name: Bundle Average Results to CSV
         run: |
-          echo "${{ needs.load-test-4-1-pg.outputs.home_avg }}", "${{ needs.load-test-4-1-pg.outputs.list_avg }}", $PG_4_2_HOME, $PG_4_2_LIST, $MY_4_1_HOME, $MY_4_1_LIST, $MY_4_2_HOME, $MY_4_2_LIST >> total.csv
+          echo "${{ needs.load-test-4-1-pg.outputs.home_avg }}", "${{ needs.load-test-4-1-pg.outputs.list_avg }}", "${{ needs.load-test-4-2-pg.outputs.home_avg }}", "${{ needs.load-test-4-2-pg.outputs.list_avg }}", "${{ needs.load-test-4-1-mysql.outputs.home_avg }}", "${{ needs.load-test-4-1-mysql.outputs.list_avg }}", "${{ needs.load-test-4-2-mysql.outputs.home_avg }}", "${{ needs.load-test-4-2-mysql.outputs.list_avg }}" >> total.csv
       - name: Upload complete evidence (ALL)
         if: always()
         uses: actions/upload-artifact@v2
