@@ -18,9 +18,7 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-    <script>var bootstrapTooltip = $.fn.tooltip.noConflict();</script>
     <script>
-        $.fn.tooltip = bootstrapTooltip;
         $(document).on('drop dragover', function(e) {
             e.preventDefault();
         });
