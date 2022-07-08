@@ -191,13 +191,13 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.content.layout__card_title'|trans }}</span></div>
-                                <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#layoutOverview" aria-expanded="false" aria-controls="layoutOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#layoutOverview" aria-expanded="false" aria-controls="layoutOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="layoutOverview">
                             <div class="card-body">
                                 <div class="row mb-2">
-                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                    <div class="col-3 pr-0"><span>{{ 'admin.content.layout_name'|trans }}</span><span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                     <div class="col">
                                         {{ form_widget(form.name) }}
                                         {{ form_errors(form.name) }}
@@ -241,7 +241,7 @@ file that was distributed with this source code.
                                 <div class="col-8">
                                     <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.layout_edit'|trans }}"><span class="card-title">{{ 'admin.content.layout_edit__card_title'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                                 </div>
-                                <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#layoutBlockEdit" aria-expanded="false" aria-controls="layoutBlockEdit"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
                         </div>
                         <div class="collapse show ec-cardCollapse" id="layoutBlockEdit">
@@ -426,7 +426,7 @@ file that was distributed with this source code.
                                             <div id="position_{{ unused_target_id }}" class="d-block p-3 ui-sortable">
                                                 <p class="font-weight-bold mb-2">{{ 'admin.content.layout_section__unused'|trans }}</p>
                                                 <div class="mb-3">
-                                                    <div class="form-row">
+                                                    <div class="row">
                                                         <div class="col">
                                                             <div class="input-group mb-3">
                                                                 <div class="input-group-prepend">
@@ -450,7 +450,7 @@ file that was distributed with this source code.
                                                                    title="{{ UnusedBlock.name }}"
                                                                 >{{ UnusedBlock.name }}</span>
                                                             </div>
-                                                            <div class="col-auto text-right">
+                                                            <div class="col-auto text-end">
                                                                 <div class="d-inline-block px-3">
                                                                     <input type="hidden" class="name" name="name_{{ loop_index }}"
                                                                         value="{{ UnusedBlock.name }}"/>

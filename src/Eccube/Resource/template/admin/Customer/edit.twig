@@ -36,7 +36,7 @@ file that was distributed with this source code.
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.customer.customer_info'|trans }}</span>
                                 </div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     <a data-bs-toggle="collapse" href="#ordererInfo"
                                        aria-expanded="false" aria-controls="ordererInfo">
                                         <i class="fa fa-angle-up fa-lg"></i>
@@ -63,7 +63,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.name'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -87,7 +87,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.kana'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="row">
@@ -119,7 +119,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3"><span>{{ 'admin.common.address'|trans }}</span><span
-                                                class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                                class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
@@ -157,7 +157,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.mail_address'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.email) }}
@@ -167,7 +167,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.phone_number'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.phone_number) }}
@@ -177,7 +177,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.password'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.plain_password.first, { type : 'password'}) }}
@@ -187,7 +187,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <span>{{ 'admin.common.password_for_confirmation'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.plain_password.second, { type : 'password'}) }}
@@ -266,7 +266,7 @@ file that was distributed with this source code.
                                         </span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         <a data-bs-toggle="collapse" href="#delivery" aria-expanded="false"
                                            aria-controls="delivery">
                                             <i class="fa fa-angle-up fa-lg"></i>
@@ -316,8 +316,8 @@ file that was distributed with this source code.
                                                                             
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">
                                                                             {{ 'admin.common.delete_modal__message'|trans({ '%name%' : 'admin.common.postal_symbol'|trans ~ CustomerAddress.postal_code ~ CustomerAddress.Pref ~ ' ' ~ CustomerAddress.name01 ~ CustomerAddress.name02 }) }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
@@ -379,7 +379,7 @@ file that was distributed with this source code.
                                         </span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         <a data-bs-toggle="collapse" href="#orderHistory" aria-expanded="false"
                                            aria-controls="orderHistory">
                                             <i class="fa fa-angle-up fa-lg"></i>
@@ -438,7 +438,7 @@ file that was distributed with this source code.
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     <a data-bs-toggle="collapse" href="#shopMemo" aria-expanded="false"
                                        aria-controls="shopMemo">
                                         <i class="fa fa-angle-up fa-lg"></i>

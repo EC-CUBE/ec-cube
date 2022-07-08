@@ -96,7 +96,7 @@ file that was distributed with this source code.
                             <div class="col-6">
                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.category.csv_format'|trans }}"><span class="align-middle">{{ 'admin.common.csv_format'|trans }}</span><i class="fa fa-question-circle fa-lg fa-lg ml-1"></i></div>
                             </div>
-                            <div class="col-4 text-right">
+                            <div class="col-4 text-end">
                                 <a href="{{ url('admin_product_csv_template', {'type': 'category'}) }}" class="btn btn-ec-regular" id="download-button">{{ 'admin.common.csv_skeleton_download'|trans }}</a>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ file that was distributed with this source code.
                                 <tr>
                                     <th class="w-25 align-middle table-ec-lightGray" id="file_format_box__header--{{ loop.index }}">{{ header }}
                                         {% if key.required %}
-                                            <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                            <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                         {% endif %}
                                     </th>
                                     <td class="align-middle">

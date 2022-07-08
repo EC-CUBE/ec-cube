@@ -154,7 +154,7 @@ file that was distributed with this source code.
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
-                        <div class="form-row">
+                        <div class="row">
                             <div class="mb-3 col-12">
                                 <label class="col-form-label"  data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.order_search_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                 <div id="admin_search_order_status">
@@ -195,7 +195,7 @@ file that was distributed with this source code.
                         {{ form_errors(searchForm.name) }}
                     </div>
                     <div class="col">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.common.payment_method'|trans }}</p>
                                 {{ form_widget(searchForm.payment, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
@@ -212,7 +212,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.order_date'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.order_datetime_start) }}
                                 {{ form_errors(searchForm.order_datetime_start) }}
@@ -233,7 +233,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.payment_date'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.payment_datetime_start) }}
                                 {{ form_errors(searchForm.payment_datetime_start) }}
@@ -254,7 +254,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.common.update_date'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.update_datetime_start) }}
                                 {{ form_errors(searchForm.update_datetime_start) }}
@@ -275,7 +275,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.delivery_date'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <div class="input-group">
                                     {{ form_widget(searchForm.shipping_delivery_datetime_start) }}
@@ -300,7 +300,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.purchase_price'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <div class="input-group">
                                     {{ form_widget(searchForm.payment_total_start) }}
@@ -319,7 +319,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.order.tracking_number'|trans }}</p>
                                 {{ form_widget(searchForm.tracking_number) }}
@@ -336,7 +336,7 @@ file that was distributed with this source code.
 
                 <div class="row mb-2">
                     <div class="col">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.order.shipping_mail'|trans }}</p>
                                 {{ form_widget(searchForm.shipping_mail,  { 'label_attr': { 'class': 'checkbox-inline' }}) }}
@@ -407,7 +407,7 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col d-none btn-bulk-wrapper">
                                         <div class="d-inline-block mr-2">
-                                            <select class="custom-select" id="option_bulk_status">
+                                            <select class="form-select" id="option_bulk_status">
                                                 <option value="" selected>{{ 'admin.order.change_status'|trans }}</option>
                                                 {% for status in OrderStatuses %}
                                                     <option value="{{ status.id }}">{{ status.name }}</option>
@@ -420,9 +420,9 @@ file that was distributed with this source code.
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-5 text-right">
+                            <div class="col-5 text-end">
                                 <div class="d-inline-block">
-                                    <select class="custom-select" onchange="location = this.value;">
+                                    <select class="form-select" onchange="location = this.value;">
                                         {% for pageMax in pageMaxis %}
                                             <option {% if pageMax.name == page_count %} selected {% endif %}
                                                     value="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
@@ -495,7 +495,7 @@ file that was distributed with this source code.
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
                                                     />
                                                 </td>
-                                                <td class="align-middle text-left">
+                                                <td class="align-middle text-start">
                                                     <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -504,7 +504,7 @@ file that was distributed with this source code.
                                                 <td class="align-middle text-center">
                                                     <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
                                                 </td>
-                                                <td class="align-middle text-right">
+                                                <td class="align-middle text-end">
                                                     {{ Order.payment_total|price }}<br>
                                                     {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.not_payment'|trans }}
                                                 </td>
@@ -551,7 +551,7 @@ file that was distributed with this source code.
                                                     {{ Shipping.Pref.name }}
                                                 </td>
                                                 <td class="align-middle pr-3">
-                                                    <div class="text-right">
+                                                    <div class="text-end">
                                                         <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon confirmationModal"
                                                                data-type="mail" data-bulk-update="false"
@@ -658,8 +658,8 @@ file that was distributed with this source code.
                                 <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete__confirm_title'|trans }}</h5>
                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body text-left">
-                                <p class="text-left">{{ 'admin.order.delete__confirm_message'|trans }}</p>
+                            <div class="modal-body text-start">
+                                <p class="text-start">{{ 'admin.order.delete__confirm_message'|trans }}</p>
                                 <ul id="bulkErrors"></ul>
                                 <div class="progress" style="display: none">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>

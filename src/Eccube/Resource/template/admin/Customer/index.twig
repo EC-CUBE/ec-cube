@@ -36,7 +36,7 @@ file that was distributed with this source code.
             <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row mb-2">
                     <div class="col">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.customer.customer_status'|trans }}</p>
                                 {{ form_widget(searchForm.customer_status, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
@@ -54,7 +54,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="row mb-2">
                     <div class="col">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.common.gender'|trans }}</p>
                                 {{ form_widget(searchForm.sex, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
@@ -65,7 +65,7 @@ file that was distributed with this source code.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.order.purchase_price'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {{ form_widget(searchForm.buy_total_start) }}
                                     {{ form_errors(searchForm.buy_total_start) }}
@@ -95,7 +95,7 @@ file that was distributed with this source code.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.order.purchase_count'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {{ form_widget(searchForm.buy_times_start) }}
                                     {{ form_errors(searchForm.buy_times_start) }}
@@ -113,7 +113,7 @@ file that was distributed with this source code.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.common.birth_day'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {{ form_widget(searchForm.birth_start) }}
                                     {{ form_errors(searchForm.birth_start) }}
@@ -129,7 +129,7 @@ file that was distributed with this source code.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.common.create_date'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {{ form_widget(searchForm.create_datetime_start) }}
                                     {{ form_errors(searchForm.create_datetime_start) }}
@@ -159,7 +159,7 @@ file that was distributed with this source code.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.common.update_date'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {{ form_widget(searchForm.update_datetime_start) }}
                                     {{ form_errors(searchForm.update_datetime_start) }}
@@ -184,7 +184,7 @@ file that was distributed with this source code.
                     <div class="col">
                         <div>
                             <label>{{ 'admin.order.last_buy_date'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {{ form_widget(searchForm.last_buy_start) }}
                                     {{ form_errors(searchForm.last_buy_start) }}
@@ -237,10 +237,10 @@ file that was distributed with this source code.
                         <div class="row justify-content-between mb-2">
                             <div class="col-6"></div>
 
-                            <div class="col-5 text-right">
+                            <div class="col-5 text-end">
                                 {#Dropdown page count#}
                                 <div class="d-inline-block mr-2">
-                                    <select class="custom-select" onchange="location = this.value;">
+                                    <select class="form-select" onchange="location = this.value;">
                                         {% for pageMax in pageMaxis %}
                                             <option {% if pageMax.name == page_count %} selected {% endif %}
                                                     value="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name }) }}">
@@ -279,7 +279,7 @@ file that was distributed with this source code.
                                             <td class="align-middle">{{ Customer.email }}</td>
                                             <td class="align-middle"></td>
                                             <td class="align-middle pr-3">
-                                                <div class="text-right">
+                                                <div class="text-end">
                                                     {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
                                                         <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
                                                             <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#discontinuance_cus_{{ Customer.id }}">
@@ -295,8 +295,8 @@ file that was distributed with this source code.
                                                                             
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">{{ 'admin.customer.resend_confirm_message'|trans }}</p>
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">{{ 'admin.customer.resend_confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -324,8 +324,8 @@ file that was distributed with this source code.
                                                                         
                                                                     </button>
                                                                 </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">
+                                                                <div class="modal-body text-start">
+                                                                    <p class="text-start">
                                                                         {{ 'admin.common.delete_modal__message'|trans({ '%name%' : Customer.email }) }}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -339,7 +339,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- /.text-right -->
+                                                </div><!-- /.text-end -->
                                             </td>
                                         </tr>
                                     {% endfor %}

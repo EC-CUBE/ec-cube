@@ -160,7 +160,7 @@ file that was distributed with this source code.
                     {% if form.classcategory_id1 is defined %}
                         <div class="row mb-2">
                             <div class="col-4 pr-0"><span>{{ form_label(form.classcategory_id1) }}</span></div>
-                            <div class="col-8 text-left pl-0">
+                            <div class="col-8 text-start pl-0">
                                 {{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
                             </div>
                         </div>
@@ -168,20 +168,20 @@ file that was distributed with this source code.
                     {% if form.classcategory_id2 is defined %}
                         <div class="row">
                             <div class="col-4 pr-0"><span>{{ form_label(form.classcategory_id2) }}</span></div>
-                            <div class="col-8 text-left pl-0">
+                            <div class="col-8 text-start pl-0">
                                 {{ form_widget(form.classcategory_id2, {'id': ''}) }}
                             </div>
                         </div>
                     {% endif %}
                 </td>
                 {% if Product.stock_find %}
-                    <td class="align-middle pr-3 text-right">
+                    <td class="align-middle pr-3 text-end">
                         <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
                             <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
                         </button>
                     </td>
                 {% else %}
-                    <td class="align-middle pr-3 text-right">
+                    <td class="align-middle pr-3 text-end">
                         {{ 'front.product.out_of_stock_label'|trans }}
                     </td>
                 {% endif %}

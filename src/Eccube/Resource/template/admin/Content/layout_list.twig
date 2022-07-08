@@ -53,7 +53,7 @@ file that was distributed with this source code.
                                     <a class="card-title align-middle"
                                        href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
                                 </div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     {% if Layout.isDefault() == false %}
                                         <button class="btn btn-ec-sub mr-3" type="button" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                 data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"

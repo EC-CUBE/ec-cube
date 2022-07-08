@@ -241,7 +241,7 @@ file that was distributed with this source code.
                                             <span class="card-title">{{ 'admin.order.shipping__card_title'|trans }}({{ loop.index }})</span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         {% if form.shippings|length > 1 %}
                                             <!-- 出荷が2つ以上ある場合は, 出荷の削除ボタンを表示する -->
                                             <a class="btn btn-ec-regular mr-2" data-bs-toggle="modal" data-bs-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
@@ -258,8 +258,8 @@ file that was distributed with this source code.
                                                                     
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">{{ 'admin.order.delete_shipping_error__confirm_message'|trans }}</p>
+                                                            <div class="modal-body text-start">
+                                                                <p class="text-start">{{ 'admin.order.delete_shipping_error__confirm_message'|trans }}</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -271,8 +271,8 @@ file that was distributed with this source code.
                                                                     
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">{{ 'admin.order.delete_shipping__confirm_message'|trans({ "%num%" : loop.index }) }}</p>
+                                                            <div class="modal-body text-start">
+                                                                <p class="text-start">{{ 'admin.order.delete_shipping__confirm_message'|trans({ "%num%" : loop.index }) }}</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -316,7 +316,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.name'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ml-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -336,7 +336,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.kana'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ml-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -356,7 +356,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.address'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ml-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -393,7 +393,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.phone_number'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ml-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -431,7 +431,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.order.delivery_provider'|trans }}
-                                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}
+                                                    <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
                                                 <div class="col">
@@ -587,7 +587,7 @@ file that was distributed with this source code.
                                                     <td class="align-middle">
                                                         <div class="col mt-3">
                                                             {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly' } }) }}
-                                                            <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
+                                                            <div class="text-end small">({{ OrderItem.TaxDisplayType }})</div>
                                                             {{ form_errors(orderItemForm.price) }}
                                                         </div>
                                                     </td>
@@ -612,7 +612,7 @@ file that was distributed with this source code.
                                                             <span>{{ OrderItem.total_price|price }}</span>
                                                         </div>
                                                     </td>
-                                                    <td class="align-middle text-right pr-3">
+                                                    <td class="align-middle text-end pr-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
                                                                 <div class="d-inline-block mr-3" data-tooltip="true"
@@ -631,8 +631,8 @@ file that was distributed with this source code.
                                                                                     
                                                                                 </button>
                                                                             </div>
-                                                                            <div class="modal-body text-left">
-                                                                                <p class="text-left">{{ 'admin.order.delete_item__confirm_message'|trans({ "%name%" : OrderItem.product_name }) }}</p>
+                                                                            <div class="modal-body text-start">
+                                                                                <p class="text-start">{{ 'admin.order.delete_item__confirm_message'|trans({ "%name%" : OrderItem.product_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>

@@ -92,7 +92,7 @@ file that was distributed with this source code.
                                     <td class="align-middle pl-3"></td>
                                     <td class="align-middle" style="width:230px;">
                                         <div class="input-group">
-                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right'}}) }}
+                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-end'}}) }}
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -123,10 +123,10 @@ file that was distributed with this source code.
                                         <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
                                         <input type="hidden" value="edit_inline" name="mode"/>
                                         <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
-                                        <td class="align-middle text-right" style="width:230px;">
+                                        <td class="align-middle text-end" style="width:230px;">
                                             <div class="edit justify-content-end">
                                                 <div class="input-group">
-                                                    {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}
+                                                    {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-end'}}) }}
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">%</span>
                                                     </div>
@@ -134,7 +134,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                             <div class="list">
-                                                <span class="col-6 text-right pr-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
+                                                <span class="col-6 text-end pr-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
                                             </div>
                                         </td>
                                         <td class="align-middle">
@@ -190,8 +190,8 @@ file that was distributed with this source code.
                                                                                 
                                                                             </button>
                                                                         </div>
-                                                                        <div class="modal-body text-left">
-                                                                            <p class="text-left modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>
+                                                                        <div class="modal-body text-start">
+                                                                            <p class="text-start modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">

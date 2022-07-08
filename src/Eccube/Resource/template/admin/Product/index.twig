@@ -167,21 +167,21 @@ file that was distributed with this source code.
             <div class="c-subContents collapse ec-collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row mb-2">
                     <div class="col-6">
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.category'|trans }}</label>
                                 {{ form_widget(searchForm.category_id) }}
                                 {{ form_errors(searchForm.category_id) }}
                             </div>
                         </div>
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.display_status'|trans }}</p>
                                 {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                             </div>
                         </div>
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.stock__short'|trans }}</p>
                                 {{ form_widget(searchForm.stock, {'label_attr': {'class': 'checkbox-inline'}}) }}
@@ -190,7 +190,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.tag'|trans }}</label>
                                 {{ form_widget(searchForm.tag_id) }}
@@ -201,7 +201,7 @@ file that was distributed with this source code.
                             <label class="col-form-label">
                                 {{ 'admin.common.create_date'|trans }}
                             </label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.create_datetime_start) }}
@@ -217,7 +217,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="mb-2">
                             <label class="col-form-label">{{ 'admin.common.update_date'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.update_datetime_start) }}
@@ -287,10 +287,10 @@ file that was distributed with this source code.
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.permanently_delete'|trans }}</button>
                                 </div>
                             </div>
-                            <div class="col-5 text-right">
+                            <div class="col-5 text-end">
                                 <div class="d-inline-block mr-2">
                                     <div>
-                                        <select class="custom-select" onchange="location = this.value;">
+                                        <select class="form-select" onchange="location = this.value;">
                                             {% for pageMax in pageMaxis %}
                                                 <option {% if pageMax.name == page_count %}selected=""{% endif %} value="{{ path('admin_product_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
                                             {% endfor %}
@@ -384,7 +384,7 @@ file that was distributed with this source code.
                                                 {{ Product.update_date|date_min }}
                                             </td>
                                             <td class="align-middle pr-3" colspan="3">
-                                                <div class="text-right">
+                                                <div class="text-end">
                                                     <div class="px-1 d-inline-block text-center" data-tooltip="true"
                                                          data-placement="top"
                                                          title="{{ 'admin.common.display'|trans }}"><a class="btn btn-ec-actionIcon"
@@ -414,8 +414,8 @@ file that was distributed with this source code.
                                                                                     aria-hidden="true">×</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">
                                                                             {{ 'admin.product.copy__confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
@@ -476,8 +476,8 @@ file that was distributed with this source code.
                             <h5 class="modal-title font-weight-bold">{{ 'admin.product.permanently_delete__confirm_title'|trans }}</h5>
                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body text-left">
-                            <p class="text-left">{{ 'admin.product.permanently_delete__confirm_message'|trans }}</p>
+                        <div class="modal-body text-start">
+                            <p class="text-start">{{ 'admin.product.permanently_delete__confirm_message'|trans }}</p>
                             <ul id="bulkErrors"></ul>
                             <div class="progress" style="display: none">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>

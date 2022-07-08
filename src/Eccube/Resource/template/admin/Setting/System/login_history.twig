@@ -56,7 +56,7 @@ file that was distributed with this source code.
                 <div class="col">
                     <div>
                         <label>{{ 'admin.setting.system.login_history.create_date'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.create_datetime_start) }}
                                 {{ form_errors(searchForm.create_datetime_start) }}
@@ -113,10 +113,10 @@ file that was distributed with this source code.
                     <div class="row justify-content-between mb-2">
                         <div class="col-6"></div>
 
-                        <div class="col-5 text-right">
+                        <div class="col-5 text-end">
                             {#Dropdown page count#}
                             <div class="d-inline-block mr-2">
-                                <select class="custom-select" onchange="location = this.value;">
+                                <select class="form-select" onchange="location = this.value;">
                                     {% for pageMax in pageMaxis %}
                                         <option {% if pageMax.name == page_count %} selected {% endif %}
                                                 value="{{ path('admin_setting_system_login_history_page', {'page_no': 1, 'page_count': pageMax.name }) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>

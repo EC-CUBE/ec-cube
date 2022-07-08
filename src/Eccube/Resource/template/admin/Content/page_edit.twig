@@ -72,7 +72,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.content.page__card_title'|trans }}</span></div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     <a data-bs-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -85,7 +85,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'admin.content.page_name'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         {{ form_widget(form.name) }}
@@ -96,10 +96,10 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'admin.content.page_url'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
-                                        <div class="form-row">
+                                        <div class="row">
                                             {% if is_user_data_page %}
                                                 <div class="col-3 pr-0"><span class="align-middle">{{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/</span></div>
                                                 <div class="col-9 pl-0">{{ form_widget(form.url) }}</div>
@@ -117,10 +117,10 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_file_name'|trans }}">
                                             <span>{{ 'admin.content.page_file_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
-                                        <div class="form-row">
+                                        <div class="row">
                                             {% if is_user_data_page %}
                                                 <div class="col-3 pr-0 align-middle"><span class="align-middle">{{ template_path }}/</span></div>
                                                 <div class="col-7 pl-0">
@@ -143,7 +143,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_source_code'|trans }}">
                                             <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
@@ -183,7 +183,7 @@ file that was distributed with this source code.
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         <a data-bs-toggle="collapse" href="#pageLayout" aria-expanded="false" aria-controls="pageLayout">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
@@ -221,7 +221,7 @@ file that was distributed with this source code.
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         <a data-bs-toggle="collapse" href="#pageMeta" aria-expanded="false" aria-controls="pageMeta">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>

@@ -123,7 +123,7 @@ file that was distributed with this source code.
                                 <div class="col-8">
                                     <span class="card-title align-middle">{{ Product.name }}</span>
                                 </div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     {# 規格の初期化ボタン #}
                                     <button class="btn btn-ec-delete" type="button"
                                             data-bs-toggle="modal"
@@ -142,7 +142,7 @@ file that was distributed with this source code.
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p class="text-left">
+                                                    <p class="text-start">
                                                         {{ 'admin.product.product_class__reset_confirm_message'|trans }}</p>
                                                 </div>
                                                 <div class="modal-footer">
@@ -197,7 +197,7 @@ file that was distributed with this source code.
                                     <div class="col-8">
                                         <span class="card-title align-middle">{{ Product.name }}</span>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         {# 商品規格の設定ボタン #}
                                         <button class="btn btn-ec-conversion" type="submit">
                                             {{ 'admin.product.product_class__create'|trans }}
@@ -206,11 +206,11 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="form-row mb-2">
+                                <div class="row mb-2">
                                     {{ form_widget(form.class_name1) }}
                                     {{ form_errors(form.class_name1) }}
                                 </div>
-                                <div class="form-row">
+                                <div class="row">
                                     {{ form_widget(form.class_name2) }}
                                     {{ form_errors(form.class_name2) }}
                                 </div>
@@ -236,7 +236,7 @@ file that was distributed with this source code.
                                             }) }}</span>
                                         {{ form_errors(form.product_classes) }}
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         <button type="button" id="copy" class="btn btn-ec-regular">
                                             <i class="fa fa-files-o mr-1"></i>
                                             <span>{{ 'admin.product.copy_first_line'|trans }}</span>
@@ -295,7 +295,7 @@ file that was distributed with this source code.
                                                 {{ form_errors(product_class_form.code) }}
                                             </td>
                                             <td class="align-middle">
-                                                <div class="form-row">
+                                                <div class="row">
                                                     <div class="col-5">
                                                         {{ form_widget(product_class_form.stock) }}
                                                         {{ form_errors(product_class_form.stock) }}
@@ -308,7 +308,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                <div class="form-row">
+                                                <div class="row">
                                                     <div class="col-6">
                                                         {{ form_widget(product_class_form.sale_limit) }}
                                                         {{ form_errors(product_class_form.sale_limit) }}

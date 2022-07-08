@@ -17,7 +17,7 @@ file that was distributed with this source code.
         <div class="col d-flex align-items-center">
             <a class="display-label">{% if DeliveryTime is empty %}__value__{% else %}{{ DeliveryTime }}{% endif %}</a>
         </div>
-        <div class="col-auto text-right">
+        <div class="col-auto text-end">
             <a class="btn btn-ec-actionIcon mr-2 action-up" href="" data-tooltip="true"
                data-placement="top" title="{{ 'admin.common.up'|trans }}">
                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
@@ -49,7 +49,7 @@ file that was distributed with this source code.
     </div>
     <div class="row justify-content-around mode-edit d-none">
         <div class="col d-flex align-items-center">
-            <div class="form-row">
+            <div class="row">
                 <div class="col-auto d-flex align-items-center">
                     {{ form_widget(form.delivery_time, {'attr': {'data-origin-value': form.vars.value }}) }}
                 </div>
