@@ -196,6 +196,19 @@ class AbstractController extends Controller
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function addFlash(string $type, $message): void
+    {
+        try {
+            parent::addFlash($type, $message);
+        } catch (\LogicException $e) {
+            // fallback session
+            $this->session->getFlashBag()->add($type, $message);
+        }
+    }
+
+    /**
      * @param string $targetPath
      */
     public function setLoginTargetPath($targetPath, $namespace = null)
