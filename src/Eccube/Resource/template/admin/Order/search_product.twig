@@ -159,16 +159,16 @@ file that was distributed with this source code.
                 <td class="align-middle">
                     {% if form.classcategory_id1 is defined %}
                         <div class="row mb-2">
-                            <div class="col-4 pr-0"><span>{{ form_label(form.classcategory_id1) }}</span></div>
-                            <div class="col-8 text-start pl-0">
+                            <div class="col-4 pe-0"><span>{{ form_label(form.classcategory_id1) }}</span></div>
+                            <div class="col-8 text-start ps-0">
                                 {{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
                             </div>
                         </div>
                     {% endif %}
                     {% if form.classcategory_id2 is defined %}
                         <div class="row">
-                            <div class="col-4 pr-0"><span>{{ form_label(form.classcategory_id2) }}</span></div>
-                            <div class="col-8 text-start pl-0">
+                            <div class="col-4 pe-0"><span>{{ form_label(form.classcategory_id2) }}</span></div>
+                            <div class="col-8 text-start ps-0">
                                 {{ form_widget(form.classcategory_id2, {'id': ''}) }}
                             </div>
                         </div>

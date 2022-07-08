@@ -130,7 +130,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="card-body p-0">
                                 {% for OrderStatus in OrderStatuses %}
-                                    <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                    <div class="d-block border border-top-0 border-start-0 border-end-0">
                                         <a href="{{ url('admin_order', { 'order_status_id': OrderStatus.id }) }}" class="p-3 d-block">
                                             <div class="row align-items-center">
                                                 <div class="col align-middle">
@@ -226,7 +226,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="card-body p-0">
-                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                <div class="d-block border border-top-0 border-start-0 border-end-0">
                                     <a href="{{ url('admin_homepage_nonstock') }}" class="p-3 d-block">
                                         <div class="row align-items-center">
                                             <div class="col-2 align-middle text-center">
@@ -241,7 +241,7 @@ file that was distributed with this source code.
                                         </div>
                                     </a>
                                 </div>
-                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                <div class="d-block border border-top-0 border-start-0 border-end-0">
                                     <a href="{{ url('admin_product') }}" class="p-3 d-block">
                                         <div class="row align-items-center">
                                             <div class="col-2 align-middle text-center">
@@ -256,7 +256,7 @@ file that was distributed with this source code.
                                         </div>
                                     </a>
                                 </div>
-                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                <div class="d-block border border-top-0 border-start-0 border-end-0">
                                     <a href="{{ url('admin_homepage_customer') }}" class="p-3 d-block">
                                         <div class="row align-items-center">
                                             <div class="col-2 align-middle text-center">
@@ -283,13 +283,13 @@ file that was distributed with this source code.
                             </div>
                             <div class="card-body py-0" style="max-height: 395px; overflow-y: scroll">
                                 {% for plugin in recommendedPlugins %}
-                                    <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
+                                    <div class="row py-3 border border-bottom-0 border-start-0 border-end-0">
                                         <div class="col-5 col-md-4">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#searchPluginModal-{{ plugin.id }}">
                                                 <img src="{{ plugin.image }}" class="w-100" alt="{{ plugin.name }}">
                                             </a>
                                         </div>
-                                        <div class="col-7 col-md-8 pl-0">
+                                        <div class="col-7 col-md-8 ps-0">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#searchPluginModal-{{ plugin.id }}">{{ plugin.name }}</a>
                                             <p class="m-0 pt-2">
                                                 {{ plugin.short_description }}

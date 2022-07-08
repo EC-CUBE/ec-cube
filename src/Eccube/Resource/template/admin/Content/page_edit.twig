@@ -101,10 +101,10 @@ file that was distributed with this source code.
                                     <div class="col-10">
                                         <div class="row">
                                             {% if is_user_data_page %}
-                                                <div class="col-3 pr-0"><span class="align-middle">{{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/</span></div>
-                                                <div class="col-9 pl-0">{{ form_widget(form.url) }}</div>
+                                                <div class="col-3 pe-0"><span class="align-middle">{{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/</span></div>
+                                                <div class="col-9 ps-0">{{ form_widget(form.url) }}</div>
                                             {% else %}
-                                                <div class="col pr-0"><span class="align-middle">{{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}</span></div>
+                                                <div class="col pe-0"><span class="align-middle">{{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}</span></div>
                                                 <div>{{ form_widget(form.url, { type : 'hidden' } ) }}</div>
                                             {% endif %}
                                             {{ form_errors(form.url) }}
@@ -122,13 +122,13 @@ file that was distributed with this source code.
                                     <div class="col-10">
                                         <div class="row">
                                             {% if is_user_data_page %}
-                                                <div class="col-3 pr-0 align-middle"><span class="align-middle">{{ template_path }}/</span></div>
-                                                <div class="col-7 pl-0">
+                                                <div class="col-3 pe-0 align-middle"><span class="align-middle">{{ template_path }}/</span></div>
+                                                <div class="col-7 ps-0">
                                                     {{ form_widget(form.file_name) }}
                                                 </div>
-                                                <div class="col-2 pl-0">.twig</div>
+                                                <div class="col-2 ps-0">.twig</div>
                                             {% else %}
-                                                <div class="col pr-0 align-middle">
+                                                <div class="col pe-0 align-middle">
                                                     <span class="align-middle">{{ template_path }}/{{ form.file_name.vars.value }}.twig</span>
                                                     <div>{{ form_widget(form.file_name, { type : 'hidden' } ) }}</div>
                                                 </div>
