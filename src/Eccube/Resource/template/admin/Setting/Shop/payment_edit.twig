@@ -70,9 +70,9 @@ file that was distributed with this source code.
                     {% if form.payment_image.vars.value is not empty %}
                     {
                         {% if form.payment_image.vars.value == oldPaymentImage %}
-                        source: '{{ asset(form.payment_image.vars.value, 'save_image') }}',
+                        source: '{{ form.payment_image.vars.value }}',
                         {% else %}
-                        source: '{{ asset(form.payment_image.vars.value, 'temp_image') }}',
+                        source: '{{ form.payment_image.vars.value }}',
                         {% endif %}
                         options: {
                             type: 'local'

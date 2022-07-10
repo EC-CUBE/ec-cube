@@ -376,13 +376,20 @@ class ProductController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $image = $this->getParameter('kernel.project_dir').$request->query->get('source');
-        if (file_exists($image)
-            && (stripos(realpath($image), $this->eccubeConfig['eccube_save_image_dir']) === 0
-                || stripos(realpath($image), $this->eccubeConfig['eccube_temp_image_dir']) === 0)) {
-            $file = new \SplFileObject($image);
+        $dirs = [
+            $this->eccubeConfig['eccube_save_image_dir'],
+            $this->eccubeConfig['eccube_temp_image_dir']
+        ];
 
-            return $this->file($file, $file->getBasename());
+        foreach ($dirs as $dir) {
+            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $dir = \realpath($dir);
+
+            if (\is_file($image) && \str_starts_with($image, $dir)) {
+                $file = new \SplFileObject($image);
+
+                return $this->file($file, $file->getBasename());
+            }
         }
 
         throw new NotFoundHttpException();
