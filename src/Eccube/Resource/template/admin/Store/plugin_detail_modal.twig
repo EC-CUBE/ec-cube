@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">{{ 'admin.store.plugin_owners_search.modal.header'|trans }}</h5>
+                <h5 class="modal-title fw-bold" id="exampleModalLabel">{{ 'admin.store.plugin_owners_search.modal.header'|trans }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,9 +14,9 @@
                              src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
                     </div>
                     <div class="col-6">
-                        <h5 class="font-weight-bold mb-3">{{ item.name }}</h5>
+                        <h5 class="fw-bold mb-3">{{ item.name }}</h5>
                         <p>{{ item.short_description }}</p>
-                        <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
+                        <p class="plg-prices text-danger"><span class="fw-bold text-dark">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
                     </div>
                 </div>
                 <div class="row mb-4">

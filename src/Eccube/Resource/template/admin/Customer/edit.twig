@@ -281,8 +281,8 @@ file that was distributed with this source code.
                                             <thead class="table-active">
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.name'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.common.address'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.common.phone_number'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3"></th>
+                                            <th class="align-middle pt-2 pb-2 pe-3">{{ 'admin.common.phone_number'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pe-3"></th>
                                             </thead>
                                             <tbody>
                                             {% for CustomerAddress in Customer.CustomerAddresses %}
@@ -310,7 +310,7 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
+                                                                        <h5 class="modal-title fw-bold">
                                                                             {{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                             
@@ -392,22 +392,22 @@ file that was distributed with this source code.
                                     <div class="card-body">
                                         <table class="table table-striped table-sm">
                                             <thead class="table-active">
-                                            <th class="align-middle pt-2 pb-2 pl-3">{{ 'admin.order.order_date'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 ps-3">{{ 'admin.order.order_date'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.order.order_no'|trans }}</th>
                                             <th class="align-middle pt-2 pb-2">{{ 'admin.order.purchase_price'|trans }}</th>
-                                            <th class="align-middle pt-2 pb-2 pr-3">{{ 'admin.order.order_status'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pe-3">{{ 'admin.order.order_status'|trans }}</th>
                                             </thead>
                                             <tbody>
                                             {% for Order in Customer.Orders %}
                                                 <tr>
-                                                    <td class="align-middle pl-3">{{ Order.order_date|date_min }}</td>
+                                                    <td class="align-middle ps-3">{{ Order.order_date|date_min }}</td>
                                                     <td class="align-middle">
                                                         <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
                                                             {{ Order.order_no }}
                                                         </a>
                                                     </td>
                                                     <td class="align-middle">{{ Order.total|price }}</td>
-                                                    <td class="align-middle pr-3">
+                                                    <td class="align-middle pe-3">
                                                         <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
                                                     </td>
                                                 </tr>

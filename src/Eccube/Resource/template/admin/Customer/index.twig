@@ -29,7 +29,7 @@ file that was distributed with this source code.
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
-                        <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
+                        <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold mr-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
                     </div>
                 </div>
             </div>
@@ -224,7 +224,7 @@ file that was distributed with this source code.
         <div class="c-outsideBlock__contents mb-5">
             <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.search'|trans }}</button>
             {% if pagination %}
-                <span class="font-weight-bold ml-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
+                <span class="fw-bold ml-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
             {% endif %}
         </div>
         <div class="c-outsideBlock__contents mb-5">
@@ -262,23 +262,23 @@ file that was distributed with this source code.
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-3 pl-3 text-nowrap">{{ 'admin.customer.customer_id'|trans }}<a href="#" class="js-listSort" data-sortkey="customer_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3 text-nowrap">{{ 'admin.customer.customer_id'|trans }}<a href="#" class="js-listSort" data-sortkey="customer_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.name'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.phone_number'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.common.mail_address'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
-                                        <th class="border-top-0 pt-2 pb-3 pr-3">&nbsp;</th>
+                                        <th class="border-top-0 pt-2 pb-3 pe-3">&nbsp;</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for Customer in pagination %}
                                         <tr id="ex-customer-{{ Customer.id }}">
-                                            <td class="align-middle pl-3">{{ Customer.id }}</td>
+                                            <td class="align-middle ps-3">{{ Customer.id }}</td>
                                             <td class="align-middle"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
                                             <td class="align-middle">{{ Customer.phone_number }}</td>
                                             <td class="align-middle">{{ Customer.email }}</td>
                                             <td class="align-middle"></td>
-                                            <td class="align-middle pr-3">
+                                            <td class="align-middle pe-3">
                                                 <div class="text-end">
                                                     {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
                                                         <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
@@ -290,7 +290,7 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.customer.resend_confirm_title'|trans }}</h5>
+                                                                        <h5 class="modal-title fw-bold">{{ 'admin.customer.resend_confirm_title'|trans }}</h5>
                                                                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                             
                                                                         </button>
@@ -318,7 +318,7 @@ file that was distributed with this source code.
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">
+                                                                    <h5 class="modal-title fw-bold">
                                                                         {{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                         

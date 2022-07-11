@@ -29,18 +29,18 @@ file that was distributed with this source code.
                     <form name="form1" id="form1" method="post">
                         {{ form_widget(form._token) }}
                         <div class="row mb-3">
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3">
                                 {{ form_widget(form.files) }}
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3">
                                 {{ form_widget(form.line_max) }}
                                 <span class="ml-2">{{ 'admin.setting.system.log.line_number'|trans }}</span>
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3">
                                 <button type="submit"
                                         class="btn btn-ec-conversion">{{ 'admin.setting.system.log.read'|trans }}</button>
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3">
                                 {{ form_widget(form.download) }}
                             </div>
                             {{ form_errors(form.line_max) }}

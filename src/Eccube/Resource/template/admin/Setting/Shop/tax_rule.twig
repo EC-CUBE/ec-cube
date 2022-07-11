@@ -76,12 +76,12 @@ file that was distributed with this source code.
                             </colgroup>
                             <thead>
                             <tr>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.tax_rate'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.rounding_type'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.apply_date'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3"></th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.common.id'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.tax_rate'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.rounding_type'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.apply_date'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3"></th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3 pr-5"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -89,7 +89,7 @@ file that was distributed with this source code.
                             <tr id="tax_rule_item_new">
                                 <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_tax_new') }}">
                                     {{ form_widget(form._token) }}
-                                    <td class="align-middle pl-3"></td>
+                                    <td class="align-middle ps-3"></td>
                                     <td class="align-middle" style="width:230px;">
                                         <div class="input-group">
                                             {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-end'}}) }}
@@ -122,7 +122,7 @@ file that was distributed with this source code.
                                         {{ form_widget(forms[TaxRule.id]._token) }}
                                         <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
                                         <input type="hidden" value="edit_inline" name="mode"/>
-                                        <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
+                                        <td class="align-middle ps-3"><span>{{ TaxRule.id }}</span></td>
                                         <td class="align-middle text-end" style="width:230px;">
                                             <div class="edit justify-content-end">
                                                 <div class="input-group">
@@ -183,7 +183,7 @@ file that was distributed with this source code.
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">
+                                                                            <h5 class="modal-title fw-bold">
                                                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                                                             </h5>
                                                                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">

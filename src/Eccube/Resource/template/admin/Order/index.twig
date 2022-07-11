@@ -179,8 +179,8 @@ file that was distributed with this source code.
                         </div>
                         <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
                             <a>
-                                <i class="fa font-weight-bold mr-1 fa-plus-square-o">
-                                    <span class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span>
+                                <i class="fa fw-bold mr-1 fa-plus-square-o">
+                                    <span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span>
                                 </i>
                             </a>
                         </div>
@@ -372,7 +372,7 @@ file that was distributed with this source code.
                         <div class="col-12">
                             <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.common.search'|trans }}</button>
                             {% if pagination %}
-                                <span class="font-weight-bold ml-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                                <span class="fw-bold ml-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -470,7 +470,7 @@ file that was distributed with this source code.
                                 <table class="table table-sm" id="search_result">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-2 text-center pl-3">
+                                        <th class="border-top-0 pt-2 pb-2 text-center ps-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
@@ -481,14 +481,14 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}<a href="#" class="js-listSort" data-sortkey="shipping_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}<a href="#" class="js-listSort" data-sortkey="tracking_number"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}<a href="#" class="js-listSort" data-sortkey="delivery"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center pe-3"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for Order in pagination %}
                                         {% for Shipping in Order.Shippings %}
                                             <tr>
-                                                <td class="align-middle text-center pl-3">
+                                                <td class="align-middle text-center ps-3">
                                                     <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                            data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
@@ -550,7 +550,7 @@ file that was distributed with this source code.
                                                     {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                                     {{ Shipping.Pref.name }}
                                                 </td>
-                                                <td class="align-middle pr-3">
+                                                <td class="align-middle pe-3">
                                                     <div class="text-end">
                                                         <div class="px-1 d-inline-block">
                                                             <a class="btn btn-ec-actionIcon confirmationModal"
@@ -616,14 +616,14 @@ file that was distributed with this source code.
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold"><!--confirmationModal_js.twig--></h5>
+                                <h5 class="modal-title fw-bold"><!--confirmationModal_js.twig--></h5>
                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p class="modal-message"></p>
                                 <ul id="bulkErrors"></ul>
                                 <div id="bulk-options">
-                                    <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
+                                    <div class="fw-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="notificationMail">
                                         <label class="form-check-label notificationMail">
@@ -631,7 +631,7 @@ file that was distributed with this source code.
                                         </label>
                                     </div>
                                     <div>
-                                        <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'admin.order.bulk_action__confirm_view_mail_body'|trans }}</span></a></div>
+                                        <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o fw-bold mr-1"></i><span class="fw-bold">{{ 'admin.order.bulk_action__confirm_view_mail_body'|trans }}</span></a></div>
                                         <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
                                             <pre></pre>
                                         </div>
@@ -655,7 +655,7 @@ file that was distributed with this source code.
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete__confirm_title'|trans }}</h5>
+                                <h5 class="modal-title fw-bold">{{ 'admin.order.delete__confirm_title'|trans }}</h5>
                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-start">

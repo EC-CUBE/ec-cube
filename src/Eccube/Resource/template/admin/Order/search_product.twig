@@ -132,10 +132,10 @@ file that was distributed with this source code.
 <table class="table table-striped table-sm mb-3">
     <thead class="table-active">
     <tr>
-        <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_id'|trans }}</th>
-        <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
+        <th class="pt-2 pb-2 ps-3">{{ 'admin.product.product_id'|trans }}</th>
+        <th class="pt-2 pb-2 ps-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
         <th class="pt-2 pb-2">{{ 'admin.product.product_class__short'|trans }}</th>
-        <th class="pt-2 pb-2 pr-3"></th>
+        <th class="pt-2 pb-2 pe-3"></th>
     </tr>
     </thead>
     <tbody>
@@ -143,10 +143,10 @@ file that was distributed with this source code.
         <form name="product_form{{ Product.id }}">
             {% set form = forms[Product.id] %}
             <tr>
-                <td class="align-middle pl-3">
+                <td class="align-middle ps-3">
                     {{ Product.id }}
                 </td>
-                <td class="align-middle pl-3">
+                <td class="align-middle ps-3">
                     <p class="m-0"> {{ Product.name }}</p>
                     <span>
                         {% if Product.hasProductClass %}
@@ -175,13 +175,13 @@ file that was distributed with this source code.
                     {% endif %}
                 </td>
                 {% if Product.stock_find %}
-                    <td class="align-middle pr-3 text-end">
+                    <td class="align-middle pe-3 text-end">
                         <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
-                            <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
+                            <i class="fa fa-plus fa-lg fw-bold text-secondary"></i>
                         </button>
                     </td>
                 {% else %}
-                    <td class="align-middle pr-3 text-end">
+                    <td class="align-middle pe-3 text-end">
                         {{ 'front.product.out_of_stock_label'|trans }}
                     </td>
                 {% endif %}

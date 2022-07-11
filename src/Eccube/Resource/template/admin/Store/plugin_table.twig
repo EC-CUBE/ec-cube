@@ -21,7 +21,7 @@ $(function() {
         <table class="table table-sm">
             <thead>
             <tr>
-                <th class="border-top-0 pl-3 pt-2 pb-2">{{ 'admin.store.plugin_table.887'|trans }}</th>
+                <th class="border-top-0 ps-3 pt-2 pb-2">{{ 'admin.store.plugin_table.887'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.888'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.889'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.901'|trans }}</th>
@@ -36,7 +36,7 @@ $(function() {
                 <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action=""
                       enctype="multipart/form-data">
                     <tr class="{% if Plugin.enabled == false %}active{% endif %}">
-                        <td class="align-middle pl-3">
+                        <td class="align-middle ps-3">
                             {{ Plugin.name }}
                         </td>
                         <td class="align-middle">{{ Plugin.version }}</td>
@@ -130,7 +130,7 @@ $(function() {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">
+                <h5 class="modal-title fw-bold">
                     {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
                 <button class="close" type="button"
                         data-bs-dismiss="modal"

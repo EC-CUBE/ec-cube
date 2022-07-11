@@ -191,7 +191,7 @@ file that was distributed with this source code.
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold"><!--confirmationModal_js.twig--></h5>
+                        <h5 class="modal-title fw-bold"><!--confirmationModal_js.twig--></h5>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -199,7 +199,7 @@ file that was distributed with this source code.
                         <p class="mb-4 warning-message">{{ 'admin.order.bulk_action__confirm_message'|trans }}</p>
                         <ul id="bulkErrors"></ul>
                         <div id="bulk-options">
-                            <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
+                            <div class="fw-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="notificationMail">
                                 <label class="form-check-label notificationMail">
@@ -207,7 +207,7 @@ file that was distributed with this source code.
                                 </label>
                             </div>
                             <div>
-                                <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'メール詳細'|trans }}</span></a></div>
+                                <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o fw-bold mr-1"></i><span class="fw-bold">{{ 'メール詳細'|trans }}</span></a></div>
                                 <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
                                     <pre></pre>
                                 </div>
@@ -253,7 +253,7 @@ file that was distributed with this source code.
                                                     <div class="modal-content">
                                                         {% if shippingForm.OrderItems|length > 0 %}
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete_shipping_error__confirm_title'|trans }}</h5>
+                                                                <h5 class="modal-title fw-bold">{{ 'admin.order.delete_shipping_error__confirm_title'|trans }}</h5>
                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                     
                                                                 </button>
@@ -266,7 +266,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         {% else %}
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                     
                                                                 </button>
@@ -530,7 +530,7 @@ file that was distributed with this source code.
                                                data-prototype="{% apply escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': shippingForm.OrderItems.vars.prototype}) }}{% endapply %}">
                                             <thead class="table-active">
                                             <tr class="text-nowrap">
-                                                <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
+                                                <th class="pt-2 pb-2 ps-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
                                                 <th class="pt-2 pb-2">
                                                     <div class="col-8">{{ 'admin.order.amount'|trans }}</div>
                                                 </th>
@@ -546,7 +546,7 @@ file that was distributed with this source code.
                                                 <th class="pt-2 pb-2">
                                                     <div class="col-8">{{ 'admin.order.subtotal'|trans }}</div>
                                                 </th>
-                                                <th class="pt-2 pb-2 pr-3"></th>
+                                                <th class="pt-2 pb-2 pe-3"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -559,8 +559,8 @@ file that was distributed with this source code.
                                                     {{ form_widget(orderItemForm.order_item_type) }}
                                                     {{ form_widget(orderItemForm.tax_type) }}
                                                     {{ form_widget(orderItemForm.tax_rate, {'type': 'hidden'}) }}
-                                                    <td class="align-middle w-25 pl-3">
-                                                        <p class="mb-0 font-weight-bold">
+                                                    <td class="align-middle w-25 ps-3">
+                                                        <p class="mb-0 fw-bold">
                                                             {% if OrderItem.OrderItemType.isProduct %}
                                                                 {{ OrderItem.product_name }}
                                                                 {{ form_widget(orderItemForm.product_name, { 'type': 'hidden' }) }}
@@ -612,7 +612,7 @@ file that was distributed with this source code.
                                                             <span>{{ OrderItem.total_price|price }}</span>
                                                         </div>
                                                     </td>
-                                                    <td class="align-middle text-end pr-3">
+                                                    <td class="align-middle text-end pe-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
                                                                 <div class="d-inline-block mr-3" data-tooltip="true"
@@ -626,7 +626,7 @@ file that was distributed with this source code.
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                                     
                                                                                 </button>
