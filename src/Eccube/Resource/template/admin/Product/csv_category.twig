@@ -18,7 +18,6 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
     <script>
         $(function() {
 
@@ -114,7 +113,7 @@ file that was distributed with this source code.
                                     </th>
                                     <td class="align-middle">
                                         {% if key.description %}
-                                            {{ key.description|trans|raw }}
+                                            {{ key.description|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>

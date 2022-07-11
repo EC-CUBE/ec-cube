@@ -54,10 +54,10 @@ class MaintenanceListener implements EventSubscriberInterface
 
         $user = $this->requestContext->getCurrentUser();
         if ($user instanceof Entity\Member && $this->requestContext->isAdmin()) {
-            $cookie = new Cookie(
+            $cookie = (new Cookie(
                 SystemService::MAINTENANCE_TOKEN_KEY,
                 $this->systemService->getMaintenanceToken()
-            );
+            ))->withSecure(true);
             $response->headers->setCookie($cookie);
         }
     }

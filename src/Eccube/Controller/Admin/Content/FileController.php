@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,6 +57,8 @@ class FileController extends AbstractController
      */
     public function index(Request $request)
     {
+        $this->addInfo('admin.common.restrict_file_upload_info', 'admin');
+
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
                 'multiple' => true,

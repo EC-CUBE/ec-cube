@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                   .addClass('btn-success')
                                   .addClass('active');
                        }
-                       if (is_sqlite && ['Api', 'GMC', 'SiteKit'].includes(plugin.code)) {
+                       if (is_sqlite && ['Api42', 'SiteKit42'].includes(plugin.code)) {
                            content.find('.btn-toggle').text('SQLite3 には対応していません');
                        }
                        content.appendTo('#plugins');
@@ -62,7 +62,8 @@ file that was distributed with this source code.
                  btn.toggleClass('btn-default');
                  var statusText = $(this).find('.btn-success').text();
                  var modal = $('#PluginProgressModal');
-                 modal.modal();
+                 var bootstrapModal = new bootstrap.Modal(modal.get(0));
+                 bootstrapModal.show();
                  var progress = $('div.progress', modal).show();
                  var progress_message = $('#progress_message');
                  modal.find('.modal-footer').hide();
@@ -74,7 +75,7 @@ file that was distributed with this source code.
                      }
                  ).done(function(data, textStatus, jqXHR) {
                      progress.hide();
-                     modal.modal('hide');
+                     bootstrapModal.hide();
                   }).fail(function(jqXHR, textStatus, errorThrown) {
                       modal.find('.modal-footer').show();
                       btn.toggleClass('active');
@@ -146,7 +147,7 @@ file that was distributed with this source code.
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                <button class="btn btn-default" type="button" data-bs-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
             </div>
         </div>
     </div>

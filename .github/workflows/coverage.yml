@@ -64,8 +64,6 @@ jobs:
         run: |
           sudo apt-fast install -y php7.4-pcov
           sudo phpenmod -s cli pcov
-          composer require pcov/clobber --dev
-          vendor/bin/pcov clobber
 
       - name: Setup EC-CUBE
         env:

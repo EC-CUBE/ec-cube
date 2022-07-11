@@ -15,27 +15,28 @@ on:
 jobs:
   codeception:
     name: Codeception
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
         php: [ 7.4 ]
         db: [ pgsql ]
-        group: [ admin01, admin02, admin03, front, installer ]
+        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-file-upload', 'installer' ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
-          - group: admin01
+          - group: 'admin01'
             app_env: 'codeception'
-          - group: admin02
+          - group: 'admin02'
             app_env: 'codeception'
-          - group: admin03
+          - group: 'admin03'
             app_env: 'codeception'
-          - group: front
+          - group: 'front'
             app_env: 'codeception'
-          - group: installer
+          - group: 'restrict-file-upload'
+            app_env: 'codeception'
+          - group: 'installer'
             app_env: 'install'
     services:
       postgres:
@@ -115,6 +116,7 @@ jobs:
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception
+        if: ${{ matrix.group != 'restrict-file-upload' }}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -123,7 +125,21 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
+
+      - name: Codeception with Restrict file upload
+        if: ${{ matrix.group == 'restrict-file-upload' }}
+        env:
+          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          GROUP: ${{ matrix.group }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+          ECCUBE_RESTRICT_FILE_UPLOAD: '1'
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
+
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2

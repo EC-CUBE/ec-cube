@@ -115,6 +115,8 @@ class EF02ProductCest
         $topPage->カテゴリ選択(['新入荷']);
 
         // 絞込検索条件では、検索数が多い場合、「次へ」「前へ」「ページ番号」が表示される
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('1', ['css' => 'li.ec-pager__item--active']);
         $I->see('2', ['xpath' => "//li[@class='ec-pager__item'][position()=1]"]);
         $I->see('次へ', ['xpath' => "//li[@class='ec-pager__item'][position()=2]"]);
@@ -123,14 +125,20 @@ class EF02ProductCest
 
         // '2'をクリック
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=1]/a"]);
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('2', ['css' => 'li.ec-pager__item--active']);
 
         // '前へ'をクリック
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=1]/a"]);
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('1', ['css' => 'li.ec-pager__item--active']);
 
         // '次へ'をクリック
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=2]/a"]);
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('2', ['css' => 'li.ec-pager__item--active']);
     }
 

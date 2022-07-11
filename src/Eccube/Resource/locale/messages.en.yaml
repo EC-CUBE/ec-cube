@@ -64,6 +64,7 @@ common.payment_total: 'Payment Total'
 common.reduced_tax_rate_symbol: '*'
 common.reduced_tax_rate_messeage: '* is subject to reduced tax rate.'
 common.tax_rate_target: '%rate% %'
+common.tax_amount: Tax amount
 common.delivery_fee: Shipping Charge
 common.charge: Charges
 common.discount: Discount
@@ -497,6 +498,7 @@ admin.common.move_to_confirm_message: 'Will move to %name% Setting page. Do you 
 admin.common.move_to_confirm_move_only: Move
 admin.common.move_to_confirm_save_and_move: Save & Move
 admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
+admin.common.restrict_file_upload_info: 'If this feature is used infrequently, disabling it while not in use provides additional security. You can disable this feature by setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1.'
 
 
 # Labels related to entity
@@ -1133,11 +1135,21 @@ admin.setting.shop.shop.option_remember_me: Auto Sign-in
 admin.setting.shop.shop.option_product: Product Settings
 admin.setting.shop.shop.nostock_hidden: Hide out-of-stock products
 admin.setting.shop.shop.option_tax: Taxes
+admin.setting.shop.shop.option_invoice_registration_number: Invoice registration number
 admin.setting.shop.shop.option_product_tax: Taxes by Product
 admin.setting.shop.shop.option_point: Point Settings
 admin.setting.shop.shop.option_point_enabled: Points
 admin.setting.shop.shop.option_point_rate: Point Return Rate
 admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
+
+#------------------------------------------------------------------------------------
+# Settings：Store Settings：Trade Law Settings
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.trade_law.header.name: Label
+admin.setting.shop.trade_law.header.description: Description
+admin.setting.shop.trade_law.header.confirm_page_show: Visible on order confirmation page
+admin.setting.shop.trade_law.error.activation_error: Please enter both the label and description
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : Payment Methods
@@ -1772,6 +1784,7 @@ exception.error_title_can_not_access: Unable to access.
 exception.error_message_can_not_access: The page you reached is not available. It may have been moved or deleted.
 exception.error_title_not_found: Page not found.
 exception.error_message_not_found: Please check if the URL is correct.
+exception.error_message_restrict_url: This functionality is restricted by the administrator.
 
 #------------------------------------------------------------------------------------
 # Purchase Flow

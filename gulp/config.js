@@ -9,6 +9,7 @@ config.paths = {
   },
   assets: {
     scss: '/**/scss/**/*.scss',
+    js: '/**/js/bundle.js'
   },
 }
 config.server = 'http://localhost:8080'

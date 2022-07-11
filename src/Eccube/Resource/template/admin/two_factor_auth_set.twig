@@ -13,7 +13,6 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js" integrity="sha512-NFUcDlm4V+a2sjPX7gREIXgCSFja9cHtKPOL1zj6QhnE0vcY695MODehqkaGYTLyL2wxe/wtr4Z49SvqXq12UQ==" crossorigin="anonymous"></script>
 <script>
 $(function () {
     $("#qrcode").qrcode({
@@ -55,7 +54,7 @@ $(function () {
                         {% endif %}
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex justify-content-center">
+                                <div class="mb-3 d-flex justify-content-center">
                                     {{ form_widget(form.device_token, {'attr': {'class':'w-100','placeholder': 'admin.setting.system.two_factor_auth.device_token', 'autofocus': true}}) }}
                                 </div>
                                 <p class="mb-3 text-left">{{ form_errors(form.device_token) }}</p>

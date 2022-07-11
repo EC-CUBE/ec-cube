@@ -266,6 +266,8 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
     {
+        $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
+
         foreach ($parentNav as $key => $childNav) {
             if (array_key_exists('children', $childNav) && count($childNav['children']) > 0) {
                 // 子のメニューがある場合は子の権限チェック
@@ -286,6 +288,10 @@ class TwigInitializeListener implements EventSubscriberInterface
                         unset($parentNav[$key]);
                         break;
                     }
+                }
+
+                if ($this->eccubeConfig['eccube_restrict_file_upload'] === '1' && in_array($childNav['url'], $restrictUrls)) {
+                    unset($parentNav[$key]);
                 }
             }
         }

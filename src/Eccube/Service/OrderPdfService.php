@@ -319,6 +319,12 @@ class OrderPdfService extends TcpdfFpdi
             $this->lfText(125, 75, $text, 8); // Email
         }
 
+        // インボイス登録番号
+        if (!empty($this->baseInfoRepository->getInvoiceRegistrationNumber())) {
+            $text = '登録番号: '.$this->baseInfoRepository->getInvoiceRegistrationNumber();
+            $this->lfText(125, 79, $text, 8);
+        }
+
         // user_dataにlogo.pngが配置されている場合は優先的に読み込む
         $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
 
@@ -563,14 +569,6 @@ class OrderPdfService extends TcpdfFpdi
             $arrOrder[$i][2] = '合計';
             $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getTaxableTotal());
 
-            foreach ($Order->getTaxableTotalByTaxRate() as $rate => $total) {
-                ++$i;
-                $arrOrder[$i][0] = '';
-                $arrOrder[$i][1] = '';
-                $arrOrder[$i][2] = '('.$rate.'%対象)';
-                $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($total);
-            }
-
             ++$i;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
@@ -602,6 +600,30 @@ class OrderPdfService extends TcpdfFpdi
 
         // PDFに設定する
         $this->setFancyTable($this->labelCell, $arrOrder, $this->widthCell);
+
+        // インボイス対応
+        $this->backupFont();
+        $this->SetLineWidth(.3);
+        $this->SetFont(self::FONT_SJIS, '', 6);
+
+        $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        // 行頭近くの場合、表示崩れがあるためもう一個字下げする
+        if (270 <= $this->GetY()) {
+            $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        }
+        $width = array_reduce($this->widthCell, function ($n, $w) {
+            return $n + $w;
+        });
+        $this->SetX(20);
+        $message = '';
+        foreach ($Order->getTotalByTaxRate() as $rate => $total) {
+            $message .= '('.$rate.'%対象: ';
+            $message .= $this->eccubeExtension->getPriceFilter($total);
+            $message .= ' 内消費税: '.$this->eccubeExtension->getPriceFilter($Order->getTaxByTaxRate()[$rate]).')'.PHP_EOL;
+        }
+        $this->MultiCell($width, 4, $message, 0, 'R', 0, '');
+
+        $this->restoreFont();
     }
 
     /**

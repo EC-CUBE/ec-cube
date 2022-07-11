@@ -18,51 +18,6 @@ file that was distributed with this source code.
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
-    <style type="text/css">
-        .datepicker-days th.dow:first-child,
-        .datepicker-days td:first-child {
-            color: #f00;
-        }
-
-        .datepicker-days th.dow:last-child,
-        .datepicker-days td:last-child {
-            color: #00f;
-        }
-    </style>
-{% endblock stylesheet %}
-
-{% block javascript %}
-    <script src="{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}"></script>
-
-    <script>
-    $(function() {
-        // datetimepicker で value が消えてしまうので data-value に保持しておく
-        $('input.datetimepicker-input').each(function() {
-            $(this).data('value', $(this).val());
-        });
-
-        $('input.datetimepicker-input').datetimepicker({
-            locale: '{{ eccube_config.locale }}',
-            format: 'YYYY-MM-DD HH:mm:ss',
-            useCurrent: false,
-            buttons: {
-                showToday: true,
-                showClose: true
-            },
-        });
-
-        // datetimepicker で value が消えてしまうので更新
-        $('input.datetimepicker-input').each(function() {
-            $(this).val($(this).data('value'));
-        });
-    });
-    </script>
-{% endblock javascript %}
-
 {% block main %}
 <form name="search_form" id="search_form" method="post" action="">
     {{ form_widget(searchForm._token) }}
@@ -75,7 +30,7 @@ file that was distributed with this source code.
                         {{ form_widget(searchForm.multi) }}
                         {{ form_errors(searchForm.multi) }}
                     </div>
-                    <div class="d-inline-block mb-3 collapsed" data-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
+                    <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
                 </div>
             </div>
         </div>

@@ -225,7 +225,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function 検索結果_削除()
     {
-        $this->tester->click(['css' => '#btn_bulk button[data-target="#bulkDeleteModal"]']);
+        $this->tester->click(['css' => '#btn_bulk button[data-bs-target="#bulkDeleteModal"]']);
         $this->tester->wait(1);
 
         return $this;

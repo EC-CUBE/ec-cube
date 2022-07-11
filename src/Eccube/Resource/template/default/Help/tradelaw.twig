@@ -18,76 +18,14 @@ file that was distributed with this source code.
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
                 <div class="ec-borderedDefs">
+                    {% for tradelaw in tradelaws|filter(t => t.name and t.description)  %}
                     <dl>
                         <dt>
-                            <label class="ec-label">販売業者</label>
+                            <label class="ec-label">{{ tradelaw.name }}</label>
                         </dt>
-                        <dd></dd>
+                        <dd>{{ tradelaw.description|raw|purify }}</dd>
                     </dl>
-                    <dl>
-                        <dt>
-                            <label class="ec-label">代表責任者</label>
-                        </dt>
-                        <dd>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>
-                            <label class="ec-label">所在地</label>
-                        </dt>
-                        <dd>
-
-                        </dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">電話番号</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">メールアドレス</label>
-                        </dt>
-                        <dd><a href="mailto:"></a></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">URL</label>
-                        </dt>
-                        <dd><a href=""></a></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">商品代金以外の必要料金</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">引き渡し時期</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">お支払方法</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">返品・交換について</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
+                    {% endfor %}
                 </div>
             </div>
         </div>

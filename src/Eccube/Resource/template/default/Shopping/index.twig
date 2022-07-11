@@ -382,6 +382,16 @@ file that was distributed with this source code.
                         {{ form_errors(form.message) }}
                     </div>
                 </div>
+                {% for activeTradeLaw in activeTradeLaws|filter(t => t.name and t.description) %}
+                    <div class="ec-orderConfirm">
+                        <div class="ec-rectHeading">
+                            <h2>{{ activeTradeLaw.name }}</h2>
+                        </div>
+                        <div class="ec-input">
+                            {{ activeTradeLaw.description|raw|purify }}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
@@ -404,20 +414,19 @@ file that was distributed with this source code.
                     </dl>
                     {% endif %}
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
-                    {% for rate, total in Order.taxable_total_by_tax_rate %}
-                    <dl class="ec-totalBox__taxRate">
-                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
-                        <dd>{{ total|price }}</dd>
-                    </dl>
-                    {% endfor %}
                     {% for item in Order.tax_free_discount_items %}
-                        {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
                         <dl class="ec-totalBox__spec">
                             <dt>{{ item.product_name }}</dt>
                             <dd>{{ item.total_price|price }}</dd>
                         </dl>
                     {% endfor %}
                     <div class="ec-totalBox__paymentTotal">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% for rate, total in Order.total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }} ({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</dd>
+                    </dl>
+                    {% endfor %}
                     {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <div class="ec-totalBox__pointBlock">
                         <dl class="ec-totalBox__spec">

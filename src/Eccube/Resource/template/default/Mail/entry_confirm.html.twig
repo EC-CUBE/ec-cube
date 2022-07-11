@@ -31,14 +31,34 @@ file that was distributed with this source code.
                             {{ Customer.name01 }} {{ Customer.name02 }} 様<br>
                             <br>
                             {{ BaseInfo.shop_name }}でございます。<br/>
-                            現在は仮登録の状態です。<br/><br/>
-                            本会員登録を完了するには下記URLにアクセスしてください。<br><br/>
-                            <a href="{{ activateUrl }}">{{ activateUrl }}</a>
+                            {% if existCustomer is defined and existCustomer and existCustomer.status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}{# 仮会員登録済 #}
+                            入力いただきましたメールアドレスは、現在仮登録の状態です。<br/>
+                            本会員登録を完了するには下記URLにアクセスしてください。<br/>
                             <br/>
+                            <a href="{{ activateUrl }}">{{ activateUrl }}</a><br/>
                             <br/>
-                            上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認メールをお送り致します。
+                            上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認メールをお送り致します。<br/>
                             <br/>
+                            {% elseif existCustomer is defined and existCustomer and existCustomer.status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::REGULAR') %}{# 本会員登録済 #}
+                            入力いただきましたメールアドレスは、既に会員としてご登録いただいております。<br/>
+                            マイページよりログイン頂き、会員情報をご確認ください。<br/>
                             <br/>
+                            <a href="{{ url('mypage') }}">{{ url('mypage') }}</a><br/>
+                            <br/>
+                            パスワードがわからない場合は、パスワードの再発行をご利用ください。<br/>
+                            <br/>
+                            <a href="{{ url('mypage') }}">{{ url('mypage') }}</a><br/>
+                            <br/>
+                            {% else %}
+                            現在は仮登録の状態です。<br/>
+                            <br/>
+                            本会員登録を完了するには下記URLにアクセスしてください。<br/>
+                            <br/>
+                            <a href="{{ activateUrl }}">{{ activateUrl }}</a><br/>
+                            <br/>
+                            上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認メールをお送り致します。<br/>
+                            <br/>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

@@ -199,6 +199,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $option_product_delivery_fee = false;
 
         /**
+         * @var string|null
+         *
+         * @ORM\Column(name="invoice_registration_number", type="string", length=255, nullable=true)
+         */
+        private $invoice_registration_number;
+
+        /**
          * @var boolean
          *
          * @ORM\Column(name="option_product_tax_rule", type="boolean", options={"default":false})
@@ -838,6 +845,30 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         public function isOptionProductDeliveryFee()
         {
             return $this->option_product_delivery_fee;
+        }
+
+        /**
+         * Set invoiceRegistrationNumber.
+         *
+         * @param string $invoiceRegistrationNumber
+         *
+         * @return BaseInfo
+         */
+        public function setInvoiceRegistrationNumber($invoiceRegistrationNumber)
+        {
+            $this->invoice_registration_number = $invoiceRegistrationNumber;
+
+            return $this;
+        }
+
+        /**
+         * Get invoiceRegistrationNumber.
+         *
+         * @return string|null
+         */
+        public function getInvoiceRegistrationNumber()
+        {
+            return $this->invoice_registration_number;
         }
 
         /**

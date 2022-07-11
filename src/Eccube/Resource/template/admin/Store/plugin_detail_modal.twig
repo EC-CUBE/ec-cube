@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">{{ 'admin.store.plugin_owners_search.modal.header'|trans }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -45,13 +45,13 @@
                 <hr>
                 <div class="row mt-4">
                     <div class="col-12">
-                        {{ item.long_description|raw }}
+                        {{ item.long_description|raw|purify }}
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <form action="{{ eccube_config.eccube_owners_store_url }}/gateway/purchase/?product_id={{ item.id }}" method="post" target="_blank">
-                <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
+                <button type="button" class="btn btn-ec-sub" data-bs-dismiss="modal">{{ 'admin.store.plugin_owners_search.modal.cancel'|trans }}</button>
                 {% if item.update_status == 1 %}
                     <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
                         {{ 'admin.store.plugin_owners_search.install.free'|trans }}

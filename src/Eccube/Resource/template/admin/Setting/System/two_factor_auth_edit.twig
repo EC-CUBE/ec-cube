@@ -18,7 +18,6 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js" integrity="sha512-NFUcDlm4V+a2sjPX7gREIXgCSFja9cHtKPOL1zj6QhnE0vcY695MODehqkaGYTLyL2wxe/wtr4Z49SvqXq12UQ==" crossorigin="anonymous"></script>
 <script>
 $(function () {
     $("#qrcode").qrcode({
@@ -58,7 +57,7 @@ $(function () {
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</span></div>
                                 <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#memberInfo" aria-expanded="false" aria-controls="memberInfo">
+                                    <a data-bs-toggle="collapse" href="#memberInfo" aria-expanded="false" aria-controls="memberInfo">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
                                 </div>

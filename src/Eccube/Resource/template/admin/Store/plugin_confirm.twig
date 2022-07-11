@@ -199,11 +199,11 @@ $(function() {
                             <div class="col-12 text-right">
                                 <button class="btn btn-ec-sub" type="button" onclick="return window.history.back()">{{ 'admin.common.cancel'|trans }}</button>
                                 {% if is_update %}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#installModal" data-mode="upgrade"
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#installModal" data-mode="upgrade"
                                             data-enable-url="{{ url('admin_store_plugin_enable', { id: Plugin.id , maintenance_mode: constant('Eccube\\Service\\SystemService::AUTO_MAINTENANCE_UPDATE')}) }}"
                                             data-disable-url="{{ url('admin_store_plugin_disable', { id: Plugin.id , maintenance_mode: constant('Eccube\\Service\\SystemService::AUTO_MAINTENANCE_UPDATE')}) }}">{{ 'admin.store.plugin.upgrade'|trans }}</button>
                                 {% else %}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#installModal" data-mode="install">{{ 'admin.store.plugin.install'|trans }}</button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#installModal" data-mode="install">{{ 'admin.store.plugin.install'|trans }}</button>
                                 {% endif %}
                             </div>
                         </div>
@@ -244,14 +244,14 @@ $(function() {
                         <p class="text-right small" id="installStatus"></p>
                     </div>
                     <div id="installLogPane" style="display: none;">
-                        <div class="d-inline-block collapsed" data-toggle="collapse" href="#installLog" aria-expanded="false" aria-controls="installLog">
+                        <div class="d-inline-block collapsed" data-bs-toggle="collapse" href="#installLog" aria-expanded="false" aria-controls="installLog">
                             <a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">ログを確認</span></a>
                         </div>
                         <pre class="collapsed collapse" id="installLog"></pre>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-ec-sub" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                    <button type="button" class="btn btn-ec-sub" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                     <button type="button" class="btn btn-ec-conversion" id="installBtn"></button>
                     <a href="{{ url('admin_store_plugin') }}" class="btn btn-ec-regular" style="display: none">完了</a>
                 </div>

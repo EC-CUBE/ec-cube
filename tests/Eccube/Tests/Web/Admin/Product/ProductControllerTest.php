@@ -681,6 +681,63 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->client->request('GET', $csvExportUrl);
     }
 
+    /**
+     * Test search + export product with list product order by product_id
+     */
+    public function testExportWithOrderByProduct()
+    {
+        $expectedIds = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $productName = 'Product name ' . $i;
+            $Product = $this->createProduct($productName, 0);
+            array_unshift($expectedIds, $Product->getId());
+        }
+
+        // 更新日をすべて同一日時に更新
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->update(Product::class, 'p')
+            ->set('p.update_date', ':update_date')
+            ->where('p.name LIKE :name')
+            ->setParameter('update_date', new \DateTime())
+            ->setParameter('name', 'Product name%')
+            ->getQuery()
+            ->execute();
+
+        // 商品名：Product nameで検索
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = 'Product name';
+
+        /* @var $crawler Crawler*/
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
+        $this->verify('検索結果件数の確認テスト');
+
+        $this->expectOutputRegex('/Product name [10-1]/');
+        $csvExportUrl = $crawler->filter('.btn-ec-regular')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->request('GET', $csvExportUrl);
+
+        // get list product after call admin_product_export function
+        $data = ob_get_contents();
+        $arr = explode("\n", $data);
+        // unset header
+        unset($arr[0]);
+        $actualIds = [];
+        foreach ($arr as $v){
+            if(!empty($v)){
+                $data = explode(",", $v);
+                $actualIds[] = (int) $data[0];
+            }
+        }
+
+        $this->assertSame($expectedIds, $actualIds);
+    }
+
     public function dataNewProductProvider()
     {
         return [
@@ -895,107 +952,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAddImage()
-    {
-        $formData = $this->createFormData();
-
-        copy(
-            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.png',
-            'sand-1.png',
-            'image/png',
-            null, true
-        );
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testAddImageWithUppercaseSuffix()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.PNG'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.PNG',
-            'sand-1.PNG',
-            'image/png',
-            null, true
-        );
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testAddImageNotAjax()
-    {
-        $formData = $this->createFormData();
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            []
-        );
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAddImageMineNotSupported()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../Fixtures/categories.csv',
-            $this->imageDir.'/categories.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/categories.png',
-            'categories.png',
-            'image/png',
-            null, true
-        );
-
-        $crawler = $this->client->request('POST',
-           $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertFalse($this->client->getResponse()->isSuccessful());
     }
 
     /**

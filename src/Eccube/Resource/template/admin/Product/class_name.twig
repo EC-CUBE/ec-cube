@@ -25,10 +25,6 @@ file that was distributed with this source code.
 {% endblock stylesheet %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             var oldSortNos = [];
@@ -197,7 +193,7 @@ file that was distributed with this source code.
                                                      data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     {% set classCategories = ClassName.ClassCategories|length %}
                                                     <a class="btn btn-ec-actionIcon{% if classCategories > 0 %} disabled{% endif %}"
-                                                       {% if classCategories == 0 %}data-toggle="modal" data-target="#DeleteModal"
+                                                       {% if classCategories == 0 %}data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                        data-url="{{ url('admin_product_class_name_delete', {'id' : ClassName.id}) }}"
                                                        data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : ClassName.name }) }}"{% endif %}>
                                                         <i class="fa fa-close fa-lg text-secondary"></i>
@@ -236,15 +232,15 @@ file that was distributed with this source code.
                                             <h5 class="modal-title font-weight-bold">
                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                             </h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
                                             <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                            <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                                 {{ 'admin.common.cancel'|trans }}
                                             </button>
                                             <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}
