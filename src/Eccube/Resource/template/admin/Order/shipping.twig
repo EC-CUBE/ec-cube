@@ -15,8 +15,8 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.order.shipping_registration'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
-{% form_theme searchProductModalForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_5_horizontal_layout.html.twig' %}
+{% form_theme searchProductModalForm '@admin/Form/bootstrap_5_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
@@ -473,7 +473,7 @@ file that was distributed with this source code.
                                                     {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->
-                                                        <button type="button" class="btn btn-ec-regular mr-2 confirmationModal" href="javascript:;"
+                                                        <button type="button" class="btn btn-ec-regular me-2 confirmationModal" href="javascript:;"
                                                                 data-id="{{ shippingForm.vars.value.id }}" data-type="status" data-bulk-update="false"
                                                                 data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                                 data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
@@ -514,12 +514,12 @@ file that was distributed with this source code.
                                     <div id="shipping-product_{{ loop.index0 }}" class="row justify-content-between mb-2">
                                         <div class="col-6">
                                             <!-- 商品を追加 -->
-                                            <button class="btn btn-ec-regular mr-2 addProduct-button" type="button" data-bs-toggle="modal"
+                                            <button class="btn btn-ec-regular me-2 addProduct-button" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#addProduct" data-shipping-no="{{ loop.index0 }}">
                                                 {{ 'admin.order.add_product_item'|trans }}
                                             </button>
                                             <!-- その他の明細を追加 -->
-                                            <a class="btn btn-ec-regular mr-2 addOtherProduct-button" data-bs-toggle="modal" data-bs-target="#addOrderItemType" data-shipping-no="{{ loop.index0 }}">{{ 'admin.order.add_other_item'|trans }}</a>
+                                            <a class="btn btn-ec-regular me-2 addOtherProduct-button" data-bs-toggle="modal" data-bs-target="#addOrderItemType" data-shipping-no="{{ loop.index0 }}">{{ 'admin.order.add_other_item'|trans }}</a>
                                             {# 明細行のエラー表示 #}
                                             {{ form_errors(shippingForm.OrderItemsErrors) }}
                                         </div>
