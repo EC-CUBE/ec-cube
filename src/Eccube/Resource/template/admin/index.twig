@@ -17,9 +17,6 @@ file that was distributed with this source code.
     <script>
         $(function() {
             var options = {
-                legend: {
-                    display: false
-                },
                 layout: {
                     padding: {
                         left: 0,
@@ -28,28 +25,27 @@ file that was distributed with this source code.
                         bottom: 0
                     }
                 },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            return '{{ currency_symbol() }}' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return '{{ currency_symbol() }}' + tooltipItem.formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            }
                         }
                     }
                 },
                 scales: {
-                    y: [
-                        {
-                            id: 'y-axis-1',
-                            display: true,
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function(label, index, labels) {
-                                    if (Math.floor(label) === label) {
-                                        return '{{ currency_symbol() }}' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                                    }
+                    y: {
+                        beginatzero: true,
+                        display: true,
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                if (Math.floor(value) === value) {
+                                    return '{{ currency_symbol() }}' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                                 }
                             }
                         }
-                    ]
+                    }
                 }
             };
 
@@ -90,7 +86,7 @@ file that was distributed with this source code.
                                     backgroundColor: priceBackgroundColors,
                                     borderColor: priceBorderColors,
                                     borderWidth: 1,
-                                    yAxisID: 'y-axis-1'
+                                    yAxisID: 'y'
                                 }
                             ]
                         },
