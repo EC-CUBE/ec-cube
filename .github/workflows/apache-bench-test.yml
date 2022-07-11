@@ -68,22 +68,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.1 - PGSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg
-          path: |
-            pg-4.1-home_1.txt
-            pg-4.1-home_2.txt
-            pg-4.1-home_3.txt
-            pg-4.1-home_4.txt
-            pg-4.1-home_5.txt
-            pg-4.1-list_1.txt
-            pg-4.1-list_2.txt
-            pg-4.1-list_3.txt
-            pg-4.1-list_4.txt
-            pg-4.1-list_5.txt
+#      - name: Upload ECCUBE 4.1 - PGSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg
+#          path: |
+#            pg-4.1-home_1.txt
+#            pg-4.1-home_2.txt
+#            pg-4.1-home_3.txt
+#            pg-4.1-home_4.txt
+#            pg-4.1-home_5.txt
+#            pg-4.1-list_1.txt
+#            pg-4.1-list_2.txt
+#            pg-4.1-list_3.txt
+#            pg-4.1-list_4.txt
+#            pg-4.1-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-pg-list.outputs.list_avg }}
@@ -149,22 +149,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.2 - PGSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg
-          path: |
-            pg-4.2-home_1.txt
-            pg-4.2-home_2.txt
-            pg-4.2-home_3.txt
-            pg-4.2-home_4.txt
-            pg-4.2-home_5.txt
-            pg-4.2-list_1.txt
-            pg-4.2-list_2.txt
-            pg-4.2-list_3.txt
-            pg-4.2-list_4.txt
-            pg-4.2-list_5.txt
+#      - name: Upload ECCUBE 4.2 - PGSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg
+#          path: |
+#            pg-4.2-home_1.txt
+#            pg-4.2-home_2.txt
+#            pg-4.2-home_3.txt
+#            pg-4.2-home_4.txt
+#            pg-4.2-home_5.txt
+#            pg-4.2-list_1.txt
+#            pg-4.2-list_2.txt
+#            pg-4.2-list_3.txt
+#            pg-4.2-list_4.txt
+#            pg-4.2-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-pg-list.outputs.list_avg }}
@@ -230,22 +230,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.1 - MYSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql
-          path: |
-            mysql-4.1-home_1.txt
-            mysql-4.1-home_2.txt
-            mysql-4.1-home_3.txt
-            mysql-4.1-home_4.txt
-            mysql-4.1-home_5.txt
-            mysql-4.1-list_1.txt
-            mysql-4.1-list_2.txt
-            mysql-4.1-list_3.txt
-            mysql-4.1-list_4.txt
-            mysql-4.1-list_5.txt
+#      - name: Upload ECCUBE 4.1 - MYSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql
+#          path: |
+#            mysql-4.1-home_1.txt
+#            mysql-4.1-home_2.txt
+#            mysql-4.1-home_3.txt
+#            mysql-4.1-home_4.txt
+#            mysql-4.1-home_5.txt
+#            mysql-4.1-list_1.txt
+#            mysql-4.1-list_2.txt
+#            mysql-4.1-list_3.txt
+#            mysql-4.1-list_4.txt
+#            mysql-4.1-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-one-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-my-list.outputs.list_avg }}
@@ -312,22 +312,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.2 - MYSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql
-          path: |
-            mysql-4.2-home_1.txt
-            mysql-4.2-home_2.txt
-            mysql-4.2-home_3.txt
-            mysql-4.2-home_4.txt
-            mysql-4.2-home_5.txt
-            mysql-4.2-list_1.txt
-            mysql-4.2-list_2.txt
-            mysql-4.2-list_3.txt
-            mysql-4.2-list_4.txt
-            mysql-4.2-list_5.txt
+#      - name: Upload ECCUBE 4.2 - MYSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql
+#          path: |
+#            mysql-4.2-home_1.txt
+#            mysql-4.2-home_2.txt
+#            mysql-4.2-home_3.txt
+#            mysql-4.2-home_4.txt
+#            mysql-4.2-home_5.txt
+#            mysql-4.2-list_1.txt
+#            mysql-4.2-list_2.txt
+#            mysql-4.2-list_3.txt
+#            mysql-4.2-list_4.txt
+#            mysql-4.2-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-two-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-my-list.outputs.list_avg }}
@@ -343,12 +343,12 @@ jobs:
           echo $LINE >> total.csv
           export RESULT=$(echo "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }} \r\n 10000 Product Result, MYSQL, TOP, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
           echo "::set-output name=products_avg::${RESULT}"
-      - name: Upload complete evidence (Products Only)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-product-complete
-          path: total.csv
+#      - name: Upload complete evidence (Products Only)
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-product-complete
+#          path: total.csv
     outputs:
       products_avg: ${{ steps.calculate-product-avg.outputs.products_avg }}
   load-test-4-1-pg-base:
@@ -417,22 +417,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.1 - PGSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg-base
-          path: |
-            pg-4.1-home_1.txt
-            pg-4.1-home_2.txt
-            pg-4.1-home_3.txt
-            pg-4.1-home_4.txt
-            pg-4.1-home_5.txt
-            pg-4.1-list_1.txt
-            pg-4.1-list_2.txt
-            pg-4.1-list_3.txt
-            pg-4.1-list_4.txt
-            pg-4.1-list_5.txt
+#      - name: Upload ECCUBE 4.1 - PGSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-1-pg-base
+#          path: |
+#            pg-4.1-home_1.txt
+#            pg-4.1-home_2.txt
+#            pg-4.1-home_3.txt
+#            pg-4.1-home_4.txt
+#            pg-4.1-home_5.txt
+#            pg-4.1-list_1.txt
+#            pg-4.1-list_2.txt
+#            pg-4.1-list_3.txt
+#            pg-4.1-list_4.txt
+#            pg-4.1-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-pg-list.outputs.list_avg }}
@@ -501,22 +501,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.2 - PGSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-base
-          path: |
-            pg-4.2-home_1.txt
-            pg-4.2-home_2.txt
-            pg-4.2-home_3.txt
-            pg-4.2-home_4.txt
-            pg-4.2-home_5.txt
-            pg-4.2-list_1.txt
-            pg-4.2-list_2.txt
-            pg-4.2-list_3.txt
-            pg-4.2-list_4.txt
-            pg-4.2-list_5.txt
+#      - name: Upload ECCUBE 4.2 - PGSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-2-pg-base
+#          path: |
+#            pg-4.2-home_1.txt
+#            pg-4.2-home_2.txt
+#            pg-4.2-home_3.txt
+#            pg-4.2-home_4.txt
+#            pg-4.2-home_5.txt
+#            pg-4.2-list_1.txt
+#            pg-4.2-list_2.txt
+#            pg-4.2-list_3.txt
+#            pg-4.2-list_4.txt
+#            pg-4.2-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-pg-list.outputs.list_avg }}
@@ -588,22 +588,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.1 - MYSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-base
-          path: |
-            mysql-4.1-home_1.txt
-            mysql-4.1-home_2.txt
-            mysql-4.1-home_3.txt
-            mysql-4.1-home_4.txt
-            mysql-4.1-home_5.txt
-            mysql-4.1-list_1.txt
-            mysql-4.1-list_2.txt
-            mysql-4.1-list_3.txt
-            mysql-4.1-list_4.txt
-            mysql-4.1-list_5.txt
+#      - name: Upload ECCUBE 4.1 - MYSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-1-mysql-base
+#          path: |
+#            mysql-4.1-home_1.txt
+#            mysql-4.1-home_2.txt
+#            mysql-4.1-home_3.txt
+#            mysql-4.1-home_4.txt
+#            mysql-4.1-home_5.txt
+#            mysql-4.1-list_1.txt
+#            mysql-4.1-list_2.txt
+#            mysql-4.1-list_3.txt
+#            mysql-4.1-list_4.txt
+#            mysql-4.1-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-one-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-my-list.outputs.list_avg }}
@@ -676,22 +676,22 @@ jobs:
           GROUP: ${{ matrix.group }}
         if: always()
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
-      - name: Upload ECCUBE 4.2 - MYSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql-base
-          path: |
-            mysql-4.2-home_1.txt
-            mysql-4.2-home_2.txt
-            mysql-4.2-home_3.txt
-            mysql-4.2-home_4.txt
-            mysql-4.2-home_5.txt
-            mysql-4.2-list_1.txt
-            mysql-4.2-list_2.txt
-            mysql-4.2-list_3.txt
-            mysql-4.2-list_4.txt
-            mysql-4.2-list_5.txt
+#      - name: Upload ECCUBE 4.2 - MYSQL evidence
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-4-2-mysql-base
+#          path: |
+#            mysql-4.2-home_1.txt
+#            mysql-4.2-home_2.txt
+#            mysql-4.2-home_3.txt
+#            mysql-4.2-home_4.txt
+#            mysql-4.2-home_5.txt
+#            mysql-4.2-list_1.txt
+#            mysql-4.2-list_2.txt
+#            mysql-4.2-list_3.txt
+#            mysql-4.2-list_4.txt
+#            mysql-4.2-list_5.txt
     outputs:
       home_avg: ${{ steps.ec-four-two-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-my-list.outputs.list_avg }}
@@ -707,12 +707,12 @@ jobs:
           echo $LINE >> total.csv
           export OUTPUT=$(echo "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }} \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
           echo "::set-output name=base_avg::${OUTPUT}"
-      - name: Upload complete evidence (Base Only)
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: ab-${{ env.ARTIFACT_NAME }}-base-complete
-          path: total.csv
+#      - name: Upload complete evidence (Base Only)
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ab-${{ env.ARTIFACT_NAME }}-base-complete
+#          path: total.csv
     outputs:
       base_avg: ${{ steps.calculate-base-avg.outputs.base_avg }}
   map_csv_of_base_and_products:
