@@ -287,7 +287,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
          *
          * @return $this
          */
-        public function setPlainPassword(string $password): self
+        public function setPlainPassword(?string $password): self
         {
             $this->plainPassword = $password;
 
