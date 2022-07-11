@@ -57,7 +57,7 @@ class FileController extends AbstractController
      */
     public function index(Request $request)
     {
-        $this->addInfo('admin.common.restrict_file_upload_info', 'admin');
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
