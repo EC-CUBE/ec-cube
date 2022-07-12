@@ -13,6 +13,9 @@
 
 namespace Eccube\Service;
 
+use Eccube\Stream\Filter\ConvertLineFeedFilter;
+use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
+
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
  *
@@ -100,14 +103,32 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     {
         ini_set('auto_detect_line_endings', true);
 
+        // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
         $tempFile = tmpfile();
-        foreach ($file as $line) {
-            $encoded = mb_convert_encoding($line, 'UTF-8', 'SJIS-win');
-            fwrite($tempFile, $encoded);
+        \stream_filter_register(
+            'sjis_to_utf8_encoding_filter',
+            SjisToUtf8EncodingFilter::class
+        );
+        SjisToUtf8EncodingFilter::setBufferSizeLimit(8192);
+
+        \stream_filter_register(
+            'convert_linefeed_filter',
+            ConvertLineFeedFilter::class
+        );
+
+        // UTF-8 が検出できなかった場合は SJIS-win の stream filter を適用する
+        $first = $file->current();
+        if (!\mb_check_encoding($first, 'UTF-8')) {
+            \stream_filter_append($tempFile, 'sjis_to_utf8_encoding_filter');
         }
 
+        \stream_filter_append($tempFile, 'convert_linefeed_filter');
+        foreach ($file as $line) {
+            fwrite($tempFile, $line);
+        }
         $meta = stream_get_meta_data($tempFile);
+
         $this->file = new \SplFileObject($meta['uri'], 'r');
         fclose($tempFile);
 
