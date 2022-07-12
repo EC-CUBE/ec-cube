@@ -7,7 +7,8 @@ volumes:
 services:
   ec-cube:
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       DATABASE_URL: "mysql://dbuser:secret@mysql/eccubedb"
       DATABASE_SERVER_VERSION: 5.7
@@ -16,12 +17,17 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: eccubedb
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: secret
     volumes:
       - mysql-database:/var/lib/mysql
+      - ./dockerbuild/grant_to_dbuser.sql:/docker-entrypoint-initdb.d/grant_to_dbuser.sql
     ports:
       - 13306:3306
     networks:
       - backend
+    healthcheck:
+      test: mysqladmin ping
+      interval: 3s
+      timeout: 3s
+      retries: 3

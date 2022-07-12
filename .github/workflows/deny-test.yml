@@ -91,11 +91,17 @@ jobs:
         run: ${{ github.event.repository.name }}/package.sh
 
       - name: Build Container
-        run: docker build -t ec-cube --build-arg SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD=true .
+        run: docker build -t ec-cube .
 
       - name: Container Run
         run: |
           docker run -e APP_ENV=prod -e APP_DEBUG=0 -e DATABASE_URL="sqlite:///var/eccube.db" -e DATABASE_SERVER_VERSION=3 --rm -d -p 8080:80 --name eccube ec-cube
+          echo -n $(docker inspect -f {{.State.Health.Status}} eccube)
+          until [ $(docker inspect -f {{.State.Health.Status}} eccube) != "starting" ]; do
+            echo -n .
+            sleep 10;
+          done;
+          docker inspect -f {{.State.Health.Status}} eccube
           docker cp ../eccube.tar.gz eccube:/tmp/
           docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
           docker exec -u www-data eccube bin/console eccube:install -n
