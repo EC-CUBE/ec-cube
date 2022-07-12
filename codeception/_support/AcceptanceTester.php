@@ -229,4 +229,13 @@ class AcceptanceTester extends \Codeception\Actor
             $action->perform();
         });
     }
+
+    public function dragAndDropByXPath($selector, $x_offset, $y_offset, $animation_frames = 1)
+    {
+        $this->executeInSelenium(function (Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset, $animation_frames) {
+            $node = $webDriver->findElement(WebDriverBy::xpath($selector));
+            $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset, $animation_frames);
+            $action->perform();
+        });
+    }
 }

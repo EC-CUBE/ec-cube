@@ -11,18 +11,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin;
+namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Page\Admin\ProductReviewManagePage;
+use Page\Front\ProductDetailPage;
+use Page\Front\ProductReviewPage;
 
 /**
  * @group plugin
- * @group vaddy
+ * @group e2e_plugin
  */
-class PL10GMCCest
+class PL07ProductReviewCest
 {
-    public function gmc(AcceptanceTester $I)
-    {
-        $I->amOnPage('/admin/gmc/config');
-    }
+
 }

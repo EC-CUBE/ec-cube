@@ -11,20 +11,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin;
+namespace Plugin\E2E;
 
 use AcceptanceTester;
 
 /**
  * @group plugin
- * @group vaddy
+ * @group e2e_plugin
  */
 class PL09SiteKitCest
 {
-    public function sitekit(AcceptanceTester $I)
-    {
-        $I->loginAsAdmin();
-        $I->amOnPage('/admin/site_kit/config');
-        $I->amOnPage('/googletest.html');
-    }
+
 }

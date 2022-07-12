@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin;
+namespace Plugin\Vaddy;
 
 use AcceptanceTester;
 use Page\Admin\RecommendEditPage;
