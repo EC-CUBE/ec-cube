@@ -134,13 +134,6 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      ## XXX Symfony5.4 に対応するためには trikoder/oauth2-bundle "v3.x-dev@dev" に依存する必要がある
-      ## XXX 依存する Bundle を先に require して, Symfony Flex が Bundle を二重定義してしまう問題を回避する
-      - run: |
-          sed -e 's/"minimum-stability": "stable",/"minimum-stability": "dev",/g' -i composer.json
-          composer require nyholm/psr7 "^1.5"
-          composer require ajgarlag/psr-http-message-bundle "^1.2"
-
       - name: Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
