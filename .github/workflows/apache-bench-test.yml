@@ -1,7 +1,7 @@
 name: Apache bench (HTTP load speed) testing for EC-CUBE
 on:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '0 0 * * *'
   push:
   workflow_dispatch:
 jobs:
