@@ -21,7 +21,7 @@ jobs:
       matrix:
         php: [ 7.4 ]
         db: [ pgsql ]
-        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-file-upload', 'installer' ]
+        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'installer' ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -34,7 +34,7 @@ jobs:
             app_env: 'codeception'
           - group: 'front'
             app_env: 'codeception'
-          - group: 'restrict-file-upload'
+          - group: 'restrict-fileupload'
             app_env: 'codeception'
           - group: 'installer'
             app_env: 'install'
@@ -107,6 +107,7 @@ jobs:
           cp codeception/_data/plugins/*-1.0.0.tgz repos
 
       - name: Start PHP Development Server
+        if: ${{ matrix.group != 'restrict-fileupload' }}
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
@@ -115,8 +116,19 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
+      - name: Start PHP Development Server
+        if: ${{ matrix.group == 'restrict-fileupload' }}
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_RESTRICT_FILE_UPLOAD: '1'
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
       - name: Codeception
-        if: ${{ matrix.group != 'restrict-file-upload' }}
+        if: ${{ matrix.group != 'restrict-fileupload' }}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -128,7 +140,7 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
 
       - name: Codeception with Restrict file upload
-        if: ${{ matrix.group == 'restrict-file-upload' }}
+        if: ${{ matrix.group == 'restrict-fileupload' }}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
