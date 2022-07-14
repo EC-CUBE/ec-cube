@@ -45,6 +45,10 @@ monolog:
             type: console
             process_psr_3_messages: false
             channels: ['!event', '!doctrine']
+        stream:
+            type: stream
+            level: info
+            channels: ["!event"]
         # keep this last
         blackhole:
             type: "null"
