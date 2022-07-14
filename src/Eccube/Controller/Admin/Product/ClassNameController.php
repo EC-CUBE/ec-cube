@@ -115,6 +115,16 @@ class ClassNameController extends AbstractController
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classNameRepository->save($editForm->getData());
 
+                    $event = new EventArgs(
+                        [
+                            'form' => $form,
+                            'editForm' => $editForm,
+                            'TargetClassName' => $editForm->getData(),
+                        ],
+                        $request
+                    );
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE);
+
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_class_name');

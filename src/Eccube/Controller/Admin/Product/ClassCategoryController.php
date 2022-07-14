@@ -133,6 +133,18 @@ class ClassCategoryController extends AbstractController
                 $editForm->handleRequest($request);
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classCategoryRepository->save($editForm->getData());
+
+                    $event = new EventArgs(
+                        [
+                            'form' => $form,
+                            'editForm' => $editForm,
+                            'ClassName' => $ClassName,
+                            'TargetClassCategory' => $TargetClassCategory,
+                        ],
+                        $request
+                    );
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE);
+
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
