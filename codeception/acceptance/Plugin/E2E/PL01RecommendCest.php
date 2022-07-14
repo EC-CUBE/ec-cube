@@ -14,6 +14,7 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Codeception\Util\Locator;
 
 /**
  * @group plugin
@@ -61,7 +62,8 @@ class PL01RecommendCest
         $I->amOnPage('/admin/content/layout/1/edit');
         // @todo: Improve this
         $I->see('おすすめ商品');
-        $I->dragAndDrop('#detail_box__layout_item--21', '#position_7');
+        $recommendBlock = Locator::contains('.block.sort.border.border-ec-gray.bg-ec-lightGray.p-2.mb-2.ui-sortable-handle', 'おすすめ商品');
+        $I->dragAndDrop($recommendBlock, '#position_7');
         $I->clickWithLeftButton('#ex-conversion-action button');
         $I->see('保存しました');
         // Check HomePage
@@ -82,7 +84,9 @@ class PL01RecommendCest
         $I->dontSee('オススメ', '.ec-layoutRole__contentBottom');
         $I->see('オススメ', '.ec-layoutRole__contents');
         $I->amOnPage('/admin/content/layout/1/edit');
-        $I->dragAndDrop('#detail_box__layout_item--21', '#position_9');
+        // @todo: Register recommend item
+        $recommendBlock = Locator::contains('.block.sort.border.border-ec-gray.bg-ec-lightGray.p-2.mb-2.ui-sortable-handle', 'おすすめ商品');
+        $I->dragAndDrop($recommendBlock, '#position_9');
         $I->clickWithLeftButton('#ex-conversion-action button');
         $I->see('保存しました');
         $I->amOnPage('/');
@@ -102,7 +106,8 @@ class PL01RecommendCest
         $I->amOnPage('/');
         $I->see('オススメ', '.ec-layoutRole__contentBottom');
         $I->amOnPage('/admin/content/layout/1/edit');
-        $I->dragAndDrop('#detail_box__layout_item--21', '#position_0');
+        $recommendBlock = Locator::contains('.block.sort.border.border-ec-gray.bg-ec-lightGray.p-2.mb-2.ui-sortable-handle', 'おすすめ商品');
+        $I->dragAndDrop($recommendBlock, '#position_0');
         $I->clickWithLeftButton('#ex-conversion-action button');
         $I->see('保存しました');
         $I->amOnPage('/');
@@ -248,12 +253,13 @@ class PL01RecommendCest
         $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('有効', '(//tbody//tr)[1]');
-        $I->clickWithLeftButton('(//i[@class="fa fa-pause fa-lg text-secondary"])[1]');
+        $recommendPluginRow = Locator::contains('//tr', 'おすすめ商品');
+        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'おすすめ商品')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
         $I->see('「おすすめ商品管理プラグイン」を無効にしました。');
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('無効', '(//tbody//tr)[1]');
+        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
         // プラグインのおすすめ商品管理リンクが消えているかどうかをチェック
         $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[5]');
         $I->wait(2);
@@ -273,12 +279,13 @@ class PL01RecommendCest
     public function recommend_11(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/store/plugin');
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('無効', '(//tbody//tr)[1]');
-        $I->clickWithLeftButton('(//i[@class="fa fa-play fa-lg text-secondary"])[1]');
+        $recommendPluginRow = Locator::contains('//tr', 'おすすめ商品');
+        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'おすすめ商品')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
         $I->see('「おすすめ商品管理プラグイン」を有効にしました。');
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('有効', '(//tbody//tr)[1]');
+        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->see('有効', $recommendPluginRow);
         $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[5]');
         $I->wait(2);
         $I->see('おすすめ管理', '(//li[@class="c-mainNavArea__navItem"])[5]');
@@ -288,13 +295,19 @@ class PL01RecommendCest
      * ⑫ アンインストールできる
      *
      * @param AcceptanceTester $I
-     *
+     * @skip アンインストールしたら、codeceptionとphpunitがなくなるため、スキップする
      * @return void
      */
     public function recommend_12(AcceptanceTester $I)
     {
-        // プラグインを無効する
-        $this->recommend_10($I);
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
+        $I->see('有効', '(//tbody//tr)[1]');
+        $I->clickWithLeftButton('(//i[@class="fa fa-pause fa-lg text-secondary"])[1]');
+        $I->see('「おすすめ商品管理プラグイン」を無効にしました。');
+        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
+        $I->see('無効', '(//tbody//tr)[1]');
         // プラグイン削除
         $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
         $I->see('無効', '(//tbody//tr)[1]');
@@ -302,7 +315,13 @@ class PL01RecommendCest
         $I->wait(2);
         $I->see('プラグインの削除を確認する');
         $I->clickWithLeftButton('#officialPluginDeleteButton');
-        $I->wait(2);
-        $I->performOn('#deleteLogPane', ['click' => '(//button[@class="btn btn-ec-sub"])[2]'], 300);
+        // 削除処理を待つ
+        $I->retry(20, 1000);
+        $I->retrySee('削除が完了しました。');
+        $I->see('完了');
+        // プラグインの状態を確認する
+        $I->clickWithLeftButton('(//div[@class="modal-footer"]//button[@class="btn btn-ec-sub"])[2]');
+        $xpath = Locator::contains('tr', 'おすすめ商品管理プラグイン');
+        $I->see('インストール', $xpath);
     }
 }
