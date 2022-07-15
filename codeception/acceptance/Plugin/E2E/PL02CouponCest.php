@@ -14,8 +14,9 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
-use Page\Admin\CouponEditPage;
-use Page\Admin\CouponManagePage;
+use Carbon\Carbon;
+use Codeception\Util\Locator;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * @group plugin
@@ -23,5 +24,272 @@ use Page\Admin\CouponManagePage;
  */
 class PL02CouponCest
 {
+    public function _before(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+    }
 
+    /**
+     * ⓪ インストール
+     *
+     * @param AcceptanceTester $I
+     * @skip
+     *
+     * @return void
+     */
+    public function coupon_0(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/store/plugin');
+        $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
+        $I->see('インストール', $couponRow);
+        $I->click("(//tr[contains(.,'Coupon Plugin for EC-CUBE42')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+    }
+
+    /**
+     * ① 無効化できる
+     *
+     * @param AcceptanceTester $I
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function coupon_1(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/store/plugin');
+        $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
+        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
+        $I->see('有効', $couponRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'Coupon Plugin for EC-CUBE42')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「Coupon Plugin for EC-CUBE42」を無効にしました。');
+        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
+        $I->see('無効', $couponRow);
+        $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[3]');
+        $I->wait(2);
+        $I->dontSee('クーポン', '(//li[@class="c-mainNavArea__navItem"])[3]');
+    }
+
+    /**
+     * ② 有効化できる
+     *
+     * @param AcceptanceTester $I
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function coupon_2(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/store/plugin');
+        $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
+        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
+        $I->see('無効', $couponRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'Coupon Plugin for EC-CUBE42')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
+        $I->see('「Coupon Plugin for EC-CUBE42」を有効にしました。');
+        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
+        $I->see('有効', $couponRow);
+        $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[3]');
+        $I->wait(2);
+        $I->see('クーポン', '(//li[@class="c-mainNavArea__navItem"])[3]');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_3(AcceptanceTester $I)
+    {
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'test');
+        $I->fillField('#coupon_coupon_release', '1');
+        // 期間開始日設定
+        $this->dateSetter($I);
+        $I->fillField('#coupon_discount_price', '100');
+        $I->clickWithLeftButton('#coupon_coupon_type_2');
+        $I->wait(1);
+        $I->dontSee('商品情報');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'test');
+        $I->see('test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_4(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'product and set discount test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $this->dateSetter($I);
+        $xpath = Locator::contains('//a', '商品の追加');
+        $I->click($xpath);
+        $I->fillField('#admin_search_product_id', '彩');
+        $I->click('#searchProductModalButton');
+        $I->wait(5);
+        $xpathProduct = Locator::contains('//tr', '彩のジェラートCUBE');
+        $I->retrySee('cube-01', $xpathProduct);
+        $I->click('.btn.btn-default.btn-sm');
+        $I->see('彩のジェラートCUBE');
+        $I->fillField('#coupon_discount_price', '100');
+        $I->see('商品情報');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'product and set discount test');
+        $I->see('test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_5(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'category and set discount test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $this->dateSetter($I);
+        $I->clickWithLeftButton('#coupon_coupon_type_1');
+        $I->retrySee('カテゴリの追加');
+        $xpath = Locator::contains('//a', 'カテゴリの追加');
+        $I->click($xpath);
+        $I->selectOption('#coupon_search_category_category_id', '新入荷');
+        $I->click('#searchCategoryModalButton');
+        $xpathProduct = Locator::contains('//tr', '新入荷');
+        $I->retrySee('新入荷', $xpathProduct);
+        $I->click('.btn.btn-default.btn-sm');
+        $I->retrySee('新入荷');
+        $I->see('カテゴリ情報');
+        $I->fillField('#coupon_discount_price', '100');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'category and set discount test');
+        $I->see('category and set discount test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_6(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+
+        $I->fillField('#coupon_coupon_name', 'all products and percentage discount test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $this->dateSetter($I);
+        $I->clickWithLeftButton('#coupon_coupon_type_2');
+        $I->clickWithLeftButton('#coupon_discount_type_1');
+        $I->fillField('#coupon_discount_rate', '33');
+        $I->retryDontSee('商品情報');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'all products and percentage discount test');
+        $I->see('all products and percentage discount test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_7(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'product and discount rate test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $this->dateSetter($I);
+        $xpath = Locator::contains('//a', '商品の追加');
+        $I->click($xpath);
+        $I->fillField('#admin_search_product_id', '彩');
+        $I->click('#searchProductModalButton');
+        $I->wait(5);
+        $xpathProduct = Locator::contains('//tr', '彩のジェラートCUBE');
+        $I->retrySee('cube-01', $xpathProduct);
+        $I->click('.btn.btn-default.btn-sm');
+        $I->see('彩のジェラートCUBE');
+        $I->see('商品情報');
+        $I->clickWithLeftButton('#coupon_discount_type_1');
+        $I->fillField('#coupon_discount_rate', '33');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'product and discount rate test');
+        $I->see('product and discount rate test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_8(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'category and discount rate test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $this->dateSetter($I);
+        $I->clickWithLeftButton('#coupon_coupon_type_1');
+        $I->clickWithLeftButton('#coupon_discount_type_1');
+        $I->fillField('#coupon_discount_rate', '33');
+        $I->retrySee('カテゴリの追加');
+        $xpath = Locator::contains('//a', 'カテゴリの追加');
+        $I->click($xpath);
+        $I->selectOption('#coupon_search_category_category_id', '新入荷');
+        $I->click('#searchCategoryModalButton');
+        $xpathProduct = Locator::contains('//tr', '新入荷');
+        $I->retrySee('新入荷', $xpathProduct);
+        $I->click('.btn.btn-default.btn-sm');
+        $I->retrySee('新入荷');
+        $I->see('カテゴリ情報');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'category and discount rate test');
+        $I->see('category and discount rate test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    private function baseRegistrationPage(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/plugin/coupon');
+        $I->see('クーポンを新規登録');
+        $I->click(Locator::contains('//a', 'クーポンを新規登録'));
+        $I->seeInCurrentUrl('/admin/plugin/coupon/new');
+        $I->see('クーポン情報');
+        $I->see('商品情報');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @return void
+     */
+    private function dateSetter(AcceptanceTester $I): void
+    {
+        // 期間開始日設定
+        $I->clickWithLeftButton('#coupon_available_from_date');
+        $I->type(Carbon::now()->format('Y'));
+        $I->pressKey('#coupon_available_from_date', WebDriverKeys::TAB);
+        $I->type(Carbon::now()->format('m'));
+        $I->type(Carbon::now()->format('d'));
+        // 期間終了日設定
+        $I->clickWithLeftButton('#coupon_available_to_date');
+        $I->type(Carbon::now()->addDay()->format('Y'));
+        $I->pressKey('#coupon_available_to_date', WebDriverKeys::TAB);
+        $I->type(Carbon::now()->addDay()->format('m'));
+        $I->type(Carbon::now()->addDay()->format('d'));
+    }
 }
