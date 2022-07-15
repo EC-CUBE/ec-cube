@@ -549,7 +549,7 @@ EOL;
 {% block title %}${code}{% endblock %}
 {% block sub_title %}プラグイン一覧{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_5_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}{% endblock stylesheet %}
 
