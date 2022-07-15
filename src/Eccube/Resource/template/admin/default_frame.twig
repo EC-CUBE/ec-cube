@@ -48,7 +48,7 @@ file that was distributed with this source code.
            data-bs-toggle="popover"
            data-placement="bottom"
            title="{{ 'admin.header.last_login'|trans }}"
-           data-bs-content="&lt;p&gt;{{ app.user.login_date|date_min }}&lt;/p&gt;&lt;a href='{{ url("admin_change_password") }}' class='btn btn-ec-regular w-100 mb-2'&gt;{{ 'admin.header.change_password'|trans }}&lt;/a&gt;{% if app.user.two_factor_auth_enabled %}&lt;a href='{{ url("admin_setting_system_two_factor_auth_edit") }}' class='btn btn-ec-regular w-100'&gt;{{ 'admin.header.two_factor_auth'|trans }}&lt;/a&gt;{% endif %}&lt;a href='{{ url("admin_logout") }}' class='btn btn-ec-sub w-100 mt-2'&gt;{{ 'admin.header.logout'|trans }}&lt;/a&gt;"
+           data-bs-content="&lt;p&gt;{{ app.user.login_date|date_min }}&lt;/p&gt;&lt;a href='{{ url("admin_change_password") }}' class='btn btn-ec-regular w-100 mb-2'&gt;{{ 'admin.header.change_password'|trans }}&lt;/a&gt;{% if app.user.two_factor_auth_enabled %}&lt;a href='{{ url("admin_setting_system_two_factor_auth_edit") }}' class='btn btn-ec-regular w-100 mb-2'&gt;{{ 'admin.header.two_factor_auth'|trans }}&lt;/a&gt;{% endif %}&lt;a href='{{ url("admin_logout") }}' class='btn btn-ec-sub w-100'&gt;{{ 'admin.header.logout'|trans }}&lt;/a&gt;"
            data-bs-html="true"><i class="fa fa-user-circle" aria-hidden="true"></i><span>{{ 'admin.header.user_name'|trans({'%name%':app.user.name}) }}</span><i class="fa fa-angle-down" aria-hidden="true"></i></a>
     </div>
 </header>
