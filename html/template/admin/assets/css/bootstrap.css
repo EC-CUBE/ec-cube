@@ -5817,6 +5817,13 @@ Styleguide 12.7
 #plugin_local_install_plugin_archive {
   vertical-align: middle;
 }
+/*
+プロダクト > カテゴリー
+カテゴリの余白
+*/
+.list-unstyled li {
+  margin-bottom: 0.5em;
+}
 @media (min-width: 576px) {
   .container-sm, .container {
     max-width: 540px;

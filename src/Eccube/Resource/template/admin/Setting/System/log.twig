@@ -30,7 +30,7 @@ file that was distributed with this source code.
                         {{ form_widget(form._token) }}
                         <div class="row mb-3">
                             <div class="mb-3 pe-3 col-2">
-                                {{ form_widget(form.files) }}
+                                {{ form_widget(form.files, { 'attr': { 'class': 'form-select' }}) }}
                             </div>
                             <div class="row mb-3 pe-3 col-auto align-items-center">
                                 <span class="col-auto">{{ form_widget(form.line_max) }}</span>
