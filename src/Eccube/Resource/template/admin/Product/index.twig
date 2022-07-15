@@ -44,7 +44,7 @@ file that was distributed with this source code.
                 });
 
                 var addError = function(errorMessage) {
-                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                    $('<li><span class="badge bg-danger">ERROR</span> </li>')
                         .append($('<span></span>').text(errorMessage))
                         .appendTo('#bulkErrors');
                 };
@@ -288,7 +288,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="col-5 text-end">
-                                <div class="d-inline-block mr-2">
+                                <div class="d-inline-block mr-2 align-bottom">
                                     <div>
                                         <select class="form-select" onchange="location = this.value;">
                                             {% for pageMax in pageMaxis %}

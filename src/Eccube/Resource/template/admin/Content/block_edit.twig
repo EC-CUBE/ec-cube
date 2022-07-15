@@ -95,11 +95,11 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col-10">
                                         {% if deletable %}
-                                            <div class="row">
-                                                {{ form_widget(form.file_name) }}.twig
+                                            <div class="row align-items-center">
+                                                <span class="col-3">{{ form_widget(form.file_name) }}</span><span class="col-auto ps-0">.twig</span>
                                             </div>
                                         {% else %}
-                                            {{ form.file_name.vars.value }}.twig
+                                            <span class="col-3">{{ form.file_name.vars.value }}</span><span class="col-auto ps-0">.twig</span>
                                             {{ form_widget(form.file_name, { type : 'hidden' } ) }}
                                         {% endif %}
                                         {{ form_errors(form.file_name) }}

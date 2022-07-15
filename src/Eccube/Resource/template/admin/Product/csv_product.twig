@@ -30,7 +30,7 @@ file that was distributed with this source code.
                 }
 
                 var addError = function(message) {
-                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                    $('<li><span class="badge bg-danger">ERROR</span> </li>')
                         .append($('<span></span>').text(message))
                         .prependTo('#bulkMessages');
                     $('#bulkMessages li:nth-child(n+2)').hide()

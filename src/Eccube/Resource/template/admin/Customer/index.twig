@@ -239,7 +239,7 @@ file that was distributed with this source code.
 
                             <div class="col-5 text-end">
                                 {#Dropdown page count#}
-                                <div class="d-inline-block mr-2">
+                                <div class="d-inline-block mr-2 align-bottom">
                                     <select class="form-select" onchange="location = this.value;">
                                         {% for pageMax in pageMaxis %}
                                             <option {% if pageMax.name == page_count %} selected {% endif %}

@@ -362,9 +362,9 @@ file that was distributed with this source code.
                                                 </label>
                                                 <div class="col">
                                                     <div class="row mb-3">
-                                                        <div class="col row">
-                                                            {{ 'admin.common.postal_symbol'|trans }}
-                                                            {{ form_widget(shippingForm.postal_code) }}
+                                                        <div class="col row align-items-center">
+                                                            <span class="col-auto">{{ 'admin.common.postal_symbol'|trans }}</span>
+                                                            <span class="col-auto ps-0">{{ form_widget(shippingForm.postal_code) }}</span>
                                                             {{ form_errors(shippingForm.postal_code) }}
                                                         </div>
                                                     </div>

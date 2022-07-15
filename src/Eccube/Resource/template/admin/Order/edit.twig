@@ -427,9 +427,9 @@ file that was distributed with this source code.
                                             <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row mb-3">
-                                                    <div class="col row">
-                                                        {{ 'admin.common.postal_symbol'|trans }}
-                                                        {{ form_widget(form.postal_code) }}
+                                                    <div class="col row align-items-center">
+                                                        <span class="col-auto">{{ 'admin.common.postal_symbol'|trans }}</span>
+                                                        <span class="col-auto ps-0">{{ form_widget(form.postal_code) }}</span>
                                                         {{ form_errors(form.postal_code) }}
                                                     </div>
                                                 </div>
@@ -570,9 +570,9 @@ file that was distributed with this source code.
                                                 <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row mb-3">
-                                                        <div class="col row">
-                                                            {{ 'admin.common.postal_symbol'|trans }}
-                                                            {{ form_widget(form.Shipping.postal_code) }}
+                                                        <div class="col row align-items-center">
+                                                            <span class="col-auto">{{ 'admin.common.postal_symbol'|trans }}</span>
+                                                            <span class="col-auto ps-0">{{ form_widget(form.Shipping.postal_code) }}</span>
                                                             {{ form_errors(form.Shipping.postal_code) }}
                                                         </div>
                                                     </div>

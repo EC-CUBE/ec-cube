@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'system', 'masterdata'] %}
-
+{% form_theme form '@admin/Form/bootstrap_5_horizontal_layout.html.twig' %}
 {% block title %}{{ 'admin.setting.system.master_data_management'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
