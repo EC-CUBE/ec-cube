@@ -95,28 +95,30 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
-    public function coupon_3(AcceptanceTester $I)
+    public function coupon_3(AcceptanceTester $I, string $attachName = '')
     {
+        $I->retry(7, 400);
         $this->baseRegistrationPage($I);
-        $I->fillField('#coupon_coupon_name', 'test');
+        $I->fillField('#coupon_coupon_name', 'all products and set discount test '. $attachName);
         $I->fillField('#coupon_coupon_release', '1');
         // 期間開始日設定
         $this->dateSetter($I);
         $I->fillField('#coupon_discount_price', '100');
         $I->clickWithLeftButton('#coupon_coupon_type_2');
-        $I->wait(1);
-        $I->dontSee('商品情報');
+        $I->retryDontSee('商品情報');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
         $I->see('クーポンを登録しました。');
-        $couponRow = Locator::contains('//tr', 'test');
-        $I->see('test', $couponRow);
+        $couponRow = Locator::contains('//tr', 'all products and set discount test ' . $attachName);
+        $I->see('all products and set discount test '. $attachName, $couponRow);
         $I->see('有効', $couponRow);
     }
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function coupon_4(AcceptanceTester $I)
@@ -146,6 +148,7 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function coupon_5(AcceptanceTester $I)
@@ -176,6 +179,7 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function coupon_6(AcceptanceTester $I)
@@ -199,6 +203,7 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function coupon_7(AcceptanceTester $I)
@@ -229,6 +234,7 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function coupon_8(AcceptanceTester $I)
@@ -258,8 +264,84 @@ class PL02CouponCest
         $I->see('有効', $couponRow);
     }
 
+    public function coupon_9(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'member only test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $this->dateSetter($I);
+        $I->clickWithLeftButton('#coupon_coupon_member_0');
+        $I->fillField('#coupon_discount_price', '100');
+        $I->clickWithLeftButton('#coupon_coupon_type_2');
+        $I->retryDontSee('商品情報');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'member only test');
+        $I->see('member only test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    public function coupon_10(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $this->baseRegistrationPage($I);
+        $I->fillField('#coupon_coupon_name', 'coupon with lower limit test');
+        $I->fillField('#coupon_coupon_release', '1');
+        $I->fillField('#coupon_coupon_lower_limit', '50');
+        $this->dateSetter($I);
+        $I->fillField('#coupon_discount_price', '100');
+        $I->clickWithLeftButton('#coupon_coupon_type_2');
+        $I->retryDontSee('商品情報');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see('クーポンを登録しました。');
+        $couponRow = Locator::contains('//tr', 'coupon with lower limit test');
+        $I->see('coupon with lower limit test', $couponRow);
+        $I->see('有効', $couponRow);
+    }
+
+    public function coupon_11(AcceptanceTester $I, $string = "")
+    {
+        $I->retry(7, 400);
+        if (empty($string)) {
+            $string = bin2hex(random_bytes(10));
+        }
+        $this->coupon_3($I, $string);
+        $xcouponRow = Locator::contains('//tr', 'all products and set discount test '.$string);
+        $I->click($xcouponRow.Locator::contains('//a', '有効'));
+        $I->see('クーポンの状態を変更しました。');
+        $I->see('無効', $xcouponRow);
+    }
+
+    public function coupon_12(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $string = bin2hex(random_bytes(10));
+        $this->coupon_11($I, $string);
+        $xcouponRow = Locator::contains('//tr', 'all products and set discount test '.$string);
+        $I->click($xcouponRow.Locator::contains('//a', '無効'));
+        $I->see('クーポンの状態を変更しました。');
+        $I->see('有効', $xcouponRow);
+    }
+
+    public function coupon_13(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $string = bin2hex(random_bytes(10));
+        $this->coupon_3($I, $string);
+        $xcouponRow = Locator::contains('//tr', 'all products and set discount test '.$string);
+        $I->click($xcouponRow.'//i[@class="fa fa-close fa-lg text-secondary"]');
+        $I->retrySee('このクーポンを削除しても宜しいですか？');
+        $I->click(Locator::contains('//a', '削除'));
+        $I->see('クーポンを削除しました。');
+        $I->dontSee('all products and set discount test '.$string);
+    }
+
+
+
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     private function baseRegistrationPage(AcceptanceTester $I)
