@@ -36,6 +36,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
+    use \Codeception\Lib\Actor\Shared\Retry;
 
     public function getScenario()
     {
