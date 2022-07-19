@@ -145,7 +145,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         if ($this->valid()) {
             $current = $this->file->current();
 
-            $current = $this->convertEncodingRows($current);
             $line = $current;
 
             // See if values for duplicate headers should be merged
@@ -181,7 +180,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     public function setColumnHeaders(array $columnHeaders)
     {
-        $columnHeaders = $this->convertEncodingRows($columnHeaders);
         $this->columnHeaders = array_count_values($columnHeaders);
         $this->headersCount = count($columnHeaders);
     }
@@ -436,9 +434,11 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
      * それ以外の環境では何もしない。
+     * @deprecated 使用していないため削除予定
      */
     protected function convertEncodingRows($row)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             foreach ($row as &$col) {
                 $col = mb_convert_encoding($col, 'UTF-8', 'SJIS-win');
