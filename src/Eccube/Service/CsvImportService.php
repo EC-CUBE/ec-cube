@@ -13,6 +13,9 @@
 
 namespace Eccube\Service;
 
+use Eccube\Stream\Filter\ConvertLineFeedFilter;
+use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
+
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
  *
@@ -100,7 +103,18 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     {
         ini_set('auto_detect_line_endings', true);
 
-        $this->file = $file;
+        // stream filter を適用して文字エンコーディングと改行コードの変換を行う
+        // see https://github.com/EC-CUBE/ec-cube/issues/5252
+        $filters = [
+            ConvertLineFeedFilter::class
+        ];
+
+        if (!\mb_check_encoding($file->current(), 'UTF-8')) {
+            // UTF-8 が検出できなかった場合は SJIS-win の stream filter を適用する
+            $filters[] = SjisToUtf8EncodingFilter::class;
+        }
+
+        $this->file = self::applyStreamFilter($file, ...$filters);
         $this->file->setFlags(
             \SplFileObject::READ_CSV |
             \SplFileObject::SKIP_EMPTY |
@@ -130,7 +144,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         // Since the CSV has column headers use them to construct an associative array for the columns in this line
         if ($this->valid()) {
             $current = $this->file->current();
-            $current = $this->convertEncodingRows($current);
 
             $line = $current;
 
@@ -167,7 +180,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     public function setColumnHeaders(array $columnHeaders)
     {
-        $columnHeaders = $this->convertEncodingRows($columnHeaders);
         $this->columnHeaders = array_count_values($columnHeaders);
         $this->headersCount = count($columnHeaders);
     }
@@ -311,6 +323,35 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     }
 
     /**
+     * Stream filter を適用し, 新たな SplFileObject を返す.
+     *
+     * @param \SplFileObject $file Stream filter を適用する SplFileObject
+     * @param \php_user_filter $filters 適用する stream filter のクラス名
+     * @return \SplFileObject 適用後の SplFileObject
+     */
+    public static function applyStreamFilter(\SplFileObject $file, string ...$filters): \SplFileObject
+    {
+        foreach ($filters as $filter) {
+            \stream_filter_register($filter, $filter);
+        }
+
+        $tempFile = tmpfile();
+        try {
+            foreach ($filters as $filter) {
+                \stream_filter_append($tempFile, $filter);
+            }
+            foreach ($file as $line) {
+                fwrite($tempFile, $line);
+            }
+            $meta = \stream_get_meta_data($tempFile);
+
+            return new \SplFileObject($meta['uri'], 'r');
+        } finally {
+            fclose($tempFile);
+        }
+    }
+
+    /**
      * Read header row from CSV file
      *
      * @param integer $rowNumber Row number
@@ -393,9 +434,11 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
      * それ以外の環境では何もしない。
+     * @deprecated 使用していないため削除予定
      */
     protected function convertEncodingRows($row)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             foreach ($row as &$col) {
                 $col = mb_convert_encoding($col, 'UTF-8', 'SJIS-win');
