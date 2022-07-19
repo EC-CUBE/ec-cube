@@ -360,11 +360,9 @@ Styleguide 12.7
 オーナーズストアのモーダル画面
 */
 .modal-content{
-  .img{
     img{
-      width: 100%;
+      max-width: 100%;
     }
-  }
 }
 
 /*

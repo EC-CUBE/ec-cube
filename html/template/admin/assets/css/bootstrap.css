@@ -5808,8 +5808,8 @@ Styleguide 12.7
 オーナーズストア > プラグインを探す
 オーナーズストアのモーダル画面
 */
-.modal-content .img img {
-  width: 100%;
+.modal-content img {
+  max-width: 100%;
 }
 /*
 オーナーズストア > 独自プラグインのアップロード
