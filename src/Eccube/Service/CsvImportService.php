@@ -105,33 +105,16 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
-        $tempFile = tmpfile();
-        \stream_filter_register(
-            'sjis_to_utf8_encoding_filter',
-            SjisToUtf8EncodingFilter::class
-        );
-        SjisToUtf8EncodingFilter::setBufferSizeLimit(8192);
-
-        \stream_filter_register(
-            'convert_linefeed_filter',
+        $filters = [
             ConvertLineFeedFilter::class
-        );
+        ];
 
-        // UTF-8 が検出できなかった場合は SJIS-win の stream filter を適用する
-        $first = $file->current();
-        if (!\mb_check_encoding($first, 'UTF-8')) {
-            \stream_filter_append($tempFile, 'sjis_to_utf8_encoding_filter');
+        if (!\mb_check_encoding($file->current(), 'UTF-8')) {
+            // UTF-8 が検出できなかった場合は SJIS-win の stream filter を適用する
+            $filters[] = SjisToUtf8EncodingFilter::class;
         }
 
-        \stream_filter_append($tempFile, 'convert_linefeed_filter');
-        foreach ($file as $line) {
-            fwrite($tempFile, $line);
-        }
-        $meta = stream_get_meta_data($tempFile);
-
-        $this->file = new \SplFileObject($meta['uri'], 'r');
-        fclose($tempFile);
-
+        $this->file = self::applyStreamFilter($file, ...$filters);
         $this->file->setFlags(
             \SplFileObject::READ_CSV |
             \SplFileObject::SKIP_EMPTY |
@@ -339,6 +322,35 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     public function hasErrors()
     {
         return count($this->getErrors()) > 0;
+    }
+
+    /**
+     * Stream filter を適用し, 新たな SplFileObject を返す.
+     *
+     * @param \SplFileObject $file Stream filter を適用する SplFileObject
+     * @param \php_user_filter $filters 適用する stream filter のクラス名
+     * @return \SplFileObject 適用後の SplFileObject
+     */
+    public static function applyStreamFilter(\SplFileObject $file, string ...$filters): \SplFileObject
+    {
+        foreach ($filters as $filter) {
+            \stream_filter_register($filter, $filter);
+        }
+
+        $tempFile = tmpfile();
+        try {
+            foreach ($filters as $filter) {
+                \stream_filter_append($tempFile, $filter);
+            }
+            foreach ($file as $line) {
+                fwrite($tempFile, $line);
+            }
+            $meta = \stream_get_meta_data($tempFile);
+
+            return new \SplFileObject($meta['uri'], 'r');
+        } finally {
+            fclose($tempFile);
+        }
     }
 
     /**
