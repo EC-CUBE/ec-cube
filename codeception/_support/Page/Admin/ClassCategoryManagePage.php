@@ -71,7 +71,7 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-right > div > a");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-end > div > a");
 
         return $this;
     }

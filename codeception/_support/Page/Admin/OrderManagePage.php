@@ -173,7 +173,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_メール通知($rowNum)
     {
-        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(1) > a"]);
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(1) > a"]);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
@@ -198,7 +198,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 個別メール送信($rowNum)
     {
-        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-center > div > div:nth-child(1) > a"]);
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3.text-center > div > div:nth-child(1) > a"]);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
@@ -281,7 +281,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 件数変更($num)
     {
-        $this->tester->selectOption('#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(1) > select', '/admin/order/page/1?page_count='.$num);
+        $this->tester->selectOption('#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-end > div:nth-child(1) > select', '/admin/order/page/1?page_count='.$num);
 
         return $this;
     }

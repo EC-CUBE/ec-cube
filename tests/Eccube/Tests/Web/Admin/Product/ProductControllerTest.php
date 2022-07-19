@@ -184,13 +184,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
@@ -202,7 +202,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 表示件数はSESSIONから取得するテスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
@@ -232,13 +232,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
@@ -250,7 +250,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 表示件数はSESSIONから取得するテスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
@@ -277,13 +277,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
@@ -296,7 +296,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
 
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
     }
 
