@@ -45,7 +45,7 @@
     "filepond-plugin-file-validate-type": "^1.2.8",
     "filepond-plugin-image-preview": "^4.6.11",
     "jquery": "3",
-    "jquery-ui": "^1.13.1",
+    "jquery-ui": "^1.13.2",
     "jquery.qrcode": "^1.0.3",
     "ladda": "^2.0.3",
     "slick-carousel": "^1.8.1",
