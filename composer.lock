@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b769cee7a8a0c228d734642b9cddae7",
+    "content-hash": "00ba2149f4afb427ed9129a766b56cfe",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -2167,30 +2167,6 @@
                 "source": "https://github.com/EC-CUBE/eccube-plugin-installer/tree/2.0.1"
             },
             "time": "2021-07-20T01:13:11+00:00"
-        },
-        {
-            "name": "ec-cube/relatedproduct42",
-            "version": "4.2.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://package-api-c2.ec-cube.net/v42/ec-cube/relatedproduct42/4.2.1/RelatedProduct42-4.2.1.tgz"
-            },
-            "require": {
-                "ec-cube/plugin-installer": "^2.0"
-            },
-            "type": "eccube-plugin",
-            "extra": {
-                "code": "RelatedProduct42",
-                "id": 2398
-            },
-            "description": "関連商品プラグイン",
-            "transport-options": {
-                "http": {
-                    "header": [
-                        "X-ECCUBE-KEY: 62i46xtU9ABi2AUL9AYGeT9hTCDEeeoFS0VXiPIZ"
-                    ]
-                }
-            }
         },
         {
             "name": "egulias/email-validator",
@@ -13910,7 +13886,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.4.30"
+        "php": "7.4.0"
     },
     "plugin-api-version": "2.3.0"
 }

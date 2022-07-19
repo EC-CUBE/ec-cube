@@ -12,6 +12,6 @@ config.paths = {
     js: '/**/js/bundle.js'
   },
 }
-config.server = 'http://127.0.0.1:8000/'
+config.server = 'http://127.0.0.1:8080/'
 
 module.exports = config

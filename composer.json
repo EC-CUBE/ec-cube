@@ -32,7 +32,6 @@
         "doctrine/orm": "^2.11",
         "easycorp/easy-log-handler": "^1.0",
         "ec-cube/plugin-installer": "^2.0",
-        "ec-cube/relatedproduct42": "^4.2",
         "egulias/email-validator": "^2.1",
         "exercise/htmlpurifier-bundle": "^3.1",
         "friendsofphp/php-cs-fixer": "^3.8",
@@ -180,7 +179,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.4.30"
+            "php": "7.4.0"
         },
         "preferred-install": {
             "*": "dist"
@@ -192,17 +191,6 @@
             "kylekatarnls/update-helper": true,
             "ec-cube/plugin-installer": true,
             "symfony/flex": true
-        }
-    },
-    "repositories": {
-        "eccube": {
-            "type": "composer",
-            "url": "https://package-api-c2.ec-cube.net/v42",
-            "options": {
-                "http": {
-                    "header": ["X-ECCUBE-KEY: 62i46xtU9ABi2AUL9AYGeT9hTCDEeeoFS0VXiPIZ"]
-                }
-            }
         }
     }
 }
