@@ -1632,8 +1632,37 @@ class CsvImportController extends AbstractCsvImportController
             }
 
             $data = $form['import_file']->getData();
-            $src = new \SplFileObject($data->getRealPath());
+            $file = new \SplFileObject($data->getRealPath());
+
+            // stream filter を適用して文字エンコーディングと改行コードの変換を行う
+            // see https://github.com/EC-CUBE/ec-cube/issues/5252
+            $tempFile = tmpfile();
+            \stream_filter_register(
+                'sjis_to_utf8_encoding_filter',
+                SjisToUtf8EncodingFilter::class
+            );
+            SjisToUtf8EncodingFilter::setBufferSizeLimit(8192);
+
+            \stream_filter_register(
+                'convert_linefeed_filter',
+                ConvertLineFeedFilter::class
+            );
+
+            // UTF-8 が検出できなかった場合は SJIS-win の stream filter を適用する
+            $first = $file->current();
+            if (!\mb_check_encoding($first, 'UTF-8')) {
+                \stream_filter_append($tempFile, 'sjis_to_utf8_encoding_filter');
+            }
+
+            \stream_filter_append($tempFile, 'convert_linefeed_filter');
+            foreach ($file as $line) {
+                fwrite($tempFile, $line);
+            }
+            $meta = stream_get_meta_data($tempFile);
+
+            $src = new \SplFileObject($meta['uri'], 'r');
             $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
+            fclose($tempFile);
 
             $fileNo = 1;
             $fileName = StringUtil::random(8);
