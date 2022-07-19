@@ -109,7 +109,7 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
-        $I->fillField('#coupon_coupon_name', 'all products and set discount test '.$attachName);
+        $I->fillField('#coupon_coupon_name', 'all products and set discount test ' . $attachName);
         $I->fillField('#coupon_coupon_release', '1');
         // 期間開始日設定
         $this->dateSetter($I, $isFutureDate);
@@ -118,10 +118,10 @@ class PL02CouponCest
         $I->retryDontSee('商品情報');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
         $I->see('クーポンを登録しました。');
-        $couponRow = Locator::contains('//tr', 'all products and set discount test '.$attachName);
-        $I->see('all products and set discount test '.$attachName, $couponRow);
+        $couponRow = Locator::contains('//tr', 'all products and set discount test ' . $attachName);
+        $I->see('all products and set discount test ' . $attachName, $couponRow);
         $I->see('有効', $couponRow);
-        $this->couponCode = $I->grabTextFrom(Locator::contains('//tr', 'all products and set discount test '.$attachName).'//td[2]');
+        $this->couponCode = $I->grabTextFrom(Locator::contains('//tr', 'all products and set discount test ' . $attachName) . '//td[2]');
     }
 
     /**
@@ -129,11 +129,14 @@ class PL02CouponCest
      *
      * @return void
      */
-    public function coupon_4(AcceptanceTester $I)
+    public function coupon_4(AcceptanceTester $I, string $attachName = '')
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
-        $I->fillField('#coupon_coupon_name', 'product and set discount test');
+        if (empty($attachName)) {
+            $attachName = bin2hex(random_bytes(10));
+        }
+        $I->fillField('#coupon_coupon_name', 'product and set discount test'. $attachName);
         $I->fillField('#coupon_coupon_release', '1');
         $this->dateSetter($I);
         $xpath = Locator::contains('//a', '商品の追加');
@@ -149,9 +152,10 @@ class PL02CouponCest
         $I->see('商品情報');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
         $I->see('クーポンを登録しました。');
-        $couponRow = Locator::contains('//tr', 'product and set discount test');
+        $couponRow = Locator::contains('//tr', 'product and set discount test'.$attachName);
         $I->see('test', $couponRow);
         $I->see('有効', $couponRow);
+        $this->couponCode = $I->grabTextFrom(Locator::contains('//tr', 'product and set discount test' . $attachName) . '//td[2]');
     }
 
     /**
@@ -315,8 +319,8 @@ class PL02CouponCest
             $string = bin2hex(random_bytes(10));
         }
         $this->coupon_3($I, $string);
-        $xcouponRow = Locator::contains('//tr', 'all products and set discount test '.$string);
-        $I->click($xcouponRow.Locator::contains('//a', '有効'));
+        $xcouponRow = Locator::contains('//tr', 'all products and set discount test ' . $string);
+        $I->click($xcouponRow . Locator::contains('//a', '有効'));
         $I->see('クーポンの状態を変更しました。');
         $I->see('無効', $xcouponRow);
     }
@@ -326,8 +330,8 @@ class PL02CouponCest
         $I->retry(7, 400);
         $string = bin2hex(random_bytes(10));
         $this->coupon_11($I, $string);
-        $xcouponRow = Locator::contains('//tr', 'all products and set discount test '.$string);
-        $I->click($xcouponRow.Locator::contains('//a', '無効'));
+        $xcouponRow = Locator::contains('//tr', 'all products and set discount test ' . $string);
+        $I->click($xcouponRow . Locator::contains('//a', '無効'));
         $I->see('クーポンの状態を変更しました。');
         $I->see('有効', $xcouponRow);
     }
@@ -339,12 +343,12 @@ class PL02CouponCest
             $string = bin2hex(random_bytes(10));
         }
         $this->coupon_3($I, $string);
-        $xcouponRow = Locator::contains('//tr', 'all products and set discount test '.$string);
-        $I->click($xcouponRow.'//i[@class="fa fa-close fa-lg text-secondary"]');
+        $xcouponRow = Locator::contains('//tr', 'all products and set discount test ' . $string);
+        $I->click($xcouponRow . '//i[@class="fa fa-close fa-lg text-secondary"]');
         $I->retrySee('このクーポンを削除しても宜しいですか？');
         $I->click(Locator::contains('//a', '削除'));
         $I->see('クーポンを削除しました。');
-        $I->dontSee('all products and set discount test '.$string);
+        $I->dontSee('all products and set discount test ' . $string);
     }
 
     /**
@@ -430,7 +434,7 @@ class PL02CouponCest
         $I->retrySee('クーポンコードの入力');
         $dontUseOption = Locator::contains('div.form-check', 'クーポンを利用しない');
         $I->see('クーポンを利用しない', $dontUseOption);
-        $I->click($dontUseOption.'//input');
+        $I->click($dontUseOption . '//input');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
         $I->dontSee(sprintf('クーポンコード %s を利用しています。', $this->couponCode));
         $I->dontSee($randomTokenName);
@@ -514,9 +518,7 @@ class PL02CouponCest
     public function coupon_21(AcceptanceTester $I)
     {
         $I->retry(7, 400);
-        if (empty($randomTokenName)) {
-            $randomTokenName = bin2hex(random_bytes(10));
-        }
+        $randomTokenName = bin2hex(random_bytes(10));
         $this->coupon_3($I, $randomTokenName, true);
         $this->generateTestMemberAndLogin($I);
         $I->amOnPage('products/detail/1');
@@ -536,6 +538,58 @@ class PL02CouponCest
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
         $I->see('クーポンコードの入力');
         $I->see('クーポン対象商品はございません。クーポンコードをご確認ください。');
+    }
+
+    public function coupon_22(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $randomTokenName = bin2hex(random_bytes(10));
+        $this->coupon_4($I, $randomTokenName);
+        $this->generateTestMemberAndLogin($I);
+        // Product Includes Coupon
+        $I->amOnPage('products/detail/1');
+        $I->selectOption('#classcategory_id1', 'チョコ');
+        $I->selectOption('#classcategory_id2', '64cm × 64cm');
+        $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
+        $I->retrySee('カートに追加しました。');
+        $I->clickWithLeftButton('a.ec-inlineBtn--action');
+        $I->see('ショッピングカート');
+        $I->clickWithLeftButton('.ec-cartRole__actions a.ec-blockBtn--action');
+        $I->see('ご注文手続き');
+        $I->see('クーポン');
+        $I->clickWithLeftButton(Locator::contains('a', 'クーポンを変更する'));
+        $I->retrySee('クーポンコードの入力');
+        $I->fillField('#coupon_use_coupon_cd', $this->couponCode);
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->see(sprintf('クーポンコード %s を利用しています。', $this->couponCode));
+        $I->see($randomTokenName);
+        $I->see('-￥100');
+        $I->click(Locator::contains('//button', '確認する'));
+        // 確認画面
+        $I->see(sprintf('クーポンコード %s を利用しています。', $this->couponCode));
+        $I->see($randomTokenName);
+        $I->see('-￥100');
+        $I->click(Locator::contains('//button', '注文する'));
+        $I->see('ご注文ありがとうございました');
+
+        // Product Excludes Coupon
+        $randomTokenName = bin2hex(random_bytes(10));
+        $this->coupon_4($I, $randomTokenName);
+        $I->amOnPage('products/detail/2');
+        $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
+        $I->retrySee('カートに追加しました。');
+        $I->clickWithLeftButton('a.ec-inlineBtn--action');
+        $I->see('ショッピングカート');
+        $I->clickWithLeftButton('.ec-cartRole__actions a.ec-blockBtn--action');
+        $I->see('ご注文手続き');
+        $I->see('クーポン');
+        $I->clickWithLeftButton(Locator::contains('a', 'クーポンを変更する'));
+        // クーポン入力画面
+        $I->retrySee('クーポンコードの入力');
+        $I->fillField('#coupon_use_coupon_cd', $this->couponCode);
+        $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
+        $I->dontSee('クーポンコードの入力');
+        $I->see('このクーポンはご利用いただくことができません。');
     }
 
     /**
