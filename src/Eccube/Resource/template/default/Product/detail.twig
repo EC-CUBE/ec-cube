@@ -122,6 +122,40 @@ file that was distributed with this source code.
                 }
             });
 
+            // Core Web Vital の Cumulative Layout Shift(CLS)対策のため
+            // img タグに width, height が付与されている.
+            // 630px 未満の画面サイズでは縦横比が壊れるための対策
+            // see https://github.com/EC-CUBE/ec-cube/pull/5023
+            $('.ec-grid2__cell').hide();
+            var removeSize = function () {
+                $('.slide-item').height('');
+                $('.slide-item img')
+                    .removeAttr('width')
+                    .removeAttr('height')
+                    .removeAttr('style');
+            };
+            var slickInitial = function(slick) {
+                $('.ec-grid2__cell').fadeIn(1500);
+                var baseHeight = $(slick.target).height();
+                var baseWidth = $(slick.target).width();
+                var rate = baseWidth / baseHeight;
+
+                $('.slide-item').height(baseHeight * rate); // 余白を削除する
+                // transform を使用することでCLSの影響を受けないようにする
+                $('.slide-item img')
+                    .css(
+                        {
+                            'transform-origin': 'top left',
+                            'transform': 'scaleY(' + rate + ')',
+                            'transition': 'transform .1s'
+                        }
+                    );
+                // 正しいサイズに近くなったら属性を解除する
+                setTimeout(removeSize, 500);
+            };
+            $('.item_visual').on('init', slickInitial);
+            // リサイズ時は CLS の影響を受けないため属性を解除する
+            $(window).resize(removeSize);
             $('.item_visual').slick({
                 dots: false,
                 arrows: false,
