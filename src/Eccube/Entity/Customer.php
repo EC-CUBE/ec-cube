@@ -332,6 +332,16 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         {
         }
 
+        // TODO: できればFormTypeで行いたい
+        public static function loadValidatorMetadata(ClassMetadata $metadata)
+        {
+            $metadata->addConstraint(new UniqueEntity([
+                'fields' => 'email',
+                'message' => 'form_error.customer_already_exists',
+                'repositoryMethod' => 'getNonWithdrawingCustomers',
+            ]));
+        }
+
         /**
          * Get id.
          *
