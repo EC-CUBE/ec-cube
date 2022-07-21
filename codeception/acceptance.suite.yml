@@ -13,20 +13,25 @@ modules:
         - WebDriver
         - Asserts
         - MailCatcher
+        - Symfony:
+              part: SERVICES
+              app_path: "/src/Eccube/"
+              em_service: 'doctrine.orm.entity_manager'
+              kernel_class: 'Eccube\Kernel'
+        - Doctrine2:
+              depends: Symfony
     config:
         WebDriver:
-            host: '%WEB_DRIVER_HOST%'
-            port: '%WEB_DRIVER_PORT%'
-            url: '%BASE_URL%'    # テスト対象のurl
+            browser: 'chrome'
+            url: 'http://localhost:8080/'
+            port: '9515'
             window_size: 1680x3000
             wait: 10
-            capabilities:
-                unexpectedAlertBehaviour: 'accept'
-                elementScrollBehavior: 1
         MailCatcher:
             url: '%MAILCATCHER_HOST%'
             port: 1080
-
+step_decorators:
+    - \Codeception\Step\Retry
 env:
     default:
         modules:
@@ -68,6 +73,6 @@ env:
                     browser: chrome
                     capabilities:
                         chromeOptions:
-                            args: ["--headless", "--disable-gpu"]
+                            args: [ "--headless", "--disable-gpu" ]
                             prefs:
                                 download.default_directory: '%PWD%/codeception/_support/_downloads'
