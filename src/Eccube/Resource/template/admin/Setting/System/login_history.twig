@@ -30,7 +30,7 @@ file that was distributed with this source code.
                         {{ form_widget(searchForm.multi) }}
                         {{ form_errors(searchForm.multi) }}
                     </div>
-                    <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
+                    <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold mr-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@ file that was distributed with this source code.
                 <div class="col">
                     <div>
                         <label>{{ 'admin.setting.system.login_history.create_date'|trans }}</label>
-                        <div class="form-row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col">
                                 {{ form_widget(searchForm.create_datetime_start) }}
                                 {{ form_errors(searchForm.create_datetime_start) }}
@@ -100,7 +100,7 @@ file that was distributed with this source code.
     <div class="c-outsideBlock__contents mb-5">
         <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.search'|trans }}</button>
         {% if pagination %}
-            <span class="font-weight-bold ml-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
+            <span class="fw-bold ml-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
         {% endif %}
     </div>
     <div class="c-outsideBlock__contents mb-5">
@@ -113,10 +113,10 @@ file that was distributed with this source code.
                     <div class="row justify-content-between mb-2">
                         <div class="col-6"></div>
 
-                        <div class="col-5 text-right">
+                        <div class="col-5 text-end">
                             {#Dropdown page count#}
                             <div class="d-inline-block mr-2">
-                                <select class="custom-select" onchange="location = this.value;">
+                                <select class="form-select" onchange="location = this.value;">
                                     {% for pageMax in pageMaxis %}
                                         <option {% if pageMax.name == page_count %} selected {% endif %}
                                                 value="{{ path('admin_setting_system_login_history_page', {'page_no': 1, 'page_count': pageMax.name }) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
@@ -133,9 +133,9 @@ file that was distributed with this source code.
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.common.id'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3">{{ 'admin.common.id'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.setting.system.login_history.user_name'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-3 pl-3">{{ 'admin.setting.system.login_history.client_ip'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3">{{ 'admin.setting.system.login_history.client_ip'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.setting.system.login_history.create_date'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.setting.system.login_history.status'|trans }}</th>
                                     </tr>
@@ -143,7 +143,7 @@ file that was distributed with this source code.
                                 <tbody>
                                 {% for LoginHistory in pagination %}
                                     <tr>
-                                        <td class="align-middle pl-3">
+                                        <td class="align-middle ps-3">
                                             {{ LoginHistory.id }}
                                         </td>
                                         <td class="align-middle">

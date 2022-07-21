@@ -168,10 +168,10 @@ file that was distributed with this source code.
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.setting.get_api_key'|trans }}</h5>
+                        <h5 class="modal-title fw-bold">{{ 'admin.store.setting.get_api_key'|trans }}</h5>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-left">
+                    <div class="modal-body text-start">
                         <p>新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。</p>
                         <img id="captcha_image" class="mb-2" src="#">
                         <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
@@ -179,7 +179,7 @@ file that was distributed with this source code.
                         <input type="hidden" id="captcha_id" value=""/>
                         <span id="captcha_error" class="invalid-feedback" style="display: none">
                             <span class="mb-0 d-block">
-                                <span class="initialism form-error-icon badge badge-danger">{{ 'admin.store.setting.captcha_error'|trans }}</span> <span class="form-error-message">{{ 'admin.store.setting.invalid_captcha'|trans }}</span>
+                                <span class="initialism form-error-icon badge bg-danger">{{ 'admin.store.setting.captcha_error'|trans }}</span> <span class="form-error-message">{{ 'admin.store.setting.invalid_captcha'|trans }}</span>
                             </span>
                         </span>
                     </div>

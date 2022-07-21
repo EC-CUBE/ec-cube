@@ -17,7 +17,7 @@ class ProductClassEditPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = ['css' => '#page_admin_product_product_class > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3'];
 
-    public static $初期化ボタン = ['css' => '#page_admin_product_product_class > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header > div > div.col-4.text-right > button'];
+    public static $初期化ボタン = ['css' => '#page_admin_product_product_class > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header > div > div.col-4.text-end > button'];
 
     public static $規格一覧 = ['css' => '#page_admin_product_product_class > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table'];
 

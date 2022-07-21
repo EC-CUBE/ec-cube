@@ -125,7 +125,7 @@ file that was distributed with this source code.
                         <div class="row mb-2">
                             <div class="col-2"><span>{{ 'admin.content.file.add_directory'|trans }}</span></div>
                             <div class="col">
-                                <div class="form-row">
+                                <div class="row">
                                     <div class="col-3">
                                         {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.directory_name'}}) }}
                                     </div>
@@ -148,7 +148,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8"><span class="card-title">{{ 'admin.content.file.file_list__card_title'|trans }}</span></div>
-                                    <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                                    <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#fileList" aria-expanded="false" aria-controls="fileList"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>
                             </div>
                             <div class="collapse show ec-cardCollapse" id="fileList">
@@ -203,8 +203,8 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 {% if file.is_dir %}
-                                                    <td class="align-middle pr-3">
-                                                        <div class="text-right">
+                                                    <td class="align-middle pe-3">
+                                                        <div class="text-end">
                                                             <div class="px-1 d-inline-block">
                                                                 <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon action-delete {% if file.is_empty == false %}disabled{% endif %}"
@@ -215,11 +215,11 @@ file that was distributed with this source code.
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                             </div>
-                                                                            <div class="modal-body text-left">
-                                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
+                                                                            <div class="modal-body text-start">
+                                                                                <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -235,8 +235,8 @@ file that was distributed with this source code.
                                                         </div>
                                                     </td>
                                                 {% else %}
-                                                    <td class="align-middle pr-3">
-                                                        <div class="text-right">
+                                                    <td class="align-middle pe-3">
+                                                        <div class="text-end">
                                                             <div class="px-1 d-inline-block">
                                                                 <a class="btn btn-ec-actionIcon action-copy" data-tooltip="true" data-placement="top" title="{{ 'admin.common.copy_path'|trans }}">
                                                                     <i class="fas fa-copy fa-lg text-secondary" aria-hidden="true"></i>
@@ -262,11 +262,11 @@ file that was distributed with this source code.
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                             </div>
-                                                                            <div class="modal-body text-left">
-                                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
+                                                                            <div class="modal-body text-start">
+                                                                                <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({ '%name%': file.file_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -297,7 +297,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8"><span class="card-title">{{ 'admin.content.file.directory_tree'|trans }}</span></div>
-                                    <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
+                                    <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#folderDirectory" aria-expanded="false" aria-controls="folderDirectory"><i class="fa fa-lg fa-angle-down"></i></a></div>
                                 </div>
                             </div>
                             <div class="collapse show ec-cardCollapse" id="folderDirectory">

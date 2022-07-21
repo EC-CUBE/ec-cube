@@ -28,22 +28,22 @@ file that was distributed with this source code.
                 <div class="card-body">
                     <form name="form1" id="form1" method="post">
                         {{ form_widget(form._token) }}
-                        <div class="form-inline mb-3">
-                            <div class="mb-3 pr-3">
-                                {{ form_widget(form.files) }}
+                        <div class="row mb-3">
+                            <div class="mb-3 pe-3 col-2">
+                                {{ form_widget(form.files, { 'attr': { 'class': 'form-select' }}) }}
                             </div>
-                            <div class="mb-3 pr-3">
-                                {{ form_widget(form.line_max) }}
-                                <span class="ml-2">{{ 'admin.setting.system.log.line_number'|trans }}</span>
+                            <div class="row mb-3 pe-3 col-auto align-items-center">
+                                <span class="col-auto">{{ form_widget(form.line_max) }}</span>
+                                <span class="col-auto ps-0">{{ 'admin.setting.system.log.line_number'|trans }}</span>
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3 col-auto">
                                 <button type="submit"
                                         class="btn btn-ec-conversion">{{ 'admin.setting.system.log.read'|trans }}</button>
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3 col-auto">
                                 {{ form_widget(form.download) }}
                             </div>
-                            {{ form_errors(form.line_max) }}
+                            <span class="col-auto">{{ form_errors(form.line_max) }}</span>
                         </div>
                     </form>
                     <div>

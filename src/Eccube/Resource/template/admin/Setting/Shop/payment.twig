@@ -168,7 +168,7 @@ file that was distributed with this source code.
                                             {% endif %}
                                         </span>
                                         </div>
-                                        <div class="col-3 text-right">
+                                        <div class="col-3 text-end">
                                             <a class="btn btn-ec-actionIcon mr-2 action-up{{ loop.first ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
@@ -199,15 +199,15 @@ file that was distributed with this source code.
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title font-weight-bold">
+                                        <h5 class="modal-title fw-bold">
                                             {{ 'admin.common.delete_modal__title'|trans }}
                                         </h5>
                                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                             
                                         </button>
                                     </div>
-                                    <div class="modal-body text-left">
-                                        <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                    <div class="modal-body text-start">
+                                        <p class="text-start modal-message"><!-- jsでメッセージを挿入 --></p>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">

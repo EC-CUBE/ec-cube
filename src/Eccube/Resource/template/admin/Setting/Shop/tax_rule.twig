@@ -76,12 +76,12 @@ file that was distributed with this source code.
                             </colgroup>
                             <thead>
                             <tr>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.common.id'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.tax_rate'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.rounding_type'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3">{{ 'admin.setting.shop.tax.apply_date'|trans }}</th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3"></th>
-                                <th class="border-top-0 pt-2 pb-2 pl-3 pr-5"></th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.common.id'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.tax_rate'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.rounding_type'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.apply_date'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3"></th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3 pr-5"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -89,10 +89,10 @@ file that was distributed with this source code.
                             <tr id="tax_rule_item_new">
                                 <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="{{ url('admin_setting_shop_tax_new') }}">
                                     {{ form_widget(form._token) }}
-                                    <td class="align-middle pl-3"></td>
+                                    <td class="align-middle ps-3"></td>
                                     <td class="align-middle" style="width:230px;">
                                         <div class="input-group">
-                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-right'}}) }}
+                                            {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-end'}}) }}
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -122,11 +122,11 @@ file that was distributed with this source code.
                                         {{ form_widget(forms[TaxRule.id]._token) }}
                                         <input type="hidden" value="{{ TaxRule.id }}" name="tax_rule_id">
                                         <input type="hidden" value="edit_inline" name="mode"/>
-                                        <td class="align-middle pl-3"><span>{{ TaxRule.id }}</span></td>
-                                        <td class="align-middle text-right" style="width:230px;">
+                                        <td class="align-middle ps-3"><span>{{ TaxRule.id }}</span></td>
+                                        <td class="align-middle text-end" style="width:230px;">
                                             <div class="edit justify-content-end">
                                                 <div class="input-group">
-                                                    {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-right'}}) }}
+                                                    {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-end'}}) }}
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">%</span>
                                                     </div>
@@ -134,7 +134,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                             <div class="list">
-                                                <span class="col-6 text-right pr-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
+                                                <span class="col-6 text-end pe-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
                                             </div>
                                         </td>
                                         <td class="align-middle">
@@ -167,7 +167,7 @@ file that was distributed with this source code.
                                         <td class="align-middle action">
                                             <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
                                                 <div class="row pr-2">
-                                                    <div class="col-6 text-center pr-0"><a class="btn btn-ec-actionIcon edit-button" data-tooltip="true" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                    <div class="col-6 text-center pe-0"><a class="btn btn-ec-actionIcon edit-button" data-tooltip="true" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
 
                                                     <div class="col-6 text-center">
                                                         {% if not TaxRule.default_tax_rule %}
@@ -183,15 +183,15 @@ file that was distributed with this source code.
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title font-weight-bold">
+                                                                            <h5 class="modal-title fw-bold">
                                                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                                                             </h5>
                                                                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                                 
                                                                             </button>
                                                                         </div>
-                                                                        <div class="modal-body text-left">
-                                                                            <p class="text-left modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>
+                                                                        <div class="modal-body text-start">
+                                                                            <p class="text-start modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">

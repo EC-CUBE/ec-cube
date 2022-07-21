@@ -113,7 +113,7 @@
             }
         },
         fail: function (result) {
-            $('<li><span class="badge badge-danger">ERROR</span> </li>')
+            $('<li><span class="badge bg-danger">ERROR</span> </li>')
                 .append($('<span></span>').text("{{ 'admin.common.system_error'|trans }}"))
                 .appendTo('#bulkErrors');
         },

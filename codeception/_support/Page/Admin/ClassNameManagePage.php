@@ -81,7 +81,7 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_編集($rowNum)
     {
-        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a.action-edit");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-end > a.action-edit");
 
         return $this;
     }
@@ -89,7 +89,7 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
     public function 一覧_削除($rowNum)
     {
         ++$rowNum;
-        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-right > div > a");
+        $this->tester->click("ul.list-group > li:nth-child(${rowNum}) > div > div.col-auto.text-end > div > a");
 
         return $this;
     }

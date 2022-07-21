@@ -78,7 +78,7 @@ file that was distributed with this source code.
                                 <tbody>
                                 {% for Member in Members %}
                                     <tr id="ex-member-{{ Member.id }}">
-                                        <td class="align-middle text-center pl-3">
+                                        <td class="align-middle text-center ps-3">
                                             {{ Member.name }}
                                         </td>
                                         <td class="align-middle text-center">
@@ -104,8 +104,8 @@ file that was distributed with this source code.
                                                 {{ 'common.disabled'|trans }}
                                             {% endif %}
                                         </td>
-                                        <td class="align-middle pr-3">
-                                            <div class="text-right">
+                                        <td class="align-middle pe-3">
+                                            <div class="text-end">
                                                 <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-edit"
                                                        href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}"
@@ -157,7 +157,7 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
+                                                                        <h5 class="modal-title fw-bold">
                                                                             {{ 'admin.setting.system.member.delete__confirm_title'|trans }}</h5>
                                                                         <button class="close" type="button"
                                                                                 data-bs-dismiss="modal"
@@ -165,8 +165,8 @@ file that was distributed with this source code.
                                                                                     aria-hidden="true">×</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">
                                                                             {{ 'admin.setting.system.member.delete__confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">

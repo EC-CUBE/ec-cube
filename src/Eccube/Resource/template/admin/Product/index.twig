@@ -16,7 +16,6 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.product.product_management'|trans }}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
-
 {% block javascript %}
     <script>
         $(function() {
@@ -44,7 +43,7 @@ file that was distributed with this source code.
                 });
 
                 var addError = function(errorMessage) {
-                    $('<li><span class="badge badge-danger">ERROR</span> </li>')
+                    $('<li><span class="badge bg-danger">ERROR</span> </li>')
                         .append($('<span></span>').text(errorMessage))
                         .appendTo('#bulkErrors');
                 };
@@ -158,8 +157,8 @@ file that was distributed with this source code.
                         </div>
                         <div class="d-inline-block mb-3" data-bs-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
-                                        class="fa fa-plus-square-o font-weight-bold mr-1"></i><span
-                                        class="font-weight-bold">{{ 'admin.common.search_detail'|trans }}</span></a>
+                                        class="fa fa-plus-square-o fw-bold mr-1"></i><span
+                                        class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a>
                         </div>
                     </div>
                 </div>
@@ -167,21 +166,21 @@ file that was distributed with this source code.
             <div class="c-subContents collapse ec-collapse{{ has_errors ? ' show' }}" id="searchDetail">
                 <div class="row mb-2">
                     <div class="col-6">
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.category'|trans }}</label>
                                 {{ form_widget(searchForm.category_id) }}
                                 {{ form_errors(searchForm.category_id) }}
                             </div>
                         </div>
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.display_status'|trans }}</p>
                                 {{ form_widget(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                                 {{ form_errors(searchForm.status, {'label_attr': {'class': 'checkbox-inline'}}) }}
                             </div>
                         </div>
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-12">
                                 <p class="col-form-label">{{ 'admin.product.stock__short'|trans }}</p>
                                 {{ form_widget(searchForm.stock, {'label_attr': {'class': 'checkbox-inline'}}) }}
@@ -190,7 +189,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-row mb-2">
+                        <div class="row mb-2">
                             <div class="col-6">
                                 <label class="col-form-label">{{ 'admin.product.tag'|trans }}</label>
                                 {{ form_widget(searchForm.tag_id) }}
@@ -201,7 +200,7 @@ file that was distributed with this source code.
                             <label class="col-form-label">
                                 {{ 'admin.common.create_date'|trans }}
                             </label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.create_datetime_start) }}
@@ -217,7 +216,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="mb-2">
                             <label class="col-form-label">{{ 'admin.common.update_date'|trans }}</label>
-                            <div class="form-row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     {# TODO: カレンダー表示の調整 #}
                                     {{ form_widget(searchForm.update_datetime_start) }}
@@ -254,7 +253,7 @@ file that was distributed with this source code.
             <div class="c-outsideBlock__contents mb-5">
                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
                 {% if pagination %}
-                    <span class="font-weight-bold ml-2">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                    <span class="fw-bold ml-2">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
                 {% endif %}
             </div>
             <div class="c-outsideBlock__contents mb-5">
@@ -287,10 +286,10 @@ file that was distributed with this source code.
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.permanently_delete'|trans }}</button>
                                 </div>
                             </div>
-                            <div class="col-5 text-right">
-                                <div class="d-inline-block mr-2">
+                            <div class="col-5 text-end">
+                                <div class="d-inline-block mr-2 align-bottom">
                                     <div>
-                                        <select class="custom-select" onchange="location = this.value;">
+                                        <select class="form-select" onchange="location = this.value;">
                                             {% for pageMax in pageMaxis %}
                                                 <option {% if pageMax.name == page_count %}selected=""{% endif %} value="{{ path('admin_product_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
                                             {% endfor %}
@@ -314,7 +313,7 @@ file that was distributed with this source code.
                                 <table class="table table-sm">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pl-3 pt-2 pb-2">
+                                        <th class="border-top-0 ps-3 pt-2 pb-2">
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2" nowrap>{{ 'admin.product.product_id__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
@@ -326,13 +325,13 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-nowrap">{{ 'admin.product.display_status__short'|trans }}<a href="#" class="js-listSort" data-sortkey="status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.create_date'|trans }}<a href="#" class="js-listSort" data-sortkey="create_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.update_date'|trans }}<a href="#" class="js-listSort" data-sortkey="update_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 pr-3" colspan="3"></th>
+                                        <th class="border-top-0 pt-2 pb-2 pe-3" colspan="3"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for Product in pagination %}
                                         <tr id="ex-product-{{ Product.id }}">
-                                            <td class="align-middle pl-3">
+                                            <td class="align-middle ps-3">
                                                 <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}" data-delete-url="{{ url('admin_product_product_delete', { id: Product.id }) }}">
                                             </td>
                                             <td class="align-middle">{{ Product.id }}</td>
@@ -383,8 +382,8 @@ file that was distributed with this source code.
                                             <td class="align-middle">
                                                 {{ Product.update_date|date_min }}
                                             </td>
-                                            <td class="align-middle pr-3" colspan="3">
-                                                <div class="text-right">
+                                            <td class="align-middle pe-3" colspan="3">
+                                                <div class="text-end">
                                                     <div class="px-1 d-inline-block text-center" data-tooltip="true"
                                                          data-placement="top"
                                                          title="{{ 'admin.common.display'|trans }}"><a class="btn btn-ec-actionIcon"
@@ -406,7 +405,7 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
+                                                                        <h5 class="modal-title fw-bold">
                                                                             {{ 'admin.product.copy__confirm_title'|trans }}</h5>
                                                                         <button class="close" type="button"
                                                                                 data-bs-dismiss="modal"
@@ -414,8 +413,8 @@ file that was distributed with this source code.
                                                                                     aria-hidden="true">×</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">
                                                                             {{ 'admin.product.copy__confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
@@ -473,11 +472,11 @@ file that was distributed with this source code.
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold">{{ 'admin.product.permanently_delete__confirm_title'|trans }}</h5>
+                            <h5 class="modal-title fw-bold">{{ 'admin.product.permanently_delete__confirm_title'|trans }}</h5>
                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body text-left">
-                            <p class="text-left">{{ 'admin.product.permanently_delete__confirm_message'|trans }}</p>
+                        <div class="modal-body text-start">
+                            <p class="text-start">{{ 'admin.product.permanently_delete__confirm_message'|trans }}</p>
                             <ul id="bulkErrors"></ul>
                             <div class="progress" style="display: none">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -499,7 +498,7 @@ file that was distributed with this source code.
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">{# Title #}</h5>
+                    <h5 class="modal-title fw-bold">{# Title #}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
