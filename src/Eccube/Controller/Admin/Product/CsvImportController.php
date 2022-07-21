@@ -1130,10 +1130,12 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if (isset($row[$headerByKey['product_code']]) && StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
-            $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
-        } else {
-            $ProductClass->setCode(null);
+        if (isset($row[$headerByKey['product_code']])) {
+            if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
+                $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
+            } else {
+                $ProductClass->setCode(null);
+            }
         }
 
         if (!isset($row[$headerByKey['stock_unlimited']])
@@ -1308,10 +1310,12 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if (isset($row[$headerByKey['product_code']]) && StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
-            $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
-        } else {
-            $ProductClass->setCode(null);
+        if (isset($row[$headerByKey['product_code']])) {
+            if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
+                $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
+            } else {
+                $ProductClass->setCode(null);
+            }
         }
 
         if (!isset($row[$headerByKey['stock_unlimited']])
