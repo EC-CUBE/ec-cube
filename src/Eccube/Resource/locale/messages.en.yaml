@@ -360,7 +360,7 @@ front.shopping.confirm_title: Review Your Order
 front.shopping.checkout: Place an Order
 front.shopping.back_to_order: Go back to Checkout
 front.shopping.complete_title: Order Placed
-front.shopping.complete_message__title: Thank you for your oder!
+front.shopping.complete_message__title: Thank you for your order!
 front.shopping.complete_message__body: |
  We have sent an order confirmation email.
  In case you do not receive it, please contact us as your order may have not been received.
