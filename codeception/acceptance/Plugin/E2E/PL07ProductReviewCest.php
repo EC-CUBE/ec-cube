@@ -14,9 +14,14 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Carbon\Carbon;
+use Codeception\Example;
+use Codeception\Util\Locator;
 use Page\Admin\ProductReviewManagePage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ProductReviewPage;
+use Plugin\ProductReview42\Entity\ProductReview;
+use Plugin\ProductReview42\Entity\ProductReviewStatus;
 
 /**
  * @group plugin
@@ -24,5 +29,371 @@ use Page\Front\ProductReviewPage;
  */
 class PL07ProductReviewCest
 {
+    public function _before(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+    }
 
+    /**
+     * @param AcceptanceTester $I
+     * @skip
+     * @return void
+     */
+    public function review_01(AcceptanceTester $I)
+    {
+
+    }
+
+    public function review_02(AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
+        $I->see('商品レビュー管理プラグイン', "//tr[contains(.,'商品レビュー管理プラグイン')]");
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'商品レビュー管理プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「商品レビュー管理プラグイン」を無効にしました。');
+        $I->see('商品レビュー管理プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+    }
+
+    public function review_03(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
+        $I->see('商品レビュー管理プラグイン');
+        $I->see('無効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'商品レビュー管理プラグイン')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
+        $I->see('「商品レビュー管理プラグイン」を有効にしました。');
+        $I->see('商品レビュー管理プラグイン', $recommendPluginRow);
+        $I->see('有効', $recommendPluginRow);
+    }
+
+    /**
+     * @skip
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function review_04(AcceptanceTester $I)
+    {
+
+    }
+
+    public function review_05(AcceptanceTester $I)
+    {
+        $faker = \Faker\Factory::create('ja_JP');
+        $name = $faker->userName();
+        $url = $faker->url();
+        $title = $faker->realText(20);
+        $comment = $faker->realText(100);
+
+
+        // 商品詳細ページでレビュー投稿
+        $I->amOnPage('products/detail/1');
+        $I->see('この商品のレビュー');
+        $I->clickWithLeftButton(Locator::contains('//a', 'レビューを投稿'));
+
+        $I->see('レビューを投稿');
+        $I->see('彩のジェラートCUBE', Locator::contains('//dl', '商品名'));
+        $I->fillField('#product_review_reviewer_name', $name);
+        $I->fillField('#product_review_reviewer_url', $url);
+        $I->checkOption('#product_review_sex_1');
+        $I->checkOption('#product_review_recommend_level_0');
+        $I->fillField('#product_review_title', $title);
+        $I->fillField('#product_review_comment', $comment);
+        $I->clickWithLeftButton('.ec-blockBtn--action');
+        $I->see('下記の内容で送信してもよろしいでしょうか？');
+        $I->see($name);
+        $I->see($url);
+        $I->see($title);
+        $I->see($comment);
+        $I->clickWithLeftButton('.ec-blockBtn--action');
+        $I->see('ご投稿ありがとうございます。');
+        $I->clickWithLeftButton('.ec-blockBtn--cancel');
+        $I->see('★★★★★');
+        $I->dontSee($name);
+        $I->dontSee($url);
+        $I->dontSee($title);
+        $I->dontSee($comment);
+
+        return [
+            'name' => $name,
+            'url' => $url,
+            'title' => $title,
+            'comment' => $comment,
+        ];
+    }
+
+    public function review_06(AcceptanceTester $I)
+    {
+        $reviewContents = $this->review_05($I);
+        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+
+        $I->amOnPage('admin/product_review/');
+        $I->see('レビュー管理');
+        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see('非公開', $rowIdentifier);
+        $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-pencil fa-lg text-secondary"]');
+        $I->seeInField('#product_review_reviewer_name', $reviewContents['name']);
+        $I->seeInField('#product_review_reviewer_url', $reviewContents['url']);
+        $I->seeInField('#product_review_title', $reviewContents['title']);
+        $I->seeInField('#product_review_comment', $reviewContents['comment']);
+        $I->selectOption('#product_review_Status', '公開');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('登録しました。');
+        $I->seeOptionIsSelected('#product_review_Status', '公開');
+        // フロント側
+        $I->amOnPage('products/detail/1');
+        $I->see('この商品のレビュー');
+        $I->see($reviewContents['name']);
+        $I->seeInSource($reviewContents['url']);
+        $I->see($reviewContents['title']);
+        $I->see($reviewContents['comment']);
+        return $reviewContents;
+    }
+
+    public function review_07(AcceptanceTester $I)
+    {
+        $reviewContents = $this->review_06($I);
+        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+        $faker = \Faker\Factory::create('ja_JP');
+        $name = $faker->userName();
+        $url = $faker->url();
+        $title = $faker->realText(20);
+        $comment = $faker->realText(100);
+
+        $I->amOnPage('admin/product_review/');
+        $I->see('レビュー管理');
+        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see('公開', $rowIdentifier);
+        $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-pencil fa-lg text-secondary"]');
+        $I->seeInField('#product_review_reviewer_name', $reviewContents['name']);
+        $I->seeInField('#product_review_reviewer_url', $reviewContents['url']);
+        $I->seeInField('#product_review_title', $reviewContents['title']);
+        $I->seeInField('#product_review_comment', $reviewContents['comment']);
+
+        $I->fillField('#product_review_reviewer_name', $name);
+        $I->fillField('#product_review_reviewer_url', $url);
+        $I->fillField('#product_review_title', $title);
+        $I->fillField('#product_review_comment', $comment);
+
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('登録しました。');
+        $I->seeOptionIsSelected('#product_review_Status', '公開');
+
+        // フロント側
+        $I->amOnPage('products/detail/1');
+        $I->see('この商品のレビュー');
+        $I->see($name);
+        $I->seeInSource($url);
+        $I->see($title);
+        $I->see($comment);
+    }
+
+    public function review_08(AcceptanceTester $I)
+    {
+        $reviewContents = $this->review_06($I);
+        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+
+        $I->amOnPage('admin/product_review/');
+        $I->see('レビュー管理');
+        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see('公開', $rowIdentifier);
+        $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-pencil fa-lg text-secondary"]');
+        $I->seeInField('#product_review_reviewer_name', $reviewContents['name']);
+        $I->seeInField('#product_review_reviewer_url', $reviewContents['url']);
+        $I->seeInField('#product_review_title', $reviewContents['title']);
+        $I->seeInField('#product_review_comment', $reviewContents['comment']);
+        $I->selectOption('#product_review_Status', '非公開');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('登録しました。');
+        $I->seeOptionIsSelected('#product_review_Status', '非公開');
+
+        // フロント側
+        $I->amOnPage('products/detail/1');
+        $I->see('この商品のレビュー');
+        $I->dontSee($reviewContents['name']);
+        $I->dontSeeInSource($reviewContents['url']);
+        $I->dontSee($reviewContents['title']);
+        $I->dontSee($reviewContents['comment']);
+    }
+
+    public function review_09(AcceptanceTester $I)
+    {
+        $reviewContents = $this->review_05($I);
+        $I->retry(7, 400);
+
+        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+        $I->amOnPage('admin/product_review/');
+        $I->see('レビュー管理');
+        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see('非公開', $rowIdentifier);
+        $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-close fa-lg text-secondary"]');
+        $I->retrySee('レビューを削除します');
+        $I->clickWithLeftButton('//div[@class="modal fade show"]' . Locator::contains('//a', '削除'));
+        $I->retrySee('商品レビューを削除しました。');
+        $I->dontSee($reviewContents['name']);
+        $I->dontSee($reviewContents['title']);
+        $I->dontSee($reviewContents['comment']);
+    }
+
+    public function review_10(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+
+        $resultCount = count($I->grabEntitiesFromRepository(ProductReview::class, [
+            'Status' => '1'
+        ]));
+        $neededResults = 10 - $resultCount;
+
+
+        if ($neededResults > 0) {
+            for ($i = 0; $i < $neededResults; $i++) {
+                $this->review_06($I);
+            }
+        }
+
+        $I->amOnPage('admin/store/plugin');
+        $reviewPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
+        $I->clickWithLeftButton(sprintf("(%s//i[@class='fa fa-cog fa-lg text-secondary'])[1]", $reviewPluginRow));
+        $I->fillField('#product_review_config_review_max', '5');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('登録しました。');
+
+        $I->amOnPage('products/detail/1');
+        $I->seeNumberOfElementsInDOM('//ul[@class="review_list"]/li', 5);
+
+        $I->amOnPage('admin/store/plugin');
+        $reviewPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
+        $I->clickWithLeftButton(sprintf("(%s//i[@class='fa fa-cog fa-lg text-secondary'])[1]", $reviewPluginRow));
+        $I->fillField('#product_review_config_review_max', '10');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('登録しました。');
+
+        $I->amOnPage('products/detail/1');
+        $I->seeNumberOfElementsInDOM('//ul[@class="review_list"]/li', 10);
+
+        $I->amOnPage('admin/store/plugin');
+        $reviewPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
+        $I->clickWithLeftButton(sprintf("(%s//i[@class='fa fa-cog fa-lg text-secondary'])[1]", $reviewPluginRow));
+        $I->fillField('#product_review_config_review_max', '5');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('登録しました。');
+
+        $I->amOnPage('products/detail/1');
+        $I->seeNumberOfElementsInDOM('//ul[@class="review_list"]/li', 5);
+
+    }
+
+    public function review_11(AcceptanceTester $I)
+    {
+        $reviewDetails = $this->review_05($I);
+        $I->retry(7, 400);
+        $I->amOnPage('admin/product_review/');
+        $I->see('レビュー管理');
+        $I->fillField('#product_review_search_multi', $reviewDetails['name']);
+        $I->clickWithLeftButton(Locator::contains('//div[@class="c-outsideBlock__contents mb-5"]//button', '検索'));
+        $I->see($reviewDetails['name']);
+        $I->see($reviewDetails['title']);
+        $I->seeNumberOfElementsInDOM('//table[@class="table table-sm"]/tbody/tr', 1);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @param Example $example
+     * @return void
+     * @dataProvider searchFormProvider
+     */
+    public function review_12(AcceptanceTester $I, Example $example)
+    {
+        $faker = \Faker\Factory::create('ja_JP');
+        $name = $faker->userName();
+        $url = $faker->url();
+        $title = $faker->realText(20);
+        $comment = $faker->realText(100);
+
+        var_dump("YESYES");
+
+
+        $I->amOnPage('admin/product_review/');
+        $I->see('レビュー管理');
+
+        switch ($example['search']['type']) {
+            case 'option':
+                $I->selectOption($example['search']['id'], $example['search']['value']);
+                break;
+            case 'date':
+                $I->fillDate($example['search']['id'], $example['search']['value']);
+                break;
+            case 'checkbox':
+                $I->checkOption($example['search']['id']);
+                break;
+            case 'input':
+                $I->fillField($example['search']['id'], $example['search']['value']);
+                break;
+        }
+
+        $I->clickWithLeftButton(Locator::contains('//div[@class="c-outsideBlock__contents mb-5"]//button', '検索'));
+        $I->see($reviewTarget->reviewer_name);
+        $I->see($reviewTarget->title);
+        $I->dontSee($reviewAvoid->reviewer_name);
+        $I->dontSee($reviewAvoid->title);
+    }
+
+    protected function searchFormProvider(): array
+    {
+        return [
+            [
+                "target" => [
+                    "recommend_level" => 5
+                ],
+                "avoid" => [
+                    "recommend_level" => 4
+                ],
+                "search" => [
+                    "type" => "option",
+                    "id" => "product_review_search_recommend_level",
+                    "value" => "★★★★★"
+                ]
+            ],
+            [
+                "target" => [
+                    "create_date" => "2000/02/02"
+                ],
+                "avoid" => [
+                    "create_date" => "1999/02/01"
+                ],
+                "search" => [
+                    "type" => "date",
+                    "id" => "product_review_search_review_start",
+                    "value" => "1999/02/01"
+                ]
+            ],
+            [
+                "target" => [
+                    "sex" => ["id" => 1]
+                ],
+                "avoid" => [
+                    "sex" => ["id" => 2]
+                ],
+                "search" => [
+                    "type" => "checkbox",
+                    "id" => "product_review_search_sex_1"
+                ]
+            ],
+            [
+                "target" => [
+                    "product_id" => ["id" => 1]
+                ],
+                "avoid" => [
+                    "product_id" =>  ["id" => 2]
+                ],
+                "search" => [
+                    "type" => "input",
+                    "id" => "product_review_search_product_name",
+                    "value" => "彩のジェラートCUBE"
+                ]
+            ]
+        ];
+    }
 }
