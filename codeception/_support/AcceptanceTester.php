@@ -255,6 +255,18 @@ class AcceptanceTester extends \Codeception\Actor
         $I->type($date->format('d'));
     }
 
+    public function fillDateTime(string $dateTimeField, Carbon $dateTime)
+    {
+        $I = $this;
+        $I->clickWithLeftButton($dateTimeField);
+        $I->type($dateTime->format('Y'));
+        $I->pressKey($dateTimeField, WebDriverKeys::TAB);
+        $I->type($dateTime->format('m'));
+        $I->type($dateTime->format('d'));
+        $I->type($dateTime->format('H'));
+        $I->type($dateTime->format('i'));
+    }
+
     public function generateCustomerAndLogin()
     {
         $I = $this;
