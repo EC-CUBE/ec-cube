@@ -1,5 +1,9 @@
 <?php
 
+if (php_sapi_name() !== 'cli') {
+    throw new \LogicException();
+}
+
 $header = <<<EOL
 This file is part of EC-CUBE
 
@@ -24,14 +28,15 @@ $rules = [
     'header_comment' => ['header' => $header],
 ];
 
-$finder = PhpCsFixer\Finder::create()
+$finder = \PhpCsFixer\Finder::create()
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
     ->in(__DIR__.'/app')
     ->in(__DIR__.'/codeception')
     ->name('*.php')
 ;
-return PhpCsFixer\Config::create()
+$config = new \PhpCsFixer\Config();
+return $config
     ->setRules($rules)
     ->setFinder($finder)
     ;
