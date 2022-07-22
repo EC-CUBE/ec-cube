@@ -779,9 +779,15 @@ class PluginService
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            $em->getConnection()->commit();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                $em->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($em->getConnection()->isRollbackOnly()) {
+                    $em->getConnection()->rollback();
+                }
+            }
             throw $e;
         }
     }
