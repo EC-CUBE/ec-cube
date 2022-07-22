@@ -59,7 +59,7 @@ file that was distributed with this source code.
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
-                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.tax_setting'|trans }}">
+                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.tax_setting'|trans }}">
                             <span>{{ 'admin.setting.shop.tax_setting'|trans }}</span>
                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                         </div>
@@ -167,11 +167,11 @@ file that was distributed with this source code.
                                         <td class="align-middle action">
                                             <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
                                                 <div class="row pr-2">
-                                                    <div class="col-6 text-center pe-0"><a class="btn btn-ec-actionIcon edit-button" data-tooltip="true" data-id="{{ TaxRule.id }}" data-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
+                                                    <div class="col-6 text-center pe-0"><a class="btn btn-ec-actionIcon edit-button" data-bs-toggle="tooltip" data-id="{{ TaxRule.id }}" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
 
                                                     <div class="col-6 text-center">
                                                         {% if not TaxRule.default_tax_rule %}
-                                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top"
+                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip" data-bs-placement="top"
                                                                  title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal_{{ TaxRule.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>

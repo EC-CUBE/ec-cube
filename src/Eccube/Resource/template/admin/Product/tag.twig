@@ -182,17 +182,17 @@ file that was distributed with this source code.
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
                                             <div class="col-auto text-end">
-                                                <a class="btn btn-ec-actionIcon mr-2 action-up{% if loop.first %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-up{% if loop.first %} disabled{% endif %}" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-down{% if loop.last %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-down{% if loop.last %} disabled{% endif %}" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-tooltip="true" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-2" data-tooltip="true"
-                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                <div class="d-inline-block mr-2" data-bs-toggle="tooltip"
+                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                        data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
                                                        data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Tag.name }) }}">
