@@ -162,4 +162,11 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
+    public function testInvalidPhoneNumberTooLong() {
+        $this->formData['phone_number'] = '0123456789012345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['phone_number']->isValid());
+    }
 }
