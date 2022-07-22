@@ -70,11 +70,11 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
         $deferredData = '';
 
         while ($bucket = \stream_bucket_make_writeable($in)) {
-            $data = $previousData . $bucket->data;
+            $data = $previousData.$bucket->data;
             $consumed += $bucket->datalen;
 
             while ($this->needsToNarrowEncodingDataScope($data)) {
-                $deferredData = \substr($data, -1) . $deferredData;
+                $deferredData = \substr($data, -1).$deferredData;
                 $data = \substr($data, 0, -1);
             }
 
@@ -87,6 +87,7 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
 
         $this->buffer = $deferredData;
         $this->assertBufferSizeIsSmallEnough();
+
         return $isBucketAppended ? \PSFS_PASS_ON : \PSFS_FEED_ME;
     }
 

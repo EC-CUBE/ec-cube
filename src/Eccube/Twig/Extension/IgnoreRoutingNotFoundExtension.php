@@ -63,7 +63,8 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
             return $this->generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
         } catch (RouteNotFoundException $e) {
             log_warning($e->getMessage(), ['exception' => $e]);
-            return $this->generator->generate('homepage', $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH).'404?bind='.$name;;
+
+            return $this->generator->generate('homepage', $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH).'404?bind='.$name;
         }
     }
 

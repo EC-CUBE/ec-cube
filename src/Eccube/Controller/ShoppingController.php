@@ -160,7 +160,7 @@ class ShoppingController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
             'Order' => $Order,
-            'activeTradeLaws' => $activeTradeLaws
+            'activeTradeLaws' => $activeTradeLaws,
         ];
     }
 
@@ -248,7 +248,7 @@ class ShoppingController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
             'Order' => $Order,
-            'activeTradeLaws' => $activeTradeLaws
+            'activeTradeLaws' => $activeTradeLaws,
         ];
     }
 
@@ -326,7 +326,7 @@ class ShoppingController extends AbstractShoppingController
             return [
                 'form' => $form->createView(),
                 'Order' => $Order,
-                'activeTradeLaws' => $activeTradeLaws
+                'activeTradeLaws' => $activeTradeLaws,
             ];
         }
 
@@ -334,14 +334,14 @@ class ShoppingController extends AbstractShoppingController
 
         $template = new Template([
             'owner' => [$this, 'confirm'],
-            'template' => 'Shopping/index.twig'
+            'template' => 'Shopping/index.twig',
         ]);
         $request->attributes->set('_template', $template);
 
         return [
             'form' => $form->createView(),
             'Order' => $Order,
-            'activeTradeLaws' => $activeTradeLaws
+            'activeTradeLaws' => $activeTradeLaws,
         ];
     }
 

@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractPluginManager
 {
-    const MIGRATION_TABLE_PREFIX = 'migration_';
+    public const MIGRATION_TABLE_PREFIX = 'migration_';
 
     /**
      * プラグインのマイグレーションを実行する.

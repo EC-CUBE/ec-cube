@@ -46,7 +46,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -332,7 +331,7 @@ class ProductController extends AbstractController
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
-                    //ファイルフォーマット検証
+                    // ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
                         throw new UnsupportedMediaTypeHttpException();
@@ -378,7 +377,7 @@ class ProductController extends AbstractController
 
         $dirs = [
             $this->eccubeConfig['eccube_save_image_dir'],
-            $this->eccubeConfig['eccube_temp_image_dir']
+            $this->eccubeConfig['eccube_temp_image_dir'],
         ];
 
         foreach ($dirs as $dir) {

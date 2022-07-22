@@ -179,7 +179,7 @@ class PaymentController extends AbstractController
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
 
-            //ファイルフォーマット検証
+            // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
             if (0 !== strpos($mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
@@ -221,7 +221,7 @@ class PaymentController extends AbstractController
 
         $dirs = [
             $this->eccubeConfig['eccube_save_image_dir'],
-            $this->eccubeConfig['eccube_temp_image_dir']
+            $this->eccubeConfig['eccube_temp_image_dir'],
         ];
 
         foreach ($dirs as $dir) {

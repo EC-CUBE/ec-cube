@@ -27,8 +27,8 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
      */
     class ProductStock extends \Eccube\Entity\AbstractEntity
     {
-        const IN_STOCK = 1;
-        const OUT_OF_STOCK = 2;
+        public const IN_STOCK = 1;
+        public const OUT_OF_STOCK = 2;
 
         /**
          * @var integer

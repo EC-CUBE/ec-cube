@@ -40,7 +40,7 @@ class TradeLawController extends AbstractController
         $tradelaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
 
         return [
-            'tradelaws' => $tradelaws
+            'tradelaws' => $tradelaws,
         ];
     }
 }

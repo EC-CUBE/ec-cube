@@ -40,6 +40,7 @@ class CalendarRepository extends AbstractRepository
      * @param int $id
      *
      * @return Calendar
+     *
      * @throws \Exception
      */
     public function get($id = 1)

@@ -14,10 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 if (!class_exists('\Eccube\Entity\Customer')) {
     /**
@@ -608,6 +606,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * @param string|null $password
+         *
          * @return $this
          */
         public function setPlainPassword(?string $password): self

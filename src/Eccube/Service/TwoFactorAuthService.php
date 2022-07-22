@@ -26,12 +26,12 @@ class TwoFactorAuthService
     /**
      * @var int デフォルトの認証の有効日数
      */
-    const DEFAULT_EXPIRE_DATE = 14;
+    public const DEFAULT_EXPIRE_DATE = 14;
 
     /**
      * @var string Cookieに保存する時のキー名
      */
-    const DEFAULT_COOKIE_NAME = 'eccube_2fa';
+    public const DEFAULT_COOKIE_NAME = 'eccube_2fa';
 
     /**
      * @var ContainerInterface
@@ -159,7 +159,7 @@ class TwoFactorAuthService
             $this->cookieName, // name
             json_encode($configs), // value
             ($this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60)), // expire
-            $this->request->getBasePath().'/'.$this->eccubeConfig->get('eccube_admin_route'), //path
+            $this->request->getBasePath().'/'.$this->eccubeConfig->get('eccube_admin_route'), // path
             null, // domain
             ($this->eccubeConfig->get('eccube_force_ssl') ? true : false), // secure
             true, // httpOnly

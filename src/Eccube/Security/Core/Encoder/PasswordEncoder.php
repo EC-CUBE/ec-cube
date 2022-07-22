@@ -114,6 +114,7 @@ class PasswordEncoder implements PasswordEncoderInterface
     {
         return false;
     }
+
     /**
      * saltを生成する.
      *

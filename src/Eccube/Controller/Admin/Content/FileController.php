@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,8 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class FileController extends AbstractController
 {
-    const SJIS = 'sjis-win';
-    const UTF = 'UTF-8';
+    public const SJIS = 'sjis-win';
+    public const UTF = 'UTF-8';
     private $errors = [];
     private $encode = '';
 

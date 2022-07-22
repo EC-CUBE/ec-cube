@@ -174,7 +174,7 @@ class EntryController extends AbstractController
                         'Status' => [
                             CustomerStatus::PROVISIONAL,
                             CustomerStatus::REGULAR,
-                        ]
+                        ],
                     ]);
 
                     if ($existCustomer) {
@@ -350,6 +350,7 @@ class EntryController extends AbstractController
      *
      * @param Customer $Customer
      * @param Request $request
+     *
      * @return void
      */
     private function doLogin(Customer $Customer, Request $request): void
@@ -363,6 +364,7 @@ class EntryController extends AbstractController
      * 本会員へ更新する.
      *
      * @param Customer $Customer
+     *
      * @return void
      */
     private function updateRegularCustomer(Customer $Customer): void
