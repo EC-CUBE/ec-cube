@@ -380,7 +380,7 @@ class PL02CouponCest
             $randomTokenName = bin2hex(random_bytes(10));
         }
         $this->coupon_3($I, $randomTokenName);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
         $I->selectOption('#classcategory_id2', '64cm × 64cm');
@@ -426,7 +426,7 @@ class PL02CouponCest
             $randomTokenName = bin2hex(random_bytes(10));
         }
         $this->coupon_3($I, $randomTokenName);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
         $I->selectOption('#classcategory_id2', '64cm × 64cm');
@@ -485,7 +485,7 @@ class PL02CouponCest
             $string = bin2hex(random_bytes(10));
         }
         $this->coupon_11($I, $string);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
         $I->selectOption('#classcategory_id2', '64cm × 64cm');
@@ -510,7 +510,7 @@ class PL02CouponCest
         $I->retry(7, 400);
         $string = bin2hex(random_bytes(10));
         $this->coupon_13($I, $string);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
         $I->selectOption('#classcategory_id2', '64cm × 64cm');
@@ -535,7 +535,7 @@ class PL02CouponCest
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
         $this->coupon_3($I, $randomTokenName, true);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
         $I->selectOption('#classcategory_id2', '64cm × 64cm');
@@ -560,7 +560,7 @@ class PL02CouponCest
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
         $this->coupon_4($I, $randomTokenName);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
@@ -612,7 +612,7 @@ class PL02CouponCest
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
         $this->coupon_5($I, $randomTokenName, 'ジェラート');
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
@@ -664,7 +664,7 @@ class PL02CouponCest
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
         $this->coupon_7($I, $randomTokenName);
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
@@ -716,7 +716,7 @@ class PL02CouponCest
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
         $this->coupon_8($I, $randomTokenName, 'ジェラート');
-        $this->generateTestMemberAndLogin($I);
+        $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');

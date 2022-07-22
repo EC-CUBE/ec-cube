@@ -14,6 +14,7 @@
 use Carbon\Carbon;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Eccube\Entity\Customer;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use Interactions\DragAndDropBy;
@@ -39,6 +40,8 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
     use \Codeception\Lib\Actor\Shared\Retry;
+
+    public Customer $asACustomer;
 
     public function getScenario()
     {
@@ -250,5 +253,14 @@ class AcceptanceTester extends \Codeception\Actor
         $I->pressKey($dateField, WebDriverKeys::TAB);
         $I->type($date->format('m'));
         $I->type($date->format('d'));
+    }
+
+    public function generateCustomerAndLogin()
+    {
+        $I = $this;
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $this->asACustomer = $customer;
+        $I->loginAsMember($customer->getEmail(), 'password');
     }
 }
