@@ -609,7 +609,7 @@ class PluginController extends AbstractController
             try {
                 $this->pluginService->checkPluginArchiveContent($dir->getRealPath());
             } catch (PluginException $e) {
-                //config.yamlに不備があった際は全てスキップ
+                // config.yamlに不備があった際は全てスキップ
                 log_warning($e->getMessage());
                 continue;
             }

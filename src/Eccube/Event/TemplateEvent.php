@@ -13,8 +13,8 @@
 
 namespace Eccube\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class TemplateEvent

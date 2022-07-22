@@ -1,18 +1,27 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\OrderStatusSettingType;
 use Eccube\Form\Type\Admin\TradeLawType;
-use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Repository\TradeLawRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TradeLawController extends AbstractController
 {
@@ -32,6 +41,7 @@ class TradeLawController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/tradelaw.twig")
+     *
      * @param Request $request
      */
     public function index(Request $request)
@@ -57,8 +67,6 @@ class TradeLawController extends AbstractController
             $request
         );
 
-
-
         $form = $builder->getForm();
         $form->handleRequest($request);
 
@@ -80,7 +88,7 @@ class TradeLawController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'tradeLawDetails' => $tradeLawDetails
+            'tradeLawDetails' => $tradeLawDetails,
         ];
     }
 }

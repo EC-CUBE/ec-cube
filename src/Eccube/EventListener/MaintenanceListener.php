@@ -23,7 +23,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class MaintenanceListener implements EventSubscriberInterface
 {
-
     /** @var Context */
     protected $requestContext;
 
@@ -49,6 +48,7 @@ class MaintenanceListener implements EventSubscriberInterface
 
         if (!$this->systemService->isMaintenanceMode()) {
             $response->headers->clearCookie(SystemService::MAINTENANCE_TOKEN_KEY);
+
             return;
         }
 

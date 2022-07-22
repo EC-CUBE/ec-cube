@@ -13,8 +13,8 @@
 
 namespace Eccube\Twig\Extension;
 
-use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class TwigIncludeExtension extends AbstractExtension
 {

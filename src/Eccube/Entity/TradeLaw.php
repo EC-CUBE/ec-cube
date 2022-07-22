@@ -14,10 +14,6 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints as Assert;
 
 if (!class_exists('\Eccube\Entity\TradeLaw')) {
     /**
@@ -78,11 +74,13 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
 
         /**
          * @param int $id
+         *
          * @return TradeLaw
          */
         public function setId(int $id): TradeLaw
         {
             $this->id = $id;
+
             return $this;
         }
 
@@ -96,11 +94,13 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
 
         /**
          * @param string $name
+         *
          * @return TradeLaw
          */
         public function setName(?string $name): TradeLaw
         {
-            $this->name = $name ?: "";
+            $this->name = $name ?: '';
+
             return $this;
         }
 
@@ -114,11 +114,13 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
 
         /**
          * @param string $description
+         *
          * @return TradeLaw
          */
         public function setDescription(?string $description): TradeLaw
         {
-            $this->description = $description ?: "";
+            $this->description = $description ?: '';
+
             return $this;
         }
 
@@ -132,11 +134,13 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
 
         /**
          * @param int $sortNo
+         *
          * @return TradeLaw
          */
         public function setSortNo(int $sortNo): TradeLaw
         {
             $this->sortNo = $sortNo;
+
             return $this;
         }
 
@@ -150,11 +154,13 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
 
         /**
          * @param bool $displayOrderScreen
+         *
          * @return TradeLaw
          */
         public function setDisplayOrderScreen(bool $displayOrderScreen): TradeLaw
         {
             $this->displayOrderScreen = $displayOrderScreen;
+
             return $this;
         }
 

@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NavCompilerPass implements CompilerPassInterface
 {
-    const NAV_TAG = 'eccube.nav';
+    public const NAV_TAG = 'eccube.nav';
 
     public function process(ContainerBuilder $container)
     {

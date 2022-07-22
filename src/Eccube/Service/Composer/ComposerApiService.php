@@ -216,7 +216,6 @@ class ComposerApiService implements ComposerServiceInterface
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
         }
-
     }
 
     /**
