@@ -78,7 +78,7 @@ $(function() {
                                                data-bs-toggle="modal"
                                                data-bs-target="#localPluginDeleteModal"
                                                data-delete-url="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}">
-                                                <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="削除"></i>
+                                                <i class="fa fa-close fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="削除"></i>
                                             </a>
                                         </div>
                                         {% endif %}
@@ -87,7 +87,7 @@ $(function() {
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="post" data-confirm="false">
-                                                <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
+                                                <i class="fa fa-pause fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
                                             </a>
                                         </div>
                                         {% else %}
@@ -95,7 +95,7 @@ $(function() {
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="post" data-confirm="false">
-                                                <i class="fa fa-play fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
+                                                <i class="fa fa-play fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
                                             </a>
                                         </div>
                                         {% endif %}
@@ -103,8 +103,8 @@ $(function() {
                                         <div class="col-6 px-0">
                                             <a href='{{ configPages[Plugin.code] }}'
                                                class="btn btn-ec-actionIcon">
-                                                <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
-                                                   data-placement="top" title="{{ 'admin.store.plugin_table.891'|trans }}"></i></a>
+                                                <i class="fa fa-cog fa-lg text-secondary" data-bs-toggle="tooltip"
+                                                   data-bs-placement="top" title="{{ 'admin.store.plugin_table.891'|trans }}"></i></a>
                                         </div>
                                         {% endif %}
                                 </div>

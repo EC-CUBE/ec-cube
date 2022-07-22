@@ -25,7 +25,7 @@ file that was distributed with this source code.
                 <div class="row justify-content-start">
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.customer.multi_search_label'|trans }}">{{ 'admin.customer.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.customer.multi_search_label'|trans }}">{{ 'admin.customer.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
@@ -281,7 +281,7 @@ file that was distributed with this source code.
                                             <td class="align-middle pe-3">
                                                 <div class="text-end">
                                                     {% if Customer.Status.id == constant('Eccube\\Entity\\Master\\CustomerStatus::PROVISIONAL') %}
-                                                        <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.customer.resend'|trans }}">
+                                                        <div class="px-1 d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.customer.resend'|trans }}">
                                                             <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#discontinuance_cus_{{ Customer.id }}">
                                                                 <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
@@ -309,7 +309,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     {% endif %}
-                                                    <div class="px-1 d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <div class="px-1 d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                         <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#discontinuance-{{ Customer.id }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>

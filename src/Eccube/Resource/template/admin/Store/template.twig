@@ -66,13 +66,13 @@ file that was distributed with this source code.
                                             <div class="row justify-content-end">
                                                 <div class="col-auto text-center">
                                                     <a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}"
-                                                       class="btn btn-ec-actionIcon action-download" data-bs-toggle="tooltip" data-placement="top"
+                                                       class="btn btn-ec-actionIcon action-download" data-bs-toggle="tooltip" data-bs-placement="top"
                                                        title="{{ 'admin.common.download'|trans }}">
                                                         <i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                                 <div class="col-auto text-center">
-                                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                         <a class="btn btn-ec-actionIcon action-delete {% if Template.default_template or eccube_config.eccube_theme_code == Template.code %}disabled{% endif %}"
                                                            data-bs-toggle="modal" data-bs-target="#confirmModal-{{ loop.index }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
