@@ -793,17 +793,9 @@ class PL02CouponCest
             $to->addDay();
         }
         // 期間開始日設定
-        $I->clickWithLeftButton('#coupon_available_from_date');
-        $I->type($from->format('Y'));
-        $I->pressKey('#coupon_available_from_date', WebDriverKeys::TAB);
-        $I->type($from->format('m'));
-        $I->type($from->format('d'));
+        $I->fillDate("#coupon_available_from_date", $from);
         // 期間終了日設定
-        $I->clickWithLeftButton('#coupon_available_to_date');
-        $I->type($to->format('Y'));
-        $I->pressKey('#coupon_available_to_date', WebDriverKeys::TAB);
-        $I->type($to->format('m'));
-        $I->type($to->format('d'));
+        $I->fillDate("#coupon_available_to_date", $to);
     }
 
     private function generateTestMemberAndLogin(AcceptanceTester $I): void

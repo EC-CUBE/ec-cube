@@ -11,9 +11,11 @@
  * file that was distributed with this source code.
  */
 
+use Carbon\Carbon;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverKeys;
 use Interactions\DragAndDropBy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -129,7 +131,7 @@ class AcceptanceTester extends \Codeception\Actor
         } else {
             $pcs = $entityManager->getRepository('Eccube\Entity\ProductClass')
                 ->createQueryBuilder('o')
-                ->where('o.Product = '.$pid)
+                ->where('o.Product = ' . $pid)
                 ->andwhere('o.ClassCategory1 > 0')
                 ->getQuery()
                 ->getResult();
@@ -238,5 +240,15 @@ class AcceptanceTester extends \Codeception\Actor
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset, $animation_frames);
             $action->perform();
         });
+    }
+
+    public function fillDate(string $dateField, Carbon $date)
+    {
+        $I = $this;
+        $I->clickWithLeftButton($dateField);
+        $I->type($date->format('Y'));
+        $I->pressKey($dateField, WebDriverKeys::TAB);
+        $I->type($date->format('m'));
+        $I->type($date->format('d'));
     }
 }
