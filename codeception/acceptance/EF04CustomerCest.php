@@ -50,7 +50,7 @@ class EF04CustomerCest
             'entry[user_policy_check]' => '1',
         ];
         $findPluginByCode = Fixtures::get('findPluginByCode');
-        $Plugin = $findPluginByCode('MailMagazine');
+        $Plugin = $findPluginByCode('MailMagazine42');
         if ($Plugin) {
             $I->amGoingTo('メルマガプラグインを発見したため、メルマガを購読します');
             $form['entry[mailmaga_flg]'] = '1';
