@@ -126,6 +126,47 @@ class PL08ApiCest
         $I->dontSeeInSource($API0AuthData->clientID);
         $I->dontSeeInSource($API0AuthData->clientSecret);
     }
+
+    public function web_api_07(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $faker = \Faker\Factory::create('ja_JP');
+        $url = $faker->unique()->url();
+        $secret = $faker->unique()->md5();
+        $webHookData = new APIWebHookData($url, $secret);
+
+        $I->amOnPage('admin/api/webhook');
+        $I->see('Webhook管理');
+        $I->clickWithLeftButton(Locator::contains('//a', '新規登録'));
+        $I->see('Webhook登録');
+        $I->fillField('#web_hook_payload_url', $webHookData->url );
+        $I->fillField('#web_hook_secret', $webHookData->secret);
+        $I->clickWithLeftButton('//label[@for="web_hook_enabled"]');
+        $I->clickWithLeftButton(Locator::contains('//button', '登録'));
+        $I->see('保存しました');
+        $I->seeInSource($webHookData->url);
+        $I->seeInSource($webHookData->secret);
+        $I->seeCheckboxIsChecked('#web_hook_enabled');
+        $I->clickWithLeftButton(Locator::contains('//span', 'WebHook管理'));
+
+        $I->seeInCurrentUrl('admin/api/webhook');
+        $testRow = Locator::contains('//tr', $webHookData->url);
+        $I->see($url, $testRow);
+        $I->see('有効', $testRow);
+        return $webHookData;
+    }
+
+    public function web_api_08(AcceptanceTester $I)
+    {
+        $webHookData = $this->web_api_07($I);
+        $testRow = Locator::contains('//tr', $webHookData->url);
+        $I->click("(" . $testRow . "//a[@class='btn btn-ec-actionIcon action-delete'])[1]");
+        $I->retrySee('WebHookを削除します');
+        $activeModal = '//div[@class="modal fade show"]';
+        $I->click(Locator::contains($activeModal . '//a', '削除'));
+        $I->see('削除しました');
+        $I->dontSee($webHookData->url);
+    }
 }
 
 class API0AuthData
@@ -139,5 +180,17 @@ class API0AuthData
         $this->clientID = $clientID;
         $this->clientSecret = $clientSecret;
         $this->redirectUri = $redirectUri;
+    }
+}
+
+class APIWebhookData
+{
+    public string $url;
+    public string $secret;
+
+    public function __construct(string $url, string $secret)
+    {
+        $this->url = $url;
+        $this->secret = $secret;
     }
 }
