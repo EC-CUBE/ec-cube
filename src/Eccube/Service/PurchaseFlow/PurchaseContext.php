@@ -27,11 +27,11 @@ class PurchaseContext extends \SplObjectStorage
 
     private $flowType;
 
-    const ORDER_FLOW = 'order';
+    public const ORDER_FLOW = 'order';
 
-    const SHOPPING_FLOW = 'shopping';
+    public const SHOPPING_FLOW = 'shopping';
 
-    const CART_FLOW = 'cart';
+    public const CART_FLOW = 'cart';
 
     public function __construct(ItemHolderInterface $originHolder = null, ?Customer $user = null)
     {

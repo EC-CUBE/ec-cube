@@ -16,7 +16,6 @@ namespace Eccube\EventListener;
 use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -58,7 +57,7 @@ class RestrictFileUploadListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.request' => ['onKernelRequest', 7] // RouterListener より必ず後で実行する
+            'kernel.request' => ['onKernelRequest', 7], // RouterListener より必ず後で実行する
         ];
     }
 }

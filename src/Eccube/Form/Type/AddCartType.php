@@ -13,8 +13,8 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;
@@ -209,7 +209,7 @@ class AddCartType extends AbstractType
                 ]),
             ], '[classcategory_id1]');
         }
-        //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
+        // 商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
         if ($this->Product->getClassName2()) {
             $context->getValidator()->validate($data['classcategory_id2'], [
                 new Assert\NotBlank(),

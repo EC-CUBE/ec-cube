@@ -31,7 +31,7 @@ class ProductListOrderByType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $options = $event->getForm()->getConfig()->getOptions();
             if ($event->getData() === null) {
-                $event->setData((string)$options['choices'][0]->getId());
+                $event->setData((string) $options['choices'][0]->getId());
             }
         });
     }

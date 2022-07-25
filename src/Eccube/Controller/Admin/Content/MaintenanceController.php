@@ -96,7 +96,7 @@ class MaintenanceController extends AbstractController
         } else {
             $maintenanceMode = [
                 'auto_maintenance' => SystemService::AUTO_MAINTENANCE,
-                'auto_maintenance_update' => SystemService::AUTO_MAINTENANCE_UPDATE
+                'auto_maintenance_update' => SystemService::AUTO_MAINTENANCE_UPDATE,
             ];
             $systemService->disableMaintenance($maintenanceMode[$mode]);
         }

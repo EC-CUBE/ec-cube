@@ -40,13 +40,7 @@ class ProductRepository extends AbstractRepository
     protected $eccubeConfig;
 
     public const COLUMNS = [
-        'product_id' => 'p.id'
-        ,'name' => 'p.name'
-        ,'product_code' => 'pc.code'
-        ,'stock' => 'pc.stock'
-        ,'status' => 'p.Status'
-        ,'create_date' => 'p.create_date'
-        ,'update_date' => 'p.update_date'
+        'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'pc.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',
     ];
 
     /**
@@ -178,7 +172,7 @@ class ProductRepository extends AbstractRepository
         // 価格低い順
         $config = $this->eccubeConfig;
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['eccube_product_order_price_lower']) {
-            //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
+            // @see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->andWhere('pc.visible = true');

@@ -357,7 +357,7 @@ class CsvImportController extends AbstractCsvImportController
                         // 商品カテゴリ登録
                         $this->createProductCategory($row, $Product, $data, $headerByKey);
 
-                        //タグ登録
+                        // タグ登録
                         $this->createProductTag($row, $Product, $data, $headerByKey);
 
                         // 商品規格が存在しなければ新規登録
@@ -1359,7 +1359,7 @@ class CsvImportController extends AbstractCsvImportController
         if (isset($row[$headerByKey['price01']])) {
             if ($row[$headerByKey['price01']] != '') {
                 $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-                $errors  = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+                $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
                 if ($errors->count() === 0) {
                     $ProductClass->setPrice01($price01);
                 } else {
@@ -1639,7 +1639,7 @@ class CsvImportController extends AbstractCsvImportController
             // stream filter を適用して文字エンコーディングと改行コードの変換を行う
             // see https://github.com/EC-CUBE/ec-cube/issues/5252
             $filters = [
-                ConvertLineFeedFilter::class
+                ConvertLineFeedFilter::class,
             ];
 
             if (!\mb_check_encoding($file->current(), 'UTF-8')) {

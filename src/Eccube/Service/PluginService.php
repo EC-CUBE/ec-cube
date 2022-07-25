@@ -62,17 +62,17 @@ class PluginService
      */
     protected $composerService;
 
-    const VENDOR_NAME = 'ec-cube';
+    public const VENDOR_NAME = 'ec-cube';
 
     /**
      * Plugin type/library of ec-cube
      */
-    const ECCUBE_LIBRARY = 1;
+    public const ECCUBE_LIBRARY = 1;
 
     /**
      * Plugin type/library of other (except ec-cube)
      */
-    const OTHER_LIBRARY = 2;
+    public const OTHER_LIBRARY = 2;
 
     /**
      * @var string %kernel.project_dir%
@@ -727,7 +727,7 @@ class PluginService
             $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
-            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            $this->unpackPluginArchive($path, $tmp); // 一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readConfig($tmp);
@@ -779,9 +779,15 @@ class PluginService
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            $em->getConnection()->commit();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                $em->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($em->getConnection()->isRollbackOnly()) {
+                    $em->getConnection()->rollback();
+                }
+            }
             throw $e;
         }
     }

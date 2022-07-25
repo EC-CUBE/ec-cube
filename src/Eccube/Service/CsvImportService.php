@@ -39,8 +39,8 @@ use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
  */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
-    const DUPLICATE_HEADERS_INCREMENT = 1;
-    const DUPLICATE_HEADERS_MERGE = 2;
+    public const DUPLICATE_HEADERS_INCREMENT = 1;
+    public const DUPLICATE_HEADERS_MERGE = 2;
 
     /**
      * Number of the row that contains the column names
@@ -106,7 +106,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
         $filters = [
-            ConvertLineFeedFilter::class
+            ConvertLineFeedFilter::class,
         ];
 
         if (!\mb_check_encoding($file->current(), 'UTF-8')) {
@@ -327,6 +327,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param \SplFileObject $file Stream filter を適用する SplFileObject
      * @param \php_user_filter $filters 適用する stream filter のクラス名
+     *
      * @return \SplFileObject 適用後の SplFileObject
      */
     public static function applyStreamFilter(\SplFileObject $file, string ...$filters): \SplFileObject
@@ -434,6 +435,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
      * それ以外の環境では何もしない。
+     *
      * @deprecated 使用していないため削除予定
      */
     protected function convertEncodingRows($row)

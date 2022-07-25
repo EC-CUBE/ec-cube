@@ -151,7 +151,7 @@ file that was distributed with this source code.
 
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.multi_search_label'|trans }}">{{ 'admin.product.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.multi_search_label'|trans }}">{{ 'admin.product.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                             {{ form_widget(searchForm.id) }}
                             {{ form_errors(searchForm.id) }}
                         </div>
@@ -384,15 +384,15 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle pe-3" colspan="3">
                                                 <div class="text-end">
-                                                    <div class="px-1 d-inline-block text-center" data-tooltip="true"
-                                                         data-placement="top"
+                                                    <div class="px-1 d-inline-block text-center" data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
                                                          title="{{ 'admin.common.display'|trans }}"><a class="btn btn-ec-actionIcon"
                                                                                                        href="{{ url('product_detail', {id:Product.id}) }}"
                                                                                                        target="_blank"><i
                                                                     class="fa fa-eye fa-lg text-secondary"
                                                                     aria-hidden="true"></i></a></div>
-                                                    <div class="px-1 d-inline-block text-center" data-tooltip="true"
-                                                         data-placement="top"
+                                                    <div class="px-1 d-inline-block text-center" data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
                                                          title="{{ 'admin.common.copy'|trans }}">
                                                         <a href="#" class="btn btn-ec-actionIcon"
                                                            data-bs-toggle="modal"
