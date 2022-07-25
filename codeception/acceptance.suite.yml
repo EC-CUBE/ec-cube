@@ -13,6 +13,10 @@ modules:
         - WebDriver
         - Asserts
         - MailCatcher
+        - REST:
+              depends: PhpBrowser
+              url: 'http://localhost:8080/'
+              shortDebugResponse: 300 # only the first 300 characters of the response
         - Symfony:
               part: SERVICES
               app_path: "/src/Eccube/"

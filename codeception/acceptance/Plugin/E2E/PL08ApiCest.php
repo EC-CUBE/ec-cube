@@ -14,11 +14,17 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
 use Page\Admin\ApiOauthEditPage;
 use Page\Admin\ApiOauthPage;
 use Page\Admin\ApiWebHookEditPage;
 use Page\Admin\ApiWebHookPage;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertJson;
+use function PHPUnit\Framework\assertNotEmpty;
 
 /**
  * @group plugin
@@ -75,13 +81,14 @@ class PL08ApiCest
 
     }
 
-    public function web_api_05(AcceptanceTester $I): API0AuthData
+    public function web_api_05(AcceptanceTester $I, bool $fixedLocalhost = false): API0AuthData
     {
         $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
         $url = $faker->unique()->url();
-
-
+        if ($fixedLocalhost === true) {
+            $url = 'http://localhost:8080/callback';
+        }
         $I->amOnPage('admin/api/oauth');
         $I->see('OAuth管理');
         $I->clickWithLeftButton(Locator::contains('//a', '新規登録'));
@@ -139,7 +146,7 @@ class PL08ApiCest
         $I->see('Webhook管理');
         $I->clickWithLeftButton(Locator::contains('//a', '新規登録'));
         $I->see('Webhook登録');
-        $I->fillField('#web_hook_payload_url', $webHookData->url );
+        $I->fillField('#web_hook_payload_url', $webHookData->url);
         $I->fillField('#web_hook_secret', $webHookData->secret);
         $I->clickWithLeftButton('//label[@for="web_hook_enabled"]');
         $I->clickWithLeftButton(Locator::contains('//button', '登録'));
@@ -166,6 +173,117 @@ class PL08ApiCest
         $I->click(Locator::contains($activeModal . '//a', '削除'));
         $I->see('削除しました');
         $I->dontSee($webHookData->url);
+    }
+
+    public function web_api_09(AcceptanceTester $I)
+    {
+        $I->retry(7, 400);
+        $apiAuthData = $this->web_api_05($I, true);
+
+        $I->amOnPage(
+            sprintf(
+                "/admin/authorize?response_type=code&client_id=%s&client_secret=%s&redirect_uri=%s&scope=read&state=test",
+                $apiAuthData->clientID,
+                $apiAuthData->clientSecret,
+                $apiAuthData->redirectUri
+            )
+        );
+
+        $I->click(['id' => 'oauth_authorization_approve']);
+        $I->wait(5);
+        $redirectUrl = $I->grabFromCurrentUrl();
+        $code = preg_replace('/.*code=(.*)&.*/', '$1', $redirectUrl);
+
+        $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $tokens = $I->sendPost(
+            '/token',
+            [
+                'grant_type' => 'authorization_code',
+                'code' => $code,
+                'redirect_uri' => $apiAuthData->redirectUri,
+                'client_id' => $apiAuthData->clientID,
+                'client_secret' => $apiAuthData->clientSecret,
+            ]
+        );
+        assertJson($tokens);
+        $jsonTokens = json_decode($tokens, true);
+        assertNotEmpty($jsonTokens['access_token']);
+        assertEquals($jsonTokens['token_type'], 'Bearer');
+        return $jsonTokens;
+    }
+
+    public function web_api_10(AcceptanceTester $I)
+    {
+        $tokenData = $this->web_api_09($I);
+        $I->amOnPage('/admin/api/webhook');
+
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
+        $I->sendGet('/api', [
+            'query' => '{ product(id: 1) { id, name } }'
+        ]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'data' => [
+                'product' => [
+                    'id' => 1,
+                    'name' => '彩のジェラートCUBE',
+                ]
+            ]
+        ]);
+    }
+
+    public function web_api_11(AcceptanceTester $I)
+    {
+        $tokenData = $this->web_api_09($I);
+        $I->amOnPage('/admin/api/webhook');
+        $ordersGen = Fixtures::get('createOrders');
+        $customer = Fixtures::get('createCustomer');
+        /**
+         * @var Order $targetOrder
+         */
+        $targetOrder = $ordersGen($customer(), 1)[0];
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
+        $I->sendGet('/api', [
+            'query' => sprintf('{ order(id: %s) { id, order_no }}', $targetOrder->getId())
+        ]);
+
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'data' => [
+                'order' => [
+                    'id' => $targetOrder->getId(),
+                    'order_no' => $targetOrder->getOrderNo(),
+                ]
+            ]
+        ]);
+    }
+
+    public function web_api_12(AcceptanceTester $I) {
+        $tokenData = $this->web_api_09($I);
+        $I->amOnPage('/admin/api/webhook');
+        $customerFixture = Fixtures::get('createCustomer');
+        /**
+         * @var Customer $customer
+         */
+        $customer = $customerFixture();
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
+        $I->sendGet('/api', [
+            'query' => sprintf('{ customer(id: %s) { id, name01, name02 }}', $customer->getId())
+        ]);
+
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'data' => [
+                'customer' => [
+                    'id' => $customer->getId(),
+                    'name01' => $customer->getName01(),
+                    'name02' => $customer->getName02()
+                ]
+            ]
+        ]);
     }
 }
 
