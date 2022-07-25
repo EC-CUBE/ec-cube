@@ -196,17 +196,11 @@ class PL12MakerCest
         $I->dontSeeInSource($brandUrl);
     }
 
-
-
-
-
     private function registerMaker(AcceptanceTester $I, string $brandName)
     {
         $I->see('メーカー管理');
         $I->fillField('#maker_name', $brandName);
         $I->click(Locator::contains('//button', '新規作成'));
     }
-
-
 
 }
