@@ -19,13 +19,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.4 ]
-        db: [ pgsql ]
-        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-file-upload', 'installer' ]
+        php: [ 7.4, 8.0, 8.1 ]
+        db: [ pgsql10, pgsql14, mysql5, mysql8 ]
+        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'installer' ]
         include:
-          - db: pgsql
+          - db: pgsql10
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 10
+            database_charset: utf8
+          - db: pgsql14
+            database_url: postgres://postgres:password@127.0.0.1:5433/eccube_db
             database_server_version: 14
+            database_charset: utf8
+          - db: mysql5
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 5.7
+            database_charset: utf8mb4
+          - db: mysql8
+            database_url: mysql://root:password@127.0.0.1:3308/eccube_db
+            database_server_version: 8
+            database_charset: utf8mb4
           - group: 'admin01'
             app_env: 'codeception'
           - group: 'admin02'
@@ -34,13 +47,13 @@ jobs:
             app_env: 'codeception'
           - group: 'front'
             app_env: 'codeception'
-          - group: 'restrict-file-upload'
+          - group: 'restrict-fileupload'
             app_env: 'codeception'
           - group: 'installer'
             app_env: 'install'
     services:
-      postgres:
-        image: postgres:14
+      postgres10:
+        image: postgres:10
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -48,7 +61,29 @@ jobs:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+      postgres14:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5433:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql8:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3308:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -82,6 +117,7 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
@@ -107,20 +143,35 @@ jobs:
           cp codeception/_data/plugins/*-1.0.0.tgz repos
 
       - name: Start PHP Development Server
+        if: ${{ matrix.group != 'restrict-fileupload' }}
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
+      - name: Start PHP Development Server
+        if: ${{ matrix.group == 'restrict-fileupload' }}
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_RESTRICT_FILE_UPLOAD: '1'
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
       - name: Codeception
-        if: ${{ matrix.group != 'restrict-file-upload' }}
+        if: ${{ matrix.group != 'restrict-fileupload' }}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
@@ -128,11 +179,12 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
 
       - name: Codeception with Restrict file upload
-        if: ${{ matrix.group == 'restrict-file-upload' }}
+        if: ${{ matrix.group == 'restrict-fileupload' }}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
