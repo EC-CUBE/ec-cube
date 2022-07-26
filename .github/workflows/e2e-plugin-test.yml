@@ -78,6 +78,7 @@ jobs:
         run: |
           sudo locale-gen ja_JP.UTF-8
           sudo update-locale LANG=ja_JP.UTF-8
+          export LANGUAGE=ja_JP
       - name: Get base fonts
         run: |
           sudo apt-get install ttf-mscorefonts-installer
