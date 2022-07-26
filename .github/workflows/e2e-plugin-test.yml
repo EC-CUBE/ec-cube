@@ -13,7 +13,7 @@ jobs:
       matrix:
         php: [ 7.4, 8.0, 8.1 ]
         db: [ pgsql10, pgsql14, mysql5, mysql8 ]
-        file: [ PL01RecommendCest, PL02CouponCest, PL03MailMagazineCest, PL05RelatedProductCest, PL06SecurityCheckCest, PL07ProductReviewCest, PL08ApiCest, PL11ProductImagesUploaderCest, PL12MakerCest]
+        file: [ PL01RecommendCest ] # , PL02CouponCest, PL03MailMagazineCest, PL05RelatedProductCest, PL06SecurityCheckCest, PL07ProductReviewCest, PL08ApiCest, PL11ProductImagesUploaderCest, PL12MakerCest
         include:
           - db: pgsql10
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -133,8 +133,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
-
-      - name: Codeception
+      - name: Codeception (Install Process Testing)
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
@@ -144,7 +143,18 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action --html report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+      - name: Codeception (Main Process Testing)
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          GROUP: ${{ matrix.group }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
