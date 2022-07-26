@@ -10915,6 +10915,64 @@
             "time": "2020-10-21T16:48:15+00:00"
         },
         {
+            "name": "codeception/module-doctrine2",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/module-doctrine2.git",
+                "reference": "8f6c868fbda0671f8b1cc3f983ef704b64ea706a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/module-doctrine2/zipball/8f6c868fbda0671f8b1cc3f983ef704b64ea706a",
+                "reference": "8f6c868fbda0671f8b1cc3f983ef704b64ea706a",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/codeception": "^4.0",
+                "ext-json": "*",
+                "ext-pdo": "*",
+                "php": "^7.4 | ^8.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1",
+                "doctrine/data-fixtures": "^1",
+                "doctrine/orm": "^2.10",
+                "phpstan/phpstan": "^0.12",
+                "ramsey/uuid-doctrine": "^1.5",
+                "symfony/cache": "^4.4 | ^5.4 | ^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bodnarchuk"
+                },
+                {
+                    "name": "Alex Kunin"
+                }
+            ],
+            "description": "Doctrine2 module for Codeception",
+            "homepage": "https://codeception.com/",
+            "keywords": [
+                "codeception",
+                "doctrine2"
+            ],
+            "support": {
+                "issues": "https://github.com/Codeception/module-doctrine2/issues",
+                "source": "https://github.com/Codeception/module-doctrine2/tree/2.0.1"
+            },
+            "time": "2022-01-28T18:19:43+00:00"
+        },
+        {
             "name": "codeception/module-phpbrowser",
             "version": "1.0.2",
             "source": {
@@ -11024,9 +11082,77 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-rest/issues",
-                "source": "https://github.com/Codeception/module-rest/tree/1.4.2"
+                "source": "https://github.com/Codeception/module-rest/tree/2.0.2"
             },
-            "time": "2021-11-18T18:58:15+00:00"
+            "time": "2022-03-30T05:42:11+00:00"
+        },
+        {
+            "name": "codeception/module-symfony",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/module-symfony.git",
+                "reference": "518b73ac6776223be3a1c2ae6bda53c5b667d938"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/module-symfony/zipball/518b73ac6776223be3a1c2ae6bda53c5b667d938",
+                "reference": "518b73ac6776223be3a1c2ae6bda53c5b667d938",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/codeception": "^4.0",
+                "codeception/lib-innerbrowser": "^1.4",
+                "ext-json": "*",
+                "php": "^7.4 | ^8.0"
+            },
+            "require-dev": {
+                "codeception/module-asserts": "^1.3",
+                "codeception/module-doctrine2": "^1.1",
+                "doctrine/orm": "^2.10",
+                "symfony/form": "^4.4 | ^5.0",
+                "symfony/framework-bundle": "^4.4 | ^5.0",
+                "symfony/http-kernel": "^4.4 | ^5.0",
+                "symfony/mailer": "^4.4 | ^5.0",
+                "symfony/routing": "^4.4 | ^5.0",
+                "symfony/security-bundle": "^4.4 | ^5.0",
+                "symfony/twig-bundle": "^4.4 | ^5.0",
+                "vlucas/phpdotenv": "^4.2 | ^5.3"
+            },
+            "suggest": {
+                "codeception/module-asserts": "Include traditional PHPUnit assertions in your tests",
+                "symfony/web-profiler-bundle": "Tool that gives information about the execution of requests"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bodnarchuk"
+                },
+                {
+                    "name": "Gustavo Nieves",
+                    "homepage": "https://medium.com/@ganieves"
+                }
+            ],
+            "description": "Codeception module for Symfony framework",
+            "homepage": "https://codeception.com/",
+            "keywords": [
+                "codeception",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/Codeception/module-symfony/issues",
+                "source": "https://github.com/Codeception/module-symfony/tree/2.1.0"
+            },
+            "time": "2021-11-21T19:48:18+00:00"
         },
         {
             "name": "codeception/module-webdriver",
