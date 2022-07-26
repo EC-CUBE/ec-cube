@@ -43,7 +43,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         $form = [
@@ -55,7 +55,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'phone_number' => $faker->phoneNumber,
             'email' => $email,
             'plain_password' => ['first' => $password, 'second' => $password],
-            'birth' => $birth->format('Y').'-'.$birth->format('n').'-'.$birth->format('j'),
+            'birth' => $birth->format('Y').'-'.$birth->format('m').'-'.$birth->format('d'),
             'sex' => 1,
             'job' => 1,
             'status' => 1,

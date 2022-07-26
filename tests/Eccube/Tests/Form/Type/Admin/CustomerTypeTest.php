@@ -38,13 +38,13 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'addr02' => '梅田',
         ],
         'phone_number' => '012-345-6789',
-        'email' => 'default@example.com',
+        'email' => 'default1@example.com',
         'sex' => 1,
         'job' => 1,
         'birth' => '1983-2-14',
         'plain_password' => [
-            'first' => 'password',
-            'second' => 'password',
+            'first' => 'password1234',
+            'second' => 'password1234',
         ],
         'status' => 1,
         'note' => 'note',
@@ -200,8 +200,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPasswordMinLength()
     {
-        $this->formData['plain_password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
-        $this->formData['plain_password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+        $this->formData['plain_password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1).'1';
+        $this->formData['plain_password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1).'1';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -220,8 +220,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPasswordMaxLength()
     {
-        $this->formData['plain_password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
-        $this->formData['plain_password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+        $this->formData['plain_password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] - 1).'1';
+        $this->formData['plain_password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] - 1).'1';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -235,6 +235,28 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['plain_password']['second'] = $password;
 
         $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPasswordAlphabetOnly()
+    {
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPasswordNumericOnly()
+    {
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len']);
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
         $this->assertFalse($this->form->isValid());
     }
 

@@ -24,8 +24,8 @@ class PasswordResetTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     protected $formData = [
         'login_email' => 'hideki_okajima@ec-cube.co.jp',
         'password' => [
-            'first' => 'password',
-            'second' => 'password',
+            'first' => 'password1234',
+            'second' => 'password1234',
         ],
     ];
 
