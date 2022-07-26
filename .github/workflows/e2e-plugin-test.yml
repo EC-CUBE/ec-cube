@@ -136,7 +136,7 @@ jobs:
 
       - name: Codeception
         env:
-          APP_ENV: ${{ matrix.app_env }}
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
