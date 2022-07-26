@@ -14,7 +14,12 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
+use Doctrine\ORM\EntityManager;
+use Eccube\Entity\Product;
+use Page\Admin\PluginSearchPage;
+use Plugin\Recommend42\Entity\RecommendProduct;
 
 /**
  * @group plugin
@@ -31,17 +36,69 @@ class PL01RecommendCest
      */
     public function _before(AcceptanceTester $I)
     {
+        // Delete all cache as doctrine metadata is always in the way on plugin install.
+        $files = glob(__DIR__ . '../../../../var/cache/dev/*');
+        foreach($files as $file){
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
+        $files = glob(__DIR__ . '../../../../var/cache/codeception/*');
+        foreach($files as $file){
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
         $I->loginAsAdmin();
+    }
+
+
+    /**
+     * @group install
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function recommend_01(AcceptanceTester $I)
+    {
+        if ($I->seePluginIsInstalled('おすすめ商品管理プラグイン', true)) {
+            $I->wantToUninstallPlugin('おすすめ商品管理プラグイン');
+            $I->seePluginIsNotInstalled('おすすめ商品管理プラグイン');
+        }
+        $I->wantToInstallPlugin('おすすめ商品管理プラグイン');
+        $I->seePluginIsInstalled('おすすめ商品管理プラグイン');
+    }
+
+    /**
+     * ⑪ 有効化できる
+     *
+     * @param AcceptanceTester $I
+     * @group install
+     * @return void
+     */
+    public function recommend_02(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', 'おすすめ商品');
+        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'おすすめ商品')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
+        $I->see('「おすすめ商品管理プラグイン」を有効にしました。');
+        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[5]');
+        $I->wait(2);
+        $I->see('おすすめ管理', '(//li[@class="c-mainNavArea__navItem"])[5]');
     }
 
     /**
      * ① 初期状態ではおすすめ商品ブロックがフロントに表示されていないこと
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_1(AcceptanceTester $I)
+    public function recommend_03(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->dontSeeInSource('▼おすすめ商品');
@@ -51,10 +108,10 @@ class PL01RecommendCest
      * ② おすすめ商品ブロックをレイアウト編集画面で追加でき、フロントに表示されること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_2(AcceptanceTester $I)
+    public function recommend_04(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->dontSeeInSource('▼おすすめ商品');
@@ -75,11 +132,24 @@ class PL01RecommendCest
      * ③ おすすめ商品ブロックを別の位置に移動させ、フロント画面に位置が反映されること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_3(AcceptanceTester $I)
+    public function recommend_05(AcceptanceTester $I)
     {
+        if (count($I->grabEntitiesFromRepository(RecommendProduct::class)) === 0) {
+            /**
+             * @var EntityManager $em
+             */
+            $entityManager = Fixtures::get('entityManager');
+            $recommendProduct = new RecommendProduct();
+            $recommendProduct->setProduct($entityManager->getRepository('Eccube\Entity\Product')->find(1));
+            $recommendProduct->setComment('オススメ');
+            $recommendProduct->setSortno(1);
+            $recommendProduct->setVisible(1);
+            $entityManager->persist($recommendProduct);
+            $entityManager->flush();
+        }
         $I->amOnPage('/');
         $I->dontSee('オススメ', '.ec-layoutRole__contentBottom');
         $I->see('オススメ', '.ec-layoutRole__contents');
@@ -98,10 +168,10 @@ class PL01RecommendCest
      * ④ おすすめ商品を未使用ブロックに移動させ、フロント画面に表示されなくなること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_4(AcceptanceTester $I)
+    public function recommend_06(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->see('オススメ', '.ec-layoutRole__contentBottom');
@@ -120,13 +190,12 @@ class PL01RecommendCest
      * ⑥ おすすめ商品に説明文を登録でき、説明文がフロント画面に反映されること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_5_6(AcceptanceTester $I)
+    public function recommend_07(AcceptanceTester $I)
     {
-        $this->recommend_2($I);
-        $this->recommend_3($I);
+        $this->recommend_04($I);
         // フロント側チェック
         $I->amOnPage('/');
         $I->dontSee('チェリーアイスサンド', '.ec-layoutRole__footer');
@@ -148,18 +217,18 @@ class PL01RecommendCest
         $I->see('説明分テスト');
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('チェリーアイスサンド', '.ec-layoutRole__contentBottom');
-        $I->see('説明分テスト', '.ec-layoutRole__contentBottom');
+        $I->see('チェリーアイスサンド', '.ec-layoutRole__mainBottom');
+        $I->see('説明分テスト', '.ec-layoutRole__mainBottom');
     }
 
     /**
      * ⑦ おすすめ商品の並び替えができ、並び順がフロント画面に反映されること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_7(AcceptanceTester $I)
+    public function recommend_08(AcceptanceTester $I)
     {
         // フロント側チェック
         $I->amOnPage('/');
@@ -181,10 +250,10 @@ class PL01RecommendCest
      * ⑧ おすすめ商品を削除でき、フロント画面に反映されること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_8(AcceptanceTester $I)
+    public function recommend_09(AcceptanceTester $I)
     {
         // フロント側チェック
         $I->amOnPage('/');
@@ -206,10 +275,10 @@ class PL01RecommendCest
      * ⑨ おすすめ商品のリンクが遷移できること
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_9(AcceptanceTester $I)
+    public function recommend_10(AcceptanceTester $I)
     {
         // フロント側チェック
         $I->amOnPage('/');
@@ -243,23 +312,16 @@ class PL01RecommendCest
      * ⑩ 無効化できる
      *
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function recommend_10(AcceptanceTester $I)
+    public function recommend_11(AcceptanceTester $I)
     {
         // フロント側チェック
         $I->amOnPage('/');
         $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
         // 無効処理
-        $I->amOnPage('/admin/store/plugin');
-        $recommendPluginRow = Locator::contains('//tr', 'おすすめ商品');
-        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
-        $I->clickWithLeftButton("(//tr[contains(.,'おすすめ商品')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「おすすめ商品管理プラグイン」を無効にしました。');
-        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->wantToDisablePlugin('おすすめ商品管理プラグイン');
         // プラグインのおすすめ商品管理リンクが消えているかどうかをチェック
         $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[5]');
         $I->wait(2);
@@ -270,58 +332,28 @@ class PL01RecommendCest
     }
 
     /**
-     * ⑪ 有効化できる
-     *
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function recommend_11(AcceptanceTester $I)
-    {
-        $I->amOnPage('/admin/store/plugin');
-        $recommendPluginRow = Locator::contains('//tr', 'おすすめ商品');
-        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
-        $I->clickWithLeftButton("(//tr[contains(.,'おすすめ商品')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「おすすめ商品管理プラグイン」を有効にしました。');
-        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
-        $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[5]');
-        $I->wait(2);
-        $I->see('おすすめ管理', '(//li[@class="c-mainNavArea__navItem"])[5]');
-    }
-
-    /**
      * ⑫ アンインストールできる
-     *
+     * @group main
      * @param AcceptanceTester $I
-     * @skip アンインストールしたら、codeceptionとphpunitがなくなるため、スキップする
      * @return void
      */
     public function recommend_12(AcceptanceTester $I)
     {
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('有効', '(//tbody//tr)[1]');
-        $I->clickWithLeftButton('(//i[@class="fa fa-pause fa-lg text-secondary"])[1]');
-        $I->see('「おすすめ商品管理プラグイン」を無効にしました。');
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('無効', '(//tbody//tr)[1]');
-        // プラグイン削除
-        $I->see('おすすめ商品管理プラグイン', '(//tbody//tr)[1]');
-        $I->see('無効', '(//tbody//tr)[1]');
-        $I->clickWithLeftButton('(//i[@class="fa fa-close fa-lg text-secondary"])[1]');
-        $I->wait(2);
-        $I->see('プラグインの削除を確認する');
-        $I->clickWithLeftButton('#officialPluginDeleteButton');
-        // 削除処理を待つ
         $I->retry(20, 1000);
-        $I->retrySee('削除が完了しました。');
-        $I->see('完了');
+        $I->wantToUninstallPlugin('おすすめ商品管理プラグイン');
         // プラグインの状態を確認する
-        $I->clickWithLeftButton('(//div[@class="modal-footer"]//button[@class="btn btn-ec-sub"])[2]');
         $xpath = Locator::contains('tr', 'おすすめ商品管理プラグイン');
         $I->see('インストール', $xpath);
     }
+
+//    public function _after(AcceptanceTester $I)
+//    {
+//        var_dump("I GOT HERE");
+//        $result = $I->wantToDisablePlugin('おすすめ商品管理プラグイン', true);
+//        var_dump($result);
+//        $result = $I->wantToUninstallPlugin('おすすめ商品管理プラグイン', true);
+//        $result;
+//    }
 }

@@ -13,6 +13,7 @@
 
 use Carbon\Carbon;
 use Codeception\Util\Fixtures;
+use Codeception\Util\Locator;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Facebook\WebDriver\WebDriverBy;
@@ -274,5 +275,104 @@ class AcceptanceTester extends \Codeception\Actor
         $customer = $createCustomer();
         $this->asACustomer = $customer;
         $I->loginAsMember($customer->getEmail(), 'password');
+    }
+
+    public function wantToInstallPlugin(string $pluginName) {
+        $I = $this;
+        $I->retry(10, 500);
+        $I->amOnPage('/admin/store/plugin');
+        $targetRow = Locator::contains('//tr', $pluginName);
+        $I->click($targetRow . Locator::contains('//a', 'インストール'));
+        //
+        $I->seeInCurrentUrl('admin/store/plugin/api/install');
+        $I->see($pluginName);
+        $I->click(Locator::contains('//button[@data-mode="install"]', 'インストール'));
+        $I->retrySee('インストール確認');
+        $I->click('//button[@id="installBtn"]');
+        $I->retrySee('インストールが完了しました。');
+        $I->click(Locator::contains('//a', '完了'));
+        //
+        $I->seeInCurrentUrl('admin/store/plugin');
+    }
+
+    public function seePluginIsInstalled(string $pluginName, bool $safeEscape = false) {
+        $I = $this;
+        $I->amOnPage('/admin/store/plugin');
+        $targetRow = Locator::contains('//tr', $pluginName);
+        if ($safeEscape === true) {
+            try {
+                $I->dontSee('インストール', $targetRow);
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+        $I->dontSee('インストール・', $targetRow);
+        //  $I->see('無効');
+    }
+
+    public function seePluginIsNotInstalled(string $pluginName, bool $safeEscape = false) {
+        $I = $this;
+        $I->amOnPage('/admin/store/plugin');
+        $targetRow = Locator::contains('//tr', $pluginName);
+        if ($safeEscape === true) {
+            try {
+                $I->see('インストール', $targetRow);
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+        $I->see('インストール', $targetRow);
+    }
+
+    public function wantToUninstallPlugin(string $pluginName, bool $safeEscape = false): bool
+    {
+        try {
+            $I = $this;
+            $I->retry(10, 500);
+            $I->amOnPage('/admin/store/plugin');
+            $targetRow = Locator::contains('//tr', $pluginName);
+            $I->click($targetRow . '//a[@data-bs-target="#officialPluginDeleteModal"]');
+            $I->retrySee('プラグインの削除を確認する');
+            $I->click('//button[@id="officialPluginDeleteButton"]');
+            $I->retrySee('削除が完了しました。');
+            $I->click(Locator::contains('//button', '完了'));
+            //
+            $I->seeInCurrentUrl('admin/store/plugin');
+            return true;
+        } catch (\Exception $e) {
+            if ($safeEscape === true) {
+                var_dump($e->getMessage());
+                return false;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function wantToDisablePlugin(string $pluginName, bool $safeEscape = false): bool
+    {
+        try {
+            $I = $this;
+            $I->retry(10, 500);
+            $I->amOnPage('/admin/store/plugin');
+            $recommendPluginRow = Locator::contains('//tr', $pluginName);
+            $I->see($pluginName, $recommendPluginRow);
+            $I->see('有効', $recommendPluginRow);
+            $I->clickWithLeftButton("(" . $recommendPluginRow . "//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+            $I->see(sprintf('「%s」を無効にしました。', $pluginName));
+            $I->see($pluginName, $recommendPluginRow);
+            $I->see('無効', $recommendPluginRow);
+            return true;
+        } catch (\Exception $e) {
+            if($safeEscape === true) {
+                var_dump($e->getMessage());
+                return false;
+            }
+            throw $e;
+        }
     }
 }
