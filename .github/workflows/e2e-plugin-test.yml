@@ -4,17 +4,6 @@ on:
     - cron: '*/5 * * * *'
   workflow_dispatch:
   push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
 jobs:
   e2e_plugin_codeception:
     name: Codeception
