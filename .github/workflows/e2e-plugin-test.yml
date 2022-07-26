@@ -74,7 +74,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-
+      - name: Set System Locale to Japanese
+        run: |
+          sudo locale-gen ja_JP.UTF-8
+          sudo update-locale LANG=ja_JP.UTF-8
+      - name: Get base fonts
+        - run: |
+            sudo apt-get install ttf-mscorefonts-installer
+            sudo fc-cache -fv
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
