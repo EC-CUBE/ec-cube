@@ -1,5 +1,7 @@
 name: Plugin E2E Test for EC-Cube
 on:
+  schedule:
+    - cron: '*/5 * * * *'
   workflow_dispatch:
   push:
     branches:
