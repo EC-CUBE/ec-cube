@@ -59,6 +59,7 @@ class AcceptanceTester extends \Codeception\Actor
 
         $I = $this;
         $this->goToAdminPage($dir);
+        $this->makeScreenshot();
 
         $I->submitForm('#form1', [
             'login_id' => $user,
