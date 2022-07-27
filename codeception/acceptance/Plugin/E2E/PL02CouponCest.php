@@ -900,10 +900,10 @@ class PL02CouponCest
     private function dateSetter(AcceptanceTester $I, bool $isFutureDate = false): void
     {
         $from = Carbon::now();
-        $to = Carbon::now()->addDay();
+        $to = Carbon::now()->addRealDay();
         if ($isFutureDate) {
-            $from->addDay();
-            $to->addDay();
+            $from->addRealDay();
+            $to->addRealDay();
         }
         // 期間開始日設定
         $I->fillDate("#coupon_available_from_date", $from);
