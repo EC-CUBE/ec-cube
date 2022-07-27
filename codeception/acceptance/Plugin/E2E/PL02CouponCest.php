@@ -33,59 +33,50 @@ class PL02CouponCest
 
     public function _before(AcceptanceTester $I)
     {
+        // Delete all cache as doctrine metadata is always in the way on plugin install.
+        $files = glob(__DIR__ . '../../../../var/cache/dev/*');
+        foreach($files as $file){
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
+        $files = glob(__DIR__ . '../../../../var/cache/codeception/*');
+        foreach($files as $file){
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
         $I->loginAsAdmin();
     }
 
     /**
      * ⓪ インストール
      *
+     * @group install
      * @param AcceptanceTester $I
-     * @skip
-     *
      * @return void
-     */
-    public function coupon_0(AcceptanceTester $I)
-    {
-        $I->amOnPage('/admin/store/plugin');
-        $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
-        $I->see('インストール', $couponRow);
-        $I->click("(//tr[contains(.,'Coupon Plugin for EC-CUBE42')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-    }
-
-    /**
-     * ① 無効化できる
-     *
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     *
      * @throws \Exception
      */
-    public function coupon_1(AcceptanceTester $I)
+    public function coupon_01(AcceptanceTester $I)
     {
-        $I->amOnPage('/admin/store/plugin');
-        $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
-        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
-        $I->see('有効', $couponRow);
-        $I->clickWithLeftButton("(//tr[contains(.,'Coupon Plugin for EC-CUBE42')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「Coupon Plugin for EC-CUBE42」を無効にしました。');
-        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
-        $I->see('無効', $couponRow);
-        $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[3]');
-        $I->wait(2);
-        $I->dontSee('クーポン', '(//li[@class="c-mainNavArea__navItem"])[3]');
+        if ($I->seePluginIsInstalled('Coupon Plugin for EC-CUBE42', true)) {
+            $I->wantToUninstallPlugin('Coupon Plugin for EC-CUBE42');
+            $I->seePluginIsNotInstalled('Coupon Plugin for EC-CUBE42');
+        }
+        $I->wantToInstallPlugin('クーポンプラグイン');
+        $I->seePluginIsInstalled('Coupon Plugin for EC-CUBE42');
     }
 
     /**
      * ② 有効化できる
      *
      * @param AcceptanceTester $I
-     *
+     * @group install
      * @return void
      *
      * @throws \Exception
      */
-    public function coupon_2(AcceptanceTester $I)
+    public function coupon_02(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/store/plugin');
         $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
@@ -102,10 +93,10 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function coupon_3(AcceptanceTester $I, string $attachName = '', bool $isFutureDate = false)
+    public function coupon_03(AcceptanceTester $I, string $attachName = '', bool $isFutureDate = false)
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -126,10 +117,10 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function coupon_4(AcceptanceTester $I, string $attachName = '')
+    public function coupon_04(AcceptanceTester $I, string $attachName = '')
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -160,10 +151,10 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function coupon_5(AcceptanceTester $I, string $attachName = '', string $categoryName = '新入荷')
+    public function coupon_05(AcceptanceTester $I, string $attachName = '', string $categoryName = '新入荷')
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -195,10 +186,10 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function coupon_6(AcceptanceTester $I, $attachName = '')
+    public function coupon_06(AcceptanceTester $I, $attachName = '')
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -222,10 +213,10 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function coupon_7(AcceptanceTester $I, $attachName = '')
+    public function coupon_07(AcceptanceTester $I, $attachName = '')
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -257,10 +248,10 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
      */
-    public function coupon_8(AcceptanceTester $I, $attachName = '', string $categoryName = '新入荷')
+    public function coupon_08(AcceptanceTester $I, $attachName = '', string $categoryName = '新入荷')
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -291,7 +282,12 @@ class PL02CouponCest
         $this->couponCode = $I->grabTextFrom(Locator::contains('//tr', 'category and discount rate test' . $attachName) . '//td[2]');
     }
 
-    public function coupon_9(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function coupon_09(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
@@ -309,6 +305,11 @@ class PL02CouponCest
         $I->see('有効', $couponRow);
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
     public function coupon_10(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -327,6 +328,13 @@ class PL02CouponCest
         $I->see('有効', $couponRow);
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @param $string
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_11(AcceptanceTester $I, $string = '')
     {
         $I->retry(7, 400);
@@ -340,6 +348,12 @@ class PL02CouponCest
         $I->see('無効', $xcouponRow);
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_12(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -351,6 +365,13 @@ class PL02CouponCest
         $I->see('有効', $xcouponRow);
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @param string $string
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_13(AcceptanceTester $I, string $string = '')
     {
         $I->retry(7, 400);
@@ -367,8 +388,9 @@ class PL02CouponCest
     }
 
     /**
+     * @group main
      * @param AcceptanceTester $I
-     *
+     * @param string $randomTokenName
      * @return void
      *
      * @throws \Exception
@@ -410,6 +432,12 @@ class PL02CouponCest
         $this->orderNumber = mb_substr($I->grabTextFrom('.ec-reportDescription > strong'), 8);
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_15(AcceptanceTester $I)
     {
         $this->coupon_14_20($I);
@@ -419,6 +447,12 @@ class PL02CouponCest
         $I->see('-￥100');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_16(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -462,9 +496,8 @@ class PL02CouponCest
 
     /**
      * @param AcceptanceTester $I
-     *
+     * @group main
      * @return void
-     *
      * @throws \Exception
      */
     public function coupon_17(AcceptanceTester $I)
@@ -478,6 +511,12 @@ class PL02CouponCest
         $I->see('￥100');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_18(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -505,6 +544,12 @@ class PL02CouponCest
         $I->see('クーポン対象商品はございません。クーポンコードをご確認ください。');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_19(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -530,6 +575,12 @@ class PL02CouponCest
         $I->see('クーポン対象商品はございません。クーポンコードをご確認ください。');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_21(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -555,6 +606,12 @@ class PL02CouponCest
         $I->see('クーポン対象商品はございません。クーポンコードをご確認ください。');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_22(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -607,6 +664,12 @@ class PL02CouponCest
         $I->see('このクーポンはご利用いただくことができません。');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_23(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -659,6 +722,12 @@ class PL02CouponCest
         $I->see('このクーポンはご利用いただくことができません。');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_24(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -711,6 +780,12 @@ class PL02CouponCest
         $I->see('このクーポンはご利用いただくことができません。');
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_25(AcceptanceTester $I)
     {
         $I->retry(7, 400);
@@ -761,6 +836,40 @@ class PL02CouponCest
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
         $I->dontSee('クーポンコードの入力');
         $I->see('このクーポンはご利用いただくことができません。');
+    }
+
+    /**
+     * ① 無効化できる
+     *
+     * @param AcceptanceTester $I
+     * @group main
+     * @return void
+     * @throws \Exception
+     */
+    public function coupon_26(AcceptanceTester $I)
+    {
+        $I->amOnPage('/admin/store/plugin');
+        $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
+        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
+        $I->see('有効', $couponRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'Coupon Plugin for EC-CUBE42')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「Coupon Plugin for EC-CUBE42」を無効にしました。');
+        $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
+        $I->see('無効', $couponRow);
+        $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[3]');
+        $I->wait(2);
+        $I->dontSee('クーポン', '(//li[@class="c-mainNavArea__navItem"])[3]');
+    }
+
+    public function coupon_27(AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $I->retry(20, 1000);
+        $I->wantToUninstallPlugin('Coupon Plugin for EC-CUBE42');
+        // プラグインの状態を確認する
+        $xpath = Locator::contains('tr', 'クーポンプラグイン');
+        $I->see('インストール', $xpath);
     }
 
 
