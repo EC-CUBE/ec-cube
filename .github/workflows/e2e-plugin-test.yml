@@ -137,14 +137,12 @@ jobs:
           cp codeception/_data/plugins/*-1.0.0.tgz repos
 
       - name: Start PHP Development Server
-        if: ${{ matrix.group != 'restrict-fileupload' }}
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
       - name: Codeception (Install Process Testing)
         env:
@@ -153,7 +151,6 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
@@ -164,7 +161,6 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
