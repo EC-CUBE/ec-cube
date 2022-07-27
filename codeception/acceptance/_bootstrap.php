@@ -39,14 +39,6 @@ $container = $kernel->getContainer();
 $entityManager = $container->get('doctrine')->getManager();
 Fixtures::add('entityManager', $entityManager);
 
-/**
- * @var \Eccube\Entity\BaseInfo $baseInfo
- */
-$baseInfo = $entityManager->getRepository('Eccube\Entity\BaseInfo')->find(1);
-$baseInfo->setAuthenticationKey('oEGZyh6aEnsJs1BahdanLJrAchMSGAHln1P5uNma');
-$entityManager->persist($baseInfo);
-$entityManager->flush();
-
 // // この Fixture は Cest ではできるだけ使用せず, 用途に応じた Fixture を使用すること
 // Fixtures::add('app', $app);
 
