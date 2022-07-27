@@ -909,5 +909,6 @@ class PL02CouponCest
         $I->fillDate("#coupon_available_from_date", $from);
         // 期間終了日設定
         $I->fillDate("#coupon_available_to_date", $to);
+        $I->makeScreenshot();
     }
 }
