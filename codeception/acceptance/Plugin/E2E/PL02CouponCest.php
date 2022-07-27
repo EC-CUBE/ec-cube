@@ -865,11 +865,18 @@ class PL02CouponCest
         $I->dontSee('クーポン', '(//li[@class="c-mainNavArea__navItem"])[3]');
     }
 
+    /**
+     *
+     * @param AcceptanceTester $I
+     * @group main
+     * @return void
+     * @throws \Exception
+     */
     public function coupon_27(AcceptanceTester $I)
     {
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
-        $I->retry(20, 1000);
+        $I->retry(10, 1000);
         $I->wantToUninstallPlugin('Coupon Plugin for EC-CUBE42');
         // プラグインの状態を確認する
         $xpath = Locator::contains('tr', 'クーポンプラグイン');

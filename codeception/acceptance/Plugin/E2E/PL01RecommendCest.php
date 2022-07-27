@@ -341,19 +341,10 @@ class PL01RecommendCest
     {
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
-        $I->retry(20, 1000);
+        $I->retry(10, 1000);
         $I->wantToUninstallPlugin('おすすめ商品管理プラグイン');
         // プラグインの状態を確認する
         $xpath = Locator::contains('tr', 'おすすめ商品管理プラグイン');
         $I->see('インストール', $xpath);
     }
-
-//    public function _after(AcceptanceTester $I)
-//    {
-//        var_dump("I GOT HERE");
-//        $result = $I->wantToDisablePlugin('おすすめ商品管理プラグイン', true);
-//        var_dump($result);
-//        $result = $I->wantToUninstallPlugin('おすすめ商品管理プラグイン', true);
-//        $result;
-//    }
 }
