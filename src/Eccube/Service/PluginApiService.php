@@ -146,6 +146,8 @@ class PluginApiService
         $url = $this->getApiUrl().'/plugins/purchased';
 
         $payload = $this->requestApi($url);
+        var_dump($payload);
+        exit();
         $plugins = json_decode($payload, true);
 
         return $this->buildPlugins($plugins);
@@ -291,7 +293,8 @@ class PluginApiService
         if ($this->requestStack->getCurrentRequest()) {
             $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
         }
-
+        var_dump("THE KEY...");
+        var_dump($key);
         // Option array
         $options = [
             // HEADER
@@ -321,6 +324,9 @@ class PluginApiService
         if ($info['http_code'] !== 200) {
             throw new PluginApiException($info);
         }
+
+        var_dump("THE DUMP");
+        var_dump($result);
 
         return $result;
     }
