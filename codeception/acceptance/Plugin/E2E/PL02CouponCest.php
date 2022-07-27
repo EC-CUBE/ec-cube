@@ -59,7 +59,7 @@ class PL02CouponCest
      */
     public function coupon_01(AcceptanceTester $I)
     {
-        if ($I->seePluginIsInstalled('Coupon Plugin for EC-CUBE42', true)) {
+        if ($I->seePluginIsInstalled('クーポンプラグイン', true)) {
             $I->wantToUninstallPlugin('Coupon Plugin for EC-CUBE42');
             $I->seePluginIsNotInstalled('Coupon Plugin for EC-CUBE42');
         }
