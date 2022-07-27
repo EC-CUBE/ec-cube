@@ -687,7 +687,9 @@ class PluginService
             $this->regenerateProxy($plugin, false);
 
             $em->flush();
-            $em->getConnection()->commit();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                $em->getConnection()->commit();
+            }
 
             if ($enable) {
                 $this->pluginApiService->pluginEnabled($plugin);
@@ -695,7 +697,11 @@ class PluginService
                 $this->pluginApiService->pluginDisabled($plugin);
             }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($em->getConnection()->isRollbackOnly()) {
+                    $em->getConnection()->rollback();
+                }
+            }
             throw $e;
         }
 
