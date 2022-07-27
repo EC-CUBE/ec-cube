@@ -17,7 +17,6 @@ use AcceptanceTester;
 use Carbon\Carbon;
 use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
-use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * @group plugin
@@ -100,6 +99,9 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $this->baseRegistrationPage($I);
+        if (empty($attachName)) {
+            $attachName = bin2hex(random_bytes(10));
+        }
         $I->fillField('#coupon_coupon_name', 'all products and set discount test ' . $attachName);
         $I->fillField('#coupon_coupon_release', '1');
         // 期間開始日設定
@@ -196,7 +198,7 @@ class PL02CouponCest
         if (empty($attachName)) {
             $attachName = bin2hex(random_bytes(10));
         }
-        $I->fillField('#coupon_coupon_name', 'all products and percentage discount test'.$attachName);
+        $I->fillField('#coupon_coupon_name', 'all products and percentage discount test '.$attachName);
         $I->fillField('#coupon_coupon_release', '1');
         $this->dateSetter($I);
         $I->clickWithLeftButton('#coupon_coupon_type_2');
@@ -341,7 +343,7 @@ class PL02CouponCest
         if (empty($string)) {
             $string = bin2hex(random_bytes(10));
         }
-        $this->coupon_3($I, $string);
+        $this->coupon_03($I, $string);
         $xcouponRow = Locator::contains('//tr', 'all products and set discount test ' . $string);
         $I->click($xcouponRow . Locator::contains('//a', '有効'));
         $I->see('クーポンの状態を変更しました。');
@@ -378,7 +380,7 @@ class PL02CouponCest
         if (empty($string)) {
             $string = bin2hex(random_bytes(10));
         }
-        $this->coupon_3($I, $string);
+        $this->coupon_03($I, $string);
         $xcouponRow = Locator::contains('//tr', 'all products and set discount test ' . $string);
         $I->click($xcouponRow . '//i[@class="fa fa-close fa-lg text-secondary"]');
         $I->retrySee('このクーポンを削除しても宜しいですか？');
@@ -401,7 +403,7 @@ class PL02CouponCest
         if (empty($randomTokenName)) {
             $randomTokenName = bin2hex(random_bytes(10));
         }
-        $this->coupon_3($I, $randomTokenName);
+        $this->coupon_03($I, $randomTokenName);
         $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
@@ -459,7 +461,7 @@ class PL02CouponCest
         if (empty($randomTokenName)) {
             $randomTokenName = bin2hex(random_bytes(10));
         }
-        $this->coupon_3($I, $randomTokenName);
+        $this->coupon_03($I, $randomTokenName);
         $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
@@ -585,7 +587,7 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_3($I, $randomTokenName, true);
+        $this->coupon_03($I, $randomTokenName, true);
         $I->generateCustomerAndLogin();
         $I->amOnPage('products/detail/1');
         $I->selectOption('#classcategory_id1', 'チョコ');
@@ -616,7 +618,7 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_4($I, $randomTokenName);
+        $this->coupon_04($I, $randomTokenName);
         $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
@@ -646,7 +648,7 @@ class PL02CouponCest
 
         // Product Excludes Coupon
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_4($I, $randomTokenName);
+        $this->coupon_04($I, $randomTokenName);
         $I->amOnPage('products/detail/2');
         $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
         $I->retrySee('カートに追加しました。');
@@ -674,7 +676,7 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_5($I, $randomTokenName, 'ジェラート');
+        $this->coupon_05($I, $randomTokenName, 'ジェラート');
         $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
@@ -704,7 +706,7 @@ class PL02CouponCest
         // 確認
         // Product Excludes Coupon
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_5($I, $randomTokenName, 'ジェラート');
+        $this->coupon_05($I, $randomTokenName, 'ジェラート');
         $I->amOnPage('products/detail/2');
         $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
         $I->retrySee('カートに追加しました。');
@@ -732,7 +734,7 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_7($I, $randomTokenName);
+        $this->coupon_07($I, $randomTokenName);
         $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
@@ -762,7 +764,7 @@ class PL02CouponCest
         // 確認
         // Product Excludes Coupon
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_7($I, $randomTokenName);
+        $this->coupon_07($I, $randomTokenName);
         $I->amOnPage('products/detail/2');
         $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
         $I->retrySee('カートに追加しました。');
@@ -790,7 +792,7 @@ class PL02CouponCest
     {
         $I->retry(7, 400);
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_8($I, $randomTokenName, 'ジェラート');
+        $this->coupon_08($I, $randomTokenName, 'ジェラート');
         $I->generateCustomerAndLogin();
         // Product Includes Coupon
         $I->amOnPage('products/detail/1');
@@ -820,7 +822,7 @@ class PL02CouponCest
         // 確認
         // Product Excludes Coupon
         $randomTokenName = bin2hex(random_bytes(10));
-        $this->coupon_8($I, $randomTokenName, 'ジェラート');
+        $this->coupon_08($I, $randomTokenName, 'ジェラート');
         $I->amOnPage('products/detail/2');
         $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
         $I->retrySee('カートに追加しました。');
@@ -905,12 +907,5 @@ class PL02CouponCest
         $I->fillDate("#coupon_available_from_date", $from);
         // 期間終了日設定
         $I->fillDate("#coupon_available_to_date", $to);
-    }
-
-    private function generateTestMemberAndLogin(AcceptanceTester $I): void
-    {
-        $createCustomer = Fixtures::get('createCustomer');
-        $customer = $createCustomer();
-        $I->loginAsMember($customer->getEmail(), 'password');
     }
 }
