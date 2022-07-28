@@ -324,7 +324,7 @@ class CustomerController extends AbstractController
                     $ExportCsvRow->pushData();
                 }
 
-                //$row[] = number_format(memory_get_usage(true));
+                // $row[] = number_format(memory_get_usage(true));
                 // 出力.
                 $csvService->fputcsv($ExportCsvRow->getRow());
             });

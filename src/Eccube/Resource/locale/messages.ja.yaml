@@ -1143,6 +1143,15 @@ admin.setting.shop.shop.option_point_rate: ポイント付与率
 admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
 
 #------------------------------------------------------------------------------------
+# 設定：店舗設定：特定商取引法設定
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.trade_law.header.name: 名称
+admin.setting.shop.trade_law.header.description: 説明
+admin.setting.shop.trade_law.header.confirm_page_show: 注文確認画面に表示
+admin.setting.shop.trade_law.error.activation_error: 名称・説明を両方入力してください。
+
+#------------------------------------------------------------------------------------
 # 設定：店舗設定：支払方法設定
 #------------------------------------------------------------------------------------
 
@@ -1666,6 +1675,7 @@ tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後�
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
+tooltip.setting.shop.shop.option_invoice_registration_number: 納品書に適格請求書発行事業者登録番号を表示できます。
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
 tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
 tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。

@@ -37,7 +37,7 @@ use Twig\Environment as Twig;
 
 class LayoutController extends AbstractController
 {
-    const DUMMY_BLOCK_ID = 9999999999;
+    public const DUMMY_BLOCK_ID = 9999999999;
 
     /**
      * @var BlockRepository

@@ -215,7 +215,7 @@ class SitemapController extends AbstractController
     private function outputXml(array $data, $template_name = 'sitemap.xml.twig')
     {
         $response = new Response();
-        $response->headers->set('Content-Type', 'application/xml'); //Content-Typeを設定
+        $response->headers->set('Content-Type', 'application/xml'); // Content-Typeを設定
 
         return $this->render(
             $template_name,

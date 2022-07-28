@@ -50,7 +50,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //.envファイルが存在しないときに設定は失敗する
+            // .envファイルが存在しないときに設定は失敗する
             if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
                 $this->addError('admin.common.save_error', 'admin');
 
@@ -75,7 +75,7 @@ class SecurityController extends AbstractController
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_ADMIN_DENY_HOSTS' => "'{$adminDenyHosts}'",
-                'ECCUBE_FORCE_SSL' => $data['force_ssl']  ? '1' : '0',
+                'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? '1' : '0',
                 'TRUSTED_HOSTS' => $data['trusted_hosts'],
             ]);
 

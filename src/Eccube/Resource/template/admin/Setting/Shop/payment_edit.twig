@@ -17,109 +17,84 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
-{% endblock stylesheet %}
-
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.iframe-transport.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-process.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
-    <script>var bootstrapTooltip = $.fn.tooltip.noConflict();</script>
     <script>
-        $.fn.tooltip = bootstrapTooltip;
         $(document).on('drop dragover', function(e) {
             e.preventDefault();
         });
 
         $(function() {
-            var hideThumbnail = function() {
-                if ($('#thumb div').length > 0) {
-                    $('#icon_no_image').css('display', 'none');
-                } else {
-                    $('#icon_no_image').css('display', '');
-                }
-            };
-
-            var proto_img = '<div class="c-form__fileUploadThumbnail">' +
-                '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
-                '</div>';
-            var payment_image = $('#{{ form.payment_image.vars.id }}').val();
-            if (payment_image != '') {
-                var filename = $('#{{ form.payment_image.vars.id }}').val();
-                if (payment_image == '{{ oldPaymentImage }}') {
-                    var path = '{{ asset('', 'save_image') }}' + filename;
-                } else {
-                    var path = '{{ asset('', 'temp_image') }}' + filename;
-                }
-                var $img = $(proto_img).css('background-image', 'url(' + path + ')');
-                $('#{{ form.payment_image.vars.id }}').val(filename);
-
-                $('#thumb').append($img);
-                hideThumbnail();
-            }
-            hideThumbnail();
-
-            $('#{{ form.payment_image_file.vars.id }}').fileupload({
-                url: "{{ url('admin_payment_image_add') }}",
-                type: 'post',
-                dataType: 'json',
-                dropZone: $('#upload-zone'),
-                done: function(e, data) {
-                    $('.progress').hide();
-                    var path = '{{ asset('', 'temp_image') }}/' + data.result.filename;
-                    var $img = $(proto_img).css('background-image', 'url(' + path + ')');;
-                    $('#{{ form.payment_image.vars.id }}').val(data.result.filename);
-
-                    $('#thumb').append($img);
-                    hideThumbnail();
-                },
-                fail: function(e, data) {
-                    alert('{{ 'admin.common.upload_error'|trans }}');
-                },
-                always: function(e, data) {
-                    $('.progress').hide();
-                    $('.progress .progress-bar').width('0%');
-                },
-                start: function(e, data) {
-                    if ($('.c-form__fileUploadThumbnail').length >= 1) {
-                        $.each($('.delete-image'), function(index, delete_image) {
-                            delete_image.click();
-                        });
+            // ファイルアップロード
+            // see https://pqina.nl/filepond/
+            var inputFileElement = document.querySelector('input[type=file]');
+            FilePond.setOptions({
+                server: {
+                    process: {
+                        url: '{{ path('admin_payment_image_process') }}',
+                        headers: {
+                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    },
+                    load: {
+                        url: '{{ path('admin_payment_image_load') }}?source=',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    },
+                    revert: {
+                        url: '{{ path('admin_payment_image_revert') }}',
+                        headers: {
+                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
                     }
-                    $('.progress').show();
-                    $('#thumb').find('div').remove();
-                    $('#{{ form.payment_image.vars.id }}').val('');
-                },
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                }
+            });
+            var pond = FilePond.create(inputFileElement, {
+                allowFileTypeValidation: true,
+                acceptedFileTypes: [
+                    'image/gif',
+                    'image/png',
+                    'image/jpeg'
+                ],
+                allowFileSizeValidation: true,
                 maxFileSize: 10000000,
-                maxNumberOfFiles: 1,
-                progressall: function(e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('.progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                },
-                processalways: function(e, data) {
-                    if (data.files.error) {
-                        alert("{{ 'admin.common.upload_error'|trans }}");
-                    }
+                maxFiles: 1,
+                allowBrowse: true,
+                labelIdle: '<i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true" style="font-size: 40px"></i>{{ 'admin.common.drag_and_drop_image_description'|trans }}<span class="filepond--label-action">{{ 'admin.common.file_select'|trans }}</span>',
+                // 保存されている画像のロード
+                files: [
+                    {% if form.payment_image.vars.value is not empty %}
+                    {
+                        {% if form.payment_image.vars.value == oldPaymentImage %}
+                        source: '{{ form.payment_image.vars.value }}',
+                        {% else %}
+                        source: '{{ form.payment_image.vars.value }}',
+                        {% endif %}
+                        options: {
+                            type: 'local'
+                        }
+                    },
+                    {% endif %}
+                ]
+            });
+
+            // 画像が追加されたら payment_image にファイル名を追加する
+            pond.on('processfile', function(error, file) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    $('#{{ form.payment_image.vars.id }}').val(file.serverId);
                 }
             });
-
-            $('#thumb').on('click', '.delete-image', function() {
-                $('#{{ form.payment_image.vars.id }}').val('');
-                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
-                $(thumbnail).remove();
-                hideThumbnail();
-            });
-
-            // 画像アップロード
-            $('#file_upload').on('click', function() {
-                $('#{{ form.payment_image_file.vars.id }}').click();
+            // 画像が削除されたら payment_image のファイル名を削除する
+            pond.on('removefile', function(error, file) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    $('#{{ form.payment_image.vars.id }}').val('');
+                }
             });
         });
     </script>
@@ -151,7 +126,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.payment.rule'|trans }}">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.payment.rule'|trans }}">
                                         <span><span>{{ 'admin.setting.shop.payment.terms_of_use'|trans }}</span></span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
@@ -172,26 +147,17 @@ file that was distributed with this source code.
 
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.payment.logo_image'|trans }}">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.payment.logo_image'|trans }}">
                                         <span>{{ 'admin.setting.shop.payment.logo_image'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                         <br>{{ 'admin.setting.shop.payment.logo_image_size'|trans }}
                                     </div>
                                 </div>
                                 <div class="col mb-2">
-                                    <div class="progress" style="display: none;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <div id="thumb" class="c-form__fileUploadThumbnails clearfix"></div>
                                     {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
-                                    <div id="upload-zone" class="media py-5 border-ec-dashed mb-2 rounded">
+                                    <div id="upload-zone" class="media py-3">
                                         <div class="media-body">
-                                            <i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true"></i>
-                                            {{ 'admin.common.drag_and_drop_image_description'|trans }}
-                                            {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                            {{ form_widget(form.payment_image_file, { attr : { style : 'display:none;' } }) }}
                                             {{ form_errors(form.payment_image) }}
-                                            <a class="btn btn-ec-regular mr-2" onclick="$('#payment_register_payment_image_file').click()">
-                                                {{ 'admin.common.file_select'|trans }}
-                                            </a>
                                         </div><!-- /.media-body -->
                                     </div><!-- /.media -->
                                 </div>

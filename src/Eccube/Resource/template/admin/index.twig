@@ -17,9 +17,6 @@ file that was distributed with this source code.
     <script>
         $(function() {
             var options = {
-                legend: {
-                    display: false
-                },
                 layout: {
                     padding: {
                         left: 0,
@@ -28,28 +25,27 @@ file that was distributed with this source code.
                         bottom: 0
                     }
                 },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            return '{{ currency_symbol() }}' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return '{{ currency_symbol() }}' + tooltipItem.formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            }
                         }
                     }
                 },
                 scales: {
-                    y: [
-                        {
-                            id: 'y-axis-1',
-                            display: true,
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function(label, index, labels) {
-                                    if (Math.floor(label) === label) {
-                                        return '{{ currency_symbol() }}' + label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                                    }
+                    y: {
+                        beginatzero: true,
+                        display: true,
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                if (Math.floor(value) === value) {
+                                    return '{{ currency_symbol() }}' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                                 }
                             }
                         }
-                    ]
+                    }
                 }
             };
 
@@ -90,7 +86,7 @@ file that was distributed with this source code.
                                     backgroundColor: priceBackgroundColors,
                                     borderColor: priceBorderColors,
                                     borderWidth: 1,
-                                    yAxisID: 'y-axis-1'
+                                    yAxisID: 'y'
                                 }
                             ]
                         },
@@ -111,7 +107,7 @@ file that was distributed with this source code.
     {% if is_danger_admin_url %}
     <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
         <i class="fa fa-warning fa-lg mr-2"></i>
-        <span class="font-weight-bold">{{ 'admin.common.admin_url_warning'|trans({ '%url%': url('admin_setting_system_security') })|raw }}</span>
+        <span class="fw-bold">{{ 'admin.common.admin_url_warning'|trans({ '%url%': url('admin_setting_system_security') })|raw }}</span>
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
             
         </button>
@@ -130,13 +126,13 @@ file that was distributed with this source code.
                             </div>
                             <div class="card-body p-0">
                                 {% for OrderStatus in OrderStatuses %}
-                                    <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                    <div class="d-block border border-top-0 border-start-0 border-end-0">
                                         <a href="{{ url('admin_order', { 'order_status_id': OrderStatus.id }) }}" class="p-3 d-block">
                                             <div class="row align-items-center">
                                                 <div class="col align-middle">
                                                     <span class="align-middle">{{ OrderStatus.name }}</span>
                                                 </div>
-                                                <div class="col-auto text-right align-middle">
+                                                <div class="col-auto text-end align-middle">
                                                     <span class="h4 align-middle font-weight-normal text-dark">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
                                                 </div>
                                             </div>
@@ -226,7 +222,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="card-body p-0">
-                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                <div class="d-block border border-top-0 border-start-0 border-end-0">
                                     <a href="{{ url('admin_homepage_nonstock') }}" class="p-3 d-block">
                                         <div class="row align-items-center">
                                             <div class="col-2 align-middle text-center">
@@ -235,13 +231,13 @@ file that was distributed with this source code.
                                             <div class="col p-0">
                                                 <span class="align-middle">{{ 'admin.home.shop_status_out_of_stock'|trans }}</span>
                                             </div>
-                                            <div class="col-auto text-right align-middle">
+                                            <div class="col-auto text-end align-middle">
                                                 <span class="h4 align-middle font-weight-normal text-dark">{{ countNonStockProducts|number_format }}</span>
                                             </div>
                                         </div>
                                     </a>
                                 </div>
-                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                <div class="d-block border border-top-0 border-start-0 border-end-0">
                                     <a href="{{ url('admin_product') }}" class="p-3 d-block">
                                         <div class="row align-items-center">
                                             <div class="col-2 align-middle text-center">
@@ -256,7 +252,7 @@ file that was distributed with this source code.
                                         </div>
                                     </a>
                                 </div>
-                                <div class="d-block border border-top-0 border-left-0 border-right-0">
+                                <div class="d-block border border-top-0 border-start-0 border-end-0">
                                     <a href="{{ url('admin_homepage_customer') }}" class="p-3 d-block">
                                         <div class="row align-items-center">
                                             <div class="col-2 align-middle text-center">
@@ -283,13 +279,13 @@ file that was distributed with this source code.
                             </div>
                             <div class="card-body py-0" style="max-height: 395px; overflow-y: scroll">
                                 {% for plugin in recommendedPlugins %}
-                                    <div class="row py-3 border border-bottom-0 border-left-0 border-right-0">
+                                    <div class="row py-3 border border-bottom-0 border-start-0 border-end-0">
                                         <div class="col-5 col-md-4">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#searchPluginModal-{{ plugin.id }}">
                                                 <img src="{{ plugin.image }}" class="w-100" alt="{{ plugin.name }}">
                                             </a>
                                         </div>
-                                        <div class="col-7 col-md-8 pl-0">
+                                        <div class="col-7 col-md-8 ps-0">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#searchPluginModal-{{ plugin.id }}">{{ plugin.name }}</a>
                                             <p class="m-0 pt-2">
                                                 {{ plugin.short_description }}

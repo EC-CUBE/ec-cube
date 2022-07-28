@@ -30,7 +30,7 @@ if (!class_exists('\Eccube\Entity\Template')) {
         /**
          *  初期テンプレートコード
          */
-        const DEFAULT_TEMPLATE_CODE = 'default';
+        public const DEFAULT_TEMPLATE_CODE = 'default';
 
         /**
          * @return bool

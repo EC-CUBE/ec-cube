@@ -14,8 +14,6 @@
 namespace Eccube\Controller\Install;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
@@ -48,10 +46,10 @@ class InstallController extends AbstractController
     /**
      * default value of auth magic
      */
-    const DEFAULT_AUTH_MAGIC = '<change.me>';
+    public const DEFAULT_AUTH_MAGIC = '<change.me>';
 
     /** @var string */
-    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
+    public const TRANSACTION_CHECK_FILE = '/var/.httransaction';
 
     protected $requiredModules = [
         'pdo',

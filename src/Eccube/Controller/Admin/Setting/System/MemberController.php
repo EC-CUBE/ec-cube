@@ -54,8 +54,7 @@ class MemberController extends AbstractController
         EncoderFactoryInterface $encoderFactory,
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage
-    )
-    {
+    ) {
         $this->encoderFactory = $encoderFactory;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;

@@ -50,12 +50,10 @@ class EccubeConfig implements \ArrayAccess
     /**
      * @param $key
      * @param $value
-     *
-     * @return mixed
      */
     public function set($key, $value)
     {
-        return $this->container->setParameter($key, $value);
+        $this->container->setParameter($key, $value);
     }
 
     /**
@@ -63,6 +61,7 @@ class EccubeConfig implements \ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->has($offset);
@@ -73,6 +72,7 @@ class EccubeConfig implements \ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -82,6 +82,7 @@ class EccubeConfig implements \ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->set($offset, $value);
@@ -92,6 +93,7 @@ class EccubeConfig implements \ArrayAccess
      *
      * @throws \Exception
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new \Exception();

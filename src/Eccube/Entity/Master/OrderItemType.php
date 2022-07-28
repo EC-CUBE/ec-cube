@@ -35,42 +35,42 @@ if (!class_exists(OrderItemType::class, false)) {
          *
          * @var integer
          */
-        const PRODUCT = 1;
+        public const PRODUCT = 1;
 
         /**
          * 送料.
          *
          * @var integer
          */
-        const DELIVERY_FEE = 2;
+        public const DELIVERY_FEE = 2;
 
         /**
          * 手数料.
          *
          * @var integer
          */
-        const CHARGE = 3;
+        public const CHARGE = 3;
 
         /**
          * 値引き.
          *
          * @var integer
          */
-        const DISCOUNT = 4;
+        public const DISCOUNT = 4;
 
         /**
          * 税.
          *
          * @var integer
          */
-        const TAX = 5;
+        public const TAX = 5;
 
         /**
          * ポイント.
          *
          * @var integer
          */
-        const POINT = 6;
+        public const POINT = 6;
 
         /**
          * 商品かどうか

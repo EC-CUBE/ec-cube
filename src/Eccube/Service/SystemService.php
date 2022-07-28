@@ -28,9 +28,9 @@ use function unlink;
 
 class SystemService implements EventSubscriberInterface
 {
-    const MAINTENANCE_TOKEN_KEY = 'maintenance_token';
-    const AUTO_MAINTENANCE = 'auto_maintenance';
-    const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
+    public const MAINTENANCE_TOKEN_KEY = 'maintenance_token';
+    public const AUTO_MAINTENANCE = 'auto_maintenance';
+    public const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
 
     /**
      * メンテナンスモードを無効にする場合はtrue

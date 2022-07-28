@@ -53,9 +53,9 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_destination_info'|trans }}"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_destination_info'|trans }}"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
                         </div>
-                        <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                        <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
                 <div class="collapse show ec-cardCollapse" id="mailTo">
@@ -95,14 +95,14 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8"><span class="card-title">{{ 'admin.order.mail_mail_info'|trans }}</span></div>
-                        <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                        <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
                 <div class="collapse show ec-cardCollapse" id="mailCreate">
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
+                                <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
                                     <span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                 </div>
                             </div>
@@ -113,10 +113,10 @@ $(function() {
                         </div>
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}">
+                                <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}">
                                     <span>{{ 'admin.order.mail_subject'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                 </div>
-                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.mail_subject) }}

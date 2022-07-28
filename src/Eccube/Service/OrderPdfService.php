@@ -63,12 +63,12 @@ class OrderPdfService extends TcpdfFpdi
     // ====================================
 
     /** ダウンロードするPDFファイルのデフォルト名 */
-    const DEFAULT_PDF_FILE_NAME = 'nouhinsyo.pdf';
+    public const DEFAULT_PDF_FILE_NAME = 'nouhinsyo.pdf';
 
     /** FONT ゴシック */
-    const FONT_GOTHIC = 'kozgopromedium';
+    public const FONT_GOTHIC = 'kozgopromedium';
     /** FONT 明朝 */
-    const FONT_SJIS = 'kozminproregular';
+    public const FONT_SJIS = 'kozminproregular';
 
     // ====================================
     // 変数宣言
@@ -311,7 +311,7 @@ class OrderPdfService extends TcpdfFpdi
 
         // 電話番号
         $text = 'TEL: '.$this->baseInfoRepository->getPhoneNumber();
-        $this->lfText(125, 72, $text, 8); //TEL・FAX
+        $this->lfText(125, 72, $text, 8); // TEL・FAX
 
         // メールアドレス
         if (strlen($this->baseInfoRepository->getEmail01()) > 0) {
@@ -342,9 +342,9 @@ class OrderPdfService extends TcpdfFpdi
      */
     protected function renderMessageData(array $formData)
     {
-        $this->lfText(27, 70, $formData['message1'], 8); //メッセージ1
-        $this->lfText(27, 74, $formData['message2'], 8); //メッセージ2
-        $this->lfText(27, 78, $formData['message3'], 8); //メッセージ3
+        $this->lfText(27, 70, $formData['message1'], 8); // メッセージ1
+        $this->lfText(27, 74, $formData['message2'], 8); // メッセージ2
+        $this->lfText(27, 78, $formData['message3'], 8); // メッセージ3
     }
 
     /**
@@ -390,7 +390,7 @@ class OrderPdfService extends TcpdfFpdi
         // フォント情報のバックアップ
         $this->backupFont();
 
-        //文書タイトル（納品書・請求書）
+        // 文書タイトル（納品書・請求書）
         $this->SetFont(self::FONT_GOTHIC, '', 15);
         $this->Cell(0, 10, $title, 0, 2, 'C', 0, '');
         $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
@@ -423,7 +423,7 @@ class OrderPdfService extends TcpdfFpdi
         // $text = $Order->getPref().$Order->getAddr01();
         $text = $Shipping->getPref().$Shipping->getAddr01();
         $this->lfText(27, 47, $text, 10);
-        $this->lfText(27, 51, $Shipping->getAddr02(), 10); //購入者住所2
+        $this->lfText(27, 51, $Shipping->getAddr02(), 10); // 購入者住所2
 
         // 購入者氏名
         if (null !== $Shipping->getCompanyName()) {
@@ -443,14 +443,14 @@ class OrderPdfService extends TcpdfFpdi
         // =========================================
         $this->SetFont(self::FONT_SJIS, '', 10);
 
-        //ご注文日
+        // ご注文日
         $orderDate = $Order->getCreateDate()->format('Y/m/d H:i');
         if ($Order->getOrderDate()) {
             $orderDate = $Order->getOrderDate()->format('Y/m/d H:i');
         }
 
         $this->lfText(25, 125, $orderDate, 10);
-        //注文番号
+        // 注文番号
         $this->lfText(25, 135, $Order->getOrderNo(), 10);
 
         // 総合計金額

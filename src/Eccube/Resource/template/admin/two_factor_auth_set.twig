@@ -47,20 +47,20 @@ $(function () {
                         {{ form_widget(form._token) }}
                         {{ form_widget(form.auth_key) }}
                         <h5 class="mb-3">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</h5>
-                        <p class="mb-3 text-left">{{ 'tooltip.setting.system.two_factor_auth.qr_code'|trans }}</p>
+                        <p class="mb-3 text-start">{{ 'tooltip.setting.system.two_factor_auth.qr_code'|trans }}</p>
                         <div id="qrcode" class="mb-3"></div>
                         {% if error is not empty %}
-                            <div class="text-danger mb-3 text-left small">{{ error }}</div>
+                            <div class="text-danger mb-3 text-start small">{{ error }}</div>
                         {% endif %}
                         <div class="row">
                             <div class="col-12">
                                 <div class="mb-3 d-flex justify-content-center">
                                     {{ form_widget(form.device_token, {'attr': {'class':'w-100','placeholder': 'admin.setting.system.two_factor_auth.device_token', 'autofocus': true}}) }}
                                 </div>
-                                <p class="mb-3 text-left">{{ form_errors(form.device_token) }}</p>
+                                <p class="mb-3 text-start">{{ form_errors(form.device_token) }}</p>
                             </div>
                             <div class="col-12">
-                            	<button type="submit" class="btn btn-primary btn-block">{{ 'admin.common.registration'|trans }}</button>
+                            	<button type="submit" class="btn btn-primary w-100">{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                         

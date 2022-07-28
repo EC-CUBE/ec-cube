@@ -21,7 +21,7 @@ $(function() {
         <table class="table table-sm">
             <thead>
             <tr>
-                <th class="border-top-0 pl-3 pt-2 pb-2">{{ 'admin.store.plugin_table.887'|trans }}</th>
+                <th class="border-top-0 ps-3 pt-2 pb-2">{{ 'admin.store.plugin_table.887'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.888'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.889'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.901'|trans }}</th>
@@ -36,7 +36,7 @@ $(function() {
                 <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action=""
                       enctype="multipart/form-data">
                     <tr class="{% if Plugin.enabled == false %}active{% endif %}">
-                        <td class="align-middle pl-3">
+                        <td class="align-middle ps-3">
                             {{ Plugin.name }}
                         </td>
                         <td class="align-middle">{{ Plugin.version }}</td>
@@ -78,7 +78,7 @@ $(function() {
                                                data-bs-toggle="modal"
                                                data-bs-target="#localPluginDeleteModal"
                                                data-delete-url="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}">
-                                                <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="削除"></i>
+                                                <i class="fa fa-close fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="削除"></i>
                                             </a>
                                         </div>
                                         {% endif %}
@@ -87,7 +87,7 @@ $(function() {
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="post" data-confirm="false">
-                                                <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
+                                                <i class="fa fa-pause fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
                                             </a>
                                         </div>
                                         {% else %}
@@ -95,7 +95,7 @@ $(function() {
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                                class="btn btn-ec-actionIcon"
                                                data-method="post" data-confirm="false">
-                                                <i class="fa fa-play fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
+                                                <i class="fa fa-play fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
                                             </a>
                                         </div>
                                         {% endif %}
@@ -103,8 +103,8 @@ $(function() {
                                         <div class="col-6 px-0">
                                             <a href='{{ configPages[Plugin.code] }}'
                                                class="btn btn-ec-actionIcon">
-                                                <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
-                                                   data-placement="top" title="{{ 'admin.store.plugin_table.891'|trans }}"></i></a>
+                                                <i class="fa fa-cog fa-lg text-secondary" data-bs-toggle="tooltip"
+                                                   data-bs-placement="top" title="{{ 'admin.store.plugin_table.891'|trans }}"></i></a>
                                         </div>
                                         {% endif %}
                                 </div>
@@ -130,15 +130,15 @@ $(function() {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">
+                <h5 class="modal-title fw-bold">
                     {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
                 <button class="close" type="button"
                         data-bs-dismiss="modal"
                         aria-label="Close">
                 </button>
             </div>
-            <div class="modal-body text-left">
-                <p class="text-left">
+            <div class="modal-body text-start">
+                <p class="text-start">
                     {{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
             </div>
             <div class="modal-footer">

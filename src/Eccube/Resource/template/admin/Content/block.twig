@@ -41,11 +41,11 @@ file that was distributed with this source code.
                         <a class="btn btn-ec-regular" href="{{ url('admin_content_block_new') }}">{{ 'admin.common.create__new'|trans }}</a>
                     </div>
                     <div class="col-3">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    <div class="input-group-text">
+                                        <span id="basic-addon1"><i class="fa fa-search"></i></span>
                                     </div>
                                     <input id="search-block" class="form-control" type="search" aria-label="Search">
                                 </div>
@@ -58,7 +58,7 @@ file that was distributed with this source code.
                         <div class="card rounded border-0">
                             <ul class="list-group list-group-flush">
                                 <li>
-                                    <div class="row p-3 font-weight-bold">
+                                    <div class="row p-3 fw-bold">
                                         <div class="col-4 col-md-6">{{ 'admin.content.block_name'|trans }}</div>
                                         <div class="col-3 col-md-4">{{ 'admin.content.block_file_name'|trans }}</div>
                                         <div class="col-5 col-md-2"></div>
@@ -77,16 +77,16 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="col-5 col-md-2">
                                                 <div class="row">
-                                                    <div class="col-6 text-right">
+                                                    <div class="col-6 text-end">
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
-                                                           class="btn btn-ec-actionIcon mr-3" data-tooltip="true"
-                                                           data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                           class="btn btn-ec-actionIcon mr-3" data-bs-toggle="tooltip"
+                                                           data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>
                                                     {% if Block.deletable %}
                                                         <div class="col-6">
-                                                            <div class="d-inline-block mr-3" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ Block.id }}" class="btn btn-ec-actionIcon">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                                 </a>
@@ -97,13 +97,13 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                        <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                                             
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Block.name }) }}</p>
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Block.name }) }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>

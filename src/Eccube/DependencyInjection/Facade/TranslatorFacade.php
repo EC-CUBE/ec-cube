@@ -13,7 +13,6 @@
 
 namespace Eccube\DependencyInjection\Facade;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TranslatorFacade

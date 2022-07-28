@@ -57,8 +57,7 @@ class CustomerRepository extends AbstractRepository
     protected $encoderFactory;
 
     public const COLUMNS = [
-        'customer_id' => 'c.id'
-        ,'name'=> 'c.name01'
+        'customer_id' => 'c.id', 'name' => 'c.name01',
     ];
 
     /**
@@ -106,7 +105,7 @@ class CustomerRepository extends AbstractRepository
             ->select('c');
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            //スペース除去
+            // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {

@@ -64,7 +64,7 @@ file that was distributed with this source code.
                     $('a.up.disabled').removeClass('disabled');
                     $('a.down.disabled').removeClass('disabled');
                     // First element
-                    $('.sortable-item > li:nth-child(2) > div > div.col-auto.text-right > a.up').addClass('disabled');
+                    $('.sortable-item > li:nth-child(2) > div > div.col-auto.text-end > a.up').addClass('disabled');
                 }).always(function() {
                     redrawDisableAllows();
                     $('.modal-backdrop').remove();
@@ -144,14 +144,14 @@ file that was distributed with this source code.
                         <div class="card rounded border-0">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
-                                    <form role="form" class="form-row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
+                                    <form role="form" class="row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
                                         <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
                                         <div class="col-3 mr-2">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
-                                        <div class="col-auto align-self-center" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.backend_name'|trans }}">
+                                        <div class="col-auto align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.backend_name'|trans }}">
                                             <span>{{ 'admin.product.class_name__backend_name'|trans }}</span>
                                             <i class="fa fa-question-circle fa-lg ml-1"></i>
                                         </div>
@@ -179,18 +179,18 @@ file that was distributed with this source code.
                                             <div class="col d-flex align-items-center">
                                                 <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }}［{{ 'admin.product.class_name__backend_name'|trans }}{{ 'admin.common.separator__colon'|trans }}{{ ClassName.backend_name }}］ ({{ ClassName.ClassCategories|length }})</a>
                                             </div>
-                                            <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-2 up {% if loop.first %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                            <div class="col-auto text-end">
+                                                <a class="btn btn-ec-actionIcon mr-2 up {% if loop.first %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 down {% if loop.last %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 down {% if loop.last %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-tooltip="true" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-2" data-tooltip="true"
-                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                <div class="d-inline-block mr-2" data-bs-toggle="tooltip"
+                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     {% set classCategories = ClassName.ClassCategories|length %}
                                                     <a class="btn btn-ec-actionIcon{% if classCategories > 0 %} disabled{% endif %}"
                                                        {% if classCategories == 0 %}data-bs-toggle="modal" data-bs-target="#DeleteModal"
@@ -201,7 +201,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         </div>
-                                        <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_class_name') }}">
+                                        <form class="row d-none mode-edit" method="post" action="{{ url('admin_product_class_name') }}">
                                             {{ form_widget(forms[ClassName.id]._token) }}
                                             <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
@@ -229,15 +229,15 @@ file that was distributed with this source code.
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bold">
+                                            <h5 class="modal-title fw-bold">
                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                             </h5>
                                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                                 
                                             </button>
                                         </div>
-                                        <div class="modal-body text-left">
-                                            <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                        <div class="modal-body text-start">
+                                            <p class="text-start modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">

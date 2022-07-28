@@ -19,7 +19,7 @@ file that was distributed with this source code.
                title="{{ BlockPosition.Block.name }}"
             >{{ BlockPosition.Block.name }}</span>
         </div>
-        <div class="col-auto text-right">
+        <div class="col-auto text-end">
             <div class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}">
                 <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name }}"/>
                 <input type="hidden" class="block-id" name="block_id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}"/>

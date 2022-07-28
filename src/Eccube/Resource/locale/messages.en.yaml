@@ -1143,6 +1143,15 @@ admin.setting.shop.shop.option_point_rate: Point Return Rate
 admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
 
 #------------------------------------------------------------------------------------
+# Settings：Store Settings：Trade Law Settings
+#------------------------------------------------------------------------------------
+
+admin.setting.shop.trade_law.header.name: Label
+admin.setting.shop.trade_law.header.description: Description
+admin.setting.shop.trade_law.header.confirm_page_show: Visible on order confirmation page
+admin.setting.shop.trade_law.error.activation_error: Please enter both the label and description
+
+#------------------------------------------------------------------------------------
 # Settings : Store Settings : Payment Methods
 #------------------------------------------------------------------------------------
 
@@ -1666,6 +1675,7 @@ tooltip.setting.shop.shop.option_customer_activate: This will register a custome
 tooltip.setting.shop.shop.option_favorite_product: This allows users to save their favorite products as Favorites.
 tooltip.setting.shop.shop.option_remember_me: Allow customers to automatically sign in for certain period of time.
 tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax rate per product.
+tooltip.setting.shop.shop.option_invoice_registration_number: Invoice registration number can be displayed on the delivery note.
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.

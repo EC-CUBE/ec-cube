@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
@@ -21,6 +23,7 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Mime\Email;
@@ -41,11 +44,17 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $paymentRepository;
 
+    /**
+     * @var EntityRepository|ObjectRepository|TradeLawRepository
+     */
+    private $tradeLawRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
         $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->tradeLawRepository = $this->entityManager->getRepository(\Eccube\Entity\TradeLaw::class);
     }
 
     public function testRoutingShoppingLogin()
@@ -684,8 +693,333 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
-     * Check can use point when has payment limit
+     * 取引法を無効にすると、配信設定ページに取引法テスト文字が表示されないことを確認すること。
+     * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testDeliveryPageWithNoTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(false);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check that with all trade laws enabled that trade law text will appear on the delivery settings page.
+     * すべての取引法を有効にすると、取引法のテキストがご注文手続きページに表示されることを確認すること。
+     * @return void
+     */
+    public function testDeliveryPageWithTradeLawsEnabled() {
+        // Enable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(true);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $headerId = 5;
+
+        foreach($tradeLaws as $tradeLaw) {
+            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            // Check sort order
+            $this->assertEquals(
+                $tradeLaw->getName(),
+                $crawler->filter('.ec-rectHeading')->eq($headerId)->filter('h2')->first()->text()
+            );
+            $headerId++;
+        }
+    }
+
+    /**
+     * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testConfirmationPageWithNoTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(false);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testConfirmationPageWithTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(true);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $headerId = 5;
+        foreach($tradeLaws as $tradeLaw) {
+            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            // Check sort order
+            $this->assertEquals(
+                $tradeLaw->getName(),
+                $crawler->filter('.ec-rectHeading')->eq($headerId)->filter('h2')->first()->text()
+            );
+            $headerId++;
+        }
+    }
+
+    /**
+     *  Delivery Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when name is empty or null
      *
+     * @return void
+     */
+    public function testDeliveryPageInvalidTradeLawDataEmptyName() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('');
+                $tradeLaw->setDescription('Trade：テスト説明');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Delivery Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when description is empty or null
+     *
+     * @return void
+     */
+    public function testDeliveryPageInvalidTradeLawDataEmptyDescription() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('Trade：テスト名称');
+                $tradeLaw->setDescription('');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+    }
+
+
+    /**
+     * Confirmation Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when name is empty or null
+     *
+     * @return void
+     */
+    public function testConfirmationPageInvalidTradeLawDataEmptyName() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('Trade：テスト名称');
+                $tradeLaw->setDescription('');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+    }
+
+    /**
+     * Confirmation Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when description is empty or null
+     * @return void
+     */
+    public function testConfirmationPageInvalidTradeLawDataEmptyDescription() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('');
+                $tradeLaw->setDescription('Trade：テスト説明');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check can use point when has payment limit
      * https://github.com/EC-CUBE/ec-cube/issues/3916
      */
     public function testPaymentLimitAndPointCombination()

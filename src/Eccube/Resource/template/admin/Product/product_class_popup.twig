@@ -21,11 +21,11 @@ file that was distributed with this source code.
     <tbody>
     {% for Class in data %}
         <tr id="ex-class-{{ Class.id }}">
-            <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
+            <td class="ps-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
             <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
             <td>{{ Class.code }}</td>
             <td>{% if Class.stock_unlimited %}{{ 'admin.product.stock_unlimited__short'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
-            <td class="pr-3">{{ Class.price02|price }}</td>
+            <td class="pe-3">{{ Class.price02|price }}</td>
         </tr>
     {% endfor %}
     </tbody>

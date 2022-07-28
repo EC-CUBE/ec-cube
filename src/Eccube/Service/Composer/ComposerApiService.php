@@ -105,16 +105,23 @@ class ComposerApiService implements ComposerServiceInterface
     {
         $packageName = explode(' ', trim($packageName));
 
-        return $this->runCommand([
-            'command' => 'require',
-            'packages' => $packageName,
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--prefer-dist' => true,
-            '--update-with-dependencies' => true,
-            '--no-scripts' => true,
-            '--update-no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            return $this->runCommand([
+                'command' => 'require',
+                'packages' => $packageName,
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--prefer-dist' => true,
+                '--update-with-dependencies' => true,
+                '--no-scripts' => true,
+                '--update-no-dev' => env('APP_ENV') === 'prod',
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -135,7 +142,11 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        return $this->runCommand([
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            return $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
             '--ignore-platform-reqs' => true,
@@ -143,7 +154,10 @@ class ComposerApiService implements ComposerServiceInterface
             '--profile' => true,
             '--no-scripts' => true,
             '--update-no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -158,14 +172,21 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execUpdate($dryRun, $output = null)
     {
-        $this->runCommand([
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            $this->runCommand([
             'command' => 'update',
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
             '--dry-run' => (bool) $dryRun,
             '--no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -180,14 +201,21 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execInstall($dryRun, $output = null)
     {
-        $this->runCommand([
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            $this->runCommand([
             'command' => 'install',
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
             '--dry-run' => (bool) $dryRun,
             '--no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**

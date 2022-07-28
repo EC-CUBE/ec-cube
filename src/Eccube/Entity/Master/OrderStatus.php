@@ -29,21 +29,21 @@ if (!class_exists(OrderStatus::class, false)) {
     class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
     {
         /** 新規受付. */
-        const NEW = 1;
+        public const NEW = 1;
         /** 注文取消し. */
-        const CANCEL = 3;
+        public const CANCEL = 3;
         /** 対応中. */
-        const IN_PROGRESS = 4;
+        public const IN_PROGRESS = 4;
         /** 発送済み. */
-        const DELIVERED = 5;
+        public const DELIVERED = 5;
         /** 入金済み. */
-        const PAID = 6;
+        public const PAID = 6;
         /** 決済処理中. */
-        const PENDING = 7;
+        public const PENDING = 7;
         /** 購入処理中. */
-        const PROCESSING = 8;
+        public const PROCESSING = 8;
         /** 返品 */
-        const RETURNED = 9;
+        public const RETURNED = 9;
 
         /**
          * 受注一覧画面で, ステータスごとの受注件数を表示するかどうか
