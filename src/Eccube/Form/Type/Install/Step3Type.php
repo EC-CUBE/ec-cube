@@ -96,8 +96,8 @@ class Step3Type extends AbstractType
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
                     ]),
                     new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form_error.graph_only',
+                        'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                        'message' => 'form_error.password_pattern_invalid',
                     ]),
                 ],
             ])

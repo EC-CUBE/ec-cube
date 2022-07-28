@@ -91,8 +91,8 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_name'], 'admintest');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
         $I->fillField(['id' => 'admin_member_login_id'], 'admintest');
-        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password');
-        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password1234');
+        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password1234');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container button');
@@ -119,8 +119,8 @@ class EA08SysteminfoCest
         $I->fillField(['id' => 'admin_member_name'], 'admintest2');
         $I->fillField(['id' => 'admin_member_department'], 'admintest department');
         $I->fillField(['id' => 'admin_member_login_id'], 'admintest');
-        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password');
-        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password');
+        $I->fillField(['id' => 'admin_member_plain_password_first'], 'password1234');
+        $I->fillField(['id' => 'admin_member_plain_password_second'], 'password1234');
         $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
         $I->selectOption(['id' => 'admin_member_Work_1'], '稼働');
         $I->click('#member_form .c-conversionArea__container .c-conversionArea__leftBlockItem a');
@@ -380,7 +380,7 @@ class EA08SysteminfoCest
 
         // 店舗オーナーでログインし、ナビに表示されないことを確認
         $I->logoutAsAdmin();
-        $I->loginAsAdmin('shop_owner', 'password');
+        $I->loginAsAdmin('shop_owner', 'password1234');
         $I->click(['css' => 'a[href="#nav-setting"]']);
         $I->wait(1);
         $I->dontSee('システム設定', '#nav-setting');
@@ -401,7 +401,7 @@ class EA08SysteminfoCest
 
         // 店舗オーナーアカウントでアクセスできることを確認
         $I->logoutAsAdmin();
-        $I->loginAsAdmin('shop_owner', 'password');
+        $I->loginAsAdmin('shop_owner', 'password1234');
 
         $I->click(['css' => 'a[href="#nav-setting"]']);
         $I->wait(1);

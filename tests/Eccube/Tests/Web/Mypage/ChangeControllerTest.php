@@ -33,7 +33,7 @@ class ChangeControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         $form = [
