@@ -148,9 +148,7 @@ class PL03MailMagazineCest
         // Check User without logging in.
         $I->seeInRepository(Customer::class, [
             'email' => $email,
-            Criteria::create()->where(
-                Criteria::expr()->contains('mailmaga_flg', '1')
-            ),
+            'mailmaga_flg' => '1'
         ]);
     }
 
@@ -172,12 +170,10 @@ class PL03MailMagazineCest
         $I->retrySee('保存しました');
         $I->seeCheckboxIsChecked('#admin_customer_mailmaga_flg_0');
         $I->dontSeeCheckboxIsChecked('#admin_customer_mailmaga_flg_1');
-//        $I->seeInRepository(Customer::class, [
-//            'email' => $I->customer->getEmail(),
-//            Criteria::create()->where(
-//                Criteria::expr()->contains('mailmaga_flg', '1')
-//            ),
-//        ]);
+        $I->seeInRepository(Customer::class, [
+            'email' => $I->asACustomer->getEmail(),
+            'mailmaga_flg' => '1'
+        ]);
     }
 
     /**
