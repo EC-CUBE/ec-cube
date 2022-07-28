@@ -104,8 +104,14 @@ class TransactionListener implements EventSubscriberInterface
         }
 
         if ($this->em->getConnection()->isTransactionActive()) {
-            $this->em->rollback();
-            log_debug('Rollback executed.');
+            if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($this->em->getConnection()->isRollbackOnly()) {
+                    $this->em->rollback();
+                    log_debug('Rollback executed.');
+                }
+            } else {
+                log_debug('Transaction is not active. Rollback skipped.');
+            }
         } else {
             log_debug('Transaction is not active. Rollback skipped.');
         }
@@ -125,11 +131,19 @@ class TransactionListener implements EventSubscriberInterface
         }
         if ($this->em->getConnection()->isTransactionActive()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
-                $this->em->rollback();
-                log_debug('Rollback executed.');
+                if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+                    $this->em->rollback();
+                    log_debug('Rollback executed.');
+                } else {
+                    log_debug('Transaction is not active. Rollback skipped.');
+                }
             } else {
-                $this->em->commit();
-                log_debug('Commit executed.');
+                if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+                    $this->em->commit();
+                    log_debug('Commit executed.');
+                } else {
+                    log_debug('Transaction is not active. Commit skipped.');
+                }
             }
         } else {
             log_debug('Transaction is not active. Rollback skipped.');
