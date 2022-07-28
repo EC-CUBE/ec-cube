@@ -57,7 +57,7 @@ $(function() {
         <table class="table table-sm">
             <thead>
             <tr>
-                <th class="border-top-0 pl-3 pt-2 pb-2">{{ 'admin.store.plugin_table_official.901'|trans }}</th>
+                <th class="border-top-0 ps-3 pt-2 pb-2">{{ 'admin.store.plugin_table_official.901'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregistered_plugin_table.942'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.unregistered_plugin_table.943'|trans }}</th>
                 <th class="border-top-0 pt-2 pb-2">{{ 'admin.store.plugin_table.901'|trans }}</th>
@@ -69,8 +69,8 @@ $(function() {
             {% for key,Plugin in Plugins %}
                 {% set pluginDetail = officialPluginsDetail[key]|default(NULL) %}
                 <tr class="{% if Plugin.enabled == false %}active{% endif %}">
-                    <td class="align-middle pl-3">
-                        <a href="#" target="_blank" class="plugin-image pr-3">
+                    <td class="align-middle ps-3">
+                        <a href="#" target="_blank" class="plugin-image pe-3">
                             <img height="60" src="{{ pluginDetail ? pluginDetail.image : asset('noimage_plugin_list.png', 'save_image') }}" alt="">
                         </a>
                         <span>{{ Plugin.name }}</span>
@@ -125,7 +125,7 @@ $(function() {
                                            data-name="{{ Plugin.name }}"
                                            data-version="{{ Plugin.version }}"
                                            class="btn btn-ec-actionIcon">
-                                            <i class="fa fa-close fa-lg text-secondary" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
+                                            <i class="fa fa-close fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}"></i>
                                         </a>
 
                                     {% endif %}
@@ -135,23 +135,23 @@ $(function() {
                                         <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                            class="btn btn-ec-actionIcon"
                                            data-method="post" data-confirm="false">
-                                            <i class="fa fa-pause fa-lg text-secondary" data-tooltip="true"
-                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
+                                            <i class="fa fa-pause fa-lg text-secondary" data-bs-toggle="tooltip"
+                                               data-bs-placement="top" title="{{ 'admin.store.plugin_table_official.925'|trans }}"></i>
                                         </a>
                                     {% else %}
                                         <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
                                            class="btn btn-ec-actionIcon"
                                            data-method="post" data-confirm="false">
-                                            <i class="fa fa-play fa-lg text-secondary" data-tooltip="true"
-                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
+                                            <i class="fa fa-play fa-lg text-secondary" data-bs-toggle="tooltip"
+                                               data-bs-placement="top" title="{{ 'admin.store.plugin_table_official.924'|trans }}"></i>
                                         </a>
                                     {% endif %}
                                 </div>
                                 <div class="col-4">
                                     {% if configPages[Plugin.code] is defined %}
                                         <a class="btn btn-ec-actionIcon" href="{{ configPages[Plugin.code] }}">
-                                            <i class="fa fa-cog fa-lg text-secondary" data-tooltip="true"
-                                               data-placement="top" title="{{ 'admin.store.plugin_table_official.906'|trans }}"></i>
+                                            <i class="fa fa-cog fa-lg text-secondary" data-bs-toggle="tooltip"
+                                               data-bs-placement="top" title="{{ 'admin.store.plugin_table_official.906'|trans }}"></i>
                                         </a>
                                     {% endif %}
                                 </div>
@@ -176,21 +176,21 @@ $(function() {
 
 <div class="modal fade" id="officialPluginDeleteModal" tabindex="-1" role="dialog"
      aria-labelledby="officialPluginDeleteModal" aria-hidden="true"
-     data-keyboard="false" data-backdrop="static">
+     data-bs-keyboard="false" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">
+                <h5 class="modal-title fw-bold">
                     {{ 'admin.store.plugin.popup.delete.confirm.title'|trans }}</h5>
             </div>
-            <div class="modal-body text-left">
-                <p class="text-left">{{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
+            <div class="modal-body text-start">
+                <p class="text-start">{{ 'admin.store.plugin.popup.delete.confirm.message'|trans }}</p>
                 <div class="progress" style="display: none">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <div id="deleteLogPane" style="display: none;">
                     <div class="d-inline-block collapsed" data-bs-toggle="collapse" href="#deleteLog" aria-expanded="false" aria-controls="deleteLog">
-                        <a><i class="fa font-weight-bold mr-1 fa-plus-square-o"></i><span class="font-weight-bold">ログを確認</span></a>
+                        <a><i class="fa fw-bold mr-1 fa-plus-square-o"></i><span class="fw-bold">ログを確認</span></a>
                     </div>
                     <pre class="collapsed collapse" id="deleteLog"></pre>
                 </div>

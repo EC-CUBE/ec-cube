@@ -129,7 +129,7 @@ file that was distributed with this source code.
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col-2">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.mail.mail_template'|trans }}">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.mail.mail_template'|trans }}">
                                         <span>{{ 'admin.setting.shop.mail.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
                                 </div>
@@ -139,30 +139,30 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_subject'|trans }}</span><span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col-10">
                                     {{ form_widget(form.mail_subject) }}
                                     {{ form_errors(form.mail_subject) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_body'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_body'|trans }}</span><span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col-10">
                                     {# タブ表示 #}
                                     {% if id is not null %}
                                     <ul class="nav nav-tabs text-center" role="tablist">
-                                        <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
+                                        <li class="nav-item me-2" style="border: 1px solid #ced4da; padding:0;">
                                             <a id="menu__{{ form.tpl_data.vars.id }}" href="#detail_box__tpl_data" class="nav-link active" data-bs-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_text'|trans }}</span></a>
                                         </li>
                                         {% if form.html_tpl_data.vars.value %}
-                                        <li class="nav-item" style="border: 1px solid #ced4da; padding:0;">
+                                        <li class="nav-item me-2" style="border: 1px solid #ced4da; padding:0;">
                                             <a id="menu__{{ form.html_tpl_data.vars.id }}" href="#detail_box__html_tpl_data" class="nav-link" data-bs-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_html'|trans }}</span></a>
                                         </li>
                                         {% endif %}
                                         <div class="col-1">
                                             <div class="d-inline-block">
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" id="preview_button" class="btn btn-block text-nowrap btn-ec-regular" style="display:none;" data-bs-toggle="modal" data-bs-target="#htmlPreviewModal">
+                                                    <button type="button" id="preview_button" class="btn w-100 text-nowrap btn-ec-regular" style="display:none;" data-bs-toggle="modal" data-bs-target="#htmlPreviewModal">
                                                         {{ 'admin.setting.shop.mail.preview'|trans }}
                                                     </button>
                                                 </div>
@@ -228,11 +228,11 @@ file that was distributed with this source code.
     </form>
 
     <!-- HTMLメールを確認するモーダル -->
-    <div class="modal fade" id="htmlPreviewModal" tabindex="-1" role="dialog" aria-labelledby="htmlPreviewModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal fade" id="htmlPreviewModal" tabindex="-1" role="dialog" aria-labelledby="htmlPreviewModal" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">{{ 'admin.setting.shop.mail.preview'|trans }}</h5>
+                    <h5 class="modal-title fw-bold">{{ 'admin.setting.shop.mail.preview'|trans }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

@@ -58,13 +58,13 @@ file that was distributed with this source code.
                                                 <div class="col px-0 text-center">
                                                     <a class="btn btn-ec-actionIcon"
                                                        href="{{ url('admin_content_news_edit', {id: News.id}) }}"
-                                                       data-bs-toggle="tooltip" data-placement="top"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top"
                                                        title="{{ 'admin.common.edit'|trans }}">
                                                         <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                     </a>
                                                 </div>
-                                                <div class="col pl-0 text-center" data-bs-toggle="tooltip"
-                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                <div class="col ps-0 text-center" data-bs-toggle="tooltip"
+                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     <a class="btn btn-ec-actionIcon" data-bs-toggle="modal"
                                                        data-bs-target="#delete_{{ News.id }}">
                                                         <i class="fa fa-close fa-lg text-secondary"
@@ -76,15 +76,15 @@ file that was distributed with this source code.
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                     <button class="close" type="button"
                                                                             data-bs-dismiss="modal"
                                                                             aria-label="Close"><span
                                                                                 aria-hidden="true">×</span>
                                                                     </button>
                                                                 </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({'%name%': News.title}) }}</p>
+                                                                <div class="modal-body text-start">
+                                                                    <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({'%name%': News.title}) }}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button class="btn btn-ec-sub" type="button"

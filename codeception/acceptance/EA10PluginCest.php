@@ -87,6 +87,9 @@ class EA10PluginCest
             ->削除();
     }
 
+    /**
+     * @group restrict-fileupload
+     */
     public function test_install_enable_disable_enable_disable_remove_local_ファイルアップロード制限(AcceptanceTester $I)
     {
         $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');

@@ -120,6 +120,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
             }
 
             ksort($total);
+
             return $total;
         }
 
@@ -142,6 +143,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
             }
 
             ksort($tax);
+
             return $tax;
         }
 

@@ -195,22 +195,20 @@ file that was distributed with this source code.
                 if ($i.hasClass('fa-toggle-on')) {
                     $i.addClass('fa-toggle-off');
                     $i.removeClass('fa-toggle-on');
-                    $this.attr('data-original-title', '{{ 'admin.common.to_show'|trans }}');
+                    $this.attr('title', '{{ 'admin.common.to_show'|trans }}');
+                    $this.attr('data-bs-original-title', '{{ 'admin.common.to_show'|trans }}');
                     $this.parents('li').find('.visible').val('0');
                 } else {
                     $i.addClass('fa-toggle-on');
                     $i.removeClass('fa-toggle-off');
-                    $this.attr('data-original-title', '{{ 'admin.common.to_hide'|trans }}');
+                    $this.attr('title', '{{ 'admin.common.to_hide'|trans }}');
+                    $this.attr('data-bs-original-title', '{{ 'admin.common.to_hide'|trans }}');
                     $this.parents('li').find('.visible').val('1');
                 }
                 // ツールチップの表示を更新
-                $this.tooltip('show');
-
-
+                tooltip = bootstrap.Tooltip.getInstance($(this).get(0));
+                tooltip.show();
             });
-
-            // FIXME 明細行のツールチップが表示されないため, ここでツールチップを有効にしている.
-            $('[data-tooltip="true"]').tooltip();
         });
     </script>
 {% endblock javascript %}
@@ -240,7 +238,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.tracking_number_url'|trans }}">
                                         <span>{{ 'admin.setting.shop.delivery.tracking_number_url'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                                     </div>
@@ -252,7 +250,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.sale_type'|trans }}">
                                         <span>{{ 'admin.setting.shop.delivery.sale_type'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ml-1"></i>
@@ -296,7 +294,7 @@ file that was distributed with this source code.
                                 <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
                                     data-prototype="{% apply escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endapply %}">
                                     <li class="list-group-item">
-                                        <div class="form-row">
+                                        <div class="row">
                                             <div class="col-auto d-flex align-items-center">
                                                 <input id="add-delivery-time-value" class="form-control" type="text">
                                             </div>
@@ -320,8 +318,8 @@ file that was distributed with this source code.
                                 <li class="list-group-item">
                                     <div class="row justify-content-start">
                                         <div class="col-2">
-                                            <div class="d-inline-block align-middle" data-tooltip="true"
-                                                 data-placement="top" title="{{ 'tooltip.setting.shop.delivery.apply_to_pref'|trans }}"><span
+                                            <div class="d-inline-block align-middle" data-bs-toggle="tooltip"
+                                                 data-bs-placement="top" title="{{ 'tooltip.setting.shop.delivery.apply_to_pref'|trans }}"><span
                                                         class="card-title">{{ 'admin.setting.shop.delivery.apply_to_pref__title'|trans }}</span><i
                                                         class="fa fa-question-circle fa-lg ml-1"></i></div>
                                         </div>
@@ -342,7 +340,7 @@ file that was distributed with this source code.
                                                 <div class="col-2">
                                                     <label>{{ child.vars.data.pref }}</label>
                                                 </div>
-                                                <div class="col pl-0">
+                                                <div class="col ps-0">
                                                     {{ form_widget(child.fee) }}
                                                     {{ form_errors(child.fee) }}
                                                 </div>
@@ -358,12 +356,12 @@ file that was distributed with this source code.
                         <div id="ex-delivery-shop" class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.shop_memo'|trans }}">
                                     <span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i
                                                 class="fa fa-question-circle fa-lg ml-1"></i></span></div>
                                 </div>
-                                <div class="col-4 text-right"><a data-bs-toggle="collapse" href="#freeArea"
+                                <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#freeArea"
                                                                  aria-expanded="false" aria-controls="freeArea"><i
                                                 class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>

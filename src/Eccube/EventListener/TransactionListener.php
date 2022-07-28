@@ -103,15 +103,11 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->em->getConnection()->isTransactionActive()) {
-            if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
-                if ($this->em->getConnection()->isRollbackOnly()) {
-                    $this->em->rollback();
-                    log_debug('Rollback executed.');
-                }
-            } else {
-                log_debug('Transaction is not active. Rollback skipped.');
+        if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+            if ($this->em->getConnection()->isRollbackOnly()) {
+                $this->em->rollback();
             }
+            log_debug('Rollback executed.');
         } else {
             log_debug('Transaction is not active. Rollback skipped.');
         }
@@ -129,21 +125,13 @@ class TransactionListener implements EventSubscriberInterface
 
             return;
         }
-        if ($this->em->getConnection()->isTransactionActive()) {
+        if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
-                if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
-                    $this->em->rollback();
-                    log_debug('Rollback executed.');
-                } else {
-                    log_debug('Transaction is not active. Rollback skipped.');
-                }
+                $this->em->rollback();
+                log_debug('Rollback executed.');
             } else {
-                if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
-                    $this->em->commit();
-                    log_debug('Commit executed.');
-                } else {
-                    log_debug('Transaction is not active. Commit skipped.');
-                }
+                $this->em->commit();
+                log_debug('Commit executed.');
             }
         } else {
             log_debug('Transaction is not active. Rollback skipped.');

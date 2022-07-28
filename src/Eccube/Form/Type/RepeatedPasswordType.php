@@ -52,7 +52,6 @@ class RepeatedPasswordType extends AbstractType
             'error_bubbling' => false,
             'options' => [
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
@@ -74,6 +73,9 @@ class RepeatedPasswordType extends AbstractType
                 'attr' => [
                     'placeholder' => 'common.repeated_confirm',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
             ],
         ]);
     }

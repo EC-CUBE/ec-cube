@@ -25,25 +25,26 @@ var mainNavArea = function() {
 mainNavArea();
 
 //Bootstrap ツールチップ
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+});
+
+/** @deprecated プラグイン等の後方互換用 */
 var toolTip = function() {
     $(function() {
         $('[data-tooltip="true"]').tooltip();
     })
 };
-
 toolTip();
 
-//popover ポップオーバー
-// header
-var popoverHeader = function() {
-    $(function() {
-        $('.c-headerBar__userMenu').popover({
-            container: 'body'
-        })
-    })
-};
-popoverHeader();
-// all page
+// popover ポップオーバー
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+});
+
+/** @deprecated プラグイン等の後方互換用 */
 var popoverAll = function() {
     $(function() {
         $('[data-toggle="popover"]').popover();

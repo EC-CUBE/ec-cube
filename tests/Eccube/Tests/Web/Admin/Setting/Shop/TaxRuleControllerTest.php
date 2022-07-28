@@ -66,19 +66,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => [
-                'date' => [
-                    'year' => $now->format('Y'),
-                    'month' => $now->format('n'),
-                    'day' => $now->format('j'),
-                ],
-                'time' => [
-                    'hour' => $now->format('G'),
-                    // Symfony specification of without leading zero
-                    // https://symfony.com/doc/3.4/reference/forms/types/datetime.html#minutes
-                    'minute' => (int) $now->format('i'),
-                ],
-            ],
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('j').'T'.$now->format('G').':'.$now->format('i')
         ];
 
         $this->client->request(
@@ -135,17 +123,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => [
-                'date' => [
-                    'year' => $now->format('Y'),
-                    'month' => $now->format('n'),
-                    'day' => $now->format('j'),
-                ],
-                'time' => [
-                    'hour' => 23,
-                    'minute' => 1,
-                ],
-            ],
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('j').'T23:01'
         ];
 
         $this->client->request(

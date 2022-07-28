@@ -83,7 +83,7 @@ class BlockController extends AbstractController
      */
     public function edit(Request $request, Environment $twig, FileSystem $fs, CacheUtil $cacheUtil, $id = null)
     {
-        $this->addInfo('admin.common.restrict_file_upload_info', 'admin');
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);

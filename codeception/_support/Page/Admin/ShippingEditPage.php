@@ -184,7 +184,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     public function 商品検索結果_選択($rowNum)
     {
         $rowNum = $rowNum * 2;
-        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-right > button");
+        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3.text-end > button");
 
         return $this;
     }

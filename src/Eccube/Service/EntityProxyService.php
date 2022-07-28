@@ -23,7 +23,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
-use Zend\Code\Reflection\ClassReflection;
 
 class EntityProxyService
 {

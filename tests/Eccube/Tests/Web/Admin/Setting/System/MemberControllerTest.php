@@ -222,6 +222,32 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5420
+     */
+    public function testMemberEditSubmitFailWithPlainPasswordIsEmpty()
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['plain_password'] = [
+            'first' => '',
+            'second' => ''
+        ];
+        $Member = $this->createMember();
+        $Member->setPassword('**********');
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
+        $mid = $Member->getId();
+
+        // main
+        $this->client->request('POST',
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
+            ['admin_member' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     public function testMemberUpNotFoundMember()
     {
         // before
