@@ -909,8 +909,8 @@ class PL02CouponCest
         $from = Carbon::now();
         $to = Carbon::now()->addRealDay();
         if ($isFutureDate) {
-            $from->addRealDays(2);
-            $to->addRealDays(2);
+            $from->addRealDay();
+            $to->addRealDay();
         }
         // 期間開始日設定
         $I->fillDate("#coupon_available_from_date", $from);
