@@ -267,7 +267,7 @@ class PL03MailMagazineCest
 //        $I->see($this->HtmlBody);
         $I->clickWithLeftButton('#sendMailMagazine');
         $I->acceptPopup();
-        $I->waitForText('送信中', 20);
+        //$I->waitForText('送信中', 20);
         $I->retrySee('送信完了');
         $I->click(Locator::contains('//button', '閉じる'));
         $targetRow = Locator::contains('//tr', $SubjectName);
@@ -348,7 +348,7 @@ class PL03MailMagazineCest
         $I->see($this->Body);
         $I->clickWithLeftButton('#sendMailMagazine');
         $I->acceptPopup();
-        $I->waitForText('送信中', 20);
+        //$I->waitForText('送信中', 20);
         $I->retrySee('送信完了');
         $I->click(Locator::contains('//button', '閉じる'));
         $targetRow = Locator::contains('//tr', $SubjectName);
