@@ -28,6 +28,7 @@ modules:
         WebDriver:
             browser: 'chrome'
             url: 'http://localhost:8080/'
+            lang: 'ja-JP'
             port: '9515'
             window_size: 1680x3000
             wait: 10
@@ -71,6 +72,7 @@ env:
                             args: [ "--lang=ja_JP" ]
                             prefs:
                                 download.default_directory: '%PWD%/codeception/_support/_downloads'
+                                intl.accept_languages: "ja_JP"
     chrome-headless:
         modules:
             config:
