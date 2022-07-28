@@ -33,44 +33,29 @@ class PL05RelatedProductCest
         $I->loginAsAdmin();
     }
 
-    public function _after(AcceptanceTester $I)
+
+    /**
+     * @param AcceptanceTester $I
+     * @group install
+     *
+     * @return void
+     */
+    public function related_01(AcceptanceTester $I)
     {
+        if ($I->seePluginIsInstalled('関連商品プラグイン', true)) {
+            $I->wantToUninstallPlugin('関連商品プラグイン');
+            $I->seePluginIsNotInstalled('関連商品プラグイン');
+        }
+        $I->wantToInstallPlugin('関連商品プラグイン');
+        $I->seePluginIsInstalled('関連商品プラグイン');
     }
 
     /**
      * @param AcceptanceTester $I
-     * @skip
-     *
+     * @group install
      * @return void
      */
-    public function related_1(AcceptanceTester $I)
-    {
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function related_2(AcceptanceTester $I)
-    {
-        // 無効処理
-        $I->amOnPage('/admin/store/plugin');
-        $recommendPluginRow = Locator::contains('//tr', '関連商品プラグイン');
-        $I->see('関連商品プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
-        $I->clickWithLeftButton("(//tr[contains(.,'関連商品プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「関連商品プラグイン」を無効にしました。');
-        $I->see('関連商品プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function related_3(AcceptanceTester $I)
+    public function related_02(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/store/plugin');
         $couponRow = Locator::contains('//tr', '関連商品プラグイン');
@@ -83,16 +68,11 @@ class PL05RelatedProductCest
     }
 
     /**
+     * @group main
      * @param AcceptanceTester $I
-     * @skip
-     *
      * @return void
      */
-    public function related_4(AcceptanceTester $I)
-    {
-    }
-
-    public function related_5(AcceptanceTester $I)
+    public function related_03(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $Product = $this->registerBaseProductDetails();
@@ -118,7 +98,13 @@ class PL05RelatedProductCest
         $I->seeInSource($RelatedProduct->getMainListImage());
     }
 
-    public function related_6(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function related_04(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $Product = $this->registerBaseProductDetails();
@@ -145,7 +131,13 @@ class PL05RelatedProductCest
         $I->seeInSource($RelatedProduct->getMainListImage());
     }
 
-    public function related_7(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function related_05(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $Product = $this->registerBaseProductDetails();
@@ -185,10 +177,15 @@ class PL05RelatedProductCest
         }
     }
 
-    public function related_8(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function related_06(AcceptanceTester $I)
     {
 
-        $this->related_5($I);
+        $this->related_03($I);
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $this->product->getId()));
         $I->see('関連商品');
         $I->see($this->relatedProduct->getName());
@@ -201,15 +198,55 @@ class PL05RelatedProductCest
         $I->dontSee($this->relatedProduct->getName());
     }
 
-    public function related_9(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function related_07(AcceptanceTester $I)
     {
-        $this->related_5($I);
+        $this->related_03($I);
         $I->clickWithLeftButton('(//div[@id="RelatedProduct-product_area"]//a)[1]');
         $I->wait(5);
         assertStringContainsString(sprintf('/products/detail/%s', $this->relatedProduct->getId()), $I->grabFromCurrentUrl());
         $I->see($this->relatedProduct->getName());
         $I->seeInSource($this->relatedProduct->getMainListImage());
         $I->see($this->relatedProduct->getDescriptionDetail());
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @group main
+     * @return void
+     */
+    public function related_08(AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', '関連商品プラグイン');
+        $I->see('関連商品プラグイン', $recommendPluginRow);
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'関連商品プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「関連商品プラグイン」を無効にしました。');
+        $I->see('関連商品プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @group main
+     * @return void
+     * @throws \Exception
+     */
+    public function related_09(AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $I->retry(10, 1000);
+        $I->wantToUninstallPlugin('関連商品プラグイン');
+        // プラグインの状態を確認する
+        $xpath = Locator::contains('tr', '関連商品プラグイン');
+        $I->see('インストール', $xpath);
     }
 
     /**
