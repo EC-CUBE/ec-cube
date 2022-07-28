@@ -34,33 +34,44 @@ class PL07ProductReviewCest
 {
     public function _before(AcceptanceTester $I)
     {
+        // Delete all cache as doctrine metadata is always in the way on plugin install.
+        $files = glob(__DIR__ . '../../../../var/cache/dev/*');
+        foreach($files as $file){
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
+        $files = glob(__DIR__ . '../../../../var/cache/codeception/*');
+        foreach($files as $file){
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
         $I->loginAsAdmin();
     }
 
     /**
      * @param AcceptanceTester $I
-     * @skip
+     * @group install
      * @return void
+     * @throws \Exception
      */
     public function review_01(AcceptanceTester $I)
     {
-
+        if ($I->seePluginIsInstalled('商品レビュー管理プラグイン', true)) {
+            $I->wantToUninstallPlugin('商品レビュー管理プラグイン');
+            $I->seePluginIsNotInstalled('商品レビュー管理プラグイン');
+        }
+        $I->wantToInstallPlugin('商品レビュー管理プラグイン');
+        $I->seePluginIsInstalled('商品レビュー管理プラグイン');
     }
 
+    /**
+     * @group install
+     * @param AcceptanceTester $I
+     * @return void
+     */
     public function review_02(AcceptanceTester $I)
-    {
-        // 無効処理
-        $I->amOnPage('/admin/store/plugin');
-        $recommendPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
-        $I->see('商品レビュー管理プラグイン', "//tr[contains(.,'商品レビュー管理プラグイン')]");
-        $I->see('有効', $recommendPluginRow);
-        $I->clickWithLeftButton("(//tr[contains(.,'商品レビュー管理プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「商品レビュー管理プラグイン」を無効にしました。');
-        $I->see('商品レビュー管理プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
-    }
-
-    public function review_03(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
@@ -73,16 +84,11 @@ class PL07ProductReviewCest
     }
 
     /**
-     * @skip
+     * @group main
      * @param AcceptanceTester $I
-     * @return void
+     * @return ReviewData
      */
-    public function review_04(AcceptanceTester $I)
-    {
-
-    }
-
-    public function review_05(AcceptanceTester $I)
+    public function review_03(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create('ja_JP');
         $reviewData = new ReviewData(
@@ -96,7 +102,12 @@ class PL07ProductReviewCest
         return $reviewData;
     }
 
-    public function review_06(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return AcceptanceTester
+     */
+    public function review_04(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create('ja_JP');
         $reviewData = new ReviewData(
@@ -131,9 +142,14 @@ class PL07ProductReviewCest
         return $reviewContents;
     }
 
-    public function review_07(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function review_05(AcceptanceTester $I)
     {
-        $reviewContents = $this->review_06($I);
+        $reviewContents = $this->review_03($I);
         $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
         $faker = \Faker\Factory::create('ja_JP');
         $name = $faker->userName();
@@ -169,9 +185,14 @@ class PL07ProductReviewCest
         $I->see($comment);
     }
 
-    public function review_08(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function review_06(AcceptanceTester $I)
     {
-        $reviewContents = $this->review_06($I);
+        $reviewContents = $this->review_04($I);
         $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
 
         $I->amOnPage('admin/product_review/');
@@ -197,9 +218,14 @@ class PL07ProductReviewCest
         $I->dontSee($reviewContents['comment']);
     }
 
-    public function review_09(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function review_07(AcceptanceTester $I)
     {
-        $reviewContents = $this->review_05($I);
+        $reviewContents = $this->review_03($I);
         $I->retry(7, 400);
 
         $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
@@ -216,7 +242,12 @@ class PL07ProductReviewCest
         $I->dontSee($reviewContents['comment']);
     }
 
-    public function review_10(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function review_08(AcceptanceTester $I)
     {
         $I->retry(7, 400);
 
@@ -264,9 +295,14 @@ class PL07ProductReviewCest
 
     }
 
-    public function review_11(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function review_09(AcceptanceTester $I)
     {
-        $reviewDetails = $this->review_05($I);
+        $reviewDetails = $this->review_03($I);
         $I->retry(7, 400);
         $I->amOnPage('admin/product_review/');
         $I->see('レビュー管理');
@@ -278,12 +314,13 @@ class PL07ProductReviewCest
     }
 
     /**
+     * @group main
      * @param AcceptanceTester $I
      * @param Example $example
      * @return void
      * @dataProvider searchFormProvider
      */
-    public function review_12(AcceptanceTester $I, Example $example)
+    public function review_10(AcceptanceTester $I, Example $example)
     {
         $faker = \Faker\Factory::create('ja_JP');
         $name = $faker->userName();
@@ -353,13 +390,38 @@ class PL07ProductReviewCest
     }
 
     /**
-     * @skip
+     * @group main
      * @param AcceptanceTester $I
      * @return void
      */
-    public function review_13(AcceptanceTester $I)
+    public function review_11(AcceptanceTester $I)
     {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', '商品レビュー管理プラグイン');
+        $I->see('商品レビュー管理プラグイン', "//tr[contains(.,'商品レビュー管理プラグイン')]");
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'商品レビュー管理プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「商品レビュー管理プラグイン」を無効にしました。');
+        $I->see('商品レビュー管理プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+    }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function review_12(AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $I->retry(20, 1000);
+        $I->wantToUninstallPlugin('商品レビュー管理プラグイン');
+        // プラグインの状態を確認する
+        $xpath = Locator::contains('tr', '商品レビュー管理プラグイン');
+        $I->see('インストール', $xpath);
     }
 
     private function writeFrontEndReviewNoLogin(AcceptanceTester $I, ReviewData $reviewData): AcceptanceTester
