@@ -30,6 +30,11 @@ class PL05RelatedProductCest
 
     public function _before(AcceptanceTester $I)
     {
+        $I->loginAsAdmin();
+    }
+
+    public function _after(AcceptanceTester $I)
+    {
         // Delete all cache as doctrine metadata is always in the way on plugin install.
         $files = glob(__DIR__ . '../../../../var/cache/dev/*');
         foreach($files as $file){
@@ -43,7 +48,6 @@ class PL05RelatedProductCest
                 unlink($file);
             }
         }
-        $I->loginAsAdmin();
     }
 
 
