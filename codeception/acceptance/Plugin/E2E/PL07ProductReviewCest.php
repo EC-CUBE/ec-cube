@@ -35,18 +35,7 @@ class PL07ProductReviewCest
     public function _before(AcceptanceTester $I)
     {
         // Delete all cache as doctrine metadata is always in the way on plugin install.
-        $files = glob(__DIR__ . '../../../../var/cache/dev/*');
-        foreach($files as $file){
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
-        $files = glob(__DIR__ . '../../../../var/cache/codeception/*');
-        foreach($files as $file){
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
+        $I->willHardDeleteCache();
         $I->loginAsAdmin();
     }
 
@@ -105,7 +94,7 @@ class PL07ProductReviewCest
     /**
      * @group main
      * @param AcceptanceTester $I
-     * @return AcceptanceTester
+     * @return ReviewData
      */
     public function review_04(AcceptanceTester $I)
     {
@@ -116,7 +105,7 @@ class PL07ProductReviewCest
             $faker->realText(20),
             $faker->realText(100)
         );
-        $reviewContents = $this->writeFrontEndReviewNoLogin($I, $reviewData);
+        $this->writeFrontEndReviewNoLogin($I, $reviewData);
         $rowIdentifier = Locator::contains('//tr', $reviewData->reviewer_name);
 
         $I->amOnPage('admin/product_review/');
@@ -139,7 +128,7 @@ class PL07ProductReviewCest
         $I->seeInSource($reviewData->reviewer_url);
         $I->see($reviewData->title);
         $I->see($reviewData->comment);
-        return $reviewContents;
+        return $reviewData;
     }
 
     /**
@@ -149,8 +138,8 @@ class PL07ProductReviewCest
      */
     public function review_05(AcceptanceTester $I)
     {
-        $reviewContents = $this->review_03($I);
-        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+        $reviewContents = $this->review_04($I);
+        $rowIdentifier = Locator::contains('//tr', $reviewContents->reviewer_name);
         $faker = \Faker\Factory::create('ja_JP');
         $name = $faker->userName();
         $url = $faker->url();
@@ -159,13 +148,13 @@ class PL07ProductReviewCest
 
         $I->amOnPage('admin/product_review/');
         $I->see('レビュー管理');
-        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see($reviewContents->reviewer_name, $rowIdentifier);
         $I->see('公開', $rowIdentifier);
         $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-pencil fa-lg text-secondary"]');
-        $I->seeInField('#product_review_reviewer_name', $reviewContents['name']);
-        $I->seeInField('#product_review_reviewer_url', $reviewContents['url']);
-        $I->seeInField('#product_review_title', $reviewContents['title']);
-        $I->seeInField('#product_review_comment', $reviewContents['comment']);
+        $I->seeInField('#product_review_reviewer_name', $reviewContents->reviewer_name);
+        $I->seeInField('#product_review_reviewer_url', $reviewContents->reviewer_url);
+        $I->seeInField('#product_review_title', $reviewContents->title);
+        $I->seeInField('#product_review_comment', $reviewContents->comment);
 
         $I->fillField('#product_review_reviewer_name', $name);
         $I->fillField('#product_review_reviewer_url', $url);
@@ -193,17 +182,17 @@ class PL07ProductReviewCest
     public function review_06(AcceptanceTester $I)
     {
         $reviewContents = $this->review_04($I);
-        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+        $rowIdentifier = Locator::contains('//tr', $reviewContents->reviewer_name);
 
         $I->amOnPage('admin/product_review/');
         $I->see('レビュー管理');
-        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see($reviewContents->reviewer_name, $rowIdentifier);
         $I->see('公開', $rowIdentifier);
         $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-pencil fa-lg text-secondary"]');
-        $I->seeInField('#product_review_reviewer_name', $reviewContents['name']);
-        $I->seeInField('#product_review_reviewer_url', $reviewContents['url']);
-        $I->seeInField('#product_review_title', $reviewContents['title']);
-        $I->seeInField('#product_review_comment', $reviewContents['comment']);
+        $I->seeInField('#product_review_reviewer_name', $reviewContents->reviewer_name);
+        $I->seeInField('#product_review_reviewer_url', $reviewContents->reviewer_url);
+        $I->seeInField('#product_review_title', $reviewContents->title);
+        $I->seeInField('#product_review_comment', $reviewContents->comment);
         $I->selectOption('#product_review_Status', '非公開');
         $I->clickWithLeftButton(Locator::contains('//button', '登録'));
         $I->see('登録しました。');
@@ -212,10 +201,10 @@ class PL07ProductReviewCest
         // フロント側
         $I->amOnPage('products/detail/1');
         $I->see('この商品のレビュー');
-        $I->dontSee($reviewContents['name']);
-        $I->dontSeeInSource($reviewContents['url']);
-        $I->dontSee($reviewContents['title']);
-        $I->dontSee($reviewContents['comment']);
+        $I->dontSee($reviewContents->reviewer_name);
+        $I->dontSeeInSource($reviewContents->reviewer_url);
+        $I->dontSee($reviewContents->title);
+        $I->dontSee($reviewContents->comment);
     }
 
     /**
@@ -228,18 +217,18 @@ class PL07ProductReviewCest
         $reviewContents = $this->review_03($I);
         $I->retry(7, 400);
 
-        $rowIdentifier = Locator::contains('//tr', $reviewContents['name']);
+        $rowIdentifier = Locator::contains('//tr', $reviewContents->reviewer_name);
         $I->amOnPage('admin/product_review/');
         $I->see('レビュー管理');
-        $I->see($reviewContents['name'], $rowIdentifier);
+        $I->see($reviewContents->reviewer_name, $rowIdentifier);
         $I->see('非公開', $rowIdentifier);
         $I->clickWithLeftButton($rowIdentifier . '//i[@class="fa fa-close fa-lg text-secondary"]');
         $I->retrySee('レビューを削除します');
         $I->clickWithLeftButton('//div[@class="modal fade show"]' . Locator::contains('//a', '削除'));
         $I->retrySee('商品レビューを削除しました。');
-        $I->dontSee($reviewContents['name']);
-        $I->dontSee($reviewContents['title']);
-        $I->dontSee($reviewContents['comment']);
+        $I->dontSee($reviewContents->reviewer_name);
+        $I->dontSee($reviewContents->title);
+        $I->dontSee($reviewContents->comment);
     }
 
     /**
@@ -259,7 +248,7 @@ class PL07ProductReviewCest
 
         if ($neededResults > 0) {
             for ($i = 0; $i < $neededResults; $i++) {
-                $this->review_06($I);
+                $this->review_05($I);
             }
         }
 
@@ -306,10 +295,10 @@ class PL07ProductReviewCest
         $I->retry(7, 400);
         $I->amOnPage('admin/product_review/');
         $I->see('レビュー管理');
-        $I->fillField('#product_review_search_multi', $reviewDetails['name']);
+        $I->fillField('#product_review_search_multi', $reviewDetails->reviewer_name);
         $I->clickWithLeftButton(Locator::contains('//div[@class="c-outsideBlock__contents mb-5"]//button', '検索'));
-        $I->see($reviewDetails['name']);
-        $I->see($reviewDetails['title']);
+        $I->see($reviewDetails->reviewer_name);
+        $I->see($reviewDetails->title);
         $I->seeNumberOfElementsInDOM('//table[@class="table table-sm"]/tbody/tr', 1);
     }
 
@@ -322,6 +311,7 @@ class PL07ProductReviewCest
      */
     public function review_10(AcceptanceTester $I, Example $example)
     {
+        $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
         $name = $faker->userName();
         $url = $faker->url();
@@ -341,7 +331,7 @@ class PL07ProductReviewCest
         $reviewTarget->setReviewerUrl($url);
         $reviewTarget->setTitle($title);
         $reviewTarget->setComment($comment);
-        $reviewTarget->setRecommendLevel(!empty(@$example['target']['recommendLevel']) ? $example['target']['recommendLevel'] : 5);
+        $reviewTarget->setRecommendLevel(!empty(@$example['target']['recommend_level']) ? $example['target']['recommend_level'] : 5);
         $reviewTarget->setSex($entityManager->getRepository('Eccube\Entity\Master\Sex')->find(!empty(@$example['target']['sex']) ? $example['target']['sex'] : 1));
         $reviewTarget->setProduct($entityManager->getRepository('Eccube\Entity\Product')->find(!empty(@$example['target']['product_id']) ? $example['target']['product_id'] : 1));
         $reviewTarget->setStatus($entityManager->getRepository('Plugin\ProductReview42\Entity\ProductReviewStatus')->find(ProductReviewStatus::SHOW));
@@ -360,19 +350,22 @@ class PL07ProductReviewCest
         $reviewAvoid->setComment($comment);
         $reviewAvoid->setSex($entityManager->getRepository('Eccube\Entity\Master\Sex')->find(!empty(@$example['avoid']['sex']) ? $example['avoid']['sex'] :  1));
         $reviewAvoid->setProduct($entityManager->getRepository('Eccube\Entity\Product')->find(!empty(@$example['avoid']['product_id']) ? $example['avoid']['product_id'] : 1));
-        $reviewAvoid->setRecommendLevel(!empty(@$example['avoid']['recommendLevel']) ? $example['avoid']['recommendLevel'] : 5);
+        $reviewAvoid->setRecommendLevel(!empty(@$example['avoid']['recommend_level']) ? $example['avoid']['recommend_level'] : 5);
         $reviewAvoid->setStatus($entityManager->getRepository('Plugin\ProductReview42\Entity\ProductReviewStatus')->find(ProductReviewStatus::HIDE));
         $reviewAvoid->setCreateDate(!empty(@$example['avoid']['create_date']) ? Carbon::createFromFormat('Y/m/d H:i', $example['avoid']['create_date'])->toDateTime() : new \DateTime());
         $reviewAvoid->setUpdateDate(new \DateTime());
         $entityManager->persist($reviewAvoid);
         $entityManager->flush();
 
+        $I->clickWithLeftButton('//div[@href="#searchDetail"]');
+        $I->retrySee('検索条件をクリア');
+
         switch ($example['search']['type']) {
             case 'option':
                 $I->selectOption($example['search']['id'], $example['search']['value']);
                 break;
             case 'date':
-                $I->fillDate($example['search']['id'], $example['search']['value']);
+                $I->fillDate($example['search']['id'], Carbon::createFromFormat('Y/m/d', $example['search']['value']), 'jp');
                 break;
             case 'checkbox':
                 $I->checkOption($example['search']['id']);
@@ -383,7 +376,7 @@ class PL07ProductReviewCest
         }
 
         $I->clickWithLeftButton(Locator::contains('//div[@class="c-outsideBlock__contents mb-5"]//button', '検索'));
-        $I->see($reviewTarget->getReviewerName());
+        $I->retrySee($reviewTarget->getReviewerName());
         $I->see($reviewTarget->getTitle());
         $I->dontSee($reviewAvoid->getReviewerName());
         $I->dontSee($reviewAvoid->getTitle());
@@ -467,23 +460,23 @@ class PL07ProductReviewCest
                 ],
                 "search" => [
                     "type" => "option",
-                    "id" => "product_review_search_recommend_level",
+                    "id" => "#product_review_search_recommend_level",
                     "value" => "★★★★★"
                 ]
             ],
-            [
-                "target" => [
-                    "create_date" => "2000/02/02 13:00"
-                ],
-                "avoid" => [
-                    "create_date" => "1999/02/01 13:00"
-                ],
-                "search" => [
-                    "type" => "date",
-                    "id" => "product_review_search_review_start",
-                    "value" => "1999/02/01"
-                ]
-            ],
+//            [
+//                "target" => [
+//                    "create_date" => "2000/02/02 13:00"
+//                ],
+//                "avoid" => [
+//                    "create_date" => "1998/02/01 13:00"
+//                ],
+//                "search" => [
+//                    "type" => "date",
+//                    "id" => "#product_review_search_review_start",
+//                    "value" => "1999/02/01"
+//                ]
+//            ],
             [
                 "target" => [
                     "sex" => 1
@@ -493,7 +486,7 @@ class PL07ProductReviewCest
                 ],
                 "search" => [
                     "type" => "checkbox",
-                    "id" => "product_review_search_sex_1"
+                    "id" => "#product_review_search_sex_1"
                 ]
             ],
             [
@@ -505,7 +498,7 @@ class PL07ProductReviewCest
                 ],
                 "search" => [
                     "type" => "input",
-                    "id" => "product_review_search_product_name",
+                    "id" => "#product_review_search_product_name",
                     "value" => "彩のジェラートCUBE"
                 ]
             ]

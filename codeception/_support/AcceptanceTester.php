@@ -49,6 +49,19 @@ class AcceptanceTester extends \Codeception\Actor
         return $this->scenario;
     }
 
+    public function willHardDeleteCache($dir = '')
+    {
+        foreach(glob(__DIR__ . '../../var/cache/*') as $file) {
+            if(is_dir($file))
+                $this->willHardDeleteCache($dir);
+            else
+                unlink($file);
+        }
+        if(!empty($dir)) {
+            rmdir($dir);
+        }
+    }
+
     public function loginAsAdmin($user = '', $password = '', $dir = '')
     {
         if (!$user || !$password) {
