@@ -246,26 +246,52 @@ class AcceptanceTester extends \Codeception\Actor
         });
     }
 
-    public function fillDate(string $dateField, Carbon $date)
+    public function fillDate(string $dateField, Carbon $date, $locale = 'en-us')
     {
-        $I = $this;
-        $I->clickWithLeftButton($dateField);
-        $I->type($date->format('Y'));
-        $I->pressKey($dateField, WebDriverKeys::TAB);
-        $I->type($date->format('m'));
-        $I->type($date->format('d'));
+        switch ($locale) {
+            case('jp'):
+                $I = $this;
+                $I->clickWithLeftButton($dateField);
+                $I->type($date->format('Y'));
+                $I->pressKey($dateField, WebDriverKeys::TAB);
+                $I->type($date->format('m'));
+                $I->type($date->format('d'));
+                break;
+            case('en-us'):
+            default:
+                $I = $this;
+                $I->clickWithLeftButton($dateField);
+                $I->type($date->format('m'));
+                $I->type($date->format('d'));
+                $I->type($date->format('Y'));
+        }
+
     }
 
-    public function fillDateTime(string $dateTimeField, Carbon $dateTime)
+    public function fillDateTime(string $dateTimeField, Carbon $dateTime, $locale = 'en-us')
     {
         $I = $this;
-        $I->clickWithLeftButton($dateTimeField);
-        $I->type($dateTime->format('Y'));
-        $I->pressKey($dateTimeField, WebDriverKeys::TAB);
-        $I->type($dateTime->format('m'));
-        $I->type($dateTime->format('d'));
-        $I->type($dateTime->format('H'));
-        $I->type($dateTime->format('i'));
+        switch ($locale):
+            case('jp'):
+                $I->clickWithLeftButton($dateTimeField);
+                $I->type($dateTime->format('Y'));
+                $I->pressKey($dateTimeField, WebDriverKeys::TAB);
+                $I->type($dateTime->format('m'));
+                $I->type($dateTime->format('d'));
+                $I->type($dateTime->format('H'));
+                $I->type($dateTime->format('i'));
+                break;
+            case('en-us'):
+            default:
+                $I->clickWithLeftButton($dateTimeField);
+                $I->type($dateTime->format('m'));
+                $I->type($dateTime->format('d'));
+                $I->type($dateTime->format('Y'));
+                $I->pressKey($dateTimeField, WebDriverKeys::TAB);
+                $I->type($dateTime->format('H'));
+                $I->type($dateTime->format('i'));
+                break;
+        endswitch;
     }
 
     public function generateCustomerAndLogin()
