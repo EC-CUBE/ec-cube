@@ -68,6 +68,7 @@ env:
                     browser: chrome
                     capabilities:
                         chromeOptions:
+                            args: [ "--lang=ja_JP" ]
                             prefs:
                                 download.default_directory: '%PWD%/codeception/_support/_downloads'
     chrome-headless:
