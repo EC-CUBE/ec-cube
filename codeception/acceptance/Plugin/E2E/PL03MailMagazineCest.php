@@ -433,7 +433,7 @@ class PL03MailMagazineCest
         $I->retry(20, 1000);
         $I->wantToUninstallPlugin('メールマガジンプラグイン');
         // プラグインの状態を確認する
-        $xpath = Locator::contains('tr', 'メールマガジンプラグイン');
+        $xpath = Locator::contains('tr', 'メルマガ管理プラグイン');
         $I->see('インストール', $xpath);
     }
 
