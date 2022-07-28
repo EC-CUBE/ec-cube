@@ -39,6 +39,12 @@ class PL07ProductReviewCest
         $I->loginAsAdmin();
     }
 
+    public function _after(AcceptanceTester $I)
+    {
+        // Delete all cache as doctrine metadata is always in the way on plugin install.
+        $I->willHardDeleteCache();
+    }
+
     /**
      * @param AcceptanceTester $I
      * @group install

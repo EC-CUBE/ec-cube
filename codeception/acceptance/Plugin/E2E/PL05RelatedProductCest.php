@@ -30,8 +30,15 @@ class PL05RelatedProductCest
 
     public function _before(AcceptanceTester $I)
     {
+        // Delete all cache as doctrine metadata is always in the way on plugin install.
         $I->willHardDeleteCache();
         $I->loginAsAdmin();
+    }
+
+    public function _after(AcceptanceTester $I)
+    {
+        // Delete all cache as doctrine metadata is always in the way on plugin install.
+        $I->willHardDeleteCache();
     }
 
     /**
