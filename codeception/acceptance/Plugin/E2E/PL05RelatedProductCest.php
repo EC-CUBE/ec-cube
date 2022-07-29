@@ -89,6 +89,8 @@ class PL05RelatedProductCest
         $this->relatedProduct = $RelatedProduct;
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $Product->getId()));
         $I->see('関連商品');
+        // Wait for javascript to load.
+        $I->wait(10);
         $I->clickWithLeftButton('#RelatedProduct-search0');
         $I->retryFillField('#admin_search_product_id', $RelatedProduct->getId());
         $I->clickWithLeftButton('#RelatedProductSearchButton');
@@ -120,6 +122,8 @@ class PL05RelatedProductCest
         $identityID = bin2hex(random_bytes(20));
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $Product->getId()));
         $I->see('関連商品');
+        // Wait for javascript to load.
+        $I->wait(10);
         $I->clickWithLeftButton('#RelatedProduct-search0');
         $I->retryFillField('#admin_search_product_id', $RelatedProduct->getId());
         $I->clickWithLeftButton('#RelatedProductSearchButton');
@@ -158,6 +162,8 @@ class PL05RelatedProductCest
 
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $Product->getId()));
         $I->see('関連商品');
+        // Wait for javascript to load.
+        $I->wait(10);
 
         foreach ($RelatedProducts as $key => $relatedProduct) {
             $I->clickWithLeftButton('#RelatedProduct-search'.$key);
@@ -196,6 +202,8 @@ class PL05RelatedProductCest
         $this->related_03($I);
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $this->product->getId()));
         $I->see('関連商品');
+        // Wait for javascript to load.
+        $I->wait(10);
         $I->see($this->relatedProduct->getName());
         $I->clickWithLeftButton('#RelatedProduct-delete0');
         $I->wait(1);
