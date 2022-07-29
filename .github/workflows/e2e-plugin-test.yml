@@ -93,7 +93,6 @@ jobs:
           wget -O ./codeception/_data/maker.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/maker-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
           wget -O ./codeception/_data/product_images.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/ProductImagesUploader/releases/latest | grep browser_download_url | cut -d '"' -f 4)
           wget -O ./codeception/_data/data_migrate.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/data-migration-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
-      - name: Save ZIP
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
