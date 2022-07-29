@@ -155,6 +155,8 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
         run: php -S 127.0.0.1:8000 codeception/router.php &
+      - name: Start Webhook Development Server
+        run: php -S localhost:8008 codeception/_support/server/webhook.php &
       - name: Codeception (Install Process Testing)
         env:
           APP_ENV: 'codeception'

@@ -19,10 +19,13 @@ use Codeception\Util\Locator;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFileExists;
 use function PHPUnit\Framework\assertJson;
 use function PHPUnit\Framework\assertNotEmpty;
+use function PHPUnit\Framework\assertStringContainsString;
 
 /**
  * @group plugin
@@ -415,7 +418,21 @@ class PL08ApiCest
      */
     public function web_api_13(AcceptanceTester $I)
     {
+        $I->retry(7, 400);
+        $webhookData = $this->web_api_05($I, 'http://localhost:8008');
 
+        /**
+         * @var Product $productData
+         */
+        $productData = $I->grabEntitiesFromRepository(Product::class, [
+            'id' => 1,
+        ])[0];
+
+        $I->amOnPage('/admin/product/product/1/edit');
+        $I->clickWithLeftButton('//button[@class="btn btn-ec-conversion px-5 ladda-button"]');
+        $I->retrySee('保存しました');
+        $I->wait(10);
+        assertFileExists(__DIR__ . '/../../../_support/server/output/webhook_output.txt');
     }
 
     /**
