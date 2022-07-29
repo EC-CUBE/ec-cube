@@ -60,6 +60,7 @@ class AcceptanceTester extends \Codeception\Actor
         if(!empty($dir)) {
             rmdir($dir);
         }
+        apcu_clear_cache();
     }
 
     public function loginAsAdmin($user = '', $password = '', $dir = '')

@@ -32,6 +32,7 @@ class PL05RelatedProductCest
     {
         // Delete all cache as doctrine metadata is always in the way on plugin install.
         $I->willHardDeleteCache();
+
         $I->loginAsAdmin();
     }
 
