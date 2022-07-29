@@ -51,15 +51,6 @@ class PL08ApiCest
         }
         $I->wantToInstallPlugin('Web API');
         $I->seePluginIsInstalled('Web API');
-    }
-
-    /**
-     * @group install
-     * @param AcceptanceTester $I
-     * @return void
-     */
-    public function web_api_02(AcceptanceTester $I)
-    {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'Web API');
         $I->see('Web API');
@@ -424,8 +415,7 @@ class PL08ApiCest
      */
     public function web_api_13(AcceptanceTester $I)
     {
-        // @todo: Creating a mock server and reading the events of a webhook will take time there I will temporarily disable this test.
-        assertEquals(true, true);
+
     }
 
     /**

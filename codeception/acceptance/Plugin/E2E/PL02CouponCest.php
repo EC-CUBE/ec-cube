@@ -64,8 +64,19 @@ class PL02CouponCest
         }
         $I->wantToInstallPlugin('クーポンプラグイン');
         $I->seePluginIsInstalled('Coupon Plugin for EC-CUBE42');
-        // @todo Due to strange Kernel bug, move activation test case into install.
-        // Detail: Cannot retrieve the container from a non-booted kernel.
+    }
+
+    /**
+     * ② 有効化できる
+     *
+     * @param AcceptanceTester $I
+     * @group install
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function coupon_02(AcceptanceTester $I)
+    {
         $I->amOnPage('/admin/store/plugin');
         $couponRow = Locator::contains('//tr', 'Coupon Plugin for EC-CUBE42');
         $I->see('Coupon Plugin for EC-CUBE42', $couponRow);
