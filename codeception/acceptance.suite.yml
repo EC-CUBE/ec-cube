@@ -15,7 +15,7 @@ modules:
         - MailCatcher
         - REST:
               depends: PhpBrowser
-              url: 'http://localhost:8080/'
+              url: 'http://localhost:8000/'
               shortDebugResponse: 300 # only the first 300 characters of the response
         - Symfony:
               part: SERVICES
