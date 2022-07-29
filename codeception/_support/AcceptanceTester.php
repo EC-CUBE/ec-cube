@@ -382,6 +382,18 @@ class AcceptanceTester extends \Codeception\Actor
         $I->see('インストール', $targetRow);
     }
 
+    public function wantToUninstallLocalPlugin(string $pluginName)
+    {
+        $I = $this;
+        $I->retry(10, 500);
+        $I->amOnPage('/admin/store/plugin');
+        $targetRow = Locator::contains('//tr', $pluginName);
+        $I->click($targetRow . '//a[@data-bs-target="#localPluginDeleteModal"]');
+        $I->retrySee('プラグインの削除を確認する');
+        $I->click('//div[@class="modal fade show"]//a[@class="btn btn-ec-delete"]');
+        $I->retrySee('プラグインを削除しました。');
+    }
+
     public function wantToUninstallPlugin(string $pluginName, bool $safeEscape = false): bool
     {
         try {

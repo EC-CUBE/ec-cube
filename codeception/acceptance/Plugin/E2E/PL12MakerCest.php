@@ -15,29 +15,23 @@ class PL12MakerCest
     }
 
     /**
-     * @skip
+     * @group install
      * @param \AcceptanceTester $I
      * @return void
      */
     public function maker_01(\AcceptanceTester $I)
     {
-
+        // Not available on the owners store list so get from githubs latest release.
+        $I->wantToInstallPluginLocally('maker.tar.gz');
+        $I->seePluginIsInstalled('Maker42');
     }
 
+    /**
+     * @group install
+     * @param \AcceptanceTester $I
+     * @return void
+     */
     public function maker_02(\AcceptanceTester $I)
-    {
-        // 無効処理
-        $I->amOnPage('/admin/store/plugin');
-        $recommendPluginRow = Locator::contains('//tr', 'メーカー管理プラグイン');
-        $I->see('メーカー管理プラグイン', "//tr[contains(.,'メーカー管理プラグイン')]");
-        $I->see('有効', $recommendPluginRow);
-        $I->clickWithLeftButton("(" . $recommendPluginRow . "//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「メーカー管理プラグイン」を無効にしました。');
-        $I->see('メーカー管理プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
-    }
-
-    public function maker_03(\AcceptanceTester $I)
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'メーカー管理プラグイン');
@@ -50,16 +44,12 @@ class PL12MakerCest
     }
 
     /**
-     * @skip
-     * @param \AcceptanceTester $I
+     * @group main
+     * @param AcceptanceTester $I
      * @return void
+     * @throws \Exception
      */
-    public function maker_04(\AcceptanceTester $I)
-    {
-
-    }
-
-    public function maker_05(AcceptanceTester $I)
+    public function maker_03(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create('ja_JP');
         $brandName = $faker->company . bin2hex(random_bytes(10));;
@@ -69,7 +59,13 @@ class PL12MakerCest
         $I->see($brandName);
     }
 
-    public function maker_06(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function maker_04(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
@@ -92,7 +88,13 @@ class PL12MakerCest
         $I->dontSeeInRepository('Plugin\Maker42\Entity\Maker', ['name' => $brandName]);
     }
 
-    public function maker_07(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function maker_05(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
@@ -112,7 +114,13 @@ class PL12MakerCest
         $I->dontSeeInRepository('Plugin\Maker42\Entity\Maker', ['name' => $brandName]);
     }
 
-    public function maker_08(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function maker_06(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
@@ -134,7 +142,13 @@ class PL12MakerCest
         $I->see($brandName2);
     }
 
-    public function maker_09(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function maker_07(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
@@ -166,7 +180,13 @@ class PL12MakerCest
         $I->seeInSource($brandUrl);
     }
 
-    public function maker_10(AcceptanceTester $I)
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     * @throws \Exception
+     */
+    public function maker_08(AcceptanceTester $I)
     {
         $I->retry(7, 400);
         $faker = \Faker\Factory::create('ja_JP');
@@ -194,6 +214,38 @@ class PL12MakerCest
         $I->amOnPage('products/detail/1');
         $I->dontSee($brandName);
         $I->dontSeeInSource($brandUrl);
+    }
+
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function maker_09(\AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', 'メーカー管理プラグイン');
+        $I->see('メーカー管理プラグイン', "//tr[contains(.,'メーカー管理プラグイン')]");
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton("(" . $recommendPluginRow . "//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「メーカー管理プラグイン」を無効にしました。');
+        $I->see('メーカー管理プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+    }
+
+    /**
+     * @group main
+     * @param \AcceptanceTester $I
+     * @return void
+     */
+    public function maker_10(\AcceptanceTester $I)
+    {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $I->retry(10, 1000);
+        $I->wantToUninstallLocalPlugin('メーカー管理プラグイン');
+        $I->dontSee('メーカー管理プラグイン');
     }
 
     private function registerMaker(AcceptanceTester $I, string $brandName)
