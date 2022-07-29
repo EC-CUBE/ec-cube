@@ -20,10 +20,6 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
-use Page\Admin\ApiOauthEditPage;
-use Page\Admin\ApiOauthPage;
-use Page\Admin\ApiWebHookEditPage;
-use Page\Admin\ApiWebHookPage;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertJson;
 use function PHPUnit\Framework\assertNotEmpty;
@@ -62,7 +58,7 @@ class PL08ApiCest
      * @param AcceptanceTester $I
      * @return void
      */
-    public function web_api_02(\AcceptanceTester $I)
+    public function web_api_02(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'Web API');

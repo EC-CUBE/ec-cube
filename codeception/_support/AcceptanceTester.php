@@ -63,7 +63,6 @@ class AcceptanceTester extends \Codeception\Actor
 //        if(!empty($dir)) {
 //            rmdir($dir);
 //        }
-
     }
 
     public function loginAsAdmin($user = '', $password = '', $dir = '')
