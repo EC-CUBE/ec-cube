@@ -156,6 +156,11 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+      - name: Hard reset ALL cache from var/cache after install
+        run: |
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'codeception'
