@@ -338,6 +338,19 @@ class AcceptanceTester extends \Codeception\Actor
         $I->seeInCurrentUrl('admin/store/plugin');
     }
 
+    public function wantToInstallPluginLocally(string $filename)
+    {
+        $I = $this;
+        $I->retry(10, 500);
+        $I->amOnPage('/admin/store/plugin');
+        $I->click(Locator::contains('//a', 'アップロードして新規追加'));
+        $I->see('新規プラグインのアップロード');
+        $I->attachFile('//input[@type="file"]', $filename);
+        $I->click(Locator::contains('//button[@type="submit"]', 'アップロード'));
+        $I->retrySeeInCurrentUrl('admin/store/plugin');
+        $I->retrySee('プラグインをインストールしました。');
+    }
+
     public function seePluginIsInstalled(string $pluginName, bool $safeEscape = false) {
         $I = $this;
         $I->amOnPage('/admin/store/plugin');
