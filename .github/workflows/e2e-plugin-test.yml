@@ -33,10 +33,6 @@ jobs:
             database_charset: utf8mb4
 
     services:
-      fake_redirect_url_server:
-        image: kennethreitz/httpbin
-        ports:
-          - "8012:80"
       postgres10:
         image: postgres:10
         env:
