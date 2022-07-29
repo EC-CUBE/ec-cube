@@ -192,6 +192,9 @@ class PL08ApiCest
     {
         $I->retry(7, 400);
         $apiAuthData = $this->web_api_03($I, true);
+        $I->amOnPage('/');
+        $grabDomain = $I->grabFromCurrentUrl();
+
 
         $I->amOnPage(
             sprintf(
@@ -210,7 +213,7 @@ class PL08ApiCest
 
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
         $tokens = $I->sendPost(
-            '/token',
+            $grabDomain . '/token',
             [
                 'grant_type' => 'authorization_code',
                 'code' => $code,
