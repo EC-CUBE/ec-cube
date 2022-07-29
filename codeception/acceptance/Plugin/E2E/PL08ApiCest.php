@@ -192,9 +192,6 @@ class PL08ApiCest
     {
         $I->retry(7, 400);
         $apiAuthData = $this->web_api_03($I, true);
-        $I->amOnPage('/');
-        $grabDomain = $I->grabFromCurrentUrl();
-
 
         $I->amOnPage(
             sprintf(
@@ -213,7 +210,7 @@ class PL08ApiCest
 
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
         $tokens = $I->sendPost(
-            $grabDomain . '/token',
+            '/token',
             [
                 'grant_type' => 'authorization_code',
                 'code' => $code,
@@ -237,12 +234,10 @@ class PL08ApiCest
     public function web_api_08(AcceptanceTester $I)
     {
         $tokenData = $this->web_api_07($I);
-        $I->amOnPage('/');
-        $grabDomain = $I->grabFromCurrentUrl();
         $I->amOnPage('/admin/api/webhook');
 
         $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
-        $I->sendGet($grabDomain . '/api', [
+        $I->sendGet('/api', [
             'query' => '{ product(id: 1) { id, name } }'
         ]);
         $I->seeResponseCodeIs(200);
@@ -265,8 +260,6 @@ class PL08ApiCest
     public function web_api_09(AcceptanceTester $I)
     {
         $tokenData = $this->web_api_07($I);
-        $I->amOnPage('/');
-        $grabDomain = $I->grabFromCurrentUrl();
         $I->amOnPage('/admin/api/webhook');
         $ordersGen = Fixtures::get('createOrders');
         $customer = Fixtures::get('createCustomer');
@@ -275,7 +268,7 @@ class PL08ApiCest
          */
         $targetOrder = $ordersGen($customer(), 1)[0];
         $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
-        $I->sendGet($grabDomain . '/api', [
+        $I->sendGet('/api', [
             'query' => sprintf('{ order(id: %s) { id, order_no }}', $targetOrder->getId())
         ]);
 
@@ -299,8 +292,6 @@ class PL08ApiCest
     public function web_api_10(AcceptanceTester $I)
     {
         $tokenData = $this->web_api_07($I);
-        $I->amOnPage('/');
-        $grabDomain = $I->grabFromCurrentUrl();
         $I->amOnPage('/admin/api/webhook');
         $customerFixture = Fixtures::get('createCustomer');
         /**
@@ -308,7 +299,7 @@ class PL08ApiCest
          */
         $customer = $customerFixture();
         $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
-        $I->sendGet($grabDomain . '/api', [
+        $I->sendGet('/api', [
             'query' => sprintf('{ customer(id: %s) { id, name01, name02 }}', $customer->getId())
         ]);
 
@@ -333,8 +324,6 @@ class PL08ApiCest
     public function web_api_11(AcceptanceTester $I)
     {
         $tokenData = $this->web_api_07($I);
-        $I->amOnPage('/');
-        $grabDomain = $I->grabFromCurrentUrl();
         $I->amOnPage('/admin/api/webhook');
         /**
          * @var ProductStock $productStock ;
@@ -349,7 +338,7 @@ class PL08ApiCest
         $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
         $I->haveHttpHeader('HTTP_AUTHORIZATION', 'Bearer ' . $tokenData['access_token']);
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $response = $I->sendPost($grabDomain . '/api', [
+        $response = $I->sendPost('/api', [
             'query' => 'mutation ($code: String!, $stock: Int, $stock_unlimited: Boolean!) { updateProductStock(code: $code, stock: $stock, stock_unlimited: $stock_unlimited) { code, stock, stock_unlimited } }',
             'variables' => [
                 'code' => $getProductClassCode,
@@ -380,8 +369,6 @@ class PL08ApiCest
     public function web_api_12(AcceptanceTester $I)
     {
         $tokenData = $this->web_api_07($I);
-        $I->amOnPage('/');
-        $grabDomain = $I->grabFromCurrentUrl();
         $I->amOnPage('/admin/api/webhook');
         $ordersGen = Fixtures::get('createOrders');
         $customer = Fixtures::get('createCustomer');
@@ -395,7 +382,7 @@ class PL08ApiCest
         $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
         $I->haveHttpHeader('HTTP_AUTHORIZATION', 'Bearer ' . $tokenData['access_token']);
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $response = $I->sendPost($grabDomain . '/api', [
+        $response = $I->sendPost('/api', [
             'query' => 'mutation ($id: ID!, $shipping_date: DateTime, $shipping_delivery_name: String, $tracking_number: String, $note: String, $is_send_mail: Boolean) { updateShipped(id: $id, shipping_date: $shipping_date, shipping_delivery_name: $shipping_delivery_name, tracking_number: $tracking_number, note: $note, is_send_mail: $is_send_mail ) { id, shipping_date, shipping_delivery_name, tracking_number, note }}',
             'variables' => [
                 'id' => $targetOrder->getId(),
