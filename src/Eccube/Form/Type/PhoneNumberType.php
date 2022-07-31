@@ -69,7 +69,7 @@ class PhoneNumberType extends AbstractType
             ]);
 
             $constraints[] = new Assert\Type([
-                'type' => 'numeric',
+                'type' => 'digit',
                 'message' => 'form_error.numeric_only',
             ]);
 
