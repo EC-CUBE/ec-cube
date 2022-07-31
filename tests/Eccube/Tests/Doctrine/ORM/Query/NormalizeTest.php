@@ -23,10 +23,10 @@ class NormalizeTest extends EccubeTestCase
             ->select('p.id')->from('Eccube\Entity\Product', 'p')
             ->where('NORMALIZE(p.name) LIKE :name')
             ->getQuery()->getSql();
-        if ($this->entityManager->getConnection()->getDriver()->getName() === 'pdo_pgsql')
+        if ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName() === 'postgresql')
         {
-            $this->assertTrue(strpos($sql, 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー') !== false);
-            $this->assertTrue(strpos($sql, 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー') !== false) ;
+            $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', $sql);
+            $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', $sql);
         }
     }
 }
