@@ -423,10 +423,123 @@ class PL04SalesReportCest
         }
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
     public function sales_08(AcceptanceTester $I)
     {
+        $I->retry(10, 200);
 
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders(
+            $customer,
+            1,
+            [],
+            OrderStatus::IN_PROGRESS,
+            CarbonPeriod::between(
+                Carbon::createFromFormat('Y-m-d', '2022-03-01'),
+                Carbon::createFromFormat('Y-m-d', '2022-03-02')
+            )
+        );
+
+        $I->amOnPage('/admin/plugin/sales_report/product');
+        $I->see('売上管理');
+        $I->see('商品別集計');
+
+
+        $I->selectOption('#sales_report_monthly_year', '2022');
+        $I->selectOption('#sales_report_monthly_month', '3');
+        $I->clickWithLeftButton(Locator::contains('//button', '月度で集計'));
+
+        // check if html exists on page
+        $I->seeInSource('<canvas id="chart"');
+
+        // Check console log for errors
+        $I->wait(10);
+        $chartId = $I->executeJS('return Chart.instances[0].chart.canvas.id');
+        $I->assertNotEmpty($chartId);
+        $I->assertEquals('chart', $chartId);
+
+        // Check Graph data
+        $graphData = $this->get_string_between($I->grabPageSource(), 'var graphData = ', ';');
+        $I->assertJson($graphData);
+        $I->assertNotEmpty((json_decode($graphData))->labels);
+        $I->assertNotEmpty((json_decode($graphData))->datasets);
+
+        foreach($newOrders as $order)
+        {
+            $I->see($order->getProductOrderItems()[0]->getProductCode());
+            $I->see($order->getProductOrderItems()[0]->getProductName());
+        }
     }
+
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function sales_09(AcceptanceTester $I)
+    {
+        $I->retry(10, 200);
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders(
+            $customer,
+            1,
+            [],
+            OrderStatus::IN_PROGRESS,
+            CarbonPeriod::between(
+                Carbon::createFromFormat('Y-m-d', '2022-04-01'),
+                Carbon::createFromFormat('Y-m-d', '2022-04-02')
+            )
+        );
+
+        $I->amOnPage('/admin/plugin/sales_report/product');
+        $I->see('売上管理');
+        $I->see('商品別集計');
+
+
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'jp', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), 'jp', 3, 3);
+        $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
+
+        // check if html exists on page
+        $I->seeInSource('<canvas id="chart"');
+
+        // Check console log for errors
+        $I->wait(10);
+        $chartId = $I->executeJS('return Chart.instances[0].chart.canvas.id');
+        $I->assertNotEmpty($chartId);
+        $I->assertEquals('chart', $chartId);
+
+        // Check Graph data
+        $graphData = $this->get_string_between($I->grabPageSource(), 'var graphData = ', ';');
+        $I->assertJson($graphData);
+        $I->assertNotEmpty((json_decode($graphData))->labels);
+        $I->assertNotEmpty((json_decode($graphData))->datasets);
+
+        foreach($newOrders as $order)
+        {
+            $I->see($order->getProductOrderItems()[0]->getProductCode());
+            $I->see($order->getProductOrderItems()[0]->getProductName());
+        }
+    }
+
+
+
+
 
 
     private function get_string_between($string, $start, $end)
