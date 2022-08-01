@@ -42,6 +42,14 @@ class PostalTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testInvalidNotDigitOnly()
+    {
+        $this->formData['phone_number'] = '0.3e2';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testInvalidLengthMax()
     {
         $this->formData['postal_code'] = str_repeat('1', $this->eccubeConfig['eccube_postal_code'] + 1);
