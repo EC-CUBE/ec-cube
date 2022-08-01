@@ -75,11 +75,22 @@ class AcceptanceTester extends \Codeception\Actor
 
         $I = $this;
         $this->goToAdminPage($dir);
+        $loggedIn = false;
+        $I->comment('Logging in to admin...');
+        try {
+            $I->seeInSource('login_id');
+            $I->seeInSource('password');
+        } catch (\Exception $e) {
+            $I->comment('Already logged in...');
+            $loggedIn = true;
+        }
 
-        $I->submitForm('#form1', [
-            'login_id' => $user,
-            'password' => $password,
-        ]);
+        if ($loggedIn === false) {
+            $I->submitForm('#form1', [
+                'login_id' => $user,
+                'password' => $password,
+            ]);
+        }
 
         $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles');
     }
