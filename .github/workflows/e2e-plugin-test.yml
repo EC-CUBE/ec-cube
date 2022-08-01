@@ -190,3 +190,9 @@ jobs:
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/
+      - name: Upload webhook logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.group }}-webhook-logs
+          path: codeception/_support/server/output/
