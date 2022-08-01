@@ -22,6 +22,9 @@ Invalid credentials.: |
 Invalid CSRF token.: |
   ログインできませんでした。
   入力内容に誤りがないかご確認ください。
+Too many failed login attempts, please try again later.: ログイン試行回数を超えました。しばらくして再度お試しください。
+Too many failed login attempts, please try again in %minutes% minute.: ログイン試行回数が多すぎます。%minutes%分後に再度お試しください。
+Too many failed login attempts, please try again in %minutes% minutes.: ログイン試行回数が多すぎます。%minutes%分後に再度お試しください。
 
 #------------------------------------------------------------------------------------
 # EC-CUBE error message
