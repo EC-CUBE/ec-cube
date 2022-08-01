@@ -32,8 +32,10 @@ use Page\Admin\ProductEditPage;
 use Page\Admin\ProductManagePage;
 use Page\Admin\ShopSettingPage;
 use Page\Admin\TaxManagePage;
+use Page\Admin\TradelawSettingPage;
 use Page\Front\CartPage;
 use Page\Front\EntryPage;
+use Page\Front\HelpTradelawPage;
 use Page\Front\HistoryPage;
 use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
@@ -453,6 +455,91 @@ class EA07BasicinfoCest
             ->検索($customer->getEmail())
             ->一覧_編集(1);
         $I->assertEquals('0', $I->grabTextFrom(OrderEditPage::$加算ポイント));
+    }
+
+    public function basicinfo_特定商取引法の設定(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0702-UC01-T01(& UC01-T02) 特定商取引法の設定');
+
+        TradelawSettingPage::go($I)
+            ->入力(TradelawSettingPage::$販売業者, '販売業者名称', '販売業者説明')
+            ->入力(TradelawSettingPage::$代表責任者, '代表責任者名称', '代表責任者説明')
+            ->入力(TradelawSettingPage::$所在地, '所在地名称', '所在地説明')
+            ->入力(TradelawSettingPage::$電話番号, '電話番号名称', '電話番号説明')
+            ->入力(TradelawSettingPage::$メールアドレス, 'メールアドレス名称', 'メールアドレス説明')
+            ->入力(TradelawSettingPage::$URL, 'URL名称', 'URL説明')
+            ->入力(TradelawSettingPage::$商品代金以外の必要料金, '商品代金以外の必要料金名称', '商品代金以外の必要料金説明')
+            ->入力(TradelawSettingPage::$引き渡し時期, '引き渡し時期名称', '引き渡し時期説明')
+            ->注文画面に表示(TradelawSettingPage::$引き渡し時期)
+            ->入力(TradelawSettingPage::$返品交換について, '返品交換について名称', '返品交換について説明')
+            ->注文画面に表示(TradelawSettingPage::$返品交換について)
+            ->入力(TradelawSettingPage::$その他01, 'その他01名称', 'その他01説明')
+            ->入力(TradelawSettingPage::$その他02, 'その他02名称', 'その他02説明')
+            ->入力(TradelawSettingPage::$その他03, 'その他03名称', 'その他03説明')
+            ->入力(TradelawSettingPage::$その他04, 'その他04名称', 'その他04説明')
+            ->入力(TradelawSettingPage::$その他05, 'その他05名称', 'その他05説明')
+            ->入力(TradelawSettingPage::$その他06, 'その他06名称', 'その他06説明')
+            ->登録();
+
+        $I->see('保存しました', TradelawSettingPage::$登録完了メッセージ);
+
+        $I->expect('「特定商取引法に基づく表記」ページを表示して変更が反映されていることを確認します');
+
+        $tradelawPage = HelpTradelawPage::go($I);
+        $I->assertSame('販売業者名称', $tradelawPage->名称(1));
+        $I->assertSame('販売業者説明', $tradelawPage->詳細(1));
+        $I->assertSame('代表責任者名称', $tradelawPage->名称(2));
+        $I->assertSame('代表責任者説明', $tradelawPage->詳細(2));
+        $I->assertSame('所在地名称', $tradelawPage->名称(3));
+        $I->assertSame('所在地説明', $tradelawPage->詳細(3));
+        $I->assertSame('電話番号名称', $tradelawPage->名称(4));
+        $I->assertSame('電話番号説明', $tradelawPage->詳細(4));
+        $I->assertSame('メールアドレス名称', $tradelawPage->名称(5));
+        $I->assertSame('メールアドレス説明', $tradelawPage->詳細(5));
+        $I->assertSame('URL名称', $tradelawPage->名称(6));
+        $I->assertSame('URL説明', $tradelawPage->詳細(6));
+        $I->assertSame('商品代金以外の必要料金名称', $tradelawPage->名称(7));
+        $I->assertSame('商品代金以外の必要料金説明', $tradelawPage->詳細(7));
+        $I->assertSame('引き渡し時期名称', $tradelawPage->名称(8));
+        $I->assertSame('引き渡し時期説明', $tradelawPage->詳細(8));
+        $I->assertSame('返品交換について名称', $tradelawPage->名称(9));
+        $I->assertSame('返品交換について説明', $tradelawPage->詳細(9));
+        $I->assertSame('その他01名称', $tradelawPage->名称(10));
+        $I->assertSame('その他01説明', $tradelawPage->詳細(10));
+        $I->assertSame('その他02名称', $tradelawPage->名称(11));
+        $I->assertSame('その他02説明', $tradelawPage->詳細(11));
+        $I->assertSame('その他03名称', $tradelawPage->名称(12));
+        $I->assertSame('その他03説明', $tradelawPage->詳細(12));
+        $I->assertSame('その他04名称', $tradelawPage->名称(13));
+        $I->assertSame('その他04説明', $tradelawPage->詳細(13));
+        $I->assertSame('その他05名称', $tradelawPage->名称(14));
+        $I->assertSame('その他05説明', $tradelawPage->詳細(14));
+        $I->assertSame('その他06名称', $tradelawPage->名称(15));
+        $I->assertSame('その他06説明', $tradelawPage->詳細(15));
+
+        $I->expect('注文画面に遷移し登録した項目が反映されていることを確認します');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $I->loginAsMember($customer->getEmail(), 'password');
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+        CartPage::go($I)->レジに進む();
+        $I->see('引き渡し時期名称', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->see('引き渡し時期説明', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->see('返品交換について名称', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->see('返品交換について説明', ['css' => '#shopping-form div.ec-orderConfirm']);
+
+        ShoppingPage::at($I)->確認する();
+        $I->see('引き渡し時期名称', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->see('引き渡し時期説明', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->see('返品交換について名称', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->see('返品交換について説明', ['css' => '#shopping-form div.ec-orderConfirm']);
+
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('ご注文ありがとうございました');
     }
 
     public function basicinfo_会員規約(AcceptanceTester $I)
