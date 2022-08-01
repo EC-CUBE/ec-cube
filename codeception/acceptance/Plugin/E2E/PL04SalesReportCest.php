@@ -167,8 +167,8 @@ class PL04SalesReportCest
         $I->see('売上管理');
         $I->see('期間別集計');
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'jp', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-31'), 'jp', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-31'), 'en-us', 3, 3);
 
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
@@ -240,8 +240,8 @@ class PL04SalesReportCest
 
         // 月別
         $I->checkOption('#sales_report_unit_1');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-01-01'), 'jp', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-03-31'), 'jp', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-01-01'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-03-31'), 'en-us', 3, 3);
 
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
@@ -314,8 +314,8 @@ class PL04SalesReportCest
 
         // 曜日別
         $I->checkOption('#sales_report_unit_2');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'jp', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-14'), 'jp', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-14'), 'en-us', 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -386,8 +386,8 @@ class PL04SalesReportCest
 
         // 曜日別
         $I->checkOption('#sales_report_unit_3');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-05-01'), 'jp', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-02'), 'jp', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-05-01'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-02'), 'en-us', 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -473,8 +473,7 @@ class PL04SalesReportCest
         $I->assertNotEmpty((json_decode($graphData))->labels);
         $I->assertNotEmpty((json_decode($graphData))->datasets);
 
-        foreach($newOrders as $order)
-        {
+        foreach ($newOrders as $order) {
             $I->see($order->getProductOrderItems()[0]->getProductCode());
             $I->see($order->getProductOrderItems()[0]->getProductName());
         }
@@ -511,8 +510,8 @@ class PL04SalesReportCest
         $I->see('商品別集計');
 
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'jp', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), 'jp', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), 'en-us', 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -530,16 +529,151 @@ class PL04SalesReportCest
         $I->assertNotEmpty((json_decode($graphData))->labels);
         $I->assertNotEmpty((json_decode($graphData))->datasets);
 
-        foreach($newOrders as $order)
-        {
+        foreach ($newOrders as $order) {
             $I->see($order->getProductOrderItems()[0]->getProductCode());
             $I->see($order->getProductOrderItems()[0]->getProductName());
         }
     }
 
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function sales_10(AcceptanceTester $I)
+    {
+        $I->retry(10, 200);
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders(
+            $customer,
+            1,
+            [],
+            OrderStatus::IN_PROGRESS,
+            CarbonPeriod::between(
+                Carbon::createFromFormat('Y-m-d', '2022-03-01'),
+                Carbon::createFromFormat('Y-m-d', '2022-03-02')
+            )
+        );
+
+        $I->amOnPage('/admin/plugin/sales_report/age');
+        $I->see('売上管理');
+        $I->see('年代別集計');
 
 
+        $I->selectOption('#sales_report_monthly_year', '2022');
+        $I->selectOption('#sales_report_monthly_month', '3');
+        $I->clickWithLeftButton(Locator::contains('//button', '月度で集計'));
 
+        // check if html exists on page
+        $I->seeInSource('<canvas id="chart"');
+
+        // Check console log for errors
+        $I->wait(10);
+        $chartId = $I->executeJS('return Chart.instances[0].chart.canvas.id');
+        $I->assertNotEmpty($chartId);
+        $I->assertEquals('chart', $chartId);
+
+        // Check Graph data
+        $graphData = $this->get_string_between($I->grabPageSource(), 'var graphData = ', ';');
+        $I->assertJson($graphData);
+        $I->assertNotEmpty((json_decode($graphData))->labels);
+        $I->assertNotEmpty((json_decode($graphData))->datasets);
+
+        $I->see('0代');
+        $I->dontSee('￥0');
+    }
+
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function sales_11(AcceptanceTester $I)
+    {
+        $I->retry(10, 200);
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Customer $customer */
+        $customer = $createCustomer();
+
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders(
+            $customer,
+            1,
+            [],
+            OrderStatus::IN_PROGRESS,
+            CarbonPeriod::between(
+                Carbon::createFromFormat('Y-m-d', '2022-04-01'),
+                Carbon::createFromFormat('Y-m-d', '2022-04-02')
+            )
+        );
+
+        $I->amOnPage('/admin/plugin/sales_report/age');
+        $I->see('売上管理');
+        $I->see('年代別集計');
+
+
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), 'en-us', 3, 3);
+        $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
+
+        // check if html exists on page
+        $I->seeInSource('<canvas id="chart"');
+
+        // Check console log for errors
+        $I->wait(10);
+        $chartId = $I->executeJS('return Chart.instances[0].chart.canvas.id');
+        $I->assertNotEmpty($chartId);
+        $I->assertEquals('chart', $chartId);
+
+        // Check Graph data
+        $graphData = $this->get_string_between($I->grabPageSource(), 'var graphData = ', ';');
+        $I->assertJson($graphData);
+        $I->assertNotEmpty((json_decode($graphData))->labels);
+        $I->assertNotEmpty((json_decode($graphData))->datasets);
+
+        $I->see('0代');
+        $I->dontSee('￥0');
+    }
+
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function sales_12(AcceptanceTester $I) {
+// 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $recommendPluginRow = Locator::contains('//tr', '売上集計プラグイン');
+        $I->see('売上集計プラグイン', "//tr[contains(.,'売上集計プラグイン')]");
+        $I->see('有効', $recommendPluginRow);
+        $I->clickWithLeftButton("(//tr[contains(.,'売上集計プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
+        $I->see('「売上集計プラグイン」を無効にしました。');
+        $I->see('売上集計プラグイン', $recommendPluginRow);
+        $I->see('無効', $recommendPluginRow);
+    }
+
+    /**
+     * @group main
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function sales_13(AcceptanceTester $I) {
+        // 無効処理
+        $I->amOnPage('/admin/store/plugin');
+        $I->retry(20, 1000);
+        $I->wantToUninstallPlugin('売上集計プラグイン');
+        // プラグインの状態を確認する
+        $xpath = Locator::contains('tr', '売上集計プラグイン');
+        $I->see('インストール', $xpath);
+    }
 
 
     private function get_string_between($string, $start, $end)
