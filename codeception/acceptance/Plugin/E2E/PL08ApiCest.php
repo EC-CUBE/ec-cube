@@ -76,7 +76,7 @@ class PL08ApiCest
         $faker = \Faker\Factory::create('ja_JP');
         $url = $faker->unique()->url();
         if ($fixedLocalhost === true) {
-            $url = 'http://localhost:8008/redirect_url.php';
+            $url = 'http://127.0.0.1:8008/redirect_url.php';
         }
         $I->amOnPage('admin/api/oauth');
         $I->see('OAuth管理');
@@ -419,7 +419,7 @@ class PL08ApiCest
     public function web_api_13(AcceptanceTester $I)
     {
         $I->retry(7, 400);
-        $this->web_api_05($I, 'http://localhost:8008/index.php');
+        $this->web_api_05($I, 'http://127.0.0.1:8008/index.php');
 
         /**
          * @var Product $productData
