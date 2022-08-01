@@ -413,6 +413,7 @@ class PL08ApiCest
 
     /**
      * @group main
+     * @skip
      * @param AcceptanceTester $I
      * @return void
      */
