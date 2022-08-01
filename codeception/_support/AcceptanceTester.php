@@ -273,12 +273,12 @@ class AcceptanceTester extends \Codeception\Actor
         });
     }
 
-    public function fillDate(string $dateField, Carbon $date, $locale = 'en-us')
+    public function fillDate(string $dateField, Carbon $date, $locale = 'en-us', ?int $clickOffsetX = null, ?int $clickOffsetY = null)
     {
         switch ($locale) {
             case('jp'):
                 $I = $this;
-                $I->clickWithLeftButton($dateField);
+                $I->clickWithLeftButton($dateField, $clickOffsetX, $clickOffsetY);
                 $I->type($date->format('Y'));
                 $I->pressKey($dateField, WebDriverKeys::TAB);
                 $I->type($date->format('m'));
@@ -287,7 +287,7 @@ class AcceptanceTester extends \Codeception\Actor
             case('en-us'):
             default:
                 $I = $this;
-                $I->clickWithLeftButton($dateField);
+                $I->clickWithLeftButton($dateField, $clickOffsetX, $clickOffsetY);
                 $I->type($date->format('m'));
                 $I->type($date->format('d'));
                 $I->type($date->format('Y'));
