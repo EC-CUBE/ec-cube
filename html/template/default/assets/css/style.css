@@ -12294,7 +12294,12 @@ Styleguide 3.1.2
   width: 47%;
   margin-left: 2%;
 }
-.ec-halfInput input[type=text]:first-child {
+.ec-halfInput .ec-errorMessage {
+  display: inline-block;
+  width: 47%;
+}
+.ec-halfInput input[type=text]:first-of-type,
+.ec-halfInput .ec-errorMessage:first-of-type {
   margin-left: 0;
 }
 /*
@@ -12350,7 +12355,7 @@ Styleguide 3.1.4
   display: inline-block;
   text-align: left;
   width: auto;
-  max-width: 8em;
+  max-width: 9em;
   font-size: 16px;
 }
 .ec-zipInput span {
@@ -12411,7 +12416,7 @@ Markup:
 Styleguide 3.1.5
 */
 .ec-telInput input {
-  max-width: 10em;
+  max-width: 12em;
   text-align: left;
 }
 /**
@@ -12676,7 +12681,12 @@ Styleguide 3.1.2
   width: 47%;
   margin-left: 2%;
 }
-.ec-halfInput input[type=text]:first-child {
+.ec-halfInput .ec-errorMessage {
+  display: inline-block;
+  width: 47%;
+}
+.ec-halfInput input[type=text]:first-of-type,
+.ec-halfInput .ec-errorMessage:first-of-type {
   margin-left: 0;
 }
 /*
@@ -12732,7 +12742,7 @@ Styleguide 3.1.4
   display: inline-block;
   text-align: left;
   width: auto;
-  max-width: 8em;
+  max-width: 9em;
   font-size: 16px;
 }
 .ec-zipInput span {
@@ -12793,7 +12803,7 @@ Markup:
 Styleguide 3.1.5
 */
 .ec-telInput input {
-  max-width: 10em;
+  max-width: 12em;
   text-align: left;
 }
 /*
@@ -29779,6 +29789,10 @@ Styleguide 22.1
     margin-left: 15px;
     width: 45%;
   }
+  .ec-halfInput .ec-errorMessage {
+    margin-left: 15px;
+    width: 45%;
+  }
   .ec-input input, .ec-birth input, .ec-select input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input {
     font-size: 14;
   }
@@ -29792,6 +29806,10 @@ Styleguide 22.1
     margin-bottom: 16px;
   }
   .ec-halfInput input[type=text] {
+    margin-left: 15px;
+    width: 45%;
+  }
+  .ec-halfInput .ec-errorMessage {
     margin-left: 15px;
     width: 45%;
   }
@@ -30562,9 +30580,6 @@ Styleguide 22.1
   }
   .ec-historyListHeader .ec-historyListHeader__action a {
     font-size: 14px;
-  }
-  .ec-registerRole .ec-registerRole__actions {
-    text-align: left;
   }
   .ec-customerRole .ec-blockBtn--action {
     margin-bottom: 16px;
