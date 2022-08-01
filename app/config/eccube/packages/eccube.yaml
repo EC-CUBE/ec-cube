@@ -148,3 +148,5 @@ parameters:
       - admin_content_css
       - admin_content_js
       - admin_store_template_install
+    eccube_login_throttling_max_attempts: 5
+    eccube_login_throttling_interval: '30 minutes'

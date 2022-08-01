@@ -35,8 +35,8 @@ security:
                 success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
             login_throttling:
-                max_attempts: 5
-                interval: '30 minutes'
+                max_attempts: '%eccube_login_throttling_max_attempts%'
+                interval: '%eccube_login_throttling_interval%'
             logout:
                 path: admin_logout
                 success_handler: eccube.security.logout.success_handler
@@ -59,8 +59,8 @@ security:
                 success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
             login_throttling:
-                max_attempts: 5
-                interval: '30 minutes'
+                max_attempts: '%eccube_login_throttling_max_attempts%'
+                interval: '%eccube_login_throttling_interval%'
             logout:
                 path: logout
                 target: homepage
