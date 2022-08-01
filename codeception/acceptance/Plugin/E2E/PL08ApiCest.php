@@ -429,6 +429,7 @@ class PL08ApiCest
         ])[0];
 
         $I->amOnPage('/admin/product/product/1/edit');
+        $I->wait(10);
         $I->clickWithLeftButton('//button[@class="btn btn-ec-conversion px-5 ladda-button"]');
         $I->retrySee('保存しました');
         $I->wait(10);
