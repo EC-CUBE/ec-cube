@@ -13,6 +13,7 @@
 
 use Carbon\Carbon;
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\CalendarSettingsPage;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\CustomerManagePage;
@@ -947,5 +948,48 @@ class EA07BasicinfoCest
         $I->expect('認証キーの登録ボタンをクリックします。');
         $I->click(['css' => '.btn-ec-conversion']);
         $I->see('保存しました');
+    }
+
+    public function basicinfo_税設定_適格請求書発行事業者登録番号(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0713-UC01-T01_税設定_適格請求書発行事業者登録番号');
+
+        ShopSettingPage::go($I)
+            ->入力_会社名('サンプル会社名')
+            ->入力_店名('サンプルショップ')
+            ->入力_郵便番号('100-0001')
+            ->入力_電話番号('050-5555-5555')
+            ->入力_適格請求書発行事業者登録番号('T1234567890123')
+            ->登録();
+
+        $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+
+        $I->expect('納品書を出力します');
+        $findOrders = Fixtures::get('findOrders'); // Closure
+        $TargetOrders = array_filter($findOrders(), function ($Order) {
+            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
+        });
+        $OrderListPage = OrderManagePage::go($I)->検索();
+        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+
+        $OrderListPage->すべてチェック();
+        $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
+
+        // 別ウィンドウ
+        $I->switchToWindow('newwin');
+
+        // Check redirect to form pdf information
+        $I->see('納品書出力受注管理', OrderManagePage::$タイトル要素);
+
+        $I->click('.btn-ec-conversion');
+        $I->wait(2);
+        $filename = $I->getLastDownloadFile('/^nouhinsyo.pdf$/');
+        $I->assertTrue(file_exists($filename));
+
+        $I->closeTab();
+
+        $I->expect('納品書の内容を確認します');
+
+        $I->getScenario()->incomplete('SJISの納品書を確認することが困難なため未実装');
     }
 }
