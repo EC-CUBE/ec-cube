@@ -169,4 +169,11 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['charge']->isValid());
     }
+
+    public function testInvalidPostalCodeToLong()
+    {
+        $this->formData['postal_code'] = '012345678';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['postal_code']->isValid());
+    }
 }
