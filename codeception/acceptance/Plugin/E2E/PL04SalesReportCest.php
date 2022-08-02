@@ -85,6 +85,7 @@ class PL04SalesReportCest
         $createOrders = Fixtures::get('createOrders');
         /** @var Order[] $newOrders */
 
+        $I->comment('Generating Sales Data...');
         $newOrders = $createOrders(
             $createCustomer(),
             1,
@@ -95,6 +96,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-06-30')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
         $I->see('売上管理');
@@ -153,6 +155,8 @@ class PL04SalesReportCest
         $createOrders = Fixtures::get('createOrders');
         /** @var Order[] $newOrders */
 
+        $I->comment('Generating Sales Data...');
+
         $newOrders = $createOrders(
             $createCustomer(),
             1,
@@ -163,6 +167,8 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-05-31')
             )
         );
+
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
         $I->see('売上管理');
@@ -222,6 +228,7 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
+        $I->comment('Generating Sales Data...');
         /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
@@ -233,6 +240,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-03-31')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
         $I->see('売上管理');
@@ -295,6 +303,7 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
+        $I->comment('Generating Sales Data...');
         /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
@@ -306,6 +315,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-04-14')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
         $I->see('売上管理');
@@ -368,6 +378,7 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
+        $I->comment('Generating Sales Data...');
         /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
@@ -378,6 +389,7 @@ class PL04SalesReportCest
                 '2022-05-01 00:00:00', 'PT1H', '2022-05-03 00:00:00', CarbonPeriod::EXCLUDE_END_DATE
             ])
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
         $I->see('売上管理');
@@ -436,6 +448,7 @@ class PL04SalesReportCest
         $customer = $createCustomer();
 
         /** @var Order[] $newOrders */
+        $I->comment('Generating Sales Data...');
         $newOrders = $createOrders(
             $customer,
             1,
@@ -446,6 +459,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-03-02')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/product');
         $I->see('売上管理');
@@ -491,6 +505,7 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
+        $I->comment('Generating Sales Data...');
         /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
@@ -502,6 +517,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-04-02')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/product');
         $I->see('売上管理');
@@ -545,6 +561,7 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
+        $I->comment('Generating Sales Data...');
         /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
@@ -556,6 +573,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-03-02')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/age');
         $I->see('売上管理');
@@ -599,6 +617,7 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
+        $I->comment('Generating Sales Data...');
         /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
@@ -610,6 +629,7 @@ class PL04SalesReportCest
                 Carbon::createFromFormat('Y-m-d', '2022-04-02')
             )
         );
+        $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/age');
         $I->see('売上管理');
