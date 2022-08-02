@@ -61,35 +61,12 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
 COPY dockerbuild/docker-php-entrypoint /usr/local/bin/
 
-RUN chown www-data:www-data /var/www \
-  && mkdir -p ${APACHE_DOCUMENT_ROOT}/vendor \
-  && mkdir -p ${APACHE_DOCUMENT_ROOT}/var \
-  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/vendor \
-  && chmod g+s ${APACHE_DOCUMENT_ROOT}/vendor \
-  && chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/var
-
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer
 
-# 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
-
 RUN composer config -g repos.packagist composer https://packagist.jp
-COPY composer.json ${APACHE_DOCUMENT_ROOT}/composer.json
-COPY composer.lock ${APACHE_DOCUMENT_ROOT}/composer.lock
-RUN chown www-data:www-data ${APACHE_DOCUMENT_ROOT}/composer.*
 
-USER www-data
-RUN composer install \
-  --no-scripts \
-  --no-autoloader \
-  --no-plugins \
-  -d ${APACHE_DOCUMENT_ROOT} \
-  ;
-
-##################################################################
-# ファイル変更時、以後のステップにはキャッシュが効かなくなる
-USER root
 COPY . ${APACHE_DOCUMENT_ROOT}
 WORKDIR ${APACHE_DOCUMENT_ROOT}
 
@@ -99,19 +76,4 @@ RUN find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune 
   | xargs -0 chmod g+s \
   ;
 
-USER www-data
-RUN composer dumpautoload -o --apcu
-
-RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/.env ]; then \
-        cp -p .env.dist .env \
-        ; fi
-
-# trueを指定した場合、DBマイグレーションやECCubeのキャッシュ作成をスキップする。
-# ビルド時点でDBを起動出来ない場合等に指定が必要となる。
-ARG SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD=false
-
-RUN if [ ! -f ${APACHE_DOCUMENT_ROOT}/var/eccube.db ] && [ ! ${SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD} = "true" ]; then \
-        composer run-script installer-scripts && composer run-script auto-scripts \
-        ; fi
-
-USER root
+HEALTHCHECK --interval=10s --timeout=5s --retries=30 CMD pgrep apache
