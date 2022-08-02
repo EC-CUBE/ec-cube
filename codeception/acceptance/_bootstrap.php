@@ -291,7 +291,7 @@ $createCustomer = function ($email = null, $active = true) use ($container, $fak
 /* 会員を生成するクロージャ. */
 Fixtures::add('createCustomer', $createCustomer);
 
-$createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], $Status = null) use ($container, $entityManager, $faker) {
+$createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], $Status = null, ?Carbon\CarbonPeriod $ordersBetween = null) use ($container, $entityManager, $faker) {
     $generator = $container->get('Eccube\Tests\Fixture\Generator');
     $Orders = [];
     $randomOrderStatus = [
@@ -304,16 +304,32 @@ $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], 
         OrderStatus::PROCESSING,
         OrderStatus::RETURNED,
     ];
-    for ($i = 0; $i < $numberOfOrders; $i++) {
-        $Order = $generator->createOrder($Customer, $ProductClasses);
-        $Status = $Status
-            ? $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($Status)
-            : $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
-        $OrderDate = $faker->dateTimeThisYear();
-        $Order->setOrderStatus($Status);
-        $Order->setOrderDate($OrderDate);
-        $entityManager->flush($Order);
-        $Orders[] = $Order;
+    if(!empty($ordersBetween)) {
+        foreach($ordersBetween as $carbonDay) {
+            // Create order for each day in period
+            for ($i = 0; $i < $numberOfOrders; $i++) {
+                $Order = $generator->createOrder($Customer, $ProductClasses);
+                $Status = $Status
+                    ? $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($Status)
+                    : $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
+                $Order->setOrderStatus($Status);
+                $Order->setOrderDate($carbonDay->toDateTime());
+                $entityManager->flush($Order);
+                $Orders[] = $Order;
+            }
+        }
+    } else {
+        for ($i = 0; $i < $numberOfOrders; $i++) {
+            $Order = $generator->createOrder($Customer, $ProductClasses);
+            $Status = $Status
+                ? $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($Status)
+                : $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find($faker->randomElement($randomOrderStatus));
+            $OrderDate = $faker->dateTimeThisYear();
+            $Order->setOrderStatus($Status);
+            $Order->setOrderDate($OrderDate);
+            $entityManager->flush($Order);
+            $Orders[] = $Order;
+        }
     }
 
     return $Orders;
