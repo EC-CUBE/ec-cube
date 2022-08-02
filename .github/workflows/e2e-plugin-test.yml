@@ -176,6 +176,7 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           GROUP: ${{ matrix.group }}
+          DATE_LOCALE: 'en-us'
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
       - name: Upload evidence

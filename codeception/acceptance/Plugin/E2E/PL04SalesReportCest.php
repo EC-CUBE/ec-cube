@@ -167,8 +167,8 @@ class PL04SalesReportCest
         $I->see('売上管理');
         $I->see('期間別集計');
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-31'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-31'), getenv('DATE_LOCALE'), 3, 3);
 
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
@@ -240,8 +240,8 @@ class PL04SalesReportCest
 
         // 月別
         $I->checkOption('#sales_report_unit_1');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-01-01'), 'en-us', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-03-31'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-01-01'), getenv('DATE_LOCALE'), 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-03-31'), getenv('DATE_LOCALE'), 3, 3);
 
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
@@ -312,10 +312,11 @@ class PL04SalesReportCest
         $I->see('売上管理');
         $I->see('期間別集計');
 
+
         // 曜日別
         $I->checkOption('#sales_report_unit_2');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-14'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-14'), getenv('DATE_LOCALE'), 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -386,8 +387,8 @@ class PL04SalesReportCest
 
         // 曜日別
         $I->checkOption('#sales_report_unit_3');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-05-01'), 'en-us', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-02'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-05-01'), getenv('DATE_LOCALE'), 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-02'), getenv('DATE_LOCALE'), 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -510,8 +511,8 @@ class PL04SalesReportCest
         $I->see('商品別集計');
 
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), getenv('DATE_LOCALE'), 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -620,8 +621,8 @@ class PL04SalesReportCest
         $I->see('年代別集計');
 
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), 'en-us', 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), 'en-us', 3, 3);
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), getenv('DATE_LOCALE'), 3, 3);
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
