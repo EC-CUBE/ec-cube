@@ -21,6 +21,7 @@ use Codeception\Util\Locator;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Facebook\WebDriver\WebDriverKeys;
 use Page\Admin\SalesReportPage;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertIsArray;
@@ -167,9 +168,8 @@ class PL04SalesReportCest
         $I->see('売上管理');
         $I->see('期間別集計');
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-31'), getenv('DATE_LOCALE'), 3, 3);
-
+        // Hacky way of filling dates without assigning offset of pointer to input field
+        $this->inputDateTimeFields($I, '2022-04-01', '2022-05-31');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -240,9 +240,8 @@ class PL04SalesReportCest
 
         // 月別
         $I->checkOption('#sales_report_unit_1');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-01-01'), getenv('DATE_LOCALE'), 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-03-31'), getenv('DATE_LOCALE'), 3, 3);
-
+        // Hacky way of filling dates without assigning offset of pointer to input field
+        $this->inputDateTimeFields($I, '2022-01-01', '2022-03-31');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -315,8 +314,7 @@ class PL04SalesReportCest
 
         // 曜日別
         $I->checkOption('#sales_report_unit_2');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-14'), getenv('DATE_LOCALE'), 3, 3);
+        $this->inputDateTimeFields($I, '2022-04-01', '2022-04-14');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -387,8 +385,7 @@ class PL04SalesReportCest
 
         // 曜日別
         $I->checkOption('#sales_report_unit_3');
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-05-01'), getenv('DATE_LOCALE'), 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-05-02'), getenv('DATE_LOCALE'), 3, 3);
+        $this->inputDateTimeFields($I, '2022-05-01', '2022-05-02');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -510,9 +507,7 @@ class PL04SalesReportCest
         $I->see('売上管理');
         $I->see('商品別集計');
 
-
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), getenv('DATE_LOCALE'), 3, 3);
+        $this->inputDateTimeFields($I, '2022-04-01', '2022-04-02');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -621,8 +616,7 @@ class PL04SalesReportCest
         $I->see('年代別集計');
 
 
-        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', '2022-04-01'), getenv('DATE_LOCALE'), 3, 3);
-        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', '2022-04-02'), getenv('DATE_LOCALE'), 3, 3);
+        $this->inputDateTimeFields($I, '2022-04-01', '2022-04-02');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
 
         // check if html exists on page
@@ -685,5 +679,23 @@ class PL04SalesReportCest
         $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;
         return substr($string, $ini, $len);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @param string $dateFrom
+     * @param string $dateTo
+     * @return void
+     */
+    private function inputDateTimeFields(AcceptanceTester $I, string $dateFrom, string $dateTo): void
+    {
+        $I->clickWithLeftButton('#sales_report_monthly_month');
+        $I->clickWithLeftButton('#sales_report_monthly_month');
+        $I->sendKeys(WebDriverKeys::TAB);
+        $I->sendKeys(WebDriverKeys::TAB);
+
+        $I->fillDate('#sales_report_term_start', Carbon::createFromFormat('Y-m-d', $dateFrom), getenv('DATE_LOCALE'), null, null, true);
+        $I->sendKeys(WebDriverKeys::TAB);
+        $I->fillDate('#sales_report_term_end', Carbon::createFromFormat('Y-m-d', $dateTo), getenv('DATE_LOCALE'), null, null, true);
     }
 }
