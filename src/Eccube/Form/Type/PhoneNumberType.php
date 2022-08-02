@@ -17,7 +17,6 @@ use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -56,8 +55,7 @@ class PhoneNumberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $eccubeConfig = $this->eccubeConfig;
-        $constraints = function (Options $options) use ($eccubeConfig) {
+        $resolver->setNormalizer('constraints', function($options, $value) {
             $constraints = [];
             // requiredがtrueに指定されている場合, NotBlankを追加
             if (isset($options['required']) && true === $options['required']) {
@@ -65,7 +63,7 @@ class PhoneNumberType extends AbstractType
             }
 
             $constraints[] = new Assert\Length([
-                'max' => $eccubeConfig['eccube_tel_len_max'],
+                'max' => $this->eccubeConfig['eccube_tel_len_max'],
             ]);
 
             $constraints[] = new Assert\Type([
@@ -73,12 +71,10 @@ class PhoneNumberType extends AbstractType
                 'message' => 'form_error.numeric_only',
             ]);
 
-            return $constraints;
-        };
+            return array_merge($constraints, $value);
+        });
 
         $resolver->setDefaults([
-            'options' => ['constraints' => []],
-            'constraints' => $constraints,
             'attr' => [
                 'placeholder' => 'common.phone_number_sample',
             ],
