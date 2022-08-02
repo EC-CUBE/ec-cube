@@ -83,9 +83,9 @@ class PL04SalesReportCest
 
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        /** @var Order[] $newOrders */
 
         $I->comment('Generating Sales Data...');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $createCustomer(),
             1,
@@ -153,10 +153,9 @@ class PL04SalesReportCest
 
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
-        /** @var Order[] $newOrders */
 
         $I->comment('Generating Sales Data...');
-
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $createCustomer(),
             1,
@@ -447,8 +446,8 @@ class PL04SalesReportCest
         /** @var Customer $customer */
         $customer = $createCustomer();
 
-        /** @var Order[] $newOrders */
         $I->comment('Generating Sales Data...');
+        /** @var Order[] $newOrders */
         $newOrders = $createOrders(
             $customer,
             1,
