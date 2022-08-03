@@ -90,35 +90,35 @@ class PL06SecurityCheckCest
 
         $resultRow = '';
 
-        switch ($example['path']):
-            case('var'):
-                $resultRow = Locator::contains('//div[@class="row"]', 'var 以下のファイル、フォルダが公開されていないか');
-                break;
-            case('vendor'):
-                $resultRow = Locator::contains('//div[@class="row"]', 'vendor 以下のファイル、フォルダが公開されていないか');
-                break;
-            case('codeception'):
-                $resultRow = Locator::contains('//div[@class="row"]', 'codeception が公開されていないか'); // <<- Dev Environment
-                break;
-            case('.env'):
-                $resultRow = Locator::contains('//div[@class="row"]', '.env が公開されていないか'); // <<- Dev Environment
-                break;
-            case('debug'):
-                $resultRow = Locator::contains('//div[@class="row"]', 'デバッグモードが有効になっていないか');
-                break;
-            case('member_data'):
-                $resultRow = Locator::contains('//div[@class="row"]', '会員データが公開されていないか');
-                break;
-            case('ssl'):
-                $resultRow = Locator::contains('//div[@class="row"]', 'SSLが導入されているか');
-                break;
-            case('admin_access'):
-                $resultRow = Locator::contains('//div[@class="row"]', '管理画面へのアクセスには常に SSL を利用しているか');
-                break;
-
-        endswitch;
-
-        $I->see($example['result'], $resultRow);
+        foreach($example as $key => $result) {
+            switch ($key):
+                case('var'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'var 以下のファイル、フォルダが公開されていないか');
+                    break;
+                case('vendor'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'vendor 以下のファイル、フォルダが公開されていないか');
+                    break;
+                case('codeception'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'codeception が公開されていないか'); // <<- Dev Environment
+                    break;
+                case('.env'):
+                    $resultRow = Locator::contains('//div[@class="row"]', '.env が公開されていないか'); // <<- Dev Environment
+                    break;
+                case('debug'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'デバッグモードが有効になっていないか');
+                    break;
+                case('member_data'):
+                    $resultRow = Locator::contains('//div[@class="row"]', '会員データが公開されていないか');
+                    break;
+                case('ssl'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'SSLが導入されているか');
+                    break;
+                case('admin_access'):
+                    $resultRow = Locator::contains('//div[@class="row"]', '管理画面へのアクセスには常に SSL を利用しているか');
+                    break;
+            endswitch;
+            $I->see($result, $resultRow);
+        }
     }
 
 
