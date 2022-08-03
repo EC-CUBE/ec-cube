@@ -12,10 +12,10 @@ DirectoryIndex index.php index.html .ht
     Allow from all
 </FilesMatch>
 
-<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|^\.editorconfig|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
-    order allow,deny
-    deny from all
-</FilesMatch>
+#<FilesMatch "^composer|^COPYING|^\.env|^\.maintenance|^Procfile|^app\.json|^gulpfile\.js|^package\.json|^package-lock\.json|web\.config|^Dockerfile|^\.editorconfig|\.(ini|lock|dist|git|sh|bak|swp|env|twig|yml|yaml|dockerignore|sample)$">
+#    order allow,deny
+#    deny from all
+#</FilesMatch>
 
 <IfModule mod_setenvif.c>
   SetEnvIf Request_URI "\.(jpe?g|png)$" _image_request
@@ -56,19 +56,19 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
-    RewriteRule "^\.git" - [F]
-    RewriteRule "^src/" - [F]
-    RewriteRule "^app/" - [F]
-    RewriteRule "^tests/" - [F]
-    RewriteRule "^var/" - [F]
-    RewriteRule "^vendor/" - [F]
-    RewriteRule "^node_modules/" - [F]
-    RewriteRule "^gulp/" - [F]
-    RewriteRule "^codeception/" - [F]
-    RewriteRule "^bin/" - [F]
-    RewriteRule "^dockerbuild/" - [F]
-    RewriteRule "^\.devcontainer/" - [F]
-    RewriteRule "^zap/" - [F]
+#    RewriteRule "^\.git" - [F]
+#    RewriteRule "^src/" - [F]
+#    RewriteRule "^app/" - [F]
+#    RewriteRule "^tests/" - [F]
+#    RewriteRule "^var/" - [F]
+#    RewriteRule "^vendor/" - [F]
+#    RewriteRule "^node_modules/" - [F]
+#    RewriteRule "^gulp/" - [F]
+#    RewriteRule "^codeception/" - [F]
+#    RewriteRule "^bin/" - [F]
+#    RewriteRule "^dockerbuild/" - [F]
+#    RewriteRule "^\.devcontainer/" - [F]
+#    RewriteRule "^zap/" - [F]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
