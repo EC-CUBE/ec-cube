@@ -171,6 +171,7 @@ jobs:
       - name: DEBUG HTTP REQUEST
         run: |
           sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
+          echo "Test" > ./var/test.log
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'dev'
