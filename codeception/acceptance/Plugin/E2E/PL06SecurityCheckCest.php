@@ -20,6 +20,7 @@ use Codeception\Example;
 use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -90,7 +91,6 @@ class PL06SecurityCheckCest
 
 
         if ($example['inject_bad_data'] === true) {
-
             // Customer
             $createCustomer = Fixtures::get('createCustomer');
             $entityManager = Fixtures::get('entityManager');
@@ -101,6 +101,14 @@ class PL06SecurityCheckCest
             $entityManager->persist($customer);
 
             // Address
+            $address = new CustomerAddress();
+            $address->setCustomer($customer);
+            $address->setAddr01('<script>alert("Hello");</script>');
+            $address->setAddr02('<script>alert("Hello");</script>');
+            $address->setName01('<script>alert("Hello");</script>');
+            $address->setName02('<script>alert("Hello");</script>');
+            $address->setCompanyName('<script>alert("Hello");</script>');
+            $entityManager->persist($address);
 
             // Order
             $createOrders = Fixtures::get('createOrders');
@@ -116,9 +124,16 @@ class PL06SecurityCheckCest
             $entityManager->persist($badOrder);
 
             // Delivery
+            $shipping = new Shipping();
+            $shipping->setOrder($badOrder);
+            $shipping->setName01('<script>alert("Hello");</script>');
+            $shipping->setName02('<script>alert("Hello");</script>');
+            $shipping->setAddr01('<script>alert("Hello");</script>');
+            $shipping->setAddr02('<script>alert("Hello");</script>');
+            $shipping->setPhoneNumber('<script>alert("Hello");</script>');
+            $entityManager->persist($shipping);
 
-
-
+            $entityManager->flush();
         }
 
         $I->retry(10, 200);
