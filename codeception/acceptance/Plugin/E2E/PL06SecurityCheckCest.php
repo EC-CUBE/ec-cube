@@ -169,7 +169,16 @@ class PL06SecurityCheckCest
                     $resultRow = Locator::contains('//div[@class="row"]', 'デバッグモードが有効になっていないか');
                     break;
                 case('member_data'):
-                    $resultRow = Locator::contains('//div[@class="row"]', '会員データが公開されていないか');
+                    $resultRow = Locator::contains('//div[@class="row"]', '会員情報');
+                    break;
+                case('address_data'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'お届け先情報');
+                    break;
+                case('order_data'):
+                    $resultRow = Locator::contains('//div[@class="row"]', '受注情報');
+                    break;
+                case('shipping_data'):
+                    $resultRow = Locator::contains('//div[@class="row"]', '配送情報');
                     break;
                 case('ssl'):
                     $resultRow = Locator::contains('//div[@class="row"]', 'SSLが導入されているか');
@@ -246,7 +255,7 @@ class PL06SecurityCheckCest
                 'member_data' => '不正と疑われるデータが存在します。',
                 'address_data' => '不正と疑われるデータが存在します。',
                 'order_data' => '不正と疑われるデータが存在します。',
-                'delivery_data' => '不正と疑われるデータが存在します',
+                'delivery_data' => '不正と疑われるデータが存在します。',
                 'ssl' => 'SSLが強制されておらず、平文で情報がやり取りされておりますので情報が漏洩する可能性があります。',
                 'admin_access' => '管理画面へのアクセスでSSLが強制されておらず、平文で情報がやり取りされておりますので情報が漏洩する可能性があります。',
                 'trusted_hosts' => '信頼できるホスト名が設定されていません。'
