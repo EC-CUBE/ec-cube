@@ -177,7 +177,7 @@ class PL06SecurityCheckCest
                 case('order_data'):
                     $resultRow = Locator::contains('//div[@class="row"]', '受注情報');
                     break;
-                case('shipping_data'):
+                case('delivery_data'):
                     $resultRow = Locator::contains('//div[@class="row"]', '配送情報');
                     break;
                 case('ssl'):
@@ -186,6 +186,8 @@ class PL06SecurityCheckCest
                 case('admin_access'):
                     $resultRow = Locator::contains('//div[@class="row"]', '管理画面へのアクセスには常に SSL を利用しているか');
                     break;
+                case('trusted_hosts'):
+                    $resultRow = Locator::contains('//div[@class="row"]', 'TRUSTED_HOSTSを設定しているか');
             endswitch;
             $I->see($result, $resultRow);
         }
@@ -258,7 +260,7 @@ class PL06SecurityCheckCest
                 'delivery_data' => '不正と疑われるデータが存在します。',
                 'ssl' => 'SSLが強制されておらず、平文で情報がやり取りされておりますので情報が漏洩する可能性があります。',
                 'admin_access' => '管理画面へのアクセスでSSLが強制されておらず、平文で情報がやり取りされておりますので情報が漏洩する可能性があります。',
-                'trusted_hosts' => '信頼できるホスト名が設定されていません。'
+                'trusted_hosts' => '信頼できるホスト名が完全一致で設定されていません。'
             ],
         ];
     }
