@@ -130,7 +130,6 @@ class PL06SecurityCheckCest
             $shipping->setName02('<script>alert("Hello");</script>');
             $shipping->setAddr01('<script>alert("Hello");</script>');
             $shipping->setAddr02('<script>alert("Hello");</script>');
-            $shipping->setPhoneNumber('<script>alert("Hello");</script>');
             $entityManager->persist($shipping);
 
             $entityManager->flush();
