@@ -151,6 +151,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
+          HTTP_SITEURL: 'http://localhost:8000'
         run: php -S 127.0.0.1:8000 &
       - name: Start Webhook Development Server
         run: php -S 127.0.0.1:8008 -t codeception/_support/server &
@@ -161,6 +162,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
+          HTTP_SITEURL: 'http://localhost:8000'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
@@ -175,14 +177,16 @@ jobs:
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-      - name: DEBUG HTTP REQUEST
+      - name: DEBUG HTTP REQUEST #          sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
         run: |
-          sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
+          sed -i '137i log_info('HTTP_SITEURL is set.');' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
+          sed -i '143i log_info('GOBLORE');' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
           echo "Test" > ./var/test.log
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'dev'
           DATABASE_URL: ${{ matrix.database_url }}
+          HTTP_SITEURL: 'http://localhost:8000'
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
