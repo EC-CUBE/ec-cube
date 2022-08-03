@@ -11,8 +11,8 @@
  * file that was distributed with this source code.
  */
 
-if (empty(getenv('XML_OVERRIDE')) & preg_match('/\.xml$/', $_SERVER['REQUEST_URI'])) {
-    return require 'index.php';
-}
+//if (empty(getenv('XML_OVERRIDE')) & preg_match('/\.xml$/', $_SERVER['REQUEST_URI'])) {
+//    return require 'index.php';
+//}
 
 return false;
