@@ -168,6 +168,9 @@ jobs:
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
+      - name: DEBUG HTTP REQUEST
+        run: |
+          sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'codeception'
