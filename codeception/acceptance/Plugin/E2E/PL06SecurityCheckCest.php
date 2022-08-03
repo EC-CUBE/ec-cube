@@ -29,16 +29,6 @@ class PL06SecurityCheckCest
     public function _before(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
-        if (file_exists(__DIR__ . '/../../../../app/Plugin/Securitychecker42/Controller/ConfigController.php')) {
-            $this->pluginFileBackUpContent = file_get_contents(__DIR__ . '/../../../../app/Plugin/Securitychecker42/Controller/ConfigController.php');
-        }
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
-        if (file_exists(__DIR__ . '/../../../../app/Plugin/Securitychecker42/Controller/ConfigController.php')) {
-            file_put_contents(__DIR__ . '/../../../../app/Plugin/Securitychecker42/Controller/ConfigController.php', $this->pluginFileBackUpContent);
-        }
     }
 
     /**
