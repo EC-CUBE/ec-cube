@@ -157,7 +157,7 @@ class PL06SecurityCheckCest
         $I->see('インストール', $xpath);
     }
 
-    private function securityCheckProvider(): array
+    protected function securityCheckProvider(): array
     {
         return [
             'OK' => [
