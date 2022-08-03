@@ -175,22 +175,11 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
-      - name: DEBUG see phpinfo
-        run: |
-          php -i
-      - name: DEBUG Test 1
-        run: |
-          curl -X GET http://127.0.0.1:8000/var/cache/test/Eccube_KernelTestDebugContainer.xml
       - name: Hard reset ALL cache from var/cache after install
         run: |
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-      - name: DEBUG HTTP REQUEST #          sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
-        run: |
-          sed -i '137i log_info("HTTP_SITEURL is set.");' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
-          sed -i '143i log_info("GOBLORE");' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
-          echo "Test" > ./var/test.log
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'dev'
