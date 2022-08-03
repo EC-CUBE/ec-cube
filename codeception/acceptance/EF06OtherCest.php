@@ -154,8 +154,8 @@ class EF06OtherCest
         $I->wantTo('EF0605-UC01-T01 プライバシーポリシー');
         $I->amOnPage('/help/privacy');
 
-        $I->see('プライバシーポリシー', 'div.ec-pageHeader h1');
-        $I->see('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 'div.ec-layoutRole__main p:nth-child(1)');
+        $I->see('プライバシーポリシー', 'div.ec-pageHeader > h1');
+        $I->see('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 'main > div > div:nth-child(2) > div > p');
     }
 
     /**

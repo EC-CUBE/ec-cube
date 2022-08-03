@@ -24,11 +24,11 @@ class HelpTradelawPage extends AbstractFrontPage
 
     public function 名称($rowNum)
     {
-        return $this->tester->grabTextFrom(['css' => "#page_help_tradelaw > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div.ec-off1Grid > div > div > dl:nth-child($rowNum) > dt > label"]);
+        return $this->tester->grabTextFrom(['css' => "#page_help_tradelaw > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div.ec-off1Grid > div > div > dl:nth-child($rowNum) > dt > label"]);
     }
 
     public function 詳細($rowNum)
     {
-        return $this->tester->grabTextFrom(['css' => "#page_help_tradelaw > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div.ec-off1Grid > div > div > dl:nth-child($rowNum) > dd"]);
+        return $this->tester->grabTextFrom(['css' => "#page_help_tradelaw > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div.ec-off1Grid > div > div > dl:nth-child($rowNum) > dd"]);
     }
 }
