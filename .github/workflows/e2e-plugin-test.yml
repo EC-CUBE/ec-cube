@@ -13,7 +13,7 @@ jobs:
       matrix:
         php: [ 7.4, 8.0, 8.1 ]
         db: [ pgsql10, pgsql14, mysql5, mysql8 ]
-        file: [ PL06SecurityCheckCest ] # , PL01RecommendCest - PASS, PL02CouponCest - PASS, PL03MailMagazineCest - PASS, PL04SalesReportCest - WAIT, PL05RelatedProductCest - PASS, PL06SecurityCheckCest - WAIT , PL07ProductReviewCest - PASS, PL08ApiCest, PL11ProductImagesUploaderCest - PASS, PL12MakerCest - Pass
+        file: [ PL06SecurityCheckCest ] # , PL01RecommendCest - PASS, PL02CouponCest - PASS, PL03MailMagazineCest - PASS, PL04SalesReportCest - PASS, PL05RelatedProductCest - PASS, PL06SecurityCheckCest - PASS , PL07ProductReviewCest - PASS, PL08ApiCest, PL11ProductImagesUploaderCest - PASS, PL12MakerCest - Pass
         include:
           - db: pgsql10
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -113,7 +113,7 @@ jobs:
         run: composer install --dev --no-interaction -o --apcu-autoloader
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'dev'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
