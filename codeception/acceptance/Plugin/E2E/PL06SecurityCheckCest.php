@@ -73,9 +73,10 @@ class PL06SecurityCheckCest
      */
     public function security_03(AcceptanceTester $I, \Codeception\Example $example)
     {
-        if ($example['pattern'] === 'OK') {
+        if ($example['run'] === false) {
             // @todo: Only run NG pattern for now
             $I->assertEquals(true, true);
+            return;
         }
         $I->retry(15, 500);
         $I->amOnPage('/admin/store/plugin/Securitychecker4/config');
@@ -91,6 +92,9 @@ class PL06SecurityCheckCest
         $resultRow = '';
 
         foreach($example as $key => $result) {
+            if($key === 'run') {
+                continue;
+            }
             switch ($key):
                 case('var'):
                     $resultRow = Locator::contains('//div[@class="row"]', 'var 以下のファイル、フォルダが公開されていないか');
@@ -161,9 +165,20 @@ class PL06SecurityCheckCest
     {
         return [
             'OK' => [
+                'run' => false,
                 // @todo: Run OK pattern when apache server is ready
+                'var' => '問題ありません',
+                'vendor' => '問題ありません',
+                'codeception' => '問題ありません',
+                '.env' => '問題ありません',
+                'debug' => '問題ありません',
+                'member_data' => '問題ありません',
+                'ssl' => '問題ありません',
+                'admin_access' => '問題ありません',
+                'trusted_hosts' => '問題ありません'
             ],
             'NG' => [
+                'run' => true,
                 'var' => 'po',
                 'vendor' => 'po',
                 'codeception' => 'codeception フォルダが外部から存在確認出来ます',
