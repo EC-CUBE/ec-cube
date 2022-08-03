@@ -14,8 +14,15 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Codeception\Example;
+use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 
 /**
  * @group plugin
@@ -65,6 +72,7 @@ class PL06SecurityCheckCest
     }
 
     /**
+     * Directory Data Check
      * @group main
      * @param AcceptanceTester $I
      * @param Example $example
@@ -78,7 +86,42 @@ class PL06SecurityCheckCest
             $I->assertEquals(true, true);
             return;
         }
-        $I->retry(15, 500);
+
+
+
+        if ($example['inject_bad_data'] === true) {
+
+            // Customer
+            $createCustomer = Fixtures::get('createCustomer');
+            $entityManager = Fixtures::get('entityManager');
+            /** @var Customer $customer */
+            $customer = $createCustomer();
+            $customer->setAddr01('<script>alert("Hello");</script>');
+            $customer->setAddr02('<script>alert("Hello");</script>');
+            $entityManager->persist($customer);
+
+            // Address
+
+            // Order
+            $createOrders = Fixtures::get('createOrders');
+            /** @var Order $badOrder */
+            $badOrder = $createOrders(
+                $customer,
+                1,
+                [],
+                OrderStatus::IN_PROGRESS
+            )[0];
+            $badOrder->setAddr01('<script>alert("Hello");</script>');
+            $badOrder->setAddr02('<script>alert("Hello");</script>');
+            $entityManager->persist($badOrder);
+
+            // Delivery
+
+
+
+        }
+
+        $I->retry(10, 200);
         $I->amOnPage('/admin/store/plugin/Securitychecker4/config');
         $I->see('セキュリティチェックプラグイン');
         $I->scrollTo('#securitychecker42_config_tools_agreement', 0, 200);
@@ -92,7 +135,7 @@ class PL06SecurityCheckCest
         $resultRow = '';
 
         foreach($example as $key => $result) {
-            if($key === 'run') {
+            if($key === 'run' || $key === 'inject_bad_data') {
                 continue;
             }
             switch ($key):
@@ -166,6 +209,7 @@ class PL06SecurityCheckCest
         return [
             'OK' => [
                 'run' => false,
+                'inject_bad_data' => false,
                 // @todo: Run OK pattern when apache server is ready
                 'var' => '問題ありません',
                 'vendor' => '問題ありません',
@@ -179,6 +223,7 @@ class PL06SecurityCheckCest
             ],
             'NG' => [
                 'run' => true,
+                'inject_bad_data' => true,
                 'var' => 'var フォルダが外部から存在確認出来ます。',
                 'vendor' => 'vendor フォルダが外部から存在確認出来ます。',
                 'codeception' => 'codeception フォルダが外部から存在確認出来ます',

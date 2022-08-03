@@ -173,7 +173,7 @@ jobs:
           sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
       - name: Codeception (Main Process Testing)
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'dev'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
