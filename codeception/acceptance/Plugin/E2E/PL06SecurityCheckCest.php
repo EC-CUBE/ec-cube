@@ -242,7 +242,7 @@ class PL06SecurityCheckCest
                 'vendor' => 'vendor フォルダが外部から存在確認出来ます。',
                 'codeception' => 'codeception フォルダが外部から存在確認出来ます',
                 '.env' => '.env ファイルが外部から存在確認出来ます',
-                'debug' => 'デバッグモードが有効になっているようです',
+//                'debug' => 'デバッグモードが有効になっているようです',
                 'member_data' => '不正と疑われるデータが存在します。',
                 'address_data' => '不正と疑われるデータが存在します。',
                 'order_data' => '不正と疑われるデータが存在します。',
