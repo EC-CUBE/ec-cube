@@ -14,6 +14,7 @@
 namespace Plugin\E2E;
 
 use AcceptanceTester;
+use Codeception\Example;
 use Codeception\Util\Locator;
 
 /**
@@ -76,22 +77,15 @@ class PL06SecurityCheckCest
     /**
      * @group main
      * @param AcceptanceTester $I
+     * @param Example $example
      * @return void
      * @dataProvider securityCheckProvider
      */
     public function security_03(AcceptanceTester $I, \Codeception\Example $example)
     {
-        // @todo: Only run NG pattern for now
-        // directly touch the plugin code to run the tests.
-        if ($example['mock_up'] === true) {
-            if (!is_dir(__DIR__ . '/../../../../testspace')) {
-                mkdir(__DIR__ . '/../../../../testspace');
-            }
-            foreach($example['files'] as $file) {
-                fopen(sprintf(__DIR__ . '/../../../../testspace/%s', $file), 'I see inside the cube.');
-            }
-            $newSecurityCheckerContents = str_replace('$kernel_project_dir = $this->getParameter(\'kernel.project_dir\');', '$kernel_project_dir = $this->getParameter(\'kernel.project_dir\') . \'/testspace\';', $this->pluginFileBackUpContent);
-            file_put_contents(__DIR__ . '/../../../../app/Plugin/Securitychecker42/Controller/ConfigController.php', $newSecurityCheckerContents);
+        if ($example['pattern'] === 'OK') {
+            // @todo: Only run NG pattern for now
+            $I->assertEquals(true, true);
         }
         $I->retry(15, 500);
         $I->amOnPage('/admin/store/plugin/Securitychecker4/config');
@@ -119,11 +113,22 @@ class PL06SecurityCheckCest
             case('.env'):
                 $resultRow = Locator::contains('//div[@class="row"]', '.env が公開されていないか'); // <<- Dev Environment
                 break;
+            case('debug'):
+                $resultRow = Locator::contains('//div[@class="row"]', 'デバッグモードが有効になっていないか');
+                break;
+            case('member_data'):
+                $resultRow = Locator::contains('//div[@class="row"]', '会員データが公開されていないか');
+                break;
+            case('ssl'):
+                $resultRow = Locator::contains('//div[@class="row"]', 'SSLが導入されているか');
+                break;
+            case('admin_access'):
+                $resultRow = Locator::contains('//div[@class="row"]', '管理画面へのアクセスには常に SSL を利用しているか');
+                break;
+
         endswitch;
 
         $I->see($example['result'], $resultRow);
-
-        //$debugModeResult = Locator::contains('//div[@class="row"]', 'デバッグモードが有効になっていないか'); // <<- hide debug mode during check
     }
 
 
@@ -165,71 +170,20 @@ class PL06SecurityCheckCest
     private function securityCheckProvider(): array
     {
         return [
-            [
-                'type' => 'open',
-                'mock_up' => true,
-                'files' => ['var/bad.html'],
-                'path' => 'var',
-                'result' => '問題ありません',
+            'OK' => [
+                // @todo: Run OK pattern when apache server is ready
             ],
-            [
-                'type' => 'closed',
-                'mock_up' => false,
-                'path' => 'var',
-                'result' => '問題ありません',
+            'NG' => [
+                'var' => 'po',
+                'vendor' => 'po',
+                'codeception' => 'codeception フォルダが外部から存在確認出来ます',
+                '.env' => 'po',
+                'debug' => 'デバッグモードが有効になっているようです',
+                'member_data' => 'po',
+                'ssl' => 'SSLが強制されておらず、平文で情報がやり取りされておりますので情報が漏洩する可能性があります。',
+                'admin_access' => '管理画面へのアクセスでSSLが強制されておらず、平文で情報がやり取りされておりますので情報が漏洩する可能性があります。',
+                'trusted_hosts' => '信頼できるホスト名が設定されていません。'
             ],
-            [
-                'type' => 'open',
-                'mock_up' => true,
-                'files' => ['autoload.php', 'autoload_classmap.php'],
-                'path' => 'vendor',
-                'result' => '問題ありません',
-            ],
-            [
-                'type' => 'closed',
-                'mock_up' => false,
-                'path' => 'vendor',
-                'result' => '問題ありません',
-            ],
-
-            [
-                'type' => 'closed',
-                'mock_up' => true,
-                'files' => [],
-                'path' => 'codeception',
-                'result' => '問題ありません',
-            ],
-            [
-                'type' => 'open',
-                'mock_up' => false,
-                'path' => 'codeception',
-                'result' => '問題ありません',
-            ],
-            [
-                'type' => 'closed',
-                'mock_up' => false,
-                'path' => '.env',
-                'result' => '問題ありません',
-            ],
-            [
-                'type' => 'open',
-                'mock_up' => false,
-                'files' => ['.env'],
-                'path' => '.env',
-                'result' => '問題ありません',
-            ],
-//            [
-//                'type' => 'open',
-//                'mock_up' => false,
-//                'env' => 'dev',
-//                'result' => '問題ありません',
-//            ],
-//            [
-//                'type' => 'open',
-//                'mock_up' => false,
-//                'env' => 'prod',
-//                'result' => '問題ありません',
-//            ]
         ];
     }
 }
