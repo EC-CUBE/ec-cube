@@ -6204,7 +6204,7 @@ Styleguide 2.1.1
   box-shadow: 0 0 0 0.25rem rgba(186, 186, 188, 0.5);
 }
 .ec-inlineBtn:disabled, .ec-inlineBtn.disabled {
-  color: #000;
+  color: #525263;
   background-color: #F5F7F8;
   border-color: #ccc;
 }
@@ -6273,7 +6273,7 @@ Styleguide 2.1.1
   box-shadow: 0 0 0 0.25rem rgba(116, 189, 189, 0.5);
 }
 .ec-inlineBtn--primary:disabled, .ec-inlineBtn--primary.disabled {
-  color: #000;
+  color: #fff;
   background-color: #5CB1B1;
   border-color: #5CB1B1;
 }
@@ -6342,7 +6342,7 @@ Styleguide 2.1.1
   box-shadow: 0 0 0 0.25rem rgba(227, 117, 106, 0.5);
 }
 .ec-inlineBtn--action:disabled, .ec-inlineBtn--action.disabled {
-  color: #000;
+  color: #fff;
   background-color: #DE5D50;
   border-color: #DE5D50;
 }
@@ -6501,7 +6501,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(186, 186, 188, 0.5);
 }
 .ec-blockBtn:disabled, .ec-blockBtn.disabled {
-  color: #000;
+  color: #525263;
   background-color: #F5F7F8;
   border-color: #ccc;
 }
@@ -6576,7 +6576,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(116, 189, 189, 0.5);
 }
 .ec-blockBtn--primary:disabled, .ec-blockBtn--primary.disabled {
-  color: #000;
+  color: #fff;
   background-color: #5CB1B1;
   border-color: #5CB1B1;
 }
@@ -6651,7 +6651,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(227, 117, 106, 0.5);
 }
 .ec-blockBtn--action:disabled, .ec-blockBtn--action.disabled {
-  color: #000;
+  color: #fff;
   background-color: #DE5D50;
   border-color: #DE5D50;
 }
@@ -21180,7 +21180,7 @@ Styleguide 12.3.1
   box-shadow: 0 0 0 0.25rem rgba(38, 38, 38, 0.5);
 }
 .ec-inlineBtn--top:disabled, .ec-inlineBtn--top.disabled {
-  color: #fff;
+  color: white;
   background-color: black;
   border-color: black;
 }
@@ -21264,7 +21264,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(38, 38, 38, 0.5);
 }
 .ec-blockBtn--top:disabled, .ec-blockBtn--top.disabled {
-  color: #fff;
+  color: white;
   background-color: black;
   border-color: black;
 }
