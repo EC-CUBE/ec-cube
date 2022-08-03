@@ -142,7 +142,6 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
           cp codeception/_data/plugins/*-1.0.0.tgz repos
-
       - name: Start PHP Development Server
         env:
           APP_ENV: 'dev'
@@ -151,8 +150,18 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
-          HTTP_SITEURL: 'http://localhost:8000'
+          HTTP_SITEURL: 'http://127.0.0.1:7777'
         run: php -S 127.0.0.1:8000 &
+      - name: Back up development server (for security plugin check)
+        env:
+          APP_ENV: 'dev'
+          XML_OVERRIDE: 't'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          HTTP_SITEURL: 'http://127.0.0.1:7777'
+        run: php -S 127.0.0.1:7777 &
       - name: Start Webhook Development Server
         run: php -S 127.0.0.1:8008 -t codeception/_support/server &
       - name: Codeception (Install Process Testing)
@@ -162,7 +171,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
-          HTTP_SITEURL: 'http://localhost:8000'
+          HTTP_SITEURL: 'http://127.0.0.1:7777'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
@@ -186,7 +195,7 @@ jobs:
         env:
           APP_ENV: 'dev'
           DATABASE_URL: ${{ matrix.database_url }}
-          HTTP_SITEURL: 'http://localhost:8000'
+          HTTP_SITEURL: '127.0.0.1:7777'
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
