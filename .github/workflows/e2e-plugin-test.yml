@@ -145,7 +145,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'dev'
           XML_OVERRIDE: 't'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
@@ -155,25 +155,17 @@ jobs:
       - name: Start Webhook Development Server
         run: php -S localhost:8008 -t codeception/_support/server &
       - name: Codeception (Install Process Testing)
-        env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          GROUP: ${{ matrix.group }}
-          SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+      - name: Hard reset ALL cache from var/cache after install
+        run: |
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
+      - name: DEBUG HTTP REQUEST #
+        run: |
+          sed -i '235i dd($e);' app/Plugin/Securitychecker42/Service/Securitychecker42Service.php
+          echo "Test" > ./var/test.log
       - name: Codeception (Main Process Testing)
-        env:
-          APP_ENV: 'dev'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          GROUP: ${{ matrix.group }}
-          DATE_LOCALE: 'en-us'
-          SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
       - name: Upload evidence
         if: failure()
