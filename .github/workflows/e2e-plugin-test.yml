@@ -151,17 +151,8 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           HTTP_SITEURL: 'http://127.0.0.1:7777'
+          PHP_CLI_SERVER_WORKERS: 10
         run: php -S 127.0.0.1:8000 &
-      - name: Back up development server (for security plugin check)
-        env:
-          APP_ENV: 'dev'
-          XML_OVERRIDE: 't'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          HTTP_SITEURL: 'http://127.0.0.1:7777'
-        run: php -S 127.0.0.1:7777 &
       - name: Start Webhook Development Server
         run: php -S 127.0.0.1:8008 -t codeception/_support/server &
       - name: Codeception (Install Process Testing)
