@@ -151,7 +151,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 &
       - name: Start Webhook Development Server
         run: php -S localhost:8008 -t codeception/_support/server &
       - name: Codeception (Install Process Testing)
