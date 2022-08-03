@@ -145,7 +145,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'dev'
+          APP_ENV: 'codeception'
           XML_OVERRIDE: 't'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
