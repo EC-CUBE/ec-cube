@@ -164,6 +164,9 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+      - name: DEBUG Test 1
+        run: |
+          curl -X GET http://localhost:8000/var/cache/test/Eccube_KernelTestDebugContainer.xml
       - name: Hard reset ALL cache from var/cache after install
         run: |
           rm -rf var/cache
