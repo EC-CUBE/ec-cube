@@ -113,7 +113,7 @@ jobs:
         run: composer install --dev --no-interaction -o --apcu-autoloader
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'dev'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
