@@ -13,8 +13,8 @@ jobs:
       matrix:
         php: [ 7.4, 8.0, 8.1 ]
         db: [ pgsql10, pgsql14, mysql5, mysql8 ]
-#        file: [ PL01RecommendCest, PL02CouponCest, PL03MailMagazineCest, PL04SalesReportCest, PL05RelatedProductCest,  PL06SecurityCheckCest, PL07ProductReviewCest, PL08ApiCest, PL11ProductImagesUploaderCest, PL12MakerCest ]
-        file: [ PL04SalesReportCest ] # , PL01RecommendCest - PASS, PL02CouponCest - PASS, PL03MailMagazineCest - PASS, PL04SalesReportCest - PASS, PL05RelatedProductCest - PASS, PL06SecurityCheckCest - PASS , PL07ProductReviewCest - PASS, PL08ApiCest, PL11ProductImagesUploaderCest - PASS, PL12MakerCest - Pass
+        file: [ PL01RecommendCest, PL02CouponCest, PL03MailMagazineCest, PL04SalesReportCest, PL05RelatedProductCest,  PL06SecurityCheckCest, PL07ProductReviewCest, PL08ApiCest, PL11ProductImagesUploaderCest, PL12MakerCest ]
+#        file: [ PL04SalesReportCest ] # , PL01RecommendCest - PASS, PL02CouponCest - PASS, PL03MailMagazineCest - PASS, PL04SalesReportCest - PASS, PL05RelatedProductCest - PASS, PL06SecurityCheckCest - PASS , PL07ProductReviewCest - PASS, PL08ApiCest, PL11ProductImagesUploaderCest - PASS, PL12MakerCest - Pass
         include:
           - db: pgsql10
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
