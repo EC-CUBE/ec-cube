@@ -251,7 +251,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           DATE_LOCALE: 'en-us'
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main -x e2e_priority_plugin --html main-report.html codeception/acceptance/Plugin/E2E
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
