@@ -132,6 +132,11 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
       - name: Install ALL ECCUBE Offical Plugins via commandLine
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz
           bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz
@@ -144,6 +149,11 @@ jobs:
           bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz
           bin/console eccube:plugin:install --path=codeception/_data/Securitychecker42.zip
       - name: Enable ALL installed official plugins via commandline
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           bin/console eccube:plugin:enable --code=Recommend42
           bin/console eccube:plugin:enable --code=Coupon42
