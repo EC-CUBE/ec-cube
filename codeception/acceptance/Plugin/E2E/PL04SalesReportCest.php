@@ -129,13 +129,30 @@ class PL04SalesReportCest
             $I->dontSee('￥0', sprintf("(//table[@id='term-table']//tr)[%s]//td[11]", $y));
 
             if ($newOrders[$y - 3]->getCustomer()->getSex()->getId() === 1) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
+                }
             } elseif ($newOrders[$y - 3]->getCustomer()->getSex()->getId() === 2) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
+                }
             } else {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
+                }
             }
             $I->see(Carbon::instance($newOrders[$y - 3]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
         }
@@ -198,13 +215,30 @@ class PL04SalesReportCest
             $I->dontSee('￥0', sprintf("(//table[@id='term-table']//tr)[%s]//td[11]", $y));
 
             if ($newOrders[$y - 2]->getCustomer()->getSex()->getId() === 1) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
+                }
             } elseif ($newOrders[$y - 2]->getCustomer()->getSex()->getId() === 2) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
+                }
             } else {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
+                }
             }
 
             $I->see(Carbon::instance($newOrders[$y - 2]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
@@ -274,13 +308,30 @@ class PL04SalesReportCest
             $I->dontSee('￥0', sprintf("(//table[@id='term-table']//tr)[%s]//td[11]", $y + 1));
 
             if ($customer->getSex()->getId() === 1) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
+                }
             } elseif ($customer->getSex()->getId() === 2) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
+                }
             } else {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
+                }
             }
 
             $I->see(Carbon::create(2022, $y, 2)->format('Y-m'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
@@ -349,13 +400,30 @@ class PL04SalesReportCest
             $I->dontSee('￥0', sprintf("(//table[@id='term-table']//tr)[%s]//td[11]", $y + 1));
 
             if ($customer->getSex()->getId() === 1) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
+                }
             } elseif ($customer->getSex()->getId() === 2) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
+                }
             } else {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
+                }
             }
 
             $I->see($daysOfWeek[$y - 1], sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
@@ -419,13 +487,30 @@ class PL04SalesReportCest
             $I->dontSee('￥0', sprintf("(//table[@id='term-table']//tr)[%s]//td[11]", $y + 2));
 
             if ($customer->getSex()->getId() === 1) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 2));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 2));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 2));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 2));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 2));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 2));
+                }
             } elseif ($customer->getSex()->getId() === 2) {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 2));
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 2));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 2));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 2));
+                }
+
+                $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 2));
+                if (str_contains($memberGenderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 2));
+                }
             } else {
-                $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 2));
+                $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 2));
+                if (str_contains($genderData, '10') === false) {
+                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 2));
+                }
             }
 
             $I->see(str_pad($y, 2, '0', STR_PAD_LEFT), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 2));
