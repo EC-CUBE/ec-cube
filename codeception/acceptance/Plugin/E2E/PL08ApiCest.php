@@ -219,10 +219,10 @@ class PL08ApiCest
                 'client_secret' => $apiAuthData->clientSecret,
             ]
         );
-        assertJson($tokens);
+        $I->assertJson($tokens);
         $jsonTokens = json_decode($tokens, true);
-        assertNotEmpty($jsonTokens['access_token']);
-        assertEquals('Bearer', $jsonTokens['token_type']);
+        $I->assertNotEmpty($jsonTokens['access_token']);
+        $I->assertEquals('Bearer', $jsonTokens['token_type']);
         return $jsonTokens;
     }
 
@@ -371,13 +371,14 @@ class PL08ApiCest
         $tokenData = $this->web_api_07($I);
         $I->amOnPage('/admin/api/webhook');
         $ordersGen = Fixtures::get('createOrders');
-        $customer = Fixtures::get('createCustomer');
+        $customerTask = Fixtures::get('createCustomer');
+        $customer = $customerTask();
         /**
          * @var Order $targetOrder
          */
-        $targetOrder = $ordersGen($customer(), 1, [], OrderStatus::IN_PROGRESS)[0];
+        $targetOrder = $ordersGen($customer, 1, [], OrderStatus::IN_PROGRESS)[0];
 
-        assertEquals($targetOrder->getOrderStatus()->getId(), OrderStatus::IN_PROGRESS);
+        $I->assertEquals($targetOrder->getOrderStatus()->getId(), OrderStatus::IN_PROGRESS);
 
         $I->haveHttpHeader('Authorization', 'Bearer ' . $tokenData['access_token']);
         $I->haveHttpHeader('HTTP_AUTHORIZATION', 'Bearer ' . $tokenData['access_token']);
@@ -386,7 +387,7 @@ class PL08ApiCest
             'query' => 'mutation ($id: ID!, $shipping_date: DateTime, $shipping_delivery_name: String, $tracking_number: String, $note: String, $is_send_mail: Boolean) { updateShipped(id: $id, shipping_date: $shipping_date, shipping_delivery_name: $shipping_delivery_name, tracking_number: $tracking_number, note: $note, is_send_mail: $is_send_mail ) { id, shipping_date, shipping_delivery_name, tracking_number, note }}',
             'variables' => [
                 'id' => $targetOrder->getId(),
-                'shipping_date' => '2016-01-02T03:04:05+09:00',
+                'shipping_date' => '2023-01-02T03:04:05+09:00',
                 'stock_unlimited' => false,
                 'shipping_delivery_name' => 'ヤマト運輸',
                 'tracking_number' => '123456789',
@@ -402,7 +403,7 @@ class PL08ApiCest
             'data' => [
                 'updateShipped' => [
                     'id' => (string)$targetOrder->getId(),
-                    'shipping_date' => '2016-01-01T18:04:05+00:00',
+                    'shipping_date' => '2023-01-01T18:04:05+00:00',
                     'shipping_delivery_name' => 'ヤマト運輸',
                     'tracking_number' => '123456789',
                     'note' => 'test',
@@ -412,7 +413,7 @@ class PL08ApiCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @skip
      * @param AcceptanceTester $I
      * @return void
