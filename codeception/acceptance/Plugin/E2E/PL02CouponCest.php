@@ -846,7 +846,7 @@ class PL02CouponCest
      * ① 無効化できる
      *
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      * @throws \Exception
      */
@@ -868,7 +868,7 @@ class PL02CouponCest
     /**
      *
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      * @throws \Exception
      */

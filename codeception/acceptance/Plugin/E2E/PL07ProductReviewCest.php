@@ -389,7 +389,7 @@ class PL07ProductReviewCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      */
@@ -407,7 +407,7 @@ class PL07ProductReviewCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      * @throws \Exception

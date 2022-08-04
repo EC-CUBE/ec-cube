@@ -239,7 +239,7 @@ class PL05RelatedProductCest
 
     /**
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      */
     public function related_08(AcceptanceTester $I)
@@ -257,7 +257,7 @@ class PL05RelatedProductCest
 
     /**
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      * @throws \Exception
      */

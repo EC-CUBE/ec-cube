@@ -721,7 +721,7 @@ class PL04SalesReportCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      */
@@ -738,7 +738,7 @@ class PL04SalesReportCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      */

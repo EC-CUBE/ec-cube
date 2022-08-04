@@ -312,7 +312,7 @@ class PL01RecommendCest
      * ⑩ 無効化できる
      *
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      */
     public function recommend_11(AcceptanceTester $I)
@@ -333,7 +333,7 @@ class PL01RecommendCest
 
     /**
      * ⑫ アンインストールできる
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      */

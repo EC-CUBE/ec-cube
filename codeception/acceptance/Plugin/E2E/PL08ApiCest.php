@@ -438,7 +438,7 @@ class PL08ApiCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      */
@@ -455,7 +455,7 @@ class PL08ApiCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param \AcceptanceTester $I
      * @return void
      * @throws \Exception

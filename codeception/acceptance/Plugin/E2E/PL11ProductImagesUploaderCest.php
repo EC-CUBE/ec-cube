@@ -82,7 +82,7 @@ class PL11ProductImagesUploaderCest
 
     /**
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      */
     public function images_uploader_04(AcceptanceTester $I)
@@ -100,7 +100,7 @@ class PL11ProductImagesUploaderCest
 
     /**
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      */
     public function images_uploader_05(AcceptanceTester $I)

@@ -195,7 +195,7 @@ class PL06SecurityCheckCest
 
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      */
@@ -213,7 +213,7 @@ class PL06SecurityCheckCest
     }
 
     /**
-     * @group main
+     * @group uninstall
      * @param AcceptanceTester $I
      * @return void
      * @throws \Exception

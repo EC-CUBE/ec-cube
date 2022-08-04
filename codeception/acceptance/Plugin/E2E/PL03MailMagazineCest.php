@@ -403,7 +403,7 @@ class PL03MailMagazineCest
 
     /**
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      */
     public function mail_14(AcceptanceTester $I)
@@ -421,7 +421,7 @@ class PL03MailMagazineCest
 
     /**
      * @param AcceptanceTester $I
-     * @group main
+     * @group uninstall
      * @return void
      */
     public function mail_15(AcceptanceTester $I)
