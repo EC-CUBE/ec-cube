@@ -130,29 +130,26 @@ class PL04SalesReportCest
 
             if ($newOrders[$y - 3]->getCustomer()->getSex()->getId() === 1) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
+
             } elseif ($newOrders[$y - 3]->getCustomer()->getSex()->getId() === 2) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
+
             } else {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
             }
             $I->see(Carbon::instance($newOrders[$y - 3]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
         }
@@ -216,29 +213,24 @@ class PL04SalesReportCest
 
             if ($newOrders[$y - 2]->getCustomer()->getSex()->getId() === 1) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } elseif ($newOrders[$y - 2]->getCustomer()->getSex()->getId() === 2) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } else {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
             }
 
             $I->see(Carbon::instance($newOrders[$y - 2]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
@@ -309,29 +301,24 @@ class PL04SalesReportCest
 
             if ($customer->getSex()->getId() === 1) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } elseif ($customer->getSex()->getId() === 2) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } else {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
             }
 
             $I->see(Carbon::create(2022, $y, 2)->format('Y-m'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
@@ -401,29 +388,25 @@ class PL04SalesReportCest
 
             if ($customer->getSex()->getId() === 1) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 1));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 1));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } elseif ($customer->getSex()->getId() === 2) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 1));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
+
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 1));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } else {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 1));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
             }
 
             $I->see($daysOfWeek[$y - 1], sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
@@ -488,29 +471,24 @@ class PL04SalesReportCest
 
             if ($customer->getSex()->getId() === 1) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 2));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[3]", $y + 2));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 2));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[6]", $y + 2));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } elseif ($customer->getSex()->getId() === 2) {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 2));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[4]", $y + 2));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
 
                 $memberGenderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 2));
-                if (str_contains($memberGenderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[8]", $y + 2));
-                }
+                $rawMemberGenderData = (int) filter_var($memberGenderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawMemberGenderData);
             } else {
                 $genderData = $I->grabTextFrom(sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 2));
-                if (str_contains($genderData, '10') === false) {
-                    $I->dontSee('0', sprintf("(//table[@id='term-table']//tr)[%s]//td[5]", $y + 2));
-                }
+                $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
+                $I->assertEquals(0, $rawData);
             }
 
             $I->see(str_pad($y, 2, '0', STR_PAD_LEFT), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 2));
