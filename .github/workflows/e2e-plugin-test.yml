@@ -87,8 +87,17 @@ jobs:
         run: |
           sudo apt-get install ttf-mscorefonts-installer
           sudo fc-cache -fv
-      - name: Download all non native ECCUBE plugins
+      - name: Download all native ECCUBE plugins from latest release
         run: |
+          wget -O ./codeception/_data/recommend.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/Recommend-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+          wget -O ./codeception/_data/coupon.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/coupon-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+          wget -O ./codeception/_data/mail_magazine.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/mail-magazine-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+          wget -O ./codeception/_data/sales.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/sales-report-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+          wget -O ./codeception/_data/related_product.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/related-product-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+
+          wget -O ./codeception/_data/review.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/ProductReview-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+          wget -O ./codeception/_data/api.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/eccube-api4/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+
           wget -O ./codeception/_data/maker.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/maker-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
           wget -O ./codeception/_data/product_images.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/ProductImagesUploader/releases/latest | grep browser_download_url | cut -d '"' -f 4)
           wget -O ./codeception/_data/data_migrate.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/data-migration-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
@@ -122,7 +131,37 @@ jobs:
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
+      - name: Install ALL ECCUBE Offical Plugins via commandLine
+        run: |
+          bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=Recommend42 --env=dev
 
+          bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=Coupon42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=MailMagazine42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=SalesReport42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=RelatedProduct42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=ProductReview42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=Api42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=Maker42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz --env=dev
+          bin/console eccube:plugin:enable --code=ProductImagesUploader42 --env=dev
+
+          bin/console eccube:plugin:install --path=codeception/_data/Securitychecker42.zip --env=dev
+          bin/console eccube:plugin:enable --code=Securitychecker42 --env=dev
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
       - name: Run Google Chrome in Japanese Language
@@ -157,17 +196,6 @@ jobs:
         run: php -S 127.0.0.1:7777 &
       - name: Start Webhook Development Server
         run: php -S 127.0.0.1:8008 -t codeception/_support/server &
-      - name: Codeception (Install Process Testing)
-        env:
-          APP_ENV: 'dev'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          HTTP_SITEURL: 'http://127.0.0.1:7777'
-          GROUP: ${{ matrix.group }}
-          SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E
       - name: Hard reset ALL cache from var/cache after install
         run: |
           rm -rf var/cache
