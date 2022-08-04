@@ -140,14 +140,41 @@ jobs:
           # bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz
         run: |
           bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:install --path=codeception/_data/Securitychecker42.zip
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
       - name: Enable ALL installed official plugins via commandline
         env:
           APP_ENV: 'codeception'
@@ -156,15 +183,41 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           bin/console eccube:plugin:enable --code=Recommend42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=Coupon42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=MailMagazine42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=SalesReport42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=RelatedProduct42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=ProductReview42
-          bin/console eccube:plugin:enable --code=Api42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=Maker42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=ProductImagesUploader42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
           bin/console eccube:plugin:enable --code=Securitychecker42
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
       - name: Run Google Chrome in Japanese Language
