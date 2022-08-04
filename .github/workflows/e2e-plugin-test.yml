@@ -228,6 +228,18 @@ jobs:
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
+      - name: Codeception (Run priority plugins)
+        env:
+          APP_ENV: 'dev'
+          DATABASE_URL: ${{ matrix.database_url }}
+          HTTP_SITEURL: '127.0.0.1:7777'
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          GROUP: ${{ matrix.group }}
+          DATE_LOCALE: 'en-us'
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g e2e_priority_plugin -x install -x uninstall --html main-report.html codeception/acceptance/Plugin/E2E
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'dev'
@@ -239,7 +251,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           DATE_LOCALE: 'en-us'
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E/PL08ApiCest.php:web_api_12
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2

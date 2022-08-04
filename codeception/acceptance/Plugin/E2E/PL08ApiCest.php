@@ -30,6 +30,7 @@ use function PHPUnit\Framework\assertStringContainsString;
 /**
  * @group plugin
  * @group e2e_plugin
+ * @group e2e_priority_plugin
  */
 class PL08ApiCest
 {
