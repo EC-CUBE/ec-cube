@@ -151,7 +151,7 @@ class PL05RelatedProductCest
      */
     public function related_05(AcceptanceTester $I)
     {
-        $I->retry(7, 400);
+        $I->retry(5, 200);
         $Product = $this->registerBaseProductDetails();
         $RelatedProducts = [];
         $RelatedProductsDescriptionIDs = [];
@@ -166,13 +166,20 @@ class PL05RelatedProductCest
         $I->wait(10);
 
         foreach ($RelatedProducts as $key => $relatedProduct) {
-            $I->clickWithLeftButton('#RelatedProduct-search'.$key);
+            $I->retryScrollTo('#RelatedProduct-search'.$key);
+            $I->wait(10);
+            $I->retryClickWithLeftButton('#RelatedProduct-search'.$key);
+            $I->wait(10);
             $I->retryFillField('#admin_search_product_id', $relatedProduct->getId());
+            $I->wait(10);
             $I->clickWithLeftButton('#RelatedProductSearchButton');
+            $I->wait(10);
             $I->retrySee($relatedProduct->getName());
+            $I->wait(10);
             $I->clickWithLeftButton(Locator::contains('//tr', $relatedProduct->getName()).'//button');
+            $I->wait(10);
             $I->retrySee($relatedProduct->getName());
-            $I->wait(5);
+            $I->wait(10);
             $I->fillField('#admin_product_RelatedProducts_'.$key.'_content', $RelatedProductsDescriptionIDs[$key]);
         }
         $I->retryClickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
