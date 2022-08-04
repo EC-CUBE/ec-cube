@@ -13,8 +13,6 @@ jobs:
       matrix:
         php: [ 7.4, 8.0, 8.1 ]
         db: [ pgsql10, pgsql14, mysql5, mysql8 ]
-        file: [ PL01RecommendCest, PL02CouponCest, PL03MailMagazineCest, PL04SalesReportCest, PL05RelatedProductCest,  PL06SecurityCheckCest, PL07ProductReviewCest, PL08ApiCest, PL11ProductImagesUploaderCest, PL12MakerCest ]
-#        file: [ PL04SalesReportCest ] # , PL01RecommendCest - PASS, PL02CouponCest - PASS, PL03MailMagazineCest - PASS, PL04SalesReportCest - PASS, PL05RelatedProductCest - PASS, PL06SecurityCheckCest - PASS , PL07ProductReviewCest - PASS, PL08ApiCest, PL11ProductImagesUploaderCest - PASS, PL12MakerCest - Pass
         include:
           - db: pgsql10
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -137,11 +135,6 @@ jobs:
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
-#      - name: Run package-api
-#        run: |
-#          if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-#          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
-#          cp codeception/_data/plugins/*-1.0.0.tgz repos
       - name: Start PHP Development Server
         env:
           APP_ENV: 'dev'
@@ -174,7 +167,7 @@ jobs:
           HTTP_SITEURL: 'http://127.0.0.1:7777'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E
       - name: Hard reset ALL cache from var/cache after install
         run: |
           rm -rf var/cache
@@ -191,7 +184,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           DATE_LOCALE: 'en-us'
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E/${{ matrix.file }}
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main --html main-report.html codeception/acceptance/Plugin/E2E
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
