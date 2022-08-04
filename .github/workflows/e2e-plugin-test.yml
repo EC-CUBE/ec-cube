@@ -146,7 +146,6 @@ jobs:
           bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz
           bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz
           bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz
-
           bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz
           bin/console eccube:plugin:install --path=codeception/_data/Securitychecker42.zip
       - name: Enable ALL installed official plugins via commandline
