@@ -139,39 +139,39 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           # bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz
         run: |
-          bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz
+          bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:install --path=codeception/_data/Securitychecker42.zip
+          bin/console eccube:plugin:install --path=codeception/_data/Securitychecker42.zip --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
@@ -182,39 +182,39 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
-          bin/console eccube:plugin:enable --code=Recommend42
+          bin/console eccube:plugin:enable --code=Recommend42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=Coupon42
+          bin/console eccube:plugin:enable --code=Coupon42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=MailMagazine42
+          bin/console eccube:plugin:enable --code=MailMagazine42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=SalesReport42
+          bin/console eccube:plugin:enable --code=SalesReport42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=RelatedProduct42
+          bin/console eccube:plugin:enable --code=RelatedProduct42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=ProductReview42
+          bin/console eccube:plugin:enable --code=ProductReview42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=Maker42
+          bin/console eccube:plugin:enable --code=Maker42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=ProductImagesUploader42
+          bin/console eccube:plugin:enable --code=ProductImagesUploader42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
-          bin/console eccube:plugin:enable --code=Securitychecker42
+          bin/console eccube:plugin:enable --code=Securitychecker42 --env=dev
           rm -rf var/cache
           mkdir var/cache
           chmod 777 var/cache
