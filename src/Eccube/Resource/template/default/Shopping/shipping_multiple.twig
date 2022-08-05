@@ -148,12 +148,8 @@ $(function() {
             {% endfor %}
 
             <div class="ec-AddAddress__actions">
-                <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell">
-                        <button id="button__confirm" type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
-                        <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
-                    </div>
-                </div>
+                <button id="button__confirm" type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
+                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
             </div>
         </form>
     </div>

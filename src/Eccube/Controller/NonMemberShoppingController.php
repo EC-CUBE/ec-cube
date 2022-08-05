@@ -283,7 +283,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(['type' => 'digit', 'message' => 'form_error.numeric_only']),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_tel_len_max']]
                 ),
@@ -294,7 +294,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(['type' => 'digit', 'message' => 'form_error.numeric_only']),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_postal_code']]
                 ),

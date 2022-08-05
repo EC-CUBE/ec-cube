@@ -964,7 +964,7 @@ Styleguide 1.3.3
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-sans-serif: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -6204,7 +6204,7 @@ Styleguide 2.1.1
   box-shadow: 0 0 0 0.25rem rgba(186, 186, 188, 0.5);
 }
 .ec-inlineBtn:disabled, .ec-inlineBtn.disabled {
-  color: #000;
+  color: #525263;
   background-color: #F5F7F8;
   border-color: #ccc;
 }
@@ -6273,7 +6273,7 @@ Styleguide 2.1.1
   box-shadow: 0 0 0 0.25rem rgba(116, 189, 189, 0.5);
 }
 .ec-inlineBtn--primary:disabled, .ec-inlineBtn--primary.disabled {
-  color: #000;
+  color: #fff;
   background-color: #5CB1B1;
   border-color: #5CB1B1;
 }
@@ -6342,7 +6342,7 @@ Styleguide 2.1.1
   box-shadow: 0 0 0 0.25rem rgba(227, 117, 106, 0.5);
 }
 .ec-inlineBtn--action:disabled, .ec-inlineBtn--action.disabled {
-  color: #000;
+  color: #fff;
   background-color: #DE5D50;
   border-color: #DE5D50;
 }
@@ -6501,7 +6501,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(186, 186, 188, 0.5);
 }
 .ec-blockBtn:disabled, .ec-blockBtn.disabled {
-  color: #000;
+  color: #525263;
   background-color: #F5F7F8;
   border-color: #ccc;
 }
@@ -6576,7 +6576,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(116, 189, 189, 0.5);
 }
 .ec-blockBtn--primary:disabled, .ec-blockBtn--primary.disabled {
-  color: #000;
+  color: #fff;
   background-color: #5CB1B1;
   border-color: #5CB1B1;
 }
@@ -6651,7 +6651,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(227, 117, 106, 0.5);
 }
 .ec-blockBtn--action:disabled, .ec-blockBtn--action.disabled {
-  color: #000;
+  color: #fff;
   background-color: #DE5D50;
   border-color: #DE5D50;
 }
@@ -6875,7 +6875,7 @@ Twitter Bootstrap デフォルト準拠
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-sans-serif: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -12294,7 +12294,12 @@ Styleguide 3.1.2
   width: 47%;
   margin-left: 2%;
 }
-.ec-halfInput input[type=text]:first-child {
+.ec-halfInput .ec-errorMessage {
+  display: inline-block;
+  width: 47%;
+}
+.ec-halfInput input[type=text]:first-of-type,
+.ec-halfInput .ec-errorMessage:first-of-type {
   margin-left: 0;
 }
 /*
@@ -12350,7 +12355,7 @@ Styleguide 3.1.4
   display: inline-block;
   text-align: left;
   width: auto;
-  max-width: 8em;
+  max-width: 9em;
   font-size: 16px;
 }
 .ec-zipInput span {
@@ -12411,7 +12416,7 @@ Markup:
 Styleguide 3.1.5
 */
 .ec-telInput input {
-  max-width: 10em;
+  max-width: 12em;
   text-align: left;
 }
 /**
@@ -12676,7 +12681,12 @@ Styleguide 3.1.2
   width: 47%;
   margin-left: 2%;
 }
-.ec-halfInput input[type=text]:first-child {
+.ec-halfInput .ec-errorMessage {
+  display: inline-block;
+  width: 47%;
+}
+.ec-halfInput input[type=text]:first-of-type,
+.ec-halfInput .ec-errorMessage:first-of-type {
   margin-left: 0;
 }
 /*
@@ -12732,7 +12742,7 @@ Styleguide 3.1.4
   display: inline-block;
   text-align: left;
   width: auto;
-  max-width: 8em;
+  max-width: 9em;
   font-size: 16px;
 }
 .ec-zipInput span {
@@ -12793,7 +12803,7 @@ Markup:
 Styleguide 3.1.5
 */
 .ec-telInput input {
-  max-width: 10em;
+  max-width: 12em;
   text-align: left;
 }
 /*
@@ -14869,7 +14879,11 @@ include /assets/tmpl/elements/11.4.categoryNavi.pug
 Styleguide 11.2
 */
 .ec-layoutRole {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff;
 }
@@ -14883,6 +14897,7 @@ Styleguide 11.2
   max-width: 1150px;
   display: flex;
   flex-wrap: nowrap;
+  flex-grow: 1;
 }
 .ec-layoutRole .ec-layoutRole__main {
   width: 100%;
@@ -15952,7 +15967,7 @@ Styleguide 12.2
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-sans-serif: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -21165,7 +21180,7 @@ Styleguide 12.3.1
   box-shadow: 0 0 0 0.25rem rgba(38, 38, 38, 0.5);
 }
 .ec-inlineBtn--top:disabled, .ec-inlineBtn--top.disabled {
-  color: #fff;
+  color: white;
   background-color: black;
   border-color: black;
 }
@@ -21249,7 +21264,7 @@ Styleguide 2.1.2
   box-shadow: 0 0 0 0.25rem rgba(38, 38, 38, 0.5);
 }
 .ec-blockBtn--top:disabled, .ec-blockBtn--top.disabled {
-  color: #fff;
+  color: white;
   background-color: black;
   border-color: black;
 }
@@ -22789,7 +22804,7 @@ Styleguide 15.2.6
   margin-bottom: 5px;
 }
 .ec-AddAddress .ec-AddAddress__selectAddress {
-  display: inline-block;
+  display: block;
 }
 .ec-AddAddress .ec-AddAddress__selectAddress label {
   font-size: 16px;
@@ -22799,8 +22814,7 @@ Styleguide 15.2.6
   min-width: 100%;
 }
 .ec-AddAddress .ec-AddAddress__selectNumber {
-  display: inline-block;
-  margin-left: 30px;
+  display: block;
 }
 .ec-AddAddress .ec-AddAddress__selectNumber label {
   font-size: 16px;
@@ -22859,12 +22873,12 @@ Styleguide 16.1
 }
 .ec-historyRole .ec-historyRole__detail .ec-historyRole__detailTitle {
   margin-bottom: 8px;
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 .ec-historyRole .ec-historyRole__detail .ec-historyRole__detailPrice {
   margin-bottom: 8px;
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 /*
@@ -29780,6 +29794,10 @@ Styleguide 22.1
     margin-left: 15px;
     width: 45%;
   }
+  .ec-halfInput .ec-errorMessage {
+    margin-left: 15px;
+    width: 45%;
+  }
   .ec-input input, .ec-birth input, .ec-select input, .ec-halfInput input, .ec-numberInput input, .ec-zipInput input, .ec-telInput input {
     font-size: 14;
   }
@@ -29793,6 +29811,10 @@ Styleguide 22.1
     margin-bottom: 16px;
   }
   .ec-halfInput input[type=text] {
+    margin-left: 15px;
+    width: 45%;
+  }
+  .ec-halfInput .ec-errorMessage {
     margin-left: 15px;
     width: 45%;
   }
@@ -30532,8 +30554,20 @@ Styleguide 22.1
   .ec-AddAddress {
     margin: 0 10%;
   }
+  .ec-AddAddress .ec-AddAddress__selectAddress {
+    display: inline-block;
+  }
   .ec-AddAddress .ec-AddAddress__selectAddress select {
     min-width: 350px;
+  }
+  .ec-AddAddress .ec-AddAddress__selectNumber {
+    display: inline-block;
+    margin-left: 30px;
+  }
+  .ec-AddAddress .ec-AddAddress__actions {
+    width: 33.3333%;
+    min-width: 250px;
+    margin: 0 auto;
   }
   .ec-historyRole .ec-historyRole__contents {
     flex-direction: row;
@@ -30551,9 +30585,6 @@ Styleguide 22.1
   }
   .ec-historyListHeader .ec-historyListHeader__action a {
     font-size: 14px;
-  }
-  .ec-registerRole .ec-registerRole__actions {
-    text-align: left;
   }
   .ec-customerRole .ec-blockBtn--action {
     margin-bottom: 16px;

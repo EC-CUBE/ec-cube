@@ -31,7 +31,7 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         $form = [
@@ -210,14 +210,14 @@ class EntryControllerTest extends AbstractWebTestCase
         $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::PROVISIONAL);
+        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
         $client = $this->client;
         $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
@@ -239,7 +239,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);

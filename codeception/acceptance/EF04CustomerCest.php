@@ -25,8 +25,6 @@ class EF04CustomerCest
      */
     public function customer_会員登録正常(AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('4.2.0-betaではスキップ');
-
         $I->wantTo('EF0401-UC01-T01 会員登録 正常パターン');
         $I->amOnPage('/entry');
         $faker = Fixtures::get('faker');
@@ -46,8 +44,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[plain_password][first]' => 'password',
-            'entry[plain_password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
             'entry[job]' => ['value' => '1'],
             'entry[user_policy_check]' => '1',
         ];
@@ -104,7 +102,6 @@ class EF04CustomerCest
 
     public function customer_会員登録異常1(AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('4.2.0-betaではスキップ');
         $I->wantTo('EF0401-UC01-T02 会員登録 異常パターン 重複');
         $I->amOnPage('/entry');
 
@@ -125,8 +122,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $customer->getEmail(), // 会員登録済みのメールアドレスを入力する
             'entry[email][second]' => $customer->getEmail(),
-            'entry[plain_password][first]' => 'password',
-            'entry[plain_password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
@@ -155,8 +152,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[plain_password][first]' => 'password',
-            'entry[plain_password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
         ], ['css' => 'button.ec-blockBtn--action']);
 
         // 入力した会員情報を確認する。
@@ -197,8 +194,8 @@ class EF04CustomerCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[plain_password][first]' => 'password',
-            'entry[plain_password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
             'entry[job]' => ['value' => '1'],
             'entry[user_policy_check]' => '1',
         ];
