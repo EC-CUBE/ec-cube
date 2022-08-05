@@ -1,8 +1,13 @@
 modules:
     config:
+        REST:
+            depends: PhpBrowser
+            url: 'http://localhost:8000/'
+            shortDebugResponse: 300 # only the first 300 characters of the response
         WebDriver:
             host: '127.0.0.1'
             port: 9515
+            lang: 'ja-JP'
             url: 'http://127.0.0.1:8000'
             capabilities:
                 chromeOptions:

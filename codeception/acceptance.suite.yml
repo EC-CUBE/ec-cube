@@ -15,7 +15,7 @@ modules:
         - MailCatcher
         - REST:
               depends: PhpBrowser
-              url: 'http://localhost:8000/'
+              url: '%BASE_URL%'
               shortDebugResponse: 300 # only the first 300 characters of the response
         - Symfony:
               part: SERVICES
@@ -26,12 +26,14 @@ modules:
               depends: Symfony
     config:
         WebDriver:
-            browser: 'chrome'
-            url: 'http://localhost:8080/'
-            lang: 'ja-JP'
-            port: '9515'
+            host: '%WEB_DRIVER_HOST%'
+            port: '%WEB_DRIVER_PORT%'
+            url: '%BASE_URL%'
             window_size: 1680x3000
             wait: 10
+            capabilities:
+                unexpectedAlertBehaviour: 'accept'
+                elementScrollBehavior: 1
         MailCatcher:
             url: '%MAILCATCHER_HOST%'
             port: 1080
