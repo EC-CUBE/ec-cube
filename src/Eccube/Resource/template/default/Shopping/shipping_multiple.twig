@@ -81,7 +81,7 @@ $(function() {
                 <div class="text-danger">{{ error.message }}</div>
             {% endfor %}
 
-            <div class="ec-AddAddress__new"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn ec-inlineBtn">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
+            <div class="ec-AddAddress__new"><a href="{{ url('shopping_shipping_multiple_edit') }}" class="ec-inlineBtn">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
 
             {% for orderItem in OrderItems %}
                 {% set idx = loop.index0 %}
@@ -134,7 +134,7 @@ $(function() {
                                     </div>
                                 </div>
 
-                                <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn ec-inlineBtn delete"
+                                <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="ec-inlineBtn delete"
                                         {% if loop.index0 == 0 %}style="display:none;"{% endif %}
                                         data-itemidx="{{ idx }}-{{ loop.index0 }}">{{'common.delete'|trans}}</button>
                             </div>
