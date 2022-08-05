@@ -19,10 +19,6 @@ use Codeception\Example;
 use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
 use Doctrine\ORM\EntityManager;
-use Eccube\Repository\Master\SexRepository;
-use Page\Admin\ProductReviewManagePage;
-use Page\Front\ProductDetailPage;
-use Page\Front\ProductReviewPage;
 use Plugin\ProductReview42\Entity\ProductReview;
 use Plugin\ProductReview42\Entity\ProductReviewStatus;
 
@@ -34,15 +30,7 @@ class PL07ProductReviewCest
 {
     public function _before(AcceptanceTester $I)
     {
-        // Delete all cache as doctrine metadata is always in the way on plugin install.
-        $I->willHardDeleteCache();
         $I->loginAsAdmin();
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
-        // Delete all cache as doctrine metadata is always in the way on plugin install.
-        $I->willHardDeleteCache();
     }
 
     /**

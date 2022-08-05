@@ -32,19 +32,6 @@ class PL02CouponCest
 
     public function _before(AcceptanceTester $I)
     {
-        // Delete all cache as doctrine metadata is always in the way on plugin install.
-        $files = glob(__DIR__ . '../../../../var/cache/dev/*');
-        foreach($files as $file){
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
-        $files = glob(__DIR__ . '../../../../var/cache/codeception/*');
-        foreach($files as $file){
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
         $I->loginAsAdmin();
     }
 

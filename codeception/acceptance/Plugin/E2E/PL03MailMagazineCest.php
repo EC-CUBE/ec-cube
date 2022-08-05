@@ -15,15 +15,8 @@ namespace Plugin\E2E;
 
 use AcceptanceTester;
 use Carbon\Carbon;
-use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
-use Doctrine\Common\Collections\Criteria;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Master\Sex;
 use Plugin\MailMagazine42\Entity\MailMagazineTemplate;
-use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertGreaterThan;
-use function PHPUnit\Framework\assertGreaterThanOrEqual;
 
 /**
  * @group plugin
@@ -40,19 +33,6 @@ class PL03MailMagazineCest
 
     public function _before(AcceptanceTester $I)
     {
-        // Delete all cache as doctrine metadata is always in the way on plugin install.
-        $files = glob(__DIR__ . '../../../../var/cache/dev/*');
-        foreach($files as $file){
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
-        $files = glob(__DIR__ . '../../../../var/cache/codeception/*');
-        foreach($files as $file){
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
         $I->loginAsAdmin();
     }
 
@@ -275,7 +255,7 @@ class PL03MailMagazineCest
         $targetRow = Locator::contains('//tr', $SubjectName);
         $sendToTotal = $I->grabTextFrom(sprintf('(%s//td)[4]', $targetRow));
         $sendSuccessfulTotal = $I->grabTextFrom(sprintf('(%s//td)[5]', $targetRow));
-        assertGreaterThanOrEqual($sendSuccessfulTotal, $sendToTotal);
+        $I->assertGreaterThanOrEqual($sendSuccessfulTotal, $sendToTotal);
     }
 
     /**
@@ -356,7 +336,7 @@ class PL03MailMagazineCest
         $targetRow = Locator::contains('//tr', $SubjectName);
         $sendToTotal = $I->grabTextFrom(sprintf('(%s//td)[4]', $targetRow));
         $sendSuccessfulTotal = $I->grabTextFrom(sprintf('(%s//td)[5]', $targetRow));
-        assertGreaterThanOrEqual($sendSuccessfulTotal, $sendToTotal);
+        $I->assertGreaterThanOrEqual($sendSuccessfulTotal, $sendToTotal);
 
         // Check Conditions
         $testRow = Locator::contains('//tr', $this->Subject);
@@ -398,7 +378,7 @@ class PL03MailMagazineCest
     public function mail_12(AcceptanceTester $I)
     {
         // @todo: Fix CSV Test Case
-        assertEquals(true, true);
+        $I->assertEquals(true, true);
     }
 
     /**
