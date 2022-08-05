@@ -249,7 +249,6 @@ file that was distributed with this source code.
     </div>
     <form name="form1" id="form1" method="post" action="?"{% if BaseInfo.isOptionPoint and Order.Customer is not null %} onsubmit="updatePointItem()"{% endif %}>
         <input type="hidden" name="mode" value="">
-        <input type="hidden" name="modal" value="">
         {{ form_widget(form._token) }}
         {{ form_widget(form.return_link) }}
         <div class="c-contentsArea__cols">

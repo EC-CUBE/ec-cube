@@ -66,7 +66,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('j').'T'.$now->format('G').':'.$now->format('i')
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T'.$now->format('H').':'.$now->format('i')
         ];
 
         $this->client->request(
@@ -123,7 +123,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('j').'T23:01'
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T23:01'
         ];
 
         $this->client->request(

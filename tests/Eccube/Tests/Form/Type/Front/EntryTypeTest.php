@@ -39,12 +39,12 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         ],
         'phone_number' => '012-345-6789',
         'email' => [
-            'first' => 'eccube@example.com',
-            'second' => 'eccube@example.com',
+            'first' => 'eccube1@example.com',
+            'second' => 'eccube1@example.com',
         ],
         'plain_password' => [
-            'first' => '12345678',
-            'second' => '12345678',
+            'first' => '1234567890ab',
+            'second' => '1234567890ab',
         ],
         'birth' => [
             'year' => '1980',

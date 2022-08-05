@@ -200,15 +200,15 @@ file that was distributed with this source code.
                         {% endfor %}
                     </div>
                     <div class="ec-registerRole__actions">
+                        <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
+                            <label>
+                                {{ form_widget(form.user_policy_check) }}
+                                {{ 'front.entry.agree_with_terms'|trans({ '%url%': url('help_agreement') })|raw }}
+                            </label>
+                            {{ form_errors(form.user_policy_check) }}
+                        </div>
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <div class="ec-checkbox{{ has_errors(form.user_policy_check) ? ' error' }}">
-                                    <label>
-                                        {{ form_widget(form.user_policy_check) }}
-                                        {{ 'front.entry.agree_with_terms'|trans({ '%url%': url('help_agreement') })|raw }}
-                                    </label>
-                                    {{ form_errors(form.user_policy_check) }}
-                                </div>
                                 <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{ 'front.entry.agree'|trans }}</button>
                                 <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'front.entry.disagree'|trans }}</a>
                             </div>

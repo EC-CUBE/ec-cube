@@ -497,6 +497,18 @@
     "symfony/intl": {
         "version": "v3.4.1"
     },
+    "symfony/lock": {
+        "version": "5.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.2",
+            "ref": "a1c8800e40ae735206bb14586fdd6c4630a51b8d"
+        },
+        "files": [
+            "app/config/eccube/packages/lock.yaml"
+        ]
+    },
     "symfony/mailer": {
         "version": "5.4",
         "recipe": {
@@ -592,6 +604,9 @@
     },
     "symfony/proxy-manager-bridge": {
         "version": "v3.4.4"
+    },
+    "symfony/rate-limiter": {
+        "version": "v5.4.9"
     },
     "symfony/routing": {
         "version": "3.3",

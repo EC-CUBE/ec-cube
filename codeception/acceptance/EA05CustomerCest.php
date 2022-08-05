@@ -117,11 +117,11 @@ class EA05CustomerCest
             ->入力_番地_ビル名('ブリーゼタワー13F')
             ->入力_Eメール($email)
             ->入力_電話番号('111-111-111')
-            ->入力_パスワード('password')
-            ->入力_パスワード確認('password');
+            ->入力_パスワード('password1234')
+            ->入力_パスワード確認('password1234');
 
         $findPluginByCode = Fixtures::get('findPluginByCode');
-        $Plugin = $findPluginByCode('MailMagazine');
+        $Plugin = $findPluginByCode('MailMagazine42');
         if ($Plugin) {
             $I->amGoingTo('メルマガプラグインを発見したため、メルマガを購読します');
             $I->click('#admin_customer_mailmaga_flg_0');

@@ -135,6 +135,14 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidNotDigitOnly()
+    {
+        $this->formData['phone_number'] = '0.3e2';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testInvalidBlankOne()
     {
         $this->formData['phone_number'] = '';

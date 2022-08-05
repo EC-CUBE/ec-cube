@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: docker build
-        run: docker-compose build
+        run: docker compose build
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -70,11 +70,9 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=dev
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=dev
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
 
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
