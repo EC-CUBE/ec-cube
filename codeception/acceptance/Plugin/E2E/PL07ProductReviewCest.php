@@ -414,6 +414,9 @@ class PL07ProductReviewCest
     private function writeFrontEndReviewNoLogin(AcceptanceTester $I, ReviewData $reviewData): AcceptanceTester
     {
         $I->amOnPage('products/detail/1');
+        $I->retry(7, 400);
+        $I->retrySee('彩のジェラートCUBE');
+        $I->wait(5);
         $I->see('この商品のレビュー');
         $I->clickWithLeftButton(Locator::contains('//a', 'レビューを投稿'));
 

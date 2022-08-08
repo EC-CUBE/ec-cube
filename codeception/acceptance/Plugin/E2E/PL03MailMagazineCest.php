@@ -115,8 +115,8 @@ class PL03MailMagazineCest
         $I->fillField('#entry_phone_number', '00000000000');
         $I->fillField('#entry_email_first', $email);
         $I->fillField('#entry_email_second', $email);
-        $I->fillField('#entry_plain_password_first', 'password');
-        $I->fillField('#entry_plain_password_second', 'password');
+        $I->fillField('#entry_plain_password_first', 'Password#!1234');
+        $I->fillField('#entry_plain_password_second', 'Password#!1234');
         $I->checkOption('#entry_mailmaga_flg_0');
         $I->checkOption('#entry_user_policy_check');
         $I->clickWithLeftButton('//div[@class="ec-registerRole__actions"]//button[@type="submit"][@class="ec-blockBtn--action"]');
@@ -151,11 +151,6 @@ class PL03MailMagazineCest
         $I->retrySee('保存しました');
         $I->seeCheckboxIsChecked('#admin_customer_mailmaga_flg_0');
         $I->dontSeeCheckboxIsChecked('#admin_customer_mailmaga_flg_1');
-        // @todo: Fix Mysql Bug for checking user.
-//        $I->seeInRepository(Customer::class, [
-//            'email' => $I->asACustomer->getEmail(),
-//            'mailmaga_flg' => 1
-//        ]);
     }
 
     /**
@@ -225,15 +220,6 @@ class PL03MailMagazineCest
     {
         $SubjectName = $this->mail_08($I);
         $this->mail_07($I);
-        // @todo: Create members with mail magazine subscription.
-//        $I->logoutAsMember();
-//        $I->loginAsAdmin();
-//        $this->mail_07($I);
-//        $I->logoutAsMember();
-//        $I->loginAsAdmin();
-//        $this->mail_07($I);
-//        $I->logoutAsMember();
-//        $I->loginAsAdmin();
         $I->retry(7, 400);
         $I->amOnPage('admin/plugin/mail_magazine');
         $I->selectOption('.custom-select', '10件');
