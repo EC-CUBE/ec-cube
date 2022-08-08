@@ -154,13 +154,14 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
+          # bin/console eccube:plugin:enable --code=ProductReview42 --env=dev
         run: |
           bin/console eccube:plugin:enable --code=Recommend42 --env=dev
           bin/console eccube:plugin:enable --code=Coupon42 --env=dev
           bin/console eccube:plugin:enable --code=MailMagazine42 --env=dev
           bin/console eccube:plugin:enable --code=SalesReport42 --env=dev
           bin/console eccube:plugin:enable --code=RelatedProduct42 --env=dev
-          bin/console eccube:plugin:enable --code=ProductReview42 --env=dev
+
           bin/console eccube:plugin:enable --code=Maker42 --env=dev
           bin/console eccube:plugin:enable --code=ProductImagesUploader42 --env=dev
       - name: setup-chromedriver
