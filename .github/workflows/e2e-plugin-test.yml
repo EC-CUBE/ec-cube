@@ -138,13 +138,14 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           # bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz
+          # bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
         run: |
           bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz --env=dev
           bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz --env=dev
           bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz --env=dev
           bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz --env=dev
           bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz --env=dev
-          bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
+
           bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz --env=dev
           bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz --env=dev
       - name: Enable ALL installed official plugins via commandline
@@ -207,6 +208,22 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/PL08ApiCest.php
+      - name: Hard reset ALL cache from var/cache after install
+        run: |
+          rm -rf var/cache
+          mkdir var/cache
+          chmod 777 var/cache
+      - name: Codeception (Run Review plugin Installer through e2e test)
+        env:
+          APP_ENV: 'dev'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          HTTP_SITEURL: 'http://127.0.0.1:7777'
+          GROUP: ${{ matrix.group }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g install --html install-report.html codeception/acceptance/Plugin/E2E/PL07ProductReviewCest.php
       - name: Hard reset ALL cache from var/cache after install
         run: |
           rm -rf var/cache
