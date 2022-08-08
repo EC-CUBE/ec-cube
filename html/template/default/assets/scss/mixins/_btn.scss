@@ -1,6 +1,5 @@
 @import "../mixins/variables";
 @import "../mixins/_projects";
-@import "../../../../../../node_modules/bootstrap/scss/bootstrap";
 $padding-base-vertical:     6px !default;
 $padding-base-horizontal:   12px !default;
 
@@ -64,7 +63,7 @@ $cursor-disabled: not-allowed !default;
     @include box-shadow(none);
   }
 
-  @include button-variant($background, $border, $color);
+  @include button-variant($background, $border, $color, $disabled-color: $color);
   // [converter] extracted a& to a.btn
 
   .ec-icon img {

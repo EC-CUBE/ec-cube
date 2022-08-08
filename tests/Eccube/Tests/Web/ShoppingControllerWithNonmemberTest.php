@@ -287,6 +287,132 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 //        $this->assertMatchesRegularExpression('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
+    /**
+     * 非会員情報入力→注文者情報変更
+     */
+    public function testCustomer()
+    {
+        $this->scenarioCartIn();
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+
+        $crawler = $this->scenarioConfirm();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $faker = $this->getFaker();
+        $crawler = $this->client->request(
+            'POST',
+            '/shopping/customer',
+            [
+                'customer_name01' => $faker->lastName,
+                'customer_name02' => $faker->firstName,
+                'customer_kana01' => $faker->lastKanaName,
+                'customer_kana02' => $faker->firstKanaName,
+                'customer_company_name' => $faker->company,
+                'customer_phone_number' => str_replace('-', '', $faker->phoneNumber),
+                'customer_postal_code' => str_replace('-', '', $faker->postcode),
+                'customer_pref' => '秋田県',
+                'customer_addr01' => $faker->city,
+                'customer_addr02' => $faker->streetAddress,
+                'customer_email' => $faker->safeEmail
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
+        );
+
+        $this->assertEquals('OK', json_decode($this->client->getResponse()->getContent())->status);
+    }
+
+    /**
+     * 非会員情報入力→注文者情報変更_不正電話番号
+     */
+    public function testCustomerNonDigitPhoneNumber()
+    {
+        $this->scenarioCartIn();
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+
+        $crawler = $this->scenarioConfirm();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $faker = $this->getFaker();
+        $crawler = $this->client->request(
+            'POST',
+            '/shopping/customer',
+            [
+                'customer_name01' => $faker->lastName,
+                'customer_name02' => $faker->firstName,
+                'customer_kana01' => $faker->lastKanaName,
+                'customer_kana02' => $faker->firstKanaName,
+                'customer_company_name' => $faker->company,
+                'customer_phone_number' => '3.0e2',
+                'customer_postal_code' => str_replace('-', '', $faker->postcode),
+                'customer_pref' => '秋田県',
+                'customer_addr01' => $faker->city,
+                'customer_addr02' => $faker->streetAddress,
+                'customer_email' => $faker->safeEmail
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
+        );
+
+        $this->assertEquals('NG', json_decode($this->client->getResponse()->getContent())->status);
+    }
+
+    /**
+     * 非会員情報入力→注文者情報変更_不正郵便番号
+     */
+    public function testCustomerNonDigitPoastalCode()
+    {
+        $this->scenarioCartIn();
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+
+        $crawler = $this->scenarioConfirm();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $faker = $this->getFaker();
+        $crawler = $this->client->request(
+            'POST',
+            '/shopping/customer',
+            [
+                'customer_name01' => $faker->lastName,
+                'customer_name02' => $faker->firstName,
+                'customer_kana01' => $faker->lastKanaName,
+                'customer_kana02' => $faker->firstKanaName,
+                'customer_company_name' => $faker->company,
+                'customer_phone_number' => str_replace('-', '', $faker->phoneNumber),
+                'customer_postal_code' => '3.0e2',
+                'customer_pref' => '秋田県',
+                'customer_addr01' => $faker->city,
+                'customer_addr02' => $faker->streetAddress,
+                'customer_email' => $faker->safeEmail
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
+        );
+
+        $this->assertEquals('NG', json_decode($this->client->getResponse()->getContent())->status);
+    }
+
     public function createNonmemberFormData()
     {
         $faker = $this->getFaker();

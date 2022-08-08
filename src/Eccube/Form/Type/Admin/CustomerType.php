@@ -25,7 +25,6 @@ use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Validator\Email;
-use Eccube\Repository\CustomerRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -47,20 +46,13 @@ class CustomerType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
      * CustomerType constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param CustomerRepository $customerRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, CustomerRepository $customerRepository)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
-        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -157,24 +149,6 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ]);
-
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            /** @var Customer $Customer */
-            $Customer = $event->getData();
-            $qb = $this->customerRepository->createQueryBuilder('c');
-            $qb->select('count(c.id)')
-                ->where('c.email = :email')
-                ->setParameter('email', $Customer->getEmail());
-            if ($Customer->getId()) {
-                $qb->andWhere('c.id <> :id')
-                    ->setParameter('id', $Customer->getId());
-            }
-            $count = $qb->getQuery()->getSingleScalarResult();
-            if ($count > 0) {
-                $form['email']->addError(new FormError(trans('form_error.customer_already_exists', [], 'validators')));
-            }
-        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();

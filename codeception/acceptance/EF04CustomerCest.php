@@ -25,8 +25,6 @@ class EF04CustomerCest
      */
     public function customer_会員登録正常(AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('4.2.0-betaではスキップ');
-
         $I->wantTo('EF0401-UC01-T01 会員登録 正常パターン');
         $I->amOnPage('/entry');
         $faker = Fixtures::get('faker');
@@ -104,7 +102,6 @@ class EF04CustomerCest
 
     public function customer_会員登録異常1(AcceptanceTester $I)
     {
-        $I->getScenario()->incomplete('4.2.0-betaではスキップ');
         $I->wantTo('EF0401-UC01-T02 会員登録 異常パターン 重複');
         $I->amOnPage('/entry');
 
