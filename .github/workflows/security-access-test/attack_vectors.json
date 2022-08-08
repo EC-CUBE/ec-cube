@@ -1,0 +1,11 @@
+{
+    "danger": [
+        ".env",
+        "composer.json",
+        "composer.lock",
+        "bin/console",
+        ".htaccess",
+        "Dockerfile",
+        "docker-compose.yml"
+    ]
+}
