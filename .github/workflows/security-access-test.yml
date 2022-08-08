@@ -15,6 +15,9 @@ jobs:
       - name: Start EC-CUBE
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
+      - name: Run install
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube bin/console eccube:install -n
       - name: Compile start-up
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube composer run-script compile
