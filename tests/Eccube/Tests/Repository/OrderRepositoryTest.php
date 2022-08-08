@@ -276,12 +276,12 @@ class OrderRepositoryTest extends EccubeTestCase
         if (isset($searchData['update_datetime_start'])) {
             $searchData['update_datetime_start'] = $this->Order->getUpdateDate()
                 ->add(new \DateInterval($searchData['update_datetime_start']))
-                ->format('c');
+                ->format('Y-m-d H:i:s');
         }
         if (isset($searchData['update_datetime_end'])) {
             $searchData['update_datetime_end'] = $this->Order->getUpdateDate()
                 ->add(new \DateInterval($searchData['update_datetime_end']))
-                ->format('c');
+                ->format('Y-m-d H:i:s');
         }
 
         $actual = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData)
