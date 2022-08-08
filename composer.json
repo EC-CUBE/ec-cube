@@ -35,7 +35,7 @@
         "egulias/email-validator": "^2.1",
         "exercise/htmlpurifier-bundle": "^3.1",
         "friendsofphp/php-cs-fixer": "^3.8",
-        "guzzlehttp/guzzle": "^7.4",
+        "guzzlehttp/guzzle": "^7.4.5",
         "knplabs/knp-paginator-bundle": "^5.8",
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^2.5",
