@@ -25,6 +25,7 @@ use Plugin\ProductReview42\Entity\ProductReviewStatus;
 /**
  * @group plugin
  * @group e2e_plugin
+ * @group e2e_priority_plugin
  */
 class PL07ProductReviewCest
 {
