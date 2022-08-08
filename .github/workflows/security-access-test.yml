@@ -15,15 +15,18 @@ jobs:
       - name: Start EC-CUBE
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
-
-      - name: Run composer
+      - name: Compile start-up
         run: |
-          docker-compose exec -T ec-cube composer install --dev --no-interaction -o --apcu-autoloader
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec ec-cube composer run-script compile
+
+#      - name: Run composer
+#        run: |
+#          docker-compose exec -T ec-cube composer install --dev --no-interaction -o --apcu-autoloader
 
       - name: HTTP Request Pages
         run: |
           jq -c '.[]' codeception/workflows/security-access-test/attack_vectors.json | while read i; do
-            export ${i} = wget --server-response --spider --quiet http://localhost:8080/${i}
+            wget --server-response --spider --quiet http://localhost:8080/${i}
           done
         # Upload Evidence
       - name: Upload evidence
