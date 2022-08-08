@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.setting.shop.calendar_setting'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
 
-{#{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}#}
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
     <style type="text/css">
@@ -44,10 +44,7 @@ file that was distributed with this source code.
             });
 
             $('.calendar_list_item .cancel').click(function() {
-                var id = $(this).data('id');
-                var tr = $('#ex-calendar-' + id);
-                $(tr).find('.edit').hide();
-                $(tr).find('.list').show();
+                location.href = '{{ url('admin_setting_shop_calendar') }}';
             });
         });
     </script>
@@ -160,7 +157,7 @@ file that was distributed with this source code.
                                                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                                                             </h5>
                                                                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                                
+
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body text-start">
