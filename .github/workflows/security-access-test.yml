@@ -15,7 +15,7 @@ jobs:
           docker-compose up -d
       - name: Run composer
         run: |
-          docker-compose exec -T -u www-data ec-cube composer install --dev --no-interaction -o --apcu-autoloader
+          docker-compose exec -T ec-cube composer install --dev --no-interaction -o --apcu-autoloader
       - name: Run EC-Cube Installer
         run: |
           docker-compose exec -T -u www-data ec-cube bin/console eccube:install -n
