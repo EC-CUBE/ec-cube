@@ -4,11 +4,7 @@ on:
   push:
 jobs:
   load-test:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ ubuntu-20.04 ]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
