@@ -8,6 +8,10 @@ modules:
                 chromeOptions:
                     prefs:
                         download.default_directory: '%GITHUB_WORKSPACE%/codeception/_support/_downloads'
+        REST:
+            depends: PhpBrowser
+            url: 'http://localhost:8080/'
+            shortDebugResponse: 300 # only the first 300 characters of the response
         MailCatcher:
             url: 'localhost'
             port: 1080
