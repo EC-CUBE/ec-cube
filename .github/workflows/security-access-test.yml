@@ -9,19 +9,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: docker build
-        run: docker compose build
-
       - name: Start EC-CUBE
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
-      - name: Run install
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube bin/console eccube:install -n
       - name: Compile start-up
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube composer run-script compile
-
+      - name: Run install
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube bin/console eccube:install -n
 #      - name: Run composer
 #        run: |
 #          docker-compose exec -T ec-cube composer install --dev --no-interaction -o --apcu-autoloader
