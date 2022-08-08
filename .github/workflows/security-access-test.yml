@@ -13,7 +13,7 @@ jobs:
       - name: Start EC-CUBE
         run: |
           docker-compose up -d
-          docker-compose exec -u www-data ec-cube bin/console eccube:install -n
+          docker-compose exec -T -u www-data ec-cube bin/console eccube:install -n
       - name: HTTP Request Pages
         run: |
           jq -c '.[]' codeception/workflows/security-access-test/attack_vectors.json | while read i; do
