@@ -86,6 +86,8 @@ jobs:
             job_name: CRSF
           - files: SO02JavascriptInjectionSecurityCest.php
             job_name: Javascript injection
+          - files: SO03SystemFileVulnerabilitySecurityCest.php
+            job_name: System file vulnerability
     steps:
       - name: Checkout
         uses: actions/checkout@master
