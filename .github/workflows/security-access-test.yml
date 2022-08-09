@@ -132,11 +132,12 @@ jobs:
           DATABASE_SERVER_VERSION: 14
         run: |
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
-      - name: Codeception (Run API plugin Installer through e2e test)
+      - name: Codeception - Run csrf attack test.
         env:
           APP_ENV: 'dev'
           DATABASE_URL: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
           DATABASE_SERVER_VERSION: 14
+          DATABASE_CHARSET: utf8
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker --html security-report.html codeception/acceptance/security/SO01CRSFSecurityCest.php
       - name: Upload evidence
