@@ -28,7 +28,7 @@ class SO02JavascriptInjectionSecurityCest {
         $I->fillField('#order_Shipping_address_addr02', '<script>alert(\'message\')</script>');
         $I->clickWithLeftButton(Locator::contains('button', '登録'));
         $I->see('保存しました');
-        $I->clickWithLeftButton(Locator::contains('button', 'メールを作成'));
+        $I->clickWithLeftButton(Locator::contains('a', 'メールを作成'));
         $I->retrySee('ページを移動します');
         $I->retryClickWithLeftButton(Locator::contains('a', '保存せずに移動'));
         $I->see('メール通知');
