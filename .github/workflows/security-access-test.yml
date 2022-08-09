@@ -33,15 +33,42 @@ jobs:
           DATABASE_SERVER_VERSION: 14
         run: |
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
-      - name: HTTP Request Pages
+      - name: Confirm safe pages exist and viewable without error
+        run: |
+          jq -r ".safe[]" .github/workflows/security-access-test/attack_vectors.json | while read -r i; do
+            echo "Testing SAFE URL: http://localhost:8080/${i}..."
+            safeResponse=$(curl -Is http://localhost:8080/${i} | head -1 | awk '{print $2}')
+            if [ "$safeResponse" != "200" ]; then
+              echo "FAILURE: http://localhost:8080/${i} returned ${safeResponse}"
+              echo "FAILURE: http://localhost:8080/${i} returned ${safeResponse}" >> safe_files_issue.txt
+            fi
+          done
+          if [ -e safe_files_issue.txt ]; then
+              echo "FAILURE: Found erroneous requests in the SAFE urls."
+              exit 1
+          fi
+      - name: HTTP Request security vulnerable pages
         run: |
           jq -r ".danger[]" .github/workflows/security-access-test/attack_vectors.json | while read -r i; do
-            wget --server-response --spider --quiet http://localhost:8080/${i}
+            echo "Testing DANGER URL: http://localhost:8080/${i}..."
+            dangerResponse=$(curl -Is http://localhost:8080/${i} | head -1 | awk '{print $2}')
+            if [ "$dangerResponse" == "200" ]; then
+              echo "Danger File visible!: ${i}"
+              echo "Danger File visible!: ${i}" >> danger_files.txt
+            fi
           done
+          if [ -e danger_files.txt ]; then
+            echo "FAILURE: Found vulnerable requests in the SAFE urls."
+            exit 1
+          else
+            echo "NO VULNERABLE FILES FOUND VIA HTTP"
+          fi
         # Upload Evidence
       - name: Upload evidence
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: ab-${{ env.ARTIFACT_NAME }}-session
-          path: ab/test_run
+          name: test-result-${{ env.ARTIFACT_NAME }}-session
+          path: |
+            danger_files.txt
+            safe_files_issue.txt
