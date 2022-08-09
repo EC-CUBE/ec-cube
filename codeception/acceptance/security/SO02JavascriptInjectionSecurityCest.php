@@ -39,7 +39,7 @@ class SO02JavascriptInjectionSecurityCest {
         $I->see('メール通知');
         $I->wait(10);
         $I->selectOption('#template-change', '注文受付メール');
-        $I->canSee('.ace_content', '<script>alert(\'message\')</script>');
+        $I->canSee('<script>alert(\'message\')</script>', '.ace_content');
         $I->clickWithLeftButton(Locator::contains('button', '送信内容を確認'));
         $I->retrySee('<script>alert(\'message\')</script>', '#detail_box__tpl_data');
         $I->wait(10);
