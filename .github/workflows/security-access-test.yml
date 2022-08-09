@@ -35,7 +35,7 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
       - name: HTTP Request Pages
         run: |
-          jq -c '.[]' codeception/workflows/security-access-test/attack_vectors.json | while read i; do
+          jq -c '.[]' .github/workflows/security-access-test/attack_vectors.json | while read i; do
             wget --server-response --spider --quiet http://localhost:8080/${i}
           done
         # Upload Evidence
