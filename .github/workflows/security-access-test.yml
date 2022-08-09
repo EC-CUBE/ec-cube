@@ -33,13 +33,6 @@ jobs:
           DATABASE_SERVER_VERSION: 14
         run: |
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
-      - name: Initialize EC-CUBE
-        env:
-          APP_ENV: dev
-          DATABASE_URL: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
-          DATABASE_SERVER_VERSION: 14
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec -T ec-cube composer run-script compile
       - name: HTTP Request Pages
         run: |
           jq -c '.[]' codeception/workflows/security-access-test/attack_vectors.json | while read i; do
