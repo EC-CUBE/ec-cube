@@ -42,6 +42,10 @@ class Acceptance extends \Codeception\Module
         return $this->getModule('WebDriver')->_getUrl();
     }
 
+    public function setRestCookie($name, $value) {
+        $this->getModule('PhpBrowser')->setCookie($name, $value);
+    }
+
     /**
      * @param string|string[]
      */
