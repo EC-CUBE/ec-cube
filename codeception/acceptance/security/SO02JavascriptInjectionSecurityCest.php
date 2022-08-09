@@ -41,7 +41,7 @@ class SO02JavascriptInjectionSecurityCest {
         $I->selectOption('#template-change', '注文受付メール');
         $I->canSee('<script>alert("message");</script>');
         $I->clickWithLeftButton(Locator::contains('button', '送信内容を確認'));
-        $I->retrySee('<script>alert("message");</script>');
+        $I->retrySee('＜script＞alert("message");＜/script＞');
         $I->wait(10);
         try {
             $I->canSeeInPopup('message');
