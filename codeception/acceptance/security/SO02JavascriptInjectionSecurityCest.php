@@ -45,20 +45,29 @@ class SO02JavascriptInjectionSecurityCest {
         $I->clickWithLeftButton(Locator::contains('button', '送信内容を確認'));
         $I->retrySee('<script>alert(\'message\')</script>', '#detail_box__tpl_data');
         $I->wait(10);
-        if($I->canSeeInPopup('message') === true) {
+        try {
+            $I->canSeeInPopup('message');
             $I->fail('Javascript injection via order email page is detected, terminating test...');
+        } catch (ModuleException $e) {
+            $I->comment('Javascript injection via order email page is not detected');
         }
         $I->clickWithLeftButton(Locator::contains('button', '送信'));
         $I->see('メールを送信しました。');
         $I->see('受注登録');
         $I->wait(10);
-        if($I->canSeeInPopup('message') === true) {
+        try {
+            $I->canSeeInPopup('message');
             $I->fail('Javascript injection via order email page is detected, terminating test...');
+        } catch (ModuleException $e) {
+            $I->comment('Javascript injection via order email page is not detected');
         }
         $I->clickWithLeftButton(Locator::contains('a', '[EC-CUBE SHOP] ご注文ありがとうございます'));
         $I->retrySee('この度はご注文いただき誠にありがとうございます。');
-        if($I->canSeeInPopup('message') === true) {
+        try {
+            $I->canSeeInPopup('message');
             $I->fail('Javascript injection via order email page is detected, terminating test...');
+        } catch (ModuleException $e) {
+            $I->comment('Javascript injection via order email page is not detected');
         }
         $I->see('<script>alert(\'message\')</script>');
     }
