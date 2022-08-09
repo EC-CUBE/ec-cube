@@ -1,9 +1,10 @@
-name: Security Access testing for EC-CUBE (Apache)
+name: Security Testing for EC-CUBE (Apache)
 on:
   pull_request:
   push:
 jobs:
-  load-test:
+  access_test:
+    name: Access Security test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,29 +47,108 @@ jobs:
           if [ -e safe_files_issue.txt ]; then
               echo "FAILURE: Found erroneous requests in the SAFE urls."
               exit 1
+          else
+              echo "NO ERRONEOUS FILES FOUND VIA HTTP"
           fi
-      - name: HTTP Request security vulnerable pages
+      - name: HTTP Request security vulnerable pages check
         run: |
           jq -r ".danger[]" .github/workflows/security-access-test/attack_vectors.json | while read -r i; do
             echo "Testing DANGER URL: http://localhost:8080/${i}..."
             dangerResponse=$(curl -Is http://localhost:8080/${i} | head -1 | awk '{print $2}')
             if [ "$dangerResponse" == "200" ]; then
-              echo "Danger File visible!: ${i}"
-              echo "Danger File visible!: ${i}" >> danger_files.txt
+              echo "FAILURE: http://localhost:8080/${i} returned ${dangerResponse}"
+              echo "FAILURE: http://localhost:8080/${i} returned ${dangerResponse}" >> danger_files.txt
             fi
           done
           if [ -e danger_files.txt ]; then
-            echo "FAILURE: Found vulnerable requests in the SAFE urls."
+            echo "FAILURE: Found successful requests in the vulnerable urls."
             exit 1
           else
             echo "NO VULNERABLE FILES FOUND VIA HTTP"
           fi
-        # Upload Evidence
+      # Upload Evidence
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: test-result-${{ env.ARTIFACT_NAME }}-session
+          name: test-result-security-access-session
           path: |
             danger_files.txt
             safe_files_issue.txt
+  csrf_test:
+    name: CSRF Security test (Apache)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@master
+      - name: Set System Locale to Japanese
+        run: |
+          sudo locale-gen ja_JP.UTF-8
+          sudo update-locale LANG=ja_JP.UTF-8
+          export LANGUAGE=ja_JP
+      - name: Install Japanese language pack
+        run: |
+          sudo apt-get install language-pack-ja
+          sudo apt-get install japan*
+          sudo apt-get install fonts-arphic-ukai fonts-arphic-uming fonts-ipafont-mincho fonts-ipafont-gothic fonts-unfonts-core
+      - name: Get base fonts
+        run: |
+          sudo apt-get install ttf-mscorefonts-installer
+          sudo fc-cache -fv
+      - name: Run Google Chrome in Japanese Language
+        run: |
+          sed '2 i export LANGUAGE=ja_JP' /opt/google/chrome/google-chrome
+      - name: Run chromedriver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          echo ">>> Started chrome-driver"
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+      - name: docker build
+        run: docker compose build
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: 8.1
+      - name: composer install
+        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: dev
+          DATABASE_URL: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
+          DATABASE_SERVER_VERSION: 14
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
+      - name: Codeception (Run API plugin Installer through e2e test)
+        env:
+          APP_ENV: 'dev'
+          DATABASE_URL: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
+          DATABASE_SERVER_VERSION: 14
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker --html security-report.html codeception/acceptance/security/SO01CRSFSecurityCest.php
+      - name: Upload evidence
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-csrf-security-evidence
+          path: codeception/_output/
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-csrf-security-logs
+          path: var/log/
+
