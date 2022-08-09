@@ -38,9 +38,6 @@ class SO02JavascriptInjectionSecurityCest {
         $I->retryClickWithLeftButton(Locator::contains('a', '保存せずに移動'));
         $I->see('メール通知');
         $I->wait(10);
-        if($I->canSeeInPopup('message') === true) {
-            $I->fail('Javascript injection via order email page is detected, terminating test...');
-        }
         $I->selectOption('#template-change', '注文受付メール');
         $I->canSee('.ace_content', '<script>alert(\'message\')</script>');
         $I->clickWithLeftButton(Locator::contains('button', '送信内容を確認'));
