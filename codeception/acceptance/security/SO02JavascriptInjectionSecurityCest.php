@@ -67,6 +67,6 @@ class SO02JavascriptInjectionSecurityCest {
         } catch (NoSuchAlertException $e) {
             $I->comment('Javascript injection via order email page is not detected');
         }
-        $I->see('<script>alert(\'message\')</script>');
+        $I->see('＜script＞alert("message");＜/script＞');
     }
 }
