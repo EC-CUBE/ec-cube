@@ -30,6 +30,7 @@
         "doctrine/instantiator": "^1.1",
         "doctrine/lexer": "^1.0",
         "doctrine/orm": "^2.11",
+        "doctrine/persistence": "^2.5",
         "easycorp/easy-log-handler": "^1.0",
         "ec-cube/plugin-installer": "^2.0",
         "egulias/email-validator": "^2.1",
