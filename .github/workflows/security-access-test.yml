@@ -79,6 +79,7 @@ jobs:
     name: ${{ matrix.job_name }} Security test (Apache)
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         files: [ SO01CRSFSecurityCest.php, SO02JavascriptInjectionSecurityCest.php, SO03SystemFileVulnerabilitySecurityCest.php ]
         include:
