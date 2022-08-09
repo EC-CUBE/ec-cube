@@ -8,6 +8,7 @@ use Codeception\Util\Fixtures;
 use Codeception\Util\Locator;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Facebook\WebDriver\Exception\NoSuchAlertException;
 
 class SO02JavascriptInjectionSecurityCest {
 
@@ -48,7 +49,7 @@ class SO02JavascriptInjectionSecurityCest {
         try {
             $I->canSeeInPopup('message');
             $I->fail('Javascript injection via order email page is detected, terminating test...');
-        } catch (ModuleException $e) {
+        } catch (NoSuchAlertException $e) {
             $I->comment('Javascript injection via order email page is not detected');
         }
         $I->clickWithLeftButton(Locator::contains('button', '送信'));
@@ -58,7 +59,7 @@ class SO02JavascriptInjectionSecurityCest {
         try {
             $I->canSeeInPopup('message');
             $I->fail('Javascript injection via order email page is detected, terminating test...');
-        } catch (ModuleException $e) {
+        } catch (NoSuchAlertException $e) {
             $I->comment('Javascript injection via order email page is not detected');
         }
         $I->clickWithLeftButton(Locator::contains('a', '[EC-CUBE SHOP] ご注文ありがとうございます'));
@@ -66,7 +67,7 @@ class SO02JavascriptInjectionSecurityCest {
         try {
             $I->canSeeInPopup('message');
             $I->fail('Javascript injection via order email page is detected, terminating test...');
-        } catch (ModuleException $e) {
+        } catch (NoSuchAlertException $e) {
             $I->comment('Javascript injection via order email page is not detected');
         }
         $I->see('<script>alert(\'message\')</script>');
