@@ -76,8 +76,16 @@ jobs:
             danger_files.txt
             safe_files_issue.txt
   csrf_test:
-    name: CSRF Security test (Apache)
+    name: ${{ matrix.job_name }} Security test (Apache)
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        files: [ SO01CRSFSecurityCest.php, SO02JavascriptInjectionSecurityCest.php ]
+        include:
+          - files: SO01CRSFSecurityCest.php
+            job_name: CRSF
+          - files: SO02JavascriptInjectionSecurityCest.php
+            job_name: Javascript injection
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -142,7 +150,7 @@ jobs:
           DATABASE_SERVER_VERSION: 14
           DATABASE_CHARSET: utf8
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker --html security-report.html codeception/acceptance/security/SO01CRSFSecurityCest.php
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker --html security-report.html codeception/acceptance/security/${{ matrix.files }}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
