@@ -139,7 +139,7 @@ jobs:
           DATABASE_SERVER_VERSION: 14
           DATABASE_CHARSET: utf8
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker --html security-report.html codeception/acceptance/security/SO01CRSFSecurityCest.php
+        run: docker compose exec -T ec-cube vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker --html security-report.html codeception/acceptance/security/SO01CRSFSecurityCest.php
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
