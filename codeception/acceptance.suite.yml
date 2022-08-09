@@ -43,6 +43,7 @@ modules:
 step_decorators:
     - \Codeception\Step\ConditionalAssertion
     - \Codeception\Step\Retry
+    - \Codeception\Step\TryTo
 env:
     default:
         modules:
