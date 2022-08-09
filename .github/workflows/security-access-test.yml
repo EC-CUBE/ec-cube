@@ -8,20 +8,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-
-      - name: Start EC-CUBE
+      - name: docker build
+        run: docker compose build
+      - name: Get Composer Cache Directory
+        id: composer-cache
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
-      - name: Compile start-up
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: 8.1
+      - name: composer install
+        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: dev
+          DATABASE_URL: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
+          DATABASE_SERVER_VERSION: 14
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube composer run-script compile
-      - name: Run install
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
+      - name: Initialize EC-CUBE
+        env:
+          APP_ENV: dev
+          DATABASE_URL: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
+          DATABASE_SERVER_VERSION: 14
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube bin/console eccube:install -n
-#      - name: Run composer
-#        run: |
-#          docker-compose exec -T ec-cube composer install --dev --no-interaction -o --apcu-autoloader
-
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml exec ec-cube composer run-script compile
       - name: HTTP Request Pages
         run: |
           jq -c '.[]' codeception/workflows/security-access-test/attack_vectors.json | while read i; do
