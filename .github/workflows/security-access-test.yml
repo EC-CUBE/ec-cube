@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        files: [ SO01CRSFSecurityCest.php, SO02JavascriptInjectionSecurityCest.php ]
+        files: [ SO01CRSFSecurityCest.php, SO02JavascriptInjectionSecurityCest.php, SO03SystemFileVulnerabilitySecurityCest.php ]
         include:
           - files: SO01CRSFSecurityCest.php
             job_name: CRSF
