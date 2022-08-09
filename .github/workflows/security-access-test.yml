@@ -132,6 +132,9 @@ jobs:
           DATABASE_SERVER_VERSION: 14
         run: |
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
+      - name: Inject docker database url into .env
+        run: |
+          echo 'DATABASE_URL=postgres://dbuser:secret@127.0.0.1:15432/eccubedb' >> .env
       - name: Codeception - Run csrf attack test.
         env:
           APP_ENV: 'dev'
