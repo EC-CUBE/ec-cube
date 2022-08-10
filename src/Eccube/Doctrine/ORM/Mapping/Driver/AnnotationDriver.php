@@ -33,8 +33,8 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
             return $this->classNames;
         }
 
-        if (!$this->paths) {
-            throw MappingException::pathRequired();
+        if ($this->paths === []) {
+            throw MappingException::pathRequiredForDriver(static::class);
         }
 
         $classes = [];

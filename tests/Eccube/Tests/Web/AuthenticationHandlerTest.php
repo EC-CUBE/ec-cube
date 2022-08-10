@@ -32,8 +32,8 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
     {
         $this->client->request('POST', $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
-            '_target_path' => 'shopping',
-            '_failure_path' => 'shopping_login',
+            '_target_path' => $this->generateUrl('shopping'),
+            '_failure_path' => $this->generateUrl('shopping_login'),
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'password',
         ]);
@@ -44,8 +44,8 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
     {
         $this->client->request('POST', $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
-            '_target_path' => 'shopping',
-            '_failure_path' => 'shopping_login',
+            '_target_path' => $this->generateUrl('shopping'),
+            '_failure_path' => $this->generateUrl('shopping_login'),
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'foo',
         ]);
@@ -56,23 +56,25 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
     {
         $this->client->request('POST', $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
-            '_target_path' => 'bar',
-            '_failure_path' => 'shopping_login',
+            '_target_path' => 'http://example.com/bar',
+            '_failure_path' => $this->generateUrl('shopping_login'),
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'password',
         ]);
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
     }
 
     public function testAuthenticationFailureHandlerWithInvalidPath()
     {
         $this->client->request('POST', $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
-            '_target_path' => 'shopping',
-            '_failure_path' => 'baz',
+            '_target_path' => $this->generateUrl('shopping'),
+            '_failure_path' => 'http://example.com/baz',
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'quux',
         ]);
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
     }
 }
