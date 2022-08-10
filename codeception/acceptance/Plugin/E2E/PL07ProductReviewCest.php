@@ -119,6 +119,7 @@ class PL07ProductReviewCest
         // フロント側
         $I->amOnPage('products/detail/1');
         $I->see('この商品のレビュー');
+        $I->see('★★★★★');
         $I->see($reviewData->reviewer_name);
         $I->seeInSource($reviewData->reviewer_url);
         $I->see($reviewData->title);
@@ -438,7 +439,7 @@ class PL07ProductReviewCest
         $I->clickWithLeftButton('.ec-blockBtn--action');
         $I->see('ご投稿ありがとうございます。');
         $I->clickWithLeftButton('.ec-blockBtn--cancel');
-        $I->see('★★★★★');
+//        $I->dontSee('★★★★★');
         $I->dontSee($reviewData->reviewer_name);
         $I->dontSee($reviewData->reviewer_url);
         $I->dontSee($reviewData->title);
