@@ -295,12 +295,6 @@ class PluginApiService
         }
         var_dump("THE KEY...");
         var_dump($key);
-        var_dump("THE URL...");
-        var_dump($baseUrl);
-        var_dump("THE DATA...");
-        var_dump($data);
-        var_dump("THE REAL URL...");
-        var_dump($url);
         // Option array
         $options = [
             // HEADER
