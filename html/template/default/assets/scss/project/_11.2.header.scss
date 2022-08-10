@@ -833,7 +833,7 @@ Styleguide 11.2.7
 
 .ec-maintenanceAlert {
   background: steelblue;
-  height: 5rem;
+  height: 50px;
   position: fixed;
   top: 0;
   width: 100%;
@@ -854,6 +854,6 @@ Styleguide 11.2.7
     vertical-align: top;
   }
   & +* {
-    margin-top: 5rem;
+    margin-top: 50px;
   }
 }
