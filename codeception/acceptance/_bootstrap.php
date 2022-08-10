@@ -38,6 +38,7 @@ $kernel->boot();
 $container = $kernel->getContainer();
 $entityManager = $container->get('doctrine')->getManager();
 Fixtures::add('entityManager', $entityManager);
+
 // // この Fixture は Cest ではできるだけ使用せず, 用途に応じた Fixture を使用すること
 // Fixtures::add('app', $app);
 
