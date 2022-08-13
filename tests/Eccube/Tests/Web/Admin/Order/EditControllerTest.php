@@ -700,4 +700,27 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertNull($EditedOrder->getJob());
         $this->assertNull($EditedOrder->getBirth());
     }
+
+    /**
+     * 受注登録時にその他明細(初期の価格0円)をゼロ除算なしに正しく追加できるかどうかのテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5533
+     */
+    public function testAddOrderItemOrderWithoutZeroDivision()
+    {
+        $Product = null;
+        $charge = 0;
+        $formData = $this->createFormData($this->Customer, $Product, $charge);
+        unset($formData['OrderStatus']);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_new'),
+            [
+                'order' => $formData,
+                'mode' => '',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }
