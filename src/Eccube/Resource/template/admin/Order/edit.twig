@@ -106,6 +106,10 @@ file that was distributed with this source code.
             $collectionHolder = $('#table-form-field');
             index = $collectionHolder.find('tbody > tr').length;
             formIdPrefix = '#order_OrderItems_';
+            if (index > 0) {
+                let row = '#' + $collectionHolder.find('tbody > tr').last().data("row");
+                index = row.replace(formIdPrefix, '');
+            }
 
             $(document).on('click', '.delete', function(e) {
                 // 商品削除
@@ -739,7 +743,7 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for orderItemForm in form.OrderItems %}
                                         {% set OrderItem = orderItemForm.vars.data %}
-                                        <tr>
+                                        <tr data-row="{{ orderItemForm.vars.id }}">
                                             {# hidden values #}
                                             {{ form_widget(orderItemForm.ProductClass) }}
                                             {{ form_widget(orderItemForm.order_item_type) }}
