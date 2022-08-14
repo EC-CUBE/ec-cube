@@ -7089,7 +7089,7 @@ Styleguide 3.1.1
   border-color: #CF3F34;
   background: #FDF1F0;
 }
-.ec-checkbox .ec-errorMessage {
+.ec-checkbox .ec-errorMessage, .ec-radio .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
@@ -7476,7 +7476,7 @@ Styleguide 3.1.1
   border-color: #CF3F34;
   background: #FDF1F0;
 }
-.ec-checkbox .ec-errorMessage {
+.ec-checkbox .ec-errorMessage, .ec-radio .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
