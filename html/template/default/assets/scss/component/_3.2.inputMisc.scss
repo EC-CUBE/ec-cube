@@ -34,6 +34,9 @@ Markup:
 Styleguide 3.2.2
 */
 .ec-radio{
+  div{
+    display: inline-block;
+  }
   label{
     margin-right:20px;
   }
