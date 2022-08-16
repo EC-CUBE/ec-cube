@@ -7089,13 +7089,13 @@ Styleguide 3.1.1
   border-color: #CF3F34;
   background: #FDF1F0;
 }
-.ec-checkbox .ec-errorMessage {
+.ec-checkbox .ec-errorMessage, .ec-radio .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50;
 }
-.error.ec-checkbox input, .error.ec-checkbox label {
+.error.ec-checkbox input, .error.ec-checkbox label, .error.ec-checkbox div, .error.ec-radio input, .error.ec-radio label, .error.ec-radio div {
   border-color: #CF3F34;
   background: #FDF1F0;
 }
@@ -7476,13 +7476,13 @@ Styleguide 3.1.1
   border-color: #CF3F34;
   background: #FDF1F0;
 }
-.ec-checkbox .ec-errorMessage {
+.ec-checkbox .ec-errorMessage, .ec-radio .ec-errorMessage {
   margin-bottom: 25px;
   font-size: 12px;
   font-weight: bold;
   color: #DE5D50;
 }
-.error.ec-checkbox input, .error.ec-checkbox label {
+.error.ec-checkbox input, .error.ec-checkbox label, .error.ec-checkbox div, .error.ec-radio input, .error.ec-radio label, .error.ec-radio div {
   border-color: #CF3F34;
   background: #FDF1F0;
 }
@@ -7665,6 +7665,9 @@ Markup:
 
 Styleguide 3.2.2
 */
+.ec-radio div {
+  display: inline-block;
+}
 .ec-radio label {
   margin-right: 20px;
 }
