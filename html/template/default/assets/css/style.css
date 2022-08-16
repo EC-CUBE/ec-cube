@@ -5693,6 +5693,8 @@ Styleguide 1.1.5
 .ec-rectHeading .h4, .ec-rectHeading h5, .ec-rectHeading .h5, .ec-rectHeading h6, .ec-rectHeading .h6 {
   background: #F3F3F3;
   padding: 8px 12px;
+  margin-top: 20px;
+  margin-bottom: 10px;
   font-size: 20px;
   font-weight: bold;
 }
