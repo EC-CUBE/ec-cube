@@ -213,7 +213,6 @@ Markup:
 Styleguide 12.4
 */
 .badge-ec-blue{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #437EC4;
   color: #437EC4;
@@ -222,7 +221,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-green{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #25B877;
   color: #25B877;
@@ -231,7 +229,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-red{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #C04949;
   color: #C04949;
@@ -240,7 +237,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-yellow{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #EEB128;
   color: #EEB128;
@@ -249,7 +245,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-glay{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #A3A3A3;
   color: #A3A3A3;
