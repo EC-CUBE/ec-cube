@@ -5497,6 +5497,8 @@ Styleguide 12.3
 }
 .btn-ec-tab:hover {
   color: #262626;
+  background-color: #f2f2f2;
+  border-color: #262626;
 }
 .btn-ec-tab.active {
   background-color: #595959 !important;
