@@ -63,16 +63,15 @@ file that was distributed with this source code.
                                 <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}">
                                     <span>{{ 'common.postal_symbol'|trans }}</span>
                                     {{ form_widget(form.postal_code) }}
+                                    <div class="ec-zipInputHelp">
+                                        <div class="ec-zipInputHelp__icon">
+                                            <div class="ec-icon"><img
+                                                    src="{{ asset('assets/icon/question-white.svg') }}" alt="">
+                                            </div>
+                                        </div><a href="https://www.post.japanpost.jp/zipcode/" target="_blank"><span>{{ 'common.search_postal_code'|trans }}</span></a>
+                                    </div>
                                     {{ form_errors(form.postal_code) }}
                                 </div>
-                                <div class="ec-zipInputHelp">
-                                    <div class="ec-zipInputHelp__icon">
-                                        <div class="ec-icon"><img
-                                                    src="{{ asset('assets/icon/question-white.svg') }}" alt="">
-                                        </div>
-                                    </div><a href="https://www.post.japanpost.jp/zipcode/" target="_blank"><span>{{ 'common.search_postal_code'|trans }}</span></a>
-                                </div>
-                                {{ form_errors(form.postal_code) }}
                                 <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
                                     {{ form_widget(form.address.pref) }}
                                     {{ form_errors(form.address.pref) }}
