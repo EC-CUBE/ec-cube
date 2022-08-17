@@ -94,6 +94,7 @@ services:
         arguments:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator' # 手数料の変更検知

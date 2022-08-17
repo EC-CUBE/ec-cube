@@ -387,6 +387,7 @@ front.shopping.price_changed: '「%product%」の販売価格が変更されま�
 front.shopping.payment_total_invalid: 合計金額が不正です。
 front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
 front.shopping.payment_method_unselected: お支払い方法を選択してください。
+front.shopping.not_available_payment_method: 選択したお支払い方法はご利用できません。
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 front.under_maintenance: メンテナンスモードが有効になっています。
 
