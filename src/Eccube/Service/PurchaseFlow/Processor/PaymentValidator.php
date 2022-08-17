@@ -79,6 +79,10 @@ class PaymentValidator extends ItemHolderValidator
         }
 
         if ($itemHolder instanceof Order) {
+            if (null === $itemHolder->getPayment()) {
+                return;
+            }
+
             // 支払い方法が非表示の場合はエラー
             if (false === $itemHolder->getPayment()->isVisible()) {
                 $this->throwInvalidItemException('front.shopping.not_available_payment_method');
