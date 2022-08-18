@@ -79,6 +79,8 @@ class CartController extends AbstractController
     public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行
+        $this->cartService->updateCart();
+        
         $Carts = $this->cartService->getCarts();
         $this->execPurchaseFlow($Carts);
 

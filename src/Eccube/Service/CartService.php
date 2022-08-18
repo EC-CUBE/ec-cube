@@ -180,6 +180,11 @@ class CartService
         return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'ASC']);
     }
 
+    public function updateCart()
+    {
+        $this->restoreCarts($this->mergeAllCartItems());
+    }
+
     /**
      * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
      */
