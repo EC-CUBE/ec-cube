@@ -190,7 +190,7 @@ class FileController extends AbstractController
 
             $this->addSuccess('admin.common.create_complete', 'admin');
         } catch (IOException $e) {
-            $this->errors[] = ['message' => $e->getMessage()];
+            log_error($e->getMessage());
         }
     }
 
@@ -306,10 +306,10 @@ class FileController extends AbstractController
             } catch (FileException $e) {
                 $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
                     '%file_name%' => $filename,
-                    '%error%' => $e->getMessage(),
                 ])];
+                log_error($e->getMessage());
             } catch (UnsupportedMediaTypeHttpException $e) {
-                $this->errors[] = ['message' => $e->getMessage()];
+                log_error($e->getMessage());
             }
         }
         if ($successCount > 0) {
