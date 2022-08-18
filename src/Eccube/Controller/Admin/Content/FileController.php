@@ -293,6 +293,10 @@ class FileController extends AbstractController
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
+                // フォルダの存在チェック
+                if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
+                }
                 // phpファイルはアップロード不可
                 if ($file->getClientOriginalExtension() === 'php') {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.phpfile_error'));
