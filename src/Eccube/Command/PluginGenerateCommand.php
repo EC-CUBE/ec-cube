@@ -568,7 +568,7 @@ EOL;
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>名前</span><span
-                                            class="badge badge-primary ml-1">必須</span></div>
+                                            class="badge bg-primary ml-1">必須</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}
