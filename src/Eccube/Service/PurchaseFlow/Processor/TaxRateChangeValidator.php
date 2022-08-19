@@ -38,6 +38,11 @@ class TaxRateChangeValidator extends ItemHolderPostValidator
             return;
         }
 
+        // 複数配送の場合、$originHolderに税率が設定されないのでチェックしない
+        if (0 == current($originHolder->getTaxByTaxRate())) {
+            return;
+        }
+
         if ($originHolder->getTaxByTaxRate() !== $itemHolder->getTaxByTaxRate()) {
             $this->throwInvalidItemException('purchase_flow.tax_rate_update', null, true);
         }
