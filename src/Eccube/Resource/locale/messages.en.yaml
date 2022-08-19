@@ -824,6 +824,7 @@ admin.order.amount: Price
 admin.order.quantity: Qty
 admin.order.tax_rate: Tax
 admin.order.tax_type: Tax Type
+admin.order.point_rate: Point Rate
 admin.order.subtotal: Subtotal
 admin.order.discount: Discount
 admin.order.delivery_fee: Shipping Charge
