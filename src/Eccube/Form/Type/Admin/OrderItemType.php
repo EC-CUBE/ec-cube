@@ -157,7 +157,6 @@ class OrderItemType extends AbstractType
             ->add('point_rate', IntegerType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Range(['min' => 0]),
                     new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/u",
