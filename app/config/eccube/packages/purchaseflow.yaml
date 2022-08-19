@@ -82,6 +82,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'  # 税額の計算(送料明細・手数料明細に対して税額を計算)
+                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor' 
 
     eccube.purchase.flow.shopping.discount_processors:
         class: Doctrine\Common\Collections\ArrayCollection
