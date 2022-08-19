@@ -77,7 +77,7 @@ class OrderPdfType extends AbstractType
                     new Assert\Range([
                         'min'=> '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
-                    ])
+                    ]),
                 ],
                 'attr' => [
                     'data-target' => '#'.$this->getBlockPrefix().'_issue_date',

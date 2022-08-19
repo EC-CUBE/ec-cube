@@ -49,6 +49,10 @@ class NewsType extends AbstractType
                 'years' => range($this->eccubeConfig['eccube_news_start_year'], date('Y') + 3),
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
                 ],
             ])
             ->add('title', TextType::class, [
