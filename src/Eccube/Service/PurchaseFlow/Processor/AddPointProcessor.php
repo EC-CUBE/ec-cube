@@ -72,11 +72,7 @@ class AddPointProcessor extends ItemHolderPostValidator
         $totalPoint = array_reduce($itemHolder->getItems()->toArray(),
             function ($carry, ItemInterface $item) use ($basicPointRate) {
 
-                if ($item instanceof OrderItem) {
-                    $pointRate = $item->getPointRate() ? $item->getPointRate() : null;
-                } else {
-                    $pointRate = $item->isProduct() ? $item->getProductClass()->getPointRate() : null;
-                }
+                $pointRate = $item->getPointRate() ? $item->getPointRate() : null;
 
                 if ($pointRate === null) {
                     $pointRate = $basicPointRate;
