@@ -1794,6 +1794,7 @@ exception.error_message_restrict_url: This functionality is restricted by the ad
 
 purchase_flow.delivery_fee_update: Shipping charge has been updated. Please confirm the total amount.
 purchase_flow.charge_update: Charge has been updated. Please confirm the total amount.
+purchase_flow.tax_rate_update: Tax Rate has been updated. Please confirm the total amount.
 purchase_flow.over_customer_point: You are not able to use points more than your current points.
 purchase_flow.over_payment_total: The points are more than the total amount.
 purchase_flow.over_stock: '%name% does not have enough stock.'
