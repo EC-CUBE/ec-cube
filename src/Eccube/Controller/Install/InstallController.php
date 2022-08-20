@@ -879,8 +879,8 @@ class InstallController extends AbstractController
         try {
             $salt = StringUtil::random(32);
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
-            $stmt->execute([':login_id' => $data['login_id']]);
-            $row = $stmt->fetch();
+            $stmt->bindParam(':login_id', $data['login_id']);
+            $row = $stmt->executeQuery();
             $this->encoder->setAuthMagic($data['auth_magic']);
             $password = $this->encoder->encodePassword($data['login_pass'], $salt);
             if ($row) {
