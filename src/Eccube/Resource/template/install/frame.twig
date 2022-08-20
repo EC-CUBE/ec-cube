@@ -54,6 +54,24 @@ file that was distributed with this source code.
 
 </div>
 <script src="{{ asset('assets/js/function.js', 'install') }}"></script>
+<script>
+    $(function() {
+        /*
+         * for svg icon
+         */
+        $.ajax({
+            type: 'GET',
+            url: "{{ asset('assets/img/svg.html', 'install') }}",
+            dataType: 'html',
+            success: function(data){
+                $('body').prepend(data);
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
+    });
+</script>
 {% block script %}{% endblock %}
 </body>
 </html>
