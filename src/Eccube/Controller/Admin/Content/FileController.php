@@ -186,11 +186,18 @@ class FileController extends AbstractController
             if (file_exists($newFilePath)) {
                 throw new IOException(trans('admin.content.file.dir_exists', ['%file_name%' => $filename]));
             }
+        } catch (IOException $e) {
+            $this->errors[] = ['message' => $e->getMessage()];
+            return;
+        }
+        try {
             $fs->mkdir($newFilePath);
-
             $this->addSuccess('admin.common.create_complete', 'admin');
         } catch (IOException $e) {
             log_error($e->getMessage());
+            $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
+                '%file_name%' => $filename,
+            ])];
         }
     }
 
@@ -301,15 +308,18 @@ class FileController extends AbstractController
                 if (strpos($filename, '.') === 0) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
+            } catch (UnsupportedMediaTypeHttpException $e) {
+                $this->errors[] = ['message' => $e->getMessage()];
+                continue;
+            }
+            try {
                 $file->move($nowDir, $filename);
                 $successCount++;
             } catch (FileException $e) {
+                log_error($e->getMessage());
                 $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
                     '%file_name%' => $filename,
                 ])];
-                log_error($e->getMessage());
-            } catch (UnsupportedMediaTypeHttpException $e) {
-                log_error($e->getMessage());
             }
         }
         if ($successCount > 0) {
