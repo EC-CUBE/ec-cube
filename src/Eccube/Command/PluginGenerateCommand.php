@@ -74,7 +74,7 @@ class PluginGenerateCommand extends Command
         // Plugin name.
         $name = $input->getArgument('name');
         if (null !== $name) {
-            $this->io->text(' > <info>name</info>: '.$name);
+            $this->io->text(' > <info>name</info>: ' . $name);
         } else {
             $name = $this->io->ask('name', 'EC-CUBE Sample Plugin');
             $input->setArgument('name', $name);
@@ -83,7 +83,7 @@ class PluginGenerateCommand extends Command
         // Plugin code.
         $code = $input->getArgument('code');
         if (null !== $code) {
-            $this->io->text(' > <info>code</info>: '.$code);
+            $this->io->text(' > <info>code</info>: ' . $code);
         } else {
             $code = $this->io->ask('code', 'Sample', [$this, 'validateCode']);
             $input->setArgument('code', $code);
@@ -92,7 +92,7 @@ class PluginGenerateCommand extends Command
         // Plugin version.
         $version = $input->getArgument('ver');
         if (null !== $version) {
-            $this->io->text(' > <info>ver</info>: '.$version);
+            $this->io->text(' > <info>ver</info>: ' . $version);
         } else {
             $version = $this->io->ask('ver', '1.0.0', [$this, 'validateVersion']);
             $input->setArgument('ver', $version);
@@ -108,7 +108,7 @@ class PluginGenerateCommand extends Command
         $this->validateCode($code);
         $this->validateVersion($version);
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->container->getParameter('kernel.project_dir') . '/app/Plugin/' . $code;
 
         $this->createDirectories($pluginDir);
         $this->createConfig($pluginDir, $name, $code, $version);
@@ -136,7 +136,7 @@ class PluginGenerateCommand extends Command
             throw new InvalidArgumentException('The code [a-zA-Z_] is available.');
         }
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->container->getParameter('kernel.project_dir') . '/app/Plugin/' . $code;
         if (file_exists($pluginDir)) {
             throw new InvalidArgumentException('Plugin directory exists.');
         }
@@ -168,7 +168,7 @@ class PluginGenerateCommand extends Command
         ];
 
         foreach ($dirs as $dir) {
-            $this->fs->mkdir($pluginDir.'/'.$dir);
+            $this->fs->mkdir($pluginDir . '/' . $dir);
         }
     }
 
@@ -193,7 +193,7 @@ class PluginGenerateCommand extends Command
 }
 EOL;
 
-        $this->fs->dumpFile($pluginDir.'/composer.json', $source);
+        $this->fs->dumpFile($pluginDir . '/composer.json', $source);
     }
 
     /**
@@ -232,7 +232,7 @@ jobs:
           overwrite: true
 ';
 
-        $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
+        $this->fs->dumpFile($pluginDir . '/.github/workflows/release.yml', $source);
     }
 
     /**
@@ -240,8 +240,8 @@ jobs:
      */
     protected function createMessages($pluginDir)
     {
-        $this->fs->dumpFile($pluginDir.'/Resource/locale/messages.ja.yaml', '');
-        $this->fs->dumpFile($pluginDir.'/Resource/locale/validators.ja.yaml', '');
+        $this->fs->dumpFile($pluginDir . '/Resource/locale/messages.ja.yaml', '');
+        $this->fs->dumpFile($pluginDir . '/Resource/locale/validators.ja.yaml', '');
     }
 
     /**
@@ -268,7 +268,7 @@ class TwigBlock implements EccubeTwigBlock
 }
 
 EOL;
-        $this->fs->dumpFile($pluginDir.'/TwigBlock.php', $source);
+        $this->fs->dumpFile($pluginDir . '/TwigBlock.php', $source);
     }
 
     /**
@@ -295,7 +295,7 @@ class Nav implements EccubeNav
 }
 
 EOL;
-        $this->fs->dumpFile($pluginDir.'/Nav.php', $source);
+        $this->fs->dumpFile($pluginDir . '/Nav.php', $source);
     }
 
     /**
@@ -322,7 +322,7 @@ class Event implements EventSubscriberInterface
 }
 
 EOL;
-        $this->fs->dumpFile($pluginDir.'/Event.php', $source);
+        $this->fs->dumpFile($pluginDir . '/Event.php', $source);
     }
 
     /**
@@ -388,7 +388,7 @@ class ConfigController extends AbstractController
 
 EOL;
 
-        $this->fs->dumpFile($pluginDir.'/Controller/Admin/ConfigController.php', $source);
+        $this->fs->dumpFile($pluginDir . '/Controller/Admin/ConfigController.php', $source);
 
         $source = <<<EOL
 <?php
@@ -454,7 +454,7 @@ if (!class_exists('\\Plugin\\${code}\\Entity\\Config', false)) {
 
 EOL;
 
-        $this->fs->dumpFile($pluginDir.'/Entity/Config.php', $source);
+        $this->fs->dumpFile($pluginDir . '/Entity/Config.php', $source);
 
         $source = <<<EOL
 <?php
@@ -496,7 +496,7 @@ class ConfigRepository extends AbstractRepository
 
 EOL;
 
-        $this->fs->dumpFile($pluginDir.'/Repository/ConfigRepository.php', $source);
+        $this->fs->dumpFile($pluginDir . '/Repository/ConfigRepository.php', $source);
 
         $source = <<<EOL
 <?php
@@ -539,7 +539,7 @@ class ConfigType extends AbstractType
 
 EOL;
 
-        $this->fs->dumpFile($pluginDir.'/Form/Type/Admin/ConfigType.php', $source);
+        $this->fs->dumpFile($pluginDir . '/Form/Type/Admin/ConfigType.php', $source);
 
         $source = <<<EOL
 {% extends '@admin/default_frame.twig' %}
@@ -549,7 +549,7 @@ EOL;
 {% block title %}${code}{% endblock %}
 {% block sub_title %}プラグイン一覧{% endblock %}
 
-{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_5_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}{% endblock stylesheet %}
 
@@ -606,6 +606,6 @@ EOL;
 {% endblock %}
 
 EOL;
-        $this->fs->dumpFile($pluginDir.'/Resource/template/admin/config.twig', $source);
+        $this->fs->dumpFile($pluginDir . '/Resource/template/admin/config.twig', $source);
     }
 }

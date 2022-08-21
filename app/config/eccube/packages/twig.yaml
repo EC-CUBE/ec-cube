@@ -1,24 +1,24 @@
 twig:
     globals:
-      BaseInfo: null
-      eccube_config: '@Eccube\Common\EccubeConfig'
-      event_dispatcher: '@event_dispatcher'
+        BaseInfo: null
+        eccube_config: '@Eccube\Common\EccubeConfig'
+        event_dispatcher: "@event_dispatcher"
     paths:
-      '%eccube_theme_front_dir%': ~
-      '%eccube_theme_front_default_dir%': ~
-      '%kernel.project_dir%/app/Plugin': ~
-      '%eccube_theme_admin_dir%': admin
-      '%eccube_theme_admin_default_dir%': admin
-      '%eccube_theme_user_data_dir%': user_data
-      '%eccube_theme_src_dir%/toolbar': toolbar
-      '%eccube_theme_src_dir%/common': common
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
-    form_themes: ['bootstrap_4_layout.html.twig']
+        "%eccube_theme_front_dir%": ~
+        "%eccube_theme_front_default_dir%": ~
+        "%kernel.project_dir%/app/Plugin": ~
+        "%eccube_theme_admin_dir%": admin
+        "%eccube_theme_admin_default_dir%": admin
+        "%eccube_theme_user_data_dir%": user_data
+        "%eccube_theme_src_dir%/toolbar": toolbar
+        "%eccube_theme_src_dir%/common": common
+    debug: "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form_themes: ["bootstrap_5_layout.html.twig"]
 
     #     - 'default_frame.twig'
     #     - 'Form/form_div_layout.twig'
     date:
-      timezone: '%timezone%'
+        timezone: "%timezone%"
     base_template_class: 'Eccube\Twig\Template'
     exception_controller: null
