@@ -1,0 +1,64 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{%- extends 'bootstrap_5_horizontal_layout.html.twig' -%}
+
+{%- block toggle_switch_widget -%}
+    <div class="c-toggleSwitch">
+        <div class="c-toggleSwitch__btn">
+            <input type="checkbox"
+                   id="{{ form.vars.id }}"
+                   name="{{ form.vars.full_name }}"
+                   value="{{ form.vars.value }}"{{ form.vars.data ? ' checked' }}>
+            <label for="{{ form.vars.id }}"></label>
+        </div>
+        <div class="c-toggleSwitch__label">
+            <span class="{{ form.vars.id }}-on text-dark {{ form.vars.data ? '' : 'd-none' }}">{{ form.vars.label_on|trans }}</span>
+            <span class="{{ form.vars.id }}-off text-dark {{ form.vars.data ? 'd-none' : '' }}">{{ form.vars.label_off|trans }}</span>
+        </div>
+        <script>
+            $('#{{ form.vars.id }}').on('change', function (e) {
+                if ($(this).prop('checked')) {
+                    $('.{{ form.vars.id }}-on').removeClass('d-none');
+                    $('.{{ form.vars.id }}-off').addClass('d-none');
+                } else {
+                    $('.{{ form.vars.id }}-on').addClass('d-none');
+                    $('.{{ form.vars.id }}-off').removeClass('d-none');
+                }
+            });
+        </script>
+    </div>
+{%- endblock -%}
+
+{% block choice_widget %}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{%- block file_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control-file')|trim}) -%}
+    <input type="file" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock -%}
+
+{% block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
+            {%- for error in errors -%}
+                <span class="d-block">
+                    <span class="form-error-icon badge bg-danger text-uppercase">{{ 'Error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
+                </span>
+            {%- endfor -%}
+        </span>
+    {%- endif %}
+{%- endblock form_errors %}
+
