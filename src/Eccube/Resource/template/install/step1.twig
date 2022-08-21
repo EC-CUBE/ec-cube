@@ -63,9 +63,7 @@ file that was distributed with this source code.
                                     <p>
                                         {{ 'install.cooperation_of_providing_information'|trans|raw }}
                                     </p>
-                                    <div class="form-check form-check-inline">
-                                    {{ form_widget(form.agree, { 'label': 'install.accept_infomation_provision'}) }}
-                                    </div>
+                                    {{ form_widget(form.agree, { 'label': 'install.accept_infomation_provision', 'label_attr': {'class': 'checkbox-inline'}}) }}
                                 </div>
                                 <ul class="btn_area">
                                     <li class="d-grid gap-2"><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
