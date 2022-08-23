@@ -107,6 +107,9 @@ Styleguide 12.2
 */
 .btn-ec-conversion{
   @include button-variant(#437EC4, transparent, #FFF, #2963AB, transparent, #FFF, #2963AB, transparent );
+  &:disabled {
+    color: #fff;
+  }
   cursor:pointer;
 }
 
