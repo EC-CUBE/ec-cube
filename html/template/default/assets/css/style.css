@@ -5953,6 +5953,11 @@ Styleguide 1.2.10
 .ec-para-normal {
   margin-bottom: 16px;
 }
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
 /**
 メディアクエリ
 SP フォーストで記述する。
