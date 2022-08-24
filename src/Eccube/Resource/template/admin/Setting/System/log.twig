@@ -16,6 +16,8 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.setting.system.log_display'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
+{% form_theme form '@admin/Form/bootstrap_4_layout.html.twig' %}
+
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
