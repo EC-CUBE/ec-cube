@@ -983,7 +983,7 @@ admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
 admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
-admin.content.file.upload_error: 'Failed to upload %file_name%. (%error%)'
+admin.content.file.upload_error: 'Failed to upload %file_name%. '
 admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
 admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
 admin.content.file.dir_exists: '%file_name% is already exists.'
