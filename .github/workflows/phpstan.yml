@@ -22,10 +22,31 @@ jobs:
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
+
+    - name: Cache extensions
+      uses: actions/cache@v2
+      with:
+        path: /var/cache/apt/apt-fast/
+        key: ${{ matrix.php }}-php
+        restore-keys: |
+          ${{ matrix.php }}-php-
+
     - name: Setup PHP
       uses: nanasess/setup-php@master
       with:
         php-version: '7.4'
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
     - name: composer install
       run: composer install --dev --no-interaction -o --apcu-autoloader
     - name: PHPStan
