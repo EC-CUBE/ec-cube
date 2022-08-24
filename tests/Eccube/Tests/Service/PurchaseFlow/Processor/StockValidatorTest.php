@@ -52,7 +52,7 @@ class StockValidatorTest extends EccubeTestCase
 
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = self::$container->get(StockValidator::class);
+        $this->validator = static::getContainer()->get(StockValidator::class);
         $this->cartItem = new CartItem();
         $this->cartItem->setProductClass($this->ProductClass);
     }
@@ -82,7 +82,7 @@ class StockValidatorTest extends EccubeTestCase
     public function testValidStockOrder()
     {
         $Customer = $this->createCustomer();
-        $Order = self::$container->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
+        $Order = static::getContainer()->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
 
         self::assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 

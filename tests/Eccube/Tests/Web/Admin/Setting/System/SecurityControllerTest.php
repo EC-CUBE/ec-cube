@@ -28,7 +28,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->envFile = self::$container->getParameter('kernel.project_dir').'/.env';
+        $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
         }
@@ -72,7 +72,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // Message
-        $outPut = self::$container->get('session')->getFlashBag()->get('eccube.admin.success');
+        $outPut = static::getContainer()->get('session')->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.setting.system.security.admin_url_changed';
         $this->verify();

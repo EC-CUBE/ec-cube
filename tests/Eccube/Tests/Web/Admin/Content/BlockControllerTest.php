@@ -56,8 +56,8 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         ));
 
         $dir = sprintf('%s/app/template/%s/Block',
-            self::$container->getParameter('kernel.project_dir'),
-            self::$container->getParameter('eccube.theme'));
+            static::getContainer()->getParameter('kernel.project_dir'),
+            static::getContainer()->getParameter('eccube.theme'));
 
         $this->expected = '<p>test</p>';
         $this->actual = file_get_contents($dir.'/file_name.twig');

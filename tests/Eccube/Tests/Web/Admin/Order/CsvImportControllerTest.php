@@ -130,7 +130,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv = new CsvImportService(new \SplFileObject($tempFile));
         $csv->setHeaderRowNumber(0);
 
-        $controller = self::$container->get(CsvImportController::class);
+        $controller = static::getContainer()->get(CsvImportController::class);
         $rc = new \ReflectionClass(CsvImportController::class);
         $method = $rc->getMethod('loadCsv');
         $method->setAccessible(true);
