@@ -57,6 +57,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: /var/cache/apt/apt-fast/
+          key: ${{ matrix.php }}-php
+          restore-keys: |
+            ${{ matrix.php }}-php-
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -68,11 +81,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-
-      - name: Setup PHP
-        uses: nanasess/setup-php@master
-        with:
-          php-version: ${{ matrix.php }}
 
       - name: composer install
         run: composer install --dev --no-interaction -o --apcu-autoloader
