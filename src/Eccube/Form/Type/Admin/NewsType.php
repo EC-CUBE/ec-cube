@@ -47,6 +47,7 @@ class NewsType extends AbstractType
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'years' => range($this->eccubeConfig['eccube_news_start_year'], date('Y') + 3),
+                'with_seconds' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
