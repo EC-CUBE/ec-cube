@@ -146,14 +146,14 @@ file that was distributed with this source code.
                                 <li class="list-group-item">
                                     <form role="form" class="row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
                                         <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
-                                        <div class="col-3 mr-2">
+                                        <div class="col-3 me-2">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
                                         <div class="col-auto align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.backend_name'|trans }}">
                                             <span>{{ 'admin.product.class_name__backend_name'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
                                         <div class="col-3">
                                             {{ form_widget(form.backend_name) }}
@@ -180,16 +180,16 @@ file that was distributed with this source code.
                                                 <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">{{ ClassName.name }}［{{ 'admin.product.class_name__backend_name'|trans }}{{ 'admin.common.separator__colon'|trans }}{{ ClassName.backend_name }}］ ({{ ClassName.ClassCategories|length }})</a>
                                             </div>
                                             <div class="col-auto text-end">
-                                                <a class="btn btn-ec-actionIcon mr-2 up {% if loop.first %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 up {% if loop.first %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 down {% if loop.last %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 down {% if loop.last %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 action-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-2" data-bs-toggle="tooltip"
+                                                <div class="d-inline-block me-2" data-bs-toggle="tooltip"
                                                      data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                     {% set classCategories = ClassName.ClassCategories|length %}
                                                     <a class="btn btn-ec-actionIcon{% if classCategories > 0 %} disabled{% endif %}"
@@ -233,7 +233,7 @@ file that was distributed with this source code.
                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                             </h5>
                                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                
+
                                             </button>
                                         </div>
                                         <div class="modal-body text-start">
