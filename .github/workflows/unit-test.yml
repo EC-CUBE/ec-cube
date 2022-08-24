@@ -58,14 +58,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       
-      - name: Cache extensions
-        uses: actions/cache@v2
-        with:
-          path: /var/cache/apt/apt-fast/
-          key: ${{ matrix.php }}-php
-          restore-keys: |
-            ${{ matrix.php }}-php-
-
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
