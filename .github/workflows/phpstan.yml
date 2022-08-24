@@ -23,7 +23,7 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v2
 
-    - name: Cache extensions
+    - name: Cache apt-fast
       uses: actions/cache@v2
       with:
         path: /var/cache/apt/apt-fast/
