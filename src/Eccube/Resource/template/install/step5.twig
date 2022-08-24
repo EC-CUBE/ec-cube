@@ -45,7 +45,7 @@ file that was distributed with this source code.
                                 {{ form_widget(form._token) }}
                                 <div class="note_box">
                                     <p>{{ 'install.database_skip_notice'|trans }}</p>
-                                    {{ form_widget(form.no_update) }}
+                                    {{ form_widget(form.no_update, {'label_attr': {'class': 'checkbox-inline'}}) }}
 
                                     {% for error in app.session.flashbag.get('eccube.front.error')  %}
                                         <div class="message">
