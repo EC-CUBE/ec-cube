@@ -16,7 +16,7 @@ services:
       - '@Eccube\Repository\TagRepository'
       - '@Eccube\Repository\TaxRuleRepository'
       - '@eccube.purchase.flow.order'
-      - '@session'
+      - '@request_stack'
       - 'ja_JP'
     lazy: true
     public: true # Codeception対応
