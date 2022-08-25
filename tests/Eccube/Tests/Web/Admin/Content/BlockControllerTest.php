@@ -73,12 +73,12 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         $this->loginTo($this->createMember());
 
-        $redirectUrl = $this->generateUrl('admin_content_block');
 
         $this->client->request('DELETE',
             $this->generateUrl('admin_content_block_delete', ['id' => 1])
         );
 
+        $redirectUrl = $this->generateUrl('admin_content_block');
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertSame(true, $actual);
