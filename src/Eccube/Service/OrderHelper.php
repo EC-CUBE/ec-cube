@@ -36,6 +36,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -129,7 +130,7 @@ class OrderHelper
         DeviceTypeRepository $deviceTypeRepository,
         PrefRepository $prefRepository,
         MobileDetect $mobileDetector,
-        SessionInterface $session
+        RequestStack $requestStack
     ) {
         $this->container = $container;
         $this->orderRepository = $orderRepository;
@@ -141,7 +142,7 @@ class OrderHelper
         $this->entityManager = $entityManager;
         $this->prefRepository = $prefRepository;
         $this->mobileDetector = $mobileDetector;
-        $this->session = $session;
+        $this->session = $requestStack->getSession();
     }
 
     /**

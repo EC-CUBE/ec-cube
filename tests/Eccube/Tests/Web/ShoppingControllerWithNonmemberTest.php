@@ -143,7 +143,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $Nonmember = static::getContainer()->get(OrderHelper::class)->getNonMember('eccube.front.shopping.nonmember');
         $this->assertNotNull($Nonmember);
-        $this->assertNotNull(static::getContainer()->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
+        $this->assertNotNull(static::getContainer()->get('request_stack')->getSession()->get('eccube.front.shopping.nonmember.customeraddress'));
 
         $this->expected = $formData['name']['name01'];
         $this->actual = $Nonmember->getName01();

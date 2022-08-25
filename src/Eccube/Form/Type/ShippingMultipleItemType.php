@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -71,13 +72,16 @@ class ShippingMultipleItemType extends AbstractType
      * ShippingMultipleItemType constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface $tokenStorage
+     * @param PrefRepository $prefRepository
+     * @param EntityManagerInterface $entityManager
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        SessionInterface $session,
+        RequestStack $requestStack,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         PrefRepository $prefRepository,
@@ -85,7 +89,7 @@ class ShippingMultipleItemType extends AbstractType
         OrderHelper $orderHelper
     ) {
         $this->eccubeConfig = $eccubeConfig;
-        $this->session = $session;
+        $this->session = $requestStack->getSession();
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
         $this->prefRepository = $prefRepository;

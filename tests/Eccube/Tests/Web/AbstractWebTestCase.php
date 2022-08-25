@@ -66,7 +66,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
         }
         $token = new UsernamePasswordToken($User, $firewall, $role);
 
-        $session = $this->client->getContainer()->get('session');
+        $session = $this->client->getContainer()->get('request_stack')->getSession();
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
 
@@ -77,7 +77,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     {
         // セッションが途中できれてしまうような事象が発生するため
         // https://github.com/symfony/symfony/issues/13450#issuecomment-353745790
-        $session = $this->client->getContainer()->get('session');
+        $session = $this->client->getContainer()->get('request_stack')->getSession();
         $session->set('dummy', 'dummy');
         $session->save();
         $cookie = new Cookie($session->getName(), $session->getId());

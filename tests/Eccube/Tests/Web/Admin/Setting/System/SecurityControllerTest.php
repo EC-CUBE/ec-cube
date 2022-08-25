@@ -72,7 +72,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // Message
-        $outPut = static::getContainer()->get('session')->getFlashBag()->get('eccube.admin.success');
+        $outPut = static::getContainer()->get('request_stack')->getSession()->getFlashBag()->get('eccube.admin.success');
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.setting.system.security.admin_url_changed';
         $this->verify();

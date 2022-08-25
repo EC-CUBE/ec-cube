@@ -13,6 +13,7 @@
 
 namespace Eccube\Log\Processor;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionProcessor
@@ -22,9 +23,9 @@ class SessionProcessor
      */
     protected $session;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->session = $requestStack->getSession();
     }
 
     public function __invoke(array $records)

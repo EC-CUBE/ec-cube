@@ -37,7 +37,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -506,18 +506,19 @@ class InstallController extends AbstractController
         ];
     }
 
-    protected function getSessionData(SessionInterface $session)
+    protected function getSessionData(RequestStack $requestStack)
     {
-        return $session->get('eccube.session.install', []);
+        return $requestStack->getSession()->get('eccube.session.install', []);
     }
 
-    protected function removeSessionData(SessionInterface $session)
+    protected function removeSessionData(RequestStack $requestStack)
     {
-        $session->clear();
+        $requestStack->getSession()->clear();
     }
 
-    protected function setSessionData(SessionInterface $session, $data = [])
+    protected function setSessionData(RequestStack $requestStack, $data = [])
     {
+        $session = $requestStack->getSession();
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
     }

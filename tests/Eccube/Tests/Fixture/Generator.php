@@ -54,6 +54,7 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -166,7 +167,7 @@ class Generator
         TagRepository $tagRepository,
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
-        SessionInterface $session,
+        RequestStack $requestStack,
         $locale = 'ja_JP'
     ) {
         $this->locale = $locale;
@@ -185,7 +186,7 @@ class Generator
         $this->tagRepository = $tagRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
-        $this->session = $session;
+        $this->session = $requestStack->getSession();
     }
 
     /**

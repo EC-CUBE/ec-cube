@@ -142,7 +142,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $outPut = static::getContainer()->get('session')->getFlashBag()->get('eccube.admin.error');
+        $outPut = static::getContainer()->get('request_stack')->getSession()->getFlashBag()->get('eccube.admin.error');
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.common.save_error';
         $this->verify();
