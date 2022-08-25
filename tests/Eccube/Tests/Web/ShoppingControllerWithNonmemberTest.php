@@ -48,7 +48,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     public function testIndexWithCartNotFound()
     {
         // お客様情報を入力済の状態にするため, セッションにエンティティをセット.
-        $session = static::getContainer()->get('session');
+        $session = static::getContainer()->get('request_stack')->getSession();
         $session->set(OrderHelper::SESSION_NON_MEMBER, new Customer());
 
         $this->client->request('GET', '/shopping');
