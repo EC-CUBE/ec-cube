@@ -1631,7 +1631,7 @@ tooltip.order.order_search_status: You can filter the list by order status. The 
 tooltip.order.bulk_actions: Bulk processing is applied to the checked orders. Please be careful when you apply it.
 tooltip.order.order_info: General information of orders.
 tooltip.order.order_no: Order No. is automatically generated upon placing the order.
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし新規受注登録以外。また、1受注で出荷先が複数ある場合は全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.order_status: You can change the status of your order response. However, except for new order registration. If an order has multiple destinations, the status will change to "Shipped" when all orders have been shipped.
 tooltip.order.customer_id: Customer IDs which are automatically generated.
 tooltip.order.shipping_info: Displaying the delivery information. You can add delivery addresses too. If you have multiple delivery addresses within a order, you can check the delivery address details at [Edit Delivery Address].
 tooltip.order.shipping_info.tracking_number: If you have a tracking number (delivery slip number), you can enter from here. You can also bulk-input from All Orders.
