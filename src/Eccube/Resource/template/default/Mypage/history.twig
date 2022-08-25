@@ -148,8 +148,6 @@ file that was distributed with this source code.
                     {% endfor %}
                 </div>
 
-                <a href="{{ url('mypage') }}" class="ec-inlineBtn ec-font-bold">{{ 'common.back'|trans }}</a>
-
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
@@ -200,6 +198,11 @@ file that was distributed with this source code.
                         <strong>{{ 'front.mypage.reorder_message'|trans }}</strong>
                     </p>
                 {% endif %}
+            </div>
+        </div>
+        <div class="ec-role ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <a href="{{ url('mypage') }}" class="ec-inlineBtn ec-font-bold">{{ 'common.back'|trans }}</a>
             </div>
         </div>
     </div>
