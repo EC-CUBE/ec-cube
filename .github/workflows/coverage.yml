@@ -44,6 +44,11 @@ jobs:
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
+      
+      - name: Setup pcov
+        run: |
+          sudo apt-fast install -y php8.1-pcov
+          sudo phpenmod -s cli pcov
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -152,6 +157,11 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
           cp codeception/_data/plugins/*-1.0.0.tgz repos
 
+      - name: Setup pcov
+        run: |
+          sudo apt-fast install -y php8.1-pcov
+          sudo phpenmod -s cli pcov
+
       - name: Setup codeception
         run: |
           composer config --no-plugins allow-plugins.codeception/c3 true
@@ -177,7 +187,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         continue-on-error: true
-        run: php -dpcov.enabled=1 -dpcov.directory=src -dpcov.exclude="~vendor~" ./vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
+        run: php -dpcov.enabled=1 vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
       - name: Upload outputs
         uses: actions/upload-artifact@v2
         with:
