@@ -70,7 +70,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
         continue-on-error: true
-        run: php -dpcov.enabled=1 -dpcov.directory=src -dpcov.exclude="~vendor~" ./vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+        run: php -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v2
