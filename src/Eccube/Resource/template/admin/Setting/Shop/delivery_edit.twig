@@ -89,8 +89,8 @@ file that was distributed with this source code.
 
                 var prototype = $collectionHolder.data('prototype');
 
-                var newForm = prototype.replace(/__name__/g, index);
-                var newForm = newForm.replace(/__value__/g, deliveryTimeName);
+                var newForm = $(prototype.replace(/__name__/g, index));
+                newForm.find('.display-label').text(deliveryTimeName)
 
                 // 要素を追加
                 var $lastRow = $('#delivery-time-group > li:last');
