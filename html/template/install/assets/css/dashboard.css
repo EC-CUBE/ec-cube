@@ -1161,7 +1161,14 @@ textarea.disp_area {
 .step1 .note_box {
 	margin: 32px 0;
 }
+.form-check{
+	display: inline-block;
+}
 
+.badge-danger{
+	--bs-bg-opacity: 1;
+	background-color: rgba(var(--bs-danger-rgb),var(--bs-bg-opacity))!important;
+}
 /*	Step4
 ============================ */
 
