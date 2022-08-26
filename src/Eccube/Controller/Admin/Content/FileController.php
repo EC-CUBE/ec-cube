@@ -299,6 +299,8 @@ class FileController extends AbstractController
         /** @var UploadedFile $file */
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
+            // ASCII制御文字を削除
+            $filename = preg_replace('/[\x00-\x1F]/u', '_', $filename);
             try {
                 // フォルダの存在チェック
                 if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
