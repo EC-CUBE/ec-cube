@@ -1757,6 +1757,7 @@ install.smtp_host: SMTP Host
 install.smtp_port: SMTP Port
 install.smtp_user: SMTP User
 install.smtp_password: SMTP Password
+install.ip_is_invalid: 'Email Settings is invalid (%e%)'
 install.database_type: Database Type
 install.database_pgsql: PostgreSQL
 install.database_mysql: MySQL

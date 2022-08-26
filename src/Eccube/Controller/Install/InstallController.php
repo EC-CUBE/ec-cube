@@ -457,7 +457,7 @@ class InstallController extends AbstractController
 
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
-        $mailerUrl = $this->createMailerUrl($sessionData);
+        $mailerUrl = StringUtil::createMailerUrl($sessionData);
         $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool) $sessionData['admin_force_ssl'] : false;
         if ($forceSSL === false) {
             $forceSSL = '0';
@@ -668,64 +668,6 @@ class InstallController extends AbstractController
         ];
     }
 
-    /**
-     * @return string
-     *
-     * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
-     */
-    public function createMailerUrl(array $params)
-    {
-        $url = '';
-        if (isset($params['transport'])) {
-            $url = $params['transport'].'://';
-        } else {
-            $url = 'smtp://';
-        }
-        if (isset($params['smtp_username'])) {
-            $url .= $params['smtp_username'];
-            if (isset($params['smtp_password'])) {
-                $url .= ':'.$params['smtp_password'];
-            }
-            $url .= '@';
-        }
-
-        $queryStrings = [];
-        if (isset($params['encryption'])) {
-            $queryStrings['encryption'] = $params['encryption'];
-            if ($params['encryption'] === 'ssl' && !isset($params['smtp_port'])) {
-                $params['smtp_port'] = 465;
-            }
-        }
-        if (isset($params['auth_mode'])) {
-            $queryStrings['auth_mode'] = $params['auth_mode'];
-        } else {
-            if (isset($params['smtp_username'])) {
-                $queryStrings['auth_mode'] = 'plain';
-            }
-        }
-        ksort($queryStrings, SORT_STRING);
-
-        if (isset($params['smtp_host'])) {
-            $url .= $params['smtp_host'];
-            if (isset($params['smtp_port'])) {
-                $url .= ':'.$params['smtp_port'];
-            }
-        }
-
-        if (isset($params['smtp_username']) || array_values($queryStrings)) {
-            $url .= '?';
-            $i = count($queryStrings);
-            foreach ($queryStrings as $key => $value) {
-                $url .= $key.'='.$value;
-                if ($i > 1) {
-                    $url .= '&';
-                }
-                $i--;
-            }
-        }
-
-        return $url;
-    }
 
     /**
      * @param string $url

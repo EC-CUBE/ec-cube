@@ -1757,6 +1757,7 @@ install.smtp_host: SMTPホスト
 install.smtp_port: SMTPポート
 install.smtp_user: SMTPユーザー
 install.smtp_password: SMTPパスワード
+install.smtp_is_invalid: メールの設定に間違いがあります。(%e%)
 install.database_type: データベースの種類
 install.database_pgsql: PostgreSQL
 install.database_mysql: MySQL

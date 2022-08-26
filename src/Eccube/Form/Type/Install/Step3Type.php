@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Install;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Util\StringUtil;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -26,6 +27,12 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email as MailerEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Dotenv\Dotenv;
 
 class Step3Type extends AbstractType
 {
@@ -155,6 +162,26 @@ class Step3Type extends AbstractType
                         $form['admin_allow_hosts']->addError(new FormError(trans('install.ip_is_invalid', ['%ip%' => $ip])));
                     }
                 }
+
+                $mailerUrl = StringUtil::createMailerUrl($data);
+
+                $body = "test";
+                $message = (new MailerEmail())
+                    ->from('from@example.com')
+                    ->to('to@example.com');
+
+                $message
+                    ->text($body);
+
+                $transport = Transport::fromDsn($mailerUrl);
+                $mailer = new Mailer($transport);
+
+                try {
+                    $mailer->send($message);
+                } catch (TransportExceptionInterface $e) {
+
+                    $form['smtp_host']->addError(new FormError(trans('install.smtp_is_invalid', ['%e%' => $e->getMessage()])));
+                }
             })
         ;
     }
@@ -166,4 +193,5 @@ class Step3Type extends AbstractType
     {
         return 'install_step3';
     }
+
 }
