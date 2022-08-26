@@ -64,13 +64,11 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
         $this->loginTo($Member);
 
-        $redirectUrl = $this->generateUrl('admin_content_news');
-
         $this->client->request('DELETE',
             $this->generateUrl('admin_content_news_delete', ['id' => $News->getId()])
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_news')));
     }
 
     private function createNews($TestCreator, $sortNo = 1)
