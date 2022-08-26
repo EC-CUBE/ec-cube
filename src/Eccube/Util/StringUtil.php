@@ -341,7 +341,7 @@ class StringUtil
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
      */
-    public function createMailerUrl(array $params)
+    public static function createMailerUrl(array $params)
     {
         $url = '';
         if (isset($params['transport'])) {

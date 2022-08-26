@@ -34,8 +34,8 @@ class Step3TypeTest extends AbstractTypeTestCase
         'admin_dir' => 'administrator',
         'admin_force_ssl' => true,
         'admin_allow_hosts' => '1.1.1.1',
-        'smtp_host' => '',
-        'smtp_port' => '',
+        'smtp_host' => 'localhost',
+        'smtp_port' => '1025',
         'smtp_username' => '',
         'smtp_password' => '',
     ];
@@ -280,6 +280,14 @@ class Step3TypeTest extends AbstractTypeTestCase
     public function testInValidAdminDir()
     {
         $this->formData['admin_dir'] = 'admin';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidSmtp()
+    {
+        $this->formData['smtp_host'] = 'localhost';
+        $this->formData['smtp_port'] = '25';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
