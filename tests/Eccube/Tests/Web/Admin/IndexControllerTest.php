@@ -143,6 +143,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     {
         $this->logIn($this->Member);
         $client = $this->client;
+        $client->followRedirects(false);
 
         $form = $this->createChangePasswordFormData();
         $client->request(
