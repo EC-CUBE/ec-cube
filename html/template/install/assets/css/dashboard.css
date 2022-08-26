@@ -1164,6 +1164,9 @@ textarea.disp_area {
 .form-check{
 	display: inline-block;
 }
+.form-select{
+	font-size: 1.6rem;
+}
 
 .badge-danger{
 	--bs-bg-opacity: 1;
