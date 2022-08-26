@@ -46,7 +46,7 @@ class RepeatedPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'entry_type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
+            'type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
             'invalid_message' => 'form_error.same_password',
             'required' => true,
             'error_bubbling' => false,
@@ -60,6 +60,7 @@ class RepeatedPasswordType extends AbstractType
                         'pattern' => $this->eccubeConfig['eccube_password_pattern'],
                         'message' => 'form_error.password_pattern_invalid',
                     ]),
+                    new Assert\NotBlank(),
                 ],
             ],
             'first_options' => [
@@ -73,9 +74,6 @@ class RepeatedPasswordType extends AbstractType
                 'attr' => [
                     'placeholder' => 'common.repeated_confirm',
                 ],
-                'constraints' => [
-                    new Assert\NotBlank()
-                ]
             ],
         ]);
     }
