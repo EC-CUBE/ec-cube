@@ -69,11 +69,11 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        self::$container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        static::getContainer()->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertNull(self::$container->get('session')->get('eccube.front.shopping.order.id'));
+        $this->assertNull(static::getContainer()->get('session')->get('eccube.front.shopping.order.id'));
     }
 
 
@@ -104,7 +104,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 1つの新着情報を保存した後にホームページにアクセスする。
         // Request Homepage after saving a single news item
-        self::$container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        static::getContainer()->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $crawler = $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         // <div>タグから危険なid属性が削除されていることを確認する。
@@ -561,7 +561,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $SaleTypeNormal = $this->entityManager->find(SaleType::class, SaleType::SALE_TYPE_NORMAL);
-        $Delivery = self::$container->get(Generator::class)->createDelivery();
+        $Delivery = static::getContainer()->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($SaleTypeNormal);
         $this->entityManager->flush($Delivery);
         $Payments = $this->paymentRepository->findAll();
@@ -1035,12 +1035,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $ProductClass->setPrice02($price);
         $this->entityManager->flush($ProductClass);
 
-        $Delivery = self::$container->get(Generator::class)->createDelivery();
+        $Delivery = static::getContainer()->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($ProductClass->getSaleType());
         $this->entityManager->flush($Delivery);
 
-        $COD1 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
-        $COD2 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
+        $COD1 = static::getContainer()->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
+        $COD2 = static::getContainer()->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
 
         // カート画面
         $this->scenarioCartIn($Customer, 2);

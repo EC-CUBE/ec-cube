@@ -151,13 +151,13 @@ file that was distributed with this source code.
 
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.multi_search_label'|trans }}">{{ 'admin.product.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.multi_search_label'|trans }}">{{ 'admin.product.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                             {{ form_widget(searchForm.id) }}
                             {{ form_errors(searchForm.id) }}
                         </div>
                         <div class="d-inline-block mb-3" data-bs-toggle="collapse" href="#searchDetail"
                              aria-expanded="false" aria-controls="searchDetail"><a><i
-                                        class="fa fa-plus-square-o fw-bold mr-1"></i><span
+                                        class="fa fa-plus-square-o fw-bold me-1"></i><span
                                         class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a>
                         </div>
                     </div>
@@ -253,7 +253,7 @@ file that was distributed with this source code.
             <div class="c-outsideBlock__contents mb-5">
                 <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
                 {% if pagination %}
-                    <span class="fw-bold ml-2">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                    <span class="fw-bold ms-2">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
                 {% endif %}
             </div>
             <div class="c-outsideBlock__contents mb-5">
@@ -271,8 +271,8 @@ file that was distributed with this source code.
                         <div class="row justify-content-between mb-2">
                             <div class="col-6">
                                 <div id="btn_bulk" class="d-none">
-                                    <label class="mr-2">{{ 'admin.common.bulk_actions'|trans }}</label>
-                                    <div class="btn-group mr-2" role="group">
+                                    <label class="me-2">{{ 'admin.common.bulk_actions'|trans }}</label>
+                                    <div class="btn-group me-2" role="group">
                                         <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW')}) }}" class="btn btn-ec-regular action-submit" type="button">
                                             <span>{{ 'admin.product.display_status__show'|trans }}</span>
                                         </button>
@@ -280,14 +280,14 @@ file that was distributed with this source code.
                                             <span>{{ 'admin.product.display_status__hide'|trans }}</span>
                                         </button>
                                     </div>
-                                    <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular mr-2 action-submit">
+                                    <button {{ csrf_token_for_anchor() }} data-action="{{ url('admin_product_bulk_product_status', {id: constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_ABOLISHED')}) }}" class="btn btn-ec-regular me-2 action-submit">
                                         {{ 'admin.product.display_status__abolished'|trans }}
                                     </button>
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal" class="btn btn-ec-delete">{{ 'admin.product.permanently_delete'|trans }}</button>
                                 </div>
                             </div>
                             <div class="col-5 text-end">
-                                <div class="d-inline-block mr-2 align-bottom">
+                                <div class="d-inline-block me-2 align-bottom">
                                     <div>
                                         <select class="form-select" onchange="location = this.value;">
                                             {% for pageMax in pageMaxis %}
@@ -299,10 +299,10 @@ file that was distributed with this source code.
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
                                         <a class="btn btn-ec-regular" href="{{ url('admin_product_export') }}">
-                                            <i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span>
+                                            <i class="fa fa-cloud-download me-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span>
                                         </a>
                                         <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">
-                                            <i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
+                                            <i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
                                         </a>
                                     </div>
                                 </div>

@@ -5319,6 +5319,9 @@ Styleguide 12.2
   background-color: #437EC4;
   border-color: transparent;
 }
+.btn-ec-conversion:disabled {
+  color: #fff;
+}
 .btn-ec-delete {
   color: #FFF;
   background-color: #C04949;

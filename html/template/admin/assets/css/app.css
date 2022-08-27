@@ -334,8 +334,9 @@ Styleguide 3.0
   height: 16px;
   content: "\f106";
   text-align: right;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 20px;
+  font-weight: 900;
   color: #54687a;
   position: absolute;
   top: 7px;
@@ -375,8 +376,9 @@ Styleguide 3.0
   height: 16px;
   content: "\f106";
   text-align: right;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 20px;
+  font-weight: 900;
   color: #54687a;
   position: absolute;
   top: 7px;
@@ -739,8 +741,9 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
 }
 .c-form__fileUploadThumbnail .delete-image {
   display: none;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 18px;
+  font-weight: 400;
   line-height: 1;
   color: #54687A;
   padding: 5px;
@@ -755,8 +758,9 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
 }
 .c-form__fileUploadThumbnail:hover .delete-image {
   display: inline-block;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 18px;
+  font-weight: 400;
   line-height: 1;
   color: #54687A;
   padding: 5px;
@@ -813,25 +817,28 @@ include /assets/tmpl/components/directory.pug
 Styleguide 7.0
 */
 .c-directoryTree label::before {
-  content: "\f147";
+  content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
 }
 .c-directoryTree label[data-toggle=collapse]::before {
-  content: "\f147";
+  content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
 }
 .c-directoryTree label.collapsed::before {
-  content: "\f196";
+  content: "\f0fe";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
 }
 .c-directoryTree ul > li > ul li > label {
   margin-left: 10px;
@@ -857,29 +864,32 @@ Styleguide 7.0
   height: 1em;
 }
 .c-directoryTree ul > li > ul label::after {
-  content: "\f147";
+  content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
   position: absolute;
   left: 20px;
 }
 .c-directoryTree ul > li > ul label[data-toggle=collapse]::after {
-  content: "\f147";
+  content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
   position: absolute;
   left: 20px;
 }
 .c-directoryTree ul > li > ul label.collapsed::after {
-  content: "\f196";
+  content: "\f0fe";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
   position: absolute;
   left: 20px;
 }
@@ -947,25 +957,28 @@ include /assets/tmpl/components/directory.pug
 Styleguide 7.2
 */
 .c-directoryTree--folder label::before {
-  content: "\f114";
+  content: "\f07b";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
 }
 .c-directoryTree--folder label[data-toggle=collapse]::before {
-  content: "\f115";
+  content: "\f07c";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
 }
 .c-directoryTree--folder label.collapsed::before {
-  content: "\f114";
+  content: "\f07b";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
 }
 .c-directoryTree--folder ul > li > ul li > label {
   margin-left: 10px;
@@ -991,29 +1004,32 @@ Styleguide 7.2
   height: 1em;
 }
 .c-directoryTree--folder ul > li > ul label::after {
-  content: "\f114";
+  content: "\f07b";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
   position: absolute;
   left: 20px;
 }
 .c-directoryTree--folder ul > li > ul label[data-toggle=collapse]::after {
-  content: "\f115";
+  content: "\f07c";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
   position: absolute;
   left: 20px;
 }
 .c-directoryTree--folder ul > li > ul label.collapsed::after {
-  content: "\f114";
+  content: "\f07b";
   display: inline-block;
   margin-right: 0.5em;
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 16px;
+  font-weight: 400;
   position: absolute;
   left: 20px;
 }
@@ -1093,11 +1109,11 @@ Styleguide 8.0
 /*
 アイコン
 
-スタイルガイドで使用される一部アイコンは Font Awesome v4.7.0 を使用しています。
+スタイルガイドで使用される一部アイコンは Font Awesome v5.3.1 を使用しています。
 
-マークアップにおいても Font Awesome v4.7.0 形式のクラス設定を利用していますので、追加のアイコン等を導入する際には Font Awesome v4.7.0 互換の形式でフォントを導入してください。
+マークアップにおいても Font Awesome v5.3.1 形式のクラス設定を利用していますので、追加のアイコン等を導入する際には Font Awesome v5.3.1 互換の形式でフォントを導入してください。
 
-Font Awesome v4.7.0 で利用可能なフォント群については、<a href="https://fontawesome.com/v4.7.0/" target="_blank">Font Awesome v4.7.0 公式サイト</a> をご利用ください。
+Font Awesome v5.3.1 で利用可能なフォント群については、<a href="https://fontawesome.com/v5/search?m=free" target="_blank">Font Awesome v5.3.1 公式サイト</a> をご利用ください。
 
 
 Styleguide 11.0
