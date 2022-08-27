@@ -105,6 +105,9 @@ class CacheUtil implements EventSubscriberInterface
             wincache_ucache_clear();
         }
 
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs->remove($this->container->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
+
         return $output->fetch();
     }
 
