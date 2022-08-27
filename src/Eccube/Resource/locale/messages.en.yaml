@@ -479,6 +479,7 @@ admin.common.csv_invalid_no_data: No CSV data found
 admin.common.csv_invalid_required: '%name% is empty in the %line%'
 admin.common.csv_invalid_greater_than_zero: '%name% should be more than 0 in the line %line%.'
 admin.common.csv_invalid_format_line: 'CSV format unmatches in the line %line%'
+admin.common.csv_invalid_format_line_name: 'Unmatched format in %name% in the line %line%'
 admin.common.csv_invalid_date_format: 'Unmatched date format in %name% in the line %line%'
 admin.common.csv_invalid_not_found: '%name% is empty in the line %line%'
 admin.common.csv_invalid_not_found_target: '"%target_name%" is empty in %name% in the line %line%'

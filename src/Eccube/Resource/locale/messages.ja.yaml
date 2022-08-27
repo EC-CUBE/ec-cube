@@ -479,6 +479,7 @@ admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
 admin.common.csv_invalid_greater_than_zero: '%line%行目の%name%は0以上の数値を設定してください。'
 admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
+admin.common.csv_invalid_format_line_name: '%line%行目の%name%のフォーマットが異なります'
 admin.common.csv_invalid_date_format: '%line%行目の%name%の日付フォーマットが異なります'
 admin.common.csv_invalid_not_found: '%line%行目の%name%が存在しません'
 admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name%」が存在しません'
