@@ -140,6 +140,14 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
         return self::getConstantValue($name);
     }
 
+    public static function getRequiredIds(): array
+    {
+        $ref = new \ReflectionClass(static::class);
+        // クラス定数が存在していれば, クラス定数から値を取得する
+        $constants = $ref->getConstants();
+        return $constants;
+    }
+
     protected static function getConstantValue($name)
     {
         if (in_array($name, ['id', 'name', 'sortNo'])) {

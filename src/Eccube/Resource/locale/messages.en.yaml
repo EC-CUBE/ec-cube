@@ -1357,6 +1357,7 @@ admin.setting.system.master_data.description: |
 admin.setting.system.master_data.id: ID
 admin.setting.system.master_data.name: Name
 admin.setting.system.master_data.duplicate_id: You are not allowed to register duplicated IDs.
+admin.setting.system.master_data.error_must_data: 'Please include %id% in IDs.'
 
 #------------------------------------------------------------------------------------
 # Settings : System : System Info

@@ -1357,6 +1357,7 @@ admin.setting.system.master_data.description: |
 admin.setting.system.master_data.id: ID
 admin.setting.system.master_data.name: Name
 admin.setting.system.master_data.duplicate_id: 重複したIDを登録することはできません。
+admin.setting.system.master_data.error_must_data: 'IDには%id%を含めてください'
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：システム情報

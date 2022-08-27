@@ -140,45 +140,50 @@ class MasterdataController extends AbstractController
                     $data['data']
                 ));
 
-                $repository = $this->entityManager->getRepository($entityName);
+                $errors = $this->validateMasterData($data['data'], $entityName);
+                if (empty($errors)) {
+                    $repository = $this->entityManager->getRepository($entityName);
 
-                foreach ($data['data'] as $key => $value) {
-                    if ($value['id'] !== null && $value['name'] !== null) {
-                        $entity = $repository->find($value['id']);
-                        if ($entity === null) {
-                            $entity = new $entityName();
-                        }
-                        $entity->setId($value['id']);
-                        $entity->setName($value['name']);
-                        $entity->setSortNo($sortNo++);
-                        $this->entityManager->persist($entity);
-                    } elseif (!in_array($key, $ids)) {
-                        // remove
-                        $delKey = $this->entityManager->getRepository($entityName)->find($key);
-                        if ($delKey) {
-                            $this->entityManager->remove($delKey);
+                    foreach ($data['data'] as $key => $value) {
+                        if ($value['id'] !== null && $value['name'] !== null) {
+                            $entity = $repository->find($value['id']);
+                            if ($entity === null) {
+                                $entity = new $entityName();
+                            }
+                            $entity->setId($value['id']);
+                            $entity->setName($value['name']);
+                            $entity->setSortNo($sortNo++);
+                            $this->entityManager->persist($entity);
+                        } elseif (!in_array($key, $ids)) {
+                            // remove
+                            $delKey = $this->entityManager->getRepository($entityName)->find($key);
+                            if ($delKey) {
+                                $this->entityManager->remove($delKey);
+                            }
                         }
                     }
-                }
 
-                try {
-                    $this->entityManager->flush();
+                    try {
+                        $this->entityManager->flush();
 
-                    $event = new EventArgs(
-                        [
-                            'form' => $form2,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(
-                        $event,
-                        EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE
-                    );
+                        $event = new EventArgs(
+                            [
+                                'form' => $form2,
+                            ],
+                            $request
+                        );
+                        $this->eventDispatcher->dispatch(
+                            $event,
+                            EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE
+                        );
 
-                    $this->addSuccess('admin.common.save_complete', 'admin');
-                } catch (\Exception $e) {
-                    // 外部キー制約などで削除できない場合に例外エラーになる
-                    $this->addError('admin.common.save_error', 'admin');
+                        $this->addSuccess('admin.common.save_complete', 'admin');
+                    } catch (\Exception $e) {
+                        // 外部キー制約などで削除できない場合に例外エラーになる
+                        $this->addError('admin.common.save_error', 'admin');
+                    }
+                } else {
+                    array_map(fn($error) => $this->addError($error, 'admin'), $errors);
                 }
 
                 return $this->redirectToRoute(
@@ -205,5 +210,21 @@ class MasterdataController extends AbstractController
             'form' => $form->createView(),
             'form2' => $form2->createView(),
         ];
+    }
+
+    protected function validateMasterData($data, $entityName): array
+    {
+        $errors = [];
+        try {
+            $ids = $entityName::getRequiredIds();
+            array_walk($ids, function ($id) use ($data, &$errors) {
+                if (!in_array($id, array_column($data, 'id'))) {
+                    $errors[] = trans('admin.setting.system.master_data.error_must_data', ['%id%' => $id]);
+                }
+            });
+        } catch (\Exception $e) {
+        }
+
+        return $errors;
     }
 }
