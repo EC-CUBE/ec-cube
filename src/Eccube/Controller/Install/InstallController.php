@@ -479,7 +479,7 @@ class InstallController extends AbstractController
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
             'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
-            'DATABASE_CHARSET' => substr($databaseUrl, 0, 5) === 'mysql' ? 'utf8mb4' : 'utf8',
+            'DATABASE_CHARSET' => 'mysql' === substr($databaseUrl, 0, 5) ? 'utf8mb4' : 'utf8',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);

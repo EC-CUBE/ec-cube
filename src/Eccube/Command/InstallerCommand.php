@@ -144,7 +144,7 @@ class InstallerCommand extends Command
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
         // DATABASE_CHARSET
-        $this->envFileUpdater->databaseCharset = \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
+        $this->envFileUpdater->databaseCharset = 'mysql' === substr($databaseUrl, 0, 5) ? 'utf8mb4' : 'utf8';
 
         // MAILER_DSN
         $mailerDsn = $this->container->getParameter('eccube_mailer_dsn');

@@ -123,10 +123,10 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir') . '/' . $file)) {
                 $fs->rename(
-                    $this->getParameter('eccube_temp_image_dir').'/'.$file,
-                    $this->getParameter('eccube_save_image_dir').'/'.$file
+                    $this->getParameter('eccube_temp_image_dir') . '/' . $file,
+                    $this->getParameter('eccube_save_image_dir') . '/' . $file
                 );
             }
 
@@ -191,7 +191,7 @@ class PaymentController extends AbstractController
                 throw new UnsupportedMediaTypeHttpException();
             }
 
-            $filename = date('mdHis').uniqid('_').'.'.$extension;
+            $filename = date('mdHis') . uniqid('_') . '.' . $extension;
             $image->move($this->getParameter('eccube_temp_image_dir'), $filename);
         }
         $event = new EventArgs(
@@ -225,10 +225,10 @@ class PaymentController extends AbstractController
         ];
 
         foreach ($dirs as $dir) {
-            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $image = \realpath($dir . '/' . $request->query->get('source'));
             $dir = \realpath($dir);
 
-            if (\is_file($image) && \str_starts_with($image, $dir)) {
+            if (\is_file($image) && preg_match('/^' . $dir . '/', $image)) {
                 $file = new \SplFileObject($image);
 
                 return $this->file($file, $file->getBasename());
@@ -250,7 +250,7 @@ class PaymentController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
+        $tempFile = $this->eccubeConfig['eccube_temp_image_dir'] . '/' . $request->getContent();
         if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);

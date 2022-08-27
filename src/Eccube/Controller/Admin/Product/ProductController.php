@@ -384,7 +384,7 @@ class ProductController extends AbstractController
             $image = \realpath($dir.'/'.$request->query->get('source'));
             $dir = \realpath($dir);
 
-            if (\is_file($image) && \str_starts_with($image, $dir)) {
+            if (\is_file($image) && preg_match('/^' . $dir . '/', $image)) {
                 $file = new \SplFileObject($image);
 
                 return $this->file($file, $file->getBasename());
