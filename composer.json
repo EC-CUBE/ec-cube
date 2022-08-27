@@ -18,6 +18,7 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-zip": "*",
+        "ext-curl": "*",
         "composer/ca-bundle": "^1.1",
         "composer/composer": "^2.0",
         "doctrine/annotations": "^1.6",
