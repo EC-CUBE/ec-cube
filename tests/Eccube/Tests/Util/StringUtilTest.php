@@ -521,4 +521,76 @@ class StringUtilTest extends TestCase
             ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'hoge', 'FOO' => 'foo'], 'HOGE=hoge'.PHP_EOL.'FOO=foo'],
         ];
     }
+
+
+    public function testCreateMailerUrl()
+    {
+        $params = [
+            'smtp_host' => 'localhost',
+        ];
+        $this->expected = 'smtp://localhost';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+        ];
+        $this->expected = 'smtp://localhost:587';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'smtp_password' => 'password',
+            'smtp_username' => 'username',
+        ];
+        $this->expected = 'smtp://username:password@localhost:587?auth_mode=plain';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'smtp_password' => 'password',
+            'auth_mode' => 'login',
+            'smtp_username' => 'username',
+        ];
+        $this->expected = 'smtp://username:password@localhost:587?auth_mode=login';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 465,
+            'smtp_password' => 'password',
+            'auth_mode' => 'login',
+            'encryption' => 'ssl',
+            'smtp_username' => 'username',
+        ];
+        $this->expected = 'smtp://username:password@localhost:465?auth_mode=login&encryption=ssl';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'encryption' => 'ssl',
+        ];
+        $this->expected = 'smtp://localhost:465?encryption=ssl';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $params = [
+            'transport' => 'gmail',
+            'smtp_host' => 'smtp.gmail.com',
+            'encryption' => 'ssl',
+            'auth_mode' => 'login',
+            'smtp_password' => 'password',
+            'smtp_username' => 'username@gmail.com',
+        ];
+        $this->expected = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
+        $this->actual = StringUtil::createMailerUrl($params);
+        $this->assertEquals($this->expected, $this->actual);
+    }
 }
