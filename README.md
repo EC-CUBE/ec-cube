@@ -8,8 +8,6 @@
 
 [![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
 **4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1.0)をご確認ください。**
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。
