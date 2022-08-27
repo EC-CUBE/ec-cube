@@ -51,6 +51,11 @@ class CsvExportService
     protected $convertEncodingCallBack;
 
     /**
+     * @var \Closure
+     */
+    protected $escapeCellCallback;
+
+    /**
      * @var EntityManagerInterface
      */
     protected $entityManager;
@@ -368,6 +373,21 @@ class CsvExportService
         };
     }
 
+    /**
+     * セルのエスケープを行うコールバック関数を返す.
+     *
+     * @return \Closure
+     */
+    public function getEscapeCellCallback()
+    {
+        return function ($value) {
+            if (!is_numeric($value) && preg_match('~^[=+\-@]~', $value)) {
+                $value = '\'' . $value;
+            }
+            return $value;
+        };
+    }
+
     public function fopen()
     {
         if (is_null($this->fp) || $this->closed) {
@@ -383,6 +403,11 @@ class CsvExportService
         if (is_null($this->convertEncodingCallBack)) {
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
         }
+        if (is_null($this->escapeCellCallback)) {
+            $this->escapeCellCallback = $this->getEscapeCellCallback();
+        }
+
+        $row = array_map($this->escapeCellCallback, $row);
 
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator']);
     }
