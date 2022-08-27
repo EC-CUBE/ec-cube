@@ -925,7 +925,7 @@ admin.order.skip_change_status: '%name%: ステータス変更をスキップし
 admin.order.shipping_csv.shipping_id_col: 出荷ID
 admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: お問い合わせ番号
-admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.tracking_number_description: 半角英数字かハイフンのみで設定
 admin.order.shipping_csv.shipping_date_col: 出荷日
 admin.order.shipping_csv.shipping_date_description: '出荷日を「YYYY-MM-DD」の形式で設定'
 
