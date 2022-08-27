@@ -106,7 +106,9 @@ class CacheUtil implements EventSubscriberInterface
         }
 
         $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->remove($this->container->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
+        if ($fs->exists($this->container->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'))) {
+            $fs->remove($this->container->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
+        }
 
         return $output->fetch();
     }
