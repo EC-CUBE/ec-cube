@@ -66,7 +66,7 @@ class ShopMasterType extends AbstractType
                 ],
             ])
             ->add('shop_name', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
