@@ -90,7 +90,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     {
         $f = new Filesystem();
 
-        return $f->remove($path);
+        $f->remove($path);
     }
 
     /**
