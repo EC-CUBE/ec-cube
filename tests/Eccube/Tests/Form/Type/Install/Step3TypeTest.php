@@ -34,8 +34,8 @@ class Step3TypeTest extends AbstractTypeTestCase
         'admin_dir' => 'administrator',
         'admin_force_ssl' => true,
         'admin_allow_hosts' => '1.1.1.1',
-        'smtp_host' => '127.0.0.1',
-        'smtp_port' => '1080',
+        'smtp_host' => 'localhost',
+        'smtp_port' => '1025',
         'smtp_username' => '',
         'smtp_password' => '',
     ];
