@@ -990,6 +990,7 @@ admin.content.file.dir_exists: '%file_name% is already exists.'
 admin.content.file.same_name_folder_exists: 'Cannot upload because a folder with the same name as the file exists.'
 admin.content.file.phpfile_error: 'php files cannot be uploaded.'
 admin.content.file.dotfile_error: 'Dot files cannot be uploaded.'
+admin.content.file.forbiddenfile_error: 'Contains files with extensions that cannot be uploaded.'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview

@@ -990,6 +990,7 @@ admin.content.file.dir_exists: '%file_name% は既に使用されています。
 admin.content.file.same_name_folder_exists: 'ファイルと同じ名前のフォルダが存在するためアップロードできません。'
 admin.content.file.phpfile_error: 'phpファイルはアップロードできません。'
 admin.content.file.dotfile_error: '.で始まるファイルはアップロードできません。'
+admin.content.file.forbiddenfile_error: 'アップロードできない拡張子のファイルが含まれています。'
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
