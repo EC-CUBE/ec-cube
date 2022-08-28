@@ -190,9 +190,6 @@ class OrderPdfService extends TcpdfFpdi
         // 出荷番号をStringからarrayに変換
         $ids = explode(',', $formData['ids']);
 
-        // 空文字列の場合のデフォルトメッセージを設定する
-        $this->setDefaultData($formData);
-
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
 
@@ -755,27 +752,6 @@ class OrderPdfService extends TcpdfFpdi
         $this->SetX($actualX);
         $actualY = is_null($y) ? $result['top'] : $y;
         $this->SetY($actualY);
-    }
-
-    /**
-     * データが設定されていない場合にデフォルト値を設定する.
-     *
-     * @param array $formData
-     */
-    protected function setDefaultData(array &$formData)
-    {
-        $defaultList = [
-            'title' => trans('admin.order.delivery_note_title__default'),
-            'message1' => trans('admin.order.delivery_note_message__default1'),
-            'message2' => trans('admin.order.delivery_note_message__default2'),
-            'message3' => trans('admin.order.delivery_note_message__default3'),
-        ];
-
-        foreach ($defaultList as $key => $value) {
-            if (is_null($formData[$key])) {
-                $formData[$key] = $value;
-            }
-        }
     }
 
     /**
