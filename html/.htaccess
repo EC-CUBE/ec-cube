@@ -1,6 +1,6 @@
 RemoveType .php
 AddType text/plain .php
-<FilesMatch \.php$>
+<FilesMatch "\.ph(p[2-6]?|tml)$">
     SetHandler none
     Deny from all
 </FilesMatch>
