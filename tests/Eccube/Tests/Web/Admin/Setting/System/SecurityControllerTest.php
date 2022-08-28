@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Tests\Web\Admin\Setting\Shop;
+namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
