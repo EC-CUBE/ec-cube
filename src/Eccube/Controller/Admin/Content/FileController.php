@@ -312,6 +312,10 @@ class FileController extends AbstractController
                 if (strpos($filename, '.') === 0) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
+                // その他の実行拡張子はアップロード不可
+                if ($this->checkExtension($filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.forbiddenfile_error'));
+                }
             } catch (UnsupportedMediaTypeHttpException $e) {
                 $this->errors[] = ['message' => $e->getMessage()];
                 continue;
@@ -486,6 +490,15 @@ class FileController extends AbstractController
         $topDir = realpath($topDir);
 
         return strpos($targetDir, $topDir) === 0;
+    }
+
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    protected function checkExtension(string $filename)
+    {
+        return !!preg_match('/.ph(p[2-6]?|tml)$/', $filename);
     }
 
     /**
