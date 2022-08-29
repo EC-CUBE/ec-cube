@@ -159,7 +159,7 @@ file that was distributed with this source code.
                     <div class="modal-header">
                         <h5 class="modal-title">{{ 'admin.order.add_product_item'|trans }}</h5>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                            
+
                         </button>
                     </div>
                     <div class="modal-body">
@@ -187,11 +187,11 @@ file that was distributed with this source code.
             </div>
         </div>
         <!-- 出荷済にするモーダル / 出荷メール送信モーダル -->
-        <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal fade" id="sentUpdateModal" tabindex="-1" role="dialog" aria-labelledby="sentUpdateModal" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold"><!--confirmationModal_js.twig--></h5>
+                        <h5 class="modal-title fw-bold"><!--confirmationModal_js.twig--></h5>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -199,7 +199,7 @@ file that was distributed with this source code.
                         <p class="mb-4 warning-message">{{ 'admin.order.bulk_action__confirm_message'|trans }}</p>
                         <ul id="bulkErrors"></ul>
                         <div id="bulk-options">
-                            <div class="font-weight-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
+                            <div class="fw-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="notificationMail">
                                 <label class="form-check-label notificationMail">
@@ -207,7 +207,7 @@ file that was distributed with this source code.
                                 </label>
                             </div>
                             <div>
-                                <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o font-weight-bold mr-1"></i><span class="font-weight-bold">{{ 'メール詳細'|trans }}</span></a></div>
+                                <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o fw-bold me-1"></i><span class="fw-bold">{{ 'メール詳細'|trans }}</span></a></div>
                                 <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
                                     <pre></pre>
                                 </div>
@@ -241,10 +241,10 @@ file that was distributed with this source code.
                                             <span class="card-title">{{ 'admin.order.shipping__card_title'|trans }}({{ loop.index }})</span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-4 text-end">
                                         {% if form.shippings|length > 1 %}
                                             <!-- 出荷が2つ以上ある場合は, 出荷の削除ボタンを表示する -->
-                                            <a class="btn btn-ec-regular mr-2" data-bs-toggle="modal" data-bs-target="#delete_shipping_{{ shippingForm.vars.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                            <a class="btn btn-ec-regular me-2" data-bs-toggle="modal" data-bs-target="#delete_shipping_{{ shippingForm.vars.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                 {{ 'admin.order.delete_shipping'|trans }}
                                             </a>
@@ -253,26 +253,26 @@ file that was distributed with this source code.
                                                     <div class="modal-content">
                                                         {% if shippingForm.OrderItems|length > 0 %}
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.order.delete_shipping_error__confirm_title'|trans }}</h5>
+                                                                <h5 class="modal-title fw-bold">{{ 'admin.order.delete_shipping_error__confirm_title'|trans }}</h5>
                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                    
+
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">{{ 'admin.order.delete_shipping_error__confirm_message'|trans }}</p>
+                                                            <div class="modal-body text-start">
+                                                                <p class="text-start">{{ 'admin.order.delete_shipping_error__confirm_message'|trans }}</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                             </div>
                                                         {% else %}
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                    
+
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">{{ 'admin.order.delete_shipping__confirm_message'|trans({ "%num%" : loop.index }) }}</p>
+                                                            <div class="modal-body text-start">
+                                                                <p class="text-start">{{ 'admin.order.delete_shipping__confirm_message'|trans({ "%num%" : loop.index }) }}</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
@@ -316,7 +316,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.name'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ms-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -336,7 +336,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.kana'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ms-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -356,15 +356,15 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.address'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ms-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
                                                 <div class="col">
                                                     <div class="row mb-3">
-                                                        <div class="col form-inline">
-                                                            {{ 'admin.common.postal_symbol'|trans }}
-                                                            {{ form_widget(shippingForm.postal_code) }}
+                                                        <div class="col row align-items-center">
+                                                            <span class="col-auto">{{ 'admin.common.postal_symbol'|trans }}</span>
+                                                            <span class="col-auto ps-0">{{ form_widget(shippingForm.postal_code) }}</span>
                                                             {{ form_errors(shippingForm.postal_code) }}
                                                         </div>
                                                     </div>
@@ -393,7 +393,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.common.phone_number'|trans }}
-                                                    <span class="badge badge-primary ml-1">
+                                                    <span class="badge bg-primary ms-1">
                                                         {{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
@@ -431,7 +431,7 @@ file that was distributed with this source code.
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
                                                     {{ 'admin.order.delivery_provider'|trans }}
-                                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}
+                                                    <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}
                                                     </span>
                                                 </label>
                                                 <div class="col">
@@ -443,7 +443,7 @@ file that was distributed with this source code.
                                         <div class="col-6">
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
-                                                    <i class="fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true"></i>
+                                                    <i class="fa fa-calendar-check-o fa-fw me-1" aria-hidden="true"></i>
                                                     {{ 'admin.order.delivery_date'|trans }}
                                                 </label>
                                                 <div class="col">
@@ -453,7 +453,7 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
-                                                    <i class="fa fa-clock-o fa-fw mr-1" aria-hidden="true"></i>
+                                                    <i class="fa fa-clock-o fa-fw me-1" aria-hidden="true"></i>
                                                     {{ 'admin.order.delivery_time'|trans }}
                                                 </label>
                                                 <div class="col">
@@ -463,7 +463,7 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
-                                                    <i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>
+                                                    <i class="fa fa-truck fa-fw me-1" aria-hidden="true"></i>
                                                     {{ 'admin.order.shipping_date'|trans }}
                                                 </label>
                                                 <div class="col">
@@ -473,12 +473,12 @@ file that was distributed with this source code.
                                                     {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->
-                                                        <button type="button" class="btn btn-ec-regular mr-2 confirmationModal" href="javascript:;"
+                                                        <button type="button" class="btn btn-ec-regular me-2 confirmationModal" href="javascript:;"
                                                                 data-id="{{ shippingForm.vars.value.id }}" data-type="status" data-bulk-update="false"
                                                                 data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
                                                                 data-update-status-url="{{ url('admin_shipping_update_order_status', { id: shippingForm.vars.value.id}) }}"
                                                                 data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: shippingForm.vars.value.id}) }}"
-                                                                data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.order.to_shipped'|trans }}">
                                                             <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
                                                             {{ 'admin.order.to_shipped'|trans }}
                                                         </button>
@@ -489,7 +489,7 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
-                                                    <i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>
+                                                    <i class="fa fa-refresh fa-fw me-1" aria-hidden="true"></i>
                                                     {{ 'admin.common.last_update_date'|trans }}
                                                 </label>
                                                 <div class="col">
@@ -498,7 +498,7 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-3 col-form-label">
-                                                    <i class="fa fa-user fa-fw mr-1" aria-hidden="true"></i>
+                                                    <i class="fa fa-user fa-fw me-1" aria-hidden="true"></i>
                                                     {{ 'admin.common.last_updater'|trans }}
                                                 </label>
                                                 <div class="col">
@@ -514,12 +514,12 @@ file that was distributed with this source code.
                                     <div id="shipping-product_{{ loop.index0 }}" class="row justify-content-between mb-2">
                                         <div class="col-6">
                                             <!-- 商品を追加 -->
-                                            <button class="btn btn-ec-regular mr-2 addProduct-button" type="button" data-bs-toggle="modal"
+                                            <button class="btn btn-ec-regular me-2 addProduct-button" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#addProduct" data-shipping-no="{{ loop.index0 }}">
                                                 {{ 'admin.order.add_product_item'|trans }}
                                             </button>
                                             <!-- その他の明細を追加 -->
-                                            <a class="btn btn-ec-regular mr-2 addOtherProduct-button" data-bs-toggle="modal" data-bs-target="#addOrderItemType" data-shipping-no="{{ loop.index0 }}">{{ 'admin.order.add_other_item'|trans }}</a>
+                                            <a class="btn btn-ec-regular me-2 addOtherProduct-button" data-bs-toggle="modal" data-bs-target="#addOrderItemType" data-shipping-no="{{ loop.index0 }}">{{ 'admin.order.add_other_item'|trans }}</a>
                                             {# 明細行のエラー表示 #}
                                             {{ form_errors(shippingForm.OrderItemsErrors) }}
                                         </div>
@@ -530,7 +530,7 @@ file that was distributed with this source code.
                                                data-prototype="{% apply escape %}{{ include('@admin/Order/order_item_prototype.twig', {'orderItemForm': shippingForm.OrderItems.vars.prototype}) }}{% endapply %}">
                                             <thead class="table-active">
                                             <tr class="text-nowrap">
-                                                <th class="pt-2 pb-2 pl-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
+                                                <th class="pt-2 pb-2 ps-3">{{ 'admin.product.product_name_and_code'|trans }}</th>
                                                 <th class="pt-2 pb-2">
                                                     <div class="col-8">{{ 'admin.order.amount'|trans }}</div>
                                                 </th>
@@ -546,7 +546,7 @@ file that was distributed with this source code.
                                                 <th class="pt-2 pb-2">
                                                     <div class="col-8">{{ 'admin.order.subtotal'|trans }}</div>
                                                 </th>
-                                                <th class="pt-2 pb-2 pr-3"></th>
+                                                <th class="pt-2 pb-2 pe-3"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -559,8 +559,8 @@ file that was distributed with this source code.
                                                     {{ form_widget(orderItemForm.order_item_type) }}
                                                     {{ form_widget(orderItemForm.tax_type) }}
                                                     {{ form_widget(orderItemForm.tax_rate, {'type': 'hidden'}) }}
-                                                    <td class="align-middle w-25 pl-3">
-                                                        <p class="mb-0 font-weight-bold">
+                                                    <td class="align-middle w-25 ps-3">
+                                                        <p class="mb-0 fw-bold">
                                                             {% if OrderItem.OrderItemType.isProduct %}
                                                                 {{ OrderItem.product_name }}
                                                                 {{ form_widget(orderItemForm.product_name, { 'type': 'hidden' }) }}
@@ -587,7 +587,7 @@ file that was distributed with this source code.
                                                     <td class="align-middle">
                                                         <div class="col mt-3">
                                                             {{ form_widget(orderItemForm.price, {'attr': { 'readonly': 'readonly' } }) }}
-                                                            <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
+                                                            <div class="text-end small">({{ OrderItem.TaxDisplayType }})</div>
                                                             {{ form_errors(orderItemForm.price) }}
                                                         </div>
                                                     </td>
@@ -612,11 +612,11 @@ file that was distributed with this source code.
                                                             <span>{{ OrderItem.total_price|price }}</span>
                                                         </div>
                                                     </td>
-                                                    <td class="align-middle text-right pr-3">
+                                                    <td class="align-middle text-end pe-3">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto text-center">
-                                                                <div class="d-inline-block mr-3" data-tooltip="true"
-                                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                                <div class="d-inline-block me-3" data-bs-toggle="tooltip"
+                                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                     <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#delete_{{ orderItemForm.vars.id }}">
                                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                                     </a>
@@ -626,13 +626,13 @@ file that was distributed with this source code.
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                                    
+
                                                                                 </button>
                                                                             </div>
-                                                                            <div class="modal-body text-left">
-                                                                                <p class="text-left">{{ 'admin.order.delete_item__confirm_message'|trans({ "%name%" : OrderItem.product_name }) }}</p>
+                                                                            <div class="modal-body text-start">
+                                                                                <p class="text-start">{{ 'admin.order.delete_item__confirm_message'|trans({ "%name%" : OrderItem.product_name }) }}</p>
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>

@@ -62,7 +62,7 @@ class CalendarControllerTest extends AbstractWebTestCase
 
         if ($targetHoliday->isSaturday()) {
             if (!$targetHoliday->copy()->addDay(2)->isCurrentMonth()) {
-                $targetHoliday = $targetHoliday->addDay(-1);
+                $targetHoliday = $targetHoliday->addDay(-2);
             } else {
                 $targetHoliday = $targetHoliday->addDay(2);
             }

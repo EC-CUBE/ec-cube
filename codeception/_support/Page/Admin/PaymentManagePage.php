@@ -60,7 +60,7 @@ class PaymentManagePage extends AbstractAdminPageStyleGuide
     public function 一覧_削除($rowNum)
     {
         $rowNum = $rowNum + 1;
-        $this->tester->click(".c-contentsArea__primaryCol .list-group-flush .list-group-item:nth-child(${rowNum}) > div > div.col-3.text-right > div > a");
+        $this->tester->click(".c-contentsArea__primaryCol .list-group-flush .list-group-item:nth-child(${rowNum}) > div > div.col-3.text-end > div > a");
         $this->tester->wait(1);
 
         // accept modal

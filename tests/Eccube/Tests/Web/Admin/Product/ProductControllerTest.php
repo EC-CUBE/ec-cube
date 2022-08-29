@@ -184,13 +184,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
@@ -202,7 +202,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 表示件数はSESSIONから取得するテスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
@@ -232,13 +232,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
@@ -250,7 +250,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 表示件数はSESSIONから取得するテスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
@@ -277,13 +277,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
@@ -296,7 +296,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
 
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
     }
 
@@ -954,107 +954,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImage()
-    {
-        $formData = $this->createFormData();
-
-        copy(
-            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.png',
-            'sand-1.png',
-            'image/png',
-            null, true
-        );
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testAddImageWithUppercaseSuffix()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.PNG'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.PNG',
-            'sand-1.PNG',
-            'image/png',
-            null, true
-        );
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testAddImageNotAjax()
-    {
-        $formData = $this->createFormData();
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            []
-        );
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAddImageMineNotSupported()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../Fixtures/categories.csv',
-            $this->imageDir.'/categories.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/categories.png',
-            'categories.png',
-            'image/png',
-            null, true
-        );
-
-        $crawler = $this->client->request('POST',
-           $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertFalse($this->client->getResponse()->isSuccessful());
-    }
-
     /**
      * 個別税率編集時のテストデータ
      * 更新前の税率 / POST値 / 期待値の配列を返す
@@ -1116,7 +1015,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteImage()
     {
         /** @var Generator $generator */
-        $generator = self::$container->get(Generator::class);
+        $generator = static::getContainer()->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -1155,7 +1054,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteAndDeleteProductImage()
     {
         /** @var Generator $generator */
-        $generator = self::$container->get(Generator::class);
+        $generator = static::getContainer()->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 

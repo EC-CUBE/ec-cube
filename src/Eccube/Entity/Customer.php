@@ -618,6 +618,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * @param string|null $password
+         *
          * @return $this
          */
         public function setPlainPassword(?string $password): self

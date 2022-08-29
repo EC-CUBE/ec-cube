@@ -52,14 +52,13 @@ class RepeatedPasswordType extends AbstractType
             'error_bubbling' => false,
             'options' => [
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => $this->eccubeConfig['eccube_password_min_len'],
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
                     ]),
                     new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form_error.graph_only',
+                        'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                        'message' => 'form_error.password_pattern_invalid',
                     ]),
                 ],
             ],
@@ -74,6 +73,9 @@ class RepeatedPasswordType extends AbstractType
                 'attr' => [
                     'placeholder' => 'common.repeated_confirm',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
             ],
         ]);
     }

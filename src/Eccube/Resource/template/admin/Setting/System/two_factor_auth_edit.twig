@@ -56,7 +56,7 @@ $(function () {
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</span></div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     <a data-bs-toggle="collapse" href="#memberInfo" aria-expanded="false" aria-controls="memberInfo">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -75,10 +75,10 @@ $(function () {
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.two_factor_auth.qr_code'|trans }}">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.two_factor_auth.qr_code'|trans }}">
                                             <span>{{ form.device_token.vars.label|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                            <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
+                                            <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                         </div>
                                     </div>
                                     <div class="col">

@@ -114,12 +114,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $total = [];
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
                 $total[$rate] = TaxRuleService::roundByRoundingType(
-                    $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal(),
+                    $this->getTaxableTotal() ?
+                    $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal() : 0,
                     $roundingTypes[$rate]->getId()
                 );
             }
 
             ksort($total);
+
             return $total;
         }
 
@@ -136,12 +138,14 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $tax = [];
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
                 $tax[$rate] = TaxRuleService::roundByRoundingType(
-                    ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)),
+                    $this->getTaxableTotal() ?
+                    ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)) : 0,
                     $roundingTypes[$rate]->getId()
                 );
             }
 
             ksort($tax);
+
             return $tax;
         }
 

@@ -175,12 +175,12 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // before
         $formData = $this->createFormData();
         $formData['plain_password'] = [
-            'first' => '**********',
-            'second' => '**********',
+            'first' => $this->eccubeConfig['eccube_default_password'],
+            'second' => $this->eccubeConfig['eccube_default_password'],
         ];
         $Member = $this->createMember();
         $loginId = $Member->getLoginId();
-        $Member->setPassword('**********');
+        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
         $this->entityManager->persist($Member);
         $this->entityManager->flush();
         $mid = $Member->getId();
@@ -207,6 +207,32 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // before
         $formData = $this->createFormData();
         $formData['name'] = '';
+        $Member = $this->createMember();
+        $Member->setPassword('**********');
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
+        $mid = $Member->getId();
+
+        // main
+        $this->client->request('POST',
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
+            ['admin_member' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5420
+     */
+    public function testMemberEditSubmitFailWithPlainPasswordIsEmpty()
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['plain_password'] = [
+            'first' => '',
+            'second' => ''
+        ];
         $Member = $this->createMember();
         $Member->setPassword('**********');
         $this->entityManager->persist($Member);
@@ -347,8 +373,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             'department' => $faker->word,
             'login_id' => 'logintest',
             'plain_password' => [
-                'first' => 'password',
-                'second' => 'password',
+                'first' => 'password1234',
+                'second' => 'password1234',
             ],
             'Authority' => rand(0, 1),
             'Work' => rand(0, 1),

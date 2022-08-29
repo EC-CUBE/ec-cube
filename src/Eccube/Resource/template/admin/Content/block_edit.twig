@@ -65,7 +65,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.content.block__card_title'|trans }}</span></div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     <a data-bs-toggle="collapse" href="#blockEdit" aria-expanded="false" aria-controls="blockEdit">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -76,10 +76,10 @@ file that was distributed with this source code.
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.block_name'|trans }}">
-                                            <span>{{ 'admin.content.block_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.block_name'|trans }}">
+                                            <span>{{ 'admin.content.block_name'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         {{ form_widget(form.name) }}
@@ -88,18 +88,18 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.block_file_name'|trans }}">
-                                            <span>{{ 'admin.content.block_file_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.block_file_name'|trans }}">
+                                            <span>{{ 'admin.content.block_file_name'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         {% if deletable %}
-                                            <div class="form-inline">
-                                                {{ form_widget(form.file_name) }}.twig
+                                            <div class="row align-items-center">
+                                                <span class="col-3">{{ form_widget(form.file_name) }}</span><span class="col-auto ps-0">.twig</span>
                                             </div>
                                         {% else %}
-                                            {{ form.file_name.vars.value }}.twig
+                                            <span class="col-3">{{ form.file_name.vars.value }}</span><span class="col-auto ps-0">.twig</span>
                                             {{ form_widget(form.file_name, { type : 'hidden' } ) }}
                                         {% endif %}
                                         {{ form_errors(form.file_name) }}
@@ -107,10 +107,10 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.block_source_code'|trans }}">
-                                            <span>{{ 'admin.content.block_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.block_source_code'|trans }}">
+                                            <span>{{ 'admin.content.block_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.block_html) ? ' is-invalid' }}"></div>

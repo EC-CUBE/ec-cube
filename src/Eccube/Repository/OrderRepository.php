@@ -37,17 +37,7 @@ class OrderRepository extends AbstractRepository
     protected $queries;
 
     public const COLUMNS = [
-        'order' => 'o.name01'
-        ,'orderer'=> 'o.id'
-        ,'shipping_id'=> 's.id'
-        ,'purchase_product' => 'oi.product_name'
-        ,'quantity' => 'oi.quantity'
-        ,'payment_method' => 'o.payment_method'
-        ,'order_status' => 'o.OrderStatus'
-        ,'purchase_price' => 'o.total'
-        ,'shipping_status' => 's.shipping_date'
-        ,'tracking_number' => 's.tracking_number'
-        ,'delivery'  => 's.name01'
+        'order' => 'o.name01', 'orderer' => 'o.id', 'shipping_id' => 's.id', 'purchase_product' => 'oi.product_name', 'quantity' => 'oi.quantity', 'payment_method' => 'o.payment_method', 'order_status' => 'o.OrderStatus', 'purchase_price' => 'o.total', 'shipping_status' => 's.shipping_date', 'tracking_number' => 's.tracking_number', 'delivery' => 's.name01',
     ];
 
     /**
@@ -120,7 +110,7 @@ class OrderRepository extends AbstractRepository
         }
         // multi
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            //スペース除去
+            // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $multi = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
@@ -128,11 +118,11 @@ class OrderRepository extends AbstractRepository
             }
             $qb
                 ->andWhere('o.id = :multi OR CONCAT(o.name01, o.name02) LIKE :likemulti OR '.
-                    "CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :likemulti OR o.company_name LIKE :company_name OR ".
+                    "CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :likemulti OR o.company_name LIKE :multi_company_name OR ".
                     'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$clean_key_multi.'%')
-                ->setParameter('company_name', '%'.$searchData['multi'].'%'); // 会社名はスペースを除去せず検索
+                ->setParameter('multi_company_name', '%'.$searchData['multi'].'%'); // 会社名はスペースを除去せず検索
         }
 
         // order_id_end

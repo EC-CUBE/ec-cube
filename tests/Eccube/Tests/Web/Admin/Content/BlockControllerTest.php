@@ -56,8 +56,8 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         ));
 
         $dir = sprintf('%s/app/template/%s/Block',
-            self::$container->getParameter('kernel.project_dir'),
-            self::$container->getParameter('eccube.theme'));
+            static::getContainer()->getParameter('kernel.project_dir'),
+            static::getContainer()->getParameter('eccube.theme'));
 
         $this->expected = '<p>test</p>';
         $this->actual = file_get_contents($dir.'/file_name.twig');
@@ -73,12 +73,12 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         $this->loginTo($this->createMember());
 
-        $redirectUrl = $this->generateUrl('admin_content_block');
 
         $this->client->request('DELETE',
             $this->generateUrl('admin_content_block_delete', ['id' => 1])
         );
 
+        $redirectUrl = $this->generateUrl('admin_content_block');
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertSame(true, $actual);

@@ -14,8 +14,6 @@
 namespace Eccube\Controller\Install;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
@@ -48,10 +46,10 @@ class InstallController extends AbstractController
     /**
      * default value of auth magic
      */
-    const DEFAULT_AUTH_MAGIC = '<change.me>';
+    public const DEFAULT_AUTH_MAGIC = '<change.me>';
 
     /** @var string */
-    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
+    public const TRANSACTION_CHECK_FILE = '/var/.httransaction';
 
     protected $requiredModules = [
         'pdo',
@@ -881,8 +879,8 @@ class InstallController extends AbstractController
         try {
             $salt = StringUtil::random(32);
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
-            $stmt->execute([':login_id' => $data['login_id']]);
-            $row = $stmt->fetch();
+            $stmt->bindParam(':login_id', $data['login_id']);
+            $row = $stmt->executeQuery();
             $this->encoder->setAuthMagic($data['auth_magic']);
             $password = $this->encoder->encodePassword($data['login_pass'], $salt);
             if ($row) {

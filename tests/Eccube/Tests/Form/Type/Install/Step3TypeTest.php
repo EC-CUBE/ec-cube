@@ -30,7 +30,7 @@ class Step3TypeTest extends AbstractTypeTestCase
         'shop_name' => '店舗名',
         'email' => 'eccube@example.com',
         'login_id' => 'administrator',
-        'login_pass' => 'administrator',
+        'login_pass' => 'administrator1',
         'admin_dir' => 'administrator',
         'admin_force_ssl' => true,
         'admin_allow_hosts' => '1.1.1.1',
@@ -150,7 +150,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testVallidLoginPassMin()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1).'1';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -158,7 +158,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testVallidLoginPassMax()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] - 1).'1';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -169,6 +169,26 @@ class Step3TypeTest extends AbstractTypeTestCase
         $this->formData['login_pass'] = str_repeat('あ', $this->eccubeConfig['eccube_password_max_len']);
 
         $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidAlphabetOnly()
+    {
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+
+        $this->formData['login_pass'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidNumericOnly()
+    {
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len']);
+
+        $this->formData['login_pass'] = $password;
+        $this->form->submit($this->formData);
+
         $this->assertFalse($this->form->isValid());
     }
 
@@ -198,15 +218,15 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testVallidAdminDirMin()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+        $this->formData['admin_dir'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testVallidAdminDirMax()
+    public function testValidAdminDirMax()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+        $this->formData['admin_dir'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

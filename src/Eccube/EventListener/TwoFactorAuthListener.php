@@ -28,7 +28,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     /**
      * @var array 2段階認証のチェックを除外するroute
      */
-    const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
+    public const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
 
     /**
      * @var EccubeConfig

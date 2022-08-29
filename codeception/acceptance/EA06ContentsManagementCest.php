@@ -55,7 +55,7 @@ class EA06ContentsManagementCest
         NewsManagePage::go($I)->新規登録();
 
         NewsEditPage::of($I)
-            ->入力_日付(date('Y-m-d'))
+            ->入力_日付(date('Y-m-d').'T00:00:00')
             ->入力_タイトル('news_title1')
             ->入力_本文('newsnewsnewsnewsnews')
             ->登録();
@@ -212,7 +212,7 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/user_data/'.$page);
         $config = Fixtures::get('config');
-        $I->seeElement('div.ec-layoutRole__footer');
+        $I->seeElement('footer.ec-layoutRole__footer');
 
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');

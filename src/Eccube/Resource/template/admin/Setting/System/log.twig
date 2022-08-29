@@ -16,34 +16,36 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.setting.system.log_display'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
+{% form_theme form '@admin/Form/bootstrap_4_layout.html.twig' %}
+
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
             <div class="card rounded border-0 mb-4">
                 <div class="card-header">
-                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.log_display'|trans }}">
-                        <span class="card-title">{{ 'admin.setting.system.log_display'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.log_display'|trans }}">
+                        <span class="card-title">{{ 'admin.setting.system.log_display'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                     </div>
                 </div>
                 <div class="card-body">
                     <form name="form1" id="form1" method="post">
                         {{ form_widget(form._token) }}
-                        <div class="form-inline mb-3">
-                            <div class="mb-3 pr-3">
-                                {{ form_widget(form.files) }}
+                        <div class="row mb-3">
+                            <div class="mb-3 pe-3 col-2">
+                                {{ form_widget(form.files, { 'attr': { 'class': 'form-select' }}) }}
                             </div>
-                            <div class="mb-3 pr-3">
-                                {{ form_widget(form.line_max) }}
-                                <span class="ml-2">{{ 'admin.setting.system.log.line_number'|trans }}</span>
+                            <div class="row mb-3 pe-3 col-auto align-items-center">
+                                <span class="col-auto">{{ form_widget(form.line_max) }}</span>
+                                <span class="col-auto ps-0">{{ 'admin.setting.system.log.line_number'|trans }}</span>
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3 col-auto">
                                 <button type="submit"
                                         class="btn btn-ec-conversion">{{ 'admin.setting.system.log.read'|trans }}</button>
                             </div>
-                            <div class="mb-3 pr-3">
+                            <div class="mb-3 pe-3 col-auto">
                                 {{ form_widget(form.download) }}
                             </div>
-                            {{ form_errors(form.line_max) }}
+                            <span class="col-auto">{{ form_errors(form.line_max) }}</span>
                         </div>
                     </form>
                     <div>

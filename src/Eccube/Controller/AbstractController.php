@@ -114,32 +114,62 @@ class AbstractController extends Controller
 
     public function addSuccess($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.'.$namespace.'.success', $message);
+        $this->addFlash('eccube.'.$namespace.'.success', $message);
+    }
+
+    public function addSuccessOnce($message, $namespace = 'front')
+    {
+        $this->addFlashOnce('eccube.'.$namespace.'.success', $message);
     }
 
     public function addError($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.'.$namespace.'.error', $message);
+        $this->addFlash('eccube.'.$namespace.'.error', $message);
+    }
+
+    public function addErrorOnce($message, $namespace = 'front')
+    {
+        $this->addFlashOnce('eccube.'.$namespace.'.error', $message);
     }
 
     public function addDanger($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.'.$namespace.'.danger', $message);
+        $this->addFlash('eccube.'.$namespace.'.danger', $message);
+    }
+
+    public function addDangerOnce($message, $namespace = 'front')
+    {
+        $this->addFlashOnce('eccube.'.$namespace.'.danger', $message);
     }
 
     public function addWarning($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.'.$namespace.'.warning', $message);
+        $this->addFlash('eccube.'.$namespace.'.warning', $message);
+    }
+
+    public function addWarningOnce($message, $namespace = 'front')
+    {
+        $this->addFlashOnce('eccube.'.$namespace.'.warning', $message);
     }
 
     public function addInfo($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.'.$namespace.'.info', $message);
+        $this->addFlash('eccube.'.$namespace.'.info', $message);
+    }
+
+    public function addInfoOnce($message, $namespace = 'front')
+    {
+        $this->addFlashOnce('eccube.'.$namespace.'.info', $message);
     }
 
     public function addRequestError($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.'.$namespace.'.request.error', $message);
+        $this->addFlash('eccube.'.$namespace.'.request.error', $message);
+    }
+
+    public function addRequestErrorOnce($message, $namespace = 'front')
+    {
+        $this->addFlashOnce('eccube.'.$namespace.'.request.error', $message);
     }
 
     public function clearMessage()
@@ -151,6 +181,31 @@ class AbstractController extends Controller
     {
         $this->clearMessage();
         $this->addWarning('admin.common.delete_error_already_deleted', 'admin');
+    }
+
+    public function hasMessage(string $type): bool
+    {
+        return $this->session->getFlashBag()->has($type);
+    }
+
+    public function addFlashOnce(string $type, $message): void
+    {
+        if (!$this->hasMessage($type)) {
+            $this->addFlash($type, $message);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addFlash(string $type, $message): void
+    {
+        try {
+            parent::addFlash($type, $message);
+        } catch (\LogicException $e) {
+            // fallback session
+            $this->session->getFlashBag()->add($type, $message);
+        }
     }
 
     /**

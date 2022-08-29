@@ -24,7 +24,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginHistoryListener implements EventSubscriberInterface
@@ -74,7 +76,7 @@ class LoginHistoryListener implements EventSubscriberInterface
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
-            AuthenticationEvents::AUTHENTICATION_FAILURE => 'onAuthenticationFailure',
+            LoginFailureEvent::class => 'onAuthenticationFailure',
         ];
     }
 
@@ -103,7 +105,7 @@ class LoginHistoryListener implements EventSubscriberInterface
         }
     }
 
-    public function onAuthenticationFailure(AuthenticationFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();
 
@@ -116,9 +118,12 @@ class LoginHistoryListener implements EventSubscriberInterface
             return;
         }
 
-        $userName = $event->getAuthenticationToken()->getUsername();
         $Member = null;
-        if ($userName) {
+        $userName = null;
+        $passport = $event->getPassport();
+        if ($passport->hasBadge(UserBadge::class)) {
+            $userName = $passport->getBadge(UserBadge::class)
+                ->getUserIdentifier();
             $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
         }
 

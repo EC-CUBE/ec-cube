@@ -59,7 +59,7 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{ 'admin.order.output_delivery_note'|trans }}</h4>
+                            <h4 class="box-title fw-bold">{{ 'admin.order.output_delivery_note'|trans }}</h4>
                         </div>
 
                         <div class="card-body">
@@ -87,7 +87,7 @@ file that was distributed with this source code.
                                 {{ form_errors(form.download_kind) }}
                             </div>
 
-                            <div class="font-weight-bold">{{ 'admin.order.delivery_note_message'|trans }}</div>
+                            <div class="fw-bold">{{ 'admin.order.delivery_note_message'|trans }}</div>
 
                             <div class="mb-3">
                                 <label>{{ 'admin.order.delivery_note_line1'|trans }}</label>
@@ -107,7 +107,7 @@ file that was distributed with this source code.
                                 {{ form_errors(form.message3) }}
                             </div>
 
-                            <div class="font-weight-bold">{{ 'admin.order.delivery_note_memo'|trans }}</div>
+                            <div class="fw-bold">{{ 'admin.order.delivery_note_memo'|trans }}</div>
                             <div class="mb-3">
                                 <label>{{ 'admin.order.delivery_note_line1'|trans }}</label>
                                 {{ form_widget(form.note1) }}
@@ -126,9 +126,11 @@ file that was distributed with this source code.
                                 {{ form_errors(form.note3) }}
                             </div>
 
-                            <div class="mb-3 text-right">
-                                {{ form_widget(form.default) }}
-                                {{ form_errors(form.default) }}
+                            <div class="mb-3 text-end">
+                                <div class="form-check form-check-inline">
+                                    {{ form_widget(form.default) }}
+                                    {{ form_errors(form.default) }}
+                                </div>
                             </div>
 
                         </div>

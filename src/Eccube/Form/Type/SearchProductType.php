@@ -14,8 +14,8 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Repository\CategoryRepository;
@@ -76,11 +76,11 @@ class SearchProductType extends AbstractType
         $builder->add('pageno', HiddenType::class, []);
         $builder->add('disp_number', ProductListMaxType::class, [
             'label' => false,
-            'choices' => $this->entityManager->getRepository(ProductListMax::class)->findBy([], ['sort_no' => 'ASC'])
+            'choices' => $this->entityManager->getRepository(ProductListMax::class)->findBy([], ['sort_no' => 'ASC']),
         ]);
         $builder->add('orderby', ProductListOrderByType::class, [
             'label' => false,
-            'choices' => $this->entityManager->getRepository(ProductListOrderBy::class)->findBy([], ['sort_no' => 'ASC'])
+            'choices' => $this->entityManager->getRepository(ProductListOrderBy::class)->findBy([], ['sort_no' => 'ASC']),
         ]);
     }
 

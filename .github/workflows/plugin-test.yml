@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -35,9 +35,11 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
+            database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
+            database_charset: utf8mb4
 
     services:
       mysql:
@@ -90,6 +92,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           bin/console doctrine:database:create --env=dev
@@ -124,6 +127,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
@@ -134,18 +138,12 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      ## XXX Symfony5.4 に対応するためには trikoder/oauth2-bundle "v3.x-dev@dev" に依存する必要がある
-      ## XXX 依存する Bundle を先に require して, Symfony Flex が Bundle を二重定義してしまう問題を回避する
-      - run: |
-          sed -e 's/"minimum-stability": "stable",/"minimum-stability": "dev",/g' -i composer.json
-          composer require nyholm/psr7 "^1.5"
-          composer require ajgarlag/psr-http-message-bundle "^1.2"
-
       - name: Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
@@ -171,7 +169,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -184,9 +182,11 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
+            database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
+            database_charset: utf8mb4
 
     services:
       mysql:
@@ -239,6 +239,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           bin/console doctrine:database:create --env=dev
@@ -273,6 +274,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
@@ -288,6 +290,7 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
@@ -313,7 +316,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -326,9 +329,11 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
+            database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
+            database_charset: utf8mb4
 
     services:
       mysql:
@@ -381,6 +386,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           bin/console doctrine:database:create --env=dev
@@ -415,6 +421,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
@@ -430,6 +437,7 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
@@ -455,7 +463,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
@@ -468,9 +476,11 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
+            database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 5
+            database_charset: utf8mb4
         exclude:
           - db: mysql
             method: test_dependency_plugin_update
@@ -526,6 +536,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           bin/console doctrine:database:create --env=dev
@@ -560,6 +571,7 @@ jobs:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
         run: php -S 127.0.0.1:8000 codeception/router.php &
@@ -575,6 +587,7 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'

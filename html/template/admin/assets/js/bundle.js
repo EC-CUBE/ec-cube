@@ -80,3 +80,16 @@ global.Ladda = Ladda;
 
 const bootstrap = require('bootstrap');
 global.bootstrap = bootstrap;
+
+require('filepond/dist/filepond.min.css');
+require('filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css');
+const FilePondPluginImagePreview = require('filepond-plugin-image-preview/dist/filepond-plugin-image-preview');
+const FilePondPluginFileValidateType = require('filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type');
+const FilePondPluginFileValidateSize = require('filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size');
+const FilePond = require('filepond');
+FilePond.registerPlugin(
+    FilePondPluginImagePreview,
+    FilePondPluginFileValidateType,
+    FilePondPluginFileValidateSize
+);
+global.FilePond = FilePond;

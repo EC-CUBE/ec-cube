@@ -14,30 +14,24 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\OrderItem;
-use Eccube\Repository\OrderItemRepository;
+use Eccube\Entity\TradeLaw;
+use Eccube\Form\Type\ToggleSwitchType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class OrderItemForShippingRegistrationType extends AbstractType
+class TradeLawType extends AbstractType
 {
-    /**
-     * @var OrderItemRepository
-     */
-    protected $orderItemRepository;
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    protected $eccubeConfig;
 
-    public function __construct(OrderItemRepository $orderItemRepository, EccubeConfig $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->orderItemRepository = $orderItemRepository;
         $this->eccubeConfig = $eccubeConfig;
     }
 
@@ -47,20 +41,26 @@ class OrderItemForShippingRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', HiddenType::class, [
+            ->add('name', TextType::class, [
                 'required' => false,
-                'mapped' => false, // idは更新できないので 'mapped'=>false にしてcontrollerでdateをset
                 'constraints' => [
-                    new NotBlank(),
-                ],
-            ])
-            ->add('quantity', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_int_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => 4000,
+                    ]),
+                ],
+            ])
+            ->add('displayOrderScreen', ToggleSwitchType::class, [
+                'required' => false,
+                'label_on' => '',
+                'label_off' => '',
             ]);
     }
 
@@ -70,7 +70,7 @@ class OrderItemForShippingRegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => OrderItem::class,
+            'data_class' => TradeLaw::class,
         ]);
     }
 }

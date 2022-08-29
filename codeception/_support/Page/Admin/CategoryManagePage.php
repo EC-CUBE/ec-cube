@@ -59,7 +59,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_編集($rowNum)
     {
-        $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > a:nth-child(3)");
+        $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-end > a:nth-child(3)");
 
         return $this;
     }
@@ -80,7 +80,7 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-right > div > a");
+        $this->tester->click("body > div > div.c-contentsArea > div.c-contentsArea__cols > div.c-contentsArea__primaryCol > div > div > div > div > ul > li:nth-child(${rowNum}) > div > div.col-auto.text-end > div > a");
 
         return $this;
     }
@@ -96,14 +96,14 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
 
     public function CSVダウンロード実行()
     {
-        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-right > div > a:nth-child(1)');
+        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-end > div > a:nth-child(1)');
 
         return $this;
     }
 
     public function CSV出力項目設定()
     {
-        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-right > div > a:nth-child(2)');
+        $this->tester->click('body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div.col-6.text-end > div > a:nth-child(2)');
     }
 
     public function 一覧_上に($rowNum)

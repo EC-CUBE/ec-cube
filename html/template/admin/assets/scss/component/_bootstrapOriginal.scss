@@ -107,6 +107,9 @@ Styleguide 12.2
 */
 .btn-ec-conversion{
   @include button-variant(#437EC4, transparent, #FFF, #2963AB, transparent, #FFF, #2963AB, transparent );
+  &:disabled {
+    color: #fff;
+  }
   cursor:pointer;
 }
 
@@ -165,6 +168,8 @@ Styleguide 12.3
 
 .btn-ec-tab:hover {
   color: #262626;
+  background-color: #f2f2f2;
+  border-color: #262626;
 }
 
 .btn-ec-tab.active{
@@ -172,6 +177,22 @@ Styleguide 12.3
   color: #fff !important;
   box-shadow: none !important;
 }
+
+/*
+ボタン
+テキストカラーを変更しています。
+btn-primary
+$active-color,$hover-color,$color,$disabled-color
+*/
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #fff!important;
+}
+
 
 /*
 バッジ
@@ -195,7 +216,6 @@ Markup:
 Styleguide 12.4
 */
 .badge-ec-blue{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #437EC4;
   color: #437EC4;
@@ -204,7 +224,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-green{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #25B877;
   color: #25B877;
@@ -213,7 +232,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-red{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #C04949;
   color: #C04949;
@@ -222,7 +240,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-yellow{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #EEB128;
   color: #EEB128;
@@ -231,7 +248,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-glay{
-  @include button-variant(#FFF, transparent, transparent, transparent, transparent, transparent );
   display: inline-block;
   border: 1px solid #A3A3A3;
   color: #A3A3A3;
@@ -323,5 +339,44 @@ Styleguide 12.7
     .fa-arrow-down:before {
       content: "\f0ab"; // fa-arrow-circle-down
     }
+  }
+}
+
+/*
+画像アップロードパネル
+
+画像アップロード用のクラスを定義しています
+*/
+.filepond--item {
+    width: 170px;
+}
+.filepond--panel-root {
+    background-color: #fff;
+    border: dashed 1px #ccc;
+}
+
+/*
+オーナーズストア > プラグインを探す
+オーナーズストアのモーダル画面
+*/
+.modal-content{
+    img{
+      max-width: 100%;
+    }
+}
+
+/*
+オーナーズストア > 独自プラグインのアップロード
+*/
+#plugin_local_install_plugin_archive{
+  vertical-align: middle;
+}
+/*
+プロダクト > カテゴリー
+カテゴリの余白
+*/
+.list-unstyled{
+  li{
+    margin-bottom: .5em;
   }
 }
