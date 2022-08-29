@@ -76,6 +76,7 @@ file that was distributed with this source code.
                 allowDrop: true,
                 allowReorder: true,
                 labelIdle: '<i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true" style="font-size: 40px"></i>{{ 'admin.common.drag_and_drop_image_description'|trans }}<span class="filepond--label-action">{{ 'admin.common.file_select'|trans }}</span>',
+                styleItemPanelAspectRatio: 0.5625,
                 // 保存されている画像のロード
                 files: [
                     {% for image in form.images %}
@@ -210,7 +211,7 @@ file that was distributed with this source code.
                 <div class="modal-header">
                     <h5 class="modal-title">{{ 'admin.common.move_to_confirm_title'|trans }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                        
+
                     </button>
                 </div>
                 <div class="modal-body">
@@ -258,7 +259,7 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.product_id'|trans }}">
                                                 <span>{{ 'admin.product.product_id'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -270,7 +271,7 @@ file that was distributed with this source code.
                                     <div class="col-3">
                                         <div class="d-inline-block">
                                             <span>{{ 'admin.product.name'|trans }}</span>
-                                            <span class="badge bg-primary ml-1">
+                                            <span class="badge bg-primary ms-1">
                                                 {{ 'admin.common.required'|trans }}
                                             </span>
                                         </div>
@@ -285,8 +286,8 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.sale_type'|trans }}">
                                                 <span>{{ 'admin.product.sale_type'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                <span class="badge bg-primary ml-1">
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
+                                                <span class="badge bg-primary ms-1">
                                                     {{ 'admin.common.required'|trans }}
                                                 </span>
                                             </div>
@@ -300,18 +301,16 @@ file that was distributed with this source code.
                                     <div class="col-3">
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.image'|trans }}">
                                             <span>{{ 'admin.product.image'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             <br>{{ 'admin.product.image_size'|trans }}
                                         </div>
                                     </div>
                                     <div class="col mb-2">
                                         <p id="message"></p>
-                                        <div id="upload-zone" class="media rounded">
-                                            <div class="media-body">
-                                                {{ form_widget(form.product_image, { attr : { style : 'display:none;' } }) }}
-                                                {{ form_errors(form.product_image) }}
-                                            </div><!-- /.media-body -->
-                                        </div><!-- /.media -->
+                                        <div id="upload-zone" class="rounded">
+                                            {{ form_widget(form.product_image, { attr : { style : 'display:none;' } }) }}
+                                            {{ form_errors(form.product_image) }}
+                                        </div><!-- /#upload-zone -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -319,7 +318,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="{{ 'tooltip.product.description_detail'|trans }}">
                                             <span>{{ 'admin.product.description_detail'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -328,7 +327,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block mb-2" data-bs-toggle="collapse" href="#addComment"
                                              role="button" aria-expanded="false" aria-controls="addComment">
                                             <a>
-                                                <i class="fa fa-plus-square-o fw-bold mr-1"></i>
+                                                <i class="fa fa-plus-square-o fw-bold me-1"></i>
                                                 <span class="fw-bold text-ec-black">
                                                     {{ 'admin.product.description_list__add'|trans }}
                                                 </span>
@@ -342,7 +341,7 @@ file that was distributed with this source code.
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.description_list'|trans }}">
                                                 <span>{{ 'admin.product.description_list'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-4">
@@ -358,7 +357,7 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block">
                                                 <span>{{ 'admin.product.sale_price'|trans }}</span>
-                                                <span class="badge bg-primary ml-1">
+                                                <span class="badge bg-primary ms-1">
                                                     {{ 'admin.common.required'|trans }}
                                                 </span>
                                             </div>
@@ -375,7 +374,7 @@ file that was distributed with this source code.
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.normal_price'|trans }}">
                                                 <span>{{ 'admin.product.normal_price'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -389,7 +388,7 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block">
                                                 <span>{{ 'admin.product.stock'|trans }}</span>
-                                                <span class="badge bg-primary ml-1">
+                                                <span class="badge bg-primary ms-1">
                                                     {{ 'admin.common.required'|trans }}
                                                 </span>
                                             </div>
@@ -420,7 +419,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="{{ 'tooltip.product.search_word'|trans }}">
                                             <span>{{ 'admin.product.search_word'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
                                     </div>
                                     <div class="col mb-2">
@@ -437,7 +436,7 @@ file that was distributed with this source code.
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.product_code'|trans }}">
                                                 <span>{{ 'admin.product.product_code'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -452,7 +451,7 @@ file that was distributed with this source code.
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.sale_limit'|trans }}">
                                                 <span>{{ 'admin.product.sale_limit'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -467,7 +466,7 @@ file that was distributed with this source code.
                                             <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.delivery_duration'|trans }}">
                                                 <span>{{ 'admin.product.delivery_duration'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -563,7 +562,7 @@ file that was distributed with this source code.
                                              title="{{ 'tooltip.product.product_class'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.product.product_class__card_title'|trans }}
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </span>
                                         </div>
                                     </div>
@@ -619,7 +618,7 @@ file that was distributed with this source code.
                                     <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.product.free_area'|trans }}">
                                         <span class="card-title">{{ 'admin.product.free_area__card_title'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <i class="fa fa-question-circle fa-lg ms-1"></i>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
@@ -754,7 +753,7 @@ file that was distributed with this source code.
                             <div class="card-body">
                                 {% if(Tags|length > 0) %}
                                     {% for Tag in Tags %}
-                                        <div class="d-inline-block mb-2 mr-2">
+                                        <div class="d-inline-block mb-2 me-2">
                                             <button class="btn btn-outline-primary" type="button">{{ Tag.name }}</button>
                                         </div>
                                     {% endfor %}
@@ -763,7 +762,7 @@ file that was distributed with this source code.
                                 <div class="d-block mb-3" data-bs-toggle="collapse" href="#allTags" role="button"
                                      aria-expanded="false" aria-controls="allTags">
                                     <a>
-                                        <i class="fa fa-plus-square-o fw-bold mr-1"></i>
+                                        <i class="fa fa-plus-square-o fw-bold me-1"></i>
                                         <span class="fw-bold">{{ 'admin.product.save_tag'|trans }}</span>
                                     </a>
                                 </div>
@@ -773,7 +772,7 @@ file that was distributed with this source code.
                                     </div>
                                     {% if(TagsList|length > 0) %}
                                         {% for Tag in TagsList %}
-                                            <div class="d-inline-block mb-2 mr-2">
+                                            <div class="d-inline-block mb-2 me-2">
                                                 <button class="btn btn-outline-secondary" type="button"
                                                         data-tag-id="{{ Tag.id }}">{{ Tag.name }}</button>
                                             </div>
@@ -812,7 +811,7 @@ file that was distributed with this source code.
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <i class="fa fa-flag mr-1"></i>
+                                        <i class="fa fa-flag me-1"></i>
                                         <span>{{ 'admin.common.create_date'|trans }}</span>
                                     </div>
                                     <div class="col">
@@ -821,7 +820,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <i class="fa fa-refresh mr-1"></i>
+                                        <i class="fa fa-refresh me-1"></i>
                                         <span>{{ 'admin.common.update_date'|trans }}</span>
                                     </div>
                                     <div class="col">
@@ -830,7 +829,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <i class="fa fa-user mr-1"></i>
+                                        <i class="fa fa-user me-1"></i>
                                         <span>{{ 'admin.common.last_updater'|trans }}</span>
                                     </div>
                                     <div class="col">
@@ -848,7 +847,7 @@ file that was distributed with this source code.
                                          title="{{ 'tooltip.product.shop_memo'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.common.shop_memo'|trans }}
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </span>
                                     </div>
                                 </div>

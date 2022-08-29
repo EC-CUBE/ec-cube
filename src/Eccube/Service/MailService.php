@@ -32,6 +32,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class MailService
 {
@@ -158,11 +159,12 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CONFIRM);
 
-        $count = $this->mailer->send($message);
-
-        log_info('仮会員登録メール送信完了', ['count' => $count]);
-
-        return $count;
+        try {
+            $this->mailer->send($message);
+            log_info('仮会員登録メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
     }
 
     /**
@@ -214,11 +216,12 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_COMPLETE);
 
-        $count = $this->mailer->send($message);
-
-        log_info('会員登録完了メール送信完了', ['count' => $count]);
-
-        return $count;
+        try {
+            $this->mailer->send($message);
+            log_info('会員登録完了メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
     }
 
     /**
@@ -272,11 +275,13 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_WITHDRAW);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+            log_info('退会手続き完了メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
-        log_info('退会手続き完了メール送信完了', ['count' => $count]);
-
-        return $count;
     }
 
     /**
@@ -329,11 +334,13 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CONTACT);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+            log_info('お問い合わせ受付メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
-        log_info('お問い合わせ受付メール送信完了', ['count' => $count]);
-
-        return $count;
     }
 
     /**
@@ -386,7 +393,11 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ORDER);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())
@@ -402,7 +413,7 @@ class MailService
 
         $this->mailHistoryRepository->save($MailHistory);
 
-        log_info('受注メール送信完了', ['count' => $count]);
+        log_info('受注メール送信完了');
 
         return $message;
     }
@@ -461,11 +472,14 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
 
-        log_info('仮会員登録再送メール送信完了', ['count' => $count]);
+            log_info('仮会員登録再送メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
-        return $count;
     }
 
     /**
@@ -504,9 +518,13 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_ORDER);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+            log_info('受注管理通知メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
-        log_info('受注管理通知メール送信完了', ['count' => $count]);
 
         return $message;
     }
@@ -564,11 +582,13 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+            log_info('パスワード再発行メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
-        log_info('パスワード再発行メール送信完了', ['count' => $count]);
-
-        return $count;
     }
 
     /**
@@ -624,11 +644,13 @@ class MailService
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE);
 
-        $count = $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+            log_info('パスワード変更完了メール送信完了');
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
-        log_info('パスワード変更完了メール送信完了', ['count' => $count]);
-
-        return $count;
     }
 
     /**
@@ -669,7 +691,11 @@ class MailService
             $message->text($body);
         }
 
-        $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())

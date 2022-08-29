@@ -32,9 +32,6 @@ file that was distributed with this source code.
     {% if Page.meta_robots is not empty %}
         <meta name="robots" content="{{ Page.meta_robots }}">
     {% endif %}
-    {% if Page.meta_tags is not empty %}
-        {{ include(template_from_string(Page.meta_tags)) }}
-    {% endif %}
     <link rel="icon" href="{{ asset('assets/img/common/favicon.ico', 'user_data') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
