@@ -29,6 +29,9 @@ file that was distributed with this source code.
                     'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
                 }
             });
+            $(document).ready(function() {
+                $("form").attr('novalidate', 'novalidate');
+            });
         });
     </script>
     {# プラグイン用styleseetやmetatagなど #}
