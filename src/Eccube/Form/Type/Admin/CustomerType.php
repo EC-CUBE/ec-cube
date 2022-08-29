@@ -111,6 +111,10 @@ class CustomerType extends AbstractType
                         'value' => date('Y-m-d', strtotime('-1 day')),
                         'message' => 'form_error.select_is_future_or_now_date',
                     ]),
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
                 ],
             ])
             ->add('plain_password', RepeatedPasswordType::class, [
