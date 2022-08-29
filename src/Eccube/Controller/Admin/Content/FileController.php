@@ -313,7 +313,9 @@ class FileController extends AbstractController
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
             } catch (UnsupportedMediaTypeHttpException $e) {
-                $this->errors[] = ['message' => $e->getMessage()];
+                if (!in_array($e->getMessage(), array_column($this->errors, 'message'))) {
+                    $this->errors[] = ['message' => $e->getMessage()];
+                }
                 continue;
             }
             try {
