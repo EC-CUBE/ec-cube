@@ -37,7 +37,7 @@ class FileController extends AbstractController
     public const SJIS = 'sjis-win';
     public const UTF = 'UTF-8';
     private $errors = [];
-    private $encode = '';
+    private $encode;
 
     /**
      * FileController constructor.

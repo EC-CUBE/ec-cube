@@ -17,7 +17,7 @@ use Eccube\Entity\ProductClass;
 
 class InvalidItemException extends \Exception
 {
-    private $messageArgs = [];
+    private $messageArgs;
 
     private $warning;
 

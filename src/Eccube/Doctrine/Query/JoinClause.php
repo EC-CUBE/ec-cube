@@ -30,7 +30,7 @@ class JoinClause
 
     private $indexBy;
 
-    private $leftJoin = false;
+    private $leftJoin;
 
     /**
      * @var JoinClauseWhereCustomizer
@@ -52,7 +52,7 @@ class JoinClause
      * @param $condition
      * @param $indexBy
      */
-    private function __construct($leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
     {
         $this->leftJoin = $leftJoin;
         $this->join = $join;
