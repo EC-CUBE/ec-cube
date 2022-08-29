@@ -69,7 +69,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->Product = $this->createProduct();
         $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->cartService = self::$container->get(CartService::class);
+        $this->cartService = static::getContainer()->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
     }
@@ -463,7 +463,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
             $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = self::$container->get(TaxRuleService::class)->getTax($orderItem['price']);
+            $tax = static::getContainer()->get(TaxRuleService::class)->getTax($orderItem['price']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
@@ -699,5 +699,28 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertNull($EditedOrder->getSex());
         $this->assertNull($EditedOrder->getJob());
         $this->assertNull($EditedOrder->getBirth());
+    }
+
+    /**
+     * 受注登録時にその他明細(初期の価格0円)をゼロ除算なしに正しく追加できるかどうかのテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5533
+     */
+    public function testAddOrderItemOrderWithoutZeroDivision()
+    {
+        $Product = null;
+        $charge = 0;
+        $formData = $this->createFormData($this->Customer, $Product, $charge);
+        unset($formData['OrderStatus']);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_new'),
+            [
+                'order' => $formData,
+                'mode' => '',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

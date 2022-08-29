@@ -42,7 +42,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
-        $this->cartService = self::$container->get(CartService::class);
+        $this->cartService = static::getContainer()->get(CartService::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 

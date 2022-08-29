@@ -153,8 +153,8 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
     public function 商品検索($value = '')
     {
-        $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, -50);
-        $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add']);
+        $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.me-2.add'], 0, -50);
+        $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.me-2.add']);
         $this->tester->waitForElementVisible(['id' => 'addProduct']);
         $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
         $this->tester->click('#searchProductModalButton');
@@ -187,7 +187,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function 明細を削除($row)
     {
         $this->tester->scrollTo(['css' => '#order-product']);
-        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-end.pe-3 > div > div > div.d-inline-block.mr-3 > a");
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-end.pe-3 > div > div > div.d-inline-block.me-3 > a");
         $this->tester->waitForElementVisible("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-end.pe-3 > div > div > div.modal");
 
         return $this;

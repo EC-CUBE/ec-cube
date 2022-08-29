@@ -58,7 +58,7 @@ file that was distributed with this source code.
                     <div class="card-header">
                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.calendar_setting'|trans }}">
                             <span>{{ 'admin.setting.shop.calendar_setting'|trans }}</span>
-                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -74,7 +74,7 @@ file that was distributed with this source code.
                                     <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.common.id'|trans }}</th>
                                     <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.calendar.title'|trans }}</th>
                                     <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.calendar.holiday'|trans }}</th>
-                                    <th class="border-top-0 pt-2 pb-2 ps-3 pr-5"></th>
+                                    <th class="border-top-0 pt-2 pb-2 ps-3 pe-5"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -93,7 +93,7 @@ file that was distributed with this source code.
                                             {{ form_errors(form.holiday) }}
                                         </td>
                                         <td class="align-middle col-3"></td>
-                                        <td class="align-middle pr-5">
+                                        <td class="align-middle pe-5">
                                             <div class="row justify-content-end w-100">
                                                 <button class="btn btn-ec-regular px-4" type="submit">{{ 'admin.common.create__new'|trans }}</button>
                                             </div>
@@ -132,8 +132,8 @@ file that was distributed with this source code.
                                                 </div>
                                             </td>
                                             <td class="align-middle action">
-                                                <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
-                                                    <div class="row pr-2">
+                                                <div class="col-12 col-sm-10 col-md-8 col-lg-6 float-end">
+                                                    <div class="row pe-2">
                                                         <div class="col-6 text-center pe-0">
                                                             <a class="btn btn-ec-actionIcon edit-button" data-bs-toggle="tooltip" data-id="{{ Calendar.id }}" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                                 <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
@@ -141,7 +141,7 @@ file that was distributed with this source code.
                                                         </div>
 
                                                         <div class="col-6 text-center">
-                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            <div class="d-inline-block me-3" data-bs-toggle="tooltip" data-bs-placement="top"
                                                                  title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal_{{ Calendar.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>

@@ -16,13 +16,15 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.setting.system.log_display'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
+{% form_theme form '@admin/Form/bootstrap_4_layout.html.twig' %}
+
 {% block main %}
     <div class="c-outsideBlock">
         <div class="c-outsideBlock__contents">
             <div class="card rounded border-0 mb-4">
                 <div class="card-header">
                     <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.log_display'|trans }}">
-                        <span class="card-title">{{ 'admin.setting.system.log_display'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                        <span class="card-title">{{ 'admin.setting.system.log_display'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                     </div>
                 </div>
                 <div class="card-body">

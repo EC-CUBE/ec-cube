@@ -63,7 +63,7 @@ Styleguide 3.1.1
   }
 }
 
-.ec-checkbox{
+.ec-checkbox,.ec-radio{
   .ec-errorMessage {
     margin-bottom: 25px;
     font-size: 12px;
@@ -71,8 +71,8 @@ Styleguide 3.1.1
     color: $clrRed;
   }
 }
-.error.ec-checkbox {
-  input, label{
+.error.ec-checkbox,.error.ec-radio {
+  input, label, div{
     border-color: #CF3F34;
     background: #FDF1F0;
   }

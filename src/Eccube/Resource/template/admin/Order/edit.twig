@@ -106,6 +106,10 @@ file that was distributed with this source code.
             $collectionHolder = $('#table-form-field');
             index = $collectionHolder.find('tbody > tr').length;
             formIdPrefix = '#order_OrderItems_';
+            if (index > 0) {
+                let row = '#' + $collectionHolder.find('tbody > tr').last().data("row");
+                index = row.replace(formIdPrefix, '');
+            }
 
             $(document).on('click', '.delete', function(e) {
                 // 商品削除
@@ -230,7 +234,7 @@ file that was distributed with this source code.
                 <div class="modal-header">
                     <h5 class="modal-title">{{ 'admin.common.move_to_confirm_title'|trans }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                        
+
                     </button>
                 </div>
                 <div class="modal-body">
@@ -258,7 +262,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_info'|trans }}"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_info'|trans }}"><span class="card-title">{{ 'admin.order.order_info'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
                                 </div>
                                 <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#orderOverview" aria-expanded="false" aria-controls="orderOverview"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -268,11 +272,11 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_no'|trans }}">{{ 'admin.order.order_no'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                            <div class="col-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_no'|trans }}">{{ 'admin.order.order_no'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></div>
                                             <div class="col">{{ Order.order_no }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                            <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                                             <div class="col">
                                                 {% if Order.id is not empty %}
                                                     {{ form_widget(form.OrderStatus) }}
@@ -291,31 +295,31 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-inbox fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.order_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-inbox fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.order_date'|trans }}</div>
                                             <div class="col">{{ Order.order_date ? Order.order_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-money fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.payment_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-money fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.payment_date'|trans }}</div>
                                             <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
                                         </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
-                                                <div class="col-3"><i class="fa fa-truck fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.shipping_date'|trans }}</div>
+                                                <div class="col-3"><i class="fa fa-truck fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.shipping_date'|trans }}</div>
                                                 <div class="col">
                                                     {{ Order.Shippings[0].shipping_date|date_sec }}
                                                 </div>
                                             </div>
                                         {% endif %}
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-refresh fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.common.update_date'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-refresh fa-fw me-1" aria-hidden="true"></i>{{ 'admin.common.update_date'|trans }}</div>
                                             <div class="col">{{ Order.update_date ? Order.update_date|date_sec : '' }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-mobile fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.common.device_type'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-mobile fa-fw me-1" aria-hidden="true"></i>{{ 'admin.common.device_type'|trans }}</div>
                                             <div class="col">{{ Order.device_type }}</div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-3"><i class="fa fa-commenting fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.message'|trans }}</div>
+                                            <div class="col-3"><i class="fa fa-commenting fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.message'|trans }}</div>
                                             <div class="col">{{ Order.message ? Order.message|nl2br : '' }}</div>
                                         </div>
                                     </div>
@@ -352,7 +356,7 @@ file that was distributed with this source code.
                                 <div class="col-2">
                                     <div class="d-inline-block"><span class="card-title">{{ 'admin.order.orderer'|trans }}</span></div>
                                 </div>
-                                <div class="col">{% if id %}<span class="mr-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
+                                <div class="col">{% if id %}<span class="me-5">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</span>{{ Order.full_name }} ({{ Order.full_name_kana }}) 〒{{ Order.postal_code }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }} {{ Order.email }}{% endif %}</div>
                                 <div class="col-1 text-end"><a class="d-block" data-bs-toggle="collapse" href="#ordererInfo" aria-expanded="false" aria-controls="ordererInfo"><i class="fa {{ id ? 'fa-angle-down' : 'fa-angle-up' }} fa-lg"></i></a></div>
                             </div>
                         </div>
@@ -385,7 +389,7 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row">
-                                            <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.customer_id'|trans }}">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                            <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.customer_id'|trans }}">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                                             <div class="col">
                                                 <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                                 {{ form_widget(form.Customer) }}
@@ -393,7 +397,7 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.name'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.name'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="col">
@@ -408,7 +412,7 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.kana'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.kana'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="col">
@@ -423,7 +427,7 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 <div class="row mb-3">
                                                     <div class="col row align-items-center">
@@ -456,14 +460,14 @@ file that was distributed with this source code.
 
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.mail_address'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.mail_address'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 {{ form_widget(form.email) }}
                                                 {{ form_errors(form.email) }}
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-3 col-form-label">{{ 'admin.common.phone_number'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                            <label class="col-3 col-form-label">{{ 'admin.common.phone_number'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                             <div class="col">
                                                 {{ form_widget(form.phone_number) }}
                                                 {{ form_errors(form.phone_number) }}
@@ -493,7 +497,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info'|trans }}"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info'|trans }}"><span class="card-title">{{ 'admin.order.shipping_info'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
                                 </div>
                                 <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#shippingInfo" aria-expanded="false" aria-controls="shippingInfo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -509,7 +513,7 @@ file that was distributed with this source code.
                                     </div>
                                     {% for shipping in Order.Shippings %}
                                         <div class="col">
-                                            <span class="mr-5">{{ 'admin.order.delivery'|trans }}({{ loop.index }})</span>
+                                            <span class="me-5">{{ 'admin.order.delivery'|trans }}({{ loop.index }})</span>
                                             {% set shipping_name = shipping.full_name ~ '(' ~ shipping.full_name_kana ~ ')' ~ (shipping.company_name is not null ? ' ' ~ shipping.company_name : '') %}
                                             {% set shipping_addr = 'admin.common.postal_symbol'|trans ~ shipping.postal_code ~ ' ' ~ shipping.pref ~ shipping.addr01 ~ shipping.addr02 %}
                                             {% set shipping_date = shipping.shipping_date is not null ? shipping.shipping_date|date_day : '' %}
@@ -536,7 +540,7 @@ file that was distributed with this source code.
                                         <span class="p-country-name" style="display:none;">Japan</span>
                                         <div class="col-6">
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.name'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.name'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row">
                                                         <div class="col">
@@ -551,7 +555,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.kana'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.kana'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row">
                                                         <div class="col">
@@ -566,7 +570,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.address'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     <div class="row mb-3">
                                                         <div class="col row align-items-center">
@@ -598,7 +602,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label">{{ 'admin.common.phone_number'|trans }}<span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span></label>
+                                                <label class="col-3 col-form-label">{{ 'admin.common.phone_number'|trans }}<span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.phone_number) }}
                                                     {{ form_errors(form.Shipping.phone_number) }}
@@ -618,21 +622,21 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info.tracking_number'|trans }}">{{ 'admin.order.tracking_number'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                                <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info.tracking_number'|trans }}">{{ 'admin.order.tracking_number'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.tracking_number) }}
                                                     {{ form_errors(form.Shipping.tracking_number) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info.delivery_provider'|trans }}">{{ 'admin.order.delivery_provider'|trans }}<span class="badge bg-primary ml-1"></span><i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                                <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info.delivery_provider'|trans }}">{{ 'admin.order.delivery_provider'|trans }}<span class="badge bg-primary ms-1"></span><i class="fa fa-question-circle fa-lg ms-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.Delivery) }}
                                                     {{ form_errors(form.Shipping.Delivery) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info.shop_memo'|trans }}">{{ 'admin.order.shop_memo_for_shipped'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                                <label class="col-3 col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shipping_info.shop_memo'|trans }}">{{ 'admin.order.shop_memo_for_shipped'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.note) }}
                                                     {{ form_errors(form.Shipping.note) }}
@@ -641,14 +645,14 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col-6">
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label"><i class="fa fa-calendar-check-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.delivery_date'|trans }}</label>
+                                                <label class="col-3 col-form-label"><i class="fa fa-calendar-check-o fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.delivery_date'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.shipping_delivery_date) }}
                                                     {{ form_errors(form.Shipping.shipping_delivery_date) }}
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-3 col-form-label"><i class="fa fa-clock-o fa-fw mr-1" aria-hidden="true"></i>{{ 'admin.order.delivery_time'|trans }}</label>
+                                                <label class="col-3 col-form-label"><i class="fa fa-clock-o fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.delivery_time'|trans }}</label>
                                                 <div class="col">
                                                     {{ form_widget(form.Shipping.DeliveryTime) }}
                                                     {{ form_errors(form.Shipping.DeliveryTime) }}
@@ -664,7 +668,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.product_info'|trans }}"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.product_info'|trans }}"><span class="card-title">{{ 'admin.order.product_info'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#orderItem" aria-expanded="false" aria-controls="orderItem"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -675,7 +679,7 @@ file that was distributed with this source code.
                                     <div class="col-6">
                                         {# 複数配送の場合は商品追加できない #}
                                         {% if not Order.isMultiple %}
-                                            <a class="btn btn-ec-regular mr-2 add" data-bs-toggle="modal" data-bs-target="#addProduct">{{ 'admin.order.add_product_item'|trans }}</a>
+                                            <a class="btn btn-ec-regular me-2 add" data-bs-toggle="modal" data-bs-target="#addProduct">{{ 'admin.order.add_product_item'|trans }}</a>
                                             <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProduct" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
@@ -693,7 +697,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         {% endif %}
-                                        <a class="btn btn-ec-regular mr-2" data-bs-toggle="modal" data-bs-target="#addOrderItemType">{{ 'admin.order.add_other_item'|trans }}</a>
+                                        <a class="btn btn-ec-regular me-2" data-bs-toggle="modal" data-bs-target="#addOrderItemType">{{ 'admin.order.add_other_item'|trans }}</a>
                                         <div class="modal fade" id="addOrderItemType" tabindex="-1" role="dialog" aria-labelledby="addOrderItemType" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
@@ -710,7 +714,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.OrderItemsErrors) }}
                                     </div>
                                     <div class="col-5 text-end">
-                                        <button type="submit" class="btn btn-ec-regular mr-2" name="mode" value="calc" data-link="order-product" id="calculate"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.order.update_calculation_results'|trans }}</button>
+                                        <button type="submit" class="btn btn-ec-regular me-2" name="mode" value="calc" data-link="order-product" id="calculate"{{ action_disabled ? ' disabled="disabled"' }}>{{ 'admin.order.update_calculation_results'|trans }}</button>
                                     </div>
                                 </div>
                                 <table id="table-form-field" class="table table-striped table-sm mb-0"
@@ -739,7 +743,7 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for orderItemForm in form.OrderItems %}
                                         {% set OrderItem = orderItemForm.vars.data %}
-                                        <tr>
+                                        <tr data-row="{{ orderItemForm.vars.id }}">
                                             {# hidden values #}
                                             {{ form_widget(orderItemForm.ProductClass) }}
                                             {{ form_widget(orderItemForm.order_item_type) }}
@@ -831,7 +835,7 @@ file that was distributed with this source code.
                                                     {# 複数配送の場合は商品を削除できない #}
                                                     {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint %}
                                                         <div class="col-auto text-center">
-                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip"
+                                                            <div class="d-inline-block me-3" data-bs-toggle="tooltip"
                                                                  data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon disabled">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -840,7 +844,7 @@ file that was distributed with this source code.
                                                         </div>
                                                     {% else %}
                                                         <div class="col-auto text-center">
-                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip"
+                                                            <div class="d-inline-block me-3" data-bs-toggle="tooltip"
                                                                  data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#delete_{{ orderItemForm.vars.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
@@ -853,7 +857,7 @@ file that was distributed with this source code.
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                                
+
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body text-start">
@@ -878,46 +882,46 @@ file that was distributed with this source code.
                                 <!-- 小計 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.subtotal'|trans }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle font-weight-normal">{{ Order.subtotal|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle fw-normal">{{ Order.subtotal|price }}</span></div>
                                 </div>
                                 <!-- 送料 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.delivery_fee'|trans }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle font-weight-normal">{{ Order.delivery_fee_total|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle fw-normal">{{ Order.delivery_fee_total|price }}</span></div>
                                 </div>
                                 <!-- 手数料 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.common.charge'|trans }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle font-weight-normal">{{ Order.charge|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle fw-normal">{{ Order.charge|price }}</span></div>
                                 </div>
                                 <!-- 値引き -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.discount'|trans }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle text-danger font-weight-normal">{{ Order.taxable_discount|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle text-danger fw-normal">{{ Order.taxable_discount|price }}</span></div>
                                 </div>
                                 <hr>
                                 <!-- 合計 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.total'|trans }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle font-weight-normal">{{ Order.taxable_total|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle fw-normal">{{ Order.taxable_total|price }}</span></div>
                                 </div>
                                 {% for item in Order.tax_free_discount_items %}
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ item.product_name }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle text-danger font-weight-normal">{{ item.total_price|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle text-danger fw-normal">{{ item.total_price|price }}</span></div>
                                 </div>
                                 {% endfor %}
                                 <!-- お支払い合計 -->
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.payment_total'|trans }}</span></div>
-                                    <div class="col-2 text-end"><span class="h4 align-middle font-weight-normal">{{ Order.payment_total|price }}</span></div>
+                                    <div class="col-2 text-end"><span class="h4 align-middle fw-normal">{{ Order.payment_total|price }}</span></div>
                                 </div>
                                 <hr>
                                 <!-- 消費税額 -->
                                 {% for rate, total in Order.total_by_tax_rate %}
                                     <div class="row justify-content-end mb-3">
                                         <div class="col-auto"><span class="align-middle">{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</span></div>
-                                        <div class="col-2 text-end"><span class="align-middle font-weight-normal">{{ total|price }}</span>({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</div>
+                                        <div class="col-2 text-end"><span class="align-middle fw-normal">{{ total|price }}</span>({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</div>
                                     </div>
                                 {% endfor %}
                                 <hr>
@@ -925,7 +929,7 @@ file that was distributed with this source code.
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.add_point'|trans }}</span></div>
                                     <div class="col-2 text-end">
-                                        <span class="h4 align-middle font-weight-normal">
+                                        <span class="h4 align-middle fw-normal">
                                             {{ form.vars.value.addpoint|number_format }}
                                         </span>
                                     </div>
@@ -934,7 +938,7 @@ file that was distributed with this source code.
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-auto"><span class="align-middle">{{ 'admin.order.use_point'|trans }}</span></div>
                                     <div class="col-2 text-end">
-                                        <span class="h4 align-middle font-weight-normal">
+                                        <span class="h4 align-middle fw-normal">
                                             {# ポイント機能が有効かつ会員の場合のみポイントを編集可能とする #}
                                             {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                                                 {{ form_widget(form.use_point) }}
@@ -953,7 +957,7 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shop_memo'|trans }}"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.shop_memo'|trans }}"><span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></span></div>
                                 </div>
                                 <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#freeArea" aria-expanded="false" aria-controls="freeArea"><i class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>
@@ -970,7 +974,7 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_history'|trans }}"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_history'|trans }}"><span class="card-title">{{ 'admin.order.mail_history'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
                                     </div>
                                     <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailHistory" aria-expanded="false" aria-controls="mailHistory"><i class="fa fa-angle-up fa-lg"></i></a></div>
                                 </div>

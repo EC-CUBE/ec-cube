@@ -45,7 +45,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
 
-        $this->service = self::$container->get(PluginService::class);
+        $this->service = static::getContainer()->get(PluginService::class);
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
@@ -54,7 +54,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $dirs = [];
         $finder = new Finder();
         $iterator = $finder
-            ->in(self::$container->getParameter('kernel.project_dir').'/app/Plugin')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
         foreach ($iterator as $dir) {
@@ -66,7 +66,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
 
         $files = Finder::create()
-            ->in(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);

@@ -80,11 +80,11 @@ class CartServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
 
-        $this->cartService = self::$container->get(CartService::class);
+        $this->cartService = static::getContainer()->get(CartService::class);
         $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
         $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
-        $this->purchaseFlow = self::$container->get('eccube.purchase.flow.cart');
+        $this->purchaseFlow = static::getContainer()->get('eccube.purchase.flow.cart');
 
         $this->SaleType1 = $this->saleTypeRepository->find(1);
         $this->SaleType2 = $this->saleTypeRepository->find(2);

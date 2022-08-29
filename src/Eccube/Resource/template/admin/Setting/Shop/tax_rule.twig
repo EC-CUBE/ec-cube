@@ -44,10 +44,7 @@ file that was distributed with this source code.
             });
 
             $('.tax_rule_list_item .cancel').click(function() {
-                var id = $(this).data('id');
-                var tr = $('#ex-tax_rule-' + id);
-                $(tr).find('.edit').hide();
-                $(tr).find('.list').show();
+                location.href = '{{ url('admin_setting_shop_tax') }}';
             });
         });
     </script>
@@ -61,7 +58,7 @@ file that was distributed with this source code.
                     <div class="card-header">
                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.tax_setting'|trans }}">
                             <span>{{ 'admin.setting.shop.tax_setting'|trans }}</span>
-                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -81,7 +78,7 @@ file that was distributed with this source code.
                                 <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.rounding_type'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.setting.shop.tax.apply_date'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 ps-3"></th>
-                                <th class="border-top-0 pt-2 pb-2 ps-3 pr-5"></th>
+                                <th class="border-top-0 pt-2 pb-2 ps-3 pe-5"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -93,9 +90,7 @@ file that was distributed with this source code.
                                     <td class="align-middle" style="width:230px;">
                                         <div class="input-group">
                                             {{ form_widget(form.tax_rate, {attr: {class: 'col-auto text-end'}}) }}
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">%</span>
-                                            </div>
+                                            <div class="input-group-text">%</div>
                                             {{ form_errors(form.tax_rate) }}
                                         </div>
                                     </td>
@@ -108,7 +103,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.apply_date) }}
                                     </td>
                                     <td class="align-middle"></td>
-                                    <td class="align-middle pr-5">
+                                    <td class="align-middle pe-5">
                                         <div class="row justify-content-end">
                                             <button class="btn btn-ec-regular px-4" type="submit">{{ 'admin.common.create__new'|trans }}</button>
                                         </div>
@@ -127,14 +122,12 @@ file that was distributed with this source code.
                                             <div class="edit justify-content-end">
                                                 <div class="input-group">
                                                     {{ form_widget(forms[TaxRule.id].tax_rate, {attr: {class: 'col-auto text-end'}}) }}
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">%</span>
-                                                    </div>
+                                                    <div class="input-group-text">%</div>
                                                     {{ form_errors(forms[TaxRule.id].tax_rate) }}
                                                 </div>
                                             </div>
                                             <div class="list">
-                                                <span class="col-6 text-end pe-0">{{ TaxRule.tax_rate }}</span><span class="col-6 pl-1">%</span>
+                                                <span class="col-6 text-end pe-0">{{ TaxRule.tax_rate }}</span><span class="col-6 ps-1">%</span>
                                             </div>
                                         </td>
                                         <td class="align-middle">
@@ -165,13 +158,13 @@ file that was distributed with this source code.
                                             </div>
                                         </td>
                                         <td class="align-middle action">
-                                            <div class="col-12 col-sm-10 col-md-8 col-lg-6 pull-right">
-                                                <div class="row pr-2">
+                                            <div class="col-12 col-sm-10 col-md-8 col-lg-6 float-end">
+                                                <div class="row pe-2">
                                                     <div class="col-6 text-center pe-0"><a class="btn btn-ec-actionIcon edit-button" data-bs-toggle="tooltip" data-id="{{ TaxRule.id }}" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a></div>
 
                                                     <div class="col-6 text-center">
                                                         {% if not TaxRule.default_tax_rule %}
-                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            <div class="d-inline-block me-3" data-bs-toggle="tooltip" data-bs-placement="top"
                                                                  title="{{ 'admin.common.delete'|trans }}">
                                                                 <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal_{{ TaxRule.id }}">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
@@ -186,9 +179,7 @@ file that was distributed with this source code.
                                                                             <h5 class="modal-title fw-bold">
                                                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                                                             </h5>
-                                                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                                
-                                                                            </button>
+                                                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                         </div>
                                                                         <div class="modal-body text-start">
                                                                             <p class="text-start modal-message">{{ 'admin.common.delete_modal__message'|trans({ "%name%" : TaxRule.id }) }}</p>

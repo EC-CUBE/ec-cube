@@ -201,6 +201,11 @@ class Generator
         $Member = new Member();
         if (is_null($username)) {
             $username = $faker->word;
+            do {
+                $loginId = $faker->word;
+            } while ($this->memberRepository->findBy(['login_id' => $loginId]));
+        } else {
+            $loginId = $username;
         }
         $Work = $this->entityManager->find(\Eccube\Entity\Master\Work::class, 1);
         $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
@@ -211,7 +216,7 @@ class Generator
         $password = $this->passwordEncoder->encodePassword($password, $salt);
 
         $Member
-            ->setLoginId($username)
+            ->setLoginId($loginId)
             ->setName($username)
             ->setSalt($salt)
             ->setPassword($password)
@@ -236,7 +241,9 @@ class Generator
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->safeEmail;
+            do {
+                $email = $faker->safeEmail;
+            } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
@@ -332,7 +339,9 @@ class Generator
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->safeEmail;
+            do {
+                $email = $faker->safeEmail;
+            } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
@@ -378,6 +387,7 @@ class Generator
         $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $DeliveryDurations = $this->durationRepository->findAll();
+        $ProductCodesGenerated = [];
 
         $Product = new Product();
         if (is_null($product_name)) {
@@ -443,8 +453,12 @@ class Generator
             $this->entityManager->persist($ProductStock);
             $this->entityManager->flush();
             $ProductClass = new ProductClass();
+            do {
+                $ProductCode = $faker->word;
+            } while (in_array($ProductCode, $ProductCodesGenerated));
+            $ProductCodesGenerated[] = $ProductCode;
             $ProductClass
-                ->setCode($faker->word)
+                ->setCode($ProductCode)
                 ->setCreator($Member)
                 ->setStock($ProductStock->getStock())
                 ->setProductStock($ProductStock)
@@ -488,8 +502,12 @@ class Generator
         } else {
             $ProductClass->setVisible(true);
         }
+        do {
+            $ProductCode = $faker->word;
+        } while (in_array($ProductCode, $ProductCodesGenerated));
+        $ProductCodesGenerated[] = $ProductCode;
         $ProductClass
-            ->setCode($faker->word)
+            ->setCode($ProductCode)
             ->setCreator($Member)
             ->setStock($ProductStock->getStock())
             ->setProductStock($ProductStock)
@@ -823,10 +841,16 @@ class Generator
         $faker = $this->getFaker();
         /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
+        do {
+            $url = $faker->word;
+        } while ($this->pageRepository->findBy(['url' => $url]));
+        do {
+            $filename = $faker->word;
+        } while ($this->pageRepository->findBy(['file_name' => $filename]));
         $Page
             ->setName($faker->word)
-            ->setUrl($faker->word)
-            ->setFileName($faker->word)
+            ->setUrl($url)
+            ->setFileName($filename)
             ->setAuthor($faker->word)
             ->setDescription($faker->word)
             ->setKeyword($faker->word)

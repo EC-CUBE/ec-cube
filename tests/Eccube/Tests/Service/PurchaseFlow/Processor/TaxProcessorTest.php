@@ -49,7 +49,7 @@ class TaxProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->processor = self::$container->get(TaxProcessor::class);
+        $this->processor = static::getContainer()->get(TaxProcessor::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
 
         /** @var RoundingType $RoundingType */

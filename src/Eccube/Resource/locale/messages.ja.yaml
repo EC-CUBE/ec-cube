@@ -387,6 +387,7 @@ front.shopping.price_changed: '「%product%」の販売価格が変更されま�
 front.shopping.payment_total_invalid: 合計金額が不正です。
 front.shopping.different_payment_methods: 支払い方法が異なる商品が含まれているため、同時に購入することはできません。
 front.shopping.payment_method_unselected: お支払い方法を選択してください。
+front.shopping.not_available_payment_method: 選択したお支払い方法はご利用できません。
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 front.under_maintenance: メンテナンスモードが有効になっています。
 
@@ -478,6 +479,7 @@ admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
 admin.common.csv_invalid_greater_than_zero: '%line%行目の%name%は0以上の数値を設定してください。'
 admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
+admin.common.csv_invalid_format_line_name: '%line%行目の%name%のフォーマットが異なります'
 admin.common.csv_invalid_date_format: '%line%行目の%name%の日付フォーマットが異なります'
 admin.common.csv_invalid_not_found: '%line%行目の%name%が存在しません'
 admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name%」が存在しません'
@@ -923,7 +925,7 @@ admin.order.skip_change_status: '%name%: ステータス変更をスキップし
 admin.order.shipping_csv.shipping_id_col: 出荷ID
 admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: お問い合わせ番号
-admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.tracking_number_description: 半角英数字かハイフンのみで設定
 admin.order.shipping_csv.shipping_date_col: 出荷日
 admin.order.shipping_csv.shipping_date_description: '出荷日を「YYYY-MM-DD」の形式で設定'
 
@@ -982,10 +984,11 @@ admin.content.file.file_list__card_title: このフォルダ内のファイル
 admin.content.file.updated: 更新
 admin.content.file.directory_tree: フォルダ構成
 admin.content.file.upload_complete: '%success%件のファイルをアップロードしました。(%success%/%count%)'
-admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。(%error%)'
+admin.content.file.upload_error: '%file_name% のアップロードに失敗しました。'
 admin.content.file.folder_name_symbol_error: 使用できない文字が含まれています。
 admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
 admin.content.file.dir_exists: '%file_name% は既に使用されています。別のフォルダ名を入力してください'
+admin.content.file.same_name_folder_exists: 'ファイルと同じ名前のフォルダが存在するためアップロードできません。'
 admin.content.file.phpfile_error: 'phpファイルはアップロードできません。'
 admin.content.file.dotfile_error: '.で始まるファイルはアップロードできません。'
 admin.content.layout_delete: レイアウトを削除
