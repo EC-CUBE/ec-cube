@@ -69,11 +69,13 @@ $(function() {
             {% for key,Plugin in Plugins %}
                 {% set pluginDetail = officialPluginsDetail[key]|default(NULL) %}
                 <tr class="{% if Plugin.enabled == false %}active{% endif %}">
-                    <td class="align-items-center ps-3 d-flex">
-                        <a href="#" target="_blank" class="plugin-image pe-3 d-block float-start">
-                            <img height="60" src="{{ pluginDetail ? pluginDetail.image : asset('noimage_plugin_list.png', 'save_image') }}" alt="">
-                        </a>
-                        <span>{{ Plugin.name }}</span>
+                    <td class="align-middle">
+                        <div class="align-center-items ps-3 d-flex">
+                            <a href="#" target="_blank" class="plugin-image pe-3 d-block float-start">
+                                <img height="60" src="{{ pluginDetail ? pluginDetail.image : asset('noimage_plugin_list.png', 'save_image') }}" alt="">
+                            </a>
+                            <span>{{ Plugin.name }}</span>
+                        </div>
                     </td>
                     <td class="align-middle">{{ Plugin.version }}</td>
                     <td class="align-middle"><p class="mb-0">{{ Plugin.code }}</p></td>
