@@ -184,9 +184,6 @@ class EditController extends AbstractController
      */
     public function index(Request $request, RouterInterface $router, $id = null)
     {
-        $TargetOrder = null;
-        $OriginOrder = null;
-
         if (null === $id) {
             // 空のエンティティを作成.
             $TargetOrder = new Order();

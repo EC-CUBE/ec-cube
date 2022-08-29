@@ -754,7 +754,6 @@ class ProductController extends AbstractController
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
-        $message = null;
         $success = false;
 
         if (!is_null($id)) {

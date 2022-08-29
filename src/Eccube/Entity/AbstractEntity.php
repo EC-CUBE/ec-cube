@@ -77,7 +77,6 @@ abstract class AbstractEntity implements \ArrayAccess
      */
     public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], \ReflectionClass $parentClass = null)
     {
-        $objReflect = null;
         if (is_object($parentClass)) {
             $objReflect = $parentClass;
         } else {
@@ -113,7 +112,6 @@ abstract class AbstractEntity implements \ArrayAccess
      */
     public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], \ReflectionClass $parentClass = null)
     {
-        $objReflect = null;
         if (is_object($parentClass)) {
             $objReflect = $parentClass;
         } else {

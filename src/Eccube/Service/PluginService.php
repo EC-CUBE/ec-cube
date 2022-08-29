@@ -721,7 +721,6 @@ class PluginService
      */
     public function update(Plugin $plugin, $path)
     {
-        $pluginBaseDir = null;
         $tmp = null;
         try {
             $this->cacheUtil->clearCache();
@@ -990,23 +989,5 @@ class PluginService
         }
 
         return $index;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return bool
-     */
-    private function isEnable($code)
-    {
-        $Plugin = $this->pluginRepository->findOneBy([
-            'enabled' => Constant::ENABLED,
-            'code' => $code,
-        ]);
-        if ($Plugin) {
-            return true;
-        }
-
-        return false;
     }
 }
