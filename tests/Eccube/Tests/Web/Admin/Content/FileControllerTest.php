@@ -156,6 +156,10 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $contents2 = '<html><body><h1>test2</h1></body></html>';
         file_put_contents($filepath2, $contents2);
 
+        $filepath4 = $this->getUserDataDir().'/../ddd.php.html';
+        $contents4 = '<html><body><h1>test4</h1></body></html>';
+        file_put_contents($filepath4, $contents4);
+
         $file1 = new UploadedFile(
             realpath($filepath1),          // file path
             'aaa.html',         // original name
@@ -170,6 +174,13 @@ class FileControllerTest extends AbstractAdminWebTestCase
             null,               // error
             true                // test mode
         );
+        $file4 = new UploadedFile(
+            realpath($filepath4),          // file path
+            'ddd.php.html',         // original name
+            'text/html',        // mimeType
+            null,               // error
+            true                // test mode
+        );
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_content_file'),
@@ -177,17 +188,18 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'form' => [
                     '_token' => 'dummy',
                     'create_file' => '',
-                    'file' => [$file1, $file2],
+                    'file' => [$file1, $file2, $file4],
                 ],
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['form' => ['file' => [$file1, $file2]]]
+            ['form' => ['file' => [$file1, $file2, $file4]]]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(file_exists($this->getUserDataDir().'/aaa.html'));
         $this->assertTrue(file_exists($this->getUserDataDir().'/bbb.html'));
+        $this->assertTrue(file_exists($this->getUserDataDir().'/ddd.html'));
     }
 
     public function testUploadIgnoreFiles()

@@ -299,6 +299,11 @@ class FileController extends AbstractController
         /** @var UploadedFile $file */
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
+            // 拡張子が複数ある場合は最後のものだけを残す
+            $filename_parts = explode('.', $filename);
+            if (count($filename_parts) > 2) {
+                $filename = $filename_parts[0] . '.' . $filename_parts[array_key_last($filename_parts)];
+            }
             try {
                 // フォルダの存在チェック
                 if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
