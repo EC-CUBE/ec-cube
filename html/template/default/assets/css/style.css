@@ -10694,6 +10694,8 @@ Styleguide 12.1
 }
 .ec-sliderItemRole .slideThumb img {
   width: 80%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 /**
 メディアクエリ
