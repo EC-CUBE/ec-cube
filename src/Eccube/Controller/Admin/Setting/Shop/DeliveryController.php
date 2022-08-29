@@ -176,7 +176,7 @@ class DeliveryController extends AbstractController
             $DeliveryFeesIndex[$DeliveryFee->getPref()->getId()] = $DeliveryFee;
         }
         ksort($DeliveryFeesIndex);
-        foreach ($DeliveryFeesIndex as $timeId => $DeliveryFee) {
+        foreach ($DeliveryFeesIndex as $DeliveryFee) {
             $Delivery->addDeliveryFee($DeliveryFee);
         }
 

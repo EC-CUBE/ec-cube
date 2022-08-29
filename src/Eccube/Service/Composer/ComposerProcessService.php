@@ -36,8 +36,6 @@ class ComposerProcessService implements ComposerServiceInterface
      */
     protected $entityManager;
 
-    private $workingDir;
-
     /**
      * @var ComposerApiService
      */
