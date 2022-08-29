@@ -478,6 +478,7 @@ admin.common.csv_invalid_format: Unmatched CSV format
 admin.common.csv_invalid_no_data: No CSV data found
 admin.common.csv_invalid_required: '%name% is empty in the %line%'
 admin.common.csv_invalid_greater_than_zero: '%name% should be more than 0 in the line %line%.'
+admin.common.csv_invalid_format_line_name: 'Unmatched format in %name% in the line %line%'
 admin.common.csv_invalid_format_line: 'Unmatched CSV format in the line %line%'
 admin.common.csv_invalid_date_format: 'Unmatched date format in %name% in the line %line%'
 admin.common.csv_invalid_not_found: '%name% is empty in the line %line%'
@@ -924,7 +925,7 @@ admin.order.skip_change_status: '%name%: Status change has been skipped'
 admin.order.shipping_csv.shipping_id_col: Shipping ID
 admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: Tracking No.
-admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.tracking_number_description: Enter alphanumeric characters or hyphens
 admin.order.shipping_csv.shipping_date_col: Shipping Date
 admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of MM/DD/YYYY
 

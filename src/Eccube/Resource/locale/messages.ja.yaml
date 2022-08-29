@@ -479,6 +479,7 @@ admin.common.csv_invalid_no_data: CSVデータが存在しません
 admin.common.csv_invalid_required: '%line%行目の%name%が設定されていません'
 admin.common.csv_invalid_greater_than_zero: '%line%行目の%name%は0以上の数値を設定してください。'
 admin.common.csv_invalid_format_line: '%line%行目のCSVフォーマットが一致しません'
+admin.common.csv_invalid_format_line_name: '%line%行目の%name%のフォーマットが異なります'
 admin.common.csv_invalid_date_format: '%line%行目の%name%の日付フォーマットが異なります'
 admin.common.csv_invalid_not_found: '%line%行目の%name%が存在しません'
 admin.common.csv_invalid_not_found_target: '%line%行目の%name%「%target_name%」が存在しません'
@@ -924,7 +925,7 @@ admin.order.skip_change_status: '%name%: ステータス変更をスキップし
 admin.order.shipping_csv.shipping_id_col: 出荷ID
 admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: お問い合わせ番号
-admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.tracking_number_description: 半角英数字かハイフンのみで設定
 admin.order.shipping_csv.shipping_date_col: 出荷日
 admin.order.shipping_csv.shipping_date_description: '出荷日を「YYYY-MM-DD」の形式で設定'
 
