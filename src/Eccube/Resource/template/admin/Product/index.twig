@@ -316,46 +316,46 @@ file that was distributed with this source code.
                                         <th class="border-top-0 ps-3 pt-2 pb-2">
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2" nowrap>{{ 'admin.product.product_id__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.image__short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_code"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.stock'|trans }}<a href="#" class="js-listSort" data-sortkey="stock"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none" nowrap>{{ 'admin.product.product_id__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.product.image__short'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.product.name'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.product.product_code__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_code"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.product.price'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.product.stock'|trans }}<a href="#" class="js-listSort" data-sortkey="stock"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-nowrap">{{ 'admin.product.display_status__short'|trans }}<a href="#" class="js-listSort" data-sortkey="status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.create_date'|trans }}<a href="#" class="js-listSort" data-sortkey="create_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.common.update_date'|trans }}<a href="#" class="js-listSort" data-sortkey="update_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 pe-3" colspan="3"></th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.common.create_date'|trans }}<a href="#" class="js-listSort" data-sortkey="create_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 shadow-none">{{ 'admin.common.update_date'|trans }}<a href="#" class="js-listSort" data-sortkey="update_date"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 pe-3 shadow-none" colspan="3"></th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="border-top-2 border-light border-right-0 border-left-0">
                                     {% for Product in pagination %}
                                         <tr id="ex-product-{{ Product.id }}">
-                                            <td class="align-middle ps-3">
+                                            <td class="align-middle ps-3 shadow-none">
                                                 <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}" data-delete-url="{{ url('admin_product_product_delete', { id: Product.id }) }}">
                                             </td>
-                                            <td class="align-middle">{{ Product.id }}</td>
+                                            <td class="align-middle shadow-none">{{ Product.id }}</td>
                                             {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                     <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
                                                          style="max-width: 50px">
                                                 </a>
                                             </td>
-                                            <td class="align-middle"><a
+                                            <td class="align-middle shadow-none"><a
                                                         href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a>
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 {{ Product.code_min }}
                                                 {% if Product.code_min != Product.code_max %}{{ 'admin.common.separator__range'|trans }}{{ Product.code_max }}
                                                 {% endif %}
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 {{ Product.price02_min|price }}
                                                 {% if Product.price02_min != Product.price02_max %}{{ 'admin.common.separator__range'|trans }}{{ Product.price02_max|price }}
                                                 {% endif %}
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 {% if Product.hasProductClass %}
                                                     <button type="button" class="btn page-link text-dark d-inline-block"
                                                             data-product-id="{{ Product.id }}"
@@ -373,16 +373,16 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 {% endif %}
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 {{ Product.status.name }}
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 {{ Product.create_date|date_min }}
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle shadow-none">
                                                 {{ Product.update_date|date_min }}
                                             </td>
-                                            <td class="align-middle pe-3" colspan="3">
+                                            <td class="align-middle pe-3 shadow-none" colspan="3">
                                                 <div class="text-end">
                                                     <div class="px-1 d-inline-block text-center" data-bs-toggle="tooltip"
                                                          data-bs-placement="top"
