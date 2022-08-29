@@ -537,9 +537,9 @@ jobs:
       - name: Wait for 30 seconds for the database to load, (because MySQL is slow to initialize)
         run: sleep 30s
         shell: bash
-      - name: Setup database schema
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
+#      - name: Setup database schema
+#        run: |
+#          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
       - name: Setup base fixtures
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=prod
@@ -623,9 +623,9 @@ jobs:
       - name: Wait for 30 seconds for the database to load, (because MySQL is slow to initialize)
         run: sleep 30s
         shell: bash
-      - name: Setup database schema
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
+#      - name: Setup database schema
+#        run: |
+#          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console doctrine:schema:create --env=prod
       - name: Setup base fixtures
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec -T ec-cube  bin/console eccube:fixtures:load --env=prod
