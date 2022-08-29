@@ -147,7 +147,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
      */
     private $whereClauses = [];
 
-    public function add(WhereClause $whereClause): array
+    public function add(WhereClause $whereClause): void
     {
         $this->whereClauses[] = $whereClause;
     }
