@@ -1796,6 +1796,7 @@ exception.error_message_restrict_url: この機能は管理者によって制限
 
 purchase_flow.delivery_fee_update: 送料が更新されました。金額をご確認ください。
 purchase_flow.charge_update: 手数料が更新されました。金額をご確認ください。
+purchase_flow.tax_rate_update: 税率が更新されました。金額をご確認ください。
 purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
 purchase_flow.over_stock: '「%name%」の在庫が足りません。'
