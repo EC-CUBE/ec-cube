@@ -22,9 +22,11 @@ file that was distributed with this source code.
         $(function() {
 
             $(window).on('pageshow', function() {
-                var tmp_select =  $('#csv-type[name="form[csv_type]"] option[selected]').val();
-                $('#csv-type[name="form[csv_type]"] option:selected').removeAttr('selected');
-                $('#csv-type[name="form[csv_type]"]').val(tmp_select);
+                if(window.performance.navigation.type == 2) {
+                    var tmp_select =  $('#csv-type[name="form[csv_type]"] option[selected]').val();
+                    $('#csv-type[name="form[csv_type]"] option:selected').removeAttr('selected');
+                    $('#csv-type[name="form[csv_type]"]').val(tmp_select);
+                }
             });
 
             function add(event) {
