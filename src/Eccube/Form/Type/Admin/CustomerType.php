@@ -113,15 +113,7 @@ class CustomerType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plain_password', RepeatedPasswordType::class, [
-                // 'type' => 'password',
-                'first_options' => [
-                    'label' => 'member.label.pass',
-                ],
-                'second_options' => [
-                    'label' => 'member.label.verify_pass',
-                ],
-            ])
+            ->add('plain_password', RepeatedPasswordType::class)
             ->add('status', CustomerStatusType::class, [
                 'required' => true,
                 'constraints' => [

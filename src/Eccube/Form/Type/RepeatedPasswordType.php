@@ -15,6 +15,8 @@ namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTransformer;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -60,7 +62,6 @@ class RepeatedPasswordType extends AbstractType
                         'pattern' => $this->eccubeConfig['eccube_password_pattern'],
                         'message' => 'form_error.password_pattern_invalid',
                     ]),
-                    new Assert\NotBlank(),
                 ],
             ],
             'first_options' => [
@@ -74,6 +75,9 @@ class RepeatedPasswordType extends AbstractType
                 'attr' => [
                     'placeholder' => 'common.repeated_confirm',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
             ],
         ]);
     }
