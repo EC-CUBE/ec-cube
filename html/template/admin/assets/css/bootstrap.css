@@ -5691,6 +5691,13 @@ Styleguide 12.7
 .list-unstyled li {
   margin-bottom: 0.5em;
 }
+/*
+EC-CUBE4.2 Bootstrap5
+admin > tableのbox-shadow打ち消し
+*/
+.table > :not(caption) > * > * {
+  box-shadow: none;
+}
 @media (min-width: 576px) {
   .container-sm, .container {
     max-width: 540px;
