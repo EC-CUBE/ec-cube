@@ -43,8 +43,8 @@ class CalendarController extends AbstractController
     {
         $today = Carbon::now();
         $firstDateOfThisMonth = $today->copy()->startOfMonth();
-        $firstDateOfNextMonth = $today->copy()->startOfMonth()->addMonth(1)->startOfMonth();
-        $endDateOfNextMonth = $today->copy()->startOfMonth()->addMonth(1)->endOfMonth();
+        $firstDateOfNextMonth = $today->copy()->startOfMonth()->addMonth()->startOfMonth();
+        $endDateOfNextMonth = $today->copy()->startOfMonth()->addMonth()->endOfMonth();
 
         // 2ヶ月間の定休日を取得
         $HolidaysOfTwoMonths = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
@@ -65,7 +65,7 @@ class CalendarController extends AbstractController
         $thisMonthCalendar = $this->setHolidayAndTodayFlag($thisMonthCalendar, $holidayListOfTwoMonths, $today->copy());
 
         // 来月のカレンダー配列に定休日フラグを設定
-        $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, $today->copy()->startOfMonth()->addMonth(1));
+        $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, $today->copy()->startOfMonth()->addMonth());
 
         // 各カレンダータイトルを作成
         $monthFormat = $this->translator->trans('front.block.calendar.month_format');
