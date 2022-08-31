@@ -21,6 +21,11 @@ file that was distributed with this source code.
     <script>
         $(function() {
 
+            $(window).on('pageshow', function() {
+                var tmp_select =  $('#csv-type[name="form[csv_type]"] option[selected]').val();
+                $('#csv-type[name="form[csv_type]"]').val(tmp_select);
+            });
+
             function add(event) {
                 $('#' + event.data.from + ' option:selected')
                     .appendTo($('#' + event.data.to))
