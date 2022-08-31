@@ -84,6 +84,11 @@ class ProductClassEditType extends AbstractType
             ])
             ->add('code', TextType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => 255,
+                    ]),
+                ],
             ])
             ->add('stock', IntegerType::class, [
                 'required' => false,
