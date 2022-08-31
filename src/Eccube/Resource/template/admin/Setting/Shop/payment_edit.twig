@@ -111,14 +111,15 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.common.payment_method'|trans }}</span></div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.payment.payment_name'|trans }}</span></div>
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.payment.payment_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.method) }}
                                     {{ form_errors(form.method) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.common.charge'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'admin.common.charge'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.charge) }}
                                     {{ form_errors(form.charge) }}
