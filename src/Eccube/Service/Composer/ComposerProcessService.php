@@ -141,11 +141,11 @@ class ComposerProcessService implements ComposerServiceInterface
 
     public function configureRepository(BaseInfo $BaseInfo)
     {
-        composerApiService->configureRepository($BaseInfo);
+        $this->composerApiService->configureRepository($BaseInfo);
     }
 
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
     {
-        composerApiService->foreachRequires($packageName, $version, $callback, $typeFilter, $level);
+        $this->composerApiService->foreachRequires($packageName, $version, $callback, $typeFilter, $level);
     }
 }
