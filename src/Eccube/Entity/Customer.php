@@ -196,7 +196,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * @var string
          *
-         * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":true,"default":0})
+         * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
          */
         private $point = '0';
 
