@@ -182,14 +182,8 @@ class OrderType extends AbstractType
             ->add('charge', PriceType::class, [
                 'required' => false,
             ])
-            ->add('use_point', NumberType::class, [
+            ->add('use_point', PriceType::class, [
                 'required' => true,
-                'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
-                ],
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,
