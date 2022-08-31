@@ -160,7 +160,11 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscountItems()
         {
-            return array_filter($this->getTaxableItems(), function (OrderItem $Item) {
+            $items = $this->OrderItems->toArray();
+            usort($items, function (ItemInterface $a, ItemInterface $b) {
+                return ($a->getId() < $b->getId()) ? -1 : 1;
+            });
+            return array_filter($items, function (OrderItem $Item) {
                 return $Item->isDiscount();
             });
         }
@@ -184,7 +188,11 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxFreeDiscountItems()
         {
-            return array_filter($this->OrderItems->toArray(), function (OrderItem $Item) {
+            $items = $this->OrderItems->toArray();
+            usort($items, function (ItemInterface $a, ItemInterface $b) {
+                return ($a->getId() < $b->getId()) ? -1 : 1;
+            });
+            return array_filter($items, function (OrderItem $Item) {
                 return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
             });
         }
