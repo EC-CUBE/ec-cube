@@ -25,7 +25,6 @@ use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Validator\Email;
-use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -135,7 +134,16 @@ class CustomerType extends AbstractType
             ])
             ->add(
                 'point',
-                PriceType::class
+                NumberType::class,
+                [
+                    'required' => false,
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                        new Assert\Range([
+                            'min' => "-".$this->eccubeConfig['eccube_price_max'],
+                            'max' => $this->eccubeConfig['eccube_price_max']])
+                    ],
+                ]
             )
             ->add('note', TextareaType::class, [
                 'required' => false,

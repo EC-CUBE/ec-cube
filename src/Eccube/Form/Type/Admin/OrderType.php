@@ -182,8 +182,18 @@ class OrderType extends AbstractType
             ->add('charge', PriceType::class, [
                 'required' => false,
             ])
-            ->add('use_point', PriceType::class, [
+            ->add('use_point', NumberType::class, [
                 'required' => true,
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form_error.numeric_only',
+                    ]),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => $this->eccubeConfig['eccube_price_max']
+                    ]),
+                ],
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,
