@@ -420,4 +420,16 @@ class PointProcessorTest extends EccubeTestCase
 
         return $OrderItem;
     }
+
+    public function testProcess()
+    {
+        $processor = self::$container->get(PointProcessor::class);
+        $Order = $this->createOrder($this->createCustomer());
+
+        $processor->process($Order, new PurchaseContext());
+
+        foreach ($Order->getOrderItems() as $OrderItem) {
+            $this->assertEquals($OrderItem->getPointRate(), $this->BaseInfo->getBasicPointRate());
+        }
+    }
 }
