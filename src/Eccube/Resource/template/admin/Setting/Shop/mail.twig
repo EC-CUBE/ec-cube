@@ -31,11 +31,8 @@ file that was distributed with this source code.
         $(function() {
 
             $(window).on('pageshow', function() {
-                if(window.performance.navigation.type == 2) {
-                    var tmp_select =  $('#mail_template[name="mail[template]"] option[selected]').val();
-                    $('#mail_template[name="mail[template]"] option:selected').removeAttr('selected');
-                    $('#mail_template[name="mail[template]"]').val(tmp_select);
-                }
+                var tmp_select =  $('#mail_template[name="mail[template]"] option[selected]').val();
+                $('#mail_template[name="mail[template]"]').val(tmp_select);
             });
 
             $('#mail_template').on('change', function() {
