@@ -49,7 +49,6 @@
         "robthree/twofactorauth": "^1.8",
         "sensio/framework-extra-bundle": "^6.2",
         "setasign/fpdi": "^2.2",
-        "setasign/fpdi-tcpdf": "^2.2",
         "skorp/detect-incompatible-samesite-useragents": "^1.0",
         "symfony/asset": "^5.4",
         "symfony/cache": "^5.4",
