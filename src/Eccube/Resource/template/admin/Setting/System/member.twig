@@ -99,7 +99,6 @@ file that was distributed with this source code.
                                                     <i class="fa fa-check fa-lg {{ Member.two_factor_auth_key ? 'text-success' : 'text-danger' }}"
                                                        aria-hidden="true"></i>
                                                 </span>
-                                            </span>
                                             {% else %}
                                                 {{ 'common.disabled'|trans }}
                                             {% endif %}
@@ -137,13 +136,13 @@ file that was distributed with this source code.
                                                 </div>
                                                 <div class="px-1 d-inline-block">
                                                     {% if Member.id == app.user.id %}
-                                                        <a class="btn btn-ec-actionIcon action-delete mr-2 disabled"
+                                                        <a class="btn btn-ec-actionIcon action-delete me-2 disabled"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="{{ 'admin.common.delete'|trans }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% else %}
-                                                        <div class="d-inline-block mr-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon action-delete"
                                                                data-bs-toggle="modal"

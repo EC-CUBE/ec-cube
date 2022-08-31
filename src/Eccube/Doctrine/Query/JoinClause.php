@@ -30,7 +30,7 @@ class JoinClause
 
     private $indexBy;
 
-    private $leftJoin = false;
+    private $leftJoin;
 
     /**
      * @var JoinClauseWhereCustomizer
@@ -52,7 +52,7 @@ class JoinClause
      * @param $condition
      * @param $indexBy
      */
-    private function __construct($leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
     {
         $this->leftJoin = $leftJoin;
         $this->join = $join;
@@ -77,7 +77,7 @@ class JoinClause
      *
      * @return JoinClause
      */
-    public static function innerJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    public static function innerJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null): JoinClause
     {
         return new JoinClause(false, $join, $alias, $conditionType, $condition, $indexBy);
     }
@@ -95,7 +95,7 @@ class JoinClause
      *
      * @return JoinClause
      */
-    public static function leftJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    public static function leftJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null): JoinClause
     {
         return new JoinClause(true, $join, $alias, $conditionType, $condition, $indexBy);
     }
@@ -107,7 +107,7 @@ class JoinClause
      *
      * @return $this
      */
-    public function addWhere(WhereClause $whereClause)
+    public function addWhere(WhereClause $whereClause): self
     {
         $this->whereCustomizer->add($whereClause);
 
@@ -121,7 +121,7 @@ class JoinClause
      *
      * @return $this
      */
-    public function addOrderBy(OrderByClause $orderByClause)
+    public function addOrderBy(OrderByClause $orderByClause): self
     {
         $this->orderByCustomizer->add($orderByClause);
 
@@ -147,7 +147,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
      */
     private $whereClauses = [];
 
-    public function add(WhereClause $whereClause)
+    public function add(WhereClause $whereClause): void
     {
         $this->whereClauses[] = $whereClause;
     }
@@ -158,7 +158,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
      *
      * @return WhereClause[]
      */
-    protected function createStatements($params, $queryKey)
+    protected function createStatements($params, $queryKey): array
     {
         return $this->whereClauses;
     }
@@ -168,7 +168,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
      *
      * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return '';
     }
@@ -192,7 +192,7 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      *
      * @return OrderByClause[]
      */
-    protected function createStatements($params, $queryKey)
+    protected function createStatements($params, $queryKey): array
     {
         return $this->orderByClauses;
     }
@@ -202,7 +202,7 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      *
      * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return '';
     }

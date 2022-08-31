@@ -29,9 +29,9 @@ class PageRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $this->pageRepo = $this->entityManager->getRepository(\Eccube\Entity\Page::class);
-        $this->userDataRealDir = self::$container->getParameter('eccube_theme_user_data_dir');
-        $this->templateRealDir = self::$container->getParameter('eccube_theme_app_dir');
-        $this->templateDefaultRealDir = self::$container->getParameter('eccube_theme_src_dir');
+        $this->userDataRealDir = static::getContainer()->getParameter('eccube_theme_user_data_dir');
+        $this->templateRealDir = static::getContainer()->getParameter('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = static::getContainer()->getParameter('eccube_theme_src_dir');
     }
 
     public function testGetByUrl()

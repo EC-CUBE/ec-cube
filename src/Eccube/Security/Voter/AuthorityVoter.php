@@ -49,7 +49,6 @@ class AuthorityVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        $request = null;
         $path = null;
 
         try {

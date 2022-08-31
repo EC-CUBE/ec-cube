@@ -127,8 +127,10 @@ file that was distributed with this source code.
                             </div>
 
                             <div class="mb-3 text-end">
-                                {{ form_widget(form.default) }}
-                                {{ form_errors(form.default) }}
+                                <div class="form-check form-check-inline">
+                                    {{ form_widget(form.default) }}
+                                    {{ form_errors(form.default) }}
+                                </div>
                             </div>
 
                         </div>
