@@ -304,6 +304,10 @@ class FileController extends AbstractController
                 if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
                 }
+                // 英数字, 半角スペース, _-.() のみ許可
+                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', $filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
+                }
                 // phpファイルはアップロード不可
                 if ($file->getClientOriginalExtension() === 'php') {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.phpfile_error'));
