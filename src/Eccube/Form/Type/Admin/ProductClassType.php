@@ -38,12 +38,18 @@ class ProductClassType extends AbstractType
     protected $entityManager;
 
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * ProductClassType constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;

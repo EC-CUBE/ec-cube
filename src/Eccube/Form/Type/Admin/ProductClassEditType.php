@@ -55,6 +55,11 @@ class ProductClassEditType extends AbstractType
     protected $baseInfoRepository;
 
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * ProductClassEditType constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -64,7 +69,8 @@ class ProductClassEditType extends AbstractType
     public function __construct(
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
