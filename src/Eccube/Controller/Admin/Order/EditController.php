@@ -18,6 +18,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -221,6 +222,12 @@ class EditController extends AbstractController
 
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
+        
+        foreach ($TargetOrder->getOrderItems() as $orderItem) {
+            if($orderItem->getTaxDisplayType() == null){
+                $orderItem->setTaxDisplayType($this->getTaxDisplayType($orderItem->getOrderItemType()));
+            }
+        }
 
         if ($form->isSubmitted() && $form['OrderItems']->isValid()) {
             $event = new EventArgs(
@@ -689,5 +696,40 @@ class EditController extends AbstractController
         }
 
         throw new BadRequestHttpException();
+    }
+
+    /**
+     * 税表示区分を取得する.
+     *
+     * - 商品: 税抜
+     * - 送料: 税込
+     * - 値引き: 税抜
+     * - 手数料: 税込
+     * - ポイント値引き: 税込
+     *
+     * @param $OrderItemType
+     *
+     * @return TaxType
+     */
+    protected function getTaxDisplayType($OrderItemType)
+    {
+        if ($OrderItemType instanceof OrderItemType) {
+            $OrderItemType = $OrderItemType->getId();
+        }
+
+        switch ($OrderItemType) {
+            case OrderItemType::PRODUCT:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+            case OrderItemType::DELIVERY_FEE:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            case OrderItemType::DISCOUNT:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+            case OrderItemType::CHARGE:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            case OrderItemType::POINT:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            default:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+        }
     }
 }
