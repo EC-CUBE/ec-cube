@@ -133,10 +133,10 @@ class CustomerType extends AbstractType
                 [
                     'required' => false,
                     'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => "/^\d+$/u",
-                            'message' => 'form_error.numeric_only',
-                        ]),
+                        new Assert\NotBlank(),
+                        new Assert\Range([
+                            'min' => "-".$this->eccubeConfig['eccube_price_max'],
+                            'max' => $this->eccubeConfig['eccube_price_max']])
                     ],
                 ]
             )
