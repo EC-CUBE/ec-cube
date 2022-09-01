@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ClassCategory;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;

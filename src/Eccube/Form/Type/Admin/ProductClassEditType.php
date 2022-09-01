@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer;
