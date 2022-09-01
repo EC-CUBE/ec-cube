@@ -253,7 +253,6 @@ class FileControllerTest extends AbstractAdminWebTestCase
             realpath($quote),          // file path
             "'quote'.txt",         // original name
             'text/plain',        // mimeType
-            null,               // file size
             null,               // error
             true                // test mode
         );
@@ -270,7 +269,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['file' => [$quotefile]]
+            ['form' => ['file' => [$quotefile]]]
         );
 
         $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
