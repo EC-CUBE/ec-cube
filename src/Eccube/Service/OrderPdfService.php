@@ -23,13 +23,13 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Twig\Extension\TaxExtension;
-use setasign\Fpdi\TcpdfFpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 
 /**
  * Class OrderPdfService.
  * Do export pdf function.
  */
-class OrderPdfService extends TcpdfFpdi
+class OrderPdfService extends Fpdi
 {
     /** @var OrderRepository */
     protected $orderRepository;
