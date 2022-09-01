@@ -69,6 +69,7 @@ class ProductClassEditType extends AbstractType
         $this->entityManager = $entityManager;
         $this->validator = $validator;
         $this->baseInfoRepository = $baseInfoRepository;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -86,7 +87,7 @@ class ProductClassEditType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => 255,
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
             ])
