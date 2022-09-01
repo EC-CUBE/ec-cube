@@ -24,9 +24,7 @@ class HTMLPurifierListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [
-            FormEvents::PRE_SUBMIT => ['purifySubmittedData', /* as soon as possible */ 1000001],
-        ];
+        return [];
     }
 
     public function purifySubmittedData(FormEvent $event): void
