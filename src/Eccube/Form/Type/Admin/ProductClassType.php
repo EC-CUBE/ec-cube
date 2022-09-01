@@ -46,6 +46,7 @@ class ProductClassType extends AbstractType
         EntityManagerInterface $entityManager
     ) {
         $this->entityManager = $entityManager;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -58,7 +59,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => 255,
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
             ])
