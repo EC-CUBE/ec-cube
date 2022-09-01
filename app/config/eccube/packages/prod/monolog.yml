@@ -9,7 +9,7 @@ monolog:
         main:
             type: fingers_crossed
             action_level: error
-            passthru_level: info
+            passthru_level: error
             handler: main_rotating_file
         main_rotating_file:
             type: rotating_file
@@ -20,7 +20,7 @@ monolog:
         front:
             type: fingers_crossed
             action_level: error
-            passthru_level: info
+            passthru_level: error
             handler: front_rotating_file
             channels: ['front', 'app', 'php']
         front_rotating_file:
@@ -28,11 +28,11 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/front.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: error
         admin:
             type: fingers_crossed
             action_level: error
-            passthru_level: info
+            passthru_level: error
             handler: admin_rotating_file
             channels: ['admin', 'app', 'php']
         admin_rotating_file:
@@ -40,7 +40,7 @@ monolog:
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: error
         console:
             type: console
             process_psr_3_messages: false

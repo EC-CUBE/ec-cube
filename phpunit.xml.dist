@@ -23,6 +23,10 @@
         <!-- postgresql+advisory://db_user:db_password@localhost/db_name -->
         <env name="LOCK_DSN" value="semaphore"/>
         <!-- ###- symfony/lock ### -->
+
+        <!-- ###+ sentry/sentry-symfony ### -->
+        <env name="SENTRY_DSN" value=""/>
+        <!-- ###- sentry/sentry-symfony ### -->
     </php>
 
     <testsuites>
