@@ -15,8 +15,6 @@ rm -rf $WORKSPACE/.gitmodules
 rm -rf $WORKSPACE/.php-cs-fixer.*
 rm -rf $WORKSPACE/phpunit.xml.dist
 rm -rf $WORKSPACE/phpstan.neon.dist
-rm -rf $WORKSPACE/app.json
-rm -rf $WORKSPACE/Procfile
 rm -rf $WORKSPACE/LICENSE.txt
 rm -rf $WORKSPACE/README.md
 rm -rf $WORKSPACE/codeception.yml
