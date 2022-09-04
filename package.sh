@@ -12,7 +12,7 @@ rm -rf $WORKSPACE/.editorconfig
 rm -rf $WORKSPACE/.gitignore
 rm -rf $WORKSPACE/.buildpath
 rm -rf $WORKSPACE/.gitmodules
-rm -rf $WORKSPACE/.php-cs-fixler.*
+rm -rf $WORKSPACE/.php-cs-fixer.*
 rm -rf $WORKSPACE/phpunit.xml.dist
 rm -rf $WORKSPACE/phpstan.neon.dist
 rm -rf $WORKSPACE/app.json
