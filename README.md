@@ -1,14 +1,14 @@
-# EC-CUBE 4.1
+# EC-CUBE 4.2
 
-[![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
-[![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)
-[![Plugin test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml)
-[![PHPStan](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml)
-[![codecov](https://codecov.io/gh/EC-CUBE/ec-cube/branch/4.1/graph/badge.svg?token=BhnPjjvfwd)](https://codecov.io/gh/EC-CUBE/ec-cube)
+[![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.2)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
+[![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.2)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)
+[![Plugin test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml/badge.svg?branch=4.2)](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml)
+[![PHPStan](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml/badge.svg?branch=4.2)](https://github.com/EC-CUBE/ec-cube/actions/workflows/phpstan.yml)
+[![codecov](https://codecov.io/gh/EC-CUBE/ec-cube/branch/4.2/graph/badge.svg?token=BhnPjjvfwd)](https://codecov.io/gh/EC-CUBE/ec-cube)
 
 [![Slack](https://img.shields.io/badge/slack-join%5fchat-brightgreen.svg?style=flat)](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)
 
-**4.0からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.1.0)をご確認ください。**
+**4.1からの更新内容は[リリースノート](https://github.com/EC-CUBE/ec-cube/releases/tag/4.2.0)をご確認ください。**
 
 + 本ドキュメントはEC-CUBEの開発者を主要な対象者としております。
 + パッケージ版は[EC-CUBEオフィシャルサイト](https://www.ec-cube.net)で配布しています。
@@ -19,7 +19,7 @@
 
 ## インストール
 
-### EC-CUBE 4.1のインストール方法
+### EC-CUBE 4.2のインストール方法
 
 開発ドキュメントの [インストール方法](https://doc4.ec-cube.net/quickstart/install) の手順に従ってインストールしてください。
 
@@ -36,11 +36,31 @@ npm ci # 初回およびpackage-lock.jsonに変更があったとき
 npm run build # Sass のビルド
 ```
 
+### JavaScript のビルド方法
+
+フロントエンドで使用する JavaScript のライブラリは npm で管理されています。
+JavaScript のライブラリは webpack でバンドル/minifyされます。
+バンドルするライブラリを変更する場合は、テンプレートごとに以下の bundle.js を修正し、リビルドしてください。
+- [html/template/admin/assets/js/bundle.js](html/template/admin/assets/js/bundle.js)
+- [html/template/default/assets/js/bundle.js](html/template/default/assets/js/bundle.js)
+- [html/template/install/assets/js/bundle.js](html/template/default/install/js/bundle.js)
+
+```shell
+npm ci # 初回およびpackage-lock.jsonに変更があったとき
+npm run build # Sass 及び JavaScript のビルド
+```
+
+JavaScript ライブラリのみをビルドしたい場合は以下でも可能です。
+
+```shell
+npx webpack
+```
+
 ### 動作確認環境
 
 * Apache 2.4.x (mod_rewrite / mod_ssl 必須)
-* PHP 7.3.x / 7.4.x
-* PostgreSQL 10.x / MySQL 5.7.x
+* PHP 7.4.x / 8.0.x / 8.1.x
+* PostgreSQL 10.x or higher / MySQL 5.7.x or 8.0.x
 * ブラウザー：Google Chrome
 
 詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart/requirement) をご確認ください。
@@ -56,7 +76,7 @@ EC-CUBE 4.x 系の仕様や手順、開発Tipsに関するドキュメントを�
 
 ## 開発への参加
 
-EC-CUBE 4.1の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。  
+EC-CUBE 4.2の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。  
 コードのリファクタリング、不具合修正以外のPullRequestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
 
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。
