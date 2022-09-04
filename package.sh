@@ -28,8 +28,8 @@ rm -rf $WORKSPACE/.github
 rm -rf $WORKSPACE/zap
 rm -rf $WORKSPACE/docker-compose.owaspzap.*
 rm -rf $WORKSPACE/package.sh
-rm -rf $WORKSPACE/app/PluginData/Api/oauth/private.key
-rm -rf $WORKSPACE/app/PluginData/Api/oauth/public.key
+rm -rf $WORKSPACE/app/PluginData/Api42/oauth/private.key
+rm -rf $WORKSPACE/app/PluginData/Api42/oauth/public.key
 find $WORKSPACE -name "dummy" -print0 | xargs -0 rm -rf
 find $WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
 find $WORKSPACE -name ".git*" -type d -print0 | xargs -0 rm -rf
