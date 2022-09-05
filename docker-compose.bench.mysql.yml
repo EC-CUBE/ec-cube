@@ -10,6 +10,7 @@ services:
       DATABASE_URL: "mysql://dbuser:secret@mysql/eccubedb"
       DATABASE_SERVER_VERSION: 5.7
       DATABASE_CHARSET: 'utf8mb4'
+      IGNORE_DATABASE_INITIALIZATION: 1
 
   mysql:
     build:
