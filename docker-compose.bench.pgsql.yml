@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+  pg-database:
+    driver: local
+
+services:
+  ec-cube:
+    environment:
+      DATABASE_URL: "postgres://dbuser:secret@postgres/eccubedb"
+      DATABASE_SERVER_VERSION: 14
+      DATABASE_CHARSET: 'utf8'
+
+  postgres:
+    build:
+      context: .github/workflows/pgsql
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_DB: eccubedb
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 15432:5432
+    volumes:
+      - pg-database:/var/lib/postgresql/data
+    networks:
+      - backend
