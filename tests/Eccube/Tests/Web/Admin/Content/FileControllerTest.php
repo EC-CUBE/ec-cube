@@ -244,6 +244,45 @@ class FileControllerTest extends AbstractAdminWebTestCase
         unlink($dot);
     }
 
+    public function testUploadInvalidFileName()
+    {
+        $quote = $this->getUserDataDir()."/../'quote'.txt";
+        touch($quote);
+
+        $quotefile = new UploadedFile(
+            realpath($quote),          // file path
+            "'quote'.txt",         // original name
+            'text/plain',        // mimeType
+            null,               // error
+            true                // test mode
+        );
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_content_file'),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                    'create_file' => '',
+                    'file' => [$quotefile],
+                ],
+                'mode' => 'upload',
+                'now_dir' => '/',
+            ],
+            ['form' => ['file' => [$quotefile]]]
+        );
+
+        $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
+            return $node->text();
+        });
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertContains('使用できない文字が含まれています。', $messages);
+        $this->assertFalse(file_exists($this->getUserDataDir()."/'quote'.txt"));
+
+        unlink($quote);
+    }
+
     protected function getUserDataDir()
     {
         return __DIR__.'/../../../../../../html/user_data';
