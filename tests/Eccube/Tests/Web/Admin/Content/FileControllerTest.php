@@ -42,6 +42,20 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    public function testViewWithFailure()
+    {
+        $filepath = $this->getUserDataDir().'/aaa.html';
+        $contents = '<html><body><h1>test</h1></body></html>';
+        file_put_contents($filepath, $contents);
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_content_file_view').'?file=/../user_data/aaa.html'
+        );
+        $this->assertFalse($this->client->getResponse()->isSuccessful());
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testDownload()
     {
         $filepath = $this->getUserDataDir().'/aaa.html';
