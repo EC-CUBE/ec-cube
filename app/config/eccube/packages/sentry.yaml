@@ -1,6 +1,0 @@
-sentry:
-    dsn: "https://772a3676fee84a92a4511d464f9c4b5d@o1383760.ingest.sentry.io/6701413"
-    options:
-        # Specify a fixed sample rate:
-        traces_sample_rate: 1.0
-        max_breadcrumbs: 100

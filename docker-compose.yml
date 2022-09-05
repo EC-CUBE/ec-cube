@@ -26,10 +26,12 @@ services:
       - 4430:443
     volumes:
       ### 同期対象からコストの重いフォルダを除外 #####################
-      - ".:/var/www/html/"
+      - "var:/var/www/html/var"
+      - "vendor:/var/www/html/vendor"
+      - "node_modules:/var/www/html/node_modules"
     environment:
       # EC-CUBE environments
-      APP_ENV: "prod"
+      APP_ENV: "dev"
       APP_DEBUG: 1
       DATABASE_URL: "sqlite:///var/eccube.db"
       DATABASE_SERVER_VERSION: 3

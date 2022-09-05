@@ -383,18 +383,6 @@
             "app/config/eccube/packages/sensio_framework_extra.yaml"
         ]
     },
-    "sentry/sentry-symfony": {
-        "version": "4.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "4.0",
-            "ref": "3d8dc8c0f689e2e94f860d2e36f81fcc26348069"
-        },
-        "files": [
-            "app/config/eccube/packages/sentry.yaml"
-        ]
-    },
     "setasign/fpdi": {
         "version": "v2.0.3"
     },
