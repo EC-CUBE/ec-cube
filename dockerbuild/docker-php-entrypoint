@@ -11,6 +11,7 @@ if [ ! -d /var/www/html/vendor/bin ]; then
     chown -R www-data: vendor
 fi
 
+# Wait for database to be up
 echo "Waiting for database to be ready..."
 ATTEMPTS_LEFT_TO_REACH_DATABASE=60
 until [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ] || DATABASE_ERROR=$(bin/console dbal:run-sql "SELECT 1" 2>&1); do
@@ -24,6 +25,21 @@ until [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ] || DATABASE_ERROR=$(bin/console
     echo "Still waiting for db to be ready... Or maybe the db is not reachable. $ATTEMPTS_LEFT_TO_REACH_DATABASE attempts left"
 done
 echo "Database is ready"
+
+# if docker run is an apache bench run, run auto-scripts and chmod but ignore database initialize process
+if [ -z "${IGNORE_DATABASE_INITIALIZATION}" ]; then
+    echo "Running normal process mode..."
+else
+    echo "Running apache bench initialize mode..."
+    if [ -z "${DATABASE_URL}" ]; then
+        cp .env.dist .env
+    fi
+    composer run-script auto-scripts
+    find "${APACHE_DOCUMENT_ROOT}" \( -path "${APACHE_DOCUMENT_ROOT}"/vendor -prune \) -or -print0 \
+        | xargs -0 chown www-data:www-data
+    find "${APACHE_DOCUMENT_ROOT}" \( -path "${APACHE_DOCUMENT_ROOT}"/vendor -prune \) -or \( -type d -print0 \) \
+      | xargs -0 chmod g+s
+fi
 
 bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
     if [ -z ${DATABASE_URL} ]; then
