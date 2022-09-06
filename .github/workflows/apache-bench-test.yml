@@ -14,6 +14,28 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: "4.1"
+      - name: Download 4.2 Apache Bench Data
+        run: |
+          mkdir .github/workflows/pgsql
+          sudo chmod 777 .github/workflows/pgsql
+          curl --fail -LJO https://raw.githubusercontent.com/EC-CUBE/ec-cube/4.2/docker-compose.bench.pgsql.yml
+          if [ ! -f docker-compose.bench.pgsql.yml ]; then
+            echo "docker-compose.bench.pgsql.yml File not found!"
+          else
+            echo "docker-compose.bench.pgsql.yml File found!"
+          fi
+          curl --fail -LJ https://raw.githubusercontent.com/EC-CUBE/ec-cube/4.2/.github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql -o .github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql
+          if [ ! -f .github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql ]; then
+            echo ".github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql File not found!"
+          else
+            echo ".github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql File found!"
+          fi
+          curl --fail -LJ https://raw.githubusercontent.com/EC-CUBE/ec-cube/4.2/.github/workflows/pgsql/Dockerfile -o .github/workflows/pgsql/Dockerfile
+          if [ ! -f .github/workflows/pgsql/Dockerfile ]; then
+            echo ".github/workflows/pgsql/Dockerfile File not found!"
+          else
+            echo ".github/workflows/pgsql/Dockerfile File found!"
+          fi
       - name: Start Load EC-CUBE
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
@@ -35,11 +57,20 @@ jobs:
           export PG_4_1_HOME_3="$(tail -n +23 pg-4.1-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_HOME_4="$(tail -n +23 pg-4.1-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_HOME_5="$(tail -n +23 pg-4.1-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME_RPS_1="$(tail -n +20 pg-4.1-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_2="$(tail -n +20 pg-4.1-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_3="$(tail -n +20 pg-4.1-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_4="$(tail -n +20 pg-4.1-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_5="$(tail -n +20 pg-4.1-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_1_HOME_1 + $PG_4_1_HOME_2 + $PG_4_1_HOME_3 + $PG_4_1_HOME_4 + $PG_4_1_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_1_HOME_RPS_1 + $PG_4_1_HOME_RPS_2 + $PG_4_1_HOME_RPS_3 + $PG_4_1_HOME_RPS_4 + $PG_4_1_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-one-pg-list
         name: Request list page
         run: |
@@ -54,11 +85,20 @@ jobs:
           export PG_4_1_LIST_3="$(tail -n +23 pg-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_LIST_4="$(tail -n +23 pg-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_LIST_5="$(tail -n +23 pg-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST_RPS_1="$(tail -n +20 pg-4.1-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_2="$(tail -n +20 pg-4.1-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_3="$(tail -n +20 pg-4.1-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_4="$(tail -n +20 pg-4.1-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_5="$(tail -n +20 pg-4.1-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_1_LIST_1 + $PG_4_1_LIST_2 + $PG_4_1_LIST_3 + $PG_4_1_LIST_4 + $PG_4_1_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_1_LIST_RPS_1 + $PG_4_1_LIST_RPS_2 + $PG_4_1_LIST_RPS_3 + $PG_4_1_LIST_RPS_4 + $PG_4_1_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
@@ -70,6 +110,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-pg-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-one-pg-list.outputs.list_rps_avg }}
   load-test-4-2-pg:
     name: EC-CUBE 4.2 for Postgresql - 10,000 Products
     runs-on: ubuntu-latest
@@ -100,11 +142,20 @@ jobs:
           export PG_4_2_HOME_3="$(tail -n +23 pg-4.2-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_HOME_4="$(tail -n +23 pg-4.2-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_HOME_5="$(tail -n +23 pg-4.2-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_2_HOME_RPS_1="$(tail -n +20 pg-4.2-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_2="$(tail -n +20 pg-4.2-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_3="$(tail -n +20 pg-4.2-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_4="$(tail -n +20 pg-4.2-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_5="$(tail -n +20 pg-4.2-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_2_HOME_1 + $PG_4_2_HOME_2 + $PG_4_2_HOME_3 + $PG_4_2_HOME_4 + $PG_4_2_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_2_HOME_RPS_1 + $PG_4_2_HOME_RPS_2 + $PG_4_2_HOME_RPS_3 + $PG_4_2_HOME_RPS_4 + $PG_4_2_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-two-pg-list
         name: Request list page
         run: |
@@ -119,11 +170,20 @@ jobs:
           export PG_4_2_LIST_3="$(tail -n +23 pg-4.2-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_LIST_4="$(tail -n +23 pg-4.2-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_LIST_5="$(tail -n +23 pg-4.2-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_2_LIST_RPS_1="$(tail -n +20 pg-4.2-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_2="$(tail -n +20 pg-4.2-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_3="$(tail -n +20 pg-4.2-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_4="$(tail -n +20 pg-4.2-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_5="$(tail -n +20 pg-4.2-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_2_LIST_1 + $PG_4_2_LIST_2 + $PG_4_2_LIST_3 + $PG_4_2_LIST_4 + $PG_4_2_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_2_LIST_RPS_1 + $PG_4_2_LIST_RPS_2 + $PG_4_2_LIST_RPS_3 + $PG_4_2_LIST_RPS_4 + $PG_4_2_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
         run: |
@@ -135,6 +195,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-pg-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-two-pg-list.outputs.list_rps_avg }}
   load-test-4-1-mysql:
     name: EC-CUBE 4.1 for MySQL - 10,000 Products
     runs-on: ubuntu-latest
@@ -145,6 +207,28 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: "4.1"
+      - name: Download 4.2 Apache Bench Data
+        run: |
+          mkdir .github/workflows/mysql
+          sudo chmod 777 .github/workflows/mysql
+          curl --fail -LJO https://raw.githubusercontent.com/EC-CUBE/ec-cube/4.2/docker-compose.bench.mysql.yml
+          if [ ! -f docker-compose.bench.mysql.yml ]; then
+            echo "docker-compose.bench.mysql.yml File not found!"
+          else
+            echo "docker-compose.bench.mysql.yml File found!"
+          fi
+          curl --fail -LJ https://raw.githubusercontent.com/EC-CUBE/ec-cube/4.2/.github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql -o .github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql
+          if [ ! -f .github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql ]; then
+            echo ".github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql File not found!"
+          else
+            echo ".github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql File found!"
+          fi
+          curl --fail -LJ https://raw.githubusercontent.com/EC-CUBE/ec-cube/4.2/.github/workflows/mysql/Dockerfile -o .github/workflows/mysql/Dockerfile
+          if [ ! -f .github/workflows/mysql/Dockerfile ]; then
+            echo ".github/workflows/mysql/Dockerfile File not found!"
+          else
+            echo ".github/workflows/mysql/Dockerfile File found!"
+          fi
       - name: Start Load EC-CUBE on 4.1
         run: |
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
@@ -172,11 +256,20 @@ jobs:
           export MY_4_1_HOME_3="$(tail -n +23 mysql-4.1-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_HOME_4="$(tail -n +23 mysql-4.1-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_HOME_5="$(tail -n +23 mysql-4.1-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_1_HOME_RPS_1="$(tail -n +20 mysql-4.1-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_2="$(tail -n +20 mysql-4.1-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_3="$(tail -n +20 mysql-4.1-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_4="$(tail -n +20 mysql-4.1-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_5="$(tail -n +20 mysql-4.1-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_1_HOME_1 + $MY_4_1_HOME_2 + $MY_4_1_HOME_3 + $MY_4_1_HOME_4 + $MY_4_1_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_1_HOME_RPS_1 + $MY_4_1_HOME_RPS_2 + $MY_4_1_HOME_RPS_3 + $MY_4_1_HOME_RPS_4 + $MY_4_1_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-one-my-list
         name: Request list page
         run: |
@@ -191,11 +284,20 @@ jobs:
           export MY_4_1_LIST_3="$(tail -n +23 mysql-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_LIST_4="$(tail -n +23 mysql-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_LIST_5="$(tail -n +23 mysql-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_1_LIST_RPS_1="$(tail -n +20 mysql-4.1-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_2="$(tail -n +20 mysql-4.1-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_3="$(tail -n +20 mysql-4.1-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_4="$(tail -n +20 mysql-4.1-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_5="$(tail -n +20 mysql-4.1-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_1_LIST_1 + $MY_4_1_LIST_2 + $MY_4_1_LIST_3 + $MY_4_1_LIST_4 + $MY_4_1_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_1_LIST_RPS_1 + $MY_4_1_LIST_RPS_2 + $MY_4_1_LIST_RPS_3 + $MY_4_1_LIST_RPS_4 + $MY_4_1_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
@@ -206,6 +308,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-one-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-my-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-one-my-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-one-my-list.outputs.list_rps_avg }}
   load-test-4-2-mysql:
     name: EC-CUBE 4.2 for MySQL - 10,000 Products
     runs-on: ubuntu-latest
@@ -242,11 +346,20 @@ jobs:
           export MY_4_2_HOME_3="$(tail -n +23 mysql-4.2-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_HOME_4="$(tail -n +23 mysql-4.2-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_HOME_5="$(tail -n +23 mysql-4.2-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_2_HOME_RPS_1="$(tail -n +20 mysql-4.2-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_2="$(tail -n +20 mysql-4.2-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_3="$(tail -n +20 mysql-4.2-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_4="$(tail -n +20 mysql-4.2-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_5="$(tail -n +20 mysql-4.2-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_2_HOME_1 + $MY_4_2_HOME_2 + $MY_4_2_HOME_3 + $MY_4_2_HOME_4 + $MY_4_2_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_2_HOME_RPS_1 + $MY_4_2_HOME_RPS_2 + $MY_4_2_HOME_RPS_3 + $MY_4_2_HOME_RPS_4 + $MY_4_2_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-two-my-list
         name: Request list page
         run: |
@@ -261,11 +374,20 @@ jobs:
           export MY_4_2_LIST_3="$(tail -n +23 mysql-4.2-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_LIST_4="$(tail -n +23 mysql-4.2-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_LIST_5="$(tail -n +23 mysql-4.2-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_2_LIST_RPS_1="$(tail -n +20 mysql-4.2-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_2="$(tail -n +20 mysql-4.2-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_3="$(tail -n +20 mysql-4.2-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_4="$(tail -n +20 mysql-4.2-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_5="$(tail -n +20 mysql-4.2-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_2_LIST_1 + $MY_4_2_LIST_2 + $MY_4_2_LIST_3 + $MY_4_2_LIST_4 + $MY_4_2_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_2_LIST_RPS_1 + $MY_4_2_LIST_RPS_2 + $MY_4_2_LIST_RPS_3 + $MY_4_2_LIST_RPS_4 + $MY_4_2_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
@@ -278,6 +400,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-two-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-my-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-two-my-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-two-my-list.outputs.list_rps_avg }}
 
   calculate-total-result-products:
     name: Total Calculation Result - 10,000 Products
@@ -287,9 +411,7 @@ jobs:
       - id: calculate-product-avg
         name: Bundle Average Results to CSV
         run: |
-          export LINE=$(echo -e "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }} \r\n 10000 Product Result, MYSQL, TOP, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
-          echo $LINE >> total.csv
-          export RESULT=$(echo "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }} \r\n 10000 Product Result, MYSQL, TOP, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}")
+          export RESULT=$(echo "10000 Product Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg.outputs.home_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_avg }}, ${{ needs.load-test-4-1-pg.outputs.home_rps_avg }}, ${{ needs.load-test-4-2-pg.outputs.home_rps_avg }} \r\n 10000 Product Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg.outputs.list_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_avg }}, ${{ needs.load-test-4-1-pg.outputs.list_rps_avg }}, ${{ needs.load-test-4-2-pg.outputs.list_rps_avg }} \r\n 10000 Product Result, MYSQL, TOP, ${{ needs.load-test-4-1-mysql.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_avg }}, ${{ needs.load-test-4-1-mysql.outputs.home_rps_avg }}, ${{ needs.load-test-4-2-mysql.outputs.home_rps_avg }} \r\n 10000 Product Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql.outputs.list_avg }}, ${{ needs.load-test-4-1-mysql.outputs.list_rps_avg }},  ${{ needs.load-test-4-2-mysql.outputs.list_rps_avg }}")
           echo "::set-output name=products_avg::${RESULT}"
     outputs:
       products_avg: ${{ steps.calculate-product-avg.outputs.products_avg }}
@@ -324,12 +446,20 @@ jobs:
           export PG_4_1_HOME_3="$(tail -n +23 pg-4.1-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_HOME_4="$(tail -n +23 pg-4.1-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_HOME_5="$(tail -n +23 pg-4.1-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_HOME_RPS_1="$(tail -n +20 pg-4.1-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_2="$(tail -n +20 pg-4.1-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_3="$(tail -n +20 pg-4.1-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_4="$(tail -n +20 pg-4.1-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_HOME_RPS_5="$(tail -n +20 pg-4.1-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_1_HOME_1 + $PG_4_1_HOME_2 + $PG_4_1_HOME_3 + $PG_4_1_HOME_4 + $PG_4_1_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_1_HOME_RPS_1 + $PG_4_1_HOME_RPS_2 + $PG_4_1_HOME_RPS_3 + $PG_4_1_HOME_RPS_4 + $PG_4_1_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
-
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-one-pg-list
         name: Request list page
         run: |
@@ -345,15 +475,24 @@ jobs:
           export PG_4_1_LIST_3="$(tail -n +23 pg-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_LIST_4="$(tail -n +23 pg-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_1_LIST_5="$(tail -n +23 pg-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_1_LIST_RPS_1="$(tail -n +20 pg-4.1-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_2="$(tail -n +20 pg-4.1-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_3="$(tail -n +20 pg-4.1-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_4="$(tail -n +20 pg-4.1-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_1_LIST_RPS_5="$(tail -n +20 pg-4.1-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_1_LIST_1 + $PG_4_1_LIST_2 + $PG_4_1_LIST_3 + $PG_4_1_LIST_4 + $PG_4_1_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_1_LIST_RPS_1 + $PG_4_1_LIST_RPS_2 + $PG_4_1_LIST_RPS_3 + $PG_4_1_LIST_RPS_4 + $PG_4_1_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.1
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml down -v
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
@@ -361,6 +500,9 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-pg-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-one-pg-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-one-pg-list.outputs.list_rps_avg }}
+
   load-test-4-2-pg-base:
     name: Base EC-CUBE 4.2 for Postgresql - Base
     runs-on: ubuntu-latest
@@ -391,11 +533,20 @@ jobs:
           export PG_4_2_HOME_3="$(tail -n +23 pg-4.2-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_HOME_4="$(tail -n +23 pg-4.2-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_HOME_5="$(tail -n +23 pg-4.2-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_2_HOME_RPS_1="$(tail -n +20 pg-4.2-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_2="$(tail -n +20 pg-4.2-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_3="$(tail -n +20 pg-4.2-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_4="$(tail -n +20 pg-4.2-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_HOME_RPS_5="$(tail -n +20 pg-4.2-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_2_HOME_1 + $PG_4_2_HOME_2 + $PG_4_2_HOME_3 + $PG_4_2_HOME_4 + $PG_4_2_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_2_HOME_RPS_1 + $PG_4_2_HOME_RPS_2 + $PG_4_2_HOME_RPS_3 + $PG_4_2_HOME_RPS_4 + $PG_4_2_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-two-pg-list
         name: Request list page
         run: |
@@ -411,15 +562,24 @@ jobs:
           export PG_4_2_LIST_3="$(tail -n +23 pg-4.2-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_LIST_4="$(tail -n +23 pg-4.2-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export PG_4_2_LIST_5="$(tail -n +23 pg-4.2-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export PG_4_2_LIST_RPS_1="$(tail -n +20 pg-4.2-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_2="$(tail -n +20 pg-4.2-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_3="$(tail -n +20 pg-4.2-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_4="$(tail -n +20 pg-4.2-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export PG_4_2_LIST_RPS_5="$(tail -n +20 pg-4.2-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$PG_4_2_LIST_1 + $PG_4_2_LIST_2 + $PG_4_2_LIST_3 + $PG_4_2_LIST_4 + $PG_4_2_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$PG_4_2_LIST_RPS_1 + $PG_4_2_LIST_RPS_2 + $PG_4_2_LIST_RPS_3 + $PG_4_2_LIST_RPS_4 + $PG_4_2_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
         # Upload Evidence
       - name: Drop PGSQL ECCUBE for 4.2
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.bench.pgsql.yml down -v
+          docker-compose -f docker-compose.yml -f docker-compose.pgsql.yml down -v
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
@@ -427,6 +587,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-pg-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-two-pg-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-two-pg-list.outputs.list_rps_avg }}
   load-test-4-1-mysql-base:
     name: Base EC-CUBE 4.1 for MySQL - Base
     runs-on: ubuntu-latest
@@ -458,11 +620,20 @@ jobs:
           export MY_4_1_HOME_3="$(tail -n +23 mysql-4.1-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_HOME_4="$(tail -n +23 mysql-4.1-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_HOME_5="$(tail -n +23 mysql-4.1-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_1_HOME_RPS_1="$(tail -n +20 mysql-4.1-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_2="$(tail -n +20 mysql-4.1-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_3="$(tail -n +20 mysql-4.1-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_4="$(tail -n +20 mysql-4.1-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_HOME_RPS_5="$(tail -n +20 mysql-4.1-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_1_HOME_1 + $MY_4_1_HOME_2 + $MY_4_1_HOME_3 + $MY_4_1_HOME_4 + $MY_4_1_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_1_HOME_RPS_1 + $MY_4_1_HOME_RPS_2 + $MY_4_1_HOME_RPS_3 + $MY_4_1_HOME_RPS_4 + $MY_4_1_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-one-my-list
         name: Request list page
         run: |
@@ -477,14 +648,23 @@ jobs:
           export MY_4_1_LIST_3="$(tail -n +23 mysql-4.1-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_LIST_4="$(tail -n +23 mysql-4.1-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_1_LIST_5="$(tail -n +23 mysql-4.1-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_1_LIST_RPS_1="$(tail -n +20 mysql-4.1-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_2="$(tail -n +20 mysql-4.1-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_3="$(tail -n +20 mysql-4.1-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_4="$(tail -n +20 mysql-4.1-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_1_LIST_RPS_5="$(tail -n +20 mysql-4.1-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_1_LIST_1 + $MY_4_1_LIST_2 + $MY_4_1_LIST_3 + $MY_4_1_LIST_4 + $MY_4_1_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_1_LIST_RPS_1 + $MY_4_1_LIST_RPS_2 + $MY_4_1_LIST_RPS_3 + $MY_4_1_LIST_RPS_4 + $MY_4_1_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - name: Drop MYSQL ECCUBE for 4.1
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml down -v
       - env:
           GROUP: ${{ matrix.group }}
         if: always()
@@ -492,6 +672,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-one-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-one-my-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-one-my-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-one-my-list.outputs.list_rps_avg }}
   load-test-4-2-mysql-base:
     name: Base EC-CUBE 4.2 for MySQL - Base
     runs-on: ubuntu-latest
@@ -522,11 +704,20 @@ jobs:
           export MY_4_2_HOME_3="$(tail -n +23 mysql-4.2-home_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_HOME_4="$(tail -n +23 mysql-4.2-home_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_HOME_5="$(tail -n +23 mysql-4.2-home_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_2_HOME_RPS_1="$(tail -n +20 mysql-4.2-home_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_2="$(tail -n +20 mysql-4.2-home_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_3="$(tail -n +20 mysql-4.2-home_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_4="$(tail -n +20 mysql-4.2-home_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_HOME_RPS_5="$(tail -n +20 mysql-4.2-home_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_2_HOME_1 + $MY_4_2_HOME_2 + $MY_4_2_HOME_3 + $MY_4_2_HOME_4 + $MY_4_2_HOME_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_2_HOME_RPS_1 + $MY_4_2_HOME_RPS_2 + $MY_4_2_HOME_RPS_3 + $MY_4_2_HOME_RPS_4 + $MY_4_2_HOME_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=home_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=home_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - id: ec-four-two-my-list
         name: Request list page
         run: |
@@ -541,14 +732,23 @@ jobs:
           export MY_4_2_LIST_3="$(tail -n +23 mysql-4.2-list_3.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_LIST_4="$(tail -n +23 mysql-4.2-list_4.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
           export MY_4_2_LIST_5="$(tail -n +23 mysql-4.2-list_5.txt | grep -o -P '(?<=:).*(?=\[ms\])')"
+          export MY_4_2_LIST_RPS_1="$(tail -n +20 mysql-4.2-list_1.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_2="$(tail -n +20 mysql-4.2-list_2.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_3="$(tail -n +20 mysql-4.2-list_3.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_4="$(tail -n +20 mysql-4.2-list_4.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
+          export MY_4_2_LIST_RPS_5="$(tail -n +20 mysql-4.2-list_5.txt | grep -o -P '(?<=Requests per second:).*(?=\[#/sec\])')"
           SUM=$(echo "$MY_4_2_LIST_1 + $MY_4_2_LIST_2 + $MY_4_2_LIST_3 + $MY_4_2_LIST_4 + $MY_4_2_LIST_5" | bc -l)
+          RPS_SUM=$(echo "$MY_4_2_LIST_RPS_1 + $MY_4_2_LIST_RPS_2 + $MY_4_2_LIST_RPS_3 + $MY_4_2_LIST_RPS_4 + $MY_4_2_LIST_RPS_5" | bc -l)
           COUNT=5
           export RESULT=$(echo "scale=4; 1.0 * $SUM / $COUNT" | bc -l)
+          export RPS_RESULT=$(echo "scale=4; 1.0 * $RPS_SUM / $COUNT" | bc -l)
           echo "::set-output name=list_avg::${RESULT}"
-          echo $RESULT
+          echo "::set-output name=list_rps_avg::${RPS_RESULT}"
+          echo "TIME PER REQUEST AVG: ${RESULT}"
+          echo "REQUESTS PER SECOND AVG: ${RPS_RESULT}"
       - name: Drop MYSQL ECCUBE for 4.2
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.bench.mysql.yml down -v
+          docker-compose -f docker-compose.yml -f docker-compose.mysql.yml down -v
       # Upload Evidence
       ## FINALISE
       - env:
@@ -558,6 +758,8 @@ jobs:
     outputs:
       home_avg: ${{ steps.ec-four-two-my-hp.outputs.home_avg }}
       list_avg: ${{ steps.ec-four-two-my-list.outputs.list_avg }}
+      home_rps_avg: ${{ steps.ec-four-two-my-hp.outputs.home_rps_avg }}
+      list_rps_avg: ${{ steps.ec-four-two-my-list.outputs.list_rps_avg }}
   calculate-total-result-base:
     name: Total Calculation Result - Base
     runs-on: ubuntu-latest
@@ -566,9 +768,7 @@ jobs:
       - id: calculate-base-avg
         name: Bundle Average Results to CSV
         run: |
-          export LINE=$(echo -e "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }} \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
-          echo $LINE >> total.csv
-          export OUTPUT=$(echo "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }} \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}")
+          export OUTPUT=$(echo "Base Install Result, PGSQL, TOP, ${{ needs.load-test-4-1-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_avg }}, ${{ needs.load-test-4-1-pg-base.outputs.home_rps_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.home_rps_avg }}, \r\n Base Install Result, PGSQL, LIST, ${{ needs.load-test-4-1-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_avg }}, ${{ needs.load-test-4-1-pg-base.outputs.list_rps_avg }}, ${{ needs.load-test-4-2-pg-base.outputs.list_rps_avg }} \r\n Base Install Result, MYSQL, TOP,  ${{ needs.load-test-4-1-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_avg }}, ${{ needs.load-test-4-1-mysql-base.outputs.home_rps_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.home_rps_avg }}  \r\n Base Install Result, MYSQL, LIST, ${{ needs.load-test-4-1-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_avg }}, ${{ needs.load-test-4-1-mysql-base.outputs.list_rps_avg }}, ${{ needs.load-test-4-2-mysql-base.outputs.list_rps_avg }}")
           echo "::set-output name=base_avg::${OUTPUT}"
     outputs:
       base_avg: ${{ steps.calculate-base-avg.outputs.base_avg }}
@@ -579,7 +779,7 @@ jobs:
     steps:
       - name: Bundle All Average Results to CSV
         run: |
-          export LINE=$(echo -e "Pattern, DB, Page,4.1.2,4.2 \r\n ${{ needs.calculate-total-result-base.outputs.base_avg }} \r\n ${{ needs.calculate-total-result-products.outputs.products_avg }}")
+          export LINE=$(echo -e "Pattern, DB, Page, 4.1.2 - TIME PER REQUEST, 4.2 - TIME PER REQUEST, 4.1.2 - REQUESTS PER SECOND,4.2 - REQUESTS PER SECOND  \r\n ${{ needs.calculate-total-result-base.outputs.base_avg }} \r\n ${{ needs.calculate-total-result-products.outputs.products_avg }}")
           echo $LINE >> total.csv
       - name: Upload complete evidence (ALL)
         if: always()
