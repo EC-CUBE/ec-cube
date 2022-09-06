@@ -119,7 +119,7 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 
 if (typeof Ladda !== 'undefined') {
     Ladda.bind('button[type=submit]', {timeout: 2000});
-    $('.btn-ec-regular').attr('data-spinner-color', '#595959');
+    $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
 }
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
