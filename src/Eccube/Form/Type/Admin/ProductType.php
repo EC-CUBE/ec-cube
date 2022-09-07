@@ -130,6 +130,7 @@ class ProductType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new TwigLint(),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_lltext_len']]),
                 ],
             ])
 
