@@ -1812,3 +1812,11 @@ command.composer_require_already_installed.not_supported_plugin: '%name% %plugin
 #------------------------------------------------------------------------------------
 admin.list.sort.key: listSortKey # 検索条件の表示制御に利用
 admin.list.sort.type: listSortType # 検索条件の表示制御に利用
+
+#------------------------------------------------------------------------------------
+# EC-CUBE error message
+#
+# EC-CUBEの汎用エラーメッセージです
+#------------------------------------------------------------------------------------
+form_error.error_badge: エラー
+form_error.out_of_range: 不正な日付です。

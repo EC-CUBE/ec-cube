@@ -218,7 +218,9 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.birth) }}
-                                        {{ form_errors(form.birth) }}
+                                        <span id="invalid-datetime-error">
+                                            {{ form_errors(form.birth) }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row mb-2">

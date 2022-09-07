@@ -1812,3 +1812,11 @@ command.composer_require_already_installed.not_supported_plugin: '%name% %plugin
 #------------------------------------------------------------------------------------
 admin.list.sort.key: listSortKey
 admin.list.sort.type: listSortType
+
+#------------------------------------------------------------------------------------
+# EC-CUBE error message
+#
+# EC-CUBEの汎用エラーメッセージです
+#------------------------------------------------------------------------------------
+form_error.error_badge: Error
+form_error.out_of_range: Invalid DateTime.

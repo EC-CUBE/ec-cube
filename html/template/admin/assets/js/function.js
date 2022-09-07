@@ -238,3 +238,38 @@ $(function() {
         }
     });
 });
+
+//存在しない日付を入力するとエラー
+//https://github.com/EC-CUBE/ec-cube/issues/5716
+$(function () {
+    var form = $('#customer_form');
+    var input_datetime = $('#admin_customer_birth')[0];
+    form.submit(function (e) {
+        if (input_datetime.validity.valid === false) {
+            //check if has block_error
+            if ($('#invalid-datetime-error').length) {
+                $('#invalid-datetime-error').remove();
+                $('#admin_customer_birth').after(
+                    '<span id="invalid-datetime-error">' +
+                    '<span class="invalid-feedback d-block"><span class="d-block">' +
+                    '<span class="form-error-icon badge bg-danger text-uppercase">' +
+                    eccube_lang['form_error.error_badge'] +
+                    '</span> <span class="form-error-message">' +
+                    eccube_lang['form_error.out_of_range'] +
+                    '</span></span></span></span>'
+                )
+            } else {
+                $('#admin_customer_birth').after(
+                    '<span id="invalid-datetime-error">' +
+                    '<span class="invalid-feedback d-block"><span class="d-block">' +
+                    '<span class="form-error-icon badge bg-danger text-uppercase">' +
+                    eccube_lang['form_error.error_badge'] +
+                    '</span> <span class="form-error-message">' +
+                    eccube_lang['form_error.out_of_range'] +
+                    '</span></span></span></span>'
+                )
+            }
+            e.preventDefault()
+        }
+    });
+});
