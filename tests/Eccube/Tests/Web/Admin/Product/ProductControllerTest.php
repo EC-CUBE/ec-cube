@@ -1018,9 +1018,54 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->assertStringContainsString('画像のパスが不正です。', $crawler->html());
 
-        $this->assertFileNotExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $this->assertFileDoesNotExist($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
         $fs->remove($path.'/temp_image/new_image.png');
         $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    public function testImageLoad()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => 'sand-1.png']),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testImageLoadWithFailure()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => '../save_image/sand-1.png']),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testImageLoadWithNotfound()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => 'xxxxx.png']),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     /**
