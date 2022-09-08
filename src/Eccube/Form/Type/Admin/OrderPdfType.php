@@ -85,9 +85,10 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('title', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => $config['eccube_stext_len']]),
                 ],
             ])
