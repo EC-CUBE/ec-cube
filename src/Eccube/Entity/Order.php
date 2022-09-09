@@ -160,7 +160,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscountItems()
         {
-            $items = (new ItemCollection($this->getOrderItems()))->sort()->toArray();
+            $items = (new ItemCollection($this->getTaxableItems()))->sort()->toArray();
             return array_filter($items, function (OrderItem $Item) {
                 return $Item->isDiscount();
             });
