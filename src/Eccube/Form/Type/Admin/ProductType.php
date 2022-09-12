@@ -86,11 +86,13 @@ class ProductType extends AbstractType
                 'mapped' => false,
             ])
             ->add('description_detail', TextareaType::class, [
+                'purify_html' => true,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
                 ],
             ])
             ->add('description_list', TextareaType::class, [
+                'purify_html' => true,
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
@@ -127,6 +129,7 @@ class ProductType extends AbstractType
             ])
             // サブ情報
             ->add('free_area', TextareaType::class, [
+                'purify_html' => true,
                 'required' => false,
                 'constraints' => [
                     new TwigLint(),

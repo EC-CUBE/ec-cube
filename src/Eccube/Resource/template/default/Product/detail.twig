@@ -432,14 +432,14 @@ file that was distributed with this source code.
                             </div>
                         </form>
                     {% endif %}
-                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br|purify }}
+                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
                     </div>
                 </div>
             </div>
         </div>
         {% if Product.freearea %}
              <div class="ec-productRole__description">
-                 {{ include(template_from_string(Product.freearea|purify)) }}
+                 {{ include(template_from_string(Product.freearea)) }}
             </div>
         {% endif %}
     </div>
