@@ -154,7 +154,7 @@ class OrderItemType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('point_rate', IntegerType::class, [
+            ->add('point_rate', HiddenType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Range(['min' => 0]),
