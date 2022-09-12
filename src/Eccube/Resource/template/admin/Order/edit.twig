@@ -732,9 +732,6 @@ file that was distributed with this source code.
                                             <div class="col-8">{{ 'admin.order.tax_type'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2">
-                                            <div class="col-8">{{ 'admin.order.point_rate'|trans }}</div>
-                                        </th>
-                                        <th class="pt-2 pb-2">
                                             <div class="col-8">{{ 'admin.order.subtotal'|trans }}</div>
                                         </th>
                                         <th class="pt-2 pb-2 pe-3"></th>
@@ -747,6 +744,7 @@ file that was distributed with this source code.
                                             {# hidden values #}
                                             {{ form_widget(orderItemForm.ProductClass) }}
                                             {{ form_widget(orderItemForm.order_item_type) }}
+                                            {{ form_widget(orderItemForm.point_rate) }}
                                             {{ form_widget(orderItemForm.tax_type) }}
                                             <!-- 商品名 -->
                                             <td class="align-middle w-25 ps-3">
@@ -822,12 +820,6 @@ file that was distributed with this source code.
                                             <td class="align-middle">
                                                 <div class="col">
                                                     {{ OrderItem.tax_type }}
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="col-12 col-xl-8">
-                                                    {{ form_widget(orderItemForm.point_rate) }}
-                                                    {{ form_errors(orderItemForm.point_rate) }}
                                                 </div>
                                             </td>
                                             <!-- 小計 -->

@@ -538,9 +538,6 @@ file that was distributed with this source code.
                                                     <div class="col-8">{{ 'admin.order.quantity'|trans }}</div>
                                                 </th>
                                                 <th class="pt-2 pb-2">
-                                                    <div class="col-8">{{ 'admin.order.point_rate'|trans }}</div>
-                                                </th>
-                                                <th class="pt-2 pb-2">
                                                     <div class="col-8">{{ 'admin.order.tax_rate'|trans }}</div>
                                                 </th>
                                                 <th class="pt-2 pb-2">
@@ -560,6 +557,7 @@ file that was distributed with this source code.
                                                     {# hidden values #}
                                                     {{ form_widget(orderItemForm.ProductClass) }}
                                                     {{ form_widget(orderItemForm.order_item_type) }}
+                                                    {{ form_widget(orderItemForm.point_rate) }}
                                                     {{ form_widget(orderItemForm.tax_type) }}
                                                     {{ form_widget(orderItemForm.tax_rate, {'type': 'hidden'}) }}
                                                     <td class="align-middle w-25 ps-3">
@@ -598,12 +596,6 @@ file that was distributed with this source code.
                                                         <div class="col-12 col-xl-8">
                                                             {{ form_widget(orderItemForm.quantity) }}
                                                             {{ form_errors(orderItemForm.quantity) }}
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div class="col-12 col-xl-8">
-                                                            {{ form_widget(orderItemForm.point_rate) }}
-                                                            {{ form_errors(orderItemForm.point_rate) }}
                                                         </div>
                                                     </td>
                                                     <td class="align-middle">
