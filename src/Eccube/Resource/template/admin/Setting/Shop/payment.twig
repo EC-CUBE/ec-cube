@@ -37,6 +37,7 @@ file that was distributed with this source code.
 
             // 並び替え後にsort noを更新
             var updateSortNo = function() {
+                var xhr = new XMLHttpRequest();
                 var newSortNos = {};
                 var i = 0;
                 $('.sortable-item').each(function() {
@@ -47,8 +48,14 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_setting_shop_payment_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos
+                    data: newSortNos,
+                    xhr: function() {
+                        return xhr;
+                    }
                 }).always(function() {
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    }
                     $(".modal-backdrop").remove();
                 });
             };

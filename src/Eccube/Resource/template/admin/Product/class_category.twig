@@ -38,6 +38,7 @@ file that was distributed with this source code.
             }).reverse();
             // 並び替え後にsort noを更新
             var updateSortNo = function() {
+                var xhr = new XMLHttpRequest();
                 var newSortNos = {};
                 var i = 0;
                 $('.sortable-item').each(function() {
@@ -47,8 +48,14 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_product_class_category_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos
+                    data: newSortNos,
+                    xhr: function() {
+                        return xhr;
+                    }
                 }).always(function() {
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    }
                     $(".modal-backdrop").remove();
                 });
             };

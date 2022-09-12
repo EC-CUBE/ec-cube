@@ -90,6 +90,7 @@ file that was distributed with this source code.
 
             // HTMLメールモーダル表示
             $('#htmlPreviewModal').on('show.bs.modal', function (event) {
+                var xhr = new XMLHttpRequest();
                 var html = $('#viewEmail');
                 html.children().remove();
 
@@ -101,9 +102,16 @@ file that was distributed with this source code.
                         'html_body' : html_editor.getValue(),
                     },
                     url: '{{ url('admin_setting_shop_mail_preview') }}',
+                    xhr: function() {
+                        return xhr;
+                    },
                     success: function(data) {
-                        // モーダルに結果を書き出し.
-                        $('#viewEmail').html(data);
+                        if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                        } else {
+                                // モーダルに結果を書き出し.
+                                $('#viewEmail').html(data);
+                        }
                     },
                     error: function() {
                         alert('preview html mail failed.');

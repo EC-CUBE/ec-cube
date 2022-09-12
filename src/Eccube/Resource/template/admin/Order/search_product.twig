@@ -110,15 +110,23 @@ file that was distributed with this source code.
     // 商品検索
     $('#product_pagination a').on('click', function(event) {
         if (!$(this).parent().is('.active')) {
+            var xhr = new XMLHttpRequest();
             var list = $('#searchProductModalList');
             list.children().remove();
 
             $.ajax({
                 url: $(this).attr('href'),
                 type: 'GET',
-                dataType: 'html'
+                dataType: 'html',
+                xhr: function() {
+                    return xhr;
+                }
             }).done(function(data) {
-                $('#searchProductModalList').html(data);
+                if (xhr.responseURL === '{{ url('admin_login') }}') {
+                    alert('{{ 'admin.common.failed_to_load'|trans }}');
+                } else {
+                    $('#searchProductModalList').html(data);
+                }
             }).fail(function(data) {
                 alert('search product failed.');
             });

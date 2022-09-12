@@ -40,6 +40,7 @@ file that was distributed with this source code.
 
         // 商品検索
         $('#searchProductModalButton').on('click', function() {
+            var xhr = new XMLHttpRequest();
             var list = $('#searchProductModalList');
             list.children().remove();
 
@@ -50,9 +51,16 @@ file that was distributed with this source code.
                 data: {
                     'id': $('#admin_search_product_id').val(),
                     'category_id': $('#admin_search_product_category_id').val()
-                }
+                },
+                xhr: function() {
+                        return xhr;
+                    }
             }).done(function(data) {
-                $('#searchProductModalList').html(data);
+                if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                            $('#searchProductModalList').html(data);
+                    }
             }).fail(function(data) {
                 alert('search product failed.');
             });
@@ -60,15 +68,23 @@ file that was distributed with this source code.
 
         // その他明細
         $('#addOrderItemType').on('show.bs.modal', function(e) {
+            var xhr = new XMLHttpRequest();
             var list = $('#searchOrderItemTypeList');
             list.children().remove();
 
             $.ajax({
                 url: '{{ url('admin_order_search_order_item_type') }}',
                 type: 'POST',
-                dataType: 'html'
+                dataType: 'html',
+                xhr: function() {
+                     return xhr;
+                }
             }).done(function(data) {
-                $('#searchOrderItemTypeList').html(data);
+                if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                            $('#searchOrderItemTypeList').html(data);
+                    }
             }).fail(function(data) {
                 alert('search order item type failed.');
             });
