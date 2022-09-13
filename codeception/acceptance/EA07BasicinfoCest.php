@@ -628,13 +628,16 @@ class EA07BasicinfoCest
             ->新規登録();
 
         // 登録
-        DeliveryEditPage::at($I)
+        $Page = DeliveryEditPage::at($I)
             ->入力_配送業者名('配送業者名')
             ->入力_名称('名称')
             ->入力_支払方法選択(['1', '4'])
-            ->入力_全国一律送料('100')
-            ->登録();
+            ->入力_お届け時間('<AM>')
+            ->入力_全国一律送料('100');
 
+        $I->assertSame('<AM>', $I->grabTextFrom('a.display-label'));
+
+        $Page->登録();
         DeliveryEditPage::at($I);
         $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
 
