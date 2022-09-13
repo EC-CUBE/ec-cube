@@ -488,6 +488,9 @@ class FileController extends AbstractController
      */
     protected function checkDir($targetDir, $topDir)
     {
+        if (strpos($targetDir, '..') !== false) {
+            return false;
+        }
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 

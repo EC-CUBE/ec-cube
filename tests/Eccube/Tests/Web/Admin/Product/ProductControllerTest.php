@@ -955,6 +955,120 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * アップロード画像が save_image にコピーされているか確認する.
+     */
+    public function testEditWithImage()
+    {
+        $path = __DIR__.'/../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['add_images'][] = 'new_image.png';
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+
+        $this->assertFileExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    /**
+     * アップロード画像に相対パスが指定された場合は save_image にコピーされない.
+     */
+    public function testEditWithImageFailure()
+    {
+        $path = __DIR__.'/../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['add_images'][] = '../temp_image/new_image.png';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertStringContainsString('画像のパスが不正です。', $crawler->html());
+
+        $this->assertFileDoesNotExist($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    public function testImageLoad()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => 'sand-1.png']),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testImageLoadWithFailure()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => '../save_image/sand-1.png']),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testImageLoadWithNotfound()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => 'xxxxx.png']),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
      * 個別税率編集時のテストデータ
      * 更新前の税率 / POST値 / 期待値の配列を返す
      *
