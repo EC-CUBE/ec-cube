@@ -77,6 +77,7 @@ class NewsType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'purify_html' => true,
                 'attr' => [
                     'rows' => 8,
                 ],

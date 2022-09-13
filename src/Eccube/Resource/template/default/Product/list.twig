@@ -158,7 +158,7 @@ file that was distributed with this source code.
                                 </p>
                                 <p>{{ Product.name }}</p>
                                 {% if Product.description_list %}
-                                    <p>{{ Product.description_list|raw|nl2br|purify }}</p>
+                                    <p>{{ Product.description_list|raw|nl2br }}</p>
                                 {% endif %}
                                 <p class="price02-default">
                                     {% if Product.hasProductClass %}
