@@ -128,7 +128,7 @@ class PointHelper
         $pointRate = $Baseinfo->getBasicPointRate();
         // 商品別ポイントは未実装なので, 商品明細のポイント付与率はすべて同じ値が設定されているはず
         $ProductOrderItem = $itemHolder->getItems()->getProductClasses()->current();
-        if ($ProductOrderItem instanceof OrderItem) {
+        if ($ProductOrderItem instanceof OrderItem && $ProductOrderItem->getPointRate() !== null) {
             $pointRate = $ProductOrderItem->getPointRate();
         }
 

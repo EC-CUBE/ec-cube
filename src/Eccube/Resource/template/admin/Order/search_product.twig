@@ -86,6 +86,7 @@ file that was distributed with this source code.
             }
         }
 
+        var point_rate = '{{ BaseInfo.basic_point_rate }}';
         var prototype = $collectionHolder.data('prototype');
         index++;
         var newForm = prototype.replace(/__name__/g, index);
@@ -97,6 +98,7 @@ file that was distributed with this source code.
         $($lastRow).find(formIdPrefix + index + '_quantity').val(quantity);
         $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
         $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
+        $($lastRow).find(formIdPrefix + index + '_point_rate').val(point_rate);
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');
