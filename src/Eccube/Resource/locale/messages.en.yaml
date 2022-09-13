@@ -390,6 +390,7 @@ front.shopping.payment_method_unselected: Please select the payment method.
 front.shopping.not_available_payment_method: The payment method you have selected is not available.
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
 front.under_maintenance: The site is currently under maintenance.
+front.shopping.point_setting_change: Sorry, the points cannot be used. Please check the total amount.
 
 #====================================================================================
 # Admin Console
