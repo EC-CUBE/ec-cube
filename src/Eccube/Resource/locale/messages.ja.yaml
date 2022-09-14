@@ -826,6 +826,7 @@ admin.order.amount: 金額
 admin.order.quantity: 数量
 admin.order.tax_rate: 税率
 admin.order.tax_type: 課税区分
+admin.order.point_rate: ポイント付与率
 admin.order.subtotal: 小計
 admin.order.discount: 値引き
 admin.order.delivery_fee: 送料
