@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Fixture;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
@@ -647,6 +648,8 @@ class Generator
         $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+
         /** @var ProductClass $ProductClass */
         foreach ($ProductClasses as $ProductClass) {
             if (!$ProductClass->isVisible()) {
@@ -666,6 +669,7 @@ class Generator
                 ->setTaxType($Taxation) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
+                ->setPointRate($BaseInfo->getBasicPointRate())
             ;
             if ($ProductClass->hasClassCategory1()) {
                 $OrderItem
