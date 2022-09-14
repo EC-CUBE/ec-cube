@@ -14,10 +14,8 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PointHelper;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
@@ -29,10 +27,6 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
  */
 class PointProcessor implements DiscountProcessor, PurchaseProcessor
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
     /**
      * @var EntityManagerInterface
      */
@@ -49,9 +43,8 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * @param EntityManagerInterface $entityManager
      * @param PointHelper $pointHelper
      */
-    public function __construct(BaseInfoRepository $baseInfoRepository, EntityManagerInterface $entityManager, PointHelper $pointHelper)
+    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
     {
-        $this->BaseInfo = $baseInfoRepository->get();
         $this->entityManager = $entityManager;
         $this->pointHelper = $pointHelper;
     }
@@ -195,28 +188,5 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
         }
 
         return true;
-    }
-
-
-
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
-    {
-        if (!$itemHolder instanceof Order) {
-            return;
-        }
-
-        foreach ($itemHolder->getOrderItems() as $item) {
-            if ($item->isProduct() && $item->getProductClass()->getPointRate()) {
-                $item->setPointRate($item->getProductClass()->getPointRate());
-            } else {
-                $item->setPointRate($this->BaseInfo->getBasicPointRate());
-            }
-        }
     }
 }
