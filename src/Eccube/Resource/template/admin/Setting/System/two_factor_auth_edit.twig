@@ -87,6 +87,9 @@ $(function () {
                                                 {{ form_widget(form.device_token) }}
                                             </div>
                                             {{ form_errors(form.device_token) }}
+                                            {% if error is not empty %}
+                                                <div class="text-danger mb-3 text-start small">{{ error }}</div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
