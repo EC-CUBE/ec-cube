@@ -74,13 +74,13 @@ file that was distributed with this source code.
                         window.updateUpDown($block.parent('.ui-sortable').first());
                     }
                 });
-                $('.context-movesection').on('click', block, function() {
+                $('.context-movesection').off('click').on('click', block, function() {
                     var bootstrapModal = new bootstrap.Modal($('#clickStreamConfirm').get(0));
                     bootstrapModal.show();
                     $('#target-block').val($(block.current).attr('id'));
                     block.menu.popover('hide');
                 });
-                $('#clickStreamConfirm').on('show.bs.modal', function(event) {
+                $('#clickStreamConfirm').off('show.bs.modal').on('show.bs.modal', function(event) {
                     $('#move-section').children('option').remove();
                     for (var target_id in sections) {
                         $('#move-section').append('<option value="' + target_id + '">' + sections[target_id] + '</option>');
@@ -105,13 +105,13 @@ file that was distributed with this source code.
                     }
                 });
 
-                $('.context-preview').on('click', block, function() {
+                $('.context-preview').off('click').on('click', block, function() {
                     var bootstrapModal = new bootstrap.Modal($('#codePreview').get(0));
                     bootstrapModal.show();
                     block.menu.popover('hide');
                 });
 
-                $('#codePreview').on('show.bs.modal', block, function(event) {
+                $('#codePreview').off('show.bs.modal').on('show.bs.modal', block, function(event) {
                     var attr_id = block.current.attr('id').match(/^detail_box__layout_item--([0-9]+)/);
                     var block_id = attr_id[1];
                     var $modal = $(this);
