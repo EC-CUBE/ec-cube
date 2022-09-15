@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        php: [ 7.4 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
@@ -118,7 +118,10 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
+        run: |
+          composer config platform.php 7.4.30
+          composer require --dev captbaritone/mailcatcher-codeception-module:"^2.4" --no-plugins --no-scripts
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
