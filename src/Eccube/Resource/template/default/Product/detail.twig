@@ -269,7 +269,7 @@ file that was distributed with this source code.
             "@type": "Offer",
             "url": "{{ url('product_detail', {'id': Product.id}) }}",
             "priceCurrency": "{{ eccube_config.currency }}",
-            "price": {{ Product.getPrice02IncTaxMin }},
+            "price": {{ Product.getPrice02IncTaxMin ? Product.getPrice02IncTaxMin : 0}},
             "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
         }
     }
