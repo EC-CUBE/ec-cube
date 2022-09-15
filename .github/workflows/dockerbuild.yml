@@ -12,16 +12,24 @@ on:
       - 'dockerbuild/*'
       - 'docker-compose*.yml'
       - '.github/workflows/dockerbuild.yml'
+  release:
+    types: [ published ]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   dockerbuild:
     name: dockerbuild
     runs-on: ${{ matrix.operating-system }}
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql ]
         group: [ admin01 ]
         include:
@@ -30,15 +38,12 @@ jobs:
             database_server_version: 14
           - group: admin01
             app_env: 'codeception'
-          # - group: admin02
-          #   app_env: 'codeception'
-          # - group: admin03
-          #   app_env: 'codeception'
-          # - group: front
-          #   app_env: 'codeception'
-          # - group: installer
-          #   app_env: 'install'
-
+          - php: '7.4'
+            tag: '7.4-apache'
+          - php: '8.0'
+            tag: '8.0-apache'
+          - php: '8.1'
+            tag: '8.1-apache'
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -69,7 +74,9 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          TAG: ${{ matrix.tag }}
         run: |
+          docker-compose build --build-arg TAG=${TAG} ec-cube
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
@@ -96,6 +103,32 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP}
+      ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
+      - name: Login to GitHub Container Registry
+        if: success()
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        if: success()
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=auto
+            suffix=-php-${{ matrix.tag }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        if: success()
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: TAG=${{ matrix.tag }}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2

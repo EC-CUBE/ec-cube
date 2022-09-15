@@ -1,4 +1,5 @@
-FROM php:7.4-apache-bullseye
+ARG TAG=7.4-apache-bullseye
+FROM php:${TAG}
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
