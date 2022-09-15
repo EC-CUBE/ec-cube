@@ -398,6 +398,22 @@ class EA07BasicinfoCest
             ->一覧_編集(1);
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
         $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
+        $I->see($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100)), OrderEditPage::$加算ポイント);
+
+        $I->expect('ポイント付与率を変更しても, 注文のポイントに影響無いことを確認します');
+        // see https://github.com/EC-CUBE/ec-cube/pull/5571
+        ShopSettingPage::go($I)
+            ->入力_ポイント付与率(1)
+            ->登録();
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        OrderEditPage::at($I)
+            ->受注情報登録();
+
+        $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
+        $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
+        $I->see($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100)), OrderEditPage::$加算ポイント);
 
         $I->expect('管理画面・会員管理にて、ポイントが減少していること');
         CustomerManagePage::go($I)
