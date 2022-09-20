@@ -85,6 +85,31 @@ file that was distributed with this source code.
                 });
             });
 
+            // ページング処理
+            $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
+                e.preventDefault();
+                var xhr = new XMLHttpRequest();
+                var list = $('#searchProductModalList');
+                list.children().remove();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'html',
+                    xhr: function() {
+                    return xhr;
+                }
+                }).done(function(data) {
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                    alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                        $('#searchProductModalList').html(data);
+                    }
+                }).fail(function(data) {
+                    alert('search product failed.');
+                });
+            });
+
             // その他明細
             $('#addOrderItemType').on('show.bs.modal', function(e) {
                 var xhr = new XMLHttpRequest();

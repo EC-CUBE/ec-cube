@@ -414,7 +414,7 @@ admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
 admin.common.to_show_complete: '「%name%」を表示にしました。'
 admin.common.to_hide_complete: '「%name%」を非表示にしました。'
-admin.common.failed_to_load: の読み込みに失敗しました
+admin.common.failed_to_load: 読み込みに失敗しました
 
 # action系のラベル
 admin.common.save: 保存
