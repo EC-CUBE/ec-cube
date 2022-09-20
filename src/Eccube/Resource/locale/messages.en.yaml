@@ -159,7 +159,7 @@ front.contact.inquiry_notice: |
  If it falls on our holidays, we will get back to you on/after our next working day. Thank you for your understanding.
 front.contact.order_notice: For an inquiry about your order, please inform us of the order number.
 front.contact.inquiry_contents: Inquiry
-front.contact.complete_title: Thank you for your inqury!
+front.contact.complete_title: Thank you for your inquiry!
 front.contact.complete_message__title: Your inquiry has been sent.
 front.contact.complete_message__body: In case you do not receive our receipt confirmation email, your inquiry may not be received. Please contact us by inquiry form once again, or by phone. Sorry for the inconvenience.
 
@@ -478,7 +478,8 @@ admin.common.csv_invalid_format: Unmatched CSV format
 admin.common.csv_invalid_no_data: No CSV data found
 admin.common.csv_invalid_required: '%name% is empty in the %line%'
 admin.common.csv_invalid_greater_than_zero: '%name% should be more than 0 in the line %line%.'
-admin.common.csv_invalid_format_line: 'CSV format unmatches in the line %line%'
+admin.common.csv_invalid_format_line_name: 'Unmatched format in %name% in the line %line%'
+admin.common.csv_invalid_format_line: 'Unmatched CSV format in the line %line%'
 admin.common.csv_invalid_date_format: 'Unmatched date format in %name% in the line %line%'
 admin.common.csv_invalid_not_found: '%name% is empty in the line %line%'
 admin.common.csv_invalid_not_found_target: '"%target_name%" is empty in %name% in the line %line%'
@@ -807,7 +808,7 @@ admin.order.purchase_price__end: Order Amount (End)
 admin.order.orderer: Customer
 admin.order.orderer_name: Customer Name
 admin.order.orderer_kana: Customer Name (Phonetic)
-admin.order.orderer_company_name: Customer Name (Comapany)
+admin.order.orderer_company_name: Customer Name (Company)
 admin.order.copy_orderer: Copy Customer Info
 admin.order.output_delivery_note: Print Delivery Slip
 admin.order.output_delivery_note_short: Print Delivery Slip
@@ -820,11 +821,12 @@ admin.order.order_item_info: Ordered Product Info
 admin.order.order_item_type: Item Type
 admin.order.add_product_item: Add a Product
 admin.order.add_other_item: Add Other Items
-admin.order.update_calculation_results: Update the Caltulation
+admin.order.update_calculation_results: Update the Calculation
 admin.order.amount: Price
 admin.order.quantity: Qty
 admin.order.tax_rate: Tax
 admin.order.tax_type: Tax Type
+admin.order.point_rate: Point Rate
 admin.order.subtotal: Subtotal
 admin.order.discount: Discount
 admin.order.delivery_fee: Shipping Charge
@@ -864,7 +866,7 @@ admin.order.send_mail: Send an Email
 admin.order.shop_memo_for_shipped: Shipping Notes
 admin.order.shipping__card_title: Shipping Info
 admin.order.shipping_id: Shipping ID
-admin.order.shipping_mail: Shiping Notice
+admin.order.shipping_mail: Shipping Notice
 admin.order.shipping_mail__completed: 'The shipping notice is already sent on %date%'
 admin.order.shipping_mail__sent: Sent
 admin.order.shipping_mail__unsent: Unsent
@@ -924,7 +926,7 @@ admin.order.skip_change_status: '%name%: Status change has been skipped'
 admin.order.shipping_csv.shipping_id_col: Shipping ID
 admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: Tracking No.
-admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.tracking_number_description: Enter alphanumeric characters or hyphens
 admin.order.shipping_csv.shipping_date_col: Shipping Date
 admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of MM/DD/YYYY
 
@@ -983,7 +985,7 @@ admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
 admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
-admin.content.file.upload_error: 'Failed to upload %file_name%. (%error%)'
+admin.content.file.upload_error: 'Failed to upload %file_name%. '
 admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
 admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
 admin.content.file.dir_exists: '%file_name% is already exists.'
@@ -1419,7 +1421,7 @@ admin.store.setting.get_api_key_info: Issue a new authentication key
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path
-admin.store.setting.invalid_captcha: Invaild input
+admin.store.setting.invalid_captcha: Invalid input
 admin.store.setting.captcha_error: Error
 admin.store.package.api.0.error: Failed to communicate with Owners' Store. Please wait for a while and try again.
 admin.store.package.api.403.error: Owners' Store failed to authenticate. Please confirm the authentication key settings.
@@ -1493,7 +1495,7 @@ admin.store.plugin_owners_confirm.847: Supported EC-CUBE Version
 admin.store.plugin_owners_confirm.848: 'File size<br>Approx. %size% KB'
 admin.store.plugin_owners_confirm.848.1: File Size
 admin.store.plugin_owners_confirm.848.2: Approx.
-admin.store.plugin_owners_confirm.849: Lisence
+admin.store.plugin_owners_confirm.849: Licence
 admin.store.plugin_owners_confirm.850: 'This plugin does not support EC-CUBE %version%. It may not work properly.'
 admin.store.plugin_owners_confirm.851: 'This requires %dependency% to work with. It will also be installed.'
 admin.store.plugin_owners_confirm.852: '<strong>Developed by</strong> : '
@@ -1536,7 +1538,7 @@ admin.store.plugin_owners_search.modal.contact: Document Request / Inquiry
 admin.store.plugin_owners_search.modal.manual: Download User Guide
 admin.store.plugin_owners_search.modal.note: 'This plugin does not support EC-CUBE %version%. It may not work properly.'
 admin.store.plugin_owners_search.modal.cancel: Go back to All
-admin.store.plugin_owners_search.modal.submit: Comfirm Installation
+admin.store.plugin_owners_search.modal.submit: Confirm Installation
 admin.store.plugin_owners_search.modal.dependency: 'This requires %dependency% to work with. It will also be installed.'
 admin.store.plugin_search.884: Owner's Store.
 admin.store.plugin_search.885: Find Plugins
@@ -1558,7 +1560,7 @@ admin.store.plugin_table.901: Status
 admin.store.plugin_table.902: Enable
 admin.store.plugin_table.903: Disable
 admin.store.plugin_table_official.901: Plugin Name
-admin.store.plugin_table_official.902: Plugin Thumnail
+admin.store.plugin_table_official.902: Plugin Thumbnail
 admin.store.plugin_table_official.903: Plugin Version
 admin.store.plugin_table_official.904: Plugin Code
 admin.store.plugin_table_official.905: Update
@@ -1587,7 +1589,7 @@ admin.store.unregistered_plugin_table.943: Code
 admin.store.unregistered_plugin_table.944: Update
 admin.store.unregistered_plugin_table.945: Settings
 admin.store.unregistered_plugin_table.946: Unknown
-admin.store.unregistered_plugin_table.947: Unkonwn
+admin.store.unregistered_plugin_table.947: Unknown
 admin.store.unregistered_plugin_table.948: Show Details
 admin.store.unregistered_plugin_table.949: Unknown
 admin.store.unregistered_plugin_table.950: Settings
@@ -1631,7 +1633,7 @@ tooltip.order.order_search_status: You can filter the list by order status. The 
 tooltip.order.bulk_actions: Bulk processing is applied to the checked orders. Please be careful when you apply it.
 tooltip.order.order_info: General information of orders.
 tooltip.order.order_no: Order No. is automatically generated upon placing the order.
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし新規受注登録以外。また、1受注で出荷先が複数ある場合は全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.order_status: You can change the status of your order response. However, except for new order registration. If an order has multiple destinations, the status will change to "Shipped" when all orders have been shipped.
 tooltip.order.customer_id: Customer IDs which are automatically generated.
 tooltip.order.shipping_info: Displaying the delivery information. You can add delivery addresses too. If you have multiple delivery addresses within a order, you can check the delivery address details at [Edit Delivery Address].
 tooltip.order.shipping_info.tracking_number: If you have a tracking number (delivery slip number), you can enter from here. You can also bulk-input from All Orders.
@@ -1729,7 +1731,7 @@ install.database_configuration: Database Configuration
 install.database_initalization: Database Initialization
 install.install_completed: Installation Completed
 install.start_eccube_installation: '<p>The installation of EC-CUBE will be started.</p><p>Please have your database information (database name etc) at hand.</p>'
-install.cooperation_of_providing_information: 'To improve EC-CUBE and debagging, please provide your site information. We will not use the provided information other than these purposes.<br><span class="small">（Site Info: Store URL, PHP Version, DB Version）</span>'
+install.cooperation_of_providing_information: 'To improve EC-CUBE and debugging, please provide your site information. We will not use the provided information other than these purposes.<br><span class="small">（Site Info: Store URL, PHP Version, DB Version）</span>'
 install.accept_infomation_provision: Accept to Submit
 install.permission_is_valid: The access permission is working properly
 install.permission_is_invalid: Please change the access permission of the following directories.
@@ -1795,6 +1797,7 @@ exception.error_message_restrict_url: This functionality is restricted by the ad
 
 purchase_flow.delivery_fee_update: Shipping charge has been updated. Please confirm the total amount.
 purchase_flow.charge_update: Charge has been updated. Please confirm the total amount.
+purchase_flow.tax_rate_update: Tax Rate has been updated. Please confirm the total amount.
 purchase_flow.over_customer_point: You are not able to use points more than your current points.
 purchase_flow.over_payment_total: The points are more than the total amount.
 purchase_flow.over_stock: '%name% does not have enough stock.'

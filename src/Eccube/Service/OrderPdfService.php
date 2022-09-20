@@ -23,13 +23,13 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Twig\Extension\TaxExtension;
-use setasign\Fpdi\TcpdfFpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 
 /**
  * Class OrderPdfService.
  * Do export pdf function.
  */
-class OrderPdfService extends TcpdfFpdi
+class OrderPdfService extends Fpdi
 {
     /** @var OrderRepository */
     protected $orderRepository;
@@ -189,9 +189,6 @@ class OrderPdfService extends TcpdfFpdi
 
         // 出荷番号をStringからarrayに変換
         $ids = explode(',', $formData['ids']);
-
-        // 空文字列の場合のデフォルトメッセージを設定する
-        $this->setDefaultData($formData);
 
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
@@ -651,8 +648,6 @@ class OrderPdfService extends TcpdfFpdi
     /**
      * Colored table.
      *
-     * TODO: 後の列の高さが大きい場合、表示が乱れる。
-     *
      * @param array $header 出力するラベル名一覧
      * @param array $data   出力するデータ
      * @param array $w      出力するセル幅一覧
@@ -687,18 +682,9 @@ class OrderPdfService extends TcpdfFpdi
         $this->SetFont('');
         // Data
         $fill = 0;
-        $h = 4;
-        foreach ($data as $row) {
-            // 行のの処理
+        $writeRow = function($row, $cellHeight, $fill, $isBorder) use($w) {
             $i = 0;
-            $h = 4;
-            $this->Cell(5, $h, '', 0, 0, '', 0, '');
-            if ((277 - $this->getY()) < ($h * 4)) {
-                $this->checkPageBreak($this->PageBreakTrigger + 1);
-            }
-
-            // Cellの高さを保持
-            $cellHeight = 0;
+            $h = 0;
             foreach ($row as $col) {
                 // 列の処理
                 // TODO: 汎用的ではない処理。この指定は呼び出し元で行うようにしたい。
@@ -708,8 +694,6 @@ class OrderPdfService extends TcpdfFpdi
                 // セル高さが最大値を保持する
                 if ($h >= $cellHeight) {
                     $cellHeight = $h;
-                } else {
-                    $this->checkPageBreak($this->PageBreakTrigger + 1);
                 }
 
                 // 最終列の場合は次の行へ移動
@@ -719,18 +703,37 @@ class OrderPdfService extends TcpdfFpdi
                 $this->MultiCell(
                     $w[$i], // セル幅
                     $cellHeight, // セルの最小の高さ
-                    $col, // 文字列
-                    1, // 境界線の描画方法を指定
+                    !$isBorder ? $col : '', // 文字列
+                    $isBorder ? 1 : 0, // 境界線の描画方法を指定
                     $align, // テキストの整列
                     $fill, // 背景の塗つぶし指定
-                    $ln                 // 出力後のカーソルの移動方法
+                    $ln // 出力後のカーソルの移動方法
                 );
                 $h = $this->getLastH();
-
-                ++$i;
+                $i++;
             }
+            return $cellHeight;
+        };
+
+        foreach ($data as $row) {
+            // 行の処理
+            $h = 4;
+            $this->Cell(5, $h, '', 0, 0, '', 0, '');
+            if ((277 - $this->getY()) < ($h * 4)) {
+                $this->checkPageBreak($this->PageBreakTrigger + 1);
+            }
+
+            $x = $this->getX();
+            $y = $this->getY();
+            // 1度目は文字だけ出力し、行の高さ最大を取得
+            $h = $writeRow($row, $h, $fill, false);
+            $this->setXY($x, $y);
+            // 2度目に最大の高さに合わせて、境界線を描画
+            $writeRow($row, $h, $fill, true);
+
             $fill = !$fill;
         }
+        $h = 4;
         $this->Cell(5, $h, '', 0, 0, '', 0, '');
         $this->Cell(array_sum($w), 0, '', 'T');
         $this->SetFillColor(255);
@@ -755,27 +758,6 @@ class OrderPdfService extends TcpdfFpdi
         $this->SetX($actualX);
         $actualY = is_null($y) ? $result['top'] : $y;
         $this->SetY($actualY);
-    }
-
-    /**
-     * データが設定されていない場合にデフォルト値を設定する.
-     *
-     * @param array $formData
-     */
-    protected function setDefaultData(array &$formData)
-    {
-        $defaultList = [
-            'title' => trans('admin.order.delivery_note_title__default'),
-            'message1' => trans('admin.order.delivery_note_message__default1'),
-            'message2' => trans('admin.order.delivery_note_message__default2'),
-            'message3' => trans('admin.order.delivery_note_message__default3'),
-        ];
-
-        foreach ($defaultList as $key => $value) {
-            if (is_null($formData[$key])) {
-                $formData[$key] = $value;
-            }
-        }
     }
 
     /**

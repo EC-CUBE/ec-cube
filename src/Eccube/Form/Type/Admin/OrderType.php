@@ -189,6 +189,10 @@ class OrderType extends AbstractType
                         'pattern' => "/^\d+$/u",
                         'message' => 'form_error.numeric_only',
                     ]),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => $this->eccubeConfig['eccube_price_max']
+                    ]),
                 ],
             ])
             ->add('note', TextareaType::class, [

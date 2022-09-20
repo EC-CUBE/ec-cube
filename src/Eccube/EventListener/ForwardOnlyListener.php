@@ -36,7 +36,7 @@ class ForwardOnlyListener implements EventSubscriberInterface
             return;
         }
 
-        if (!is_array($controller = $event->getController())) {
+        if (!is_array($event->getController())) {
             return;
         }
 

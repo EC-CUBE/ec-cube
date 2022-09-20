@@ -370,7 +370,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $form = $this->getForm($crawler);
         // fields set to empty.
         $form->setValues([
-            'order_pdf[title]' => '',
+            'order_pdf[title]' => 'title',
             'order_pdf[message1]' => '',
             'order_pdf[message2]' => '',
             'order_pdf[message3]' => '',
@@ -390,11 +390,11 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertCount(1, $OrderPdfs, '1件保存されているはず');
 
         $OrderPdf = current($OrderPdfs);
-        $token = self::$container->get('security.token_storage')->getToken();
+        $token = static::getContainer()->get('security.token_storage')->getToken();
         $adminTest = $token->getUser();
         $this->assertEquals($adminTest->getId(), $OrderPdf->getMemberId(), '管理ユーザーのIDと一致するはず');
 
-        $this->assertNull($OrderPdf->getTitle());
+        $this->assertEquals('title', $OrderPdf->getTitle());
         $this->assertNull($OrderPdf->getMessage1());
         $this->assertNull($OrderPdf->getMessage2());
         $this->assertNull($OrderPdf->getMessage3());

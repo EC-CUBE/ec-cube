@@ -53,7 +53,7 @@ class RepeatedEmailType extends AbstractType
                     new Assert\NotBlank(),
                     new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                        'max' => $this->eccubeConfig['eccube_email_len'],
                     ]),
                 ],
             ],

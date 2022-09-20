@@ -179,7 +179,7 @@ class OrderRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
             $qb
                 ->andWhere('o.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');

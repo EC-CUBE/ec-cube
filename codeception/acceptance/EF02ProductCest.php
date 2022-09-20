@@ -124,18 +124,24 @@ class EF02ProductCest
         // 選択されたリンクに応じてページングされる
 
         // '2'をクリック
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(0.5);
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=1]/a"]);
         $I->scrollTo(['css' => 'li.ec-pager__item--active']);
         $I->wait(1);
         $I->see('2', ['css' => 'li.ec-pager__item--active']);
 
         // '前へ'をクリック
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(0.5);
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=1]/a"]);
         $I->scrollTo(['css' => 'li.ec-pager__item--active']);
         $I->wait(1);
         $I->see('1', ['css' => 'li.ec-pager__item--active']);
 
         // '次へ'をクリック
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(0.5);
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=2]/a"]);
         $I->scrollTo(['css' => 'li.ec-pager__item--active']);
         $I->wait(1);

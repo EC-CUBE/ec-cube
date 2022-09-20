@@ -48,6 +48,7 @@ security:
                 lifetime: 3600
                 name: eccube_remember_me
                 remember_me_parameter: 'login_memory'
+                secure: auto
             form_login:
                 enable_csrf: true
                 check_path: mypage_login

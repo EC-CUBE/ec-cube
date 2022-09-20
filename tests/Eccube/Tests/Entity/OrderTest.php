@@ -53,7 +53,7 @@ class OrderTest extends EccubeTestCase
         $this->Order = $this->createOrder($this->Customer);
         $this->TaxRule = $this->entityManager->getRepository(TaxRule::class)->getByRule();
         $this->rate = $this->TaxRule->getTaxRate();
-        $this->taxRuleService = self::$container->get(TaxRuleService::class);
+        $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 
     public function testConstructor()
@@ -128,7 +128,7 @@ class OrderTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         /** @var Order $Order */
-        $Order = self::$container->get(Generator::class)->createOrder(
+        $Order = static::getContainer()->get(Generator::class)->createOrder(
             $this->Customer,
             [],
             null,

@@ -19,6 +19,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
+        $(document).on('drop dragover', function(e) {
+            e.preventDefault();
+        });
+
         $(function() {
             {% if has_class == false %}
             if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
@@ -76,6 +80,7 @@ file that was distributed with this source code.
                 allowDrop: true,
                 allowReorder: true,
                 labelIdle: '<i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true" style="font-size: 40px"></i>{{ 'admin.common.drag_and_drop_image_description'|trans }}<span class="filepond--label-action">{{ 'admin.common.file_select'|trans }}</span>',
+                styleItemPanelAspectRatio: 0.5625,
                 // 保存されている画像のロード
                 files: [
                     {% for image in form.images %}
@@ -409,6 +414,7 @@ file that was distributed with this source code.
                                                 {#</label>#}
                                                 {#</div>#}
                                                 {{ form_widget(form.class.stock_unlimited) }}
+                                                {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
                                         </div>
                                     </div>

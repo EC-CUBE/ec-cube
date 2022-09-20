@@ -5953,6 +5953,11 @@ Styleguide 1.2.10
 .ec-para-normal {
   margin-bottom: 16px;
 }
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
 /**
 メディアクエリ
 SP フォーストで記述する。
@@ -7841,6 +7846,8 @@ Styleguide 3.2.6
 */
 .ec-checkbox label {
   display: inline-block;
+  margin-bottom: 5px;
+  font-weight: 700;
 }
 .ec-checkbox input {
   margin-bottom: 10px;
@@ -10694,6 +10701,9 @@ Styleguide 12.1
 }
 .ec-sliderItemRole .slideThumb img {
   width: 80%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 /**
 メディアクエリ
@@ -12970,6 +12980,9 @@ Styleguide 19.2
 }
 .ec-contactRole .ec-contactRole__actions {
   padding-top: 20px;
+}
+.ec-contactRole p {
+  margin: 16px 0;
 }
 .ec-contactConfirmRole {
   margin: 0 auto;

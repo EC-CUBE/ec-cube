@@ -74,7 +74,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
      */
     private function newValidator($maxTotalFee)
     {
-        $result = self::$container->get(PaymentTotalLimitValidator::class);
+        $result = static::getContainer()->get(PaymentTotalLimitValidator::class);
         $rc = new \ReflectionClass(PaymentTotalLimitValidator::class);
         $prop = $rc->getProperty('maxTotalFee');
         $prop->setAccessible(true);

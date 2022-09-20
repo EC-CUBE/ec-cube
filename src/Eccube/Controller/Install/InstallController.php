@@ -675,7 +675,6 @@ class InstallController extends AbstractController
      */
     public function createMailerUrl(array $params)
     {
-        $url = '';
         if (isset($params['transport'])) {
             $url = $params['transport'].'://';
         } else {

@@ -281,8 +281,6 @@ class PluginController extends AbstractController
 
         $cacheUtil->clearCache();
 
-        $log = null;
-
         if ($Plugin->isEnabled()) {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true]);
@@ -593,7 +591,7 @@ class PluginController extends AbstractController
         $pluginCodes = [];
 
         // DB登録済みプラグインコードのみ取得
-        foreach ($plugins as $key => $plugin) {
+        foreach ($plugins as $plugin) {
             $pluginCodes[] = $plugin->getCode();
         }
         // DB登録済みプラグインコードPluginディレクトリから排他

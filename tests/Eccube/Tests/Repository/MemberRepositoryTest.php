@@ -36,7 +36,7 @@ class MemberRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->encoderFactory = self::$container->get('security.encoder_factory');
+        $this->encoderFactory = static::getContainer()->get('security.encoder_factory');
         $this->memberRepo = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
         $this->Member = $this->memberRepo->find(1);
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')

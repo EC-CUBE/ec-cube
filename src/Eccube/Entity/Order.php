@@ -56,6 +56,10 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $Items = [];
 
             foreach ($this->OrderItems as $Item) {
+                if (null === $Item->getTaxType()) {
+                    continue;
+                }
+
                 if ($Item->getTaxType()->getId() == TaxType::TAXATION) {
                     $Items[] = $Item;
                 }
@@ -92,8 +96,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
                 $totalPrice = $Item->getTotalPrice();
                 $taxRate = $Item->getTaxRate();
                 $total[$taxRate] = isset($total[$taxRate])
-                        ? $total[$taxRate] + $totalPrice
-                        : $totalPrice;
+                    ? $total[$taxRate] + $totalPrice
+                    : $totalPrice;
             }
 
             krsort($total);
@@ -115,7 +119,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
                 $total[$rate] = TaxRuleService::roundByRoundingType(
                     $this->getTaxableTotal() ?
-                    $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal() : 0,
+                        $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal() : 0,
                     $roundingTypes[$rate]->getId()
                 );
             }
@@ -139,7 +143,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
                 $tax[$rate] = TaxRuleService::roundByRoundingType(
                     $this->getTaxableTotal() ?
-                    ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)) : 0,
+                        ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)) : 0,
                     $roundingTypes[$rate]->getId()
                 );
             }
@@ -156,7 +160,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscountItems()
         {
-            return array_filter($this->getTaxableItems(), function (OrderItem $Item) {
+            $items = (new ItemCollection($this->getTaxableItems()))->sort()->toArray();
+            return array_filter($items, function (OrderItem $Item) {
                 return $Item->isDiscount();
             });
         }
@@ -180,7 +185,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxFreeDiscountItems()
         {
-            return array_filter($this->OrderItems->toArray(), function (OrderItem $Item) {
+            $items = (new ItemCollection($this->getOrderItems()))->sort()->toArray();
+            return array_filter($items, function (OrderItem $Item) {
                 return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
             });
         }
@@ -310,7 +316,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTotalPrice()
         {
-            @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
+            @trigger_error('The ' . __METHOD__ . ' method is deprecated.', E_USER_DEPRECATED);
 
             return $this->getPaymentTotal();
         }
@@ -681,14 +687,13 @@ if (!class_exists('\Eccube\Entity\Order')) {
         public function __construct(Master\OrderStatus $orderStatus = null)
         {
             $this->setDiscount(0)
-            ->setSubtotal(0)
-            ->setTotal(0)
-            ->setPaymentTotal(0)
-            ->setCharge(0)
-            ->setTax(0)
-            ->setDeliveryFeeTotal(0)
-            ->setOrderStatus($orderStatus)
-        ;
+                ->setSubtotal(0)
+                ->setTotal(0)
+                ->setPaymentTotal(0)
+                ->setCharge(0)
+                ->setTax(0)
+                ->setDeliveryFeeTotal(0)
+                ->setOrderStatus($orderStatus);
 
             $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
             $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1112,9 +1117,9 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Get discount.
          *
+         * @return string
          * @deprecated 4.0.3 から値引きは課税値引きと 非課税・不課税の値引きの2種に分かれる. 課税値引きについてはgetTaxableDiscountを利用してください.
          *
-         * @return string
          */
         public function getDiscount()
         {
@@ -1569,7 +1574,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         public function getShippings()
         {
             $criteria = Criteria::create()
-            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
+                ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
 
             return $this->Shippings->matching($criteria);
         }
