@@ -12,7 +12,17 @@ file that was distributed with this source code.
 
 {% block title %}{{ 'admin.home'|trans }}{% endblock %}
 {% block sub_title %}{% endblock %}
-
+{% block stylesheet %}
+    <style type="text/css">
+        .card-body.p-0 a:hover{
+            text-decoration:none;
+        }
+        .card-body.p-0 .status-name:hover{
+            text-decoration: underline;
+            color:#36659d;
+        }
+    </style>
+{% endblock %}
 {% block javascript %}
     <script>
         $(function() {
@@ -130,7 +140,7 @@ file that was distributed with this source code.
                                         <a href="{{ url('admin_order', { 'order_status_id': OrderStatus.id }) }}" class="p-3 d-block">
                                             <div class="row align-items-center">
                                                 <div class="col align-middle">
-                                                    <span class="align-middle">{{ OrderStatus.name }}</span>
+                                                    <span class="align-middle status-name">{{ OrderStatus.name }}</span>
                                                 </div>
                                                 <div class="col-auto text-end align-middle">
                                                     <span class="h4 align-middle fw-normal text-dark">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</span>
@@ -229,7 +239,7 @@ file that was distributed with this source code.
                                                 <i class="fa fa-inbox fa-2x text-secondary" aria-hidden="true"></i>
                                             </div>
                                             <div class="col p-0">
-                                                <span class="align-middle">{{ 'admin.home.shop_status_out_of_stock'|trans }}</span>
+                                                <span class="align-middle status-name">{{ 'admin.home.shop_status_out_of_stock'|trans }}</span>
                                             </div>
                                             <div class="col-auto text-end align-middle">
                                                 <span class="h4 align-middle fw-normal text-dark">{{ countNonStockProducts|number_format }}</span>
@@ -244,7 +254,7 @@ file that was distributed with this source code.
                                                 <i class="fa fa-cubes fa-2x text-secondary" aria-hidden="true"></i>
                                             </div>
                                             <div class="col p-0">
-                                                <span class="align-middle">{{ 'admin.home.shop_status_products'|trans }}</span>
+                                                <span class="align-middle status-name">{{ 'admin.home.shop_status_products'|trans }}</span>
                                             </div>
                                             <div class="col-auto text-check align-middle">
                                                 <span class="h4 align-middle fw-normal text-dark">{{ countProducts|number_format }}</span>
@@ -259,7 +269,7 @@ file that was distributed with this source code.
                                                 <i class="fa fa-users fa-2x text-secondary" aria-hidden="true"></i>
                                             </div>
                                             <div class="col p-0">
-                                                <span class="align-middle">{{ 'admin.home.shop_status_customers'|trans }}</span>
+                                                <span class="align-middle status-name">{{ 'admin.home.shop_status_customers'|trans }}</span>
                                             </div>
                                             <div class="col-auto text-check align-middle">
                                                 <span class="h4 align-middle fw-normal text-dark">{{ countCustomers|number_format }}</span>
