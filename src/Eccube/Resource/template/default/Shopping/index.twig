@@ -354,7 +354,9 @@ file that was distributed with this source code.
                                 {% set Payment = form.Payment.vars.choices[key].data %}
                                 {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
                                 {% if Payment.payment_image is not null %}
-                                    <p><img src="{{ asset(Payment.payment_image, 'save_image') }}"></p>
+                                    <div class="ec-imageGrid">
+                                        <div class="ec-imageGrid__img"><img src="{{ asset(Payment.payment_image, 'save_image') }}"></div>
+                                    </div>
                                 {% endif %}
                             </div>
                         {% endfor %}
