@@ -111,6 +111,8 @@ class ClassNameController extends AbstractController
              * 編集処理
              */
             foreach ($forms as $editForm) {
+                $originClassName = $editForm->getData()->getName();
+                $originBackendName = $editForm->getData()->getBackendName();
                 $editForm->handleRequest($request);
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classNameRepository->save($editForm->getData());
@@ -118,6 +120,9 @@ class ClassNameController extends AbstractController
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_class_name');
+                } else {
+                    $editForm->getData()->setName($originClassName);
+                    $editForm->getData()->setBackendName($originBackendName);
                 }
             }
         }

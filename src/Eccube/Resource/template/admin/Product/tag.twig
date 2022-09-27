@@ -103,6 +103,8 @@ file that was distributed with this source code.
                 var current = $(this).parents("li");
                 current.find('[data-origin-value]').each(function(e) {
                     $(this).val($(this).attr('data-origin-value'));
+                    current.find('.invalid-feedback').remove();
+                    $(this).removeClass('is-invalid');
                 });
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
@@ -204,7 +206,7 @@ file that was distributed with this source code.
                                         <form class="row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': forms[Tag.id].name.vars.value }}) }}
+                                                {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': Tag.name }}) }}
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
 

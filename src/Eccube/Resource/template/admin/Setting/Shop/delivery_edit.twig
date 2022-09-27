@@ -173,6 +173,8 @@ file that was distributed with this source code.
                 var current = $(this).parents('li');
                 current.find('[data-origin-value]').each(function(e) {
                     $(this).val($(this).attr('data-origin-value'));
+                    current.find('.invalid-feedback').remove();
+                    $(this).removeClass('is-invalid');
                 });
                 var value = current.find('.form-control').val();
                 current.find('.display-label').text(value);

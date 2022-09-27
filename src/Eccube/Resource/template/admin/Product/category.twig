@@ -98,6 +98,8 @@ file that was distributed with this source code.
                 var current = $(this).parents('li');
                 current.find('[data-origin-value]').each(function(e) {
                     $(this).val($(this).attr('data-origin-value'));
+                    current.find('.invalid-feedback').remove();
+                    $(this).removeClass('is-invalid');
                 });
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
@@ -264,7 +266,7 @@ file that was distributed with this source code.
                                                 <form class="row  {% if error_forms[Category.id].count == 0 %} d-none {% endif %} mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}" enctype="multipart/form-data">
                                                     {{ form_widget(forms[Category.id]._token) }}
                                                     <div class="col-auto align-items-center">
-                                                        {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': forms[Category.id].name.vars.value}}) }}
+                                                        {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': Category.name}}) }}
                                                         {{ form_errors(forms[Category.id].name) }}
                                                     </div>
                                                     <div class="col-auto align-items-center">

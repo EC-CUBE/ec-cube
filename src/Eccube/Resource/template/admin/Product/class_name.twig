@@ -109,6 +109,8 @@ file that was distributed with this source code.
                 var current = $(this).parents('li');
                 current.find('[data-origin-value]').each(function(e) {
                     $(this).val($(this).attr('data-origin-value'));
+                    current.find('.invalid-feedback').remove();
+                    $(this).removeClass('is-invalid');
                 });
                 current.find('.mode-view').removeClass('d-none');
                 current.find('.mode-edit').addClass('d-none');
@@ -205,12 +207,12 @@ file that was distributed with this source code.
                                             {{ form_widget(forms[ClassName.id]._token) }}
                                             <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[ClassName.id].name, {'attr': {'data-origin-value': forms[ClassName.id].name.vars.value}}) }}
+                                                {{ form_widget(forms[ClassName.id].name, {'attr': {'data-origin-value': ClassName.name}}) }}
                                                 {{ form_errors(forms[ClassName.id].name) }}
                                             </div>
                                             <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name__backend_name'|trans }}</span></div>
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[ClassName.id].backend_name, {'attr': {'data-origin-value': forms[ClassName.id].backend_name.vars.value}}) }}
+                                                {{ form_widget(forms[ClassName.id].backend_name, {'attr': {'data-origin-value': ClassName.backend_name}}) }}
                                                 {{ form_errors(forms[ClassName.id].backend_name) }}
                                             </div>
                                             <div class="col-auto align-items-center">
