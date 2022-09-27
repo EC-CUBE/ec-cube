@@ -7,11 +7,9 @@ liip_imagine:
     loaders:
         default:
             filesystem:
-                data_root:
-                    - '%kernel.project_dir%'
-                    - '%kernel.project_dir%/../'
-                    - '%kernel.project_dir%/../../'
-                    - '%kernel.project_dir%/../../../'
+                data_root: '%kernel.project_dir%'
+    twig:
+        mode: lazy
     #    webp:
     #        generate: true
     filter_sets:

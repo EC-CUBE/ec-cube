@@ -213,3 +213,13 @@ services:
             - '@Eccube\Request\Context'
         tags:
             - { name: form.type_extension, priority: -99, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
+
+    liip_imagine.binary.locator.filesystem:
+        class: Eccube\Bundle\ImagineBundle\Binary\Locator\FileSystemEccubeLocator
+        public: false
+        shared: false
+        arguments:
+            - ''
+            - ''
+        tags:
+            - { name: liip_imagine.binary.locator, shared: false }
