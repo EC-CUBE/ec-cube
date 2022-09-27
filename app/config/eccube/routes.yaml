@@ -28,6 +28,3 @@ admin_logout:
     path: '/%eccube_admin_route%/logout'
 logout:
     path: /logout
-
-_liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
