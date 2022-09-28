@@ -12,10 +12,11 @@ class FileSystemEccubeLocator extends FileSystemLocator
             return $absolute;
         }
 
-        $path = explode(DIRECTORY_SEPARATOR, $path);
-        $path = array_merge(array_diff(explode(DIRECTORY_SEPARATOR, $root), $path), $path);
-        if (false !== $absolute = realpath(implode(DIRECTORY_SEPARATOR, $path))) {
-            return $absolute;
+        for ($i = 0; $i < count(explode(DIRECTORY_SEPARATOR, $root)); $i++) {
+            $path = '..' . DIRECTORY_SEPARATOR . $path;
+            if (false !== $absolute = realpath($root . DIRECTORY_SEPARATOR . $path)) {
+                return $absolute;
+            }
         }
 
         return null;
