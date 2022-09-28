@@ -10,8 +10,8 @@ liip_imagine:
                 data_root: '%kernel.project_dir%'
     twig:
         mode: lazy
-    #    webp:
-    #        generate: true
+    #webp:
+    #    generate: true
     filter_sets:
         cache: ~
         resize:
