@@ -42,6 +42,7 @@ services:
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator' # 使用できない支払い方法が含まれていないかどうか
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator' # 支払金額の上限チェック
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'  # 支払金額のマイナスチェック
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryTimeValidator' 
 
     # Purchase Flow for Shopping
     eccube.purchase.flow.shopping:
@@ -95,6 +96,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\PointRateProcessor' # 明細にポイント付与率を設定する
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryTimeValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'

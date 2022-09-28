@@ -390,6 +390,7 @@ front.shopping.payment_method_unselected: お支払い方法を選択してく�
 front.shopping.not_available_payment_method: 選択したお支払い方法はご利用できません。
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 front.under_maintenance: メンテナンスモードが有効になっています。
+front.shopping.not_available_delivery_time: 選択した配達時間は利用できません。
 
 #====================================================================================
 # 管理画面
