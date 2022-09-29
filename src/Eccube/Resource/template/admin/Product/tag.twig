@@ -99,15 +99,7 @@ file that was distributed with this source code.
 
             // 編集キャンセル
             $('.sortable-item').on('click', 'button.action-edit-cancel', function(e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value'));
-                    current.find('.invalid-feedback').remove();
-                    $(this).removeClass('is-invalid');
-                });
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
+                location.href = '{{ url('admin_product_tag') }}';
             });
             // 編集時, エラーがあれば入力欄を表示.
             $('.sortable-item').find('.is-invalid').each(function(e) {
@@ -206,7 +198,7 @@ file that was distributed with this source code.
                                         <form class="row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
-                                                {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': Tag.name }}) }}
+                                                {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': forms[Tag.id].name.vars.value }}) }}
                                                 {{ form_errors(forms[Tag.id].name) }}
                                             </div>
 

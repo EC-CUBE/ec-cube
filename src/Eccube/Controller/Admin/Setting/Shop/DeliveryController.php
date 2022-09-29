@@ -280,13 +280,6 @@ class DeliveryController extends AbstractController
                 }
 
                 return $this->redirectToRoute('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]);
-            } else {
-                foreach ($Delivery->getDeliveryTimes() as $deliveryTime) {
-                    if ($deliveryTime->getDeliveryTime() == null && $deliveryTime->getId() != null) {
-                        $this->entityManager->detach($deliveryTime);
-                        $deliveryTime->setDeliveryTime($this->deliveryTimeRepository->find($deliveryTime->getId())->getDeliveryTime());
-                    }
-                }
             }
         }
 

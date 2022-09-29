@@ -152,7 +152,6 @@ class CategoryController extends AbstractController
             }
 
             foreach ($forms as $editForm) {
-                $originCategory = $editForm->getData()->getName();
                 $editForm->handleRequest($request);
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->categoryRepository->save($editForm->getData());
@@ -181,8 +180,6 @@ class CategoryController extends AbstractController
                     } else {
                         return $this->redirectToRoute('admin_product_category');
                     }
-                } else {
-                    $editForm->getData()->setName($originCategory);
                 }
             }
         }

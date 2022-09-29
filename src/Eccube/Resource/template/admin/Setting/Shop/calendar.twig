@@ -44,18 +44,7 @@ file that was distributed with this source code.
             });
 
             $('.calendar_list_item .cancel').click(function() {
-                var id = $(this).data('id');
-                var tr = $('#ex-calendar-' + id);
-
-                var current = $(this).parents('tr');
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value').replaceAll('/','-')); //display origin data
-                    current.find('.invalid-feedback').remove();
-                    $(this).removeClass('is-invalid');
-                });
-
-                $(tr).find('.edit').hide();
-                $(tr).find('.list').show();
+                location.href = '{{ url('admin_setting_shop_calendar') }}';
             });
         });
     </script>
@@ -129,7 +118,7 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="edit">
-                                                    {{ form_widget(forms[Calendar.id].holiday, {'attr': {'data-origin-value': Calendar.holiday|date_day}}) }}
+                                                    {{ form_widget(forms[Calendar.id].holiday) }}
                                                     {{ form_errors(forms[Calendar.id].holiday) }}
                                                 </div>
                                                 <div class="list">

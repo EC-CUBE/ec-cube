@@ -96,13 +96,8 @@ class CalendarController extends AbstractController
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_setting_shop_calendar');
-                } else {
-                    $error = count($editCalendarForm->getErrors(true));
-                    if ($error > 0 && $Calendar->getId() != null) {
-                        $this->entityManager->detach($Calendar);
-                        $Calendar->setHoliday($this->calendarRepository->find($Calendar->getId())->getHoliday());
-                    }
                 }
+                $error = count($editCalendarForm->getErrors(true));
             }
 
             $forms[$Calendar->getId()] = $editCalendarForm->createView();

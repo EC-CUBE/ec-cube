@@ -97,7 +97,6 @@ class TagController extends AbstractController
              * 編集処理
              */
             foreach ($forms as $editForm) {
-                $originTag = $editForm->getData()->getName();
                 $editForm->handleRequest($request);
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->tagRepository->save($editForm->getData());
@@ -107,8 +106,6 @@ class TagController extends AbstractController
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
                     return $this->redirectToRoute('admin_product_tag');
-                } else {
-                    $editForm->getData()->setName($originTag);
                 }
             }
         }
