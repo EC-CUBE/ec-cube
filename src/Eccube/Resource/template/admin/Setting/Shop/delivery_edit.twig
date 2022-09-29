@@ -168,7 +168,7 @@ file that was distributed with this source code.
                 });
             });
             // 編集キャンセル
-            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function() {
+            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function(e) {
                 location.href = window.location.href;
             });
             // 編集時, エラーがあれば入力欄を表示.
