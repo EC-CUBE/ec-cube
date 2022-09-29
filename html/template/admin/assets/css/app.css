@@ -1118,6 +1118,13 @@ Font Awesome v5.3.1 で利用可能なフォント群については、<a href="
 
 Styleguide 11.0
 */
+#page_admin_homepage .card-body.p-0 a:hover {
+  text-decoration: none;
+}
+#page_admin_homepage .card-body.p-0 a:hover .status-name {
+  text-decoration: underline;
+  color: #36659d;
+}
 @media only screen and (min-width: 768px) and (max-width: 1279px) {
   .c-mainNavArea {
     width: 160px;

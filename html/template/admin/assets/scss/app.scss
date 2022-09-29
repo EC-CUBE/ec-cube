@@ -34,3 +34,19 @@ a,button {
 @import "component/_directory";
 @import "component/_toggleSwitch";
 @import "component/_icon";
+
+
+#page_admin_homepage {
+  .card-body.p-0 {
+    a {
+    &:hover{
+        text-decoration:none;
+
+        .status-name{
+          text-decoration: underline;
+          color:#36659d;
+        }
+      }
+    }
+  }
+}
