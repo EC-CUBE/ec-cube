@@ -225,7 +225,7 @@ file that was distributed with this source code.
                                                     <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                                     <div class="col-auto d-flex align-items-center">{{ Category.id }}</div>
                                                     <div class="col d-flex align-items-center">
-                                                        <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ forms[Category.id].name.vars.value }}</a>
+                                                        <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                                     </div>
                                                     <div class="col-auto text-end">
                                                         <a class="btn btn-ec-actionIcon action-up me-2 {% if loop.first %} disabled {% endif %}" href=""
@@ -258,7 +258,7 @@ file that was distributed with this source code.
                                                 <form class="row  {% if error_forms[Category.id].count == 0 %} d-none {% endif %} mode-edit" method="POST" action="{{ (Parent and Parent.id) ? url('admin_product_category_show', {'parent_id': Parent.id}) : url('admin_product_category') }}" enctype="multipart/form-data">
                                                     {{ form_widget(forms[Category.id]._token) }}
                                                     <div class="col-auto align-items-center">
-                                                        {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': Category.name}}) }}
+                                                        {{ form_widget(forms[Category.id].name, {'attr': {'data-origin-value': forms[Category.id].name.vars.value}}) }}
                                                         {{ form_errors(forms[Category.id].name) }}
                                                     </div>
                                                     <div class="col-auto align-items-center">
