@@ -53,7 +53,7 @@ class DeliveryTimeValidatorTest extends EccubeTestCase
         self::assertInstanceOf(DeliveryTimeValidator::class, $this->validator);
     }
 
-    public function testValidatePaymentVisibleFalse()
+    public function testValidateDeliveryTimeVisibleFalse()
     {
         $this->Order->getShippings()[0]->setTimeId($this->Delivery->getDeliveryTimes()[0]->getId());
         $this->Delivery->getDeliveryTimes()[0]->setVisible(false);

@@ -48,9 +48,10 @@ class DeliveryTimeValidator extends ItemHolderValidator
             return;
         }
         
-        $shippings = $itemHolder->getShippings();
+       
 
-        if ($itemHolder instanceof Order) {
+        if ($itemHolder instanceof Order) { 
+            $shippings = $itemHolder->getShippings();
             if (null === $shippings) {
                 return;
             }
