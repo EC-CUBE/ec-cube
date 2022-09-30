@@ -48,14 +48,12 @@ class DeliveryTimeValidator extends ItemHolderValidator
             return;
         }
         
-       
-
         if ($itemHolder instanceof Order) { 
             $shippings = $itemHolder->getShippings();
             if (null === $shippings) {
                 return;
             }
-            $deliveryTimes=$this->getDeliveryTimes($shippings);
+            $deliveryTimes = $this->getDeliveryTimes($shippings);
             foreach($deliveryTimes as $deliveryTime){
                 if(!$deliveryTime->isVisible()){
                     $this->throwInvalidItemException('front.shopping.not_available_delivery_time');
@@ -73,7 +71,7 @@ class DeliveryTimeValidator extends ItemHolderValidator
     {
         $DeliveryTimes = new ArrayCollection();
         foreach ($Shippings as $shipping) {
-            if($shipping->getTimeId()!=null){
+            if($shipping->getTimeId() != null){
                 $DeliveryTimes->add($this->deliveryTimeRepository->find($shipping->getTimeId()));
             }
         }
