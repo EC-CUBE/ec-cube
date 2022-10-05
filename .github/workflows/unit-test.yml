@@ -73,8 +73,8 @@ jobs:
 
       - name: composer install
         run: |
-          sudo composer selfupdate --1
-          composer install --dev --no-interaction -o --apcu-autoloader
+          curl -O https://getcomposer.org/download/latest-1.x/composer.phar
+          php composer.phar install --dev --no-interaction -o --apcu-autoloader
 
       - name: Setup EC-CUBE
         env:
