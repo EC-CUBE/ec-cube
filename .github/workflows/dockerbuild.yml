@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: downcase REPO
         run: |
-          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}-php" >> ${GITHUB_ENV}
       - name: Checkout
         uses: actions/checkout@master
       ## Used when creating multi-platform images
@@ -75,9 +75,12 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=auto
-            suffix=-php-${{ matrix.tag }}
+          tags: |
+            # set latest tag for default branch
+            type=raw,value=${{ matrix.php }}-apache,prefix=,enable={{is_default_branch}}
+            type=ref,event=branch,prefix=${{ matrix.php }}-apache-
+            type=ref,event=tag,prefix=${{ matrix.php }}-apache-
+            type=ref,event=pr,prefix=${{ matrix.php }}-apache-pr-
 
       - name: Build and export to Docker
         uses: docker/build-push-action@v3
