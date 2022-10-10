@@ -291,7 +291,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @param $ext
      * @param $attr
-     * @param $iconOnly アイコンのクラス名のみ返す場合はtrue
+     * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string
      */
