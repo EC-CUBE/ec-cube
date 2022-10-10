@@ -29,6 +29,12 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         $(function() {
+
+            $(window).on('pageshow', function() {
+                var tmp_select =  $('#mail_template[name="mail[template]"] option[selected]').val();
+                $('#mail_template[name="mail[template]"]').val(tmp_select);
+            });
+
             $('#mail_template').on('change', function() {
                 var id = $(this).val()
                 if (id) {

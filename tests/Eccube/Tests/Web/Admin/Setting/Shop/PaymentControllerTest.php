@@ -157,6 +157,80 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
+    /**
+     * アップロード画像が save_image にコピーされているか確認する.
+     */
+    public function testEditWithImage()
+    {
+        $path = __DIR__.'/../../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
+        $formData = $this->createFormData();
+        $formData['payment_image'] = 'new_image.png';
+        $Payment = $this->paymentRepository->find(1);
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
+            [
+                'payment_register' => $formData,
+            ]
+        );
+
+        $this->expected = true;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->assertFileExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    /**
+     * アップロード画像に相対パスが指定された場合は save_image にコピーされない.
+     */
+    public function testEditWithImageFailure()
+    {
+        $path = __DIR__.'/../../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
+        $formData = $this->createFormData();
+        $formData['payment_image'] = '../temp_image/new_image.png';
+        $Payment = $this->paymentRepository->find(1);
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
+            [
+                'payment_register' => $formData,
+            ]
+        );
+
+        $this->expected = true;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->assertFileNotExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
     public function testMoveSortNo()
     {
         /** @var Payment[] $Payments */

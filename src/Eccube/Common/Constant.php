@@ -18,7 +18,7 @@ class Constant
     /**
      * EC-CUBE VERSION.
      */
-    public const VERSION = '4.2.0-beta2';
+    public const VERSION = '4.2.0';
 
     /**
      * Enable value.

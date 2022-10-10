@@ -20,11 +20,14 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InstallPluginController extends InstallController
@@ -77,6 +80,7 @@ class InstallPluginController extends InstallController
      * @param SystemService $systemService
      * @param PluginService $pluginService
      * @param string $code
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return JsonResponse
      *
@@ -84,7 +88,7 @@ class InstallPluginController extends InstallController
      * @throws NotFoundHttpException
      * @throws PluginException
      */
-    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code)
+    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -122,7 +126,12 @@ class InstallPluginController extends InstallController
                 }
             }
 
-            $this->cacheUtil->clearCache();
+            // KernelEvents::TERMINATE で強制的にキャッシュを削除する
+            // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083
+            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
+                $fs = new Filesystem();
+                $fs->remove($this->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
+            });
 
             return $this->json(['success' => true, 'log' => $log]);
         } else {

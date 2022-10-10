@@ -226,12 +226,13 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $callback
      * @param null $typeFilter
      * @param int $level
+     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
         if (strpos($packageName, '/') === false) {
             return;
@@ -410,11 +411,13 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
+     * @param BaseInfo $BaseInfo
+     * @return void
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function configureRepository(BaseInfo $BaseInfo)
+    public function configureRepository(BaseInfo $BaseInfo): void
     {
         $this->init($BaseInfo);
     }

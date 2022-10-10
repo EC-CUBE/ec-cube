@@ -107,7 +107,7 @@ parameters:
     eccube_tel_len_max: 14
     eccube_postal_code: 8
     eccube_password_min_len: 12
-    eccube_password_max_len: 32
+    eccube_password_max_len: 50
     # see https://github.com/EC-CUBE/ec-cube2/blob/87e269314f92ebb169ea212bf304c9371bb12fd2/data/class/SC_CheckError.php#L889
     eccube_password_pattern: '/\A(?=.*?[a-z])(?=.*?\d)[!-~]+\z/i'
     eccube_composer_memory_limit: 1536M
@@ -121,6 +121,7 @@ parameters:
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
     # メールアドレスをRFC準拠でチェックするか true: チェックする、false: チェックしない
     eccube_rfc_email_check: false
+    eccube_email_len: 254
     eccube_package_api_url: '%env(ECCUBE_PACKAGE_API_URL)%'
     # 注文番号のフォーマット. 以下のフォーマットが利用可能です. フォーマットを空にした場合, dtb_order.idを出力します.
     # {yyyy} : 西暦(4桁)

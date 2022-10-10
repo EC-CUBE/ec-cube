@@ -68,7 +68,7 @@ class LogController extends AbstractController
         $logDir = $this->getParameter('kernel.logs_dir').DIRECTORY_SEPARATOR.$this->getParameter('kernel.environment');
         $logFile = $logDir.'/'.$formData['files'];
 
-        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download') {
+        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download' && $form->isValid()) {
             $bufferSize = 1024 * 50;
             $response = new StreamedResponse();
             $response->headers->set('Content-Length', filesize($logFile));
