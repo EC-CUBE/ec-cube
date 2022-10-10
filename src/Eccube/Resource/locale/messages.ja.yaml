@@ -1201,11 +1201,21 @@ admin.setting.shop.tax.apply_date.available_error: 同時刻の適用日時を�
 
 admin.setting.shop.mail.mail_template_edit: テンプレート編集
 admin.setting.shop.mail.mail_template: テンプレート
+admin.setting.shop.mail.mail_twig_file_name: Twigファイル名
+admin.setting.shop.mail.mail_twig_file_name_notes: |
+  ・最後に「.twig」を付けてください。
+  ・先頭の「Mail/」は削除できません。
+  ・「Mail/」より後の文字列にスラッシュ（/）は使用できません。
 admin.setting.shop.mail.mail_subject: 件名
 admin.setting.shop.mail.mail_body: 本文
 admin.setting.shop.mail.mail_text: テキスト
 admin.setting.shop.mail.mail_html: HTML
 admin.setting.shop.mail.preview: プレビュー
+admin.setting.shop.mail.delete_templete: テンプレートを削除
+admin.setting.shop.mail.invalid_twig_ext: Twigファイル名の後ろに「.twig」を付けてください。
+admin.setting.shop.mail.invalid_twig_beginning: Twigファイル名の前に「Mail/」を付けてください。
+admin.setting.shop.mail.invalid_twig_slash: 先頭の「Mail/」より先の文字列に、スラッシュ（/）を含むことはできません。
+admin.setting.shop.mail.already_exist_twig_file: 別なTwigファイル名にしてください。「${newFileName}」は既に存在します。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：CSV出力項目設定

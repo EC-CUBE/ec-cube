@@ -71,75 +71,170 @@ class MailController extends AbstractController
         $form['template']->setData($Mail);
         $htmlFileName = $Mail ? $this->getHtmlFileName($Mail->getFileName()) : null;
 
-        // 更新時
-        if (!is_null($Mail)) {
-            // テンプレートファイルの取得
-            $source = $twig->getLoader()
-                ->getSourceContext($Mail->getFileName())
-                ->getCode();
-
-            $form->get('tpl_data')->setData($source);
-            if ($twig->getLoader()->exists($htmlFileName)) {
-                $source = $twig->getLoader()
-                    ->getSourceContext($htmlFileName)
-                    ->getCode();
-
-                $form->get('html_tpl_data')->setData($source);
-            }
+        // ファイル名が空である場合は「Mail/」を入力
+        if (is_null($form['file_name']->getData())) {
+            $form['file_name']->setData('Mail/');
         }
 
+        // POST時は登録 or 更新 or 削除
         if ('POST' === $request->getMethod()) {
+            $beforeFileName = $form['file_name']->getData();
             $form->handleRequest($request);
+            $newFileName = $form['file_name']->getData();
+            $isRenamed = $beforeFileName !== $newFileName;
 
-            // 新規登録は現時点では未実装とする.
-            if (is_null($Mail)) {
-                $this->addError('admin.common.save_error', 'admin');
+            $templatePath = $this->getParameter('eccube_theme_front_dir');
+            $newFilePath = $templatePath.'/'.$newFileName;
 
+            $deleteValue = $request->request->get('delete_template');
+            
+            // 削除
+            if (!is_null($deleteValue) && $deleteValue === '1') {
+                $mailTemplate = $this->mailTemplateRepository->find($Mail->getId());
+                
+                $this->entityManager->remove($mailTemplate);
+                $this->entityManager->flush();
+                
+                $fs = new Filesystem();
+                $fs->remove($templatePath.'/'.$beforeFileName);
+                $fs->remove($templatePath.'/'.$this->getHtmlFileName($beforeFileName));
+
+                $this->addSuccess('admin.common.delete_complete', 'admin');
+                
                 return $this->redirectToRoute('admin_setting_shop_mail');
             }
-
-            if ($form->isValid()) {
-                $this->entityManager->flush();
-
-                // ファイル生成・更新
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
-                $filePath = $templatePath.'/'.$Mail->getFileName();
-
+            else if ($form->isValid()) {
                 $fs = new Filesystem();
-                $mailData = $form->get('tpl_data')->getData();
-                $mailData = StringUtil::convertLineFeed($mailData);
-                $fs->dumpFile($filePath, $mailData);
+                // ファイル名が「.twig」で終わっていない場合
+                if (substr($newFileName, -5) !== '.twig')  {
+                    $this->addError('admin.setting.shop.mail.invalid_twig_ext', 'admin');
 
-                // HTMLファイル用
-                $htmlMailData = $form->get('html_tpl_data')->getData();
-                if (!is_null($htmlMailData)) {
-                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
-                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
+                    return $this->redirectToRoute('admin_setting_shop_mail');
                 }
+                // ファイル名が「Mail/」から始まっていない場合
+                else if (substr($newFileName, 0, 5) !== 'Mail/')  {
+                    $this->addError('admin.setting.shop.mail.invalid_twig_beginning', 'admin');
 
-                $event = new EventArgs(
-                    [
-                        'form' => $form,
-                        'Mail' => $Mail,
-                        'templatePath' => $templatePath,
-                        'filePath' => $filePath,
-                    ],
-                    $request
-                );
-                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE);
+                    return $this->redirectToRoute('admin_setting_shop_mail');
+                }
+                // ファイル名に「/」を含む場合
+                else if (strpos(substr($newFileName, 5), '/') !== false)  {
+                    $this->addError('admin.setting.shop.mail.invalid_twig_slash', 'admin');
 
-                $this->addSuccess('admin.common.save_complete', 'admin');
+                    return $this->redirectToRoute('admin_setting_shop_mail');
+                }
+                // 新しいファイル名、かつ、既に同じファイルパスが存在する場合
+                else if ($isRenamed && $fs->exists($newFilePath)) {
+                    $this->addError("admin.setting.shop.mail.already_exist_twig_file", 'admin');
 
-                // キャッシュの削除
-                $cacheUtil->clearTwigCache();
+                    return $this->redirectToRoute('admin_setting_shop_mail');
+                }
+                
+                // 新規登録
+                if (is_null($Mail)) {
+                    $templateName = $form['name']->getData();
+                    
+                    $nowDateTime = new DateTime('now');
+                    
+                    // DBに書き込み
+                    $mailTemplate = new MailTemplate();
+                    $mailTemplate->setCreator(null);
+                    $mailTemplate->setName($templateName);
+                    $mailTemplate->setFileName($newFileName);
+                    $mailTemplate->setMailSubject($form['mail_subject']->getData());
+                    $mailTemplate->setCreateDate($nowDateTime);
+                    $mailTemplate->setUpdateDate($nowDateTime);
+                    $this->mailTemplateRepository->save($mailTemplate);
 
-                return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
+                    $this->entityManager->flush();
+
+                    // ファイル生成・更新
+                    $mailData = $form->get('tpl_data')->getData();
+                    $mailData = StringUtil::convertLineFeed($mailData);
+                    $fs->dumpFile($newFilePath, $mailData);
+                    
+                    // HTMLファイル用
+                    $htmlMailData = $form->get('html_tpl_data')->getData();
+                    if (!is_null($htmlMailData)) {
+                        $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
+                        $fs->dumpFile($templatePath.'/'.$this->getHtmlFileName($newFileName), $htmlMailData);
+                    }
+
+                    $this->addSuccess('admin.common.save_complete', 'admin');
+                    
+                    return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $mailTemplate->getId()]);
+                }
+                // 更新
+                else {
+                    $this->entityManager->flush();
+
+                    // ファイル生成・更新
+                    $fs = new Filesystem();
+                    $mailData = $form->get('tpl_data')->getData();
+                    $mailData = StringUtil::convertLineFeed($mailData);
+                    $fs->dumpFile($newFilePath, $mailData);
+                    
+                    // ファイル名の変更を行った場合、リネーム前のファイルは削除
+                    if ($isRenamed) {
+                        $fs->remove($templatePath.'/'.$beforeFileName);
+                    }
+                    
+                    // HTMLファイル用
+                    $htmlMailData = $form->get('html_tpl_data')->getData();
+                    if (!is_null($htmlMailData)) {
+                        $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
+                        $fs->dumpFile($templatePath.'/'.$this->getHtmlFileName($newFileName), $htmlMailData);
+                        
+                        // ファイル名の変更を行った場合、リネーム前のファイルは削除
+                        if ($isRenamed) {
+                            $beforeHtmlFileName = $this->getHtmlFileName($beforeFileName);
+                            $fs->remove($templatePath.'/'.$beforeHtmlFileName);
+                        }
+                    }
+
+                    $event = new EventArgs(
+                        [
+                            'form' => $form,
+                            'Mail' => $Mail,
+                            'templatePath' => $templatePath,
+                            'filePath' => $newFileName,
+                        ],
+                        $request
+                    );
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE);
+
+                    $this->addSuccess('admin.common.save_complete', 'admin');
+
+                    // キャッシュの削除
+                    $cacheUtil->clearTwigCache();
+
+                    return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
+                }
+            }
+        }
+        // GET時は表示のみ
+        else {
+            if (!is_null($Mail)) {
+                // テンプレートファイルの取得
+                $source = $twig->getLoader()
+                    ->getSourceContext($Mail->getFileName())
+                    ->getCode();
+
+                $form->get('tpl_data')->setData($source);
+                if ($twig->getLoader()->exists($htmlFileName)) {
+                    $source = $twig->getLoader()
+                        ->getSourceContext($htmlFileName)
+                        ->getCode();
+
+                    $form->get('html_tpl_data')->setData($source);
+                }
             }
         }
 
         return [
             'form' => $form->createView(),
             'id' => is_null($Mail) ? null : $Mail->getId(),
+            'template_name' => is_null($Mail) ? '' : $Mail->getName(),
         ];
     }
 

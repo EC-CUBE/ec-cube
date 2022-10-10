@@ -120,6 +120,11 @@ file that was distributed with this source code.
                     $('#preview_button').attr('style', 'display:none;');
                 }
             });
+
+            $('#delete-template-btn').on('click', function (e) {
+                $('#delete-template').val('1');
+                $('#form1').submit();
+            });
         });
     </script>
 {% endblock javascript %}
@@ -133,6 +138,7 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span class="card-title">{{ 'admin.setting.shop.mail.mail_template_edit'|trans }}</span></div>
                         <div class="card-body">
+                            <input name="id" type="hidden" value="{{ id }}"/>
                             <div class="row mb-2">
                                 <div class="col-2">
                                     <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.mail.mail_template'|trans }}">
@@ -142,6 +148,16 @@ file that was distributed with this source code.
                                 <div class="col-10">
                                     {{ form_widget(form.template) }}
                                     {{ form_errors(form.template) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_twig_file_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-10">
+                                    {{ form_widget(form.file_name) }}
+                                    {{ form_errors(form.file_name) }}
+                                    <div class="text-danger">
+                                        {{ 'admin.setting.shop.mail.mail_twig_file_name_notes'|trans|nl2br }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -155,16 +171,13 @@ file that was distributed with this source code.
                                 <div class="col-2"><span>{{ 'admin.setting.shop.mail.mail_body'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col-10">
                                     {# タブ表示 #}
-                                    {% if id is not null %}
                                     <ul class="nav nav-tabs text-center" role="tablist">
                                         <li class="nav-item me-2" style="border: 1px solid #ced4da; padding:0;">
                                             <a id="menu__{{ form.tpl_data.vars.id }}" href="#detail_box__tpl_data" class="nav-link active" data-bs-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_text'|trans }}</span></a>
                                         </li>
-                                        {% if form.html_tpl_data.vars.value %}
                                         <li class="nav-item me-2" style="border: 1px solid #ced4da; padding:0;">
                                             <a id="menu__{{ form.html_tpl_data.vars.id }}" href="#detail_box__html_tpl_data" class="nav-link" data-bs-toggle="tab"><span>{{ 'admin.setting.shop.mail.mail_html'|trans }}</span></a>
                                         </li>
-                                        {% endif %}
                                         <div class="col-1">
                                             <div class="d-inline-block">
                                                 <div class="btn-group" role="group">
@@ -175,7 +188,6 @@ file that was distributed with this source code.
                                             </div>
                                         </div>
                                     </ul>
-                                    {% endif %}
                                     <div class="tab-content">
                                         <div id="detail_box__tpl_data" class="mb-3 tab-pane active">
                                             {{ form_label(form.tpl_data) }}
@@ -183,14 +195,12 @@ file that was distributed with this source code.
                                             <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
                                             {{ form_errors(form.tpl_data) }}
                                         </div>
-                                        {% if form.html_tpl_data.vars.value %}
                                         <div id="detail_box__html_tpl_data" class="mb-3 tab-pane">
                                             {{ form_label(form.html_tpl_data) }}
                                             <div id="html_editor" style="height: 480px" class="form-control{{ has_errors(form.html_tpl_data) ? ' is-invalid' }}"></div>
                                             <div style="display: none">{{ form_widget(form.html_tpl_data) }}</div>
                                             {{ form_errors(form.html_tpl_data) }}
                                         </div>
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -209,6 +219,29 @@ file that was distributed with this source code.
                                     </div>
                                 {% endif %}
                             {% endfor %}
+                        {% if id != null %}
+                            <input id="delete-template" name="delete_template" type="hidden" value="0"/>
+                            <button type="button" id="delete-template-btn-modal" class="btn btn-ec-delete" data-bs-toggle="modal" data-bs-target="#discontinuance">{{ 'admin.setting.shop.mail.delete_templete'|trans }}</button>
+                            <div class="modal fade" id="discontinuance" tabindex="-1" role="dialog" aria-labelledby="discontinuance" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                            <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : template_name }) }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'common.cancel'|trans }}</button>
+                                            <button type="button" id="delete-template-btn" class="btn btn-ec-delete" data-bs-toggle="modal" data-bs-target="#discontinuance">{{ 'common.delete'|trans }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         </div>
                     </div>
                 </div>

@@ -1201,11 +1201,21 @@ admin.setting.shop.tax.apply_date.available_error: The same date and time cannot
 
 admin.setting.shop.mail.mail_template_edit: Edit Templates
 admin.setting.shop.mail.mail_template: Template
+admin.setting.shop.mail.mail_twig_file_name: Twig File Name
+admin.setting.shop.mail.mail_twig_file_name_notes: |
+  - Please add ".twig" at the end.
+  - "Mail/" at the beginning cannot be deleted.
+  - Slash (/) cannot be used in the string after "Mail/".
 admin.setting.shop.mail.mail_subject: Title
 admin.setting.shop.mail.mail_body: Body
 admin.setting.shop.mail.mail_text: Text
 admin.setting.shop.mail.mail_html: HTML
 admin.setting.shop.mail.preview: Preview
+admin.setting.shop.mail.delete_templete: Delete this template
+admin.setting.shop.mail.invalid_twig_ext: Please add ".twig" after the Twig file name.
+admin.setting.shop.mail.invalid_twig_beginning: Put "Mail/" in front of the Twig file name.
+admin.setting.shop.mail.invalid_twig_slash: The string of characters after the first "Mail/" must not contain a slash (/).
+admin.setting.shop.mail.already_exist_twig_file: Please use a different Twig file name. The file name "${newFileName}" already exists.
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : CSV Outputs
