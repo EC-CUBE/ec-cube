@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use DateTime;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\MailTemplate;
 use Eccube\Event\EccubeEvents;
