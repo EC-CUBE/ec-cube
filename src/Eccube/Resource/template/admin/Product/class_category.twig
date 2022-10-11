@@ -99,7 +99,7 @@ file that was distributed with this source code.
                 current.find('.mode-edit').removeClass('d-none');
             });
             sortable.on('click', 'button.action-edit-cancel', function(e) {
-                location.href = window.location.href;
+                location.href = "{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}";
             });
             sortable.find('.is-invalid').each(function(e) {
                 var current = $(this).parents('li');
