@@ -169,7 +169,15 @@ file that was distributed with this source code.
             });
             // 編集キャンセル
             $('#delivery-time-group').on('click', 'button.action-edit-cancel', function(e) {
-                location.href = window.location.href;
+                e.preventDefault();
+                var current = $(this).parents('li');
+                current.find('[data-origin-value]').each(function(e) {
+                    $(this).val($(this).attr('data-origin-value'));
+                });
+                var value = current.find('.form-control').val();
+                current.find('.display-label').text(value);
+                current.find('.mode-view').removeClass('d-none');
+                current.find('.mode-edit').addClass('d-none');
             });
             // 編集時, エラーがあれば入力欄を表示.
             $('#delivery-time-group').find('.is-invalid').each(function(e) {
