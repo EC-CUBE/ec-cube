@@ -194,6 +194,10 @@ class CustomerController extends AbstractController
         if (is_null($Customer)) {
             throw new NotFoundHttpException();
         }
+        $secretKey = $this->customerRepository->getUniqueSecretKey();
+        $Customer->setSecretKey($secretKey);
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
 
         $activateUrl = $this->generateUrl(
             'entry_activate',
