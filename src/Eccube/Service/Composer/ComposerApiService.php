@@ -386,7 +386,7 @@ class ComposerApiService implements ComposerServiceInterface
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
         $url = $this->eccubeConfig['eccube_package_api_url'];
         $json = json_encode([
-            'type' => 'composer',
+            'type' => $this->eccubeConfig['eccube_package_api_type'],
             'url' => $url,
             'options' => [
                 'http' => [
