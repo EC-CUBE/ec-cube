@@ -452,8 +452,21 @@ class ComposerApiService implements ComposerServiceInterface
 
     private function dropTableToExtra($packageNames)
     {
+        $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
+
         foreach (explode(' ', trim($packageNames)) as $packageName) {
-            $pluginCode = basename($packageName);
+            $pluginCode = null;
+            // 大文字小文字を区別するファイルシステムを考慮して, ディレクトリ名からプラグインコードを取得する
+            foreach (glob($projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
+                if (strtolower(basename($dir)) === strtolower(basename($packageName))) {
+                    $pluginCode = basename($dir);
+                    break;
+                }
+            }
+            if ($pluginCode === null) {
+                throw new PluginException($packageName.' not found');
+            }
+
             $this->pluginContext->setCode($pluginCode);
             $this->pluginContext->setUninstall();
 
