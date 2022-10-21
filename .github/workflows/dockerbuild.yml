@@ -2,16 +2,8 @@ name: Testing dockerbuild
 on:
   push:
     paths:
-      - 'Dockerfile'
-      - 'dockerbuild/*'
-      - 'docker-compose*.yml'
-      - '.github/workflows/dockerbuild.yml'
-  pull_request:
-    paths:
-      - 'Dockerfile'
-      - 'dockerbuild/*'
-      - 'docker-compose*.yml'
-      - '.github/workflows/dockerbuild.yml'
+      - '**'
+      - '!*.md'
   release:
     types: [ published ]
 env:
