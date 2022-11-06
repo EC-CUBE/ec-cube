@@ -364,6 +364,10 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         $this->file->seek($rowNumber);
         $headers = $this->file->current();
 
+        if ($this->duplicateHeadersFlag === self::DUPLICATE_HEADERS_INCREMENT) {
+            $headers = $this->incrementHeaders($headers);
+        }
+
         return $headers;
     }
 
@@ -383,19 +387,20 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     protected function incrementHeaders(array $headers)
     {
-        $incrementedHeaders = [];
-        foreach (array_count_values($headers) as $header => $count) {
-            if ($count > 1) {
-                $incrementedHeaders[] = $header;
-                for ($i = 1; $i < $count; $i++) {
-                    $incrementedHeaders[] = $header.$i;
-                }
+        $incrementedHeaders  = [];
+        $headerCounts        = array_count_values($headers);
+        $currentHeaderCounts = array_fill_keys(array_values($headers), 0);
+        foreach ($headers as $index => $header) {
+            $maxCount     = $headerCounts[$header];
+            $currentCount = $currentHeaderCounts[$header];
+            if ($maxCount > 1 && $currentCount > 0) {
+                $incrementedHeaders[$index] = $header . $currentCount;
             } else {
-                $incrementedHeaders[] = $header;
+                $incrementedHeaders[$index] = $header;
             }
+            $currentHeaderCounts[$header]++;
         }
-
-        return $incrementedHeaders;
+        return array_values($incrementedHeaders);
     }
 
     /**
