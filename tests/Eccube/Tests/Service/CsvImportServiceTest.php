@@ -140,9 +140,35 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $this->assertCount(3, $reader);
     }
 
+    public function testDuplicateHeadersIncrement()
+    {
+        $reader = $this->getReader('data_column_headers_duplicates_increment.csv');
+        $reader->setHeaderRowNumber(0, CsvImportService::DUPLICATE_HEADERS_INCREMENT);
+        $reader->rewind();
+        $current = $reader->current();
+
+        $this->assertEquals(
+            ['id', 'description', 'details', 'description1', 'details1', 'description2', 'last'],
+            $reader->getColumnHeaders()
+        );
+
+        $this->assertEquals(
+            [
+                'id'           => '50',
+                'description'  => 'First',
+                'details'      => 'Details1',
+                'description1' => 'Second',
+                'details1'     => 'Details2',
+                'description2' => 'Third',
+                'last'         => 'Last one'
+            ],
+            $current
+        );
+    }
+
     public function testDuplicateHeadersMerge()
     {
-        $reader = $this->getReader('data_column_headers_duplicates.csv');
+        $reader = $this->getReader('data_column_headers_duplicates_merge.csv');
         $reader->setHeaderRowNumber(0, CsvImportService::DUPLICATE_HEADERS_MERGE);
         $reader->rewind();
         $current = $reader->current();
