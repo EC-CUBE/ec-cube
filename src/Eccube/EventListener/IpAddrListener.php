@@ -43,7 +43,13 @@ class IpAddrListener implements EventSubscriberInterface
             return;
         }
 
+
         if (!$this->requestContext->isAdmin()) {
+            // IPアドレス許可リスト範囲にあるかを確認（フロント画面）
+            if ($this->checkIpAddrRange($event->getRequest()->getClientIp()) === false) {
+                throw new AccessDeniedHttpException();
+            }
+
             return;
         }
 
@@ -67,5 +73,27 @@ class IpAddrListener implements EventSubscriberInterface
         return [
             'kernel.request' => ['onKernelRequest', 512],
         ];
+    }
+
+    private function checkIpAddrRange($remoteIp)
+    {
+        //フロント画面のIPアドレス許可リストを確認
+        $allowFrontHosts = ['132.111.56.0/24']; //$this->eccubeConfig['eccube_allow_hosts'];
+
+        if (empty($allowFrontHosts)) {
+            return false;
+        }
+
+        // 設定したリストの分、ビットマスクに該当するかを判断する
+        foreach ($allowFrontHosts as $allowIp) {
+            list($accept_ip, $mask) = explode('/', $allowIp);
+            $accept_long = ip2long($accept_ip) >> (32 - $mask);
+            $remote_long = ip2long($remoteIp) >> (32 - $mask);
+            if ($accept_long !== $remote_long) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
