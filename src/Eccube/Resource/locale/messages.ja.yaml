@@ -707,6 +707,8 @@ admin.product.select__class1: 規格1を選択してください
 admin.product.select__class2: 規格2を選択してください
 admin.product.select__can_not_select_same_class: 規格1と同じ規格は選択できません
 admin.product.unselected_class: 選択されていません
+admin.product.csv: 商品CSV
+admin.product.csv.include_hidden_productclass: (非表示の商品規格を含む)
 
 # 商品CSV雛形
 admin.product.product_csv.product_id_col: 商品ID

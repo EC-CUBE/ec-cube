@@ -17,6 +17,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Csv;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\ProductStatus;
@@ -1010,7 +1011,7 @@ class ProductController extends AbstractController
                 $ProductClasses = $Product->getProductClasses();
 
                 foreach ($ProductClasses as $ProductClass) {
-                    if ($ProductClass->isVisible() == false) {
+                    if ($request->get('product_class') === Csv::PRODUCT_CLASS_VISIBLE_ONLY && $ProductClass->isVisible() === false) {
                         // 非表示の商品規格は除外
                         continue;
                     }

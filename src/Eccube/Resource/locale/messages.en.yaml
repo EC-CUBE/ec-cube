@@ -707,6 +707,8 @@ admin.product.select__class1: Select option 1
 admin.product.select__class2: Select option 2
 admin.product.select__can_not_select_same_class: You are not allowed to select the same option as Option 1
 admin.product.unselected_class: Not selected
+admin.product.csv: Product CSV
+admin.product.csv.include_hidden_productclass: (Include hidden product classes)
 
 # Product CSV Templates
 admin.product.product_csv.product_id_col: Product ID

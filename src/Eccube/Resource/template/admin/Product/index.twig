@@ -298,12 +298,20 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_product_export') }}">
-                                            <i class="fa fa-cloud-download me-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span>
-                                        </a>
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">
-                                            <i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-ec-regular" data-bs-toggle="dropdown" id="csvDownloadDropDown">
+                                                <i class="fa fa-cloud-download me-1 text-secondary"></i>
+                                                <span>{{ 'admin.common.csv_download'|trans }}</span>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ url('admin_product_export', {'product_class': constant('Eccube\\Entity\\Csv::PRODUCT_CLASS_VISIBLE_ONLY') }) }}" id="productCsvDownloadVisibleOnly">
+                                                    {{ 'admin.product.csv'|trans }}
+                                                </a>
+                                                <a class="dropdown-item" href="{{ url('admin_product_export') }}" id="productCsvDownload">
+                                                    {{ 'admin.product.csv'|trans }}{{ 'admin.product.csv.include_hidden_productclass'|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

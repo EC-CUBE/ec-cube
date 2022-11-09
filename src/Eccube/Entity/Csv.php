@@ -27,6 +27,9 @@ if (!class_exists('\Eccube\Entity\Csv')) {
      */
     class Csv extends \Eccube\Entity\AbstractEntity
     {
+        /** @var string */
+        public const PRODUCT_CLASS_VISIBLE_ONLY = 'visible_only';
+
         /**
          * @var int
          *
