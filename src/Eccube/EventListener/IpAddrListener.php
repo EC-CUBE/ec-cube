@@ -43,12 +43,28 @@ class IpAddrListener implements EventSubscriberInterface
             return;
         }
 
-
         if (!$this->requestContext->isAdmin()) {
-            // IPアドレス許可リスト範囲にあるかを確認（フロント画面）
-            if ($this->checkIpAddrRange($event->getRequest()->getClientIp()) === false) {
-                throw new AccessDeniedHttpException();
+
+            // 許可リストを取得
+            $allowFrontHosts = $this->eccubeConfig['eccube_front_allow_hosts'];
+
+            foreach ($allowFrontHosts as $host) {
+                // IPアドレス許可リスト範囲になければ拒否
+                if (!$this->checkIpAddrRange($event->getRequest()->getClientIp(), $host)) {
+                    throw new AccessDeniedHttpException();
+                }
             }
+
+            // 拒否リストを取得
+            $denyFrontHosts =  $this->eccubeConfig['eccube_front_deny_hosts'];
+
+            foreach ($denyFrontHosts as $host) {
+                // IPアドレス拒否リスト範囲にあれば拒否
+                if ($this->checkIpAddrRange($event->getRequest()->getClientIp(), $host)) {
+                    throw new AccessDeniedHttpException();
+                }
+            }
+
 
             return;
         }
@@ -75,25 +91,21 @@ class IpAddrListener implements EventSubscriberInterface
         ];
     }
 
-    private function checkIpAddrRange($remoteIp)
+    private function checkIpAddrRange($remoteIp, $ipRange)
     {
-        //フロント画面のIPアドレス許可リストを確認
-        $allowFrontHosts = ['132.111.56.0/24']; //$this->eccubeConfig['eccube_allow_hosts'];
+        // ビットマスクに該当するかを判断する
+        $result = explode('/', $ipRange);
 
-        if (empty($allowFrontHosts)) {
-            return false;
+        $acceptIp = $result[0];
+        $mask = $result[1] ?? null;
+
+        if (null === $mask) {
+            return $acceptIp === $remoteIp;
         }
 
-        // 設定したリストの分、ビットマスクに該当するかを判断する
-        foreach ($allowFrontHosts as $allowIp) {
-            list($accept_ip, $mask) = explode('/', $allowIp);
-            $accept_long = ip2long($accept_ip) >> (32 - $mask);
-            $remote_long = ip2long($remoteIp) >> (32 - $mask);
-            if ($accept_long !== $remote_long) {
-                return true;
-            }
-        }
+        $accept_long = ip2long($acceptIp) >> (32 - $mask);
+        $remote_long = ip2long($remoteIp) >> (32 - $mask);
 
-        return false;
+        return $accept_long === $remote_long;
     }
 }

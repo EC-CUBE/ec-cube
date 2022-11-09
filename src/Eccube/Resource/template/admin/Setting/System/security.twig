@@ -60,7 +60,7 @@ file that was distributed with this source code.
                                         {{ form_errors(form.admin_route_dir) }}
                                     </div>
                                 </div>
-                                <!-- IP制限 許可リスト -->
+                                <!-- 管理画面側 IP制限 許可リスト -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.ip_limit'|trans }}">
@@ -73,7 +73,7 @@ file that was distributed with this source code.
                                         <p>{{ 'admin.setting.system.security.ip_limit_description'|trans|nl2br }}</p>
                                     </div>
                                 </div>
-                                <!-- IP制限 拒否リスト -->
+                                <!-- 管理画面側 IP制限 拒否リスト -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.ip_limit_deny'|trans }}">
@@ -84,6 +84,32 @@ file that was distributed with this source code.
                                         {{ form_widget(form.admin_deny_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.ip_limit_sample'|trans }}) }}
                                         {{ form_errors(form.admin_deny_hosts) }}
                                         <p>{{ 'admin.setting.system.security.ip_limit_description_deny'|trans|nl2br }}</p>
+                                    </div>
+                                </div>
+                                <!-- フロント側 IP制限 許可リスト -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.front_ip_limit'|trans }}">
+                                            <span>{{ 'admin.setting.system.security.front_ip_limit'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.front_allow_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.front_ip_limit_sample'|trans }}) }}
+                                        {{ form_errors(form.front_allow_hosts) }}
+                                        <p>{{ 'admin.setting.system.security.front_ip_limit_description'|trans|nl2br }}</p>
+                                    </div>
+                                </div>
+                                <!-- フロント側 IP制限 禁止リスト -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.front_ip_limit_deny'|trans }}">
+                                            <span>{{ 'admin.setting.system.security.front_ip_limit_deny'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.front_deny_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.front_ip_limit_sample'|trans }}) }}
+                                        {{ form_errors(form.front_deny_hosts) }}
+                                        <p>{{ 'admin.setting.system.security.front_ip_limit_description_deny'|trans|nl2br }}</p>
                                     </div>
                                 </div>
                                 <!-- 強制SSL -->
