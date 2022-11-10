@@ -685,8 +685,56 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
-        $csvExportUrl = $crawler->filter('.dropdown-menu')->selectLink('商品CSV')->link()->getUri();
+        $csvExportUrl = $crawler->filter('.dropdown-menu')->selectLink('商品CSV(非表示の商品規格を含む)')->link()->getUri();
         $this->client->request('GET', $csvExportUrl);
+    }
+
+    public function testExportWithProductClassVisibleOnly()
+    {
+        $this->createProduct('Product with status 02', 3);
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = 'Product with status';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
+        $this->verify('検索結果件数の確認テスト');
+
+        $csvExportUrl = $crawler->filter('.dropdown-menu')->selectLink('商品CSV')->link()->getUri();
+        $this->expectOutputRegex('/Product with/');
+        $this->client->request('GET', $csvExportUrl);
+
+        $data = ob_get_contents();
+        $this->assertCount(4, explode("\n", trim($data)), 'ヘッダ行 + データ(3行)出力される');
+    }
+
+    public function testExportWithProductClassHasHidden()
+    {
+        $this->createProduct('Product with status 02', 3);
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = 'Product with status';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+        $this->expected = '検索結果：1件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
+        $this->verify('検索結果件数の確認テスト');
+
+        $csvExportUrl = $crawler->filter('.dropdown-menu')->selectLink('商品CSV(非表示の商品規格を含む)')->link()->getUri();
+        $this->expectOutputRegex('/Product with/');
+        $this->client->request('GET', $csvExportUrl);
+
+        $data = ob_get_contents();
+        $this->assertCount(5, explode("\n", trim($data)), 'ヘッダ行 + データ(4行)出力される');
     }
 
     /**
