@@ -89,6 +89,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData['admin_route_dir'] = null;
         $formData['admin_allow_hosts'] = null;
         $formData['admin_deny_hosts'] = null;
+        $formData['front_allow_hosts'] = null;
+        $formData['front_deny_hosts'] = null;
         $formData['force_ssl'] = null;
 
         $this->client->request(
@@ -117,6 +119,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
             'admin_route_dir' => 'admintest',
             'admin_allow_hosts' => '127.0.0.1',
             'admin_deny_hosts' => '127.0.0.1',
+            'front_allow_hosts' => '127.0.0.1/32',
+            'front_deny_hosts' => '127.0.0.1/32',
             'trusted_hosts' => '^127\.0\.0\.1$,^localhost$',
         ];
 
