@@ -1405,6 +1405,13 @@ class CsvImportController extends AbstractCsvImportController
             $ProductStock->setStock(null);
         }
 
+        if (isset($row[$headerByKey['product_class_invisible_flg']])) {
+            if (StringUtil::isNotBlank($row[$headerByKey['product_class_invisible_flg']])
+                && $row[$headerByKey['product_class_invisible_flg']] == (string) Constant::ENABLED) {
+                $ProductClass->setVisible(false);
+            }
+        }
+
         return $ProductClass;
     }
 
@@ -1558,6 +1565,11 @@ class CsvImportController extends AbstractCsvImportController
             trans('admin.product.product_csv.tax_rate_col') => [
                 'id' => 'tax_rate',
                 'description' => 'admin.product.product_csv.tax_rate_description',
+                'required' => false,
+            ],
+            trans('admin.product.product_csv.product_class_invisible_flag_col') => [
+                'id' => 'product_class_invisible_flg',
+                'description' => 'admin.product.product_csv.product_class_invisible_flag_description',
                 'required' => false,
             ],
         ];
