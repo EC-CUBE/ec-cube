@@ -1002,6 +1002,141 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         }
     }
 
+    public function testImportProductWithProductClassUpdateToVisible()
+    {
+        $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->filter(
+            function (ProductClass $ProductClass) {
+                return $ProductClass->getClassCategory1() !== null;
+            })[0];
+        $ProductClass->setVisible(false);
+        $this->entityManager->flush();
+
+        /** @var Generator $faker */
+        $faker = $this->getFaker();
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)'];
+        $csv[] = [$Product->getId(),
+                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+                  $ProductClass->getClassCategory1()->getId(),
+                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        /** @var Product $Product */
+        $Product = $this->productRepo->find($Product->getId());
+
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            if ($ProductClass->getClassCategory1() !== null) {
+                $this->assertTrue($ProductClass->isVisible(), '商品規格が非表示になっている場合は表示に更新する');
+            }
+        }
+    }
+
+    public function testImportProductWithProductClassUpdateToVisibleAndInvisible()
+    {
+        $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->filter(
+            function (ProductClass $ProductClass) {
+                return $ProductClass->getClassCategory1() !== null;
+            })[0];
+        $ProductClass->setVisible(false);
+        $this->entityManager->flush();
+
+        /** @var Generator $faker */
+        $faker = $this->getFaker();
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格非表示フラグ'];
+        $csv[] = [$Product->getId(),
+                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+                  $ProductClass->getClassCategory1()->getId(),
+                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
+                  1             // 商品規格非表示フラグ
+        ];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        /** @var Product $Product */
+        $Product = $this->productRepo->find($Product->getId());
+
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            if ($ProductClass->getClassCategory1() !== null) {
+                $this->assertFalse($ProductClass->isVisible(), '商品規格非表示フラグが 1 の場合は非表示');
+            }
+        }
+    }
+
+    public function testImportProductWithProductClassUpdateToVisibleAndInvisibleOff()
+    {
+        $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->filter(
+            function (ProductClass $ProductClass) {
+                return $ProductClass->getClassCategory1() !== null;
+            })[0];
+        $ProductClass->setVisible(false);
+        $this->entityManager->flush();
+
+        /** @var Generator $faker */
+        $faker = $this->getFaker();
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格非表示フラグ'];
+        $csv[] = [$Product->getId(),
+                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+                  $ProductClass->getClassCategory1()->getId(),
+                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
+                  0             // 商品規格非表示フラグ
+        ];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        /** @var Product $Product */
+        $Product = $this->productRepo->find($Product->getId());
+
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            if ($ProductClass->getClassCategory1() !== null) {
+                $this->assertTrue($ProductClass->isVisible(), '商品規格非表示フラグが 0 の場合は表示');
+            }
+        }
+    }
+
+    /**
+     * デフォルトの商品規格(class_category_id1 及び class_category_id2 が null)のレコードを更新する.
+     */
+    public function testImportProductWithProductClassUpdateToVisibleAndDefault()
+    {
+        $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
+
+        /** @var Generator $faker */
+        $faker = $this->getFaker();
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格非表示フラグ'];
+        $csv[] = [$Product->getId(),
+                  1, 'デフォルト規格', 1, 1, $faker->randomNumber(5),
+                  null,         // 規格分類1(ID)
+                  null,         // 規格分類2(ID)
+                  0];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        /** @var Product $Product */
+        $Product = $this->productRepo->find($Product->getId());
+
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            if ($ProductClass->getClassCategory1() === null
+            && $ProductClass->getClassCategory2() === null) {
+                $this->assertFalse($ProductClass->isVisible(), 'デフォルト規格は更新しても常に非表示');
+                $this->assertSame('デフォルト規格', $Product->getName());
+            }
+        }
+    }
+
     /**
      * 商品を削除する際に、他の商品画像が参照しているファイルは削除せず、それ以外は削除することをテスト
      */
