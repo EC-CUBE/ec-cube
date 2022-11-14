@@ -1405,6 +1405,10 @@ class CsvImportController extends AbstractCsvImportController
             $ProductStock->setStock(null);
         }
 
+        if ($ProductClass->isVisible() === false && $ProductClass->getClassCategory1() !== null) {
+            $ProductClass->setVisible(true);
+        }
+
         if (isset($row[$headerByKey['product_class_invisible_flg']])) {
             if (StringUtil::isNotBlank($row[$headerByKey['product_class_invisible_flg']])
                 && $row[$headerByKey['product_class_invisible_flg']] == (string) Constant::ENABLED) {
