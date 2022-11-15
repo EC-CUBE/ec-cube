@@ -311,6 +311,9 @@ file that was distributed with this source code.
                                                     {{ 'admin.product.csv'|trans }}{{ 'admin.product.csv.include_hidden_productclass'|trans }}
                                                 </a>
                                             </div>
+                                            <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">
+                                                <i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

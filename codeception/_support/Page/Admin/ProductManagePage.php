@@ -273,7 +273,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function CSV出力項目設定()
     {
-        $this->tester->click('.c-contentsArea__cols .row div:nth-child(2) div:nth-child(2) a:nth-child(2)');
+        $this->tester->click('#form_bulk > div > div.col-5.text-end > div:nth-child(2) > div > div > a');
 
         return $this;
     }
