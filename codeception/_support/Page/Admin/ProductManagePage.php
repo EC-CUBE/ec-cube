@@ -262,9 +262,11 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function CSVダウンロード()
+    public function CSVダウンロード($selector = ['id' => 'productCsvDownload'])
     {
-        $this->tester->click('.c-contentsArea__cols .row div:nth-child(2) div:nth-child(2) a:nth-child(1)');
+        $this->tester->click(['id' => 'csvDownloadDropDown']);
+        $this->tester->waitForElementVisible($selector);
+        $this->tester->click($selector);
 
         return $this;
     }

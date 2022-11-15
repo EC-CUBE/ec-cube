@@ -139,7 +139,28 @@ class EA03ProductCest
         $Products = $findProducts();
         ProductManagePage::go($I)
             ->検索()
-            ->CSVダウンロード();
+            ->CSVダウンロード(['id' => 'productCsvDownloadVisibleOnly']);
+
+        $I->see('検索結果：'.count($Products).'件が該当しました', ProductManagePage::$検索結果_メッセージ);
+
+        $ProductCSV = $I->getLastDownloadFile('/^product_\d{14}\.csv$/');
+        $I->assertGreaterOrEquals(count($Products), count(file($ProductCSV)), '検索結果以上の行数があるはず');
+    }
+
+    /**
+     * @env firefox
+     * @env chrome
+     * @group vaddy
+     */
+    public function product_CSV出力_非表示の商品規格(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0301-UC02-T01 CSV出力');
+
+        $findProducts = Fixtures::get('findProducts');
+        $Products = $findProducts();
+        ProductManagePage::go($I)
+            ->検索()
+            ->CSVダウンロード(['id' => 'productCsvDownload']);
 
         $I->see('検索結果：'.count($Products).'件が該当しました', ProductManagePage::$検索結果_メッセージ);
 
