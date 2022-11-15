@@ -990,8 +990,9 @@ admin.content.file.folder_name_symbol_error: The folder name contains invalid ch
 admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
 admin.content.file.dir_exists: '%file_name% is already exists.'
 admin.content.file.same_name_folder_exists: 'Cannot upload because a folder with the same name as the file exists.'
-admin.content.file.phpfile_error: 'php files cannot be uploaded.'
+admin.content.file.phpfile_error: 'php files cannot be uploaded.' # Unused
 admin.content.file.dotfile_error: 'Dot files cannot be uploaded.'
+admin.content.file.extension_error: 'File extension cannot be uploaded.'
 admin.content.layout_delete: Delete Layouts
 admin.content.layout_no_page: Page not registered
 admin.content.layout__card_title: Layout Overview
