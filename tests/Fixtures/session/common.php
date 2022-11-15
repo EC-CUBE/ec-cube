@@ -74,10 +74,12 @@ ob_start();
 class MockSessionHandler extends \SessionHandler
 {
     private $data;
+    private $sessionId;
 
-    public function __construct($data = null)
+    public function __construct($data = '', $sessionId = null)
     {
         $this->data = $data;
+        $this->sessionId = $sessionId;
     }
 
     public function getData()
@@ -173,7 +175,13 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
 
     protected function doRead($sessionId)
     {
+        if (isset($this->sessionId) && $sessionId !== $this->sessionId) {
+            echo __FUNCTION__ . ": invalid sessionId\n";
+
+            return '';
+        }
         echo __FUNCTION__.': ', $this->data, "\n";
+        $this->sessionId = $sessionId;
 
         return $this->data;
     }
@@ -181,6 +189,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     protected function doWrite($sessionId, $data)
     {
         echo __FUNCTION__.': ', $data, "\n";
+        $this->sessionId = $sessionId;
 
         return true;
     }
@@ -188,6 +197,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     protected function doDestroy($sessionId)
     {
         echo __FUNCTION__, "\n";
+        $this->sessionId = $sessionId;
 
         return true;
     }
