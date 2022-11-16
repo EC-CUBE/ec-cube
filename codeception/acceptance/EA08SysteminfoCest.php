@@ -16,6 +16,8 @@ use Page\Admin\AuthorityManagePage;
 use Page\Admin\LoginHistoryPage;
 use Page\Admin\MasterDataManagePage;
 use Page\Admin\SystemMemberEditPage;
+use Page\Admin\SystemSecurityPage;
+use Page\Front\TopPage;
 
 /**
  * @group admin
@@ -632,4 +634,40 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route']);
         $I->see('アクセスできません。', '//*[@id="error-page"]//h3');
     }
+
+    public function systeminfo_セキュリティ管理フロントIP制限_許可リスト(AcceptanceTester $I)
+    {
+        // 許可リストに該当するので、閲覧できるパターン
+        SystemSecurityPage::go($I)->入力_front許可リスト('127.0.0.1')
+        ->登録();
+        TopPage::go($I)->at('彩のジェラート"CUBE"をご堪能ください');
+
+        // 許可リストに該当しないので、閲覧できないパターン
+        SystemSecurityPage::go($I)->入力_front許可リスト('192.168.100.1')
+        ->登録();
+        TopPage::go($I)->at('アクセスできません。');
+
+        //後片付け（後続処理がエラーにならないため）
+        SystemSecurityPage::go($I)->入力_front許可リスト('')
+        ->登録();
+
+    }
+
+    public function systeminfo_セキュリティ管理フロントIP制限_拒否リスト(AcceptanceTester $I)
+    {
+        // 拒否リストに該当するため閲覧できないパターン
+        SystemSecurityPage::go($I)->入力_front拒否リスト('127.0.0.1')
+        ->登録();
+        TopPage::go($I)->at('アクセスできません');
+
+        // 拒否リストに該当しないため閲覧可能なパターン
+        SystemSecurityPage::go($I)->入力_front拒否リスト('192.168.100.1')
+        ->登録();
+        TopPage::go($I)->at('彩のジェラート"CUBE"をご堪能ください');
+
+        //後片付け（後続処理がエラーにならないため）
+        SystemSecurityPage::go($I)->入力_front拒否リスト('')
+        ->登録();
+    }
+
 }

@@ -135,7 +135,13 @@ class SecurityType extends AbstractType
 
                 foreach ($ips as $ip) {
                     // 適切なIPとビットマスクになっているか
-                    if ($this->hasErrorIpAddressAndBitMask($ip)) {
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
+                            new Assert\Ip(),
+                            new Assert\Cidr()
+                        ]
+                    ]));
+                    if ($errors->count() > 0) {
                         $form['front_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
                     }
                 }
@@ -145,7 +151,13 @@ class SecurityType extends AbstractType
 
                 foreach ($ips as $ip) {
                     // 適切なIPとビットマスクになっているか
-                    if ($this->hasErrorIpAddressAndBitMask($ip)) {
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
+                            new Assert\Ip(),
+                            new Assert\Cidr()
+                        ]
+                    ]));
+                    if ($errors->count() > 0) {
                         $form['front_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
                     }
                 }
@@ -154,10 +166,13 @@ class SecurityType extends AbstractType
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($ips as $ip) {
-                    $errors = $this->validator->validate($ip, [
+                    // 適切なIPとビットマスクになっているか
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
                             new Assert\Ip(),
+                            new Assert\Cidr()
                         ]
-                    );
+                    ]));
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                     }
@@ -167,10 +182,13 @@ class SecurityType extends AbstractType
                 $ips = preg_split("/\R/", $data['admin_deny_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($ips as $ip) {
-                    $errors = $this->validator->validate($ip, [
+                    // 適切なIPとビットマスクになっているか
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
                             new Assert\Ip(),
+                            new Assert\Cidr()
                         ]
-                    );
+                    ]));
                     if ($errors->count() != 0) {
                         $form['admin_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                     }
@@ -182,17 +200,6 @@ class SecurityType extends AbstractType
                 }
             })
         ;
-    }
-
-    private function hasErrorIpAddressAndBitMask($ip)
-    {
-        $errors = $this->validator->validate($ip, [
-            new Assert\Regex([
-                'pattern' => '/^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\/(3[0-2]|[1-2]?[0-9]))?$/',
-            ])
-        ]);
-
-        return $errors->count() > 0;
     }
 
     /**

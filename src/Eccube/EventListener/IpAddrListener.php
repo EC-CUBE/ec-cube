@@ -18,6 +18,7 @@ use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class IpAddrListener implements EventSubscriberInterface
 {
@@ -50,7 +51,7 @@ class IpAddrListener implements EventSubscriberInterface
 
             foreach ($allowFrontHosts as $host) {
                 // IPアドレス許可リスト範囲になければ拒否
-                if (!$this->checkIpAddrRange($event->getRequest()->getClientIp(), $host)) {
+                if (!IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
                     throw new AccessDeniedHttpException();
                 }
             }
@@ -60,27 +61,31 @@ class IpAddrListener implements EventSubscriberInterface
 
             foreach ($denyFrontHosts as $host) {
                 // IPアドレス拒否リスト範囲にあれば拒否
-                if ($this->checkIpAddrRange($event->getRequest()->getClientIp(), $host)) {
+                if (IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
                     throw new AccessDeniedHttpException();
                 }
             }
-
 
             return;
         }
 
         // IPアドレス許可リストを確認
-        $allowHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
+        $allowAdminHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
 
-        if (!empty($allowHosts) && array_search($event->getRequest()->getClientIp(), $allowHosts) === false) {
-            throw new AccessDeniedHttpException();
+        foreach ($allowAdminHosts as $host) {
+            // IPアドレス許可リスト範囲になければ拒否
+            if (!IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
+                throw new AccessDeniedHttpException();
+            }
         }
 
         // IPアドレス拒否リストを確認
-        $denyHosts = $this->eccubeConfig['eccube_admin_deny_hosts'];
-
-        if (array_search($event->getRequest()->getClientIp(), $denyHosts) !== false) {
-            throw new AccessDeniedHttpException();
+        $denyAdminHosts = $this->eccubeConfig['eccube_admin_deny_hosts'];
+        foreach ($denyAdminHosts as $host) {
+            // IPアドレス拒否リスト範囲にあれば拒否
+            if (IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
+                throw new AccessDeniedHttpException();
+            }
         }
     }
 
@@ -89,23 +94,5 @@ class IpAddrListener implements EventSubscriberInterface
         return [
             'kernel.request' => ['onKernelRequest', 512],
         ];
-    }
-
-    private function checkIpAddrRange($remoteIp, $ipRange)
-    {
-        // ビットマスクに該当するかを判断する
-        $result = explode('/', $ipRange);
-
-        $acceptIp = $result[0];
-        $mask = $result[1] ?? null;
-
-        if (null === $mask) {
-            return $acceptIp === $remoteIp;
-        }
-
-        $accept_long = ip2long($acceptIp) >> (32 - $mask);
-        $remote_long = ip2long($remoteIp) >> (32 - $mask);
-
-        return $accept_long === $remote_long;
     }
 }

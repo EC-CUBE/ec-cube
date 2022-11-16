@@ -26,8 +26,11 @@ class IpAddrListenerTest extends AbstractWebTestCase
 
     protected $clientIp = '192.168.56.1';
 
-    public function frontIpAddressParams()
+    public function ipAddressParams()
     {
+        // 第1要素：許可IPリスト
+        // 第2要素：拒否IPリスト
+        // 第3要素：想定結果（許可->true、拒否->false）
         return [
             // allowチェック 許可パターン
             [[], [], true], // 空
@@ -56,7 +59,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
 
 
     /**
-     * @dataProvider frontIpAddressParams
+     * @dataProvider ipAddressParams
      */    
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
@@ -95,4 +98,44 @@ class IpAddrListenerTest extends AbstractWebTestCase
         $this->assertSame($expected, $actual);
     }
 
+
+        /**
+     * @dataProvider ipAddressParams
+     */    
+    public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
+    {
+        $event = $this->createStub(RequestEvent::class);
+        $event->method('isMainRequest')
+            ->willReturn(true);
+
+        $context = $this->createStub(Context::class);
+        $context->method('isAdmin')
+            ->willReturn(true);
+
+        $map = [
+            ['eccube_admin_allow_hosts', $allowHost],
+            ['eccube_admin_deny_hosts',  $denyHost],
+        ];
+        $eccubeConfig = $this->createStub(EccubeConfig::class);
+        $eccubeConfig->method('offsetGet')
+            ->will($this->returnValueMap($map));
+
+        $request = $this->createStub(Request::class);
+        $request->method('getClientIp')
+            ->willReturn($this->clientIp);
+
+        $event->method('getRequest')
+            ->willReturn($request);
+
+        $ipAddrListerner = new IpAddrListener($eccubeConfig, $context);
+
+        $actual = true;
+        try {
+            $ipAddrListerner->onKernelRequest($event);
+        } catch (AccessDeniedHttpException $e) {
+            $actual = false;
+        }
+
+        $this->assertSame($expected, $actual);
+    }
 }
