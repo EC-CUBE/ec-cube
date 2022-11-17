@@ -612,6 +612,8 @@ class EA08SysteminfoCest
 
     public function systeminfo_セキュリティ管理フロントIP制限_許可リスト(AcceptanceTester $I)
     {
+        $I->wantTo('EA0804-UC01-T06 セキュリティ管理 - フロントIP制限（許可リスト）');
+
         // 許可リストに該当するので、閲覧できるパターン
         SystemSecurityPage::go($I)->入力_front許可リスト('127.0.0.1')
         ->登録();
@@ -630,6 +632,8 @@ class EA08SysteminfoCest
 
     public function systeminfo_セキュリティ管理フロントIP制限_拒否リスト(AcceptanceTester $I)
     {
+        $I->wantTo('EA0804-UC01-T07 セキュリティ管理 - フロントIP制限（拒否リスト）');
+
         // 拒否リストに該当するため閲覧できないパターン
         SystemSecurityPage::go($I)->入力_front拒否リスト('127.0.0.1')
         ->登録();
@@ -650,7 +654,7 @@ class EA08SysteminfoCest
      */
     public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
     {
-        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
+        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - 管理画面IP制限（許可リスト）');
 
         $findPlugins = Fixtures::get('findPlugins');
         $Plugins = $findPlugins();
