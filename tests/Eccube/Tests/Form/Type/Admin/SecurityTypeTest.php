@@ -136,7 +136,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function frontIpAddressParams()
+    public function ipAddressParams()
     {
         return [
             // 正常系（適切なIPアドレス表記として認める）
@@ -158,7 +158,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider frontIpAddressParams
+     * @dataProvider ipAddressParams
      */
     public function testFrontAllowHost($ip, $valid)
     {
@@ -168,7 +168,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider frontIpAddressParams
+     * @dataProvider ipAddressParams
      */
     public function testFrontDenyHost($ip, $valid)
     {
@@ -178,4 +178,23 @@ class SecurityTypeTest extends AbstractTypeTestCase
     }
 
 
+    /**
+     * @dataProvider ipAddressParams
+     */
+    public function testAdminAllowHost($ip, $valid)
+    {
+        $this->formData['admin_allow_hosts'] = $ip;
+        $this->form->submit($this->formData);
+        $this->assertSame($valid, $this->form['admin_allow_hosts']->isValid());
+    }
+
+    /**
+     * @dataProvider ipAddressParams
+     */
+    public function testAdminDenyHost($ip, $valid)
+    {
+        $this->formData['admin_deny_hosts'] = $ip;
+        $this->form->submit($this->formData);
+        $this->assertSame($valid, $this->form['admin_deny_hosts']->isValid());
+    }
 }
