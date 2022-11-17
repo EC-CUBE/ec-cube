@@ -610,31 +610,6 @@ class EA08SysteminfoCest
         $I->see('この機能は管理者によって制限されています。');
     }
 
-    /**
-     * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
-     */
-    public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
-    {
-        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
-
-        $findPlugins = Fixtures::get('findPlugins');
-        $Plugins = $findPlugins();
-        if (is_array($Plugins) && count($Plugins) > 0) {
-            $I->getScenario()->skip('プラグインのアンインストールが必要なため、テストをスキップします');
-        }
-
-        // 表示
-        $config = Fixtures::get('config');
-        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
-        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
-
-        $I->fillField(['id' => 'admin_security_admin_allow_hosts'], '1.1.1.1');
-        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
-
-        $I->amOnPage('/'.$config['eccube_admin_route']);
-        $I->see('アクセスできません。', '//*[@id="error-page"]//h3');
-    }
-
     public function systeminfo_セキュリティ管理フロントIP制限_許可リスト(AcceptanceTester $I)
     {
         // 許可リストに該当するので、閲覧できるパターン
@@ -668,6 +643,31 @@ class EA08SysteminfoCest
         //後片付け（後続処理がエラーにならないため）
         SystemSecurityPage::go($I)->入力_front拒否リスト('')
         ->登録();
+    }
+
+    /**
+     * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
+     */
+    public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
+
+        $findPlugins = Fixtures::get('findPlugins');
+        $Plugins = $findPlugins();
+        if (is_array($Plugins) && count($Plugins) > 0) {
+            $I->getScenario()->skip('プラグインのアンインストールが必要なため、テストをスキップします');
+        }
+
+        // 表示
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
+        $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
+
+        $I->fillField(['id' => 'admin_security_admin_allow_hosts'], '1.1.1.1');
+        $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
+
+        $I->amOnPage('/'.$config['eccube_admin_route']);
+        $I->see('アクセスできません。', '//*[@id="error-page"]//h3');
     }
 
 }
