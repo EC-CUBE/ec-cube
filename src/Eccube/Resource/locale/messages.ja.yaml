@@ -757,6 +757,8 @@ admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
 admin.product.product_csv.tax_rate_col: 税率
 admin.product.product_csv.tax_rate_description: 商品別税率機能設定が有効の場合、0以上の数値を設定
+admin.product.product_csv.product_class_visible_flag_col: 商品規格表示フラグ
+admin.product.product_csv.product_class_visible_flag_description: 0:非表示 1:表示を指定します。未指定の場合は更新しません。
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
