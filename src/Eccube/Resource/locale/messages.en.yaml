@@ -1301,31 +1301,35 @@ admin.setting.system.authority.deny_url_is_invalid: /(slash) is required.
 #------------------------------------------------------------------------------------
 
 admin.setting.system.security__card_title: Security Settings
+admin.setting.system.security_admin_url__card_title: Admin Console URL Setting
+admin.setting.system.security_admin_ip_limit__card_title: Admin Console IP Restrictions Setting
+admin.setting.system.security_front_ip_limit__card_title: Storefront IP Restrictions Setting
+admin.setting.system.security_connect_card_title: Connect Setting
 admin.setting.system.security.admin_url: Admin Console URL
 admin.setting.system.security.admin_url_description: It is recommended to set the URL which would NOT be easily guessed.
 admin.setting.system.security.admin_url_changed: The URL of Admin Console has been changed. Please sign in again.
-admin.setting.system.security.ip_limit: Admin Console IP Restrictions(Allow List)
+admin.setting.system.security.ip_limit: IP Restrictions(Allow List)
 admin.setting.system.security.ip_limit_description: |
  This will restrict the access to the Admin Console to specified IP addresses.
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
+  The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.ip_limit_sample: |
  127.0.0.1
  192.0.2.1
-admin.setting.system.security.ip_limit_deny: Admin Console IP Restrictions(Deny List)
+admin.setting.system.security.ip_limit_deny: IP Restrictions(Deny List)
 admin.setting.system.security.ip_limit_description_deny: |
   This will deny the access to the Admin Console from specified IP addresses.
   Please enter the URLs one by one which you deny the access to.
-admin.setting.system.security.front_ip_limit: Front Screen IP Restrictions(Allow List)
+  The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.front_ip_limit_description: |
-  This will restrict the access to the Front Screen to specified IP addresses.
+  This will restrict the access to the storefront to specified IP addresses.
   Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Front Screen.
   The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.front_ip_limit_sample: |
   127.0.0.1/28
   192.0.2.1
-admin.setting.system.security.front_ip_limit_deny: Front Screen IP Restrictions(Deny List)
 admin.setting.system.security.front_ip_limit_description_deny: |
-  This will deny the access to the Front Screen from specified IP addresses.
+  This will deny the access to the storefront from specified IP addresses.
   Please enter the URLs one by one which you deny the access to.
   The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.force_ssl: SSL is mandatory
@@ -1716,8 +1720,8 @@ tooltip.setting.system.member.work: You can set customers to inactive temporaril
 tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
 tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
-tooltip.setting.system.security.front_ip_limit: Restricting IP addresses which are allowed to sign in to the Front Screen.
-tooltip.setting.system.security.front_ip_limit_deny: IP addresses where access to the Front Screen is denied.
+tooltip.setting.system.security.front_ip_limit: Restricting IP addresses which are allowed to sign in to the Storefront.
+tooltip.setting.system.security.front_ip_limit_deny: IP addresses where access to the Storefront is denied.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
 tooltip.setting.system.security.ip_limit_deny: IP addresses where access to the Admin Console is denied.
 tooltip.setting.system.security.force_ssl: Restricting the access to the storefront and Admin Console to via SSL(https).
