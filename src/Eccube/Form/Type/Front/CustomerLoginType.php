@@ -72,7 +72,8 @@ class CustomerLoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'customer_login';
     }

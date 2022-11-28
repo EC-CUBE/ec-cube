@@ -35,7 +35,8 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'csv_type';
     }

@@ -72,7 +72,8 @@ class ShippingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'shipping_multiple';
     }

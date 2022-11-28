@@ -125,7 +125,8 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'install_step4';
     }

@@ -77,7 +77,8 @@ class NonMemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'nonmember';
     }

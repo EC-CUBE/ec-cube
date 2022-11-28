@@ -271,7 +271,8 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'admin_search_product';
     }

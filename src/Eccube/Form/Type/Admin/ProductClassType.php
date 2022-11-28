@@ -160,7 +160,8 @@ class ProductClassType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'admin_product_class';
     }

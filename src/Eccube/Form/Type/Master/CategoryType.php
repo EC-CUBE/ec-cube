@@ -41,7 +41,8 @@ class CategoryType extends AbstractType
         return MasterType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'category';
     }

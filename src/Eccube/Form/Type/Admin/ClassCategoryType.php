@@ -78,7 +78,8 @@ class ClassCategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix():string
+
     {
         return 'admin_class_category';
     }
