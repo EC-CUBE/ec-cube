@@ -290,7 +290,7 @@ class EA08SysteminfoCest
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
         $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
-        $I->see('セキュリティ設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea > form > div > div.c-contentsArea__primaryCol > div > div > div.card-header > div > div.col-8 > span');
+        $I->see('管理画面URL設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea > form > div > div.c-contentsArea__primaryCol > div > div > div.card-header > div > div.col-8 > span');
     }
 
     public function systeminfo_セキュリティ管理ディレクトリ名(AcceptanceTester $I)
