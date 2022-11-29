@@ -95,6 +95,7 @@ parameters:
     eccube_official_site_url: https://www.ec-cube.net
     eccube_community_site_url: https://xoops.ec-cube.net
     eccube_document_url: http://doc4.ec-cube.net
+    eccube_manual_url: https://www.ec-cube.net/manual/ec-cube4/
     eccube_name_len: 16
     eccube_kana_len: 25
     eccube_address1_len: 32

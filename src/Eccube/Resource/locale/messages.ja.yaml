@@ -1604,6 +1604,7 @@ admin.info: 情報
 admin.info.official_site: 公式サイト
 admin.info.community: 開発コミュニティ
 admin.info.document: ドキュメント
+admin.info.manual: 管理・運用マニュアル
 
 #------------------------------------------------------------------------------------
 # ツールチップ
