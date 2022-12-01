@@ -1,0 +1,29 @@
+eccube_rate_limiter:
+    forgot:
+        route: forgot
+        method: ['POST']
+        type: ip
+        limit: 5
+        interval: '30 minutes'
+    entry:
+        route: entry
+        method: ['POST']
+        mode: complete
+        type: ip
+        limit: 5
+        interval: '30 minutes'
+    contact:
+        route: contact
+        method: ['POST']
+        mode: complete
+        type: ip
+        limit: 5
+        interval: '30 minutes'
+    shopping_confirm_ip:
+        route: ~ # routeがnullの場合は自動適用されない
+        limit: 25
+        interval: '30 minutes'
+    shopping_confirm_customer:
+        route: ~
+        limit: 10
+        interval: '30 minutes'

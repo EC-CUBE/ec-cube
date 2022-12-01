@@ -73,6 +73,31 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $container->prependExtensionConfig('security', [
           'access_control' => $accessControl,
         ]);
+
+        $configs = $container->getExtensionConfig('eccube_rate_limiter');
+        $configs = array_reverse($configs);
+        $rateLimiterConfigs = [];
+
+        foreach ($configs as $config) {
+            foreach ($config as $id => $limiter) {
+                $container->prependExtensionConfig('framework', [
+                    'rate_limiter' => [
+                        $id => [
+                            'policy' => 'fixed_window',
+                            'limit' => $limiter['limit'],
+                            'interval' => $limiter['interval'],
+                            'cache_pool' => 'rate_limiter.cache',
+                        ],
+                    ],
+                ]);
+                // Customize > Plugin > 本体
+                if (isset($limiter['route']) && !isset($rateLimiterConfigs[$limiter['route']][$id])) {
+                    $rateLimiterConfigs[$limiter['route']][$id] = $limiter;
+                }
+            }
+        }
+
+        $container->setParameter('eccube_rate_limiter_configs', $rateLimiterConfigs);
     }
 
     protected function configurePlugins(ContainerBuilder $container)
