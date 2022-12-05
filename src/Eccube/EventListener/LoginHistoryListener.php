@@ -14,12 +14,15 @@
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Customer;
 use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Entity\Member;
+use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\LoginHistoryStatusRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Request\Context;
+use Eccube\Service\MailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -53,18 +56,28 @@ class LoginHistoryListener implements EventSubscriberInterface
      */
     private $loginHistoryStatusRepository;
 
+    /** @var MailService */
+    protected $mailService;
+
+    /** @var CustomerRepository */
+    protected $customerRepository;
+
     public function __construct(
         EntityManagerInterface $em,
         RequestStack $requestStack,
         Context $requestContext,
         MemberRepository $memberRepository,
-        LoginHistoryStatusRepository $loginHistoryStatusRepository
+        LoginHistoryStatusRepository $loginHistoryStatusRepository,
+        MailService $mailService,
+        CustomerRepository $customerRepository
     ) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
         $this->requestContext = $requestContext;
         $this->memberRepository = $memberRepository;
         $this->loginHistoryStatusRepository = $loginHistoryStatusRepository;
+        $this->mailService = $mailService;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -100,17 +113,16 @@ class LoginHistoryListener implements EventSubscriberInterface
 
             $this->entityManager->persist($LoginHistory);
             $this->entityManager->flush();
+
+            $this->mailService->sendAdminEventNotifyMail($user, $request, trans('admin.login.login'));
+        } elseif ($user instanceof Customer) {
+            $this->mailService->sendEventNotifyMail($user, $request, trans('admin.login.login'));
         }
     }
 
     public function onAuthenticationFailure(LoginFailureEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();
-
-        if (!$this->requestContext->isAdmin()) {
-            return;
-        }
-
         $Status = $this->loginHistoryStatusRepository->find(LoginHistoryStatus::FAILURE);
         if (is_null($Status)) {
             return;
@@ -122,7 +134,22 @@ class LoginHistoryListener implements EventSubscriberInterface
         if ($passport->hasBadge(UserBadge::class)) {
             $userName = $passport->getBadge(UserBadge::class)
                 ->getUserIdentifier();
-            $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
+
+            if ($this->requestContext->isAdmin()) {
+                $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
+                if ($Member instanceof Member) {
+                    $this->mailService->sendAdminEventNotifyMail($Member, $request, trans('admin.login.failure.notify_title'));
+                }
+            } else {
+                $Customer = $this->customerRepository->findOneBy(['email' => $userName]);
+                if ($Customer instanceof Customer) {
+                    $this->mailService->sendEventNotifyMail($Customer, $request, trans('admin.login.failure.notify_title'));
+                }
+            }
+        }
+
+        if (!$this->requestContext->isAdmin()) {
+            return;
         }
 
         $LoginHistory = new LoginHistory();

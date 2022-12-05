@@ -19,6 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,14 +44,18 @@ class ChangeController extends AbstractController
      */
     protected $encoderFactory;
 
+    protected $mailService;
+
     public function __construct(
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        MailService $mailService
     ) {
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
         $this->tokenStorage = $tokenStorage;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -94,6 +99,7 @@ class ChangeController extends AbstractController
                 );
             }
             $this->entityManager->flush();
+            $this->mailService->sendEventNotifyMail($Customer, $request, trans('front.mypage.customer.notify_title'));
 
             log_info('会員編集完了');
 

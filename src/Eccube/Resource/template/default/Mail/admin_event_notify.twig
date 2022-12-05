@@ -1,0 +1,32 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% autoescape 'safe_textmail' %}
+※本メールは自動配信メールです。
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+　※本メールは、
+　{{ BaseInfo.shop_name }}よりお送りしています。
+　もしお心当たりが無い場合は、
+　その旨 {# 問い合わせ受付メール #}{{ BaseInfo.email02 }} まで
+　ご連絡いただければ幸いです。
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+下記の日時に {{ eventName }} がありましたのでお知らせいたします。
+
+ログインID：{{ Member.login_id }}
+日時：{{ date()|date_format('%Y年%m月%d日 %H時%M分%S秒') }}
+環境：{{ userAgent }}
+
+ご自身によるものであれば、何もする必要はございません。
+もし{{ eventName }}のお心当りが無い場合は、以下よりパスワードの再設定を行ってください。
+
+{{ url('admin_change_password') }}
+{% endautoescape %}

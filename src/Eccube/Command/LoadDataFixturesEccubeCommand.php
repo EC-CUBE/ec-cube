@@ -77,6 +77,7 @@ EOF
         $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
             ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
+        $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
         $conn->insert('dtb_member', [
             'id' => $member_id,
@@ -91,6 +92,7 @@ EOF
             'create_date' => new \DateTime(),
             'name' => trans('install.member_name'),
             'department' => 'EC-CUBE SHOP',
+            'email' => $admin_mail,
             'discriminator_type' => 'member',
         ], [
             'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
@@ -98,7 +100,6 @@ EOF
         ]);
 
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
-        $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
         $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
             ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")

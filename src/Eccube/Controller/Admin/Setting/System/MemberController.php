@@ -20,6 +20,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,6 +44,9 @@ class MemberController extends AbstractController
      */
     protected $encoderFactory;
 
+    /** @var MailService */
+    protected $mailService;
+
     /**
      * MemberController constructor.
      *
@@ -53,11 +57,13 @@ class MemberController extends AbstractController
     public function __construct(
         EncoderFactoryInterface $encoderFactory,
         MemberRepository $memberRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        MailService $mailService
     ) {
         $this->encoderFactory = $encoderFactory;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -176,6 +182,7 @@ class MemberController extends AbstractController
             }
 
             $this->memberRepository->save($Member);
+            $this->mailService->sendAdminEventNotifyMail($Member, $request, trans('admin.setting.system.member.notify_title'));
 
             $event = new EventArgs(
                 [

@@ -860,6 +860,7 @@ class InstallController extends AbstractController
                 'create_date' => new \DateTime(),
                 'name' => trans('install.member_name'),
                 'department' => $data['shop_name'],
+                'email' => $data['email'],
                 'discriminator_type' => 'member',
             ], [
                 'update_date' => Types::DATETIMETZ_MUTABLE,

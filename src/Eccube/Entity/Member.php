@@ -142,6 +142,13 @@ if (!class_exists('\Eccube\Entity\Member')) {
         private $two_factor_auth_enabled = false;
 
         /**
+         * @var string
+         *
+         * @ORM\Column(name="email", type="string", length=255,nullable=true)
+         */
+        private $email;
+
+        /**
          * @var \DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -412,6 +419,30 @@ if (!class_exists('\Eccube\Entity\Member')) {
         public function isTwoFactorAuthEnabled()
         {
             return $this->two_factor_auth_enabled;
+        }
+
+        /**
+         * Set email.
+         *
+         * @param string $email
+         *
+         * @return Customer
+         */
+        public function setEmail($email)
+        {
+            $this->email = $email;
+
+            return $this;
+        }
+
+        /**
+         * Get email.
+         *
+         * @return string
+         */
+        public function getEmail()
+        {
+            return $this->email;
         }
 
         /**

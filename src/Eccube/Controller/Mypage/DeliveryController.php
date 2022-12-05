@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -39,10 +40,18 @@ class DeliveryController extends AbstractController
      */
     protected $customerAddressRepository;
 
-    public function __construct(BaseInfoRepository $baseInfoRepository, CustomerAddressRepository $customerAddressRepository)
+    /** @var MailService */
+    protected $mailService;
+
+    public function __construct(
+        BaseInfoRepository $baseInfoRepository,
+        CustomerAddressRepository $customerAddressRepository,
+        MailService $mailService
+    )
     {
         $this->BaseInfo = $baseInfoRepository->get();
         $this->customerAddressRepository = $customerAddressRepository;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -128,6 +137,8 @@ class DeliveryController extends AbstractController
 
             $this->entityManager->persist($CustomerAddress);
             $this->entityManager->flush();
+
+            $this->mailService->sendEventNotifyMail($Customer, $request, trans('front.mypage.delivery.notify_title'));
 
             log_info('お届け先登録完了', [$id]);
 

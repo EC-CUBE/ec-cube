@@ -119,6 +119,8 @@ parameters:
     eccube_forgot_mail_template_id: 6 #パスワードリセット
     eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
+    eccube_event_notify_mail_template_id: 9 #イベント通知メール
+    eccube_admin_event_notify_mail_template_id: 10 #管理画面イベント通知メール
     # メールアドレスをRFC準拠でチェックするか true: チェックする、false: チェックしない
     eccube_rfc_email_check: false
     eccube_email_len: 254

@@ -19,9 +19,11 @@ use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\ToggleSwitchType;
+use Eccube\Form\Validator\Email;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -108,6 +110,18 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('two_factor_auth_enabled', ToggleSwitchType::class, [
+            ])
+            ->add('email', EmailType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_email_len'],
+                    ]),
+                ],
+                'attr' => [
+                    'placeholder' => 'common.mail_address_sample',
+                ],
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする

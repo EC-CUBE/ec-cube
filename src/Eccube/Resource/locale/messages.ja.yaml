@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: 退会が完了いたしました
 front.mypage.withdraw_complete_message__body: |
   ご利用いただき誠にありがとうございました。
   またのご来店をお待ちしております。
+front.mypage.customer.notify_title: 会員情報編集
+front.mypage.delivery.notify_title: お届け先情報編集
 
 #------------------------------------------------------------------------------------
 # 商品
@@ -578,6 +580,7 @@ admin.login.enable_javascript: JavaScript を有効にしてご利用くださ�
 admin.login.login: ログイン
 admin.login.login_id: ログインID
 admin.login.password: パスワード
+admin.login.failure.notify_title: ログイン試行
 
 admin.change_password: パスワード変更
 admin.change_password.current_password: 現在のパスワード
@@ -1266,6 +1269,8 @@ admin.setting.system.member.two_factor_auth_incompleted: 2段階認証の設定�
 admin.setting.system.member.delete__confirm_title: メンバーを削除します。
 admin.setting.system.member.delete__confirm_message: メンバーを削除してよろしいですか？
 admin.setting.system.member.work_can_not_change: 非稼働に変更することはできません。
+admin.setting.system.member.email: 通知メールアドレス
+admin.setting.system.member.notify_title: メンバー情報変更
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：メンバー管理 / 2段階認証
@@ -1701,6 +1706,7 @@ tooltip.setting.shop.calendar_setting: '定休日カレンダーに表示する�
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
+tooltip.setting.system.member.email: 登録すると、重要操作時に確認メールを送信します。
 tooltip.setting.system.two_factor_auth.qr_code: QRコードを2段階認証用スマートフォンアプリで読み込み、表示された6桁の数字を入力してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。

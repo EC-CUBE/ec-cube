@@ -32,6 +32,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Service\MailService;
 use Eccube\Service\PluginApiService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,6 +86,9 @@ class AdminController extends AbstractController
     /** @var PluginApiService */
     protected $pluginApiService;
 
+    /** @var MailService */
+    protected $mailService;
+
     /**
      * @var array 売り上げ状況用受注状況
      */
@@ -112,7 +116,8 @@ class AdminController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         CustomerRepository $custmerRepository,
         ProductRepository $productRepository,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
+        MailService $mailService
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
@@ -123,6 +128,7 @@ class AdminController extends AbstractController
         $this->customerRepository = $custmerRepository;
         $this->productRepository = $productRepository;
         $this->pluginApiService = $pluginApiService;
+        $this->mailService = $mailService;
     }
 
     /**

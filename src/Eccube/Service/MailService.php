@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
@@ -29,6 +30,7 @@ use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -748,6 +750,104 @@ class MailService
             'ShippingItems' => $ShippingItems,
             'Order' => $Order,
         ]);
+    }
+
+    public function sendAdminEventNotifyMail(Member $Member, Request $request, $eventName)
+    {
+        if ($Member->getEmail() === null) {
+            log_warning('ユーザーID: '.$Member->getLoginId().' のメールアドレスが設定されていないため、イベント通知メールを送信しませんでした。');
+
+            return;
+        }
+
+        log_info('イベント通知メール送信処理開始');
+
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_admin_event_notify_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'BaseInfo' => $this->BaseInfo,
+            'Member' => $Member,
+            'userAgent' => $request->headers->get('User-Agent'),
+            'eventName' => $eventName,
+        ]);
+
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.str_replace('[eventName]', $eventName, $MailTemplate->getMailSubject()))
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Member->getEmail()))
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Member' => $Member,
+                'User-Agent' => $request->headers->get('User-Agent'),
+                'eventName' => $eventName,
+            ]);
+
+            $message
+                ->text($body)
+                ->html($htmlBody);
+        } else {
+            $message->text($body);
+        }
+
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
+
+        log_info('イベント通知メール送信処理完了');
+    }
+
+    public function sendEventNotifyMail(Customer $Customer, Request $request, $eventName)
+    {
+        log_info('イベント通知メール送信処理開始');
+
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_event_notify_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'BaseInfo' => $this->BaseInfo,
+            'Customer' => $Customer,
+            'userAgent' => $request->headers->get('User-Agent'),
+            'eventName' => $eventName,
+        ]);
+
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.str_replace('[eventName]', $eventName, $MailTemplate->getMailSubject()))
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Customer' => $Customer,
+                'userAgent' => $request->headers->get('User-Agent'),
+                'eventName' => $eventName,
+            ]);
+
+            $message
+                ->text($body)
+                ->html($htmlBody);
+        } else {
+            $message->text($body);
+        }
+
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
+
+        log_info('イベント通知メール送信処理完了');
     }
 
     /**

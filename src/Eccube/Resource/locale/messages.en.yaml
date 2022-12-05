@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: You have canceled your membership
 front.mypage.withdraw_complete_message__body: |
  Thank you so much for supporting our store.
  We look forward to serving you again.
+front.mypage.customer.notify_title: Change customer information
+front.mypage.delivery.notify_title: Change delivery information
 
 #------------------------------------------------------------------------------------
 # Products
@@ -578,6 +580,7 @@ admin.login.enable_javascript: Please enable JavaScript
 admin.login.login: Sign in
 admin.login.login_id: ID
 admin.login.password: Password
+admin.login.failure.notify_title: Login attempt
 
 admin.change_password: Change Password
 admin.change_password.current_password: Current Password
@@ -1266,6 +1269,8 @@ admin.setting.system.member.two_factor_auth_incompleted: Two-factor authenticati
 admin.setting.system.member.delete__confirm_title: Delete a user
 admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
+admin.setting.system.member.email: Notification email
+admin.setting.system.member.notify_title: Change user information
 
 #------------------------------------------------------------------------------------
 # Settings : Members : Two-Factor Auth
@@ -1700,6 +1705,7 @@ tooltip.setting.shop.order_status.display_order_count: You can set the display /
 tooltip.setting.shop.calendar_setting: 'You can set regular holidays for displaying in the business days calendar.'
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
+tooltip.setting.system.member.email: Notification email is sent at the time of important operations.
 tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
 tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
