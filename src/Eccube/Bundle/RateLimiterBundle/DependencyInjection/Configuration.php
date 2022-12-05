@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Bundle\DependencyInjection;
+namespace Eccube\Bundle\RateLimiterBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

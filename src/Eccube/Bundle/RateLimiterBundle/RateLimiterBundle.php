@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Bundle;
+namespace Eccube\Bundle\RateLimiterBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

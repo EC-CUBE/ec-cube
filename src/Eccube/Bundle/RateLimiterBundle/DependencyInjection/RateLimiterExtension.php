@@ -11,8 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Bundle\DependencyInjection;
+namespace Eccube\Bundle\RateLimiterBundle\DependencyInjection;
 
+use Eccube\Bundle\RateLimiterBundle\DependencyInjection\Configuration;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
