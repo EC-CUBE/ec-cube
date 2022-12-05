@@ -1314,7 +1314,7 @@ admin.setting.system.security.ip_limit_description: |
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
   The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.ip_limit_sample: |
- 127.0.0.1
+ 127.0.0.1/28
  192.0.2.1
 admin.setting.system.security.ip_limit_deny: IP Restrictions(Deny List)
 admin.setting.system.security.ip_limit_description_deny: |
@@ -1325,9 +1325,6 @@ admin.setting.system.security.front_ip_limit_description: |
   This will restrict the access to the Front Screen to specified IP addresses.
   Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Front Screen.
   The IP address corresponds to the subnet mask notation.
-admin.setting.system.security.front_ip_limit_sample: |
-  127.0.0.1/28
-  192.0.2.1
 admin.setting.system.security.front_ip_limit_description_deny: |
   This will deny the access to the Front Screen from specified IP addresses.
   Please enter the URLs one by one which you deny the access to.

@@ -1314,7 +1314,7 @@ admin.setting.system.security.ip_limit_description: |
   アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
   IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.ip_limit_sample: |
-  127.0.0.1
+  127.0.0.1/28
   192.0.2.1
 admin.setting.system.security.ip_limit_deny: IP制限(拒否リスト)
 admin.setting.system.security.ip_limit_description_deny: |
@@ -1324,14 +1324,11 @@ admin.setting.system.security.ip_limit_description_deny: |
 admin.setting.system.security.front_ip_limit_description: |
   フロント画面へのアクセスを特定のIPアドレスからの接続のみに制限します。
   アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
-  IPアドレスはサブネットマスク表記に対応してます。
-admin.setting.system.security.front_ip_limit_sample: |
-  127.0.0.1/28
-  192.0.2.1
+  IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.front_ip_limit_description_deny: |
   特定のIPアドレスからのフロント画面へのアクセスを拒否します。
   アクセスを拒否するIPアドレスを1行ずつ入力してください。
-  IPアドレスはサブネットマスク表記に対応してます。
+  IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
