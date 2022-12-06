@@ -42,10 +42,6 @@ class RateLimiterListener implements EventSubscriberInterface
             return;
         }
 
-        if (!is_array($event->getController())) {
-            return;
-        }
-
         $request = $event->getRequest();
         $route = $request->attributes->get('_route');
         $limiterConfigs = $this->eccubeConfig['eccube_rate_limiter_configs'];
