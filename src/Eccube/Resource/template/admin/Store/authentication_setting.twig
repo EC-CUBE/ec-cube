@@ -63,7 +63,7 @@ file that was distributed with this source code.
                 "captcha": $('#captcha_text').val(),
                 "eccube_url": '{{ eccubeUrl }}',
                 "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}",
-                "eccube_shop_name": "{{ eccubeShopName }}"
+                "eccube_shop_name": "{{ eccubeShopName|escape('js') }}"
             }
         }).done(function(data) {
             $('#captcha').modal('hide');
