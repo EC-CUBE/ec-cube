@@ -28,4 +28,5 @@ return [
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     \Eccube\Bundle\RateLimiterBundle\RateLimiterBundle::class => ['all' => true],
+    \Eccube\EccubeBundle::class => ['all' => true],
 ];

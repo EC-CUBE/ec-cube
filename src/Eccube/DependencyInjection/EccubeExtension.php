@@ -16,7 +16,6 @@ namespace Eccube\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Eccube\Bundle\RateLimiterBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -32,6 +31,18 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $configs = $this->processConfiguration($configuration, $configs);
+    }
+
+    public function getAlias()
+    {
+        return 'eccube';
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return parent::getConfiguration($config, $container);
     }
 
     /**
@@ -76,12 +87,15 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
           'access_control' => $accessControl,
         ]);
 
-        $configs = $container->getExtensionConfig('eccube_rate_limiter');
+        $configs = $container->getExtensionConfig('eccube');
         $configs = array_reverse($configs);
         $rateLimiterConfigs = [];
 
         foreach ($configs as $config) {
-            foreach ($config as $id => $limiter) {
+            if (empty($config['rate_limiter'])) {
+                continue;
+            }
+            foreach ($config['rate_limiter'] as $id => $limiter) {
                 $container->prependExtensionConfig('framework', [
                     'rate_limiter' => [
                         $id => [
@@ -96,8 +110,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
                 if (isset($limiter['route']) && !isset($rateLimiterConfigs[$limiter['route']][$id])) {
                     $processor = new Processor();
                     $configuration = new Configuration();
-                    $processed = $processor->processConfiguration($configuration, ['eccube_rate_limiter' => [$id => $limiter]]);
-                    $rateLimiterConfigs[$limiter['route']][$id] = $processed['limiters'][$id];
+                    $processed = $processor->processConfiguration($configuration, ['eccube' => ['rate_limiter' => [$id => $limiter]]]);
+                    $rateLimiterConfigs[$limiter['route']][$id] = $processed['rate_limiter']['limiters'][$id];
                 }
             }
         }
