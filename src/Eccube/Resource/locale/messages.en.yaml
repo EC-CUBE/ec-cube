@@ -1618,6 +1618,7 @@ admin.info: Information
 admin.info.official_site: Official Site
 admin.info.community: Developers Community
 admin.info.document: Documents
+admin.info.manual: Manual
 
 #------------------------------------------------------------------------------------
 # ツールチップ
