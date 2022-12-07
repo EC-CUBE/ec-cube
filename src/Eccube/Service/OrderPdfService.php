@@ -299,11 +299,15 @@ class OrderPdfService extends Fpdi
         $this->setBasePosition();
 
         // ショップ名
-        $this->lfText(125, 60, $this->baseInfoRepository->getShopName(), 8, 'B');
+        $this->lfText(125, 58, $this->baseInfoRepository->getShopName(), 8, 'B');
+
+        //郵便番号
+        $this->lfText(121, 63, "\u{3012}". ' ' . mb_substr($this->baseInfoRepository->getPostalCode(), 0, 3) . ' - ' . mb_substr($this->baseInfoRepository->getPostalCode(), 3, 4), 8);
+
 
         // 都道府県+所在地
         $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
-        $this->lfText(125, 65, $text, 8);
+        $this->lfText(125, 66, $text, 8);
         $this->lfText(125, 69, $this->baseInfoRepository->getAddr02(), 8);
 
         // 電話番号
@@ -415,6 +419,10 @@ class OrderPdfService extends Fpdi
         // =========================================
 
         $Order = $Shipping->getOrder();
+
+        // 購入者郵便番号(3012は郵便マークのUTFコード)
+        $text = "\u{3012}" . ' ' . mb_substr($Shipping->getPostalCode(), 0, 3) . ' - ' . mb_substr($Shipping->getPostalCode(), 3, 4);
+        $this->lfText(22, 43, $text, 10);
 
         // 購入者都道府県+住所1
         // $text = $Order->getPref().$Order->getAddr01();
