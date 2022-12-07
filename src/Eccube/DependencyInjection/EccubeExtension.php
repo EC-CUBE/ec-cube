@@ -16,6 +16,8 @@ namespace Eccube\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Eccube\Bundle\RateLimiterBundle\DependencyInjection\Configuration;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Finder\Finder;
@@ -92,7 +94,10 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
                 ]);
                 // Customize > Plugin > 本体
                 if (isset($limiter['route']) && !isset($rateLimiterConfigs[$limiter['route']][$id])) {
-                    $rateLimiterConfigs[$limiter['route']][$id] = $limiter;
+                    $processor = new Processor();
+                    $configuration = new Configuration();
+                    $processed = $processor->processConfiguration($configuration, ['eccube_rate_limiter' => [$id => $limiter]]);
+                    $rateLimiterConfigs[$limiter['route']][$id] = $processed['limiters'][$id];
                 }
             }
         }
