@@ -51,7 +51,6 @@ class RateLimiterListener implements EventSubscriberInterface
         }
 
         $method = $request->getMethod();
-        $mode = $request->get('mode');
 
         foreach ($limiterConfigs[$route] as $id => $config) {
             $methods = array_filter($config['method'], fn ($m) => $m === $method);
@@ -60,9 +59,15 @@ class RateLimiterListener implements EventSubscriberInterface
                 continue;
             }
 
-            if (isset($config['mode']) && $mode !== $config['mode']) {
-                // modeパラメータが不一致であればスキップ
-                continue;
+            if (!empty($config['params'])) {
+                $matchParams = array_filter($config['params'], function ($value, $key) use ($request) {
+                    return $request->get($key) === $value;
+                }, ARRAY_FILTER_USE_BOTH);
+
+                if (count($config['params']) !== count($matchParams)) {
+                    // パラメータが不一致であればスキップ
+                    continue;
+                }
             }
 
             $limiterId = 'limiter.'.$id;
@@ -72,20 +77,22 @@ class RateLimiterListener implements EventSubscriberInterface
 
             /** @var RateLimiterFactory $factory */
             $factory = $this->locator->get($limiterId);
-            if ('customer' === $config['type']) {
+            if (in_array('customer', $config['type'])) {
                 $User = $this->requestContext->getCurrentUser();
                 if (!$User instanceof Customer) {
                     // 会員の未ログイン時はスキップ
                     continue;
                 }
                 $limiter = $factory->create($User->getId());
-            } else {
-                // default ip.
-                $limiter = $factory->create($request->getClientIp());
+                if (!$limiter->consume()->isAccepted()) {
+                    throw new TooManyRequestsHttpException();
+                }
             }
-
-            if (!$limiter->consume()->isAccepted()) {
-                throw new TooManyRequestsHttpException();
+            if (in_array('ip', $config['type'])) {
+                $limiter = $factory->create($request->getClientIp());
+                if (!$limiter->consume()->isAccepted()) {
+                    throw new TooManyRequestsHttpException();
+                }
             }
         }
     }

@@ -30,7 +30,7 @@ class RateLimiterListenerTest extends EccubeTestCase
     /**
      * @dataProvider onControllerProvider
      */
-    public function testOnController($limiterId, $type)
+    public function testOnController($limiterId, $type, $params)
     {
         $request = $this->createStub(Request::class);
         $request->method('getClientIp')
@@ -38,7 +38,10 @@ class RateLimiterListenerTest extends EccubeTestCase
         $request->method('getMethod')
             ->willReturn('POST');
         $request->method('get')
-            ->willReturn('');
+            ->will($this->returnValueMap([
+                ['mode', null, 'complete'],
+                ['next', null, 'confirm'],
+            ]));
 
         $request->attributes = new ParameterBag();
         $request->attributes->set('_route', 'test');
@@ -60,7 +63,8 @@ class RateLimiterListenerTest extends EccubeTestCase
                     'test' => [
                         $limiterId => [
                             'method' => ['POST'],
-                            'type' => $type,
+                            'type' => [$type],
+                            'params' => $params,
                         ],
                     ],
                 ],
@@ -79,6 +83,7 @@ class RateLimiterListenerTest extends EccubeTestCase
             $listener->onController($event);
             $i++;
             $listener->onController($event);
+            self::fail();
         } catch (\Exception $e) {
             self::assertInstanceOf(TooManyRequestsHttpException::class, $e);
         }
@@ -91,8 +96,9 @@ class RateLimiterListenerTest extends EccubeTestCase
     public function onControllerProvider()
     {
         return [
-            ['test_ip', 'ip'],
-            ['test_customer', 'customer'],
+            ['test_ip', 'ip', []],
+            ['test_customer', 'customer', []],
+            ['test_params', 'customer', ['mode' => 'complete', 'next' => 'confirm']],
         ];
     }
 

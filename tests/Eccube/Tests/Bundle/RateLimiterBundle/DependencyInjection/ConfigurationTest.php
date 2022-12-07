@@ -35,7 +35,7 @@ class ConfigurationTest extends KernelTestCase
                     'route' => 'entry',
                     'type' => 'ip',
                     'method' => ['POST'],
-                    'mode' => 'complete',
+                    'params' => ['mode' => 'complete'],
                     'limit' => 10,
                     'interval' => '30 minutes',
                 ],
@@ -49,9 +49,9 @@ class ConfigurationTest extends KernelTestCase
         $expected = ['limiters' => [
             'entry' => [
                 'route' => 'entry',
-                'type' => 'ip',
+                'type' => ['ip'],
                 'method' => ['POST'],
-                'mode' => 'complete',
+                'params' => ['mode' => 'complete'],
                 'limit' => 10,
                 'interval' => '30 minutes',
             ],
@@ -59,9 +59,9 @@ class ConfigurationTest extends KernelTestCase
                 'route' => null,
                 'limit' => 10,
                 'interval' => '30 minutes',
-                'type' => null,
+                'type' => [],
                 'method' => ['POST'],
-                'mode' => null,
+                'params' => [],
             ],
         ],
         ];

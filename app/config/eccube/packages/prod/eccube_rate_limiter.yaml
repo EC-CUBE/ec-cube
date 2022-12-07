@@ -8,14 +8,16 @@ eccube_rate_limiter:
     entry:
         route: entry
         method: [ 'POST' ]
-        mode: complete
+        params:
+            mode: complete
         type: ip
         limit: 5
         interval: '30 minutes'
     contact:
         route: contact
         method: [ 'POST' ]
-        mode: complete
+        params:
+            mode: complete
         type: ip
         limit: 5
         interval: '30 minutes'
