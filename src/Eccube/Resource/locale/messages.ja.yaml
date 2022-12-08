@@ -1808,6 +1808,7 @@ exception.error_message_can_not_access: お探しのページはアクセスが�
 exception.error_title_not_found: ページがみつかりません。
 exception.error_message_not_found: URLに間違いがないかご確認ください。
 exception.error_message_restrict_url: この機能は管理者によって制限されています。
+exception.error_message_rate_limit: 試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。
 
 #------------------------------------------------------------------------------------
 # PurchaseFlow

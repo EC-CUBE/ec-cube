@@ -1807,6 +1807,7 @@ exception.error_message_can_not_access: The page you reached is not available. I
 exception.error_title_not_found: Page not found.
 exception.error_message_not_found: Please check if the URL is correct.
 exception.error_message_restrict_url: This functionality is restricted by the administrator.
+exception.error_message_rate_limit: The maximum number of attempts has been exceeded. Please wait a moment and try again.
 
 #------------------------------------------------------------------------------------
 # Purchase Flow
