@@ -382,6 +382,7 @@ class EF03OrderCest
 
         // ログイン
         ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+        $I->resetEmails();
 
         ShoppingPage::at($I)->確認する();
         ShoppingConfirmPage::at($I)->注文する();

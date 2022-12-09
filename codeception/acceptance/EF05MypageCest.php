@@ -38,7 +38,12 @@ class EF05MypageCest
         $I->wantTo('EF0501-UC01-T01 Mypage 初期表示');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
+
+        $I->resetEmails();
         $I->loginAsMember($customer->getEmail(), 'password');
+
+        $I->seeEmailCount(1);
+        $I->seeInLastEmailSubjectTo($customer->getEmail(), 'ログインのお知らせ');
 
         MyPage::go($I);
         MyPage::at($I);
@@ -134,6 +139,7 @@ class EF05MypageCest
         $I->loginAsMember($customer->getEmail(), 'password');
         $faker = Fixtures::get('faker');
         $new_email = microtime(true).'.'.$faker->safeEmail;
+        $I->resetEmails();
 
         // TOPページ>マイページ>会員情報編集
         MyPage::go($I)->会員情報編集();
@@ -169,6 +175,9 @@ class EF05MypageCest
 
         // 会員情報編集（完了）画面が表示される
         $I->see('会員情報編集(完了)', 'div.ec-pageHeader h1');
+
+        $I->seeEmailCount(1);
+        $I->seeInLastEmailSubjectTo($new_email, '会員情報編集のお知らせ');
 
         // 「トップページへ」ボタンを押下する
         $I->click('div.ec-registerCompleteRole a.ec-blockBtn--cancel');
@@ -230,6 +239,7 @@ class EF05MypageCest
         MyPage::go($I)
             ->お届け先編集()
             ->変更(1);
+        $I->resetEmails();
 
         CustomerAddressEditPage::at($I)
             ->入力_姓('姓05')
@@ -242,6 +252,9 @@ class EF05MypageCest
             ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
             ->入力_電話番号('111-111-111')
             ->登録する();
+
+        $I->seeEmailCount(1);
+        $I->seeInLastEmailSubjectTo($customer->getEmail(), 'お届け先情報編集のお知らせ');
 
         // お届け先編集ページ
         CustomerAddressListPage::at($I);

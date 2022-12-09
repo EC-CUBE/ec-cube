@@ -51,12 +51,19 @@ class AcceptanceTester extends \Codeception\Actor
         }
 
         $I = $this;
+        $I->resetEmails();
+
         $this->goToAdminPage($dir);
 
         $I->submitForm('#form1', [
             'login_id' => $user,
             'password' => $password,
         ]);
+
+        $BaseInfo = Fixtures::get('baseinfo');
+        $I->seeEmailCount(1);
+        // $BaseInfo->getEmail01() は Member::getEmail() と同じメールアドレスが設定されている
+        $I->seeInLastEmailSubjectTo($BaseInfo->getEmail01(), 'ログインのお知らせ');
 
         $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles');
     }

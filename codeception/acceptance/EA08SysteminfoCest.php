@@ -151,9 +151,11 @@ class EA08SysteminfoCest
     public function systeminfo_メンバー管理編集実施(AcceptanceTester $I)
     {
         $I->wantTo('EA0803-UC02-T01 メンバー管理 - 編集 - 編集実施');
+        $I->resetEmails();
 
         // 表示
         $config = Fixtures::get('config');
+        $BaseInfo = Fixtures::get('baseinfo');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
 
@@ -161,6 +163,7 @@ class EA08SysteminfoCest
         $I->see('メンバー登録', '#member_form .c-contentsArea__primaryCol .card-header .card-title');
 
         $I->fillField(['id' => 'admin_member_name'], 'administrator');
+        $I->fillField(['id' => 'admin_member_department'], 'administrator department');
         $I->click('#member_form .c-conversionArea__container button');
 
         $I->see('保存しました', '.c-contentsArea .alert-success');
@@ -169,6 +172,10 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member');
         $I->see('メンバー管理システム設定', '.c-pageTitle');
         $I->see('administrator', '.c-primaryCol .card-body table tbody tr:nth-child(1) td:nth-child(1)');
+
+        $I->seeEmailCount(1);
+        // $BaseInfo->getEmail01() は Member::getEmail() と同じメールアドレスが設定されている
+        $I->seeInLastEmailSubjectTo($BaseInfo->getEmail01(), 'メンバー情報変更のお知らせ');
     }
 
     public function systeminfo_メンバー管理編集未実施(AcceptanceTester $I)

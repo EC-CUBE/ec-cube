@@ -31,6 +31,7 @@ class EA02AuthenticationCest
     {
         $I->wantTo('EA0201-UC01-T01 パスワード認証');
 
+        $I->resetEmails();
         // _before()で正常系はテスト済み
         // 異常系のテスト
         $I->logoutAsAdmin();
@@ -41,6 +42,8 @@ class EA02AuthenticationCest
         ]);
 
         $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
+
+        $I->seeEmailCount(0);   // invalid ユーザーは存在しないため、メールは送信されない
     }
 
     public function authentication_最終ログイン日時確認(AcceptanceTester $I)
@@ -59,8 +62,8 @@ class EA02AuthenticationCest
 
     public function authentication_パスワード変更(AcceptanceTester $I)
     {
-        $org_password = 'password';
-        $new_password = 'new_password';
+        $org_password = 'password1234';
+        $new_password = 'new_password1234';
 
         $I->wantTo('EA0201-UC01-T02 パスワード認証機能(パスワード変更)');
         SystemMemberManagePage::go($I)
@@ -86,6 +89,7 @@ class EA02AuthenticationCest
             ->登録();
         $I->see('パスワードを更新しました', '.alert-success');
 
+        $I->resetEmails();
         $I->logoutAsAdmin();
         $I->submitForm('#form1', [
             'login_id' => 'admin',
@@ -93,7 +97,12 @@ class EA02AuthenticationCest
         ]);
         $I->see('ログインできませんでした。', '#form1 > div:nth-child(5) > span');
 
-        $I->loginAsAdmin();
+        $BaseInfo = Fixtures::get('baseinfo');
+        $I->seeEmailCount(1);
+        // $BaseInfo->getEmail01() は Member::getEmail() と同じメールアドレスが設定されている
+        $I->seeInLastEmailSubjectTo($BaseInfo->getEmail01(), 'ログイン試行のお知らせ');
+
+        $I->loginAsAdmin('admin', $org_password);
     }
 
     public function authentication_非稼働_削除(AcceptanceTester $I)

@@ -46,6 +46,7 @@ class SystemMemberEditPage extends AbstractAdminPageStyleGuide
             'password_second' => 'password1234',
             'authority' => 'システム管理者',
             'work' => 1,
+            'email' => 'admin@example.com'
         ];
 
         $this->tester->fillField('#admin_member_name', $form['name']);
