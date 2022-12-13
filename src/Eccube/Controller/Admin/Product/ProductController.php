@@ -967,12 +967,12 @@ class ProductController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 商品データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getProductQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // Get stock status
             $isOutOfStock = 0;
