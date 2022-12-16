@@ -390,52 +390,50 @@ file that was distributed with this source code.
                             <div class="collapse show ec-cardCollapse" id="orderHistory">
                                 {% if Customer.Orders|length > 0 %}
                                     <div class="card-body">
-                                        <form id="form_bulk" method="POST" action="">
-                                            <div class="row justify-content-between mb-2">
-                                                <div class="col-6">
-                                                </div>
-                                                <div class="col-5 text-end">
-                                                    <div class="d-inline-block me-2 align-bottom">
-                                                        <div>
-                                                            <select class="form-select" onchange="location = this.value;">
-                                                                {% for pageMax in pageMaxis %}
-                                                                    <option {% if pageMax.name == page_count %}selected=""{% endif %} value="{{ path('admin_customer_edit', {'id':Customer.id, 'page_no': 1, 'page_count': pageMax.name}) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
+                                        <div class="row justify-content-between mb-2">
+                                            <div class="col-6">
+                                            </div>
+                                            <div class="col-5 text-end">
+                                                <div class="d-inline-block me-2 align-bottom">
+                                                    <div>
+                                                        <select class="form-select" onchange="location = this.value;">
+                                                            {% for pageMax in pageMaxis %}
+                                                                <option {% if pageMax.name == page_count %}selected=""{% endif %} value="{{ path('admin_customer_edit', {'id':Customer.id, 'page_no': 1, 'page_count': pageMax.name}) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
+                                                            {% endfor %}
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <table class="table table-striped table-sm">
-                                                <thead class="table-active">
-                                                <th class="align-middle pt-2 pb-2 ps-3">{{ 'admin.order.order_date'|trans }}</th>
-                                                <th class="align-middle pt-2 pb-2">{{ 'admin.order.order_no'|trans }}</th>
-                                                <th class="align-middle pt-2 pb-2">{{ 'admin.order.purchase_price'|trans }}</th>
-                                                <th class="align-middle pt-2 pb-2 pe-3">{{ 'admin.order.order_status'|trans }}</th>
-                                                </thead>
-                                                <tbody>
-                                                {% for Order in pagination %}
-                                                    <tr>
-                                                        <td class="align-middle ps-3">{{ Order.order_date|date_min }}</td>
-                                                        <td class="align-middle">
-                                                            <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
-                                                                {{ Order.order_no }}
-                                                            </a>
-                                                        </td>
-                                                        <td class="align-middle">{{ Order.total|price }}</td>
-                                                        <td class="align-middle pe-3">
-                                                            <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                            {% if pagination.totalItemCount > 0 %}
+                                        </div>
+                                        <table class="table table-striped table-sm">
+                                            <thead class="table-active">
+                                            <th class="align-middle pt-2 pb-2 ps-3">{{ 'admin.order.order_date'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.order.order_no'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2">{{ 'admin.order.purchase_price'|trans }}</th>
+                                            <th class="align-middle pt-2 pb-2 pe-3">{{ 'admin.order.order_status'|trans }}</th>
+                                            </thead>
+                                            <tbody>
+                                            {% for Order in pagination %}
+                                                <tr>
+                                                    <td class="align-middle ps-3">{{ Order.order_date|date_min }}</td>
+                                                    <td class="align-middle">
+                                                        <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">
+                                                            {{ Order.order_no }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-middle">{{ Order.total|price }}</td>
+                                                    <td class="align-middle pe-3">
+                                                        <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {% if pagination.totalItemCount > 0 %}
                                                 <div class="row justify-content-md-center pb-4">
                                                     {% include "@admin/pager.twig" with { 'id':Customer.id, 'pages' : pagination.paginationData, 'routes' : 'admin_customer_edit' } %}
                                                 </div>
                                             {% endif %}
-                                        </form>
                                     </div>
                                 {% else %}
                                     <div class="card-body">
