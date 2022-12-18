@@ -72,7 +72,7 @@ file that was distributed with this source code.
                 {# FIXME: Need check pass routes before use default _route from request #}
                 {% set request = app.request.query.all|merge({'page_no': pages.last}) %}
                 {% set request = id is defined ? request|merge({'id': id}) : request %}
-                <a class="page-link" h
+                <a class="page-link"
                    href="{{ path(routes ? routes : app.request.attributes.get('_route'), request) }}">{{ 'admin.common.last'|trans }}</a></li>
         {% endif %}
 
