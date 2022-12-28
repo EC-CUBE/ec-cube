@@ -44,49 +44,49 @@ class IpAddrListener implements EventSubscriberInterface
             return;
         }
 
+        $clientIp = $event->getRequest()->getClientIp();
+        log_info('Client IP: '.$clientIp);
+
         if (!$this->requestContext->isAdmin()) {
 
-            // 許可リストを取得
+            // IPアドレス許可リスト範囲になければ拒否
             $allowFrontHosts = $this->eccubeConfig['eccube_front_allow_hosts'];
-
-            foreach ($allowFrontHosts as $host) {
-                // IPアドレス許可リスト範囲になければ拒否
-                if (!IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
-                    throw new AccessDeniedHttpException();
-                }
+            if (!empty($allowFrontHosts) && !$this->isClientIpInList($allowFrontHosts, $clientIp)) {
+                throw new AccessDeniedHttpException();
             }
 
-            // 拒否リストを取得
+            // IPアドレス拒否リスト範囲にあれば拒否
             $denyFrontHosts =  $this->eccubeConfig['eccube_front_deny_hosts'];
-
-            foreach ($denyFrontHosts as $host) {
-                // IPアドレス拒否リスト範囲にあれば拒否
-                if (IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
-                    throw new AccessDeniedHttpException();
-                }
+            if (!empty($denyFrontHosts) && $this->isClientIpInList($denyFrontHosts, $clientIp)) {
+                throw new AccessDeniedHttpException();
             }
 
             return;
         }
 
-        // IPアドレス許可リストを確認
+        // IPアドレス許可リスト範囲になければ拒否
         $allowAdminHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
-
-        foreach ($allowAdminHosts as $host) {
-            // IPアドレス許可リスト範囲になければ拒否
-            if (!IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
-                throw new AccessDeniedHttpException();
-            }
+        if (!empty($allowAdminHosts) && !$this->isClientIpInList($allowAdminHosts, $clientIp)) {
+            throw new AccessDeniedHttpException();
         }
 
         // IPアドレス拒否リストを確認
         $denyAdminHosts = $this->eccubeConfig['eccube_admin_deny_hosts'];
-        foreach ($denyAdminHosts as $host) {
-            // IPアドレス拒否リスト範囲にあれば拒否
-            if (IpUtils::checkIp($event->getRequest()->getClientIp(), $host)) {
-                throw new AccessDeniedHttpException();
-            }
+        if (!empty($denyAdminHosts) && $this->isClientIpInList($denyAdminHosts, $clientIp)) {
+            throw new AccessDeniedHttpException();
         }
+    }
+
+    private function isClientIpInList($hostList, $clientIp)
+    {
+        log_info('Host List: '. implode(',', $hostList));
+        if ($hostList) {
+            $isInList = array_filter($hostList, function ($host) use ($clientIp) {
+                return IpUtils::checkIp($clientIp, $host);
+            });
+            return count($isInList) > 0;
+        }
+        return true;
     }
 
     public static function getSubscribedEvents()
