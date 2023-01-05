@@ -45,7 +45,7 @@ class IpAddrListener implements EventSubscriberInterface
         }
 
         $clientIp = $event->getRequest()->getClientIp();
-        log_info('Client IP: '.$clientIp);
+        log_debug('Client IP: '.$clientIp);
 
         if (!$this->requestContext->isAdmin()) {
 
@@ -79,7 +79,7 @@ class IpAddrListener implements EventSubscriberInterface
 
     private function isClientIpInList($hostList, $clientIp)
     {
-        log_info('Host List: '. implode(',', $hostList));
+        log_debug('Host List: '. implode(',', $hostList));
         if ($hostList) {
             $isInList = array_filter($hostList, function ($host) use ($clientIp) {
                 return IpUtils::checkIp($clientIp, $host);
