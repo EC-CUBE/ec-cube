@@ -104,7 +104,7 @@
         progress: function (result, progress) {
             $('.progress-bar', this.modal).css('width', (++this.currentCount / this.totalCount * 100) + '%');
             if (result['message']) {
-                $('<li><span class="badge badge-warning">NOTICE</span> </li>')
+                $('<li><span class="badge bg-warning">NOTICE</span> </li>')
                     .append($('<span></span>').text(result['message']))
                     .appendTo('#bulkErrors');
             }

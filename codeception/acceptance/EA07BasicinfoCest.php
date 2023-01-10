@@ -398,6 +398,22 @@ class EA07BasicinfoCest
             ->一覧_編集(1);
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
         $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
+        $I->see($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100)), OrderEditPage::$加算ポイント);
+
+        $I->expect('ポイント付与率を変更しても, 注文のポイントに影響無いことを確認します');
+        // see https://github.com/EC-CUBE/ec-cube/pull/5571
+        ShopSettingPage::go($I)
+            ->入力_ポイント付与率(1)
+            ->登録();
+        OrderManagePage::go($I)
+            ->検索($customer->getEmail())
+            ->一覧_編集(1);
+        OrderEditPage::at($I)
+            ->受注情報登録();
+
+        $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
+        $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
+        $I->see($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100)), OrderEditPage::$加算ポイント);
 
         $I->expect('管理画面・会員管理にて、ポイントが減少していること');
         CustomerManagePage::go($I)
@@ -696,13 +712,16 @@ class EA07BasicinfoCest
             ->新規登録();
 
         // 登録
-        DeliveryEditPage::at($I)
+        $Page = DeliveryEditPage::at($I)
             ->入力_配送業者名('配送業者名')
             ->入力_名称('名称')
             ->入力_支払方法選択(['1', '4'])
-            ->入力_全国一律送料('100')
-            ->登録();
+            ->入力_お届け時間('<AM>')
+            ->入力_全国一律送料('100');
 
+        $I->assertSame('<AM>', $I->grabTextFrom('a.display-label'));
+
+        $Page->登録();
         DeliveryEditPage::at($I);
         $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
 
@@ -895,7 +914,7 @@ class EA07BasicinfoCest
         // 定休日を設定
         $holidays = [
             '定休日1' => Carbon::now()->day(1), // 今月1日
-            '定休日2' => Carbon::now()->startOfMonth()->addMonth(1)->day(28), // 翌月28日
+            '定休日2' => Carbon::now()->startOfMonth()->addMonth()->day(28), // 翌月28日
         ];
 
         foreach ($holidays as $title => $date) {

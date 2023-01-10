@@ -1,4 +1,3 @@
-
 // MediaQuery
 $tablet: 480px;
 $desktop: 768px;
@@ -14,3 +13,30 @@ $clrRightGray: #B8BEC4;
 $clrExtraGray: #636378;
 $clrDarkGray:#525263;
 
+//** bootstrap-sass(https://github.com/twbs/bootstrap-sass) からの移植
+
+$font-size-base: 0.875rem;
+$font-family-sans-serif: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif !default;
+$line-height-base: 1.428571420 !default; // 20/14
+$padding-base-vertical: 6px !default;
+$line-height-computed: floor(($font-size-base * $line-height-base)) px !default;
+$input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) px !default;
+$input-border: #ccc !default;
+//** Border color for inputs on focus
+$input-border-focus: #66afe9 !default;
+
+//** Placeholder text color
+$input-color-placeholder: #999 !default;
+
+// scss-docs-start color-variables
+$blue:    #337ab7 !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #d63384 !default;
+$red:     #dc3545 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #198754 !default;
+$teal:    #20c997 !default;
+$cyan:    #0dcaf0 !default;
+// scss-docs-end color-variables

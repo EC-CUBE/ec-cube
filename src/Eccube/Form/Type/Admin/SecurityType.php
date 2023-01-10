@@ -66,6 +66,12 @@ class SecurityType extends AbstractType
         $denyHosts = $this->eccubeConfig->get('eccube_admin_deny_hosts');
         $denyHosts = implode("\n", $denyHosts);
 
+        $allowFrontHosts = $this->eccubeConfig->get('eccube_front_allow_hosts');
+        $allowFrontHosts = implode("\n", $allowFrontHosts);
+
+        $denyFrontHosts = $this->eccubeConfig->get('eccube_front_deny_hosts');
+        $denyFrontHosts = implode("\n", $denyFrontHosts);
+
         $builder
             ->add('admin_route_dir', TextType::class, [
                 'constraints' => [
@@ -76,6 +82,20 @@ class SecurityType extends AbstractType
                     ]),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
+            ])
+            ->add('front_allow_hosts', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
+                'data' => $allowFrontHosts,
+            ])
+            ->add('front_deny_hosts', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
+                'data' => $denyFrontHosts,
             ])
             ->add('admin_allow_hosts', TextareaType::class, [
                 'required' => false,
@@ -110,25 +130,65 @@ class SecurityType extends AbstractType
                 $form = $event->getForm();
                 $data = $form->getData();
 
+                // フロント画面のアクセス許可リストのvalidate
+                $ips = preg_split("/\R/", $data['front_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach ($ips as $ip) {
+                    // 適切なIPとビットマスクになっているか
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
+                            new Assert\Ip(),
+                            new Assert\Cidr()
+                        ]
+                    ]));
+                    if ($errors->count() > 0) {
+                        $form['front_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
+                    }
+                }
+
+                // フロント画面のアクセス拒否リストのvalidate
+                $ips = preg_split("/\R/", $data['front_deny_hosts'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach ($ips as $ip) {
+                    // 適切なIPとビットマスクになっているか
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
+                            new Assert\Ip(),
+                            new Assert\Cidr()
+                        ]
+                    ]));
+                    if ($errors->count() > 0) {
+                        $form['front_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
+                    }
+                }
+
+                // 管理画面のアクセス許可リストのvalidate
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($ips as $ip) {
-                    $errors = $this->validator->validate($ip, [
+                    // 適切なIPとビットマスクになっているか
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
                             new Assert\Ip(),
+                            new Assert\Cidr()
                         ]
-                    );
+                    ]));
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                     }
                 }
 
+                // 管理画面のアクセス拒否リストのvalidate
                 $ips = preg_split("/\R/", $data['admin_deny_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($ips as $ip) {
-                    $errors = $this->validator->validate($ip, [
+                    // 適切なIPとビットマスクになっているか
+                    $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
+                        'constraints' => [
                             new Assert\Ip(),
+                            new Assert\Cidr()
                         ]
-                    );
+                    ]));
                     if ($errors->count() != 0) {
                         $form['admin_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                     }

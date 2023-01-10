@@ -79,14 +79,14 @@ file that was distributed with this source code.
                                                 <div class="row">
                                                     <div class="col-6 text-end">
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}"
-                                                           class="btn btn-ec-actionIcon mr-3" data-bs-toggle="tooltip"
+                                                           class="btn btn-ec-actionIcon me-3" data-bs-toggle="tooltip"
                                                            data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
                                                     </div>
                                                     {% if Block.deletable %}
                                                         <div class="col-6">
-                                                            <div class="d-inline-block mr-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                            <div class="d-inline-block me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ Block.id }}" class="btn btn-ec-actionIcon">
                                                                     <i class="fa fa-close fa-lg text-secondary"></i>
                                                                 </a>
@@ -99,7 +99,7 @@ file that was distributed with this source code.
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                            
+
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body text-start">

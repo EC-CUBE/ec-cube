@@ -159,7 +159,7 @@ front.contact.inquiry_notice: |
  If it falls on our holidays, we will get back to you on/after our next working day. Thank you for your understanding.
 front.contact.order_notice: For an inquiry about your order, please inform us of the order number.
 front.contact.inquiry_contents: Inquiry
-front.contact.complete_title: Thank you for your inqury!
+front.contact.complete_title: Thank you for your inquiry!
 front.contact.complete_message__title: Your inquiry has been sent.
 front.contact.complete_message__body: In case you do not receive our receipt confirmation email, your inquiry may not be received. Please contact us by inquiry form once again, or by phone. Sorry for the inconvenience.
 
@@ -387,6 +387,7 @@ front.shopping.price_changed: 'The selling price of %product% has been changed.'
 front.shopping.payment_total_invalid: The total amount is invalid.
 front.shopping.different_payment_methods: Sorry, your order includes items with different purchase methods, which are unable to be processed in one order.
 front.shopping.payment_method_unselected: Please select the payment method.
+front.shopping.not_available_payment_method: The payment method you have selected is not available.
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
 front.under_maintenance: The site is currently under maintenance.
 
@@ -477,7 +478,8 @@ admin.common.csv_invalid_format: Unmatched CSV format
 admin.common.csv_invalid_no_data: No CSV data found
 admin.common.csv_invalid_required: '%name% is empty in the %line%'
 admin.common.csv_invalid_greater_than_zero: '%name% should be more than 0 in the line %line%.'
-admin.common.csv_invalid_format_line: 'CSV format unmatches in the line %line%'
+admin.common.csv_invalid_format_line_name: 'Unmatched format in %name% in the line %line%'
+admin.common.csv_invalid_format_line: 'Unmatched CSV format in the line %line%'
 admin.common.csv_invalid_date_format: 'Unmatched date format in %name% in the line %line%'
 admin.common.csv_invalid_not_found: '%name% is empty in the line %line%'
 admin.common.csv_invalid_not_found_target: '"%target_name%" is empty in %name% in the line %line%'
@@ -806,7 +808,7 @@ admin.order.purchase_price__end: Order Amount (End)
 admin.order.orderer: Customer
 admin.order.orderer_name: Customer Name
 admin.order.orderer_kana: Customer Name (Phonetic)
-admin.order.orderer_company_name: Customer Name (Comapany)
+admin.order.orderer_company_name: Customer Name (Company)
 admin.order.copy_orderer: Copy Customer Info
 admin.order.output_delivery_note: Print Delivery Slip
 admin.order.output_delivery_note_short: Print Delivery Slip
@@ -819,11 +821,12 @@ admin.order.order_item_info: Ordered Product Info
 admin.order.order_item_type: Item Type
 admin.order.add_product_item: Add a Product
 admin.order.add_other_item: Add Other Items
-admin.order.update_calculation_results: Update the Caltulation
+admin.order.update_calculation_results: Update the Calculation
 admin.order.amount: Price
 admin.order.quantity: Qty
 admin.order.tax_rate: Tax
 admin.order.tax_type: Tax Type
+admin.order.point_rate: Point Rate
 admin.order.subtotal: Subtotal
 admin.order.discount: Discount
 admin.order.delivery_fee: Shipping Charge
@@ -863,7 +866,7 @@ admin.order.send_mail: Send an Email
 admin.order.shop_memo_for_shipped: Shipping Notes
 admin.order.shipping__card_title: Shipping Info
 admin.order.shipping_id: Shipping ID
-admin.order.shipping_mail: Shiping Notice
+admin.order.shipping_mail: Shipping Notice
 admin.order.shipping_mail__completed: 'The shipping notice is already sent on %date%'
 admin.order.shipping_mail__sent: Sent
 admin.order.shipping_mail__unsent: Unsent
@@ -923,7 +926,7 @@ admin.order.skip_change_status: '%name%: Status change has been skipped'
 admin.order.shipping_csv.shipping_id_col: Shipping ID
 admin.order.shipping_csv.shipping_id_description: ''
 admin.order.shipping_csv.tracking_number_col: Tracking No.
-admin.order.shipping_csv.tracking_number_description: ''
+admin.order.shipping_csv.tracking_number_description: Enter alphanumeric characters or hyphens
 admin.order.shipping_csv.shipping_date_col: Shipping Date
 admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of MM/DD/YYYY
 
@@ -982,10 +985,11 @@ admin.content.file.file_list__card_title: Files in This Directory
 admin.content.file.updated: Update
 admin.content.file.directory_tree: Directories
 admin.content.file.upload_complete: '%success% file upload completed. (%success%/%count%)'
-admin.content.file.upload_error: 'Failed to upload %file_name%. (%error%)'
+admin.content.file.upload_error: 'Failed to upload %file_name%. '
 admin.content.file.folder_name_symbol_error: The folder name contains invalid characters.
 admin.content.file.folder_name_period_error: Folder names beginning with a period(.) are not allowed.
 admin.content.file.dir_exists: '%file_name% is already exists.'
+admin.content.file.same_name_folder_exists: 'Cannot upload because a folder with the same name as the file exists.'
 admin.content.file.phpfile_error: 'php files cannot be uploaded.'
 admin.content.file.dotfile_error: 'Dot files cannot be uploaded.'
 admin.content.layout_delete: Delete Layouts
@@ -1297,6 +1301,10 @@ admin.setting.system.authority.deny_url_is_invalid: /(slash) is required.
 #------------------------------------------------------------------------------------
 
 admin.setting.system.security__card_title: Security Settings
+admin.setting.system.security_admin_url__card_title: Admin Console URL Setting
+admin.setting.system.security_admin_ip_limit__card_title: Admin Console IP Restrictions Setting
+admin.setting.system.security_front_ip_limit__card_title: Storefront IP Restrictions Setting
+admin.setting.system.security_connect_card_title: Connect Setting
 admin.setting.system.security.admin_url: Admin Console URL
 admin.setting.system.security.admin_url_description: It is recommended to set the URL which would NOT be easily guessed.
 admin.setting.system.security.admin_url_changed: The URL of Admin Console has been changed. Please sign in again.
@@ -1304,13 +1312,23 @@ admin.setting.system.security.ip_limit: IP Restrictions(Allow List)
 admin.setting.system.security.ip_limit_description: |
  This will restrict the access to the Admin Console to specified IP addresses.
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
+  The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.ip_limit_sample: |
- 127.0.0.1
+ 127.0.0.1/28
  192.0.2.1
 admin.setting.system.security.ip_limit_deny: IP Restrictions(Deny List)
 admin.setting.system.security.ip_limit_description_deny: |
   This will deny the access to the Admin Console from specified IP addresses.
   Please enter the URLs one by one which you deny the access to.
+  The IP address corresponds to the subnet mask notation.
+admin.setting.system.security.front_ip_limit_description: |
+  This will restrict the access to the Front Screen to specified IP addresses.
+  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Front Screen.
+  The IP address corresponds to the subnet mask notation.
+admin.setting.system.security.front_ip_limit_description_deny: |
+  This will deny the access to the Front Screen from specified IP addresses.
+  Please enter the URLs one by one which you deny the access to.
+  The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.force_ssl: SSL is mandatory
 admin.setting.system.security.force_ssl_description: Only https access is allowed to set SSL restrictions.
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip% is not an IPv4 address.'
@@ -1417,7 +1435,7 @@ admin.store.setting.get_api_key_info: Issue a new authentication key
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path
-admin.store.setting.invalid_captcha: Invaild input
+admin.store.setting.invalid_captcha: Invalid input
 admin.store.setting.captcha_error: Error
 admin.store.package.api.0.error: Failed to communicate with Owners' Store. Please wait for a while and try again.
 admin.store.package.api.403.error: Owners' Store failed to authenticate. Please confirm the authentication key settings.
@@ -1491,7 +1509,7 @@ admin.store.plugin_owners_confirm.847: Supported EC-CUBE Version
 admin.store.plugin_owners_confirm.848: 'File size<br>Approx. %size% KB'
 admin.store.plugin_owners_confirm.848.1: File Size
 admin.store.plugin_owners_confirm.848.2: Approx.
-admin.store.plugin_owners_confirm.849: Lisence
+admin.store.plugin_owners_confirm.849: Licence
 admin.store.plugin_owners_confirm.850: 'This plugin does not support EC-CUBE %version%. It may not work properly.'
 admin.store.plugin_owners_confirm.851: 'This requires %dependency% to work with. It will also be installed.'
 admin.store.plugin_owners_confirm.852: '<strong>Developed by</strong> : '
@@ -1534,7 +1552,7 @@ admin.store.plugin_owners_search.modal.contact: Document Request / Inquiry
 admin.store.plugin_owners_search.modal.manual: Download User Guide
 admin.store.plugin_owners_search.modal.note: 'This plugin does not support EC-CUBE %version%. It may not work properly.'
 admin.store.plugin_owners_search.modal.cancel: Go back to All
-admin.store.plugin_owners_search.modal.submit: Comfirm Installation
+admin.store.plugin_owners_search.modal.submit: Confirm Installation
 admin.store.plugin_owners_search.modal.dependency: 'This requires %dependency% to work with. It will also be installed.'
 admin.store.plugin_search.884: Owner's Store.
 admin.store.plugin_search.885: Find Plugins
@@ -1556,7 +1574,7 @@ admin.store.plugin_table.901: Status
 admin.store.plugin_table.902: Enable
 admin.store.plugin_table.903: Disable
 admin.store.plugin_table_official.901: Plugin Name
-admin.store.plugin_table_official.902: Plugin Thumnail
+admin.store.plugin_table_official.902: Plugin Thumbnail
 admin.store.plugin_table_official.903: Plugin Version
 admin.store.plugin_table_official.904: Plugin Code
 admin.store.plugin_table_official.905: Update
@@ -1585,7 +1603,7 @@ admin.store.unregistered_plugin_table.943: Code
 admin.store.unregistered_plugin_table.944: Update
 admin.store.unregistered_plugin_table.945: Settings
 admin.store.unregistered_plugin_table.946: Unknown
-admin.store.unregistered_plugin_table.947: Unkonwn
+admin.store.unregistered_plugin_table.947: Unknown
 admin.store.unregistered_plugin_table.948: Show Details
 admin.store.unregistered_plugin_table.949: Unknown
 admin.store.unregistered_plugin_table.950: Settings
@@ -1600,6 +1618,7 @@ admin.info: Information
 admin.info.official_site: Official Site
 admin.info.community: Developers Community
 admin.info.document: Documents
+admin.info.manual: Manual
 
 #------------------------------------------------------------------------------------
 # ツールチップ
@@ -1618,8 +1637,8 @@ tooltip.product.sale_limit: This will limit the number of products shoppers can 
 tooltip.product.delivery_duration: You can register estimated shipping date per product.
 tooltip.product.product_class: You can review and manage the option(s) set to this product.
 tooltip.product.free_area: The entry will be displayed on the product page. The placement varies according to the design templates.
-tooltip.product.shop_memo: Notes for store use. This will not be displayed on the storefront.
-tooltip.product.backend_name: 'You can register an alias for administrator (e.g. Option Name: Size - Alias: Size (Clothing) or Size (Shoes) etc. It will not be displayed on the storefront.'
+tooltip.product.shop_memo: Notes for store use. This will not be displayed on the Front Screen.
+tooltip.product.backend_name: 'You can register an alias for administrator (e.g. Option Name: Size - Alias: Size (Clothing) or Size (Shoes) etc. It will not be displayed on the Front Screen.'
 tooltip.product.csv_upload: Bulk product registration is available with a CSV template.
 tooltip.product.csv_format: You can create a CSV data easily with templates available for downloads.
 tooltip.category.csv_upload: Bulk category registration is available with a CSV template.
@@ -1629,14 +1648,14 @@ tooltip.order.order_search_status: You can filter the list by order status. The 
 tooltip.order.bulk_actions: Bulk processing is applied to the checked orders. Please be careful when you apply it.
 tooltip.order.order_info: General information of orders.
 tooltip.order.order_no: Order No. is automatically generated upon placing the order.
-tooltip.order.order_status: 受注の対応状況を変更できます。ただし新規受注登録以外。また、1受注で出荷先が複数ある場合は全て出荷されると対応状況が「出荷済」となります。
+tooltip.order.order_status: You can change the status of your order response. However, except for new order registration. If an order has multiple destinations, the status will change to "Shipped" when all orders have been shipped.
 tooltip.order.customer_id: Customer IDs which are automatically generated.
 tooltip.order.shipping_info: Displaying the delivery information. You can add delivery addresses too. If you have multiple delivery addresses within a order, you can check the delivery address details at [Edit Delivery Address].
 tooltip.order.shipping_info.tracking_number: If you have a tracking number (delivery slip number), you can enter from here. You can also bulk-input from All Orders.
 tooltip.order.shipping_info.delivery_provider: You can change delivery companies or delivery methods here. Please note the shipping charge may be updated if you change any of them.
 tooltip.order.shipping_info.shop_memo: You can save a note for shipping operators or delivery companies. You can review it in Shipping CSV etc.
 tooltip.order.product_info: Here displayed the purchased product information and the total amount including shipping charge or any other charges. If you add a product(s) or change the amount, please update the total amount as well.
-tooltip.order.shop_memo: You can save notes for store use. They are not displayed on the storefront.
+tooltip.order.shop_memo: You can save notes for store use. They are not displayed on the Front Screen.
 tooltip.order.mail_history: You can review the emails sent and create a new email.
 tooltip.order.mail_destination_info: You can send emails to shoppers.
 tooltip.order.mail_template: You can select an email template.
@@ -1647,7 +1666,7 @@ tooltip.customer.multi_search_label: You can filter the list with keywords. To f
 tooltip.customer.customer_id: Auto-generated Customer IDs.
 tooltip.customer.customer_address: The delivery address registered by this customer. You can add a new address from this page as well.
 tooltip.customer.purchase_history: Order history of this customer is displayed here.
-tooltip.customer.shop_memo: Notes for store use. This will not be displayed on the storefront.
+tooltip.customer.shop_memo: Notes for store use. This will not be displayed on the Front Screen.
 tooltip.content.news.url: If there is a page which provides the details of this news, enter its URL. You can also enter external URLs.
 tooltip.content.news.body: You can use HTML tags.
 tooltip.content.file.upload_file: You can select multiple files and upload files.
@@ -1684,7 +1703,7 @@ tooltip.setting.shop.payment.logo_image: You can upload the payment option icons
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
 tooltip.setting.shop.delivery.apply_to_pref: The same shipping charge can be applied to all prefectures. You can later change the shipping rate for each prefecture one by one.
-tooltip.setting.shop.delivery.shop_memo: This is a note for store Owner''s. It is not displayed on the storefront.
+tooltip.setting.shop.delivery.shop_memo: This is a note for store Owner''s. It is not displayed on the Front Screen.
 tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all products. The general tax rate can be overwritten if you enter a new rate.
 tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
@@ -1699,9 +1718,11 @@ tooltip.setting.system.member.work: You can set customers to inactive temporaril
 tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
 tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
+tooltip.setting.system.security.front_ip_limit: Restricting IP addresses which are allowed to sign in to the Front Screen.
+tooltip.setting.system.security.front_ip_limit_deny: IP addresses where access to the Front Screen is denied.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
 tooltip.setting.system.security.ip_limit_deny: IP addresses where access to the Admin Console is denied.
-tooltip.setting.system.security.force_ssl: Restricting the access to the storefront and Admin Console to via SSL(https).
+tooltip.setting.system.security.force_ssl: Restricting the access to the Front Screen and Admin Console to via SSL(https).
 tooltip.setting.system.security.trusted_hosts: Deny access to non-trusted hosts.
 tooltip.setting.system.login_history.multi_search_label: You can filter the list with keywords. For more search options, open [Advanced Search].
 tooltip.setting.system.log_display: Here you can check logs such as access logs and error logs etc.
@@ -1727,7 +1748,7 @@ install.database_configuration: Database Configuration
 install.database_initalization: Database Initialization
 install.install_completed: Installation Completed
 install.start_eccube_installation: '<p>The installation of EC-CUBE will be started.</p><p>Please have your database information (database name etc) at hand.</p>'
-install.cooperation_of_providing_information: 'To improve EC-CUBE and debagging, please provide your site information. We will not use the provided information other than these purposes.<br><span class="small">（Site Info: Store URL, PHP Version, DB Version）</span>'
+install.cooperation_of_providing_information: 'To improve EC-CUBE and debugging, please provide your site information. We will not use the provided information other than these purposes.<br><span class="small">（Site Info: Store URL, PHP Version, DB Version）</span>'
 install.accept_infomation_provision: Accept to Submit
 install.permission_is_valid: The access permission is working properly
 install.permission_is_invalid: Please change the access permission of the following directories.
@@ -1786,6 +1807,7 @@ exception.error_message_can_not_access: The page you reached is not available. I
 exception.error_title_not_found: Page not found.
 exception.error_message_not_found: Please check if the URL is correct.
 exception.error_message_restrict_url: This functionality is restricted by the administrator.
+exception.error_message_rate_limit: The maximum number of attempts has been exceeded. Please wait a moment and try again.
 
 #------------------------------------------------------------------------------------
 # Purchase Flow
@@ -1793,6 +1815,7 @@ exception.error_message_restrict_url: This functionality is restricted by the ad
 
 purchase_flow.delivery_fee_update: Shipping charge has been updated. Please confirm the total amount.
 purchase_flow.charge_update: Charge has been updated. Please confirm the total amount.
+purchase_flow.tax_rate_update: Tax Rate has been updated. Please confirm the total amount.
 purchase_flow.over_customer_point: You are not able to use points more than your current points.
 purchase_flow.over_payment_total: The points are more than the total amount.
 purchase_flow.over_stock: '%name% does not have enough stock.'

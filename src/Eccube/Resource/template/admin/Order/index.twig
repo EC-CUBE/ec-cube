@@ -149,13 +149,13 @@ file that was distributed with this source code.
                     <div class="col-12">
                         {{ form_widget(searchForm._token) }}
                         <div>
-                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.multi_search_label'|trans }}">{{ 'admin.order.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.multi_search_label'|trans }}">{{ 'admin.order.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="row">
                             <div class="mb-3 col-12">
-                                <label class="col-form-label"  data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_search_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                <label class="col-form-label"  data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.order_search_status'|trans }}">{{ 'admin.order.order_status'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                                 <div id="admin_search_order_status">
                                     {% set statusForm = searchForm.status %}
                                     <!-- 各対応状況の件数を表示する -->
@@ -178,7 +178,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail">
                             <a>
-                                <i class="fa fw-bold mr-1 fa-plus-square-o">
+                                <i class="fa fw-bold me-1 fa-plus-square-o">
                                     <span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span>
                                 </i>
                             </a>
@@ -371,7 +371,7 @@ file that was distributed with this source code.
                         <div class="col-12">
                             <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.common.search'|trans }}</button>
                             {% if pagination %}
-                                <span class="fw-bold ml-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                                <span class="fw-bold ms-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -397,15 +397,15 @@ file that was distributed with this source code.
                             <div class="col-7">
                                 <div class="row justify-content-between">
                                     <div class="col-auto d-none btn-bulk-wrapper">
-                                        <label class="mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.bulk_actions'|trans }}">{{ 'admin.common.bulk_actions'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
-                                        <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
+                                        <label class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.bulk_actions'|trans }}">{{ 'admin.common.bulk_actions'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
+                                        <button id="bulkSendMail" type="button" class="btn btn-ec-regular me-2" data-type="mail" data-bulk-update="true">
                                             {{ 'admin.order.send_mail'|trans }}
                                         </button>
-                                        <button type="button" id="bulkExportPdf" class="btn btn-ec-regular mr-2">{{ 'admin.order.output_delivery_note_short'|trans }}</button>
+                                        <button type="button" id="bulkExportPdf" class="btn btn-ec-regular me-2">{{ 'admin.order.output_delivery_note_short'|trans }}</button>
                                         {# TODO 削除処理は将来バージョンで対応 <button type="button" class="btn btn-ec-delete" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal">{{ 'admin.common.delete'|trans }}</button> #}
                                     </div>
                                     <div class="col d-none btn-bulk-wrapper">
-                                        <div class="d-inline-block mr-2">
+                                        <div class="d-inline-block me-2">
                                             <select class="form-select" id="option_bulk_status">
                                                 <option value="" selected>{{ 'admin.order.change_status'|trans }}</option>
                                                 {% for status in OrderStatuses %}
@@ -413,7 +413,7 @@ file that was distributed with this source code.
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                        <button type="button" id="btn_bulk_status" class="btn btn-ec-regular mr-2 progressModal" data-type="status" data-bulk-update="true" data-submit="bulk">
+                                        <button type="button" id="btn_bulk_status" class="btn btn-ec-regular me-2 progressModal" data-type="status" data-bulk-update="true" data-submit="bulk">
                                             {{ 'admin.common.decision'|trans }}
                                         </button>
                                     </div>
@@ -433,7 +433,7 @@ file that was distributed with this source code.
                                     <div class="btn-group" role="group">
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-ec-regular" data-bs-toggle="dropdown" id="csvDownloadDropDown">
-                                                <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                                <i class="fa fa-cloud-download me-1 text-secondary"></i>
                                                 <span>{{ 'admin.common.csv_download'|trans }}</span>
                                             </button>
                                             <div class="dropdown-menu">
@@ -448,7 +448,7 @@ file that was distributed with this source code.
 
                                         <div class="btn-group" role="group">
                                             <button type="button" class="btn btn-ec-regular" data-bs-toggle="dropdown" id="csvSettingDropDown">
-                                                <i class="fa fa-cog mr-1 text-secondary"></i>
+                                                <i class="fa fa-cog me-1 text-secondary"></i>
                                                 <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
                                             </button>
                                             <div class="dropdown-menu">
@@ -472,7 +472,7 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center ps-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.id'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="order"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}<a href="#" class="js-listSort" data-sortkey="payment_method"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}<a href="#" class="js-listSort" data-sortkey="order_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}<a href="#" class="js-listSort" data-sortkey="purchase_price"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
@@ -582,9 +582,9 @@ file that was distributed with this source code.
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                                <div class="row justify-content-md-center mb-4"></div>
+                                <div class="row justify-content-md-center"></div>
                             </div>
-                            <div class="row justify-content-md-center mb-4">
+                            <div class="row justify-content-md-center pb-4 mb-4">
                                 {% if pagination.totalItemCount > 0 %}
                                     {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
                                 {% endif %}
@@ -630,7 +630,7 @@ file that was distributed with this source code.
                                         </label>
                                     </div>
                                     <div>
-                                        <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o fw-bold mr-1"></i><span class="fw-bold">{{ 'admin.order.bulk_action__confirm_view_mail_body'|trans }}</span></a></div>
+                                        <div class="d-inline-block" data-bs-toggle="collapse" href="#viewEmail" aria-expanded="false" aria-controls="viewEmail"><a><i class="fa fa-plus-square-o fw-bold me-1"></i><span class="fw-bold">{{ 'admin.order.bulk_action__confirm_view_mail_body'|trans }}</span></a></div>
                                         <div class="collapse bg-light p-4 ec-collapse bg-ec-formGray" id="viewEmail" style="word-wrap: break-word; word-break:break-all">
                                             <pre></pre>
                                         </div>

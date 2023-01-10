@@ -104,7 +104,7 @@ class IntlExtension extends AbstractExtension
             return '';
         }
 
-        $date_day = (new \Twig\Extra\Intl\IntlExtension())->formatDateTime($env, $date, 'medium');
+        $date_day = (new \Twig\Extra\Intl\IntlExtension())->formatDate($env, $date, 'medium');
         // 曜日
         $dateFormatter = \IntlDateFormatter::create(
             'ja_JP@calendar=japanese',

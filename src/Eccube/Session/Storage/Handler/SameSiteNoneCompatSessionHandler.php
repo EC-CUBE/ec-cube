@@ -27,13 +27,9 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /** @var string */
     private $sessionName;
     /** @var string|null */
-    private $prefetchId;
-    /** @var string|null */
     private $prefetchData;
     /** @var string */
     private $newSessionId;
-    /** @var string|null */
-    private $igbinaryEmptyData;
 
     /**
      *  {@inheritdoc}

@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                 <li class="list-group-item sortable-item" data-id="{{ News.id }}">
                                     <div class="row justify-content-around">
                                         <div class="col-2 d-flex align-items-center">
-                                            <span>{{ News.publishDate|date_min }}</span></div>
+                                            <span>{{ News.publishDate|date_sec }}</span></div>
                                         <div class="col-1 d-flex align-items-center">{{ News.visible ? 'admin.content.news.display_status__show'|trans : 'admin.content.news.display_status__hide'|trans }}</div>
                                         <div class="col d-flex align-items-center"><a
                                                     href="{{ url('admin_content_news_edit', {id: News.id}) }}">{{ News.title }}</a>
@@ -77,10 +77,9 @@ file that was distributed with this source code.
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                    <button class="close" type="button"
+                                                                    <button class="btn-close" type="button"
                                                                             data-bs-dismiss="modal"
-                                                                            aria-label="Close"><span
-                                                                                aria-hidden="true">×</span>
+                                                                            aria-label="Close">
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body text-start">

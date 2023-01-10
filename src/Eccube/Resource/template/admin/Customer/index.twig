@@ -25,11 +25,11 @@ file that was distributed with this source code.
                 <div class="row justify-content-start">
                     <div class="col-6">
                         <div class="mb-2">
-                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.customer.multi_search_label'|trans }}">{{ 'admin.customer.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.customer.multi_search_label'|trans }}">{{ 'admin.customer.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
                             {{ form_widget(searchForm.multi) }}
                             {{ form_errors(searchForm.multi) }}
                         </div>
-                        <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold mr-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
+                        <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold me-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
                     </div>
                 </div>
             </div>
@@ -224,7 +224,7 @@ file that was distributed with this source code.
         <div class="c-outsideBlock__contents mb-5">
             <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.search'|trans }}</button>
             {% if pagination %}
-                <span class="fw-bold ml-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
+                <span class="fw-bold ms-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
             {% endif %}
         </div>
         <div class="c-outsideBlock__contents mb-5">
@@ -239,7 +239,7 @@ file that was distributed with this source code.
 
                             <div class="col-5 text-end">
                                 {#Dropdown page count#}
-                                <div class="d-inline-block mr-2 align-bottom">
+                                <div class="d-inline-block me-2 align-bottom">
                                     <select class="form-select" onchange="location = this.value;">
                                         {% for pageMax in pageMaxis %}
                                             <option {% if pageMax.name == page_count %} selected {% endif %}
@@ -251,8 +251,8 @@ file that was distributed with this source code.
 
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_customer_export') }}"><i class="fa fa-cloud-download mr-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span></a>
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"><i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></a>
+                                        <a class="btn btn-ec-regular" href="{{ url('admin_customer_export') }}"><i class="fa fa-cloud-download me-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span></a>
+                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}"><i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -292,7 +292,7 @@ file that was distributed with this source code.
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title fw-bold">{{ 'admin.customer.resend_confirm_title'|trans }}</h5>
                                                                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                            
+
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body text-start">
@@ -321,7 +321,7 @@ file that was distributed with this source code.
                                                                     <h5 class="modal-title fw-bold">
                                                                         {{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                        
+
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body text-start">
@@ -345,7 +345,7 @@ file that was distributed with this source code.
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                                <div class="row justify-content-md-center mb-4">
+                                <div class="row justify-content-md-center pb-4 mb-4">
                                     {% if pagination.totalItemCount > 0 %}
                                         {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
                                     {% endif %}

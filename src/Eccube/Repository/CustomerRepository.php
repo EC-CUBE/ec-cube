@@ -14,12 +14,15 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\Sex;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -99,6 +102,38 @@ class CustomerRepository extends AbstractRepository
         return $Customer;
     }
 
+    /**
+     * @param array{
+     *         multi?:string,
+     *         pref?:Pref,
+     *         sex?:Sex[],
+     *         birth_month?:string|int,
+     *         birth_start?:\DateTime,
+     *         birth_end?:\DateTime,
+     *         phone_number?:string,
+     *         buy_total_start?:string|int,
+     *         buy_total_end?:string|int,
+     *         buy_times_start?:string|int,
+     *         buy_times_end?:string|int,
+     *         create_datetime_start?:\DateTime,
+     *         create_datetime_end?:\DateTime,
+     *         create_date_start?:\DateTime,
+     *         create_date_end?:\DateTime,
+     *         update_datetime_start?:\DateTime,
+     *         update_datetime_end?:\DateTime,
+     *         update_date_start?:\DateTime,
+     *         update_date_end?:\DateTime,
+     *         last_buy_datetime_start?:\DateTime,
+     *         last_buy_datetime_end?:\DateTime,
+     *         last_buy_start?:\DateTime,
+     *         last_buy_end?:\DateTime,
+     *         customer_status?:CustomerStatus[],
+     *         buy_product_name?:string,
+     *         sortkey?:string,
+     *         sorttype?:string
+     *     } $searchData
+     * @return QueryBuilder
+     */
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('c')
@@ -160,7 +195,7 @@ class CustomerRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
             $qb
                 ->andWhere('c.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');

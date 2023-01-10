@@ -15,6 +15,8 @@ namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTransformer;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,7 +48,7 @@ class RepeatedPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'entry_type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
+            'type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
             'invalid_message' => 'form_error.same_password',
             'required' => true,
             'error_bubbling' => false,

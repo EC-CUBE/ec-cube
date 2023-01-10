@@ -15,30 +15,33 @@ Styleguide 7.0
   //1層目
   label {
     &::before {
-      content: "\f147";
+      content: "\f146";
       display: inline-block;
       margin-right: .5em;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 16px;
+      font-weight: 400;
     }
   }
   label[data-toggle="collapse"] {
     &::before {
-      content: "\f147";
+      content: "\f146";
       display: inline-block;
       margin-right: .5em;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 16px;
+      font-weight: 400;
     }
   }
 
   label.collapsed {
     &::before {
-      content: "\f196";
+      content: "\f0fe";
       display: inline-block;
       margin-right: .5em;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 16px;
+      font-weight: 400;
     }
   }
   //2層目以降
@@ -70,33 +73,36 @@ Styleguide 7.0
     }
     label {
       &::after {
-        content: "\f147";
+        content: "\f146";
         display: inline-block;
         margin-right: .5em;
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-size: 16px;
+        font-weight: 400;
         position: absolute;
         left: 20px;
       }
     }
     label[data-toggle="collapse"] {
       &::after {
-        content: "\f147";
+        content: "\f146";
         display: inline-block;
         margin-right: .5em;
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-size: 16px;
+        font-weight: 400;
         position: absolute;
         left: 20px;
       }
     }
     label.collapsed {
       &::after {
-        content: "\f196";
+        content: "\f0fe";
         display: inline-block;
         margin-right: .5em;
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-size: 16px;
+        font-weight: 400;
         position: absolute;
         left: 20px;
       }
@@ -191,30 +197,32 @@ Styleguide 7.2
   //1層目
   label {
     &::before {
-      content: "\f114";
+      content: "\f07b";
       display: inline-block;
       margin-right: .5em;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 16px;
+      font-weight: 400;
     }
   }
   label[data-toggle="collapse"] {
     &::before {
-      content: "\f115";
+      content: "\f07c";
       display: inline-block;
       margin-right: .5em;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 16px;
-
+      font-weight: 400;
     }
   }
   label.collapsed {
     &::before {
-      content: "\f114";
+      content: "\f07b";
       display: inline-block;
       margin-right: .5em;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 16px;
+      font-weight: 400;
     }
   }
   //2層目以降
@@ -245,33 +253,36 @@ Styleguide 7.2
     }
     label {
       &::after {
-        content: "\f114";
+        content: "\f07b";
         display: inline-block;
         margin-right: .5em;
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-size: 16px;
+        font-weight: 400;
         position: absolute;
         left: 20px;
       }
     }
     label[data-toggle="collapse"] {
       &::after {
-        content: "\f115";
+        content: "\f07c";
         display: inline-block;
         margin-right: .5em;
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-size: 16px;
+        font-weight: 400;
         position: absolute;
         left: 20px;
       }
     }
     label.collapsed {
       &::after {
-        content: "\f114";
+        content: "\f07b";
         display: inline-block;
         margin-right: .5em;
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-size: 16px;
+        font-weight: 400;
         position: absolute;
         left: 20px;
       }

@@ -123,7 +123,7 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && strpos($file, '..') === false && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file

@@ -381,6 +381,9 @@ class ProductController extends AbstractController
         ];
 
         foreach ($dirs as $dir) {
+            if (strpos($request->query->get('source'), '..') !== false) {
+                throw new NotFoundHttpException();
+            }
             $image = \realpath($dir.'/'.$request->query->get('source'));
             $dir = \realpath($dir);
 
@@ -754,7 +757,6 @@ class ProductController extends AbstractController
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
-        $message = null;
         $success = false;
 
         if (!is_null($id)) {
@@ -965,12 +967,12 @@ class ProductController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 商品データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getProductQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // Get stock status
             $isOutOfStock = 0;

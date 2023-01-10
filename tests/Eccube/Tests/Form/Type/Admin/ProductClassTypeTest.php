@@ -27,6 +27,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
      * @var array デフォルト値（正常系）を設定
      */
     protected $formData = [
+        'code' => 'code',
         'stock' => '100',
         'sale_limit' => '100',
         'price01' => '100',
@@ -186,6 +187,14 @@ class ProductClassTypeTest extends AbstractTypeTestCase
     public function testInvalidDeliveryFeeHasMinus()
     {
         $this->formData['delivery_fee'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidCodeLong()
+    {
+        $this->formData['code'] = 'この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

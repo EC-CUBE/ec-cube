@@ -188,7 +188,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->assertCount(0, $crawler->filter('span.ec-errorMessage'));
 
         // お届け先上限まで登録
-        $max = self::$container->getParameter('eccube_deliv_addr_max');
+        $max = static::getContainer()->getParameter('eccube_deliv_addr_max');
         for ($i = 0; $i < $max; $i++) {
             $this->createCustomerAddress($this->Customer);
         }

@@ -102,7 +102,6 @@ class MailController extends AbstractController
                     if ($form->get('template')->isValid()) {
                         /** @var $data \Eccube\Entity\MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
-                        $data = $form->getData();
 
                         if ($MailTemplate) {
                             $twig = $MailTemplate->getFileName();

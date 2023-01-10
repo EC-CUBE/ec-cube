@@ -1,0 +1,112 @@
+name: E2E test(Throttoling) for EC-CUBE
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+jobs:
+  codeception:
+    name: Codeception
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 8.1 ]
+        db: [ pgsql ]
+        method: [ フロント画面ログイン_IP, フロント画面ログイン_会員, 管理画面ログイン_IP, 管理画面ログイン_会員, 会員登録, 問い合わせ, パスワード再発行, 非会員購入, 会員購入 ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 14
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Run chromedriver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          echo ">>> Started chrome-driver"
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          echo ">>> Started xvfb"
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
+      - name: Codeception
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          METHOD: ${{ matrix.method }}
+          SYMFONY_DEPRECATIONS_HELPER: weak
+        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EF09ThrottlingCest::${METHOD} --html report.html
+
+      - name: Upload evidence
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.method }}-evidence
+          path: codeception/_output/
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-${{ matrix.method }}-logs
+          path: var/log/

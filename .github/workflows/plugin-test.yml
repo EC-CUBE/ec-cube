@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-20.04 ]
         php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -68,24 +68,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
 
-      - name: composer install
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Setup to EC-CUBE
         env:
@@ -168,7 +157,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-20.04 ]
         php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -315,7 +304,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-20.04 ]
         php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -462,7 +451,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-20.04 ]
         php: [ '7.4', '8.0', '8.1' ]
         db: [ pgsql, mysql ]
         method:

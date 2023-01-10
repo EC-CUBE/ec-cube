@@ -20,21 +20,6 @@
   }
 }
 
-//** bootstrap-sass(https://github.com/twbs/bootstrap-sass) からの移植
-
-$font-size-base: 14;
-$font-family-sans-serif: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif !default;
-$line-height-base: 1.428571420 !default; // 20/14
-$padding-base-vertical: 6px !default;
-$line-height-computed: floor(($font-size-base * $line-height-base)) px !default;
-$input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) px !default;
-$input-border: #ccc !default;
-//** Border color for inputs on focus
-$input-border-focus: #66afe9 !default;
-
-//** Placeholder text color
-$input-color-placeholder: #999 !default;
-
 @mixin form-control-focus($color: $input-border-focus) {
   $color-rgba: rgba(red($color), green($color), blue($color), .6);
   &:focus {

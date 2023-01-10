@@ -37,7 +37,7 @@ class FileController extends AbstractController
     public const SJIS = 'sjis-win';
     public const UTF = 'UTF-8';
     private $errors = [];
-    private $encode = '';
+    private $encode;
 
     /**
      * FileController constructor.
@@ -186,11 +186,18 @@ class FileController extends AbstractController
             if (file_exists($newFilePath)) {
                 throw new IOException(trans('admin.content.file.dir_exists', ['%file_name%' => $filename]));
             }
-            $fs->mkdir($newFilePath);
-
-            $this->addSuccess('admin.common.create_complete', 'admin');
         } catch (IOException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
+            return;
+        }
+        try {
+            $fs->mkdir($newFilePath);
+            $this->addSuccess('admin.common.create_complete', 'admin');
+        } catch (IOException $e) {
+            log_error($e->getMessage());
+            $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
+                '%file_name%' => $filename,
+            ])];
         }
     }
 
@@ -293,6 +300,14 @@ class FileController extends AbstractController
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
+                // フォルダの存在チェック
+                if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
+                }
+                // 英数字, 半角スペース, _-.() のみ許可
+                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', $filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
+                }
                 // phpファイルはアップロード不可
                 if ($file->getClientOriginalExtension() === 'php') {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.phpfile_error'));
@@ -301,15 +316,20 @@ class FileController extends AbstractController
                 if (strpos($filename, '.') === 0) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
+            } catch (UnsupportedMediaTypeHttpException $e) {
+                if (!in_array($e->getMessage(), array_column($this->errors, 'message'))) {
+                    $this->errors[] = ['message' => $e->getMessage()];
+                }
+                continue;
+            }
+            try {
                 $file->move($nowDir, $filename);
                 $successCount++;
             } catch (FileException $e) {
+                log_error($e->getMessage());
                 $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
                     '%file_name%' => $filename,
-                    '%error%' => $e->getMessage(),
                 ])];
-            } catch (UnsupportedMediaTypeHttpException $e) {
-                $this->errors[] = ['message' => $e->getMessage()];
             }
         }
         if ($successCount > 0) {
@@ -468,6 +488,9 @@ class FileController extends AbstractController
      */
     protected function checkDir($targetDir, $topDir)
     {
+        if (strpos($targetDir, '..') !== false) {
+            return false;
+        }
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 

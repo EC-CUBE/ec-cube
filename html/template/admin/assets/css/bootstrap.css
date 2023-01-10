@@ -5319,6 +5319,9 @@ Styleguide 12.2
   background-color: #437EC4;
   border-color: transparent;
 }
+.btn-ec-conversion:disabled {
+  color: #fff;
+}
 .btn-ec-delete {
   color: #FFF;
   background-color: #C04949;
@@ -5497,6 +5500,8 @@ Styleguide 12.3
 }
 .btn-ec-tab:hover {
   color: #262626;
+  background-color: #f2f2f2;
+  border-color: #262626;
 }
 .btn-ec-tab.active {
   background-color: #595959 !important;
@@ -5539,9 +5544,6 @@ Markup:
 Styleguide 12.4
 */
 .badge-ec-blue {
-  color: transparent;
-  background-color: #FFF;
-  border-color: transparent;
   display: inline-block;
   border: 1px solid #437EC4;
   color: #437EC4;
@@ -5549,34 +5551,7 @@ Styleguide 12.4
   font-size: 14px;
   font-weight: normal;
 }
-.badge-ec-blue:hover {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-}
-.btn-check:focus + .badge-ec-blue, .badge-ec-blue:focus {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.btn-check:checked + .badge-ec-blue, .btn-check:active + .badge-ec-blue, .badge-ec-blue:active, .badge-ec-blue.active, .show > .badge-ec-blue.dropdown-toggle {
-  color: #000;
-  background-color: white;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.btn-check:checked + .badge-ec-blue:focus, .btn-check:active + .badge-ec-blue:focus, .badge-ec-blue:active:focus, .badge-ec-blue.active:focus, .show > .badge-ec-blue.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.badge-ec-blue:disabled, .badge-ec-blue.disabled {
-  color: #000;
-  background-color: #FFF;
-  border-color: transparent;
-}
 .badge-ec-green {
-  color: transparent;
-  background-color: #FFF;
-  border-color: transparent;
   display: inline-block;
   border: 1px solid #25B877;
   color: #25B877;
@@ -5584,34 +5559,7 @@ Styleguide 12.4
   font-size: 14px;
   font-weight: normal;
 }
-.badge-ec-green:hover {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-}
-.btn-check:focus + .badge-ec-green, .badge-ec-green:focus {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.btn-check:checked + .badge-ec-green, .btn-check:active + .badge-ec-green, .badge-ec-green:active, .badge-ec-green.active, .show > .badge-ec-green.dropdown-toggle {
-  color: #000;
-  background-color: white;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.btn-check:checked + .badge-ec-green:focus, .btn-check:active + .badge-ec-green:focus, .badge-ec-green:active:focus, .badge-ec-green.active:focus, .show > .badge-ec-green.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.badge-ec-green:disabled, .badge-ec-green.disabled {
-  color: #000;
-  background-color: #FFF;
-  border-color: transparent;
-}
 .badge-ec-red {
-  color: transparent;
-  background-color: #FFF;
-  border-color: transparent;
   display: inline-block;
   border: 1px solid #C04949;
   color: #C04949;
@@ -5619,34 +5567,7 @@ Styleguide 12.4
   font-size: 14px;
   font-weight: normal;
 }
-.badge-ec-red:hover {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-}
-.btn-check:focus + .badge-ec-red, .badge-ec-red:focus {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.btn-check:checked + .badge-ec-red, .btn-check:active + .badge-ec-red, .badge-ec-red:active, .badge-ec-red.active, .show > .badge-ec-red.dropdown-toggle {
-  color: #000;
-  background-color: white;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.btn-check:checked + .badge-ec-red:focus, .btn-check:active + .badge-ec-red:focus, .badge-ec-red:active:focus, .badge-ec-red.active:focus, .show > .badge-ec-red.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.badge-ec-red:disabled, .badge-ec-red.disabled {
-  color: #000;
-  background-color: #FFF;
-  border-color: transparent;
-}
 .badge-ec-yellow {
-  color: transparent;
-  background-color: #FFF;
-  border-color: transparent;
   display: inline-block;
   border: 1px solid #EEB128;
   color: #EEB128;
@@ -5654,64 +5575,13 @@ Styleguide 12.4
   font-size: 14px;
   font-weight: normal;
 }
-.badge-ec-yellow:hover {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-}
-.btn-check:focus + .badge-ec-yellow, .badge-ec-yellow:focus {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.btn-check:checked + .badge-ec-yellow, .btn-check:active + .badge-ec-yellow, .badge-ec-yellow:active, .badge-ec-yellow.active, .show > .badge-ec-yellow.dropdown-toggle {
-  color: #000;
-  background-color: white;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.btn-check:checked + .badge-ec-yellow:focus, .btn-check:active + .badge-ec-yellow:focus, .badge-ec-yellow:active:focus, .badge-ec-yellow.active:focus, .show > .badge-ec-yellow.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.badge-ec-yellow:disabled, .badge-ec-yellow.disabled {
-  color: #000;
-  background-color: #FFF;
-  border-color: transparent;
-}
 .badge-ec-glay {
-  color: transparent;
-  background-color: #FFF;
-  border-color: transparent;
   display: inline-block;
   border: 1px solid #A3A3A3;
   color: #A3A3A3;
   padding: 0.5rem 0.75rem;
   font-size: 14px;
   font-weight: normal;
-}
-.badge-ec-glay:hover {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-}
-.btn-check:focus + .badge-ec-glay, .badge-ec-glay:focus {
-  color: transparent;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.btn-check:checked + .badge-ec-glay, .btn-check:active + .badge-ec-glay, .badge-ec-glay:active, .badge-ec-glay.active, .show > .badge-ec-glay.dropdown-toggle {
-  color: #000;
-  background-color: white;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.btn-check:checked + .badge-ec-glay:focus, .btn-check:active + .badge-ec-glay:focus, .badge-ec-glay:active:focus, .badge-ec-glay.active:focus, .show > .badge-ec-glay.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.5);
-}
-.badge-ec-glay:disabled, .badge-ec-glay.disabled {
-  color: #000;
-  background-color: #FFF;
-  border-color: transparent;
 }
 /*
 ボーダー

@@ -269,7 +269,7 @@ file that was distributed with this source code.
             "@type": "Offer",
             "url": "{{ url('product_detail', {'id': Product.id}) }}",
             "priceCurrency": "{{ eccube_config.currency }}",
-            "price": {{ Product.getPrice02IncTaxMin }},
+            "price": {{ Product.getPrice02IncTaxMin ? Product.getPrice02IncTaxMin : 0}},
             "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
         }
     }
@@ -432,14 +432,14 @@ file that was distributed with this source code.
                             </div>
                         </form>
                     {% endif %}
-                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br|purify }}
+                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
                     </div>
                 </div>
             </div>
         </div>
         {% if Product.freearea %}
              <div class="ec-productRole__description">
-                 {{ include(template_from_string(Product.freearea|purify)) }}
+                 {{ include(template_from_string(Product.freearea)) }}
             </div>
         {% endif %}
     </div>

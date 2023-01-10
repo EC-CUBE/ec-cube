@@ -408,12 +408,12 @@ class OrderController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType($csvTypeId);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 受注データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getOrderQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
