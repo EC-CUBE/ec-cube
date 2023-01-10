@@ -15,12 +15,11 @@ on:
 jobs:
   phpunit:
     name: PHPUnit
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ 8.1 ]
         db: [ pgsql ]
         include:
           - db: pgsql
@@ -41,29 +40,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
-
-      - name: composer install
-        run: composer install --dev --no-interaction -o --apcu-autoloader
-
+      
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php7.4-pcov
+          sudo apt-fast install -y php8.1-pcov
           sudo phpenmod -s cli pcov
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Setup EC-CUBE
         env:
@@ -82,7 +70,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
         continue-on-error: true
-        run: bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+        run: php -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v2
@@ -91,12 +79,11 @@ jobs:
           path: coverage1.xml
   codeception:
     name: Codeception
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.4 ]
+        php: [ 8.1 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
@@ -134,26 +121,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
 
-      - name: composer install
-        run: |
-          sudo composer selfupdate
-          composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: ${{ matrix.app_env }}
@@ -182,11 +157,15 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
           cp codeception/_data/plugins/*-1.0.0.tgz repos
 
-      - name: Setup xdebug
+      - name: Setup pcov
+        run: |
+          sudo apt-fast install -y php8.1-pcov
+          sudo phpenmod -s cli pcov
+
+      - name: Setup codeception
         run: |
           composer config --no-plugins allow-plugins.codeception/c3 true
           composer require --dev codeception/c3 "2.*"
-          sudo phpenmod -s cli xdebug
           sed -i "7a include __DIR__.'/c3.php';" index.php
 
       - name: Start PHP Development Server
@@ -196,7 +175,6 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          XDEBUG_MODE: coverage
         run: php -S 127.0.0.1:8000 &
 
       - name: Codeception
@@ -208,9 +186,8 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-          XDEBUG_MODE: coverage
         continue-on-error: true
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
+        run: php -dpcov.enabled=1 vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
       - name: Upload outputs
         uses: actions/upload-artifact@v2
         with:

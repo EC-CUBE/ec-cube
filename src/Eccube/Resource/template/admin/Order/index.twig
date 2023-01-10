@@ -472,7 +472,7 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center ps-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.id'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="order"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}<a href="#" class="js-listSort" data-sortkey="payment_method"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}<a href="#" class="js-listSort" data-sortkey="order_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}<a href="#" class="js-listSort" data-sortkey="purchase_price"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
@@ -582,9 +582,9 @@ file that was distributed with this source code.
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                                <div class="row justify-content-md-center mb-4"></div>
+                                <div class="row justify-content-md-center"></div>
                             </div>
-                            <div class="row justify-content-md-center mb-4">
+                            <div class="row justify-content-md-center pb-4 mb-4">
                                 {% if pagination.totalItemCount > 0 %}
                                     {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
                                 {% endif %}

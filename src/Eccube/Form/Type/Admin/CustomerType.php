@@ -89,6 +89,9 @@ class CustomerType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_email_len'],
+                    ]),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
@@ -130,10 +133,10 @@ class CustomerType extends AbstractType
                 [
                     'required' => false,
                     'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => "/^\d+$/u",
-                            'message' => 'form_error.numeric_only',
-                        ]),
+                        new Assert\NotBlank(),
+                        new Assert\Range([
+                            'min' => "-".$this->eccubeConfig['eccube_price_max'],
+                            'max' => $this->eccubeConfig['eccube_price_max']])
                     ],
                 ]
             )

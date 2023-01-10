@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.2.0-beta2",
+  "version": "4.2.0",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -58,7 +58,7 @@
     "@babel/preset-env": "^7.18.2",
     "autoprefixer": "^9.6.4",
     "babel-loader": "^8.2.5",
-    "browser-sync": "^2.26.14",
+    "browser-sync": "^2.27.10",
     "cross-env": "^7.0.2",
     "css-mqpacker": "^7.0.0",
     "gulp": "^4.0.2",

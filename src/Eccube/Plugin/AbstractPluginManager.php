@@ -84,7 +84,7 @@ abstract class AbstractPluginManager
     /**
      * Install the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function install(array $meta, ContainerInterface $container)
@@ -95,7 +95,7 @@ abstract class AbstractPluginManager
     /**
      * Update the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function update(array $meta, ContainerInterface $container)
@@ -106,7 +106,7 @@ abstract class AbstractPluginManager
     /**
      * Enable the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function enable(array $meta, ContainerInterface $container)
@@ -117,7 +117,7 @@ abstract class AbstractPluginManager
     /**
      * Disable the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function disable(array $meta, ContainerInterface $container)
@@ -128,7 +128,7 @@ abstract class AbstractPluginManager
     /**
      * Uninstall the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function uninstall(array $meta, ContainerInterface $container)

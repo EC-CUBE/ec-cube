@@ -25,6 +25,14 @@ class TopPage extends AbstractFrontPage
         return $page->goPage('/');
     }
 
+    public function at($title)
+    {
+        $this->tester->see($title);
+
+        return $this;
+    }
+
+
     public function 新着情報選択($rowNum)
     {
         $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"]);
