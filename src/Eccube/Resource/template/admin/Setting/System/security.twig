@@ -35,18 +35,19 @@ file that was distributed with this source code.
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
+
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <span class="card-title">{{ 'admin.setting.system.security__card_title'|trans }}</span>
+                                    <span class="card-title">{{ 'admin.setting.system.security_admin_url__card_title'|trans }}</span>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <a data-bs-toggle="collapse" href="#basicConfig" aria-expanded="false" aria-controls="basicConfig"><i class="fa fa-angle-up fa-lg"></i></a>
+                                    <a data-bs-toggle="collapse" href="#urlConfig" aria-expanded="false" aria-controls="basicConfig"><i class="fa fa-angle-up fa-lg"></i></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="collapse show ec-cardCollapse" id="basicConfig">
+                        <div class="collapse show ec-cardCollapse" id="urlConfig">
                             <div class="card-body">
                                 <!-- ディレクトリ名 -->
                                 <div class="row mb-2">
@@ -60,7 +61,24 @@ file that was distributed with this source code.
                                         {{ form_errors(form.admin_route_dir) }}
                                     </div>
                                 </div>
-                                <!-- IP制限 許可リスト -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <span class="card-title">{{ 'admin.setting.system.security_admin_ip_limit__card_title'|trans }}</span>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#adminIpConfig" aria-expanded="false" aria-controls="basicConfig"><i class="fa fa-angle-up fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="adminIpConfig">
+                            <div class="card-body">
+                                <!-- 管理画面側 IP制限 許可リスト -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.ip_limit'|trans }}">
@@ -73,7 +91,7 @@ file that was distributed with this source code.
                                         <p>{{ 'admin.setting.system.security.ip_limit_description'|trans|nl2br }}</p>
                                     </div>
                                 </div>
-                                <!-- IP制限 拒否リスト -->
+                                <!-- 管理画面側 IP制限 拒否リスト -->
                                 <div class="row mb-2">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.ip_limit_deny'|trans }}">
@@ -86,6 +104,70 @@ file that was distributed with this source code.
                                         <p>{{ 'admin.setting.system.security.ip_limit_description_deny'|trans|nl2br }}</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <span class="card-title">{{ 'admin.setting.system.security_front_ip_limit__card_title'|trans }}</span>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#frontIpConfig" aria-expanded="false" aria-controls="basicConfig"><i class="fa fa-angle-up fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="frontIpConfig">
+                            <div class="card-body">
+                                <!-- フロント側 IP制限 許可リスト -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.front_ip_limit'|trans }}">
+                                            <span>{{ 'admin.setting.system.security.ip_limit'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.front_allow_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.ip_limit_sample'|trans }}) }}
+                                        {{ form_errors(form.front_allow_hosts) }}
+                                        <p>{{ 'admin.setting.system.security.front_ip_limit_description'|trans|nl2br }}</p>
+                                    </div>
+                                </div>
+                                <!-- フロント側 IP制限 禁止リスト -->
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.front_ip_limit_deny'|trans }}">
+                                            <span>{{ 'admin.setting.system.security.ip_limit_deny'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.front_deny_hosts, { 'attr': { 'rows': '8', 'placeholder': 'admin.setting.system.security.ip_limit_sample'|trans }}) }}
+                                        {{ form_errors(form.front_deny_hosts) }}
+                                        <p>{{ 'admin.setting.system.security.front_ip_limit_description_deny'|trans|nl2br }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.card -->
+
+
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <span class="card-title">{{ 'admin.setting.system.security_connect_card_title'|trans }}</span>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#networkConfig" aria-expanded="false" aria-controls="basicConfig"><i class="fa fa-angle-up fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="networkConfig">
+                            <div class="card-body">
                                 <!-- 強制SSL -->
                                 <div class="row mb-2">
                                     <div class="col-3">
@@ -117,9 +199,12 @@ file that was distributed with this source code.
                                         <p>{{ 'admin.setting.system.security.trusted_hosts_description'|trans|nl2br }}</p>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div><!-- /.card -->
+
+
                 </div>
             </div>
 

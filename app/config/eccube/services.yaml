@@ -213,3 +213,6 @@ services:
             - '@Eccube\Request\Context'
         tags:
             - { name: form.type_extension, priority: -99, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
+
+    Eccube\EventListener\RateLimiterListener:
+        arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]

@@ -93,12 +93,14 @@ services:
         class: Doctrine\Common\Collections\ArrayCollection
         arguments:
             - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PointRateProcessor' # 明細にポイント付与率を設定する
                 - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator' # 手数料の変更検知
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator' # 送料の変更検知
+                - '@Eccube\Service\PurchaseFlow\Processor\TaxRateChangeValidator' # 税率の変更検知
 
     eccube.purchase.flow.shopping.purchase:
         class: Doctrine\Common\Collections\ArrayCollection

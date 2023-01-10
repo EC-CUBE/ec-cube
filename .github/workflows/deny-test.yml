@@ -15,7 +15,7 @@ on:
 jobs:
   deploy:
     name: Deny check
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     services:
       postgres:
         image: postgres:14
@@ -35,19 +35,8 @@ jobs:
         with:
           php-version: '7.4'
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install to Composer
-        run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Translate to templates
         run: php bin/template_jp.php

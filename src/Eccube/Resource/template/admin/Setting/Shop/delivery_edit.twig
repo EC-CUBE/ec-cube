@@ -85,8 +85,8 @@ file that was distributed with this source code.
 
                 var prototype = $collectionHolder.data('prototype');
 
-                var newForm = prototype.replace(/__name__/g, index);
-                var newForm = newForm.replace(/__value__/g, deliveryTimeName);
+                var newForm = $(prototype.replace(/__name__/g, index));
+                newForm.find('.display-label').text(deliveryTimeName)
 
                 // 要素を追加
                 var $lastRow = $('#delivery-time-group > li:last');
@@ -223,14 +223,14 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery.base_info'|trans }}</span></div>
                         <div id="ex-delivery-basic" class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_sevice_name'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_sevice_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.service_name) }}
                                     {{ form_errors(form.service_name) }}
@@ -252,7 +252,7 @@ file that was distributed with this source code.
                                 <div class="col-3">
                                     <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.sale_type'|trans }}">
-                                        <span>{{ 'admin.setting.shop.delivery.sale_type'|trans }}</span>
+                                        <span>{{ 'admin.setting.shop.delivery.sale_type'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                         <i class="fa fa-question-circle fa-lg ms-1"></i>
                                     </div>
                                 </div>
@@ -279,7 +279,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.payment_method'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.payment_method'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                         <div id="ex-delivery-payment" class="card-body">
                             <div>
                                 {{ form_widget(form.payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
@@ -312,7 +312,7 @@ file that was distributed with this source code.
                     </div>
                     <p class="mb-4">{{ 'admin.common.drag_and_drop_description'|trans }}</p>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.delivery_fee_by_pref'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.delivery_fee_by_pref'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                         <div id="ex-delivery-fee" class="card-body p-0">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">

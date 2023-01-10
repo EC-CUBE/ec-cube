@@ -826,6 +826,7 @@ admin.order.amount: Price
 admin.order.quantity: Qty
 admin.order.tax_rate: Tax
 admin.order.tax_type: Tax Type
+admin.order.point_rate: Point Rate
 admin.order.subtotal: Subtotal
 admin.order.discount: Discount
 admin.order.delivery_fee: Shipping Charge
@@ -1300,6 +1301,10 @@ admin.setting.system.authority.deny_url_is_invalid: /(slash) is required.
 #------------------------------------------------------------------------------------
 
 admin.setting.system.security__card_title: Security Settings
+admin.setting.system.security_admin_url__card_title: Admin Console URL Setting
+admin.setting.system.security_admin_ip_limit__card_title: Admin Console IP Restrictions Setting
+admin.setting.system.security_front_ip_limit__card_title: Storefront IP Restrictions Setting
+admin.setting.system.security_connect_card_title: Connect Setting
 admin.setting.system.security.admin_url: Admin Console URL
 admin.setting.system.security.admin_url_description: It is recommended to set the URL which would NOT be easily guessed.
 admin.setting.system.security.admin_url_changed: The URL of Admin Console has been changed. Please sign in again.
@@ -1307,13 +1312,23 @@ admin.setting.system.security.ip_limit: IP Restrictions(Allow List)
 admin.setting.system.security.ip_limit_description: |
  This will restrict the access to the Admin Console to specified IP addresses.
  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Admin Console.
+  The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.ip_limit_sample: |
- 127.0.0.1
+ 127.0.0.1/28
  192.0.2.1
 admin.setting.system.security.ip_limit_deny: IP Restrictions(Deny List)
 admin.setting.system.security.ip_limit_description_deny: |
   This will deny the access to the Admin Console from specified IP addresses.
   Please enter the URLs one by one which you deny the access to.
+  The IP address corresponds to the subnet mask notation.
+admin.setting.system.security.front_ip_limit_description: |
+  This will restrict the access to the Front Screen to specified IP addresses.
+  Please enter the URLs one by one which you allow the access to. If no URLs are entered, any URL can access your Front Screen.
+  The IP address corresponds to the subnet mask notation.
+admin.setting.system.security.front_ip_limit_description_deny: |
+  This will deny the access to the Front Screen from specified IP addresses.
+  Please enter the URLs one by one which you deny the access to.
+  The IP address corresponds to the subnet mask notation.
 admin.setting.system.security.force_ssl: SSL is mandatory
 admin.setting.system.security.force_ssl_description: Only https access is allowed to set SSL restrictions.
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip% is not an IPv4 address.'
@@ -1603,6 +1618,7 @@ admin.info: Information
 admin.info.official_site: Official Site
 admin.info.community: Developers Community
 admin.info.document: Documents
+admin.info.manual: Manual
 
 #------------------------------------------------------------------------------------
 # ツールチップ
@@ -1621,8 +1637,8 @@ tooltip.product.sale_limit: This will limit the number of products shoppers can 
 tooltip.product.delivery_duration: You can register estimated shipping date per product.
 tooltip.product.product_class: You can review and manage the option(s) set to this product.
 tooltip.product.free_area: The entry will be displayed on the product page. The placement varies according to the design templates.
-tooltip.product.shop_memo: Notes for store use. This will not be displayed on the storefront.
-tooltip.product.backend_name: 'You can register an alias for administrator (e.g. Option Name: Size - Alias: Size (Clothing) or Size (Shoes) etc. It will not be displayed on the storefront.'
+tooltip.product.shop_memo: Notes for store use. This will not be displayed on the Front Screen.
+tooltip.product.backend_name: 'You can register an alias for administrator (e.g. Option Name: Size - Alias: Size (Clothing) or Size (Shoes) etc. It will not be displayed on the Front Screen.'
 tooltip.product.csv_upload: Bulk product registration is available with a CSV template.
 tooltip.product.csv_format: You can create a CSV data easily with templates available for downloads.
 tooltip.category.csv_upload: Bulk category registration is available with a CSV template.
@@ -1639,7 +1655,7 @@ tooltip.order.shipping_info.tracking_number: If you have a tracking number (deli
 tooltip.order.shipping_info.delivery_provider: You can change delivery companies or delivery methods here. Please note the shipping charge may be updated if you change any of them.
 tooltip.order.shipping_info.shop_memo: You can save a note for shipping operators or delivery companies. You can review it in Shipping CSV etc.
 tooltip.order.product_info: Here displayed the purchased product information and the total amount including shipping charge or any other charges. If you add a product(s) or change the amount, please update the total amount as well.
-tooltip.order.shop_memo: You can save notes for store use. They are not displayed on the storefront.
+tooltip.order.shop_memo: You can save notes for store use. They are not displayed on the Front Screen.
 tooltip.order.mail_history: You can review the emails sent and create a new email.
 tooltip.order.mail_destination_info: You can send emails to shoppers.
 tooltip.order.mail_template: You can select an email template.
@@ -1650,7 +1666,7 @@ tooltip.customer.multi_search_label: You can filter the list with keywords. To f
 tooltip.customer.customer_id: Auto-generated Customer IDs.
 tooltip.customer.customer_address: The delivery address registered by this customer. You can add a new address from this page as well.
 tooltip.customer.purchase_history: Order history of this customer is displayed here.
-tooltip.customer.shop_memo: Notes for store use. This will not be displayed on the storefront.
+tooltip.customer.shop_memo: Notes for store use. This will not be displayed on the Front Screen.
 tooltip.content.news.url: If there is a page which provides the details of this news, enter its URL. You can also enter external URLs.
 tooltip.content.news.body: You can use HTML tags.
 tooltip.content.file.upload_file: You can select multiple files and upload files.
@@ -1687,7 +1703,7 @@ tooltip.setting.shop.payment.logo_image: You can upload the payment option icons
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
 tooltip.setting.shop.delivery.sale_type: Specify the sales type(s) available for this delivery method.
 tooltip.setting.shop.delivery.apply_to_pref: The same shipping charge can be applied to all prefectures. You can later change the shipping rate for each prefecture one by one.
-tooltip.setting.shop.delivery.shop_memo: This is a note for store Owner''s. It is not displayed on the storefront.
+tooltip.setting.shop.delivery.shop_memo: This is a note for store Owner''s. It is not displayed on the Front Screen.
 tooltip.setting.shop.tax_setting: You can set the tax rates applicable to all products. The general tax rate can be overwritten if you enter a new rate.
 tooltip.setting.shop.mail.mail_template: Please select an existing email template. Contents are displayed in the text field below.
 tooltip.setting.shop.csv.csv_columns: You can output various data in CSV format. You can specify the items for CSV output.
@@ -1702,9 +1718,11 @@ tooltip.setting.system.member.work: You can set customers to inactive temporaril
 tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
 tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
+tooltip.setting.system.security.front_ip_limit: Restricting IP addresses which are allowed to sign in to the Front Screen.
+tooltip.setting.system.security.front_ip_limit_deny: IP addresses where access to the Front Screen is denied.
 tooltip.setting.system.security.ip_limit: Restricting IP addresses which are allowed to sign in to the Admin Console.
 tooltip.setting.system.security.ip_limit_deny: IP addresses where access to the Admin Console is denied.
-tooltip.setting.system.security.force_ssl: Restricting the access to the storefront and Admin Console to via SSL(https).
+tooltip.setting.system.security.force_ssl: Restricting the access to the Front Screen and Admin Console to via SSL(https).
 tooltip.setting.system.security.trusted_hosts: Deny access to non-trusted hosts.
 tooltip.setting.system.login_history.multi_search_label: You can filter the list with keywords. For more search options, open [Advanced Search].
 tooltip.setting.system.log_display: Here you can check logs such as access logs and error logs etc.
@@ -1789,6 +1807,7 @@ exception.error_message_can_not_access: The page you reached is not available. I
 exception.error_title_not_found: Page not found.
 exception.error_message_not_found: Please check if the URL is correct.
 exception.error_message_restrict_url: This functionality is restricted by the administrator.
+exception.error_message_rate_limit: The maximum number of attempts has been exceeded. Please wait a moment and try again.
 
 #------------------------------------------------------------------------------------
 # Purchase Flow
@@ -1796,6 +1815,7 @@ exception.error_message_restrict_url: This functionality is restricted by the ad
 
 purchase_flow.delivery_fee_update: Shipping charge has been updated. Please confirm the total amount.
 purchase_flow.charge_update: Charge has been updated. Please confirm the total amount.
+purchase_flow.tax_rate_update: Tax Rate has been updated. Please confirm the total amount.
 purchase_flow.over_customer_point: You are not able to use points more than your current points.
 purchase_flow.over_payment_total: The points are more than the total amount.
 purchase_flow.over_stock: '%name% does not have enough stock.'

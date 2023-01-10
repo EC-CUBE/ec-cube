@@ -826,6 +826,7 @@ admin.order.amount: 金額
 admin.order.quantity: 数量
 admin.order.tax_rate: 税率
 admin.order.tax_type: 課税区分
+admin.order.point_rate: ポイント付与率
 admin.order.subtotal: 小計
 admin.order.discount: 値引き
 admin.order.delivery_fee: 送料
@@ -1300,6 +1301,10 @@ admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入して
 #------------------------------------------------------------------------------------
 
 admin.setting.system.security__card_title: セキュリティ設定
+admin.setting.system.security_admin_url__card_title: 管理画面URL設定
+admin.setting.system.security_admin_ip_limit__card_title: 管理画面IP制限設定
+admin.setting.system.security_front_ip_limit__card_title: フロント画面IP制限設定
+admin.setting.system.security_connect_card_title: 接続設定
 admin.setting.system.security.admin_url: 管理画面URL
 admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
 admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
@@ -1307,16 +1312,27 @@ admin.setting.system.security.ip_limit: IP制限(許可リスト)
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
   アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
+  IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.ip_limit_sample: |
-  127.0.0.1
+  127.0.0.1/28
   192.0.2.1
 admin.setting.system.security.ip_limit_deny: IP制限(拒否リスト)
 admin.setting.system.security.ip_limit_description_deny: |
   特定のIPアドレスからの管理機能へのアクセスを拒否します。
   アクセスを拒否するIPアドレスを1行ずつ入力してください。
+  IPアドレスはサブネットマスク表記に対応しています。
+admin.setting.system.security.front_ip_limit_description: |
+  フロント画面へのアクセスを特定のIPアドレスからの接続のみに制限します。
+  アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
+  IPアドレスはサブネットマスク表記に対応しています。
+admin.setting.system.security.front_ip_limit_description_deny: |
+  特定のIPアドレスからのフロント画面へのアクセスを拒否します。
+  アクセスを拒否するIPアドレスを1行ずつ入力してください。
+  IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
+admin.setting.system.security.ip_limit_invalid_ip_and_submask: '%ip%はIPv4/ビットマスクの形式ではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
@@ -1603,6 +1619,7 @@ admin.info: 情報
 admin.info.official_site: 公式サイト
 admin.info.community: 開発コミュニティ
 admin.info.document: ドキュメント
+admin.info.manual: 管理・運用マニュアル
 
 #------------------------------------------------------------------------------------
 # ツールチップ
@@ -1702,9 +1719,11 @@ tooltip.setting.system.member.work: 一時的に非稼働にすることが可�
 tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
 tooltip.setting.system.two_factor_auth.qr_code: QRコードを2段階認証用スマートフォンアプリで読み込み、表示された6桁の数字を入力してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
+tooltip.setting.system.security.front_ip_limit: フロント画面にアクセスできる接続元のIPアドレスを制限します。
+tooltip.setting.system.security.front_ip_limit_deny: フロント画面へのアクセスを拒否する接続元のIPアドレスを指定します。
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
 tooltip.setting.system.security.ip_limit_deny: 管理画面へのアクセスを拒否する接続元のIPアドレスを指定します。
-tooltip.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.setting.system.security.force_ssl: フロント画面と管理画面への接続をSSL(https)での接続に制限します。
 tooltip.setting.system.security.trusted_hosts: 設定されたホスト名以外でのアクセスを拒否します。
 tooltip.setting.system.login_history.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
 tooltip.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
@@ -1789,6 +1808,7 @@ exception.error_message_can_not_access: お探しのページはアクセスが�
 exception.error_title_not_found: ページがみつかりません。
 exception.error_message_not_found: URLに間違いがないかご確認ください。
 exception.error_message_restrict_url: この機能は管理者によって制限されています。
+exception.error_message_rate_limit: 試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。
 
 #------------------------------------------------------------------------------------
 # PurchaseFlow
@@ -1796,6 +1816,7 @@ exception.error_message_restrict_url: この機能は管理者によって制限
 
 purchase_flow.delivery_fee_update: 送料が更新されました。金額をご確認ください。
 purchase_flow.charge_update: 手数料が更新されました。金額をご確認ください。
+purchase_flow.tax_rate_update: 税率が更新されました。金額をご確認ください。
 purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
 purchase_flow.over_stock: '「%name%」の在庫が足りません。'

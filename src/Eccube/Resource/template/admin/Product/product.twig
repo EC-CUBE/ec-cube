@@ -19,6 +19,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
+        $(document).on('drop dragover', function(e) {
+            e.preventDefault();
+        });
+
         $(function() {
             {% if has_class == false %}
             if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
@@ -410,6 +414,7 @@ file that was distributed with this source code.
                                                 {#</label>#}
                                                 {#</div>#}
                                                 {{ form_widget(form.class.stock_unlimited) }}
+                                                {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
                                         </div>
                                     </div>

@@ -46,6 +46,7 @@ form_error.admin_is_not_available: ディレクトリ名に「admin」を使用�
 form_error.member_already_exists: 既に利用されているログインIDです。
 form_error.customer_already_exists:  このメールアドレスは利用できません。
 form_error.password_pattern_invalid: 英数字をそれぞれ1種類使用してください。
+form_error.out_of_range: 不正な日付です。
 
 #------------------------------------------------------------------------------------
 # Deplicated

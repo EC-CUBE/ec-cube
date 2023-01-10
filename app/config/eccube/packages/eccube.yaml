@@ -2,6 +2,8 @@ parameters:
     # EC-CUBE default env parameters
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_USER_DATA_ROUTE): 'user_data'
+    env(ECCUBE_FRONT_ALLOW_HOSTS): '[]'
+    env(ECCUBE_FRONT_DENY_HOSTS): '[]'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): '[]'
     env(ECCUBE_ADMIN_DENY_HOSTS): '[]'
     env(ECCUBE_FORCE_SSL): '0'
@@ -24,6 +26,8 @@ parameters:
     eccube_mailer_dsn: '%env(MAILER_DSN)%'
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_user_data_route: '%env(ECCUBE_USER_DATA_ROUTE)%'
+    eccube_front_allow_hosts: '%env(json:ECCUBE_FRONT_ALLOW_HOSTS)%'
+    eccube_front_deny_hosts: '%env(json:ECCUBE_FRONT_DENY_HOSTS)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
     eccube_admin_deny_hosts: '%env(json:ECCUBE_ADMIN_DENY_HOSTS)%'
     eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
@@ -95,6 +99,7 @@ parameters:
     eccube_official_site_url: https://www.ec-cube.net
     eccube_community_site_url: https://xoops.ec-cube.net
     eccube_document_url: http://doc4.ec-cube.net
+    eccube_manual_url: https://www.ec-cube.net/manual/ec-cube4/
     eccube_name_len: 16
     eccube_kana_len: 25
     eccube_address1_len: 32
@@ -107,7 +112,7 @@ parameters:
     eccube_tel_len_max: 14
     eccube_postal_code: 8
     eccube_password_min_len: 12
-    eccube_password_max_len: 32
+    eccube_password_max_len: 50
     # see https://github.com/EC-CUBE/ec-cube2/blob/87e269314f92ebb169ea212bf304c9371bb12fd2/data/class/SC_CheckError.php#L889
     eccube_password_pattern: '/\A(?=.*?[a-z])(?=.*?\d)[!-~]+\z/i'
     eccube_composer_memory_limit: 1536M
@@ -121,6 +126,7 @@ parameters:
     eccube_shipping_notify_mail_template_id: 8 #出荷通知メール
     # メールアドレスをRFC準拠でチェックするか true: チェックする、false: チェックしない
     eccube_rfc_email_check: false
+    eccube_email_len: 254
     eccube_package_api_url: '%env(ECCUBE_PACKAGE_API_URL)%'
     # 注文番号のフォーマット. 以下のフォーマットが利用可能です. フォーマットを空にした場合, dtb_order.idを出力します.
     # {yyyy} : 西暦(4桁)

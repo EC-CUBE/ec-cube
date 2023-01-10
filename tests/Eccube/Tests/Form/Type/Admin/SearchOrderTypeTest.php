@@ -54,6 +54,23 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     }
 
     /**
+     * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
+     *
+     * @dataProvider dataFormDateProvider
+     *
+     * @param string $formName
+     */
+    public function testOutOfRangeSearch(string $formName)
+    {
+        $formData = [
+            $formName => '0001-01-01',
+        ];
+
+        $this->form->submit($formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
      * Data provider date form test.
      *
      * @return array

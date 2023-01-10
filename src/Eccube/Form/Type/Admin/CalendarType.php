@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class CalendarType
@@ -42,12 +43,18 @@ class CalendarType extends AbstractType
     protected $calendarRepository;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * CalendarType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, CalendarRepository $calendarRepository)
+    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, CalendarRepository $calendarRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->calendarRepository = $calendarRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -70,6 +77,12 @@ class CalendarType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_start',
@@ -82,6 +95,21 @@ class CalendarType extends AbstractType
             // 日付重複チェック
             /** @var Calendar $Calendar */
             $Calendar = $event->getData();
+
+            $errors = $this->validator->validate(
+                $Calendar->getHoliday(),
+                [
+                    new Assert\Range([
+                        'min' => '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ]
+            );
+
+            if ($errors->count()) {
+                return;
+            }
+
             $qb = $this->calendarRepository->createQueryBuilder('c');
             $qb
                 ->select('count(c.id)')

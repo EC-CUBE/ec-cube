@@ -58,24 +58,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
 
-      - name: composer install
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Setup EC-CUBE
         env:
@@ -95,7 +84,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.11025'
-        run: bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
+        run: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
       - name: PHPUnit
         env:
           APP_ENV: 'test'
@@ -104,16 +93,16 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.11025'
         run: |
-          bin/phpunit --group cache-clear
-          bin/phpunit --group cache-clear-install
-          bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
-          bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+          vendor/bin/phpunit --group cache-clear
+          vendor/bin/phpunit --group cache-clear-install
+          vendor/bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
+          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
       ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
       ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener を削除する
       ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
@@ -130,4 +119,4 @@ jobs:
           rm -r app/Plugin/*
           git checkout app/Plugin
           rm -r var/cache
-          bin/phpunit --group plugin-service
+          vendor/bin/phpunit --group plugin-service

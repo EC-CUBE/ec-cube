@@ -12,23 +12,7 @@ file that was distributed with this source code.
 
 {% set current = 5 %}
 
-{% form_theme form _self %}
-{% block form_row %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        <label>{{ label }}
-            {% if required %}<span class="required">*</span>{% endif %}
-        </label>
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
-
-{% block checkbox_row %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
+{% form_theme form 'layout.html.twig' %}
 
 {% block main %}
     <div id="main" class="step6">

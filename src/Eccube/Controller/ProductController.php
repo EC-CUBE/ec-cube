@@ -402,7 +402,6 @@ class ProductController extends AbstractController
             // ajaxでのリクエストの場合は結果をjson形式で返す。
 
             // 初期化
-            $done = null;
             $messages = [];
 
             if (empty($errorMessages)) {

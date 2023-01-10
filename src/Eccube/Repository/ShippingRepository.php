@@ -85,7 +85,6 @@ class ShippingRepository extends AbstractRepository
 
         // order status
         if (isset($searchData['order_status']) && count($searchData['order_status'])) {
-            $s = $searchData['order_status'];
             $qb
                 ->andWhere($qb->expr()->in('o.OrderStatus', ':order_status'))
                 ->setParameter('order_status', $searchData['order_status']);
@@ -127,7 +126,7 @@ class ShippingRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
             $qb
                 ->andWhere('s.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');
