@@ -54,6 +54,7 @@
         "sensio/framework-extra-bundle": "^6.2",
         "setasign/fpdi": "^2.2",
         "skorp/detect-incompatible-samesite-useragents": "^1.0",
+        "softcreatr/jsonpath": "0.7.5",
         "symfony/asset": "^5.4",
         "symfony/cache": "^5.4",
         "symfony/config": "^5.4",
@@ -170,8 +171,7 @@
     },
     "conflict": {
         "symfony/symfony": "*",
-        "easycorp/easy-log-handler": "1.0.4|1.0.5",
-        "softcreatr/jsonpath": "0.7.6"
+        "easycorp/easy-log-handler": "1.0.4|1.0.5"
     },
     "extra": {
         "symfony": {
