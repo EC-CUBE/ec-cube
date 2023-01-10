@@ -1,9 +1,8 @@
 name: Plugin E2E Test for EC-Cube
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 0 * * 0'
   workflow_dispatch:
-  push:
 jobs:
   e2e_plugin_codeception:
     name: Codeception
