@@ -18,19 +18,19 @@ jobs:
         run: |
           mkdir .github/workflows/pgsql
           sudo chmod 777 .github/workflows/pgsql
-          curl --fail -LJO https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.repository }}/feature/apache_workbench_speed_tool/docker-compose.bench.pgsql.yml
+          curl --fail -LJO https://raw.githubusercontent.com/${{ github.repository }}/feature/apache_workbench_speed_tool/docker-compose.bench.pgsql.yml
           if [ ! -f docker-compose.bench.pgsql.yml ]; then
             echo "docker-compose.bench.pgsql.yml File not found!"
           else
             echo "docker-compose.bench.pgsql.yml File found!"
           fi
-          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql -o .github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql
+          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql -o .github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql
           if [ ! -f .github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql ]; then
             echo ".github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql File not found!"
           else
             echo ".github/workflows/pgsql/eccubedb_localhost-2022_06_30_17_25_15-dump.sql File found!"
           fi
-          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/pgsql/Dockerfile -o .github/workflows/pgsql/Dockerfile
+          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/pgsql/Dockerfile -o .github/workflows/pgsql/Dockerfile
           if [ ! -f .github/workflows/pgsql/Dockerfile ]; then
             echo ".github/workflows/pgsql/Dockerfile File not found!"
           else
@@ -211,19 +211,19 @@ jobs:
         run: |
           mkdir .github/workflows/mysql
           sudo chmod 777 .github/workflows/mysql
-          curl --fail -LJO https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.repository }}/feature/apache_workbench_speed_tool/docker-compose.bench.mysql.yml
+          curl --fail -LJO https://raw.githubusercontent.com/${{ github.repository }}/feature/apache_workbench_speed_tool/docker-compose.bench.mysql.yml
           if [ ! -f docker-compose.bench.mysql.yml ]; then
             echo "docker-compose.bench.mysql.yml File not found!"
           else
             echo "docker-compose.bench.mysql.yml File found!"
           fi
-          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql -o .github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql
+          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql -o .github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql
           if [ ! -f .github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql ]; then
             echo ".github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql File not found!"
           else
             echo ".github/workflows/mysql/mysql_localhost-2022_07_06_19_15_00-dump.sql File found!"
           fi
-          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/mysql/Dockerfile -o .github/workflows/mysql/Dockerfile
+          curl --fail -LJ https://raw.githubusercontent.com/${{ github.repository }}/feature/apache_workbench_speed_tool/.github/workflows/mysql/Dockerfile -o .github/workflows/mysql/Dockerfile
           if [ ! -f .github/workflows/mysql/Dockerfile ]; then
             echo ".github/workflows/mysql/Dockerfile File not found!"
           else
