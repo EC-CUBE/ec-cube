@@ -169,7 +169,8 @@
     },
     "conflict": {
         "symfony/symfony": "*",
-        "easycorp/easy-log-handler": "1.0.4|1.0.5"
+        "easycorp/easy-log-handler": "1.0.4|1.0.5",
+        "softcreatr/jsonpath": "0.7.6"
     },
     "extra": {
         "symfony": {
