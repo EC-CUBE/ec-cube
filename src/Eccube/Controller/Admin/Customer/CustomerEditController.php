@@ -125,11 +125,10 @@ class CustomerEditController extends AbstractController
         $page_no = (int) $request->get('page_no', 1);
         $qb = $this->orderRepository->getQueryBuilderByCustomer($Customer);
         $pagination = [];
-        if (!is_null($Customer->getId()))
-        {
+        if (!is_null($Customer->getId())) {
             $pagination = $paginator->paginate(
                 $qb,
-                $page_no > 0 ? $page_no : 1 ,
+                $page_no > 0 ? $page_no : 1,
                 $page_count
             );
         }
