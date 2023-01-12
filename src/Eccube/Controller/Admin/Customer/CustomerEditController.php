@@ -107,7 +107,7 @@ class CustomerEditController extends AbstractController
         $form = $builder->getForm();
 
         $form->handleRequest($request);
-        $page_count = $this->session->get('eccube.admin.customer_edit.order.page_count',
+        $page_count = (int) $this->session->get('eccube.admin.customer_edit.order.page_count',
             $this->eccubeConfig->get('eccube_default_page_count'));
 
         $page_count_param = (int) $request->get('page_count');
@@ -122,14 +122,14 @@ class CustomerEditController extends AbstractController
                 }
             }
         }
-        $page_no = $request->get('page_no', 1);
+        $page_no = (int) $request->get('page_no', 1);
         $qb = $this->orderRepository->getQueryBuilderByCustomer($Customer);
         $pagination = null;
         if (!is_null($Customer->getId()))
         {
             $pagination = $paginator->paginate(
                 $qb,
-                $page_no,
+                $page_no > 0 ? $page_no : 1 ,
                 $page_count
             );
         }
