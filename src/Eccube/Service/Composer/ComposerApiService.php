@@ -350,6 +350,7 @@ class ComposerApiService implements ComposerServiceInterface
             ob_end_clean();
             $log = $output->fetch();
             if ($exitCode) {
+                log_info('>>>>>>>>>>>>>>COMPOSER ERROR<<<<<<<<<<<<<<');
                 log_error($log);
                 throw new PluginException($log);
             }
@@ -357,6 +358,7 @@ class ComposerApiService implements ComposerServiceInterface
 
             return $log;
         } elseif ($exitCode) {
+            log_info('>>>>>>>>>>>>>>DIFFERENT COMPOSER ERROR<<<<<<<<<<<<<<');
             throw new PluginException();
         }
 

@@ -268,6 +268,10 @@ class OwnerStoreController extends AbstractController
 
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
+            log_info('*************************************HERE********************');
+            log_info($e->getMessage());
+            log_info(">>>>>>>>>>>>>STACK TRACE<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            log_info($e->getTraceAsString());
             $log = $e->getMessage();
             log_error($e);
         }
