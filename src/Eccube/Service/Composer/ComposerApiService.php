@@ -327,6 +327,7 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function runCommand($commands, $output = null, $init = true)
     {
+        log_info('>>>>>>>>>>>>>>START<<<<<<<<<<<<<<');
         if ($init) {
             $this->init();
         }
@@ -344,7 +345,11 @@ class ComposerApiService implements ComposerServiceInterface
             });
         }
 
+        log_info('>>>>>>>>>>>>>>BEFORE<<<<<<<<<<<<<<');
+
         $exitCode = $this->consoleApplication->run($input, $output);
+
+        log_info('>>>>>>>>>>>>>>AFTER<<<<<<<<<<<<<<');
 
         if ($useBufferedOutput) {
             ob_end_clean();
@@ -361,6 +366,8 @@ class ComposerApiService implements ComposerServiceInterface
             log_info('>>>>>>>>>>>>>>DIFFERENT COMPOSER ERROR<<<<<<<<<<<<<<');
             throw new PluginException();
         }
+
+        log_info('>>>>>>>>>>>>>>NO ERROR<<<<<<<<<<<<<<');
 
         return null;
     }

@@ -254,6 +254,8 @@ class OwnerStoreController extends AbstractController
      */
     public function apiInstall(Request $request)
     {
+        log_info('****************************START*****************************');
+
         $this->isTokenValid();
 
         // .maintenanceファイルを設置
@@ -265,7 +267,7 @@ class OwnerStoreController extends AbstractController
 
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode);
-
+            log_info('*************************************SUCCESS********************');
             return $this->json(['success' => true, 'log' => $log]);
         } catch (\Exception $e) {
             log_info('*************************************HERE********************');
@@ -275,6 +277,8 @@ class OwnerStoreController extends AbstractController
             $log = $e->getMessage();
             log_error($e);
         }
+
+        log_info('*************************************FAILURE********************');
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
