@@ -154,12 +154,10 @@ $(function() {
                 message_text += 'プラグイン一覧より有効化を行って下さい。';
             {% endif %}
             message.text(message_text);
-
         }).fail(function(res) {
-            console.log(d)
-            console.log(res)
-            message.text('システムエラーが発生しました。');
+            message.text(res.status.toString() + 'システムエラーが発生しました。');
             if (res.responseJSON) {
+                log(res.responseJSON.success ? "true" : "false");
                 log(res.responseJSON.log);
             }
             if (res.responseText) {
