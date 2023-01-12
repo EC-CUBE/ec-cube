@@ -143,6 +143,7 @@ $(function() {
                 'plugin': req,
                 'deferred': d
             }));
+            console.log(d);
         });
 
         d.done(function() {
@@ -155,6 +156,8 @@ $(function() {
             message.text(message_text);
 
         }).fail(function(res) {
+            console.log(d)
+            console.log(res)
             message.text('システムエラーが発生しました。');
             if (res.responseJSON) {
                 log(res.responseJSON.log);
