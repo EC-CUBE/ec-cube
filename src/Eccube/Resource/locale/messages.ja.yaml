@@ -990,8 +990,9 @@ admin.content.file.folder_name_symbol_error: 使用できない文字が含ま�
 admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
 admin.content.file.dir_exists: '%file_name% は既に使用されています。別のフォルダ名を入力してください'
 admin.content.file.same_name_folder_exists: 'ファイルと同じ名前のフォルダが存在するためアップロードできません。'
-admin.content.file.phpfile_error: 'phpファイルはアップロードできません。'
+admin.content.file.phpfile_error: 'phpファイルはアップロードできません。' # 未使用
 admin.content.file.dotfile_error: '.で始まるファイルはアップロードできません。'
+admin.content.file.extension_error: 'アップロードできないファイル拡張子です。'
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
