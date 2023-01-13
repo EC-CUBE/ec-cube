@@ -327,7 +327,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I->click(Locator::contains('//button[@data-mode="install"]', 'インストール'));
         $I->retrySee('インストール確認');
         $I->click('//button[@id="installBtn"]');
-//        $I->retrySee('インストールが完了しました。');
+        $I->retrySee('インストールが完了しました。');
         $I->retrySee('完了');
         $I->click(Locator::contains('//a', '完了'));
         //
