@@ -72,6 +72,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      - name: Replace Azure Ubuntu Mirror with Japanese Ubuntu Mirror
+        run: |
+          sudo sed -i 's/azure\./jp\./' /etc/apt/sources.list
       - name: Set System Locale to Japanese
         run: |
           sudo locale-gen ja_JP.UTF-8
