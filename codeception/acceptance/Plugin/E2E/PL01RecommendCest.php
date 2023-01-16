@@ -272,7 +272,7 @@ class PL01RecommendCest
         // おすすめ商品の修正
         $I->amOnPage('/admin/plugin/recommend');
         $I->see('彩のジェラートCUBE');
-        $I->clickWithLeftButton('(//a[@class="btn btn-ec-actionIcon mr-3 action-edit"])[1]');
+        $I->clickWithLeftButton('(//a[@class="btn btn-ec-actionIcon me-3 action-edit"])[1]');
         $I->see('おすすめ商品情報');
         $I->clickWithLeftButton('#showSearchProductModal');
         $I->see('商品検索');
