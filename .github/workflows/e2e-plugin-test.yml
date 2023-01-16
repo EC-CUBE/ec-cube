@@ -103,7 +103,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          run: |
+          command: |
             wget -O ./codeception/_data/recommend.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/Recommend-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
             wget -O ./codeception/_data/coupon.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/coupon-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
             wget -O ./codeception/_data/mail_magazine.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/mail-magazine-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
