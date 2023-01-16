@@ -222,7 +222,7 @@ class PL03MailMagazineCest
         $this->mail_07($I);
         $I->retry(7, 400);
         $I->amOnPage('admin/plugin/mail_magazine');
-        $I->selectOption('.custom-select', '10件');
+        $I->selectOption('.c-contentsArea__cols .form-select', '10件');
         $I->clickWithLeftButton(Locator::contains('//button', '配信内容を作成する'));
         $I->selectOption('#mail_magazine_template', $this->Subject);
         $I->seeInField('#mail_magazine_subject', $this->Subject);
@@ -284,7 +284,7 @@ class PL03MailMagazineCest
 
         // Search Member
         $I->amOnPage('admin/plugin/mail_magazine');
-        $I->selectOption('.custom-select', '10件');
+        $I->selectOption('.c-contentsArea__cols .form-select', '10件');
         $I->click(Locator::contains('//a', '詳細検索'));
         $I->waitForText('最終購入日', 30);
         switch ($example['type']) {
