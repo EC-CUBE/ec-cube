@@ -85,6 +85,7 @@ jobs:
         with:
           timeout_minutes: 15
           max_attempts: 3
+          retry_wait_seconds: 15
           command: |
             sudo apt-get update
             sudo apt-get install language-pack-ja-base language-pack-ja
@@ -95,6 +96,7 @@ jobs:
         with:
           timeout_minutes: 5
           max_attempts: 3
+          retry_wait_seconds: 15
           command: |
             sudo apt-get install ttf-mscorefonts-installer
             sudo fc-cache -fv
@@ -102,7 +104,8 @@ jobs:
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 10
-          max_attempts: 3
+          max_attempts: 30
+          retry_wait_seconds: 15
           command: |
             wget -O ./codeception/_data/recommend.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/Recommend-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
             wget -O ./codeception/_data/coupon.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/coupon-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
