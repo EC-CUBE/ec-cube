@@ -58,7 +58,7 @@
     "@babel/preset-env": "^7.18.2",
     "autoprefixer": "^9.6.4",
     "babel-loader": "^8.2.5",
-    "browser-sync": "^2.27.10",
+    "browser-sync": "^2.27.11",
     "cross-env": "^7.0.2",
     "css-mqpacker": "^7.0.0",
     "gulp": "^4.0.2",

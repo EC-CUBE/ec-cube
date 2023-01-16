@@ -258,6 +258,10 @@ class EntryController extends AbstractController
             ]
         );
 
+        if (!$this->session->has('eccube.login.target.path')) {
+            $this->setLoginTargetPath($this->generateUrl('mypage'));
+        }
+
         if (!is_null($qtyInCart)) {
             return [
                 'qtyInCart' => $qtyInCart,
@@ -315,16 +319,9 @@ class EntryController extends AbstractController
             $qtyInCart += $Cart->getTotalQuantity();
         }
 
-        // 本会員登録してログイン状態にする
-        $token = new UsernamePasswordToken($Customer, 'customer', ['ROLE_USER']);
-        $this->tokenStorage->setToken($token);
-        $request->getSession()->migrate(true);
-
         if ($qtyInCart) {
             $this->cartService->save();
         }
-
-        log_info('ログイン済に変更', [$this->getUser()->getId()]);
 
         return $qtyInCart;
     }
