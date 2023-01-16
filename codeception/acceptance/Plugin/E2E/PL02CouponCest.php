@@ -126,7 +126,7 @@ class PL02CouponCest
         $I->wait(5);
         $xpathProduct = Locator::contains('//tr', '彩のジェラートCUBE');
         $I->retrySee('cube-01', $xpathProduct);
-        $I->click('.btn.btn-default.btn-sm');
+        $I->click('#searchProductModalList .btn.btn-ec-actionIcon');
         $I->see('彩のジェラートCUBE');
         $I->fillField('#coupon_discount_price', '100');
         $I->see('商品情報');
@@ -161,7 +161,7 @@ class PL02CouponCest
         $I->click('#searchCategoryModalButton');
         $xpathProduct = Locator::contains('//tr', $categoryName);
         $I->retrySee($categoryName, $xpathProduct);
-        $I->click('.btn.btn-default.btn-sm');
+        $I->click('#searchCategoryModalList .btn.btn-ec-actionIcon');
         $I->retrySee($categoryName);
         $I->see('カテゴリ情報');
         $I->fillField('#coupon_discount_price', '100');
@@ -222,7 +222,7 @@ class PL02CouponCest
         $I->wait(5);
         $xpathProduct = Locator::contains('//tr', '彩のジェラートCUBE');
         $I->retrySee('cube-01', $xpathProduct);
-        $I->click('.btn.btn-default.btn-sm');
+        $I->click('#searchProductModalList .btn.btn-ec-actionIcon');
         $I->see('彩のジェラートCUBE');
         $I->see('商品情報');
         $I->clickWithLeftButton('#coupon_discount_type_1');
@@ -260,7 +260,7 @@ class PL02CouponCest
         $I->click('#searchCategoryModalButton');
         $xpathProduct = Locator::contains('//tr', $categoryName);
         $I->retrySee($categoryName, $xpathProduct);
-        $I->click('.btn.btn-default.btn-sm');
+        $I->click('#searchCategoryModalList .btn.btn-ec-actionIcon');
         $I->retrySee($categoryName);
         $I->see('カテゴリ情報');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
@@ -372,7 +372,7 @@ class PL02CouponCest
         $this->coupon_03($I, $string);
         $xcouponRow = Locator::contains('//tr', 'ap_sd ' . $string);
         $I->click($xcouponRow . '//i[@class="fa fa-close fa-lg text-secondary"]');
-        $I->retrySee('このクーポンを削除しても宜しいですか？');
+        $I->retrySee('クーポンを削除してよろしいですか？');
         $I->click(Locator::contains('//a', '削除'));
         $I->see('クーポンを削除しました。');
         $I->dontSee('ap_sd ' . $string);
