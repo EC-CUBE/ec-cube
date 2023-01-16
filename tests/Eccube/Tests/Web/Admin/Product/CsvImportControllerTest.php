@@ -942,6 +942,70 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
+    public function testImportProductWithProductClassInvisible()
+    {
+        $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->filter(
+            function (ProductClass $ProductClass) {
+                return $ProductClass->getClassCategory1() !== null;
+            })[0];
+        /** @var Generator $faker */
+        $faker = $this->getFaker();
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
+        $csv[] = [$Product->getId(),
+                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+                  $ProductClass->getClassCategory1()->getId(),
+                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
+                  '0'           // 商品規格非表示
+        ];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        /** @var Product $Product */
+        $Product = $this->productRepo->find($Product->getId());
+
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            if ($ProductClass->getClassCategory1() !== null) {
+                $this->assertFalse($ProductClass->isVisible());
+            }
+        }
+    }
+
+    public function testImportProductWithProductClassVisible()
+    {
+        $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->filter(
+            function (ProductClass $ProductClass) {
+                return $ProductClass->getClassCategory1() !== null;
+            })[0];
+        /** @var Generator $faker */
+        $faker = $this->getFaker();
+        $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
+        $csv[] = [$Product->getId(),
+                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+                  $ProductClass->getClassCategory1()->getId(),
+                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
+                  '1'           // 商品規格表示
+        ];
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
+
+        /** @var Product $Product */
+        $Product = $this->productRepo->find($Product->getId());
+
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            if ($ProductClass->getClassCategory1() !== null) {
+                $this->assertTrue($ProductClass->isVisible());
+            }
+        }
+    }
+
     /**
      * 商品を削除する際に、他の商品画像が参照しているファイルは削除せず、それ以外は削除することをテスト
      */
