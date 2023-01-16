@@ -108,16 +108,23 @@ jobs:
           retry_wait_seconds: 15
           command: |
             wget -O ./codeception/_data/recommend.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/Recommend-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/coupon.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/coupon-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/mail_magazine.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/mail-magazine-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/sales.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/sales-report-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/related_product.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/related-product-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
-
+            sleep 2
             wget -O ./codeception/_data/review.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/ProductReview-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/api.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/eccube-api4/releases/latest | grep browser_download_url | cut -d '"' -f 4)
-
+            sleep 2
             wget -O ./codeception/_data/maker.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/maker-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/product_images.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/ProductImagesUploader/releases/latest | grep browser_download_url | cut -d '"' -f 4)
+            sleep 2
             wget -O ./codeception/_data/data_migrate.tar.gz $(curl -s https://api.github.com/repos/EC-CUBE/data-migration-plugin/releases/latest | grep browser_download_url | cut -d '"' -f 4)
       - name: Get Composer Cache Directory
         id: composer-cache
