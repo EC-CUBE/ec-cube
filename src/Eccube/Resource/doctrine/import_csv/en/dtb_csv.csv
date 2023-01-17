@@ -202,3 +202,4 @@ id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,
 203,5,,Eccube\\Entity\\Category,level,,Level,5,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 204,1,,Eccube\\Entity\\ProductClass,TaxRule,tax_rate,Tax Rate,"31","0","2017-03-07 10:14:00","2017-03-07 10:14:00","csv"
 205,2,,Eccube\\Entity\\Customer,point,,Point,32,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+206,1,,Eccube\\Entity\\ProductClass,visible,,Product options visible flag,32,0,2022-11-24 00:00:00,2022-11-24 00:00:00,csv
