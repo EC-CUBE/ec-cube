@@ -156,25 +156,30 @@ jobs:
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
-      - name: Install ALL ECCUBE Offical Plugins via commandLine
+      - name: Install ALL ECCUBE Official Plugins via commandLine
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 30
+          retry_wait_seconds: 15
           # bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz
           # bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
-        run: |
-          bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz --env=dev
-          bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz --env=dev
-          bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz --env=dev
-          bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz --env=dev
-          bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz --env=dev
+          command: |
+            bin/console eccube:plugin:install --path=codeception/_data/recommend.tar.gz --env=dev
+            bin/console eccube:plugin:install --path=codeception/_data/coupon.tar.gz --env=dev
+            bin/console eccube:plugin:install --path=codeception/_data/mail_magazine.tar.gz --env=dev
+            bin/console eccube:plugin:install --path=codeception/_data/sales.tar.gz --env=dev
+            bin/console eccube:plugin:install --path=codeception/_data/related_product.tar.gz --env=dev
 
-          bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz --env=dev
-          bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz --env=dev
-#          bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
-#          bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz --env=dev
+            bin/console eccube:plugin:install --path=codeception/_data/maker.tar.gz --env=dev
+            bin/console eccube:plugin:install --path=codeception/_data/product_images.tar.gz --env=dev
+#           bin/console eccube:plugin:install --path=codeception/_data/review.tar.gz --env=dev
+#           bin/console eccube:plugin:install --path=codeception/_data/api.tar.gz --env=dev
       - name: Enable ALL installed official plugins via commandline
         env:
           APP_ENV: 'codeception'
@@ -182,15 +187,20 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           # bin/console eccube:plugin:enable --code=ProductReview42 --env=dev
-        run: |
-          bin/console eccube:plugin:enable --code=Recommend42 --env=dev
-          bin/console eccube:plugin:enable --code=Coupon42 --env=dev
-          bin/console eccube:plugin:enable --code=MailMagazine42 --env=dev
-          bin/console eccube:plugin:enable --code=SalesReport42 --env=dev
-          bin/console eccube:plugin:enable --code=RelatedProduct42 --env=dev
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 30
+          retry_wait_seconds: 15
+          command: |
+            bin/console eccube:plugin:enable --code=Recommend42 --env=dev
+            bin/console eccube:plugin:enable --code=Coupon42 --env=dev
+            bin/console eccube:plugin:enable --code=MailMagazine42 --env=dev
+            bin/console eccube:plugin:enable --code=SalesReport42 --env=dev
+            bin/console eccube:plugin:enable --code=RelatedProduct42 --env=dev
 
-          bin/console eccube:plugin:enable --code=Maker42 --env=dev
-          bin/console eccube:plugin:enable --code=ProductImagesUploader42 --env=dev
+            bin/console eccube:plugin:enable --code=Maker42 --env=dev
+            bin/console eccube:plugin:enable --code=ProductImagesUploader42 --env=dev
 #          bin/console eccube:plugin:enable --code=ProductReview42 --env=dev
 #          bin/console eccube:plugin:enable --code=Api42 --env=dev
       - name: setup-chromedriver
