@@ -239,3 +239,17 @@ $(function() {
         }
     });
 });
+
+// input[type="datetime-local"]、初期クリック時に当日の0時0分を設定
+$(function() {
+    if( $('[type="datetime-local"]').length ){
+        $('[type="datetime-local"]').on('click',function(){
+            if( $(this).val() === '' && !$(this).hasClass('is_adjusted') ){
+                $(this).addClass('is_adjusted');
+                let date = new Date();
+                let adjusted_date = date.toLocaleDateString().split('/').map((e)=>{ return ( String(e).length < 2 )? "0"+e : e ; }).join('-');
+                $(this).val( adjusted_date + 'T00:00');
+            }
+        });
+    }
+});
