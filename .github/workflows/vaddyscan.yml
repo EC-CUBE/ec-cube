@@ -9,9 +9,21 @@ jobs:
       matrix:
         include:
           - vaddy_project: 'ADMIN01'
-            command1: 'EA04OrderCest:order_個別出荷済みステータス変更'
-          # - vaddy_project: 'ADMIN02'
-          #   command1: 'EA04OrderCest:order_受注編集'
+            command1: 'EA03ProductCest'
+            command2: 'EA05CustomerCest'
+            command3: 'EA04OrderCest:order_個別出荷済みステータス変更'
+            command4: 'EA04OrderCest:order_納品書の一括出力'
+            command5: 'EA04OrderCest:order_受注メール通知'
+            command6: 'EA04OrderCest:order_受注削除'
+            command7: 'EA04OrderCest:order_受注CSVダウンロード'
+            command8: 'EA04OrderCest:order_受注登録'
+            command9: 'EA06ContentsManagementCest'
+          - vaddy_project: 'ADMIN02'
+            command1: 'EA04OrderCest:order_受注編集'
+          - vaddy_project: 'FRONT'
+            command1: '                 -x delivery -x basicsetting -x taxrule -x mailsetting -x csvsetting -x orderstatus -x pluginauth EA07BasicinfoCest'
+            command2: '-x paymentmethod             -x basicsetting -x taxrule -x mailsetting -x csvsetting -x orderstatus -x pluginauth EA07BasicinfoCest'
+            command3: '-x paymentmethod -x delivery                            -x mailsetting -x csvsetting -x orderstatus               EA07BasicinfoCest'
     services:
       postgres:
         image: postgres:14
