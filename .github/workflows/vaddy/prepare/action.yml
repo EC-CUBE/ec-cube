@@ -24,6 +24,19 @@ runs:
   using: "composite"
   steps:
 
+    - name: Workaround
+      shell: bash
+      run: |
+        sudo gem install apt-spy2
+        sudo apt-spy2 check
+        sudo apt-spy2 fix --commit
+        sudo apt-get update
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: '7.4'
+
     - name: setup-chromedriver
       uses: nanasess/setup-chromedriver@master
 
