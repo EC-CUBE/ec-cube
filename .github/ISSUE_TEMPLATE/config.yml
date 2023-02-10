@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 脆弱性報告(Vulnerability Report)
+    url: https://www.ec-cube.net/contact/
+    about: 公式サイトのお問い合わせフォームへ
+  - name: 質問(Question)
+    url: https://xoops.ec-cube.net/
+    about: 開発コミュニティへ
