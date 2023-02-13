@@ -101,6 +101,13 @@ runs:
         }' > src/Eccube/Doctrine/EventSubscriber/CancelDeletionEventSubscriber.php
         sed -i.bak -e 's_$fs->remove_// $fs->remove_' src/Eccube/Controller/Admin/Content/PageController.php
         rm -f app/config/eccube/packages/dev/web_profiler.yaml
+        sed -i -e "s/eccube_login_throttling_max_attempts: 5/eccube_login_throttling_max_attempts: 1024/" -e "s/eccube_login_throttling_interval: '30 minutes'/eccube_login_throttling_interval: '1 minutes'/" app/config/eccube/packages/eccube.yaml
+        rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+        sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+        bin/console cache:clear
+        bin/console debug:container --parameter eccube_login_throttling_max_attempts
+        bin/console debug:container --parameter eccube_login_throttling_interval
+        bin/console debug:config eccube
         bin/console doctrine:database:create --env=dev
         bin/console doctrine:schema:create --env=dev
         bin/console eccube:fixtures:load --env=dev
