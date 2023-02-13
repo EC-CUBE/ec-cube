@@ -21,7 +21,7 @@ jobs:
       matrix:
         php: [ 8.1 ]
         db: [ pgsql ]
-        method: [ フロント画面ログイン_IP, フロント画面ログイン_会員, 管理画面ログイン_IP, 管理画面ログイン_会員, 会員登録, 問い合わせ, パスワード再発行, 非会員購入, 会員購入 ]
+        method: [ フロント画面ログイン_IP, フロント画面ログイン_会員, 管理画面ログイン_IP, 管理画面ログイン_会員, 会員登録, 問い合わせ, パスワード再発行, 注文確認_非会員購入, 注文確認_会員購入, 注文完了_非会員購入, 注文完了_会員購入 ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -46,6 +46,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+
+      # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
+      - name: Fix limiter limit
+        if: startsWith(matrix.method, '注文完了')
+        run: |
+          echo "eccube:
+              rate_limiter:
+                  shopping_confirm_ip:
+                      route: ~
+                      limit: 1024
+                      interval: '30 minutes'
+                  shopping_confirm_customer:
+                      route: ~
+                      limit: 1024
+                      interval: '30 minutes'
+                  shopping_checkout_ip:
+                      route: ~
+                      limit: 25
+                      interval: '30 minutes'
+                  shopping_checkout_customer:
+                      route: ~
+                      limit: 10
+                      interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 
       - name: Setup PHP
         uses: nanasess/setup-php@master

@@ -80,6 +80,10 @@ class ShoppingController extends AbstractShoppingController
 
     protected RateLimiterFactory $shoppingConfirmCustomerLimiter;
 
+    protected RateLimiterFactory $shoppingCheckoutIpLimiter;
+
+    protected RateLimiterFactory $shoppingCheckoutCustomerLimiter;
+
     public function __construct(
         CartService $cartService,
         MailService $mailService,
@@ -88,7 +92,9 @@ class ShoppingController extends AbstractShoppingController
         ContainerInterface $serviceContainer,
         TradeLawRepository $tradeLawRepository,
         RateLimiterFactory $shoppingConfirmIpLimiter,
-        RateLimiterFactory $shoppingConfirmCustomerLimiter
+        RateLimiterFactory $shoppingConfirmCustomerLimiter,
+        RateLimiterFactory $shoppingCheckoutIpLimiter,
+        RateLimiterFactory $shoppingCheckoutCustomerLimiter
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
@@ -98,6 +104,8 @@ class ShoppingController extends AbstractShoppingController
         $this->tradeLawRepository = $tradeLawRepository;
         $this->shoppingConfirmIpLimiter = $shoppingConfirmIpLimiter;
         $this->shoppingConfirmCustomerLimiter = $shoppingConfirmCustomerLimiter;
+        $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
+        $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
     }
 
     /**
@@ -419,6 +427,23 @@ class ShoppingController extends AbstractShoppingController
 
                 if ($response) {
                     return $response;
+                }
+
+                log_info('[注文完了] IPベースのスロットリングを実行します.');
+                $ipLimiter = $this->shoppingCheckoutIpLimiter->create($request->getClientIp());
+                if (!$ipLimiter->consume()->isAccepted()) {
+                    log_info('[注文完了] 試行回数制限を超過しました(IPベース)');
+                    throw new TooManyRequestsHttpException();
+                }
+
+                $Customer = $this->getUser();
+                if ($Customer instanceof Customer) {
+                    log_info('[注文完了] 会員ベースのスロットリングを実行します.');
+                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create($Customer->getId());
+                    if (!$customerLimiter->consume()->isAccepted()) {
+                        log_info('[注文完了] 試行回数制限を超過しました(会員ベース)');
+                        throw new TooManyRequestsHttpException();
+                    }
                 }
 
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
