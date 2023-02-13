@@ -105,12 +105,13 @@ runs:
         bin/console eccube:fixtures:load --env=dev
         chmod -R 777 html
 
-    - name: Install Plugins
+    - name: Setup Plugins
       shell: bash
       env:
         APP_ENV: 'prod'
         DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
         DATABASE_SERVER_VERSION: 14
+        PGPASSWORD: 'password'
       run: |
         bin/console eccube:composer:require "ec-cube/recommend42"
         bin/console eccube:composer:require "ec-cube/coupon42"
@@ -121,16 +122,7 @@ runs:
         bin/console eccube:composer:require "ec-cube/productreview42"
         bin/console eccube:composer:require "ec-cube/api42"
         bin/console eccube:composer:require "ec-cube/sitekit42"
-
-    - name: Pre Install Plugins
-      shell: bash
-      env:
-        DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-        DATABASE_SERVER_VERSION: 14
-        PGPASSWORD: 'password'
-      run: |
         psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
-        for code in Recommend42; do bin/console eccube:plugin:enable --code $code; done
 
     - name: "EC-CUBE: package"
       shell: bash
