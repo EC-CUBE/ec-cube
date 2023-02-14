@@ -31,7 +31,7 @@ jobs:
             command1: '-x admin -x plugin -x order'
           - vaddy_project: 'FRONT'
             command1: '-x admin -x front'
-          #   command2: 'EA09ShippingCest'
+            command2: 'EA09ShippingCest'
           # - vaddy_project: 'ADMIN01'
           #   command1: 'EF03OrderCest:order_ログインユーザ購入複数配送'
           #   command2: 'EF03OrderCest:order_ログインしてカートをマージ'
