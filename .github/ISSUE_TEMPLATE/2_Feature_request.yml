@@ -1,7 +1,7 @@
 name: 🚀 改善要望(Feature Request)
 description: こんな機能が欲しいなど
 body:
-  - type: input
+  - type: textarea
     id: overview
     attributes:
       label: 概要(Overview)
