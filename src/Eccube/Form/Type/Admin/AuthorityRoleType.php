@@ -49,6 +49,10 @@ class AuthorityRoleType extends AbstractType
                         'pattern' => '/^\\/.*/',
                         'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
                     ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z0-9\/]+$/',
+                        'message' => trans('admin.setting.system.authority.deny_url_is_not_full_width'),
+                    ])
                 ],
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

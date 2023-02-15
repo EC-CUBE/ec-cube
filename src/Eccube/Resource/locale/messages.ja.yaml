@@ -1298,6 +1298,8 @@ admin.setting.system.authority.add_row: 行を追加
 admin.setting.system.authority.authority_not_selected: 権限が選択されていません。
 admin.setting.system.authority.deny_url_is_empty: 拒否URLが入力されていません。
 admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入してください。
+admin.setting.system.authority.deny_url_is_not_full_width: 拒否URLは半角英数字かスラッシュのみで入力してください。
+
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：セキュリティ管理

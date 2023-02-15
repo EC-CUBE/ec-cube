@@ -1298,6 +1298,7 @@ admin.setting.system.authority.add_row: Add Rows
 admin.setting.system.authority.authority_not_selected: User role is not selected.
 admin.setting.system.authority.deny_url_is_empty: Blocked URL is empty.
 admin.setting.system.authority.deny_url_is_invalid: /(slash) is required.
+admin.setting.system.authority.deny_url_is_not_full_width: Deny url is not full width character.
 
 #------------------------------------------------------------------------------------
 # Settings : System : Security
