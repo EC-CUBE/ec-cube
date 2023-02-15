@@ -212,7 +212,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    public function 非会員購入(AcceptanceTester $I)
+    public function 注文確認_非会員購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0901-UC01-T08_非会員購入');
 
@@ -265,7 +265,7 @@ class EF09ThrottlingCest
         return $page;
     }
 
-    public function 会員購入(AcceptanceTester $I)
+    public function 注文確認_会員購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0901-UC01-T09_会員購入');
 
@@ -294,5 +294,89 @@ class EF09ThrottlingCest
         // 注文確認画面へ
         ShoppingPage::at($I)->確認する();
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * checkoutでのスロットリングのテスト
+     * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
+     *
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 注文完了_非会員購入(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T08_非会員購入');
+
+        $I->logoutAsMember();
+
+        for ($i = 0; $i < 25; $i++) {
+            $I->expect('非会員購入を行います：'.$i);
+            // カートへ進む
+            ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+            // レジに進む
+            CartPage::go($I)->レジに進む();
+            // 非会員情報入力
+            $ShoppingPage = ShoppingLoginPage::at($I)->ゲスト購入();
+            $this->inputGuestInfo($ShoppingPage)->次へ();
+            // 注文確認画面へ
+            ShoppingPage::at($I)->確認する();
+            // 注文完了
+            ShoppingConfirmPage::at($I)->注文する();
+            $I->see('ご注文完了', 'div.ec-pageHeader h1');
+        }
+
+        $I->expect('試行回数上限を超過します');
+        // カートへ進む
+        ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+        // レジに進む
+        CartPage::go($I)->レジに進む();
+        // 非会員情報入力
+        $ShoppingPage = ShoppingLoginPage::at($I)->ゲスト購入();
+        $this->inputGuestInfo($ShoppingPage)->次へ();
+        // 注文確認画面へ
+        ShoppingPage::at($I)->確認する();
+        // 注文完了
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。', 'div.ec-cartRole__error');
+    }
+
+    /**
+     * checkoutでのスロットリングのテスト
+     * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
+     *
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 注文完了_会員購入(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T09_会員購入');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('会員購入を行います：'.$i);
+            // カートへ進む
+            ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+            // レジに進む
+            CartPage::go($I)->レジに進む();
+            // 注文確認画面へ
+            ShoppingPage::at($I)->確認する();
+            // 注文完了
+            ShoppingConfirmPage::at($I)->注文する();
+            $I->see('ご注文完了', 'div.ec-pageHeader h1');
+        }
+
+        $I->expect('試行回数上限を超過します');
+        // カートへ進む
+        ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+        // レジに進む
+        CartPage::go($I)->レジに進む();
+        // 注文確認画面へ
+        ShoppingPage::at($I)->確認する();
+        // 注文完了
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。', 'div.ec-cartRole__error');
     }
 }
