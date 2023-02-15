@@ -17,6 +17,7 @@ use Eccube\Controller\Install\InstallController;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
@@ -38,10 +39,14 @@ class InstallPluginController extends InstallController
     /** @var PluginRepository */
     protected $pluginReposigoty;
 
-    public function __construct(CacheUtil $cacheUtil, PluginRepository $pluginRespository)
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    public function __construct(CacheUtil $cacheUtil, PluginRepository $pluginRespository, EventDispatcherInterface $eventDispatcher)
     {
         $this->cacheUtil = $cacheUtil;
         $this->pluginReposigoty = $pluginRespository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -126,12 +131,7 @@ class InstallPluginController extends InstallController
                 }
             }
 
-            // KernelEvents::TERMINATE で強制的にキャッシュを削除する
-            // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083
-            $dispatcher->addListener(KernelEvents::TERMINATE, function () {
-                $fs = new Filesystem();
-                $fs->remove($this->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
-            });
+            $this->clearCacheOnTerminate();
 
             return $this->json(['success' => true, 'log' => $log]);
         } else {
@@ -179,5 +179,52 @@ class InstallPluginController extends InstallController
         }
 
         return $expire >= time();
+    }
+
+    /**
+     * WebApiプラグインのシステム要件をチェックする
+     * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
+     *
+     * @Route("/install/plugin/check_api", name="install_plugin_check_api", methods={"PUT"})
+     */
+    public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        // トランザクションチェックファイルの有効期限を確認する
+        $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
+        if (!$this->isValidTransaction($token)) {
+            throw new NotFoundHttpException();
+        }
+
+        $Plugin = $this->pluginReposigoty->findByCode('Api42');
+
+        // WebApiプラグインがインストールされているが、sodium拡張がない場合は、プラグインをアンインストールする
+        if ($Plugin && !extension_loaded('sodium')) {
+
+            $this->clearCacheOnTerminate();
+
+            try {
+                $composerApiService->execRemove('ec-cube/api42');
+            } catch (\Exception $e) {
+                log_error($e);
+
+                return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
+            }
+        }
+
+        return $this->json(['success' => true]);
+    }
+
+    private function clearCacheOnTerminate()
+    {
+        // KernelEvents::TERMINATE で強制的にキャッシュを削除する
+        // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () {
+            $fs = new Filesystem();
+            $fs->remove($this->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
+        });
     }
 }
