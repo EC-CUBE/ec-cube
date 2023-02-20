@@ -30,3 +30,11 @@ eccube:
             route: ~
             limit: 10
             interval: '30 minutes'
+        shopping_checkout_ip:
+            route: ~
+            limit: 25
+            interval: '30 minutes'
+        shopping_checkout_customer:
+            route: ~
+            limit: 10
+            interval: '30 minutes'
