@@ -3,4 +3,4 @@ framework:
     cache:
         pools:
             rate_limiter.cache:
-                adapter: cache.adapter.doctrine_dbal
+                adapter: cache.adapter.filesystem
