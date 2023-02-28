@@ -21,8 +21,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
+        operating-system: [ ubuntu-20.04 ]
+        php: [ 7.4 ]
         db: [ mysql, pgsql, sqlite3 ]
         include:
           - db: mysql
@@ -75,8 +75,8 @@ jobs:
 
     - name: composer install
       run: |
-        sudo composer selfupdate --1
-        composer install --dev --no-interaction -o --apcu-autoloader
+        curl -O https://getcomposer.org/download/latest-1.x/composer.phar
+        php composer.phar install --dev --no-interaction -o --apcu-autoloader
 
     - name: Setup EC-CUBE
       env:
@@ -112,8 +112,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        operating-system: [ ubuntu-20.04 ]
+        php: [ 7.4 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
@@ -212,7 +212,10 @@ jobs:
         ECCUBE_PACKAGE_API_URL: 'http://localhost:8080'
         GROUP: ${{ matrix.group }}
         SYMFONY_DEPRECATIONS_HELPER: weak
-      run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
+      run: |
+        composer config platform.php 7.4.30
+        composer require --dev captbaritone/mailcatcher-codeception-module:"^2.4" --no-plugins --no-scripts
+        vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP}
     - name: Upload evidence
       if: failure()
       uses: actions/upload-artifact@v2
@@ -232,8 +235,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        operating-system: [ ubuntu-20.04 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -378,8 +381,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        operating-system: [ ubuntu-20.04 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -522,8 +525,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        operating-system: [ ubuntu-20.04 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -666,8 +669,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.3 ]
+        operating-system: [ ubuntu-20.04 ]
+        php: [ 7.4 ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
@@ -809,7 +812,7 @@ jobs:
 
   deploy:
     name: Deploy
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
@@ -819,7 +822,7 @@ jobs:
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
       uses: nanasess/setup-php@master
       with:
-        php-version: '7.3'
+        php-version: '7.4'
 
     - name: Get Composer Cache Directory
       if: github.event_name == 'release' && (github.event.action == 'published' || github.event.action == 'prereleased' )
