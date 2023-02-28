@@ -218,7 +218,7 @@ file that was distributed with this source code.
                 }).done(function(data) {
                     // レスポンス内のメッセージをalertで表示
                     $.each(data.messages, function() {
-                        $('#ec-modal-header').html(this);
+                        $('#ec-modal-header').text(this);
                     });
 
                     $('.ec-modal').show()
