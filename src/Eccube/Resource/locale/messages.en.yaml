@@ -658,6 +658,7 @@ admin.product.delete_flag: Product Deletion Flag
 admin.product.search_category: Category Search
 admin.product.save_tag: Tags
 admin.product.create_date__card_title: Update
+admin.product.date_range_error: End date is set after start date
 admin.product.move_to_category: Add / Edit a Category
 admin.product.move_to_tag: Add / Edit a Tag
 admin.product.move_to_product_class: Edit an Option

@@ -658,6 +658,7 @@ admin.product.delete_flag: 商品削除フラグ
 admin.product.search_category: カテゴリ検索
 admin.product.save_tag: タグ登録
 admin.product.create_date__card_title: 登録日・更新日
+admin.product.date_range_error: 終了日時は、開始日時より大きく設定してください
 admin.product.move_to_category: カテゴリの追加・編集
 admin.product.move_to_tag: タグの追加・編集
 admin.product.move_to_product_class: 商品規格の編集
