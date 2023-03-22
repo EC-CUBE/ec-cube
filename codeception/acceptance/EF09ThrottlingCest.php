@@ -214,7 +214,7 @@ class EF09ThrottlingCest
 
     public function 注文確認_非会員購入(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T08_非会員購入');
+        $I->wantTo('EF0901-UC01-T08_注文確認_非会員購入');
 
         $I->logoutAsMember();
 
@@ -267,7 +267,7 @@ class EF09ThrottlingCest
 
     public function 注文確認_会員購入(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T09_会員購入');
+        $I->wantTo('EF0901-UC01-T09_注文確認_会員購入');
 
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
@@ -305,7 +305,7 @@ class EF09ThrottlingCest
      */
     public function 注文完了_非会員購入(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T08_非会員購入');
+        $I->wantTo('EF0901-UC01-T10_注文完了_非会員購入');
 
         $I->logoutAsMember();
 
@@ -349,7 +349,7 @@ class EF09ThrottlingCest
      */
     public function 注文完了_会員購入(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T09_会員購入');
+        $I->wantTo('EF0901-UC01-T11_注文完了_会員購入');
 
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
