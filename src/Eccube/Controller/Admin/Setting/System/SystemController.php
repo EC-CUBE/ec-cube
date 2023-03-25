@@ -57,17 +57,4 @@ class SystemController
             'info' => $info,
         ];
     }
-
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo", methods={"GET"})
-     */
-    public function phpinfo(Request $request)
-    {
-        ob_start();
-        phpinfo();
-        $phpinfo = ob_get_contents();
-        ob_end_clean();
-
-        return new Response($phpinfo);
-    }
 }
