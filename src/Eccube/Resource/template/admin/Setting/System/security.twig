@@ -55,6 +55,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.admin_url'|trans }}">
                                             <span>{{ 'admin.setting.system.security.admin_url'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.admin_route_dir) }}
@@ -192,6 +193,7 @@ file that was distributed with this source code.
                                         <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.security.trusted_hosts'|trans }}">
                                             <span>{{ 'admin.setting.system.security.trusted_hosts'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.trusted_hosts, { 'attr': { 'placeholder': 'admin.setting.system.security.trusted_hosts_sample'|trans }}) }}
