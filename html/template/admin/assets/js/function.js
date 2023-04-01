@@ -118,7 +118,7 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 /////////// 2重submit制御.
 
 if (typeof Ladda !== 'undefined') {
-    Ladda.bind('button[type=submit]', {timeout: 2000});
+    Ladda.bind('button[type=submit],a[token-for-anchor]', {timeout: 2000});
     $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
 }
 
@@ -144,6 +144,7 @@ $(function() {
     $('a[token-for-anchor]').click(function(e) {
         e.preventDefault();
         var $this = $(this);
+        $this.css('pointer-events','none');
         var data = $this.data();
         if (data.confirm != false) {
             if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
