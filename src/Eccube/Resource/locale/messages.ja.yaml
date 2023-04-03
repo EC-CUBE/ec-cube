@@ -1125,9 +1125,9 @@ admin.setting.shop.shop.shop_name_kana: 店名(カナ)
 admin.setting.shop.shop.shop_name_en: 店名(英語表記)
 admin.setting.shop.shop.business_hour: 店舗営業時間
 admin.setting.shop.shop.email_from: 送信元メールアドレス(From)
-admin.setting.shop.shop.email_for_inquiries: 問い合わせ受付メールアドレス(From, ReplyTo)
-admin.setting.shop.shop.email_reply_to: 返信受付メールアドレス(ReplyTo)
-admin.setting.shop.shop.email_return_path: 送信エラー受付メールアドレス(ReturnPath)
+admin.setting.shop.shop.email_for_inquiries: 問い合わせ専用メールアドレス(From, ReplyTo)
+admin.setting.shop.shop.email_reply_to: 返信先メールアドレス(ReplyTo)
+admin.setting.shop.shop.email_return_path: 送信エラー通知メールアドレス(ReturnPath)
 admin.setting.shop.shop.good_traded: 取り扱い商品説明文
 admin.setting.shop.shop.message: 店舗からのメッセージ
 admin.setting.shop.shop.option_delivery_fee: 送料設定
