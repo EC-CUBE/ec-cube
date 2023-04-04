@@ -133,7 +133,7 @@ file that was distributed with this source code.
                                                 <div class="col-2 pl-0">.twig</div>
                                             {% else %}
                                                 <div class="col pr-0 align-middle">
-                                                    <span class="align-middle">{{ template_path }}/{{ form.file_name.vars.value }}.twig</span>
+                                                    <span class="align-middle">{{ template_path }}/{{ form.file_name.vars.value|replace({'@' : ''}) }}.twig</span>
                                                     <div>{{ form_widget(form.file_name, { type : 'hidden' } ) }}</div>
                                                 </div>
                                             {% endif %}

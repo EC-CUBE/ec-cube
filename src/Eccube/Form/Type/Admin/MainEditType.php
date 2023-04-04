@@ -101,7 +101,7 @@ class MainEditType extends AbstractType
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                     new Assert\Regex([
-                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
+                        'pattern' => '/^@?([0-9a-zA-Z_\-]+\/?)+$/',
                     ]),
                 ],
             ])
