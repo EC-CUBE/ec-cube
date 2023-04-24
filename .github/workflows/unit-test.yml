@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-22.04 ]
         php: [ '7.4', '8.0', '8.1' ]
         db: [ mysql, pgsql, sqlite3 ]
         include:
