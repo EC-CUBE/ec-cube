@@ -1226,14 +1226,19 @@ admin.setting.system.member.work_can_not_change: 非稼働に変更すること�
 
 admin.setting.system.authority__card_title: 権限設定
 admin.setting.system.authority.description: |
-  %url%以降からのURLを拒否URLに入力してください。
-  拒否URL以降がアクセス拒否されます。(URLは前方一致)
+  %url%以降からのURLを設定画面・項目に入力してください。
+  URL以降にロールが設定されます。(URLは前方一致)
 admin.setting.system.authority.example: '例) /setting <span class="text-danger">「/」を必ず記入してください</span>'
+admin.setting.system.authority.read_only_description: |
+  ロール：表示のみは、3機能で設定可能となります。<br>
+  ・商品一覧 「/product」 ・受注一覧 「/order」 ・会員一覧 「/customer」
+admin.setting.system.authority.role: ロール
 admin.setting.system.authority.authority: 権限
-admin.setting.system.authority.deny_url: 拒否URL
+admin.setting.system.authority.deny_url: 設定画面・項目
 admin.setting.system.authority.add_row: 行を追加
+admin.setting.system.authority.role_not_selected: 役割が選択されていません。
 admin.setting.system.authority.authority_not_selected: 権限が選択されていません。
-admin.setting.system.authority.deny_url_is_empty: 拒否URLが入力されていません。
+admin.setting.system.authority.deny_url_is_empty: 設定画面・項目が入力されていません。
 admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入してください。
 
 #------------------------------------------------------------------------------------
