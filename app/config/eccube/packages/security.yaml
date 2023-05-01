@@ -45,7 +45,7 @@ security:
             provider: customer_provider
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 3600
+                lifetime: '%env(int:ECCUBE_COOKIE_LIFETIME)%'
                 name: eccube_remember_me
                 remember_me_parameter: 'login_memory'
                 secure: auto
