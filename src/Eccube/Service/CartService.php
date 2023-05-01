@@ -280,11 +280,17 @@ class CartService
     {
         foreach ($this->getCarts() as $Cart) {
             foreach ($Cart->getCartItems() as $i) {
-                $this->entityManager->remove($i);
-                $this->entityManager->flush();
+                // remove()をする前にオブジェクトの状態を確認する
+                if ($this->entityManager->getUnitOfWork()->getEntityState($i) === UnitOfWork::STATE_MANAGED) {
+                    $this->entityManager->remove($i);
+                    $this->entityManager->flush($i);
+                }
             }
-            $this->entityManager->remove($Cart);
-            $this->entityManager->flush();
+            // remove()をする前にオブジェクトの状態を確認する
+            if ($this->entityManager->getUnitOfWork()->getEntityState($Cart) === UnitOfWork::STATE_MANAGED) {
+                $this->entityManager->remove($Cart);
+                $this->entityManager->flush($Cart);
+            }
         }
         $this->carts = [];
 
@@ -400,8 +406,9 @@ class CartService
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
+                $this->entityManager->flush($item);
             }
-            $this->entityManager->flush();
+            $this->entityManager->flush($Cart);
             $cartKeys[] = $Cart->getCartKey();
         }
 
