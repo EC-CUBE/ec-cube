@@ -445,21 +445,22 @@ file that was distributed with this source code.
                                                 </a>
                                             </div>
                                         </div>
-
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-ec-regular" data-bs-toggle="dropdown" id="csvSettingDropDown">
-                                                <i class="fa fa-cog me-1 text-secondary"></i>
-                                                <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}" id="orderCsvSetting">
-                                                    {{ 'admin.order.order_csv'|trans }}
-                                                </a>
-                                                <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}" id="shippingCsvSetting">
-                                                    {{ 'admin.order.shipping_csv'|trans }}
-                                                </a>
+                                        {% if read_only is empty %}
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-ec-regular" data-toggle="dropdown" id="csvSettingDropDown">
+                                                    <i class="fa fa-cog mr-1 text-secondary"></i>
+                                                    <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}" id="orderCsvSetting">
+                                                        {{ 'admin.order.order_csv'|trans }}
+                                                    </a>
+                                                    <a class="dropdown-item" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}" id="shippingCsvSetting">
+                                                        {{ 'admin.order.shipping_csv'|trans }}
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -469,13 +470,15 @@ file that was distributed with this source code.
                                 <table class="table table-sm" id="search_result">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-2 text-center ps-3">
-                                            <input type="checkbox" id="toggle_check_all" name="filter" value="open">
-                                        </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.id'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="order"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}<a href="#" class="js-listSort" data-sortkey="payment_method"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}<a href="#" class="js-listSort" data-sortkey="order_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}<a href="#" class="js-listSort" data-sortkey="purchase_price"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        {% if read_only is empty %}
+                                            <th class="border-top-0 pt-2 pb-2 text-center pl-3">
+                                                <input type="checkbox" id="toggle_check_all" name="filter" value="open">
+                                            </th>
+                                        {% endif %}
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}<a href="#" class="js-listSort" data-sortkey="shipping_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}<a href="#" class="js-listSort" data-sortkey="tracking_number"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
@@ -487,16 +490,24 @@ file that was distributed with this source code.
                                     {% for Order in pagination %}
                                         {% for Shipping in Order.Shippings %}
                                             <tr>
-                                                <td class="align-middle text-center ps-3">
-                                                    <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
-                                                           data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                           data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
-                                                           data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
-                                                    />
-                                                </td>
-                                                <td class="align-middle text-start">
-                                                    <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
-                                                </td>
+                                                {% if read_only is empty %}
+                                                    <td class="align-middle text-center pl-3">
+                                                        <input type="checkbox" id="check_{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids[]" value="{{ Shipping.id }}"
+                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                            data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
+                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                                        />
+                                                    </td>
+                                                {% endif %}
+                                                    {% if read_only %}
+                                                        <td class="align-middle text-center">
+                                                            {{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td class="align-middle text-left">
+                                                            <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
+                                                        </td>
+                                                    {% endif %}
                                                 <td class="align-middle text-center">
                                                     {{ Order.payment_method }}
                                                 </td>
@@ -536,46 +547,52 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
-                                                        <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
-                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </button>
-                                                </span>
-                                                    </div>
+                                                    {% if read_only %}
+                                                        {{ Shipping.trackingNumber }}
+                                                    {% else %}
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
+                                                                    <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                                     {{ Shipping.Pref.name }}
                                                 </td>
-                                                <td class="align-middle pe-3">
-                                                    <div class="text-end">
-                                                        <div class="px-1 d-inline-block">
-                                                            <a class="btn btn-ec-actionIcon confirmationModal"
-                                                               data-type="mail" data-bulk-update="false"
-                                                               data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
-                                                               data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.order.shipping_mail_send'|trans }}">
-                                                                <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
+                                                <td class="align-middle pr-3">
+                                                    {% if read_only is empty %}
+                                                        <div class="text-right">
+                                                            <div class="px-1 d-inline-block">
+                                                                <a class="btn btn-ec-actionIcon confirmationModal"
+                                                                data-type="mail" data-bulk-update="false"
+                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                                data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
+                                                                data-tooltip="true" data-placement="top" title="{{ 'admin.order.shipping_mail_send'|trans }}">
+                                                                    <i class="fa fa-send fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="px-1 d-inline-block">
+                                                                <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-tooltip="true" data-placement="top" title="{{ 'admin.order.output_delivery_note_short'|trans }}">
+                                                                    <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="px-1 d-inline-block">
+                                                                <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
+                                                                data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
+                                                                data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
+                                                                data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                                                data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
+                                                                data-tooltip="true" data-placement="top" title data-original-title="{{ 'admin.order.to_shipped'|trans }}">
+                                                                    <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                        <div class="px-1 d-inline-block">
-                                                            <a class="btn btn-ec-actionIcon pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Shipping.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.order.output_delivery_note_short'|trans }}">
-                                                                <i class="fa fa-table fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="px-1 d-inline-block">
-                                                            <a class="btn btn-ec-actionIcon confirmationModal" href="javascript:;"
-                                                               data-id="{{ Shipping.id }}" data-type="status" data-bulk-update="false"
-                                                               data-update-status-id="{{ constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') }}"
-                                                               data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
-                                                               data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
-                                                               data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.order.to_shipped'|trans }}">
-                                                                <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                         {% endfor %}

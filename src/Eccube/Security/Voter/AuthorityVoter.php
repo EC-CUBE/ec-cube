@@ -15,6 +15,7 @@ namespace Eccube\Security\Voter;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
+use Eccube\Entity\Master\Role;
 use Eccube\Repository\AuthorityRoleRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -65,7 +66,7 @@ class AuthorityVoter implements VoterInterface
         $Member = $token->getUser();
         if ($Member instanceof Member) {
             // 管理者のロールをチェック
-            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority(), 'Role' => Role::HIDE]);
             $adminRoute = $this->eccubeConfig->get('eccube_admin_route');
 
             foreach ($AuthorityRoles as $AuthorityRole) {

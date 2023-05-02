@@ -195,6 +195,17 @@ class OrderController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
+        // 表示のみ制限の引数準備
+        $raedOnlyFlag = false;
+        $pathInfo = $request->getPathInfo();
+        $adminRoute = '/'.$this->eccubeConfig['eccube_admin_route'];
+        $checkUrl = str_replace($adminRoute, '', $pathInfo);
+        $Authority = $this->getUser()->getAuthority();
+
+        $AuthorityRoleRepository = $this->entityManager->getRepository('Eccube\Entity\AuthorityRole');
+        // 表示のみ制限をチェック
+        $raedOnlyFlag = $AuthorityRoleRepository->checkReadOnly($Authority, $checkUrl);
+
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
 
@@ -325,6 +336,7 @@ class OrderController extends AbstractController
             'page_count' => $page_count,
             'has_errors' => false,
             'OrderStatuses' => $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']),
+            'read_only' => $raedOnlyFlag,
         ];
     }
 

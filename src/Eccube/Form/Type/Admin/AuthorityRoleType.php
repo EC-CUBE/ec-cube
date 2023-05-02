@@ -35,35 +35,56 @@ class AuthorityRoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Authority', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\Authority',
-                'expanded' => false,
-                'multiple' => false,
-                'required' => false,
-                'placeholder' => 'common.select',
-            ])
-            ->add('deny_url', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Regex([
-                        'pattern' => '/^\\/.*/',
-                        'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
-                    ]),
-                ],
-            ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                $form = $event->getForm();
+        ->add('Authority', EntityType::class, [
+            'class' => 'Eccube\Entity\Master\Authority',
+            'expanded' => false,
+            'multiple' => false,
+            'required' => false,
+            'placeholder' => 'common.select',
+        ])
+        ->add('Role', EntityType::class, [
+            'class' => 'Eccube\Entity\Master\Role',
+            'expanded' => false,
+            'multiple' => false,
+            'required' => false,
+            'placeholder' => 'common.select',
+        ])
+        ->add('deny_url', TextType::class, [
+            'required' => false,
+            'constraints' => [
+                new Regex([
+                    'pattern' => '/^\\/.*/',
+                    'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
+                ]),
+            ],
+        ])
+        ->add('read_only_url', TextType::class, [
+            'required' => false,
+            'constraints' => [
+                new Regex([
+                    'pattern' => '/^\\/.*/',
+                    'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
+                ]),
+            ],
+        ])
+        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
 
-                $Authority = $form['Authority']->getData();
-                $denyUrl = $form['deny_url']->getData();
+            $Authority = $form['Authority']->getData();
+            $Role = $form['Role']->getData();
+            $denyUrl = $form['deny_url']->getData();
+            $readOnlyUrl = $form['read_only_url']->getData();
 
-                if (!$Authority && !empty($denyUrl)) {
-                    $form['Authority']->addError(new FormError(trans('admin.setting.system.authority.authority_not_selected')));
-                } elseif ($Authority && empty($denyUrl)) {
-                    $form['deny_url']->addError(new FormError(trans('admin.setting.system.authority.deny_url_is_empty')));
-                }
-            })
-        ;
+            if (!$Authority) {
+                $form['Authority']->addError(new FormError(trans('admin.setting.system.authority.authority_not_selected')));
+            }
+            if (empty($denyUrl) && empty($readOnlyUrl)) {
+                $form['deny_url']->addError(new FormError(trans('admin.setting.system.authority.deny_url_is_empty')));
+            }
+            if (!$Role) {
+                $form['Role']->addError(new FormError(trans('admin.setting.system.authority.role_not_selected')));
+            }
+        });
     }
 
     /**

@@ -19,6 +19,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\Role;
 use Eccube\Entity\Member;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
@@ -248,7 +249,7 @@ class TwigInitializeListener implements EventSubscriberInterface
 
         $Member = $this->requestContext->getCurrentUser();
         if ($Member instanceof Member) {
-            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority()]);
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(['Authority' => $Member->getAuthority(), 'Role' => Role::HIDE]);
             $baseUrl = $event->getRequest()->getBaseUrl().'/'.$this->eccubeConfig['eccube_admin_route'];
             $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
         }

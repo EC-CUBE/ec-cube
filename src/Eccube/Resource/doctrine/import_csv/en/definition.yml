@@ -21,6 +21,7 @@
 - mtb_tax_type.csv
 - mtb_tax_display_type.csv
 - mtb_work.csv
+- mtb_role.csv
 - dtb_member.csv
 - dtb_tax_rule.csv
 - dtb_block.csv

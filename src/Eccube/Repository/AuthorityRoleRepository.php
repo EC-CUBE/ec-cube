@@ -15,6 +15,7 @@ namespace Eccube\Repository;
 
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\Master\Role;
 
 /**
  * AuthorityRoleRepository
@@ -37,5 +38,17 @@ class AuthorityRoleRepository extends AbstractRepository
     public function findAllSort()
     {
         return $this->findBy([], ['Authority' => 'ASC', 'deny_url' => 'ASC']);
+    }
+
+    /**
+     * 表示のみ制限URLチェック
+     *
+     * @return boolean
+     */
+    public function checkReadOnly($Authority, $checkUrl)
+    {
+        // ログイン者の表示権限をチェック
+        $checkData = $this->findOneBy(['Role' => Role::READ_ONLY, 'Authority' => $Authority, 'read_only_url' => $checkUrl]);
+        return isset($checkData);
     }
 }

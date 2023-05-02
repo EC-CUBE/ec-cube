@@ -301,9 +301,11 @@ file that was distributed with this source code.
                                         <a class="btn btn-ec-regular" href="{{ url('admin_product_export') }}">
                                             <i class="fa fa-cloud-download me-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span>
                                         </a>
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">
-                                            <i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
-                                        </a>
+                                        {% if read_only is empty %}
+                                            <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">
+                                                <i class="fa fa-cog mr-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -313,10 +315,12 @@ file that was distributed with this source code.
                                 <table class="table table-sm">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 ps-3 pt-2 pb-2">
+                                        {% if read_only is empty %}
+                                        <th class="border-top-0 pl-3 pt-2 pb-2">
                                             <input type="checkbox" name="filter" value="open" id="trigger_check_all">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2" nowrap>{{ 'admin.product.product_id__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        {% endif %}
+                                        <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_id__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.image__short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.name'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                         <th class="border-top-0 pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}<a href="#" class="js-listSort" data-sortkey="product_code"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
@@ -331,11 +335,20 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for Product in pagination %}
                                         <tr id="ex-product-{{ Product.id }}">
-                                            <td class="align-middle ps-3">
+                                            {% if read_only is empty %}
+                                            <td class="align-middle pl-3">
                                                 <input type="checkbox" name="ids[]" value="{{ Product.id }}" id="check_{{ Product.id }}" data-delete-url="{{ url('admin_product_product_delete', { id: Product.id }) }}">
                                             </td>
+                                            {% endif %}
                                             <td class="align-middle">{{ Product.id }}</td>
                                             {# TODO: 画像のサイズをベタ指定しているので、styleguide側を直す #}
+                                            {% if read_only %}
+                                            <td class="align-middle">
+                                                <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
+                                                        style="max-width: 50px">
+                                            </td>
+                                            <td class="align-middle">{{ Product.name }}</td>
+                                            {% else %}
                                             <td class="align-middle">
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                     <img src="{{ asset(Product.mainFileName|no_image_product, 'save_image') }}"
@@ -345,6 +358,7 @@ file that was distributed with this source code.
                                             <td class="align-middle"><a
                                                         href="{{ url('admin_product_product_edit', { id : Product.id }) }}">{{ Product.name }}</a>
                                             </td>
+                                            {% endif %}
                                             <td class="align-middle">
                                                 {{ Product.code_min }}
                                                 {% if Product.code_min != Product.code_max %}{{ 'admin.common.separator__range'|trans }}{{ Product.code_max }}
@@ -390,9 +404,11 @@ file that was distributed with this source code.
                                                                                                        href="{{ url('product_detail', {id:Product.id}) }}"
                                                                                                        target="_blank"><i
                                                                     class="fa fa-eye fa-lg text-secondary"
-                                                                    aria-hidden="true"></i></a></div>
-                                                    <div class="px-1 d-inline-block text-center" data-bs-toggle="tooltip"
-                                                         data-bs-placement="top"
+                                                                    aria-hidden="true"></i></a>
+                                                    </div>
+                                                    {% if read_only is empty %}
+                                                    <div class="px-1 d-inline-block text-center" data-tooltip="true"
+                                                         data-placement="top"
                                                          title="{{ 'admin.common.copy'|trans }}">
                                                         <a href="#" class="btn btn-ec-actionIcon"
                                                            data-bs-toggle="modal"
@@ -433,6 +449,7 @@ file that was distributed with this source code.
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {% endif %}
                                                 </div>
                                             </td>
                                         </tr>
@@ -508,10 +525,12 @@ file that was distributed with this source code.
                     <button class="btn btn-v-sub" type="button" data-bs-dismiss="modal">
                         {{ 'admin.common.cancel'|trans }}
                     </button>
+                    {% if read_only is empty %}
                     <a class="btn btn-ec-conversion"
                        href="#">
                         {{ 'admin.product.move_to_product_class'|trans }}
                     </a>
+                    {% endif %}
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
