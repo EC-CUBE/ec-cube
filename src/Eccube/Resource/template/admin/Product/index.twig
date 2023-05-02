@@ -16,6 +16,7 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.product.product_management'|trans }}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
+
 {% block javascript %}
     <script>
         $(function() {
@@ -118,13 +119,21 @@ file that was distributed with this source code.
                     renderClass(dataClass[productId], btnClass);
                     return;
                 }
-
+                var xhr = new XMLHttpRequest();
                 $.ajax({
                     url: btnClass.data('class-load'),
                     type: 'GET',
+                    xhr: function() {
+                        return xhr;
+                    }
                 }).done(function(data) {
-                    dataClass[productId] = data;
-                    renderClass(dataClass[productId], btnClass);
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                            btnClass.attr('disabled', false);
+                    } else {
+                            dataClass[productId] = data;
+                            renderClass(dataClass[productId], btnClass);
+                    }
                 }).fail(function() {
                     alert('Failed');
                 });

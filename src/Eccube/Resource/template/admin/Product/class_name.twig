@@ -47,6 +47,7 @@ file that was distributed with this source code.
             });
 
             var updateSortNo = function() {
+                var xhr = new XMLHttpRequest();
                 // 並び替え後にsortNoを更新
                 var newSortNos = {};
                 var i = 0;
@@ -58,13 +59,20 @@ file that was distributed with this source code.
                 $.ajax({
                     url: '{{ url('admin_product_class_name_sort_no_move') }}',
                     type: 'POST',
-                    data: newSortNos
+                    data: newSortNos,
+                    xhr: function() {
+                        return xhr;
+                    }
                 }).done(function() {
-                    // remove class disable
-                    $('a.up.disabled').removeClass('disabled');
-                    $('a.down.disabled').removeClass('disabled');
-                    // First element
-                    $('.sortable-item > li:nth-child(2) > div > div.col-auto.text-end > a.up').addClass('disabled');
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                            // remove class disable
+                            $('a.up.disabled').removeClass('disabled');
+                            $('a.down.disabled').removeClass('disabled');
+                            // First element
+                            $('.sortable-item > li:nth-child(2) > div > div.col-auto.text-end > a.up').addClass('disabled');
+                    }
                 }).always(function() {
                     redrawDisableAllows();
                     $('.modal-backdrop').remove();

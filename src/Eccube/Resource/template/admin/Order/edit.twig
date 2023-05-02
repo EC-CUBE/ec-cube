@@ -34,6 +34,7 @@ file that was distributed with this source code.
 
             // 会員検索
             $('#searchCustomerModalButton').on('click', function() {
+                var xhr = new XMLHttpRequest();
                 var list = $('#searchCustomerModalList');
                 list.children().remove();
 
@@ -41,9 +42,16 @@ file that was distributed with this source code.
                     url: '{{ url('admin_order_search_customer_html') }}',
                     type: 'POST',
                     dataType: 'html',
-                    data: {'search_word': $('#admin_search_customer_multi').val()}
+                    data: {'search_word': $('#admin_search_customer_multi').val()},
+                    xhr: function() {
+                        return xhr;
+                    }
                 }).done(function(data) {
-                    $('#searchCustomerModalList').html(data);
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                            $('#searchCustomerModalList').html(data);
+                    }
                 }).fail(function(data) {
                     alert('search customer failed.');
                 });
@@ -51,6 +59,7 @@ file that was distributed with this source code.
 
             // 商品検索
             $('#searchProductModalButton').on('click', function() {
+                var xhr = new XMLHttpRequest();
                 var list = $('#searchProductModalList');
                 list.children().remove();
 
@@ -61,9 +70,41 @@ file that was distributed with this source code.
                     data: {
                         'id': $('#admin_search_product_id').val(),
                         'category_id': $('#admin_search_product_category_id').val()
+                    },
+                    xhr: function() {
+                        return xhr;
                     }
                 }).done(function(data) {
-                    $('#searchProductModalList').html(data);
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                            $('#searchProductModalList').html(data);
+                    }
+                }).fail(function(data) {
+                    alert('search product failed.');
+                });
+            });
+
+            // ページング処理
+            $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
+                e.preventDefault();
+                var xhr = new XMLHttpRequest();
+                var list = $('#searchProductModalList');
+                list.children().remove();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'html',
+                    xhr: function() {
+                    return xhr;
+                }
+                }).done(function(data) {
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                    alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                        $('#searchProductModalList').html(data);
+                    }
                 }).fail(function(data) {
                     alert('search product failed.');
                 });
@@ -71,36 +112,28 @@ file that was distributed with this source code.
 
             // その他明細
             $('#addOrderItemType').on('show.bs.modal', function(e) {
+                var xhr = new XMLHttpRequest();
                 var list = $('#searchOrderItemTypeList');
                 list.children().remove();
 
                 $.ajax({
                     url: '{{ url('admin_order_search_order_item_type') }}',
                     type: 'POST',
-                    dataType: 'html'
+                    dataType: 'html',
+                     xhr: function() {
+                          return xhr;
+                     }
                 }).done(function(data) {
-                    $('#searchOrderItemTypeList').html(data);
+                    if (xhr.responseURL === '{{ url('admin_login') }}') {
+                            alert('{{ 'admin.common.failed_to_load'|trans }}');
+                    } else {
+                            $('#searchOrderItemTypeList').html(data);
+                    }
                 }).fail(function(data) {
                     alert('search order item type failed.');
                 });
             });
 
-            // ページング処理
-            $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
-                e.preventDefault();
-                var list = $('#searchProductModalList');
-                list.children().remove();
-                var url = $(this).attr('href');
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'html'
-                }).done(function(data) {
-                    $('#searchProductModalList').html(data);
-                }).fail(function(data) {
-                    alert('search product failed.');
-                });
-            });
 
             // 商品追加
             $collectionHolder = $('#table-form-field');
