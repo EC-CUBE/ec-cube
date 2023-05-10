@@ -1,0 +1,1 @@
+{"name":"ec-cube\/horizon","description":"\u30db\u30e9\u30a4\u30be\u30f3","version":"1.0.0","type":"eccube-plugin","require":{"ec-cube\/plugin-installer":"^2.0@dev"},"extra":{"code":"Horizon","id":100}}

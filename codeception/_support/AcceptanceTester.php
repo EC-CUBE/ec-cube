@@ -231,4 +231,20 @@ class AcceptanceTester extends \Codeception\Actor
             $action->perform();
         });
     }
+
+    public function compressPlugin($pluginDirName, $destDir)
+    {
+        $archiveName = $pluginDirName.'.tgz';
+        $tgzPath = $destDir.'/'.$archiveName;
+        if (file_exists($tgzPath)) {
+            $this->comment("deleted.");
+            unlink($tgzPath);
+        }
+        $tarPath = $destDir.'/'.$pluginDirName.'.tar';
+        $phar = new \PharData($tarPath);
+        $published = $phar->buildFromDirectory(codecept_data_dir('plugins/'.$pluginDirName));
+        $phar->compress(\Phar::GZ, '.tgz');
+        unlink($tarPath);
+        return $published;
+    }
 }
