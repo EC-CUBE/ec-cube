@@ -15,7 +15,7 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Master\Role;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 
 /**
  * RoleRepository
