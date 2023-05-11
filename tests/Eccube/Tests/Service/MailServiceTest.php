@@ -18,6 +18,9 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,6 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MailServiceTest extends AbstractServiceTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var Customer
      */
@@ -50,24 +55,19 @@ class MailServiceTest extends AbstractServiceTestCase
     protected $orderRepository;
 
     /**
-     * @var \Swift_Message
-     */
-    protected $Message;
-
-    /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->mailService = self::$container->get(MailService::class);
+        $this->mailService = static::getContainer()->get(MailService::class);
 
         $request = Request::createFromGlobals();
-        self::$container->get('request_stack')->push($request);
-        $twig = self::$container->get('twig');
+        static::getContainer()->get('request_stack')->push($request);
+        $twig = static::getContainer()->get('twig');
         $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 
@@ -76,65 +76,57 @@ class MailServiceTest extends AbstractServiceTestCase
         $url = 'http://example.com/confirm';
         $this->mailService->sendCustomerConfirmMail($this->Customer, $url);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
-
-        $this->expected = $url;
-        $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
+        $this->assertEmailTextBodyContains($Message, $url, 'URLは'.$url.'ではありません');
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $this->Customer->getEmail();
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
         $this->verify();
 
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
+        $this->assertEmailHtmlBodyContains($Message, $url, 'URLは'.$url.'ではありません');
     }
 
     public function testSendCustomerCompleteMail()
     {
         $this->mailService->sendCustomerCompleteMail($this->Customer);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $this->Customer->getEmail();
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
         $this->verify();
 
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
+        $this->assertEmailTextBodyContains($Message, '本会員登録が完了いたしました');
+        $this->assertEmailHtmlBodyContains($Message, '本会員登録が完了いたしました');
     }
 
     public function testSendCustomerWithdrawMail()
@@ -142,31 +134,28 @@ class MailServiceTest extends AbstractServiceTestCase
         $email = 'draw@example.com';
         $this->mailService->sendCustomerWithdrawMail($this->Customer, $email);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $email;
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
         $this->verify();
 
-        // HTMLメールテスト
-        $this->assertEquals(0, count($Message->getChildren()));
+        $this->assertEmailTextBodyContains($Message, '退会手続きが完了いたしました');
+        $this->assertEmailHtmlBodyNotContains($Message, '退会手続きが完了いたしました', 'HTML part は存在しない');
     }
 
     public function testSendContactMail()
@@ -198,33 +187,27 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->mailService->sendContactMail($formData);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $email;
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
 
-        $this->expected = 'お問い合わせ内容';
-        $this->verifyRegExp($Message, 'お問い合わせ内容');
-
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
+        $this->assertEmailTextBodyContains($Message, 'お問い合わせ内容');
+        $this->assertEmailHtmlBodyContains($Message, 'お問い合わせ内容');
     }
 
     public function testSendOrderMail()
@@ -232,30 +215,28 @@ class MailServiceTest extends AbstractServiceTestCase
         $Order = $this->Order;
         $this->mailService->sendOrderMail($Order);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $Order->getEmail();
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
+        $this->verify();
 
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
+        $this->assertEmailTextBodyContains($Message, 'この度はご注文いただき誠にありがとうございます。');
+        $this->assertEmailHtmlBodyContains($Message, 'この度はご注文いただき誠にありがとうございます。');
     }
 
     public function testSendAdminCustomerConfirmMail()
@@ -263,34 +244,27 @@ class MailServiceTest extends AbstractServiceTestCase
         $url = 'http://example.com/confirm';
         $this->mailService->sendAdminCustomerConfirmMail($this->Customer, $url);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
-
-        $this->expected = $url;
-        $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
-
+        $this->assertEmailTextBodyContains($Message, $url, 'URLは'.$url.'ではありません');
+        $this->assertEmailHtmlBodyContains($Message, $url, 'URLは'.$url.'ではありません');
         $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $this->Customer->getEmail();
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
         $this->verify();
-
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
     }
 
     public function testSendAdminOrderMail()
@@ -304,27 +278,24 @@ class MailServiceTest extends AbstractServiceTestCase
         ];
         $this->mailService->sendAdminOrderMail($Order, $formData);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] '.$subject;
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $Order->getEmail();
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
         $this->verify();
     }
 
@@ -333,30 +304,24 @@ class MailServiceTest extends AbstractServiceTestCase
         $url = 'http://example.com/reset';
         $this->mailService->sendPasswordResetNotificationMail($this->Customer, $url);
 
-        $mailCollector = $this->getMailCollector();
-        $this->assertLessThanOrEqual(1, $mailCollector->getMessageCount(), 'Bccメールは送信しない');
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
-
-        $this->expected = $url;
-        $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
+        $this->assertEmailTextBodyContains($Message, $url, 'URLは'.$url.'ではありません');
+        $this->assertEmailHtmlBodyNotContains($Message, $url, 'HTML part は存在しない');
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $this->Customer->getEmail();
-        $this->actual = key($Message->getTo());
+        $this->actual = $Message->getTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
-
-        // HTMLメールテスト
-        $this->assertEquals(0, count($Message->getChildren()));
     }
 
     public function testSendPasswordResetCompleteMail()
@@ -364,128 +329,38 @@ class MailServiceTest extends AbstractServiceTestCase
         $faker = $this->getFaker();
         $password = $faker->password;
         $this->mailService->sendPasswordResetCompleteMail($this->Customer, $password);
-
-        $mailCollector = $this->getMailCollector();
-        $this->assertLessThanOrEqual(1, $mailCollector->getMessageCount(), 'Bccメールは送信しない');
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のお知らせ';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = key($Message->getReplyTo());
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
         $this->verify();
 
         $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = key($Message->getBcc());
+        $this->actual = $Message->getBcc()[0]->getAddress();
         $this->verify();
 
-        // HTMLメールテスト
-        $this->assertEquals(0, count($Message->getChildren()));
+        $this->assertEmailTextBodyContains($Message, 'パスワードを変更いたしました。');
+        $this->assertEmailHtmlBodyNotContains($Message, 'パスワードを変更いたしました。', 'HTML part は存在しない');
     }
 
-    public function testConvertMessageISO()
+    public function testConvertRFCViolatingEmail()
     {
-        // TODO  https://github.com/EC-CUBE/ec-cube/issues/2402#issuecomment-362487022
-        $this->markTestIncomplete('実装確認中のためスキップ');
-        $config = $this->app['config'];
-        $config['mail']['charset_iso_2022_jp'] = true;
-        $this->app['config'] = $config;
-
-        $this->app->initMailer();
-
-        $Order = $this->Order;
-        // 戻り値はiso-2022-jpのmessage
-        $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
-
-        $this->expected = mb_strtolower($message->getCharset());
-        $this->actual = 'iso-2022-jp';
+        $this->expected = new Address('".aa"@example.com');
+        $this->actual = $this->mailService->convertRFCViolatingEmail('.aa@example.com');
         $this->verify();
 
-        $this->expected = $message->getBody();
-
-        // 文字コードがiso-2022-jpからUTF-8に変換されたものと比較
-        // MailUtil::convertMessage($this->app, $message);
-        // $this->actual = $message->getBody();
-        // $this->assertNotEquals($this->expected, $this->actual);
-
-        // 文字コードがUTF-8からiso-2022-jpに変換されたものと比較
-        MailUtil::setParameterForCharset($this->app, $message);
-        $this->actual = $message->getBody();
-        $this->assertEquals($this->expected, $this->actual);
-
-        $config = $this->app['config'];
-        $config['mail']['charset_iso_2022_jp'] = false;
-        $this->app['config'] = $config;
-    }
-
-    public function testConvertMessageUTF()
-    {
-        // TODO  https://github.com/EC-CUBE/ec-cube/issues/2402#issuecomment-362487022
-        $this->markTestIncomplete('実装確認中のためスキップ');
-
-        $config = $this->app['config'];
-        $config['mail']['charset_iso_2022_jp'] = false;
-        $this->app['config'] = $config;
-
-        $this->app->initMailer();
-
-        $Order = $this->Order;
-        // 戻り値はUTFのmessage
-        $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
-
-        $this->expected = mb_strtolower($message->getCharset());
-        $this->actual = 'utf-8';
+        $this->expected = new Address('"aa."@example.com');
+        $this->actual = $this->mailService->convertRFCViolatingEmail('aa.@example.com');
         $this->verify();
 
-        $this->expected = $message->getBody();
-
-        // 変換されない
-        MailUtil::convertMessage($this->app, $message);
-        $this->actual = $message->getBody();
+        $this->expected = new Address('"a..a"@example.com');
+        $this->actual = $this->mailService->convertRFCViolatingEmail('a..a@example.com');
         $this->verify();
-
-        // 変換されない
-        MailUtil::setParameterForCharset($this->app, $message);
-        $this->actual = $message->getBody();
-        $this->verify();
-    }
-
-    /**
-     * @throws \Twig_Error
-     */
-    public function testSendShippingNotifyMail()
-    {
-        $this->markTestIncomplete('実装確認中のためスキップ');
-        $Order = $this->Order;
-        /** @var Shipping $Shipping */
-        $Shipping = $Order->getShippings()->first();
-
-        $this->mailService->sendShippingNotifyMail($Shipping);
-        $this->entityManager->flush();
-
-        $messages = $this->getMailCollector()->getMessages();
-        self::assertEquals(1, count($messages));
-
-        /** @var \Swift_Message $message */
-        $message = $messages[0];
-        self::assertEquals([$Order->getEmail() => 0], $message->getTo(), '受注者にメールが送られているはず');
-
-        /** @var MailHistoryRepository $mailHistoryRepository */
-        $mailHistoryRepository = $this->entityManager->getRepository(\Eccube\Entity\MailHistory::class);
-        $histories = $mailHistoryRepository->findBy(['Order' => $Order]);
-        self::assertEquals(1, count($histories), 'メール履歴が作成されているはず');
-
-        // HTMLメールテスト
-        $this->assertEquals(1, count($Message->getChildren()));
-    }
-
-    protected function verifyRegExp($Message, $errorMessage = null)
-    {
-        $this->assertRegExp('/'.preg_quote($this->expected, '/').'/', $Message->getBody(), $errorMessage);
     }
 }

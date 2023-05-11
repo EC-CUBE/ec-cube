@@ -21,12 +21,12 @@ class CsvLoaderCommandTest extends AbstractCommandTest
     /** @var \SplFileObject */
     protected $file;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::markTestIncomplete();
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
@@ -61,7 +61,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         $CommandTester->execute($commandArg);
 
         $output = $CommandTester->getDisplay();
-        $this->assertContains('CSV Loader complete.', $output);
+        $this->assertStringContainsString('CSV Loader complete.', $output);
 
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
         $this->file->rewind();

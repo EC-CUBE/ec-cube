@@ -26,6 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -67,7 +68,7 @@ class PaymentController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE);
 
         return [
             'Payments' => $Payments,
@@ -105,7 +106,7 @@ class PaymentController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -122,7 +123,7 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && strpos($file, '..') === false && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -143,7 +144,7 @@ class PaymentController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -159,21 +160,26 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add", methods={"POST"})
+     * 画像アップロード時にリクエストされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#process
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/process", name="admin_payment_image_process", methods={"POST"})
      */
-    public function imageAdd(Request $request)
+    public function imageProcess(Request $request)
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
         $images = $request->files->get('payment_register');
+
         $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+
         $filename = null;
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
 
-            //ファイルフォーマット検証
+            // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
             if (0 !== strpos($mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
@@ -195,10 +201,64 @@ class PaymentController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE);
         $filename = $event->getArgument('filename');
 
-        return $this->json(['filename' => $filename], 200);
+        return new Response($filename);
+    }
+
+    /**
+     * アップロード画像を取得する際にコールされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#load
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/load", name="admin_payment_image_load", methods={"GET"})
+     */
+    public function imageLoad(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $dirs = [
+            $this->eccubeConfig['eccube_save_image_dir'],
+            $this->eccubeConfig['eccube_temp_image_dir'],
+        ];
+
+        foreach ($dirs as $dir) {
+            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $dir = \realpath($dir);
+
+            if (\is_file($image) && \str_starts_with($image, $dir)) {
+                $file = new \SplFileObject($image);
+
+                return $this->file($file, $file->getBasename());
+            }
+        }
+
+        throw new NotFoundHttpException();
+    }
+
+    /**
+     * アップロード画像をすぐ削除する際にコールされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#revert
+     * @Route("/%eccube_admin_route%/setting/shop/payment/image/revert", name="admin_payment_image_revert", methods={"DELETE"})
+     */
+    public function imageRevert(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+            throw new BadRequestHttpException();
+        }
+
+        $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
+        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+            $fs = new Filesystem();
+            $fs->remove($tempFile);
+
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        }
+
+        throw new NotFoundHttpException();
     }
 
     /**
@@ -229,7 +289,7 @@ class PaymentController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {

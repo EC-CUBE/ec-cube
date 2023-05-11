@@ -55,7 +55,7 @@ class EA06ContentsManagementCest
         NewsManagePage::go($I)->新規登録();
 
         NewsEditPage::of($I)
-            ->入力_日付(date('Y-m-d'))
+            ->入力_日付(date('Y-m-d').'T00:00:00')
             ->入力_タイトル('news_title1')
             ->入力_本文('newsnewsnewsnewsnews')
             ->登録();
@@ -156,7 +156,25 @@ class EA06ContentsManagementCest
             ->入力_ファイル('upload.php')
             ->アップロード();
 
-        $I->see('phpファイルはアップロードできません', '#form1 .errormsg');
+        $I->see('アップロードできないファイル拡張子です。', '#form1 .errormsg');
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_ファイル管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0602-UC01-T10 ファイル管理 (ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
+        $I->see('この機能は管理者によって制限されています。');
     }
 
     /**
@@ -194,7 +212,7 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/user_data/'.$page);
         $config = Fixtures::get('config');
-        $I->seeElement('div.ec-layoutRole__footer');
+        $I->seeElement('footer.ec-layoutRole__footer');
 
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
@@ -243,6 +261,27 @@ class EA06ContentsManagementCest
         $I->amOnPage('/user_data/'.$page);
         $I->seeInTitle('ページがみつかりません');
     }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_ページ管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0603-UC01-T04 ページ管理 (ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/page/new');
+        $I->see('この機能は管理者によって制限されています。');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/page/1/edit');
+        $I->see('この機能は管理者によって制限されています。');
+    }
+
 
     public function contentsmanagement_レイアウト管理(AcceptanceTester $I)
     {
@@ -372,6 +411,28 @@ class EA06ContentsManagementCest
         $I->dontSeeElement(['id' => $block]);
     }
 
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_ブロック管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0604-UC01-T04 ブロック管理 (ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/block/new');
+        $I->see('この機能は管理者によって制限されています。');
+
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/block/1/edit');
+        $I->see('この機能は管理者によって制限されています。');
+    }
+
+
     public function contentsmanagement_CSS管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0606-UC01-T01_CSS管理');
@@ -383,10 +444,29 @@ class EA06ContentsManagementCest
         $I->reloadPage();
         $I->dontSee('お気に入り', '.ec-headerNaviRole');
 
-        CssManagePage::go($I)->入力('//')->登録();
+        CssManagePage::go($I)
+            ->入力('.ec-headerNaviRole { }')
+            ->登録();
         $I->amOnPage('/');
         $I->reloadPage();
         $I->see('お気に入り', '.ec-headerNaviRole');
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_CSS管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0606-UC01-T02_CSS管理(ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/css');
+        $I->see('この機能は管理者によって制限されています。');
     }
 
     public function contentsmanagement_JavaScript管理(AcceptanceTester $I)
@@ -402,11 +482,29 @@ class EA06ContentsManagementCest
         $I->reloadPage();
         $I->see($test_text, '.ec-headerNaviRole');
 
-        JavaScriptManagePage::go($I)->入力('//')->登録();
+        JavaScriptManagePage::go($I)->入力('/* */')->登録();
         $I->amOnPage('/');
         $I->reloadPage();
         $I->dontSee($test_text, '.ec-headerNaviRole');
     }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_JavaScript管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC01-T02_JavaScript管理(ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/js');
+        $I->see('この機能は管理者によって制限されています。');
+    }
+
 
     public function contentsmanagement_メンテナンス管理(AcceptanceTester $I)
     {

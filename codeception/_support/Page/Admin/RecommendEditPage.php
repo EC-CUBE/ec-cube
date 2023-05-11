@@ -28,7 +28,7 @@ class RecommendEditPage extends AbstractAdminPageStyleGuide
         $this->tester->waitForElementVisible(['id' => 'searchProductModalButton']);
         $this->tester->click(['id' => 'searchProductModalButton']);
         $this->tester->waitForElementVisible(['css' => '#searchProductModalList > div > table > tbody > tr']);
-        $this->tester->click(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-right > button']);
+        $this->tester->click(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-end > button']);
         return $this;
     }
     public function 入力_説明文($value)

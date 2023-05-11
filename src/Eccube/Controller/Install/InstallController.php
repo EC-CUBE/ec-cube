@@ -14,14 +14,10 @@
 namespace Eccube\Controller\Install;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
@@ -50,10 +46,10 @@ class InstallController extends AbstractController
     /**
      * default value of auth magic
      */
-    const DEFAULT_AUTH_MAGIC = '<change.me>';
+    public const DEFAULT_AUTH_MAGIC = '<change.me>';
 
     /** @var string */
-    const TRANSACTION_CHECK_FILE = '/var/.httransaction';
+    public const TRANSACTION_CHECK_FILE = '/var/.httransaction';
 
     protected $requiredModules = [
         'pdo',
@@ -70,11 +66,11 @@ class InstallController extends AbstractController
         'cURL',
         'fileinfo',
         'intl',
+        'sodium'
     ];
 
     protected $recommendedModules = [
         'hash',
-        'mcrypt',
     ];
 
     protected $eccubeDirs = [
@@ -286,7 +282,7 @@ class InstallController extends AbstractController
             $sessionData['admin_force_ssl'] = $this->getParameter('eccube_force_ssl');
 
             // メール
-            $mailerUrl = $this->getParameter('eccube_mailer_url');
+            $mailerUrl = $this->getParameter('eccube_mailer_dsn');
             $sessionData = array_merge($sessionData, $this->extractMailerUrl($mailerUrl));
         } else {
             // 初期値設定
@@ -398,7 +394,6 @@ class InstallController extends AbstractController
             try {
                 $conn = $this->createConnection(['url' => $url]);
                 $em = $this->createEntityManager($conn);
-                $migration = $this->createMigration($conn);
 
                 if ($noUpdate) {
                     $this->update($conn, [
@@ -412,7 +407,6 @@ class InstallController extends AbstractController
                     $this->dropTables($em);
                     $this->createTables($em);
                     $this->importCsv($em);
-                    $this->migrate($migration);
                     $this->insert($conn, [
                         'auth_magic' => $sessionData['authmagic'],
                         'login_id' => $sessionData['login_id'],
@@ -467,16 +461,16 @@ class InstallController extends AbstractController
         $mailerUrl = $this->createMailerUrl($sessionData);
         $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool) $sessionData['admin_force_ssl'] : false;
         if ($forceSSL === false) {
-            $forceSSL = 'false';
+            $forceSSL = '0';
         } elseif ($forceSSL === true) {
-            $forceSSL = 'true';
+            $forceSSL = '1';
         }
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
         $replacement = [
             'APP_ENV' => 'prod',
             'APP_DEBUG' => '0',
             'DATABASE_URL' => $databaseUrl,
-            'MAILER_URL' => $mailerUrl,
+            'MAILER_DSN' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
             'DATABASE_SERVER_VERSION' => isset($sessionData['database_version']) ? $sessionData['database_version'] : '3',
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
@@ -486,6 +480,7 @@ class InstallController extends AbstractController
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
             'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
+            'DATABASE_CHARSET' => \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -540,11 +535,6 @@ class InstallController extends AbstractController
         }
         foreach ($this->recommendedModules as $module) {
             if (!extension_loaded($module)) {
-                if ($module == 'mcrypt' && PHP_VERSION_ID >= 70100) {
-                    //The mcrypt extension has been deprecated in PHP 7.1.x
-                    //http://php.net/manual/en/migration71.deprecated.php
-                    continue;
-                }
                 $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => $module]), 'install');
             }
         }
@@ -573,9 +563,10 @@ class InstallController extends AbstractController
     protected function createConnection(array $params)
     {
         if (strpos($params['url'], 'mysql') !== false) {
-            $params['charset'] = 'utf8';
+            $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
-                'collate' => 'utf8_general_ci',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_bin',
             ];
         }
 
@@ -583,7 +574,7 @@ class InstallController extends AbstractController
         Type::overrideType('datetimetz', UTCDateTimeTzType::class);
 
         $conn = DriverManager::getConnection($params);
-        $conn->ping();
+        $conn->executeQuery('select 1');
 
         $platform = $conn->getDatabasePlatform();
         $platform->markDoctrineTypeCommented('datetime');
@@ -599,7 +590,7 @@ class InstallController extends AbstractController
             $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
         $config = Setup::createConfiguration(true);
-        $driver = new AnnotationDriver(new CachedReader(new AnnotationReader(), new ArrayCache()), $paths);
+        $driver = new AnnotationDriver(new AnnotationReader(), $paths);
         $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
         $config->setMetadataDriverImpl($driver);
 
@@ -685,7 +676,6 @@ class InstallController extends AbstractController
      */
     public function createMailerUrl(array $params)
     {
-        $url = '';
         if (isset($params['transport'])) {
             $url = $params['transport'].'://';
         } else {
@@ -799,20 +789,6 @@ class InstallController extends AbstractController
         return $options;
     }
 
-    protected function createMigration(Connection $conn)
-    {
-        $config = new Configuration($conn);
-        $config->setMigrationsNamespace('DoctrineMigrations');
-        $migrationDir = $this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/migration';
-        $config->setMigrationsDirectory($migrationDir);
-        $config->registerMigrationsFromDirectory($migrationDir);
-
-        $migration = new Migration($config);
-        $migration->setNoMigrationException(true);
-
-        return $migration;
-    }
-
     protected function dropTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
@@ -852,7 +828,7 @@ class InstallController extends AbstractController
             $password = $this->encoder->encodePassword($data['login_pass'], $salt);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-                ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
+                ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
                 : null;
 
             $conn->insert('dtb_base_info', [
@@ -865,11 +841,11 @@ class InstallController extends AbstractController
                 'update_date' => new \DateTime(),
                 'discriminator_type' => 'baseinfo',
             ], [
-                'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+                'update_date' => Types::DATETIMETZ_MUTABLE,
             ]);
 
             $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-                ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
+                ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
                 : null;
 
             $conn->insert('dtb_member', [
@@ -887,8 +863,8 @@ class InstallController extends AbstractController
                 'department' => $data['shop_name'],
                 'discriminator_type' => 'member',
             ], [
-                'update_date' => Type::DATETIME,
-                'create_date' => Type::DATETIME,
+                'update_date' => Types::DATETIMETZ_MUTABLE,
+                'create_date' => Types::DATETIMETZ_MUTABLE,
             ]);
             $conn->commit();
         } catch (\Exception $e) {
@@ -903,8 +879,8 @@ class InstallController extends AbstractController
         try {
             $salt = StringUtil::random(32);
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
-            $stmt->execute([':login_id' => $data['login_id']]);
-            $row = $stmt->fetch();
+            $stmt->bindParam(':login_id', $data['login_id']);
+            $row = $stmt->executeQuery();
             $this->encoder->setAuthMagic($data['auth_magic']);
             $password = $this->encoder->encodePassword($data['login_pass'], $salt);
             if ($row) {
@@ -940,15 +916,6 @@ class InstallController extends AbstractController
         } catch (\Exception $e) {
             $conn->rollback();
             throw $e;
-        }
-    }
-
-    public function migrate(Migration $migration)
-    {
-        try {
-            // nullを渡すと最新バージョンまでマイグレートする
-            $migration->migrate(null, false);
-        } catch (MigrationException $e) {
         }
     }
 

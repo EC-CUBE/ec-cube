@@ -76,12 +76,19 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('plain_password', RepeatedPasswordType::class, [
-                'first_options' => [
-                    'label' => 'admin.setting.system.member.password',
-                ],
-                'second_options' => [
-                    'label' => 'admin.setting.system.member.password',
-                ],
+                'options' => [
+                    'constraints' => [
+                        new Assert\Length([
+                            'min' => $this->eccubeConfig['eccube_password_min_len'],
+                            'max' => $this->eccubeConfig['eccube_password_max_len'],
+                        ]),
+                        new Assert\Regex([
+                            'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                            'message' => 'form_error.password_pattern_invalid',
+                        ]),
+                        new Assert\NotBlank()
+                    ],
+                ]
             ])
             ->add('Authority', EntityType::class, [
                 'class' => 'Eccube\Entity\Master\Authority',
@@ -127,8 +134,9 @@ class MemberType extends AbstractType
                 $options['required'] = false;
                 $options['mapped'] = false;
                 $options['attr'] = [
-                    'disabled' => 'disabled'
+                    'disabled' => 'disabled',
                 ];
+                $options['empty_data'] = $data->getLoginId();
                 $options['data'] = $data->getLoginId();
             }
 

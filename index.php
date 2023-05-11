@@ -2,13 +2,13 @@
 
 use Eccube\Kernel;
 use Eccube\Service\SystemService;
-use Symfony\Component\Debug\Debug;
+use Symfony\Component\ErrorHandler\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
 // システム要件チェック
-if (version_compare(PHP_VERSION, '7.3.0') < 0) {
-    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.3.0. See the <a href="http://www.ec-cube.net/product/system.php" target="_blank">system requirements</a> page for more information.');
+if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.4.0. See the <a href="https://doc4.ec-cube.net/quickstart/requirement" target="_blank">system requirements</a> page for more information.');
 }
 
 $autoload = __DIR__.'/vendor/autoload.php';
@@ -25,15 +25,16 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 
     if (file_exists(__DIR__.'/.env')) {
-        (new Dotenv(__DIR__))->overload();
+        (Dotenv::createUnsafeMutable(__DIR__))->load();
 
         if (strpos(getenv('DATABASE_URL'), 'sqlite') !== false && !extension_loaded('pdo_sqlite')) {
-            (new Dotenv(__DIR__, '.env.install'))->overload();
+            (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
         }
     } else {
-        (new Dotenv(__DIR__, '.env.install'))->overload();
+        (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
     }
 }
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 $env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
 $debug = isset($_SERVER['APP_DEBUG']) ? $_SERVER['APP_DEBUG'] : ('prod' !== $env);

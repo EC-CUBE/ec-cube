@@ -87,6 +87,23 @@ class EA10PluginCest
             ->削除();
     }
 
+    /**
+     * @group restrict-fileupload
+     */
+    public function test_install_enable_disable_enable_disable_remove_local_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/install');
+        $I->see('この機能は管理者によって制限されています。');
+    }
+
     public function test_install_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
@@ -557,7 +574,7 @@ abstract class Abstract_Plugin
     public function traitExists()
     {
         foreach ($this->traits as $trait => $target) {
-            $this->I->assertContains($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
+            $this->I->assertStringContainsString($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
         }
     }
 
@@ -566,7 +583,7 @@ abstract class Abstract_Plugin
         foreach ($this->traits as $trait => $target) {
             $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php';
             if (file_exists($file)) {
-                $this->I->assertNotContains($trait, file_get_contents($file), 'Traitがないはず '.$trait);
+                $this->I->assertStringNotContainsString($trait, file_get_contents($file), 'Traitがないはず '.$trait);
             } else {
                 $this->I->assertTrue(true, 'Traitがないはず');
             }

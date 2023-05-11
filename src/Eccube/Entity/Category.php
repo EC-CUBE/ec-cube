@@ -103,7 +103,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         {
             $DescendantCategories = [];
 
-            $max = 10;
             $ChildCategories = $this->getChildren();
             foreach ($ChildCategories as $ChildCategory) {
                 $DescendantCategories[$ChildCategory->getId()] = $ChildCategory;

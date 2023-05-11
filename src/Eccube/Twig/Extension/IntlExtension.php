@@ -33,7 +33,7 @@ class IntlExtension extends AbstractExtension
     }
 
     /**
-     * localizeddate('medium', 'none')のショートカット.
+     * format_datetime('medium', 'none')のショートカット.
      *
      * 2015/08/28のように、日までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
@@ -49,11 +49,11 @@ class IntlExtension extends AbstractExtension
             return '';
         }
 
-        return \twig_localized_date_filter($env, $date, 'medium', 'none');
+        return (new \Twig\Extra\Intl\IntlExtension())->formatDateTime($env, $date, 'medium', 'none');
     }
 
     /**
-     * localizeddate('medium', 'short')のショートカット.
+     * format_datetime('medium', 'short')のショートカット.
      *
      * 2015/08/28 16:13のように、分までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
@@ -69,11 +69,11 @@ class IntlExtension extends AbstractExtension
             return '';
         }
 
-        return \twig_localized_date_filter($env, $date, 'medium', 'short');
+        return (new \Twig\Extra\Intl\IntlExtension())->formatDateTime($env, $date, 'medium', 'short');
     }
 
     /**
-     * localizeddate('medium', 'medium')のショートカット.
+     * format_datetime('medium', 'medium')のショートカット.
      *
      * 2015/08/28 16:13:05(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
@@ -89,7 +89,7 @@ class IntlExtension extends AbstractExtension
             return '';
         }
 
-        return \twig_localized_date_filter($env, $date, 'medium', 'medium');
+        return (new \Twig\Extra\Intl\IntlExtension())->formatDateTime($env, $date, 'medium', 'medium');
     }
 
     /**
@@ -104,7 +104,7 @@ class IntlExtension extends AbstractExtension
             return '';
         }
 
-        $date_day = \twig_localized_date_filter($env, $date, 'medium', 'none');
+        $date_day = (new \Twig\Extra\Intl\IntlExtension())->formatDate($env, $date, 'medium');
         // 曜日
         $dateFormatter = \IntlDateFormatter::create(
             'ja_JP@calendar=japanese',

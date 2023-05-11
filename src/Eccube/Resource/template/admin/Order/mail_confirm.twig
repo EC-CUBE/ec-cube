@@ -46,7 +46,7 @@ $(function() {
                         <div class="col-8">
                             <div class="d-inline-block"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span></div>
                         </div>
-                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"></a></div>
+                        <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"></a></div>
                     </div>
                 </div>
                 <div class="collapse show ec-cardCollapse" id="mailTo">
@@ -86,7 +86,7 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8"><span class="card-title">{{ 'admin.order.mail_mail_info'|trans }}</span></div>
-                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                        <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
                 <div class="collapse show ec-cardCollapse" id="mailCreate">
@@ -101,7 +101,7 @@ $(function() {
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-3"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                            <div class="col-3"><span>{{ 'admin.order.mail_subject'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                             <div class="col">
                                 {{ form.mail_subject.vars.data }}
                                 {{ form_widget(form.mail_subject, { type : 'hidden' }) }}
@@ -110,7 +110,7 @@ $(function() {
                         <div class="row mb-2">
                             <div class="col-3"><span>{{ 'admin.order.mail_body'|trans }}</span></div>
                             <div class="col">
-                                <div id="detail_box__tpl_data" class="form-group tab-pane active">
+                                <div id="detail_box__tpl_data" class="mb-3 tab-pane active">
                                     {{ form.tpl_data.vars.data|trans|nl2br }}
                                     <div style="display: none">{{ form_widget(form.tpl_data) }}</div>
                                 </div>

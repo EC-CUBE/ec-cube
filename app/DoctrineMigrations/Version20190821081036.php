@@ -32,7 +32,7 @@ final class Version20190821081036 extends AbstractMigration
             return;
         }
 
-        $taxRateExists = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 1 AND entity_name = ? AND field_name = 'TaxRule' AND reference_field_name = 'tax_rate'", ['Eccube\\\\Entity\\\\ProductClass']);
+        $taxRateExists = $this->connection->fetchOne("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 1 AND entity_name = ? AND field_name = 'TaxRule' AND reference_field_name = 'tax_rate'", ['Eccube\\\\Entity\\\\ProductClass']);
         if ($taxRateExists == 0) {
             $this->addSql("INSERT INTO dtb_csv (csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type) VALUES (1, null , ?, 'TaxRule', 'tax_rate', '税率', 31, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'csv')", ['Eccube\\\\Entity\\\\ProductClass']);
         }

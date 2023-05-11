@@ -28,7 +28,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /** form Data   */
     protected $formData;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
             'line_max' => '50',
         ];
 
-        $logDir = self::$container->getParameter('kernel.logs_dir');
+        $logDir = static::getContainer()->getParameter('kernel.logs_dir');
 
         $this->logTest = $logDir.'/'.$this->formData['files'];
 
@@ -50,7 +50,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * rollback
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         if (file_exists($this->logTest)) {
@@ -109,7 +109,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->expected = $expected;
         $this->verify();
         if ($message) {
-            $this->assertContains($message, $crawler->filter('.card-body')->html());
+            $this->assertStringContainsString($message, $crawler->filter('.card-body')->html());
         }
     }
 

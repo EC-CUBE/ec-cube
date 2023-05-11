@@ -94,6 +94,7 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @param OutputInterface|null $output
+     * @param string|null $from
      *
      * @return string
      *
@@ -101,20 +102,27 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function execRequire($packageName, $output = null)
+    public function execRequire($packageName, $output = null, $from = null)
     {
         $packageName = explode(' ', trim($packageName));
 
-        return $this->runCommand([
-            'command' => 'require',
-            'packages' => $packageName,
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--prefer-dist' => true,
-            '--update-with-dependencies' => true,
-            '--no-scripts' => true,
-            '--update-no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+        $this->init(null, $packageName, $from);
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            return $this->runCommand([
+                'command' => 'require',
+                'packages' => $packageName,
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--prefer-dist' => true,
+                '--update-with-dependencies' => true,
+                '--no-scripts' => true,
+                '--update-no-dev' => env('APP_ENV') === 'prod',
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -135,7 +143,11 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        return $this->runCommand([
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            return $this->runCommand([
             'command' => 'remove',
             'packages' => $packageName,
             '--ignore-platform-reqs' => true,
@@ -143,7 +155,10 @@ class ComposerApiService implements ComposerServiceInterface
             '--profile' => true,
             '--no-scripts' => true,
             '--update-no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -158,14 +173,21 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execUpdate($dryRun, $output = null)
     {
-        $this->runCommand([
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            $this->runCommand([
             'command' => 'update',
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
             '--dry-run' => (bool) $dryRun,
             '--no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -180,14 +202,21 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execInstall($dryRun, $output = null)
     {
-        $this->runCommand([
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            $this->runCommand([
             'command' => 'install',
             '--no-interaction' => true,
             '--profile' => true,
             '--no-scripts' => true,
             '--dry-run' => (bool) $dryRun,
             '--no-dev' => env('APP_ENV') === 'prod',
-        ], $output);
+            ], $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        }
     }
 
     /**
@@ -198,12 +227,13 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $callback
      * @param null $typeFilter
      * @param int $level
+     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
         if (strpos($packageName, '/') === false) {
             return;
@@ -337,12 +367,14 @@ class ComposerApiService implements ComposerServiceInterface
      * Init composer console application
      *
      * @param BaseInfo|null $BaseInfo
+     * @param string[] $packageName
+     * @param string|null $from
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function init($BaseInfo = null)
+    private function init($BaseInfo = null, $packageName = [], $from = null)
     {
         $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
 
@@ -356,7 +388,8 @@ class ComposerApiService implements ComposerServiceInterface
         $this->initConsole();
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
         $url = $this->eccubeConfig['eccube_package_api_url'];
-        $json = json_encode([
+        $config = $this->getConfig();
+        $eccube_repository = [
             'type' => 'composer',
             'url' => $url,
             'options' => [
@@ -364,9 +397,33 @@ class ComposerApiService implements ComposerServiceInterface
                     'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()],
                 ],
             ],
-        ]);
+        ];
+        $exclude = [];
+        if (array_key_exists('eccube', $config['repositories'])
+            && array_key_exists('exclude', $config['repositories']['eccube'])) {
+            $exclude = array_map(
+                function ($package) {
+                    return trim($package);
+                },
+                explode(',', str_replace(['[', ']'], '', $config['repositories']['eccube']['exclude']))
+            );
+        }
+
+        if ($from !== null) {
+            $exclude = array_unique(array_merge($exclude, [trim(current($packageName))]));
+            $this->execConfig('repositories.'.str_replace(['.', '/'], '', strtolower($from)), [json_encode([
+                'type' => 'path',
+                'url' => $from,
+            ])]);
+        }
+
+        if (!empty($exclude)) {
+            $eccube_repository['exclude'] = $exclude;
+        }
+
         $this->execConfig('platform.php', [PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION]);
-        $this->execConfig('repositories.eccube', [$json]);
+        $this->execConfig('repositories.eccube', [json_encode($eccube_repository)]);
+
         if (strpos($url, 'http://') === 0) {
             $this->execConfig('secure-http', ['false']);
         }
@@ -382,19 +439,34 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
+     * @param BaseInfo $BaseInfo
+     * @return void
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function configureRepository(BaseInfo $BaseInfo)
+    public function configureRepository(BaseInfo $BaseInfo): void
     {
         $this->init($BaseInfo);
     }
 
     private function dropTableToExtra($packageNames)
     {
+        $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
+
         foreach (explode(' ', trim($packageNames)) as $packageName) {
-            $pluginCode = basename($packageName);
+            $pluginCode = null;
+            // 大文字小文字を区別するファイルシステムを考慮して, ディレクトリ名からプラグインコードを取得する
+            foreach (glob($projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
+                if (strtolower(basename($dir)) === strtolower(basename($packageName))) {
+                    $pluginCode = basename($dir);
+                    break;
+                }
+            }
+            if ($pluginCode === null) {
+                throw new PluginException($packageName.' not found');
+            }
+
             $this->pluginContext->setCode($pluginCode);
             $this->pluginContext->setUninstall();
 

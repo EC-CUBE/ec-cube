@@ -50,7 +50,7 @@ class Context
      */
     public function isAdmin()
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (null === $request) {
             return false;
@@ -70,7 +70,7 @@ class Context
      */
     public function isFront()
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (null === $request) {
             return false;
@@ -84,7 +84,7 @@ class Context
      */
     public function getCurrentUser()
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (null === $request) {
             return null;

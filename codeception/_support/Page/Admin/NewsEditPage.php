@@ -34,7 +34,7 @@ class NewsEditPage extends AbstractAdminPage
 
     public function 入力_日付($value)
     {
-        $this->tester->executeJS("$('#admin_news_publish_date').val('".$value."').change();");
+        $this->tester->executeJS("$('#admin_news_publish_date').attr('value', '".$value."');");
 
         return $this;
     }

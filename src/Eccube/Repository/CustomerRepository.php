@@ -14,13 +14,16 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\Sex;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -57,8 +60,7 @@ class CustomerRepository extends AbstractRepository
     protected $encoderFactory;
 
     public const COLUMNS = [
-        'customer_id' => 'c.id'
-        ,'name'=> 'c.name01'
+        'customer_id' => 'c.id', 'name' => 'c.name01',
     ];
 
     /**
@@ -100,20 +102,52 @@ class CustomerRepository extends AbstractRepository
         return $Customer;
     }
 
+    /**
+     * @param array{
+     *         multi?:string,
+     *         pref?:Pref,
+     *         sex?:Sex[],
+     *         birth_month?:string|int,
+     *         birth_start?:\DateTime,
+     *         birth_end?:\DateTime,
+     *         phone_number?:string,
+     *         buy_total_start?:string|int,
+     *         buy_total_end?:string|int,
+     *         buy_times_start?:string|int,
+     *         buy_times_end?:string|int,
+     *         create_datetime_start?:\DateTime,
+     *         create_datetime_end?:\DateTime,
+     *         create_date_start?:\DateTime,
+     *         create_date_end?:\DateTime,
+     *         update_datetime_start?:\DateTime,
+     *         update_datetime_end?:\DateTime,
+     *         update_date_start?:\DateTime,
+     *         update_date_end?:\DateTime,
+     *         last_buy_datetime_start?:\DateTime,
+     *         last_buy_datetime_end?:\DateTime,
+     *         last_buy_start?:\DateTime,
+     *         last_buy_end?:\DateTime,
+     *         customer_status?:CustomerStatus[],
+     *         buy_product_name?:string,
+     *         sortkey?:string,
+     *         sorttype?:string
+     *     } $searchData
+     * @return QueryBuilder
+     */
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c');
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            //スペース除去
+            // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
             $qb
-                ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
+                ->andWhere("c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(COALESCE(c.kana01, ''), COALESCE(c.kana02, '')) LIKE :kana OR c.email LIKE :email")
                 ->setParameter('customer_id', $id)
                 ->setParameter('name', '%'.$clean_key_multi.'%')
                 ->setParameter('kana', '%'.$clean_key_multi.'%')
@@ -161,7 +195,7 @@ class CustomerRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
             $qb
                 ->andWhere('c.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');

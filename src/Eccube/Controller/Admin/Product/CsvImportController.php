@@ -36,6 +36,8 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvImportService;
+use Eccube\Stream\Filter\ConvertLineFeedFilter;
+use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -355,7 +357,7 @@ class CsvImportController extends AbstractCsvImportController
                         // 商品カテゴリ登録
                         $this->createProductCategory($row, $Product, $data, $headerByKey);
 
-                        //タグ登録
+                        // タグ登録
                         $this->createProductTag($row, $Product, $data, $headerByKey);
 
                         // 商品規格が存在しなければ新規登録
@@ -1130,10 +1132,12 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if (isset($row[$headerByKey['product_code']]) && StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
-            $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
-        } else {
-            $ProductClass->setCode(null);
+        if (isset($row[$headerByKey['product_code']])) {
+            if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
+                $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
+            } else {
+                $ProductClass->setCode(null);
+            }
         }
 
         if (!isset($row[$headerByKey['stock_unlimited']])
@@ -1308,10 +1312,12 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        if (isset($row[$headerByKey['product_code']]) && StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
-            $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
-        } else {
-            $ProductClass->setCode(null);
+        if (isset($row[$headerByKey['product_code']])) {
+            if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
+                $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
+            } else {
+                $ProductClass->setCode(null);
+            }
         }
 
         if (!isset($row[$headerByKey['stock_unlimited']])
@@ -1357,7 +1363,7 @@ class CsvImportController extends AbstractCsvImportController
         if (isset($row[$headerByKey['price01']])) {
             if ($row[$headerByKey['price01']] != '') {
                 $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-                $errors  = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+                $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
                 if ($errors->count() === 0) {
                     $ProductClass->setPrice01($price01);
                 } else {
@@ -1385,11 +1391,23 @@ class CsvImportController extends AbstractCsvImportController
 
         $ProductStock = $ProductClass->getProductStock();
 
+        // 在庫テーブルに存在しない場合、新規作成
+        if (!$ProductStock instanceof ProductStock) {
+            $ProductStock = new ProductStock();
+            $ProductClass->setProductStock($ProductStock);
+            $ProductStock->setProductClass($ProductClass);
+        }
+
         if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
             $ProductStock->setStock(null);
+        }
+
+        if (isset($row[$headerByKey['product_class_visible_flg']])
+            && StringUtil::isNotBlank($row[$headerByKey['product_class_visible_flg']])) {
+            $ProductClass->setVisible((bool) $row[$headerByKey['product_class_visible_flg']]);
         }
 
         return $ProductClass;
@@ -1547,6 +1565,11 @@ class CsvImportController extends AbstractCsvImportController
                 'description' => 'admin.product.product_csv.tax_rate_description',
                 'required' => false,
             ],
+            trans('admin.product.product_csv.product_class_visible_flag_col') => [
+                'id' => 'product_class_visible_flg',
+                'description' => 'admin.product.product_csv.product_class_visible_flag_description',
+                'required' => false,
+            ],
         ];
     }
 
@@ -1625,7 +1648,19 @@ class CsvImportController extends AbstractCsvImportController
             }
 
             $data = $form['import_file']->getData();
-            $src = new \SplFileObject($data->getRealPath());
+            $file = new \SplFileObject($data->getRealPath());
+
+            // stream filter を適用して文字エンコーディングと改行コードの変換を行う
+            // see https://github.com/EC-CUBE/ec-cube/issues/5252
+            $filters = [
+                ConvertLineFeedFilter::class,
+            ];
+
+            if (!\mb_check_encoding($file->current(), 'UTF-8')) {
+                // UTF-8 が検出できなかった場合は SJIS-win の stream filter を適用する
+                $filters[] = SjisToUtf8EncodingFilter::class;
+            }
+            $src = CsvImportService::applyStreamFilter($file, ...$filters);
             $src->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
 
             $fileNo = 1;
@@ -1681,7 +1716,6 @@ class CsvImportController extends AbstractCsvImportController
             $path,
             'import.csv',
             'text/csv',
-            filesize($path),
             null,
             true
         )]);

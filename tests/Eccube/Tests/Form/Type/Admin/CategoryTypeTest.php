@@ -25,7 +25,7 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'name' => 'テスト家具',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

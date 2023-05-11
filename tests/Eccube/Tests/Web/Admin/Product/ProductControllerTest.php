@@ -69,7 +69,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -92,7 +92,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->imageDir);
@@ -128,16 +128,16 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'product_image' => [],
             'description_detail' => $faker->realText,
             'description_list' => $faker->paragraph,
-            'Category' => null,
+            'Category' => [],
             'Tag' => [1],
             'search_word' => $faker->word,
             'free_area' => $faker->realText,
             'Status' => 1,
             'note' => $faker->realText,
-            'tags' => null,
-            'images' => null,
-            'add_images' => null,
-            'delete_images' => null,
+            'tags' => [],
+            'images' => [],
+            'add_images' => [],
+            'delete_images' => [],
             Constant::TOKEN_NAME => 'dummy',
         ];
 
@@ -184,13 +184,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
@@ -202,7 +202,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 表示件数はSESSIONから取得するテスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
@@ -232,13 +232,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
@@ -250,7 +250,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 表示件数はSESSIONから取得するテスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
@@ -277,13 +277,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // デフォルトの表示件数確認テスト
         $this->expected = '50件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
@@ -296,7 +296,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
 
         $this->expected = '100件';
-        $this->actual = $crawler->filter('select.custom-select > option:selected')->text();
+        $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
     }
 
@@ -427,7 +427,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $expected = '規格1';
         $actual = $crawler->filter('#standardConfig > div > table')->text();
-        $this->assertContains($expected, $actual);
+        $this->assertStringContainsString($expected, $actual);
 
         $this->expected = $productClassNum;
         $this->actual = $crawler->filter('#standardConfig > div > table > tbody > tr')->count();
@@ -681,6 +681,63 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->client->request('GET', $csvExportUrl);
     }
 
+    /**
+     * Test search + export product with list product order by product_id
+     */
+    public function testExportWithOrderByProduct()
+    {
+        $expectedIds = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $productName = 'Product name ' . $i;
+            $Product = $this->createProduct($productName, 0);
+            array_unshift($expectedIds, $Product->getId());
+        }
+
+        // 更新日をすべて同一日時に更新
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->update(Product::class, 'p')
+            ->set('p.update_date', ':update_date')
+            ->where('p.name LIKE :name')
+            ->setParameter('update_date', new \DateTime())
+            ->setParameter('name', 'Product name%')
+            ->getQuery()
+            ->execute();
+
+        // 商品名：Product nameで検索
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = 'Product name';
+
+        /* @var $crawler Crawler*/
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+
+        $this->expected = '検索結果：10件が該当しました';
+        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
+        $this->verify('検索結果件数の確認テスト');
+
+        $this->expectOutputRegex('/Product name [10-1]/');
+        $csvExportUrl = $crawler->filter('.btn-ec-regular')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->request('GET', $csvExportUrl);
+
+        // get list product after call admin_product_export function
+        $data = ob_get_contents();
+        $arr = explode("\n", $data);
+        // unset header
+        unset($arr[0]);
+        $actualIds = [];
+        foreach ($arr as $v){
+            if(!empty($v)){
+                $data = explode(",", $v);
+                $actualIds[] = (int) $data[0];
+            }
+        }
+
+        $this->assertSame($expectedIds, $actualIds);
+    }
+
     public function dataNewProductProvider()
     {
         return [
@@ -897,105 +954,118 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImage()
+    /**
+     * アップロード画像が save_image にコピーされているか確認する.
+     */
+    public function testEditWithImage()
     {
-        $formData = $this->createFormData();
+        $path = __DIR__.'/../../../../../../html/upload';
 
-        copy(
-            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.png'
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
         );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.png',
-            'sand-1.png',
-            'image/png',
-            null, null, true
+
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['add_images'][] = 'new_image.png';
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
         );
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
+
+        $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+
+        $this->assertFileExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    /**
+     * アップロード画像に相対パスが指定された場合は save_image にコピーされない.
+     */
+    public function testEditWithImageFailure()
+    {
+        $path = __DIR__.'/../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['add_images'][] = '../temp_image/new_image.png';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertStringContainsString('画像のパスが不正です。', $crawler->html());
+
+        $this->assertFileDoesNotExist($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    public function testImageLoad()
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => 'sand-1.png']),
+            [],
+            [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImageWithUppercaseSuffix()
+    public function testImageLoadWithFailure()
     {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.PNG'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.PNG',
-            'sand-1.PNG',
-            'image/png',
-            null, null, true
-        );
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => '../save_image/sand-1.png']),
+            [],
+            [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImageNotAjax()
+    public function testImageLoadWithNotfound()
     {
-        $formData = $this->createFormData();
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            []
-        );
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAddImageMineNotSupported()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../Fixtures/categories.csv',
-            $this->imageDir.'/categories.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/categories.png',
-            'categories.png',
-            'image/png',
-            null, null, true
-        );
-
-        $crawler = $this->client->request('POST',
-           $this->generateUrl('admin_product_image_add'),
-            [
-                'admin_product' => $formData,
-            ],
-            [
-                'admin_product' => ['product_image' => [$image]],
-            ],
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_product_image_load', ['source' => 'xxxxx.png']),
+            [],
+            [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $this->assertFalse($this->client->getResponse()->isSuccessful());
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -1059,7 +1129,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteImage()
     {
         /** @var Generator $generator */
-        $generator = self::$container->get(Generator::class);
+        $generator = static::getContainer()->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -1098,7 +1168,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDeleteAndDeleteProductImage()
     {
         /** @var Generator $generator */
-        $generator = self::$container->get(Generator::class);
+        $generator = static::getContainer()->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, 'abstract');
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
@@ -1132,5 +1202,82 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $dir = __DIR__.'/../../../../../../html/upload/save_image/';
         $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
         $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
+    }
+
+    public function test絵文字()
+    {
+        $name = '🍣🍺';
+        $crawler = $this->client->request('GET', $this->generateUrl('product_list', ['name' => $name]));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $message = $crawler->filter('.ec-searchnavRole__counter > span')->text();
+        $this->assertSame('お探しの商品は見つかりませんでした', $message);
+
+        // 絵文字の商品を登録
+        $this->createProduct($name);
+
+        $crawler = $this->client->request('GET', $this->generateUrl('product_list', ['name' => $name]));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $message = $crawler->filter('.ec-searchnavRole__counter > span')->text();
+        $this->assertSame('1件', $message);
+    }
+
+    /**
+     * フリーエリア/商品説明/商品説明(一覧)で
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+     * 下記のものをチェックします。
+     * ・ ID属性の追加
+     * ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @dataProvider purifyTarget
+     */
+    public function testPurifyXssInput($formName, $methodName): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+
+        $formData[$formName] = "<div id='dangerous-id' class='safe_to_use_class'>
+            <p>商品説明文テスト</p>
+            <script>alert('XSS Attack')</script>
+            <a href='https://www.google.com'>safe html</a>
+        </div>";
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $crawler = new Crawler($Product->$methodName());
+
+        // <div>タグから危険なid属性が削除されていることを確認する。
+        // Find that dangerous id attributes are removed from <div> tags.
+        $target = $crawler->filter('#dangerous-id');
+        $this->assertEquals(0, $target->count());
+
+        // 安全なclass属性が出力されているかどうかを確認する。
+        // Find if classes (which are safe) have been outputted
+        $target = $crawler->filter('.safe_to_use_class');
+        $this->assertEquals(1, $target->count());
+
+        // 安全なHTMLが存在するかどうかを確認する
+        // Find if the safe HTML exists
+        $this->assertStringContainsString('<p>商品説明文テスト</p>', $target->outerHtml());
+        $this->assertStringContainsString('<a href="https://www.google.com">safe html</a>', $target->outerHtml());
+
+        // 安全でないスクリプトが存在しないかどうかを確認する
+        // Find if the unsafe script does not exist
+        $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $target->outerHtml());
+    }
+
+    public function purifyTarget(): array
+    {
+        return [
+            ['description_list', 'getDescriptionList'],
+            ['description_detail', 'getDescriptionDetail'],
+            ['free_area', 'getFreeArea'],
+        ];
     }
 }

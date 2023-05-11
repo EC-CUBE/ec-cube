@@ -166,9 +166,9 @@ class EA03ProductCest
         $csvHeader = ProductManagePage::go($I)
             ->CSVダウンロード()
             ->CSVヘッダ取得();
-        $I->assertContains('商品ID', $csvHeader);
-        $I->assertContains('ショップ用メモ欄', $csvHeader);
-        $I->assertContains('フリーエリア', $csvHeader);
+        $I->assertStringContainsString('商品ID', $csvHeader);
+        $I->assertStringContainsString('ショップ用メモ欄', $csvHeader);
+        $I->assertStringContainsString('フリーエリア', $csvHeader);
 
         // 一部項目を出力対象から解除
         CsvSettingsPage::go($I)
@@ -181,9 +181,9 @@ class EA03ProductCest
         $csvHeader = ProductManagePage::go($I)
             ->CSVダウンロード()
             ->CSVヘッダ取得();
-        $I->assertContains('商品ID', $csvHeader);
-        $I->assertNotContains('ショップ用メモ欄', $csvHeader);
-        $I->assertNotContains('フリーエリア', $csvHeader);
+        $I->assertStringContainsString('商品ID', $csvHeader);
+        $I->assertStringNotContainsString('ショップ用メモ欄', $csvHeader);
+        $I->assertStringNotContainsString('フリーエリア', $csvHeader);
     }
 
     public function product_一覧でのソート(AcceptanceTester $I)
@@ -366,6 +366,13 @@ class EA03ProductCest
             return $Product->hasProductClass();
         });
         $Product = array_pop($Products);
+        ProductManagePage::go($I)
+            ->検索($Product->getName())
+            ->検索結果_複製(1)
+            ->Accept_複製する(1);
+
+        $I->see('商品を複製しました', ProductEditPage::$登録結果メッセージ);
+
         ProductManagePage::go($I)
             ->検索($Product->getName())
             ->検索結果_選択(1);

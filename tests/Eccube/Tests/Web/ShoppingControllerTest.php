@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
@@ -21,12 +23,17 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\Fixture\Generator;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var BaseInfoRepository
      */
@@ -37,11 +44,17 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $paymentRepository;
 
-    public function setUp()
+    /**
+     * @var EntityRepository|ObjectRepository|TradeLawRepository
+     */
+    private $tradeLawRepository;
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
         $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->tradeLawRepository = $this->entityManager->getRepository(\Eccube\Entity\TradeLaw::class);
     }
 
     public function testRoutingShoppingLogin()
@@ -56,11 +69,62 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        self::$container->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        static::getContainer()->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertNull(self::$container->get('session')->get('eccube.front.shopping.order.id'));
+        $this->assertNull(static::getContainer()->get('session')->get('eccube.front.shopping.order.id'));
+    }
+
+
+    /**
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+
+     * 下記のものをチェックします。
+     *     ・ ID属性の追加
+     *     ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @return void
+     */
+    public function testCompleteWithXssInjectionAttack()
+    {
+        // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setCompleteMessage("
+                <div id='dangerous-id' class='safe_to_use_class'>
+                    <p>注文完了テストメッセージ＃１</p>
+                    <script>alert('XSS Attack')</script>
+                    <a href='https://www.google.com'>safe html</a>
+                </div>
+        ");
+
+        $this->entityManager->flush($Order);
+
+        // 1つの新着情報を保存した後にホームページにアクセスする。
+        // Request Homepage after saving a single news item
+        static::getContainer()->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping_complete'));
+
+        // <div>タグから危険なid属性が削除されていることを確認する。
+        // Find that dangerous id attributes are removed from <div> tags.
+        $testNewsArea_notFoundTest = $crawler->filter('#test-news-id');
+        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+
+        // 安全なclass属性が出力されているかどうかを確認する。
+        // Find if classes (which are safe) have been outputted
+        $testNewsArea = $crawler->filter('.safe_to_use_class');
+        $this->assertEquals(1, $testNewsArea->count());
+
+        // 安全なHTMLが存在するかどうかを確認する
+        // Find if the safe HTML exists
+        $this->assertStringContainsString('<p>注文完了テストメッセージ＃１</p>', $testNewsArea->outerHtml());
+        $this->assertStringContainsString('<a href="https://www.google.com">safe html</a>', $testNewsArea->outerHtml());
+
+        // 安全でないスクリプトが存在しないかどうかを確認する
+        // Find if the unsafe script does not exist
+        $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
     }
 
     public function testShoppingError()
@@ -96,9 +160,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -458,7 +522,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         // https://github.com/EC-CUBE/ec-cube/issues/1305
-        $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
+        $this->assertMatchesRegularExpression('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 
     /**
@@ -487,7 +551,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $client->request('GET', $url);
 
         // Title
-        $this->assertContains('お届け先の追加', $crawler->html());
+        $this->assertStringContainsString('お届け先の追加', $crawler->html());
     }
 
     /**
@@ -497,7 +561,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $SaleTypeNormal = $this->entityManager->find(SaleType::class, SaleType::SALE_TYPE_NORMAL);
-        $Delivery = self::$container->get(Generator::class)->createDelivery();
+        $Delivery = static::getContainer()->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($SaleTypeNormal);
         $this->entityManager->flush($Delivery);
         $Payments = $this->paymentRepository->findAll();
@@ -540,9 +604,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -616,27 +680,346 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
         $BaseInfo = $this->baseInfoRepository->get();
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
+    }
 
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
+    /**
+     * 取引法を無効にすると、配信設定ページに取引法テスト文字が表示されないことを確認すること。
+     * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testDeliveryPageWithNoTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(false);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check that with all trade laws enabled that trade law text will appear on the delivery settings page.
+     * すべての取引法を有効にすると、取引法のテキストがご注文手続きページに表示されることを確認すること。
+     * @return void
+     */
+    public function testDeliveryPageWithTradeLawsEnabled() {
+        // Enable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(true);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $headerId = 5;
+
+        foreach($tradeLaws as $tradeLaw) {
+            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            // Check sort order
+            $this->assertEquals(
+                $tradeLaw->getName(),
+                $crawler->filter('.ec-rectHeading')->eq($headerId)->filter('h2')->first()->text()
+            );
+            $headerId++;
         }
     }
 
     /**
-     * Check can use point when has payment limit
+     * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testConfirmationPageWithNoTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findAll();
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(false);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
+     * @return void
+     */
+    public function testConfirmationPageWithTradeLawsEnabled() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setName(sprintf('Trade名称_%s', $id));
+            $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
+            $tradeLaw->setDisplayOrderScreen(true);
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $headerId = 5;
+        foreach($tradeLaws as $tradeLaw) {
+            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            // Check sort order
+            $this->assertEquals(
+                $tradeLaw->getName(),
+                $crawler->filter('.ec-rectHeading')->eq($headerId)->filter('h2')->first()->text()
+            );
+            $headerId++;
+        }
+    }
+
+    /**
+     *  Delivery Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when name is empty or null
      *
+     * @return void
+     */
+    public function testDeliveryPageInvalidTradeLawDataEmptyName() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('');
+                $tradeLaw->setDescription('Trade：テスト説明');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Delivery Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when description is empty or null
+     *
+     * @return void
+     */
+    public function testDeliveryPageInvalidTradeLawDataEmptyDescription() {
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('Trade：テスト名称');
+                $tradeLaw->setDescription('');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        // Request delivery page
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+    }
+
+
+    /**
+     * Confirmation Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when name is empty or null
+     *
+     * @return void
+     */
+    public function testConfirmationPageInvalidTradeLawDataEmptyName() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('Trade：テスト名称');
+                $tradeLaw->setDescription('');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+    }
+
+    /**
+     * Confirmation Page
+     * Test that no trade law data will be visible even if the display_order_screen is true
+     * when description is empty or null
+     * @return void
+     */
+    public function testConfirmationPageInvalidTradeLawDataEmptyDescription() {
+        // Disable all trade laws
+        $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
+        $id = 0;
+        foreach($tradeLaws as $tradeLaw) {
+            $tradeLaw->setDisplayOrderScreen(false);
+            if ($id == 0) {
+                $tradeLaw->setName('');
+                $tradeLaw->setDescription('Trade：テスト説明');
+                $tradeLaw->setDisplayOrderScreen(true);
+            }
+            $id++;
+        }
+        $this->entityManager->flush();
+
+
+        // Create case for delivery screen to appear
+        $Customer = $this->createCustomer();
+
+        // カート画面
+        $this->scenarioCartIn($Customer);
+
+        // ご注文手続きページ
+        $crawler = $this->scenarioConfirm($Customer);
+
+        // 確認画面
+        $crawler = $this->scenarioComplete(
+            $Customer,
+            $this->generateUrl('shopping_confirm'),
+            [
+                [
+                    'Delivery' => 1,
+                    'DeliveryTime' => null,
+                ],
+            ]
+        );
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+    }
+
+    /**
+     * Check can use point when has payment limit
      * https://github.com/EC-CUBE/ec-cube/issues/3916
      */
     public function testPaymentLimitAndPointCombination()
@@ -652,12 +1035,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $ProductClass->setPrice02($price);
         $this->entityManager->flush($ProductClass);
 
-        $Delivery = self::$container->get(Generator::class)->createDelivery();
+        $Delivery = static::getContainer()->get(Generator::class)->createDelivery();
         $Delivery->setSaleType($ProductClass->getSaleType());
         $this->entityManager->flush($Delivery);
 
-        $COD1 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
-        $COD2 = self::$container->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
+        $COD1 = static::getContainer()->get(Generator::class)->createPayment($Delivery, 'COD1', 0, 0, 30000);
+        $COD2 = static::getContainer()->get(Generator::class)->createPayment($Delivery, 'COD2', 0, 30001, 300000);
 
         // カート画面
         $this->scenarioCartIn($Customer, 2);
@@ -683,8 +1066,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
         $crawler = $this->client->followRedirect();
         $html = $crawler->filter('body')->html();
-        $this->assertNotContains($COD1->getMethod(), $html);
-        $this->assertContains($COD2->getMethod(), $html);
+        $this->assertStringNotContainsString($COD1->getMethod(), $html);
+        $this->assertStringContainsString($COD2->getMethod(), $html);
 
         // use point with payment: COD1
         $this->scenarioRedirectTo($Customer, [
@@ -705,8 +1088,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('body')->html();
-        $this->assertContains($COD1->getMethod(), $html);
-        $this->assertNotContains($COD2->getMethod(), $html);
+        $this->assertStringContainsString($COD1->getMethod(), $html);
+        $this->assertStringNotContainsString($COD2->getMethod(), $html);
     }
 
     /**

@@ -106,28 +106,28 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('email02', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('email03', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('email04', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('good_traded', TextareaType::class, [
@@ -171,6 +171,15 @@ class ShopMasterType extends AbstractType
             ->add('option_favorite_product', ToggleSwitchType::class)
             // 在庫切れ商品を非表示にする
             ->add('option_nostock_hidden', ToggleSwitchType::class)
+            // 適格請求書発行事業者登録番号
+            ->add('invoice_registration_number', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
             // 個別税率設定
             ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定

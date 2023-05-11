@@ -10,7 +10,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <html lang="{{ eccube_config.locale }}">
-<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# product: http://ogp.me/ns/product#">
+<head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# product: https://ogp.me/ns/product#">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="eccube-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
@@ -32,16 +32,11 @@ file that was distributed with this source code.
     {% if Page.meta_robots is not empty %}
         <meta name="robots" content="{{ Page.meta_robots }}">
     {% endif %}
-    {% if Page.meta_tags is not empty %}
-        {{ include(template_from_string(Page.meta_tags)) }}
-    {% endif %}
     <link rel="icon" href="{{ asset('assets/img/common/favicon.ico', 'user_data') }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <script src="{{ asset('front.bundle.js', 'bundle') }}"></script>
     {% block stylesheet %}{% endblock %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         $(function() {
             $.ajaxSetup({
@@ -77,9 +72,9 @@ file that was distributed with this source code.
 <div class="ec-layoutRole">
     {# Layout: HEADER #}
     {% if Layout.Header %}
-        <div class="ec-layoutRole__header">
+        <header class="ec-layoutRole__header">
             {{ include('block.twig', {'Blocks': Layout.Header}) }}
-        </div>
+        </header>
     {% endif %}
 
     {# Layout: CONTENTS_TOP #}
@@ -92,9 +87,9 @@ file that was distributed with this source code.
     <div class="ec-layoutRole__contents">
         {# Layout: SIDE_LEFT #}
         {% if Layout.SideLeft %}
-            <div class="ec-layoutRole__left">
+            <aside class="ec-layoutRole__left">
                 {{ include('block.twig', {'Blocks': Layout.SideLeft}) }}
-            </div>
+            </aside>
         {% endif %}
 
         {% set layoutRoleMain = 'ec-layoutRole__main' %}
@@ -104,7 +99,7 @@ file that was distributed with this source code.
             {% set layoutRoleMain = 'ec-layoutRole__mainBetweenColumn' %}
         {% endif %}
 
-        <div class="{{ layoutRoleMain }}">
+        <main class="{{ layoutRoleMain }}">
             {# Layout: MAIN_TOP #}
             {% if Layout.MainTop %}
                 <div class="ec-layoutRole__mainTop">
@@ -121,13 +116,13 @@ file that was distributed with this source code.
                     {{ include('block.twig', {'Blocks': Layout.MainBottom}) }}
                 </div>
             {% endif %}
-        </div>
+        </main>
 
         {# Layout: SIDE_RIGHT #}
         {% if Layout.SideRight %}
-            <div class="ec-layoutRole__right">
+            <aside class="ec-layoutRole__right">
                 {{ include('block.twig', {'Blocks': Layout.SideRight}) }}
-            </div>
+            </aside>
         {% endif %}
     </div>
 
@@ -140,9 +135,9 @@ file that was distributed with this source code.
 
     {# Layout: CONTENTS_FOOTER #}
     {% if Layout.Footer %}
-        <div class="ec-layoutRole__footer">
+        <footer class="ec-layoutRole__footer">
             {{ include('block.twig', {'Blocks': Layout.Footer}) }}
-        </div>
+        </footer>
     {% endif %}
 </div><!-- ec-layoutRole -->
 
@@ -155,8 +150,6 @@ file that was distributed with this source code.
     {% endif %}
 </div>
 <div class="ec-blockTopBtn pagetop">{{'common.pagetop'|trans}}</div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
 {% include('@common/lang.twig') %}
 <script src="{{ asset('assets/js/function.js') }}"></script>
 <script src="{{ asset('assets/js/eccube.js') }}"></script>

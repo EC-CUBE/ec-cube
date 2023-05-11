@@ -33,28 +33,28 @@ if (!class_exists(CustomerStatus::class, false)) {
          *
          * @deprecated
          */
-        const NONACTIVE = 1;
+        public const NONACTIVE = 1;
 
         /**
          * 本会員.
          *
          * @deprecated
          */
-        const ACTIVE = 2;
+        public const ACTIVE = 2;
 
         /**
          * 仮会員.
          */
-        const PROVISIONAL = 1;
+        public const PROVISIONAL = 1;
 
         /**
          * 本会員
          */
-        const REGULAR = 2;
+        public const REGULAR = 2;
 
         /**
          * 退会
          */
-        const WITHDRAWING = 3;
+        public const WITHDRAWING = 3;
     }
 }

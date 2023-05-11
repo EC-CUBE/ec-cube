@@ -58,12 +58,12 @@ class PaginationTest extends EccubeTestCase
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-        $this->paginator = self::$container->get(PaginatorInterface::class);
+        $this->paginator = static::getContainer()->get(PaginatorInterface::class);
         $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
         $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
 
@@ -86,7 +86,7 @@ class PaginationTest extends EccubeTestCase
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
         $driver = $config->newDefaultAnnotationDriver(__DIR__, false);
-        $chain = $config->getMetadataDriverImpl();
+        $chain = $config->getMetadataDriverImpl()->getDriver();
         $chain->addDriver($driver, __NAMESPACE__);
 
         // 初期データより大きい値を指定
@@ -104,7 +104,7 @@ class PaginationTest extends EccubeTestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         /** @var EntityManager $em */
         $em = $this->entityManager;

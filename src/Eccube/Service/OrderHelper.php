@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Detection\MobileDetect;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,16 +35,12 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Util\StringUtil;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderHelper
 {
-    // FIXME 必要なメソッドのみ移植する
-    use ControllerTrait;
-
     /**
      * @var ContainerInterface
      */
@@ -52,24 +49,24 @@ class OrderHelper
     /**
      * @var string 非会員情報を保持するセッションのキー
      */
-    const SESSION_NON_MEMBER = 'eccube.front.shopping.nonmember';
+    public const SESSION_NON_MEMBER = 'eccube.front.shopping.nonmember';
 
     /**
      * @var string 非会員の住所情報を保持するセッションのキー
      */
-    const SESSION_NON_MEMBER_ADDRESSES = 'eccube.front.shopping.nonmember.customeraddress';
+    public const SESSION_NON_MEMBER_ADDRESSES = 'eccube.front.shopping.nonmember.customeraddress';
 
     /**
      * @var string 受注IDを保持するセッションのキー
      */
-    const SESSION_ORDER_ID = 'eccube.front.shopping.order.id';
+    public const SESSION_ORDER_ID = 'eccube.front.shopping.order.id';
 
     /**
      * @var string カートが分割されているかどうかのフラグ. 購入フローからのログイン時にカートが分割された場合にtrueがセットされる.
      *
      * @see SecurityListener
      */
-    const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
+    public const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
     /**
      * @var SessionInterface
@@ -131,7 +128,7 @@ class OrderHelper
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
         PrefRepository $prefRepository,
-        MobileDetector $mobileDetector,
+        MobileDetect $mobileDetector,
         SessionInterface $session
     ) {
         $this->container = $container;
@@ -506,5 +503,29 @@ class OrderHelper
             $OrderItem->setOrder($Order);
             $OrderItem->setShipping($Shipping);
         }
+    }
+
+    /**
+     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     */
+    private function isGranted($attribute, $subject = null): bool
+    {
+        return $this->container->get('security.authorization_checker')->isGranted($attribute, $subject);
+    }
+
+    /**
+     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     */
+    private function getUser(): ?UserInterface
+    {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
+
+        if (!\is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 }

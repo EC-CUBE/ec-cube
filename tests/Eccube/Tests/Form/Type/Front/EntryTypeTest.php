@@ -39,12 +39,12 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         ],
         'phone_number' => '012-345-6789',
         'email' => [
-            'first' => 'eccube@example.com',
-            'second' => 'eccube@example.com',
+            'first' => 'eccube1@example.com',
+            'second' => 'eccube1@example.com',
         ],
-        'password' => [
-            'first' => '12345678',
-            'second' => '12345678',
+        'plain_password' => [
+            'first' => '1234567890ab',
+            'second' => '1234567890ab',
         ],
         'birth' => [
             'year' => '1980',
@@ -55,7 +55,7 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'job' => 1,
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -180,8 +180,8 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPasswordEqualEmail()
     {
-        $this->formData['password']['first'] = $this->formData['email']['first'];
-        $this->formData['password']['second'] = $this->formData['email']['first'];
+        $this->formData['plain_password']['first'] = $this->formData['email']['first'];
+        $this->formData['plain_password']['second'] = $this->formData['email']['first'];
 
         $this->form->submit($this->formData);
         $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());

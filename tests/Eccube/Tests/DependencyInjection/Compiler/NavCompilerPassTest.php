@@ -33,10 +33,10 @@ class NavCompilerPassTest extends EccubeTestCase
         $eccubeNav = $container->getParameter('eccube_nav');
 
         // DefaultNavの全要素が含まれている
-        self::assertArraySubset(DefaultNav::getNav(), $eccubeNav);
+        self::assertSame(DefaultNav::getNav(), $eccubeNav);
 
         // DefaultNav以外の要素が含まれていない
-        self::assertEquals(DefaultNav::getNav(), $eccubeNav);
+        self::assertSame(DefaultNav::getNav(), $eccubeNav);
     }
 
     /**
@@ -59,19 +59,16 @@ class NavCompilerPassTest extends EccubeTestCase
 
         $eccubeNav = $container->getParameter('eccube_nav');
 
-        // DefaultNavの全要素が含まれている
-        self::assertArraySubset(DefaultNav::getNav(), $eccubeNav);
-
         // AddNavの全要素が含まれている
-        self::assertArraySubset($expected, $eccubeNav);
+        self::assertSame($expected, $eccubeNav);
     }
 
     public function addNavProvider()
     {
         return [
-            [AddNav1::class, AddNav1::getNav()],
-            [AddNav2::class, AddNav2::getNav()],
-            [AddNav3::class, AddNav3::getNav()],
+            [AddNav1::class, AddNav1::getExpect()],
+            [AddNav2::class, AddNav2::getExpect()],
+            [AddNav3::class, AddNav3::getExpect()],
         ];
     }
 
@@ -93,13 +90,8 @@ class NavCompilerPassTest extends EccubeTestCase
         // DefaultNavから変更されている
         self::assertNotEquals(DefaultNav::getNav(), $eccubeNav);
 
-        // nav['default']['name'] 以外のDefaultNavの全要素が含まれている
-        $expected = DefaultNav::getNav();
-        unset($expected['default']['name']);
-        self::assertArraySubset($expected, $eccubeNav);
-
         // UpdateNavの全要素が含まれている
-        self::assertArraySubset(UpdateNav::getNav(), $eccubeNav);
+        self::assertSame(UpdateNav::getExpect(), $eccubeNav);
     }
 
     /**
@@ -172,6 +164,40 @@ class AddNav1 implements EccubeNav
             ],
         ];
     }
+
+    public static function getExpect()
+    {
+        return [
+            'default' => [
+                'name' => 'default',
+                'icon' => 'fa-cube',
+                'child' => [
+                    'default_1' => [
+                        'name' => 'default-1',
+                        'url' => 'admin_homepage',
+                    ],
+                    'default_2' => [
+                        'name' => 'default-2',
+                        'child' => [
+                            'default_2_1' => [
+                                'name' => 'default-2-1',
+                                'url' => 'admin_homepage',
+                            ],
+                            'default_2_2' => [
+                                'name' => 'default-2-2',
+                                'url' => 'admin_homepage',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'add' => [
+                'name' => 'add',
+                'icon' => 'fa-cube',
+                'url' => 'admin_homepage',
+            ],
+        ];
+    }
 }
 
 /**
@@ -190,6 +216,40 @@ class AddNav2 implements EccubeNav
                         'name' => 'default-add',
                         'url' => 'admin_homepage',
                     ],
+                ],
+            ],
+        ];
+    }
+
+    public static function getExpect()
+    {
+        return [
+            'default' => [
+                'name' => 'default',
+                'icon' => 'fa-cube',
+                'child' => [
+                    'default_1' => [
+                        'name' => 'default-1',
+                        'url' => 'admin_homepage',
+                    ],
+                    'default_2' => [
+                        'name' => 'default-2',
+                        'child' => [
+                            'default_2_1' => [
+                                'name' => 'default-2-1',
+                                'url' => 'admin_homepage',
+                            ],
+                            'default_2_2' => [
+                                'name' => 'default-2-2',
+                                'url' => 'admin_homepage',
+                            ],
+                        ],
+                    ],
+                    'default_add' => [
+                        'name' => 'default-add',
+                        'url' => 'admin_homepage',
+                    ],
+
                 ],
             ],
         ];
@@ -220,6 +280,39 @@ class AddNav3 implements EccubeNav
             ],
         ];
     }
+
+    public static function getExpect()
+    {
+        return [
+            'default' => [
+                'name' => 'default',
+                'icon' => 'fa-cube',
+                'child' => [
+                    'default_1' => [
+                        'name' => 'default-1',
+                        'url' => 'admin_homepage',
+                    ],
+                    'default_2' => [
+                        'name' => 'default-2',
+                        'child' => [
+                            'default_2_1' => [
+                                'name' => 'default-2-1',
+                                'url' => 'admin_homepage',
+                            ],
+                            'default_2_2' => [
+                                'name' => 'default-2-2',
+                                'url' => 'admin_homepage',
+                            ],
+                            'default_2_add' => [
+                                'name' => 'default-2-add',
+                                'url' => 'admin_homepage',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
 }
 
 /**
@@ -234,6 +327,35 @@ class UpdateNav implements EccubeNav
         return [
             'default' => [
                 'name' => 'update',
+            ],
+        ];
+    }
+
+        public static function getExpect()
+    {
+        return [
+            'default' => [
+                'name' => 'update',
+                'icon' => 'fa-cube',
+                'child' => [
+                    'default_1' => [
+                        'name' => 'default-1',
+                        'url' => 'admin_homepage',
+                    ],
+                    'default_2' => [
+                        'name' => 'default-2',
+                        'child' => [
+                            'default_2_1' => [
+                                'name' => 'default-2-1',
+                                'url' => 'admin_homepage',
+                            ],
+                            'default_2_2' => [
+                                'name' => 'default-2-2',
+                                'url' => 'admin_homepage',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
     }

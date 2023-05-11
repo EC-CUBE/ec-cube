@@ -34,7 +34,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -47,7 +47,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->imageDir);
@@ -157,105 +157,78 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAddImage()
+    /**
+     * アップロード画像が save_image にコピーされているか確認する.
+     */
+    public function testEditWithImage()
     {
+        $path = __DIR__.'/../../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
         $formData = $this->createFormData();
-
-        copy(
-            __DIR__.'/../../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.png',
-            'sand-1.png',
-            'image/png',
-            null, null, true
-        );
-        $this->client->request('POST',
-            $this->generateUrl('admin_payment_image_add'),
-            [
-                'payment_register' => $formData,
-            ],
-            [
-                'payment_register' => ['payment_image_file' => $image],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testAddImageWithUppercaseSuffix()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.PNG'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.PNG',
-            'sand-1.PNG',
-            'image/png',
-            null, null, true
-        );
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_payment_image_add'),
-            [
-                'payment_register' => $formData,
-            ],
-            [
-                'payment_register' => ['payment_image_file' => $image],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testAddImageNotAjax()
-    {
-        $formData = $this->createFormData();
-
-        $this->client->request('POST',
-            $this->generateUrl('admin_payment_image_add'),
-            [
-                'payment_register' => $formData,
-            ],
-            []
-        );
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAddImageMineNotSupported()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../Fixtures/categories.csv',
-            $this->imageDir.'/categories.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/categories.png',
-            'categories.png',
-            'image/png',
-            null, null, true
-        );
+        $formData['payment_image'] = 'new_image.png';
+        $Payment = $this->paymentRepository->find(1);
 
         $crawler = $this->client->request('POST',
-           $this->generateUrl('admin_payment_image_add'),
-           [
-               'payment_register' => $formData,
-           ],
-           [
-               'payment_register' => ['payment_image_file' => $image],
-           ],
-           [
-               'HTTP_X-Requested-With' => 'XMLHttpRequest',
-           ]
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
+            [
+                'payment_register' => $formData,
+            ]
         );
-        $this->assertFalse($this->client->getResponse()->isSuccessful());
+
+        $this->expected = true;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->assertFileExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    /**
+     * アップロード画像に相対パスが指定された場合は save_image にコピーされない.
+     */
+    public function testEditWithImageFailure()
+    {
+        $path = __DIR__.'/../../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
+        );
+
+        $formData = $this->createFormData();
+        $formData['payment_image'] = '../temp_image/new_image.png';
+        $Payment = $this->paymentRepository->find(1);
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
+            [
+                'payment_register' => $formData,
+            ]
+        );
+
+        $this->expected = true;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->assertFileNotExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
     }
 
     public function testMoveSortNo()

@@ -43,7 +43,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      *
      * @throws \ReflectionException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         // Fixme: because the proxy entity still not working, it's can not help to run this test case
         $this->markTestIncomplete('Fatal error: Cannot declare class Eccube\Entity\BaseInfo, because the name is already in use in app\proxy\entity\BaseInfo.php on line 28');
@@ -51,7 +51,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         parent::setUp();
 
         $this->mockSchemaService = $this->createMock(SchemaService::class);
-        $this->service = self::$container->get(PluginService::class);
+        $this->service = static::getContainer()->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
         $prop = $rc->getProperty('schemaService');
         $prop->setAccessible(true);
@@ -60,11 +60,11 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $finder = new Finder();
         $iterator = $finder
-            ->in(self::$container->getParameter('kernel.project_dir').'/app/Plugin')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
 
@@ -78,7 +78,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         }
 
         $files = Finder::create()
-            ->in(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
@@ -90,7 +90,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     {
         $f = new Filesystem();
 
-        return $f->remove($path);
+        $f->remove($path);
     }
 
     /**
@@ -107,7 +107,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         // Proxyは生成されない
-        self::assertFalse(file_exists(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php'));
+        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php'));
     }
 
     /**
@@ -128,7 +128,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは有効
         self::assertContainsTrait(
-            self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
+            static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -153,7 +153,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは無効
         self::assertNotContainsTrait(
-            self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
+            static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -184,7 +184,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは無効
         self::assertNotContainsTrait(
-            self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
+            static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -212,7 +212,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは無効
         self::assertNotContainsTrait(
-            self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
+            static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -241,12 +241,12 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // 有効化
         $this->service->enable($pluginEnabled);
 
-        self::assertNotContainsTrait(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
+        self::assertNotContainsTrait(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configDisabled['code']}\\Entity\\HogeTrait",
             '無効状態プラグインのTraitは利用されないはず');
 
         // 無効化状態のTraitは利用されないはず
-        self::assertContainsTrait(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
+        self::assertContainsTrait(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configEnabled['code']}\\Entity\\HogeTrait",
             '有効状態のプラグインは利用されるはず');
     }
@@ -258,7 +258,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
         $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
 
-        self::assertContains($trait, $useStatement, $message);
+        self::assertStringContainsString($trait, $useStatement, $message);
     }
 
     private static function assertNotContainsTrait($file, $trait, $message = 'Traitが有効になっているはず')

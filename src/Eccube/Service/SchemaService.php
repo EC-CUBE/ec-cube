@@ -67,7 +67,7 @@ class SchemaService
         }
 
         try {
-            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
             $drivers = $chain->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
@@ -129,7 +129,7 @@ class SchemaService
      */
     public function dropTable($targetNamespace)
     {
-        $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+        $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
         $drivers = $chain->getDrivers();
 
         $dropMetas = [];

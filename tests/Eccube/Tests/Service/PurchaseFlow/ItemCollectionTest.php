@@ -36,13 +36,13 @@ class ItemCollectionTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses()->toArray();
         $Customer = $this->createCustomer();
-        $this->ItemHolder = self::$container->get(Generator::class)->createOrder($Customer, $ProductClasses);
+        $this->ItemHolder = static::getContainer()->get(Generator::class)->createOrder($Customer, $ProductClasses);
         $this->Items = $this->ItemHolder->getItems()->toArray();
     }
 

@@ -193,7 +193,7 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page", methods={"GET", "POST"})
      * @Template("@admin/Order/index.twig")
      */
-    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
@@ -204,7 +204,7 @@ class OrderController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -299,7 +299,7 @@ class OrderController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
         $sortKey = $searchData['sortkey'];
 
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
@@ -408,12 +408,12 @@ class OrderController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType($csvTypeId);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 受注データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getOrderQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
@@ -448,12 +448,12 @@ class OrderController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER);
 
                         $ExportCsvRow->pushData();
                     }
 
-                    //$row[] = number_format(memory_get_usage(true));
+                    // $row[] = number_format(memory_get_usage(true));
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
@@ -462,7 +462,6 @@ class OrderController extends AbstractController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
-        $response->send();
 
         return $response;
     }

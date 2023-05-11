@@ -49,11 +49,10 @@ class AuthorityVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        $request = null;
         $path = null;
 
         try {
-            $request = $this->requestStack->getMasterRequest();
+            $request = $this->requestStack->getMainRequest();
         } catch (\RuntimeException $e) {
             // requestが取得できない場合、棄権する(テストプログラムで不要なため)
             return VoterInterface::ACCESS_ABSTAIN;

@@ -23,7 +23,11 @@ include /assets/tmpl/elements/11.4.categoryNavi.pug
 Styleguide 11.2
 */
 .ec-layoutRole {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff;
   & &__contentTop {
@@ -37,7 +41,7 @@ Styleguide 11.2
     max-width: 1150px;
     display: flex;
     flex-wrap: nowrap;
-
+    flex-grow: 1;
   }
   & &__main {
     width: 100%;
@@ -829,7 +833,7 @@ Styleguide 11.2.7
 
 .ec-maintenanceAlert {
   background: steelblue;
-  height: 5rem;
+  height: 50px;
   position: fixed;
   top: 0;
   width: 100%;
@@ -850,6 +854,6 @@ Styleguide 11.2.7
     vertical-align: top;
   }
   & +* {
-    margin-top: 5rem;
+    margin-top: 50px;
   }
 }

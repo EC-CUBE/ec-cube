@@ -37,11 +37,11 @@ class EntityProxyServiceTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->entityProxyService = self::$container->get(EntityProxyService::class);
+        $this->entityProxyService = static::getContainer()->get(EntityProxyService::class);
 
         $this->tempOutputDir = tempnam(sys_get_temp_dir(), 'ProxyGeneratorTest');
         unlink($this->tempOutputDir);
@@ -51,7 +51,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $files = Finder::create()
             ->in($this->tempOutputDir)

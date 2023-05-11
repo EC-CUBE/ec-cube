@@ -24,11 +24,11 @@ class OrderTypeTest extends AbstractTypeTestCase
 
     private $orderType;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
-        $this->orderType = self::$container->get(OrderType::class);
+        $this->orderType = static::getContainer()->get(OrderType::class);
     }
 
     /**

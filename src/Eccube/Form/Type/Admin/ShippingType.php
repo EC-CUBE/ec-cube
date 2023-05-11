@@ -177,14 +177,19 @@ class ShippingType extends AbstractType
             ])
             ->add('shipping_delivery_date', DateType::class, [
                 'placeholder' => '',
-                'format' => 'yyyy-MM-dd',
                 'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
             ])
             ->add('tracking_number', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_mtext_len'],
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^[0-9a-zA-Z-]+$/u',
+                        'message' => 'form_error.graph_and_hyphen_only',
                     ]),
                 ],
             ])

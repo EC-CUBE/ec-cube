@@ -281,8 +281,6 @@ class PluginController extends AbstractController
 
         $cacheUtil->clearCache();
 
-        $log = null;
-
         if ($Plugin->isEnabled()) {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true]);
@@ -485,6 +483,8 @@ class PluginController extends AbstractController
      */
     public function install(Request $request, CacheUtil $cacheUtil)
     {
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
+
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
@@ -591,7 +591,7 @@ class PluginController extends AbstractController
         $pluginCodes = [];
 
         // DB登録済みプラグインコードのみ取得
-        foreach ($plugins as $key => $plugin) {
+        foreach ($plugins as $plugin) {
             $pluginCodes[] = $plugin->getCode();
         }
         // DB登録済みプラグインコードPluginディレクトリから排他
@@ -607,7 +607,7 @@ class PluginController extends AbstractController
             try {
                 $this->pluginService->checkPluginArchiveContent($dir->getRealPath());
             } catch (PluginException $e) {
-                //config.yamlに不備があった際は全てスキップ
+                // config.yamlに不備があった際は全てスキップ
                 log_warning($e->getMessage());
                 continue;
             }

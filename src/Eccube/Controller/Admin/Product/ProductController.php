@@ -49,6 +49,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -151,7 +152,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page", methods={"GET", "POST"})
      * @Template("@admin/Product/index.twig")
      */
-    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
@@ -162,7 +163,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -253,7 +254,7 @@ class ProductController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
 
         $sortKey = $searchData['sortkey'];
 
@@ -312,9 +313,12 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/product/image/add", name="admin_product_image_add", methods={"POST"})
+     * 画像アップロード時にリクエストされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#process
+     * @Route("/%eccube_admin_route%/product/product/image/process", name="admin_product_image_process", methods={"POST"})
      */
-    public function addImage(Request $request)
+    public function imageProcess(Request $request)
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -327,7 +331,7 @@ class ProductController extends AbstractController
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
-                    //ファイルフォーマット検証
+                    // ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
                         throw new UnsupportedMediaTypeHttpException();
@@ -353,10 +357,67 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE);
         $files = $event->getArgument('files');
 
-        return $this->json(['files' => $files], 200);
+        return new Response(array_shift($files));
+    }
+
+    /**
+     * アップロード画像を取得する際にコールされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#load
+     * @Route("/%eccube_admin_route%/product/product/image/load", name="admin_product_image_load", methods={"GET"})
+     */
+    public function imageLoad(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $dirs = [
+            $this->eccubeConfig['eccube_save_image_dir'],
+            $this->eccubeConfig['eccube_temp_image_dir'],
+        ];
+
+        foreach ($dirs as $dir) {
+            if (strpos($request->query->get('source'), '..') !== false) {
+                throw new NotFoundHttpException();
+            }
+            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $dir = \realpath($dir);
+
+            if (\is_file($image) && \str_starts_with($image, $dir)) {
+                $file = new \SplFileObject($image);
+
+                return $this->file($file, $file->getBasename());
+            }
+        }
+
+        throw new NotFoundHttpException();
+    }
+
+    /**
+     * アップロード画像をすぐ削除する際にコールされるメソッド.
+     *
+     * @see https://pqina.nl/filepond/docs/api/server/#revert
+     * @Route("/%eccube_admin_route%/product/product/image/revert", name="admin_product_image_revert", methods={"DELETE"})
+     */
+    public function imageRevert(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+            throw new BadRequestHttpException();
+        }
+
+        $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
+        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+            $fs = new Filesystem();
+            $fs->remove($tempFile);
+
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        }
+
+        throw new NotFoundHttpException();
     }
 
     /**
@@ -364,7 +425,7 @@ class ProductController extends AbstractController
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/product.twig")
      */
-    public function edit(Request $request, $id = null, RouterInterface $router, CacheUtil $cacheUtil)
+    public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
     {
         $has_class = false;
         if (is_null($id)) {
@@ -423,7 +484,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -570,20 +631,21 @@ class ProductController extends AbstractController
 
                 $this->entityManager->flush();
 
-                $sortNos = $request->get('sort_no_images');
-                if ($sortNos) {
-                    foreach ($sortNos as $sortNo) {
-                        list($filename, $sortNo_val) = explode('//', $sortNo);
+                if (array_key_exists('product_image', $request->request->get('admin_product'))) {
+                    $product_image = $request->request->get('admin_product')['product_image'];
+                    foreach ($product_image as $sortNo => $filename) {
                         $ProductImage = $this->productImageRepository
                             ->findOneBy([
-                                'file_name' => $filename,
+                                'file_name' => pathinfo($filename, PATHINFO_BASENAME),
                                 'Product' => $Product,
                             ]);
-                        $ProductImage->setSortNo($sortNo_val);
-                        $this->entityManager->persist($ProductImage);
+                        if ($ProductImage !== null) {
+                            $ProductImage->setSortNo($sortNo);
+                            $this->entityManager->persist($ProductImage);
+                        }
                     }
+                    $this->entityManager->flush();
                 }
-                $this->entityManager->flush();
 
                 // 商品タグの登録
                 // 商品タグを一度クリア
@@ -616,7 +678,7 @@ class ProductController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -656,7 +718,7 @@ class ProductController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH);
 
         $searchForm = $builder->getForm();
 
@@ -689,13 +751,12 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
+    public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         $this->isTokenValid();
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
-        $message = null;
         $success = false;
 
         if (!is_null($id)) {
@@ -732,7 +793,7 @@ class ProductController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE);
                     $deleteImages = $event->getArgument('deleteImages');
 
                     // 画像ファイルの削除(commit後に削除させる)
@@ -867,7 +928,7 @@ class ProductController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE);
 
                 $this->addSuccess('admin.product.copy_complete', 'admin');
 
@@ -906,12 +967,12 @@ class ProductController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 商品データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getProductQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // Get stock status
             $isOutOfStock = 0;
@@ -927,9 +988,7 @@ class ProductController extends AbstractController
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
             // distinctのmysqlとpgsqlの挙動をあわせる.
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
-            $qb->resetDQLPart('select')
-                ->resetDQLPart('orderBy')
-                ->orderBy('p.update_date', 'DESC');
+            $qb->resetDQLPart('select');
 
             if ($isOutOfStock) {
                 $qb->select('p, pc')
@@ -971,7 +1030,7 @@ class ProductController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT);
 
                         $ExportCsvRow->pushData();
                     }
@@ -987,7 +1046,6 @@ class ProductController extends AbstractController
         $filename = 'product_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         log_info('商品CSV出力ファイル名', [$filename]);
 

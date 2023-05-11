@@ -145,7 +145,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
     public function 注文者パネルを開く()
     {
-        $this->tester->click('#form1 > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(2) > div.card-header > div > div.col-1.text-right > a');
+        $this->tester->click('#form1 > div.c-contentsArea__cols > div > div.c-primaryCol > div:nth-child(2) > div.card-header > div > div.col-1.text-end > a');
         $this->tester->wait(1);
 
         return $this;
@@ -153,8 +153,8 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
     public function 商品検索($value = '')
     {
-        $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add'], 0, -50);
-        $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.mr-2.add']);
+        $this->tester->scrollTo(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.me-2.add'], 0, -50);
+        $this->tester->click(['css' => '#orderItem > div > div.row.justify-content-between.mb-2 > div.col-6 > a.btn.btn-ec-regular.me-2.add']);
         $this->tester->waitForElementVisible(['id' => 'addProduct']);
         $this->tester->fillField(['id' => 'admin_search_product_id'], $value);
         $this->tester->click('#searchProductModalButton');
@@ -166,7 +166,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function 商品検索結果_選択($rowNum)
     {
         $rowNum = $rowNum * 2;
-        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.text-right > button");
+        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.text-end > button");
 
         return $this;
     }
@@ -181,21 +181,21 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
     public function 明細の項目名を取得($row)
     {
-        return $this->tester->grabTextFrom("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.w-25.pl-3");
+        return $this->tester->grabTextFrom("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.w-25.ps-3");
     }
 
     public function 明細を削除($row)
     {
         $this->tester->scrollTo(['css' => '#order-product']);
-        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > div.d-inline-block.mr-3 > a");
-        $this->tester->waitForElementVisible("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 > div > div > div.modal");
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-end.pe-3 > div > div > div.d-inline-block.me-3 > a");
+        $this->tester->waitForElementVisible("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-end.pe-3 > div > div > div.modal");
 
         return $this;
     }
 
     public function acceptDeleteModal($row)
     {
-        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-right.pr-3 div.modal a.delete");
+        $this->tester->click("#table-form-field > tbody > tr:nth-child({$row}) > td.align-middle.text-end.pe-3 div.modal a.delete");
 
         return $this;
     }

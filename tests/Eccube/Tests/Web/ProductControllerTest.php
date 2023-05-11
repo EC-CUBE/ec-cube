@@ -39,7 +39,7 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     private $classCategoryRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
@@ -82,7 +82,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $message = 'ご指定のカテゴリは存在しません';
         $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => 'XXX']));
-        $this->assertContains($message, $crawler->html());
+        $this->assertStringContainsString($message, $crawler->html());
     }
 
     /**
@@ -93,7 +93,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $message = '商品が見つかりました';
         $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => '6']));
-        $this->assertContains($message, $crawler->html());
+        $this->assertStringContainsString($message, $crawler->html());
     }
 
     /**
@@ -158,8 +158,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 1: render check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('ただいま品切れ中です', $html);
-        $this->assertContains('お気に入りに追加', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', $html);
+        $this->assertStringContainsString('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
 
@@ -168,8 +168,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 2: after add favorite check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('ただいま品切れ中です', $html);
-        $this->assertContains('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', $html);
     }
 
     /**
@@ -196,8 +196,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 3: render check when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('カートに入れる', $html);
-        $this->assertContains('お気に入りに追加', $html);
+        $this->assertStringContainsString('カートに入れる', $html);
+        $this->assertStringContainsString('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
 
@@ -206,8 +206,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 4: after add favorite when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('カートに入れる', $html);
-        $this->assertContains('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('カートに入れる', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', $html);
     }
 
     /**
@@ -254,7 +254,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', $html);
     }
 
     /**
@@ -305,7 +305,7 @@ class ProductControllerTest extends AbstractWebTestCase
         // 検索 0件 → noindex 確認
         $url = $this->generateUrl('product_list', ['category_id' => 1, 'name' => 'notfoundquery'], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->client->request('GET', $url);
-        $this->assertContains('お探しの商品は見つかりませんでした', $crawler->html());
+        $this->assertStringContainsString('お探しの商品は見つかりませんでした', $crawler->html());
         $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
 
@@ -314,7 +314,8 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testMetaTagsInDetailPage()
     {
-        $product = $this->productRepository->find(2);   /** @var Product $product */
+        $product = $this->productRepository->find(2);
+        /** @var Product $product */
         $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
         $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
 
