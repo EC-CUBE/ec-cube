@@ -368,6 +368,7 @@ class EA08SysteminfoCest
                 'authority' => '店舗オーナー',
             ])
             ->登録();
+        $I->waitForText('保存しました');
 
         $I->wantTo('EA0805-UC01-T01 権限管理 - 登録');
 
@@ -376,7 +377,7 @@ class EA08SysteminfoCest
             ->行追加()
             ->入力(1, ['1' => '店舗オーナー'], '/setting')
             ->登録();
-        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
+        $I->waitForText('保存しました', 10, AuthorityManagePage::$完了メッセージ);
 
         $I->wantTo('EA0805-UC01-T02 権限管理 - 登録');
 
@@ -470,13 +471,14 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/log');
         $I->see('ログ表示システム設定', '.c-pageTitle');
 
-        $option = $I->grabTextFrom('#admin_system_log_files option:nth-child(1)');
+        $option = $I->grabTextFrom(['css' => '#admin_system_log_files option:nth-child(1)']);
         $I->selectOption('#admin_system_log_files', $option);
 
         $I->fillField(['id' => 'admin_system_log_line_max'], '10');
         $I->click(['css' => '#form1 button']);
 
-        $logs = $I->grabTextFrom('.c-contentsArea textarea');
+        $I->waitForElement(['css' => '.c-contentsArea textarea']);
+        $logs = $I->grabTextFrom(['css' => '.c-contentsArea textarea']);
         $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), 'ログ件数を確認');
         $I->seeInField(['id' => 'admin_system_log_line_max'], '10');
     }
