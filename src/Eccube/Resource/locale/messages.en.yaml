@@ -414,6 +414,7 @@ admin.common.create_complete: Created
 admin.common.system_error: System error occurred
 admin.common.to_show_complete: '%name% is displayed'
 admin.common.to_hide_complete: '%name% is hidden'
+admin.common.date_range_error: End date is set after start date
 
 # action labels
 admin.common.save: Save
