@@ -108,6 +108,15 @@ class PointDiffProcessorTest extends EccubeTestCase
             [10, 20, 9, true],
             [10, 20, 10, false],
             [10, 20, 11, false],
+            [0, 0, -10, false],
+            [20, 10, -10, false],
+            [10, 10, -10, false],
+            [20, 9, -10, false],
+            [20, 11, -10, false],
+            [10, 20, -10, true],
+            [11, 20, -10, true],
+            [9, 20, -10, true],
+            [10, 20, -10, true],
         ];
     }
 

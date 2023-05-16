@@ -16,6 +16,7 @@ namespace Eccube\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Finder\Finder;
@@ -30,6 +31,18 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $configs = $this->processConfiguration($configuration, $configs);
+    }
+
+    public function getAlias()
+    {
+        return 'eccube';
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return parent::getConfiguration($config, $container);
     }
 
     /**
@@ -73,6 +86,37 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $container->prependExtensionConfig('security', [
           'access_control' => $accessControl,
         ]);
+
+        $configs = $container->getExtensionConfig('eccube');
+        $configs = array_reverse($configs);
+        $rateLimiterConfigs = [];
+
+        foreach ($configs as $config) {
+            if (empty($config['rate_limiter'])) {
+                continue;
+            }
+            foreach ($config['rate_limiter'] as $id => $limiter) {
+                $container->prependExtensionConfig('framework', [
+                    'rate_limiter' => [
+                        $id => [
+                            'policy' => 'fixed_window',
+                            'limit' => $limiter['limit'],
+                            'interval' => $limiter['interval'],
+                            'cache_pool' => 'rate_limiter.cache',
+                        ],
+                    ],
+                ]);
+                // Customize > Plugin > 本体
+                if (isset($limiter['route']) && !isset($rateLimiterConfigs[$limiter['route']][$id])) {
+                    $processor = new Processor();
+                    $configuration = new Configuration();
+                    $processed = $processor->processConfiguration($configuration, ['eccube' => ['rate_limiter' => [$id => $limiter]]]);
+                    $rateLimiterConfigs[$limiter['route']][$id] = $processed['rate_limiter']['limiters'][$id];
+                }
+            }
+        }
+
+        $container->setParameter('eccube_rate_limiter_configs', $rateLimiterConfigs);
     }
 
     protected function configurePlugins(ContainerBuilder $container)

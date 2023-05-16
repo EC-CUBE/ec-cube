@@ -439,7 +439,7 @@ class MailService
 
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->from(new Address($this->BaseInfo->getEmail03(), $this->BaseInfo->getShopName()))
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
             ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
@@ -551,6 +551,7 @@ class MailService
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
             ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
 

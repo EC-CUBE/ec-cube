@@ -126,7 +126,6 @@ class EA07BasicinfoCest
         $I->logoutAsMember();
 
         // 会員ステータスのチェック
-        $I->loginAsAdmin();
         $page = CustomerManagePage::go($I);
         $I->fillField('#admin_search_customer_multi', $email);
         $page->詳細検索_仮会員();

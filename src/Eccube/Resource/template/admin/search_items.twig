@@ -38,7 +38,11 @@ file that was distributed with this source code.
                         {%- endif %}
                     {%- endfor -%}
                 {%- else -%}
-                    {{ child.vars.data }}
+                    {%- if child.vars.data is integer -%}
+                        {{ child.vars.data|number_format }}
+                    {%- else -%}
+                        {{ child.vars.data }}
+                    {%- endif -%}
                 {%- endif-%}
             {%- endif -%}
         </li>

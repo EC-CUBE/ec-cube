@@ -62,23 +62,14 @@ jobs:
           echo 'Host *.vaddy.net
               StrictHostKeyChecking no' >> ${HOME}/.ssh/config
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: "EC-CUBE: setup"
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 14
         run: |
-          composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
           php bin/template_jp.php
           rm -rf app/Plugin/*
           echo '<?php

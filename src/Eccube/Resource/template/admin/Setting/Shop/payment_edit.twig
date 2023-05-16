@@ -27,6 +27,9 @@ file that was distributed with this source code.
             // ファイルアップロード
             // see https://pqina.nl/filepond/
             var inputFileElement = document.querySelector('input[type=file]');
+            {% if eccube_config.locale == 'ja' or eccube_config.locale == 'en' %}
+            FilePond.setOptions(FilePondLocale_{{ eccube_config.locale }});
+            {% endif %}
             FilePond.setOptions({
                 server: {
                     process: {
@@ -78,6 +81,23 @@ file that was distributed with this source code.
                     },
                     {% endif %}
                 ]
+            });
+            pond.on('initfile', function() {
+                $('#product_image_error').hide();
+            });
+            pond.on('error', function(error, file) {
+                var message = '{{ 'admin.common.upload_error'|trans }}';
+                if (error.main !== undefined) {
+                    message = `${error.main}: ${error.sub}`;
+                }
+                $('#payment_image_error')
+                    .show()
+                    .find('.form-error-message').text(message);
+
+                // エラーメッセージが表示されてからプレビューエリアのエラーメッセージを非表示にする
+                setTimeout(function() {
+                    $('.filepond--file-status').hide();
+                }, 300);
             });
 
             // 画像が追加されたら payment_image にファイル名を追加する
@@ -160,6 +180,12 @@ file that was distributed with this source code.
                                             {{ form_widget(form.payment_image_file, { attr : { style : 'display:none;' } }) }}
                                             {{ form_errors(form.payment_image) }}
                                         </div><!-- /.media-body -->
+                                        <span class="invalid-feedback" id="payment_image_error" style="display: none">
+                                            <span class="d-block">
+                                                <span class="form-error-icon badge bg-danger text-uppercase">{{ 'Error'|trans({}, 'validators') }}</span>
+                                                <span class="form-error-message"></span>
+                                            </span>
+                                        </span>
                                     </div><!-- /.media -->
                                 </div>
                             </div>

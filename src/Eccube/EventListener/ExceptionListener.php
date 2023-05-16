@@ -65,6 +65,11 @@ class ExceptionListener implements EventSubscriberInterface
                         $message = trans('exception.error_message_can_not_access');
                     }
                     break;
+                case 429:
+                    $infoMess = '試行回数の制限を超過しました。';
+                    $title = trans('exception.error_title_can_not_access');
+                    $message = trans('exception.error_message_rate_limit');
+                    break;
                 case 404:
                     $infoMess = 'ページがみつかりません。';
                     $title = trans('exception.error_title_not_found');

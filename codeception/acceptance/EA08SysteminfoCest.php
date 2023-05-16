@@ -16,6 +16,8 @@ use Page\Admin\AuthorityManagePage;
 use Page\Admin\LoginHistoryPage;
 use Page\Admin\MasterDataManagePage;
 use Page\Admin\SystemMemberEditPage;
+use Page\Admin\SystemSecurityPage;
+use Page\Front\TopPage;
 
 /**
  * @group admin
@@ -288,7 +290,7 @@ class EA08SysteminfoCest
         $config = Fixtures::get('config');
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/security');
         $I->see('セキュリティ管理システム設定', '#page_admin_setting_system_security .c-pageTitle__titles');
-        $I->see('セキュリティ設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea > form > div > div.c-contentsArea__primaryCol > div > div > div.card-header > div > div.col-8 > span');
+        $I->see('管理画面URL設定', '#page_admin_setting_system_security > div.c-container > div.c-contentsArea > form > div > div.c-contentsArea__primaryCol > div > div > div.card-header > div > div.col-8 > span');
     }
 
     public function systeminfo_セキュリティ管理ディレクトリ名(AcceptanceTester $I)
@@ -608,12 +610,51 @@ class EA08SysteminfoCest
         $I->see('この機能は管理者によって制限されています。');
     }
 
+    public function systeminfo_セキュリティ管理フロントIP制限_許可リスト(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0804-UC01-T06 セキュリティ管理 - フロントIP制限（許可リスト）');
+
+        // 許可リストに該当するので、閲覧できるパターン
+        SystemSecurityPage::go($I)->入力_front許可リスト('127.0.0.1')
+        ->登録();
+        TopPage::go($I)->at('彩のジェラート"CUBE"をご堪能ください');
+
+        // 許可リストに該当しないので、閲覧できないパターン
+        SystemSecurityPage::go($I)->入力_front許可リスト('192.168.100.1')
+        ->登録();
+        TopPage::go($I)->at('アクセスできません。');
+
+        //後片付け（後続処理がエラーにならないため）
+        SystemSecurityPage::go($I)->入力_front許可リスト('')
+        ->登録();
+
+    }
+
+    public function systeminfo_セキュリティ管理フロントIP制限_拒否リスト(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0804-UC01-T07 セキュリティ管理 - フロントIP制限（拒否リスト）');
+
+        // 拒否リストに該当するため閲覧できないパターン
+        SystemSecurityPage::go($I)->入力_front拒否リスト('127.0.0.1')
+        ->登録();
+        TopPage::go($I)->at('アクセスできません');
+
+        // 拒否リストに該当しないため閲覧可能なパターン
+        SystemSecurityPage::go($I)->入力_front拒否リスト('192.168.100.1')
+        ->登録();
+        TopPage::go($I)->at('彩のジェラート"CUBE"をご堪能ください');
+
+        //後片付け（後続処理がエラーにならないため）
+        SystemSecurityPage::go($I)->入力_front拒否リスト('')
+        ->登録();
+    }
+
     /**
      * ATTENTION 後続のテストが失敗するため、最後に実行する必要がある
      */
     public function systeminfo_セキュリティ管理IP制限_許可リスト(AcceptanceTester $I)
     {
-        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - IP制限（許可リスト）');
+        $I->wantTo('EA0804-UC01-T03 セキュリティ管理 - 管理画面IP制限（許可リスト）');
 
         $findPlugins = Fixtures::get('findPlugins');
         $Plugins = $findPlugins();
@@ -632,4 +673,5 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route']);
         $I->see('アクセスできません。', '//*[@id="error-page"]//h3');
     }
+
 }

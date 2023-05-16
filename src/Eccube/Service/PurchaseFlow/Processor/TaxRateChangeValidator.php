@@ -43,7 +43,7 @@ class TaxRateChangeValidator extends ItemHolderPostValidator
             return;
         }
 
-        if ($originHolder->getTaxByTaxRate() !== $itemHolder->getTaxByTaxRate()) {
+        if (!empty(array_diff(array_keys($originHolder->getTaxByTaxRate()), array_keys($itemHolder->getTaxByTaxRate())))) {
             $this->throwInvalidItemException('purchase_flow.tax_rate_update', null, true);
         }
     }
