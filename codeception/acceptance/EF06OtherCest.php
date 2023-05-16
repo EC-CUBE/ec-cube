@@ -105,7 +105,7 @@ class EF06OtherCest
         $I->amOnPage($url);
         $I->see('パスワード再発行(再設定)', 'div.ec-pageHeader h1');
 
-        $password = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 20);
+        $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 16).'1234';
 
         // メルアド・新パスワード設定
         $I->submitForm('#form1', [
