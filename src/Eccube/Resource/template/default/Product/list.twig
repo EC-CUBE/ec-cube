@@ -65,7 +65,7 @@ file that was distributed with this source code.
                 }).done(function(data) {
                     // レスポンス内のメッセージをalertで表示
                     $.each(data.messages, function() {
-                        $('#ec-modal-header').html(this);
+                        $('#ec-modal-header').text(this);
                     });
 
                     $('.ec-modal').show()
@@ -154,7 +154,7 @@ file that was distributed with this source code.
                         <li class="ec-shelfGrid__item">
                             <a href="{{ url('product_detail', {'id': Product.id}) }}">
                                 <p class="ec-shelfGrid__item-image">
-                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') | imagine_filter('resize', {'thumbnail': {'size': [250, 250]}}) }}" alt="{{ Product.name }}" {% if loop.index > 5 %} loading="lazy"{% endif %}>
+                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}" {% if loop.index > 5 %} loading="lazy"{% endif %}>
                                 </p>
                                 <p>{{ Product.name }}</p>
                                 {% if Product.description_list %}

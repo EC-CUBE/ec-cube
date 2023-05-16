@@ -57,7 +57,7 @@ file that was distributed with this source code.
                     <button class="btn btn-ec-conversion action-edit-submit" type="submit">{{ 'admin.common.decision'|trans }}</button>
                 </div>
                 <div class="col-auto d-flex align-items-center">
-                    <button class="btn btn-ec-sub action-edit-cancel" type="submit">{{ 'admin.common.cancel'|trans }}</button>
+                    <button type="button" class="btn btn-ec-sub action-edit-cancel" >{{ 'admin.common.cancel'|trans }}</button>
                 </div>
                 {{ form_errors(form.delivery_time) }}
                 {{ form_widget(form.sort_no, {'attr': {'class': "sort-no" }}) }}

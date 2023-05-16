@@ -204,26 +204,55 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(file_exists($this->getUserDataDir().'/bbb.html'));
     }
 
-    public function testUploadIgnoreFiles()
+    public function dataProviderUploadIgnoreFiles(): array
     {
-        $php = $this->getUserDataDir().'/../test.php';
-        touch($php);
+        return [
+            ['test.php', 'x-php', 'アップロードできないファイル拡張子です', false],
+            ['.dotfile', 'text/plain', '.で始まるファイルはアップロードできません。', false],
+            ['test.jpg', 'image/jpeg', '', true],
+            ['test.jpeg', 'image/jpeg', '', true],
+            ['test.png', 'image/png', '', true],
+            ['test.gif', 'image/gif', '', true],
+            ['test.webp', 'image/webp', '', true],
+            ['test.svg', 'image/svg+xml', '', true],
+            ['test.ico', 'image/ico', '', true],
+            ['test.html', 'text/html', '', true],
+            ['test.htm', 'text/htm', '', true],
+            ['test.js', 'text/javascript', '', true],
+            ['test.css', 'text/css', '', true],
+            ['test.txt', 'text/txt', '', true],
+            ['test.pdf', 'application/pdf', '', true],
+            ['test.zip', 'application/zip', 'アップロードできないファイル拡張子です', false],
+            ['test.gz', 'application/gzip', 'アップロードできないファイル拡張子です', false],
+            ['test.tar', 'application/tar', 'アップロードできないファイル拡張子です', false],
+            ['test.doc', 'application/msword', 'アップロードできないファイル拡張子です', false],
+            ['test.xls', 'application/vnd.ms-excel', 'アップロードできないファイル拡張子です', false],
+            ['test.ppt', 'application/vnd.ms-powerpoint', 'アップロードできないファイル拡張子です', false],
+            ['test.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'アップロードできないファイル拡張子です', false],
+            ['test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'アップロードできないファイル拡張子です', false],
+            ['test.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'アップロードできないファイル拡張子です', false],
+            ['test.woff', 'application/font-woff', 'アップロードできないファイル拡張子です', false],
+            ['test.woff2', 'application/font-woff2', 'アップロードできないファイル拡張子です', false],
+            ['test.ttf', 'application/font-ttf', 'アップロードできないファイル拡張子です', false],
+            ['test.otf', 'application/font-otf', 'アップロードできないファイル拡張子です', false],
+            ['test.eot', 'application/vnd.ms-fontobject', 'アップロードできないファイル拡張子です', false],
+            ['test.xml', 'text/xml', 'アップロードできないファイル拡張子です', false],
+            ['test.csv', 'text/csv', 'アップロードできないファイル拡張子です', false],
+            ['test.json', 'application/json', 'アップロードできないファイル拡張子です', false],
+        ];
+    }
+    /**
+     * @dataProvider dataProviderUploadIgnoreFiles
+     */
+    public function testUploadIgnoreFiles($fileName, $mimeType, $errorMessage, $exists)
+    {
+        $file = $this->getUserDataDir().'/../'.$fileName;
+        touch($file);
 
-        $dot = $this->getUserDataDir().'/../.dotfile';
-        touch($dot);
-
-        $phpfile = new UploadedFile(
-            realpath($php),          // file path
-            'test.php',         // original name
-            'x-php',        // mimeType
-            null,               // error
-            true                // test mode
-        );
-
-        $dotfile = new UploadedFile(
-            realpath($dot),          // file path
-            '.dotfile',         // original name
-            'text/plain',        // mimeType
+        $uploadFile = new UploadedFile(
+            realpath($file),          // file path
+            $file,         // original name
+            $mimeType,        // mimeType
             null,               // error
             true                // test mode
         );
@@ -235,12 +264,12 @@ class FileControllerTest extends AbstractAdminWebTestCase
                 'form' => [
                     '_token' => 'dummy',
                     'create_file' => '',
-                    'file' => [$phpfile, $dotfile],
+                    'file' => [$uploadFile],
                 ],
                 'mode' => 'upload',
                 'now_dir' => '/',
             ],
-            ['form' => ['file' => [$phpfile, $dotfile]]]
+            ['form' => ['file' => [$uploadFile]]]
         );
 
         $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
@@ -249,13 +278,14 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->assertContains('phpファイルはアップロードできません。', $messages);
-        $this->assertContains('.で始まるファイルはアップロードできません。', $messages);
-        $this->assertFalse(file_exists($this->getUserDataDir().'/test.php'));
-        $this->assertFalse(file_exists($this->getUserDataDir().'/.dotfile'));
+        $this->assertStringContainsString($errorMessage, implode(',', $messages));
+        $this->assertSame($exists, file_exists($this->getUserDataDir().'/'.$fileName));
 
-        unlink($php);
-        unlink($dot);
+        if ($exists) {
+            unlink($this->getUserDataDir().'/'.$fileName);
+        } else {
+            unlink($file);
+        }
     }
 
     public function testUploadInvalidFileName()

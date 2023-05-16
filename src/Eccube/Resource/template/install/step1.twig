@@ -23,7 +23,7 @@ file that was distributed with this source code.
                           {% for message in app.session.flashBag.get('eccube.install.danger') %}
                           <div class="row">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                              <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="https://www.ec-cube.net/product/system.php">{{ 'install.system_requirement'|trans }}</a>
+                              <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }} <a href="https://doc4.ec-cube.net/quickstart/requirement">{{ 'install.system_requirement'|trans }}</a>
                               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                           </div>

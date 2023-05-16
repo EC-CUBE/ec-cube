@@ -17,8 +17,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
+use Eccube\Entity\Category;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\Tag;
 use Eccube\Util\StringUtil;
 
 /**
@@ -130,7 +135,13 @@ class ProductRepository extends AbstractRepository
     /**
      * get query builder.
      *
-     * @param  array $searchData
+     * @param array{
+     *         category_id?:Category,
+     *         name?:string,
+     *         pageno?:string,
+     *         disp_number?:ProductListMax,
+     *         orderby?:ProductListOrderBy
+     *     } $searchData
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -213,7 +224,25 @@ class ProductRepository extends AbstractRepository
     /**
      * get query builder.
      *
-     * @param  array $searchData
+     * @param array{
+     *         id?:string|int|null,
+     *         category_id?:Category,
+     *         status?:ProductStatus[],
+     *         link_status?:ProductStatus[],
+     *         stock_status?:int,
+     *         stock?:ProductStock::IN_STOCK|ProductStock::OUT_OF_STOCK,
+     *         tag_id?:Tag,
+     *         create_datetime_start?:\DateTime,
+     *         create_datetime_end?:\DateTime,
+     *         create_date_start?:\DateTime,
+     *         create_date_end?:\DateTime,
+     *         update_datetime_start?:\DateTime,
+     *         update_datetime_end?:\DateTime,
+     *         update_date_start?:\DateTime,
+     *         update_date_end?:\DateTime,
+     *         sortkey?:string,
+     *         sorttype?:string
+     *     } $searchData
      *
      * @return \Doctrine\ORM\QueryBuilder
      */

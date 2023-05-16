@@ -73,6 +73,9 @@ class ContactType extends AbstractType
             ->add('contents', TextareaType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                    ])
                 ],
             ]);
     }

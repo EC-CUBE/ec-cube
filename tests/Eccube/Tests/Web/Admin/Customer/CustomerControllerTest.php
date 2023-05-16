@@ -223,6 +223,34 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testResend run multiple times
+     */
+    public function testResendWithMultipleTimes()
+    {
+        $Customer = $this->createCustomer();
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
+        $MessageFistTime = $this->getMailerMessage(0);
+
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
+        $MessageSecondTime = $this->getMailerMessage(0);
+
+        //test mail resend to 仮会員. (シークレットキーが毎回変わることを確認)
+        $FirstTimeMail       = $MessageFistTime->toString();
+        $SecondTimeMail      = $MessageSecondTime->toString();
+        $secretKeyFirstTime  = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
+        $secretKeySecondTime = mb_substr($SecondTimeMail, mb_strrpos($SecondTimeMail, '/activate/') + 10, 32);
+        $this->assertNotEquals($secretKeyFirstTime, $secretKeySecondTime);
+    }
+
+    /**
      * testDelete
      */
     public function testDelete()

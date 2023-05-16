@@ -30,7 +30,7 @@ file that was distributed with this source code.
                                 <span>{{ 'admin.setting.shop.order_status.order_status'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <table class="table table-sm">
                                 <thead>
                                 <tr>
@@ -60,7 +60,7 @@ file that was distributed with this source code.
                                 <tbody>
                                 {% for OrderStatus in form.OrderStatuses %}
                                     <tr>
-                                        <td class="align-middle">
+                                        <td class="align-middle text-center">
                                             {{ OrderStatus.vars.data.id }}
                                         </td>
                                         <td class="align-middle">

@@ -156,7 +156,7 @@ class EA06ContentsManagementCest
             ->入力_ファイル('upload.php')
             ->アップロード();
 
-        $I->see('phpファイルはアップロードできません', '#form1 .errormsg');
+        $I->see('アップロードできないファイル拡張子です。', '#form1 .errormsg');
     }
 
     /**
