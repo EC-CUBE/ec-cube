@@ -353,7 +353,7 @@ class EA04OrderCest
             ->商品検索結果_選択(1)
             ->受注情報登録();
 
-        $I->see('保存しました', OrderEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, OrderEditPage::$登録完了メッセージ);
     }
 
     public function order_納品書の出力(AcceptanceTester $I)

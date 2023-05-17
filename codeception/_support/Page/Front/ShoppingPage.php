@@ -73,6 +73,7 @@ class ShoppingPage extends AbstractFrontPage
     public function 入力_利用ポイント($value)
     {
         $this->tester->executeJS("$('#shopping_order_use_point').val('{$value}').change()");
+        $this->tester->wait(5);
 
         return $this;
     }
@@ -80,6 +81,7 @@ class ShoppingPage extends AbstractFrontPage
     public function 選択_配送方法($id)
     {
         $this->tester->selectOption(['id' => 'shopping_order_Shippings_0_Delivery'], $id);
+        $this->tester->wait(5);
 
         return $this;
     }
