@@ -25,7 +25,7 @@ class InstallPage extends AbstractInstallPage
     {
         $page = new self($I);
 
-        return $page->goPage('/');
+        return $page->goPage('/install/step1');
     }
 
     public function step1_次へボタンをクリック()

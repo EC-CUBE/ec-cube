@@ -77,14 +77,14 @@ class EA07BasicinfoCest
         $I->wait(1);
         $page->登録();
 
-        $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, ShopSettingPage::$登録完了メッセージ);
 
         $I->amOnPage('/help/about');
-        $I->see('サンプル会社名', '#help_about_box__company_name dd');
-        $I->see('サンプルショップ', '#help_about_box__shop_name dd');
-        $I->see('1000001', '#help_about_box__address dd');
-        $I->see('東京都千代田区千代田', '#help_about_box__address dd');
-        $I->see('05055555555', '#help_about_box__phone_number dd');
+        $I->waitForText('サンプル会社名', 10, '#help_about_box__company_name dd');
+        $I->waitForText('サンプルショップ', 10, '#help_about_box__shop_name dd');
+        $I->waitForText('1000001', 10, '#help_about_box__address dd');
+        $I->waitForText('東京都千代田区千代田', 10, '#help_about_box__address dd');
+        $I->waitForText('05055555555', 10, '#help_about_box__phone_number dd');
     }
 
     public function basicinfo_会員設定_仮会員機能(AcceptanceTester $I)
@@ -107,7 +107,7 @@ class EA07BasicinfoCest
         $page = CustomerManagePage::go($I);
         $I->fillField('#admin_search_customer_multi', $email);
         $page->詳細検索_本会員();
-        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+        $I->waitForText('検索結果：1件が該当しました', 10, CustomerManagePage::$検索結果メッセージ);
         $I->see($email);
 
         $I->wantTo('EA0701-UC01-T05_会員設定の設定、編集(仮会員機能：有効)');
@@ -129,7 +129,7 @@ class EA07BasicinfoCest
         $page = CustomerManagePage::go($I);
         $I->fillField('#admin_search_customer_multi', $email);
         $page->詳細検索_仮会員();
-        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+        $I->waitForText('検索結果：1件が該当しました', 10, CustomerManagePage::$検索結果メッセージ);
         $I->see($email);
     }
 
@@ -154,7 +154,7 @@ class EA07BasicinfoCest
             ->登録();
 
         MyPage::go($I)->注文履歴();
-        $I->see('ご注文状況', '.ec-historyRole');
+        $I->waitForText('ご注文状況', 10, '.ec-historyRole');
     }
 
     public function basicinfo_会員設定_お気に入り(AcceptanceTester $I)
@@ -178,10 +178,10 @@ class EA07BasicinfoCest
             ->登録();
 
         $I->amOnPage('/');
-        $I->see('お気に入り', '.ec-headerNav');
+        $I->waitForText('お気に入り', 10, '.ec-headerNav');
 
         $I->amOnPage('/products/detail/1');
-        $I->see('お気に入りに追加', '.ec-productRole__btn');
+        $I->waitForText('お気に入りに追加', 10, ['id' => 'favorite']);
     }
 
     public function basicinfo_会員設定_自動ログイン(AcceptanceTester $I)
@@ -206,7 +206,7 @@ class EA07BasicinfoCest
             ->登録();
 
         $I->amOnPage('/mypage/login');
-        $I->see('次回から自動的にログインする', '#login_mypage');
+        $I->waitForText('次回から自動的にログインする', 10, '#login_mypage');
         $I->checkOption('#login_memory');
         $I->submitForm('#login_mypage', [
             'login_email' => $customer->getEmail(),
@@ -215,7 +215,7 @@ class EA07BasicinfoCest
         $I->amOnPage('/mypage');
 
         $I->seeCookie('eccube_remember_me');
-        $I->see('ログアウト', '.ec-headerNaviRole');
+        $I->waitForText('ログアウト', 10, '.ec-headerNaviRole');
         $I->dontSee('ログイン', '.ec-headerNaviRole');
 
         $I->logoutAsMember();
@@ -231,7 +231,7 @@ class EA07BasicinfoCest
         ProductEditPage::at($I)
             ->入力_在庫数(0)
             ->登録();
-        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+        $I->waitForText('保存しました', 10, ProductEditPage::$登録結果メッセージ);
 
         $I->wantTo('EA0701-UC01-T13 商品設定の設定、編集(在庫切れ商品の非表示：有効)');
 
@@ -243,7 +243,7 @@ class EA07BasicinfoCest
         $topPage = TopPage::go($I);
         $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
         $topPage->検索();
-        $I->see('お探しの商品は見つかりませんでした');
+        $I->waitForText('お探しの商品は見つかりませんでした');
 
         $I->wantTo('EA0701-UC01-T14 商品設定の設定、編集(在庫切れ商品の非表示：無効)');
 
@@ -255,7 +255,7 @@ class EA07BasicinfoCest
         $topPage = TopPage::go($I);
         $I->fillField(['class' => 'search-name'], 'チェリーアイスサンド');
         $topPage->検索();
-        $I->see('チェリーアイスサンド', '.ec-shelfGrid');
+        $I->waitForText('チェリーアイスサンド', 10, '.ec-shelfGrid');
     }
 
     public function basicinfo_税設定(AcceptanceTester $I)
@@ -269,7 +269,7 @@ class EA07BasicinfoCest
 
         $I->expect('商品登録画面で、税率の入力欄が表示されている');
         ProductEditPage::go($I);
-        $I->see('税率', '.c-contentsArea');
+        $I->waitForText('税率', 10, '.c-contentsArea');
         $I->seeElement('#admin_product_class_tax_rate');
 
         $I->amGoingTo('税設定を無効化');
@@ -303,7 +303,7 @@ class EA07BasicinfoCest
             ->入力_販売価格(2800)
             ->入力_在庫数(1000)
             ->登録();
-        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+        $I->waitForText('保存しました', 10, ProductEditPage::$登録結果メッセージ);
 
         $I->amGoingTo('会員を作成');
         $createCustomer = Fixtures::get('createCustomer');
@@ -325,21 +325,21 @@ class EA07BasicinfoCest
 
         $I->expect('注文手続き画面・確認画面にて、加算ポイントが表示されていること');
         CartPage::go($I)->レジに進む();
-        $I->see('加算ポイント');
+        $I->waitForText('加算ポイント');
         $I->see($expected_point_text, CartPage::$加算ポイント);
 
         ShoppingPage::at($I)->確認する();
-        $I->see('加算ポイント');
+        $I->waitForText('加算ポイント');
         $I->see($expected_point_text, CartPage::$加算ポイント);
 
         $I->amGoingTo('注文完了');
         ShoppingConfirmPage::at($I)->注文する();
-        $I->see('ご注文ありがとうございました');
+        $I->waitForText('ご注文ありがとうございました');
 
         $I->expect('マイベージ 注文詳細にて、加算ポイントが表示されていること');
         MyPage::go($I)->注文履歴詳細(0);
         HistoryPage::at($I);
-        $I->see('加算ポイント');
+        $I->waitForText('加算ポイント');
         $I->see($expected_point_text, HistoryPage::$加算ポイント);
 
         $I->expect('管理画面・受注管理にて、加算ポイントが表示されていること');
@@ -362,7 +362,7 @@ class EA07BasicinfoCest
 
         $I->expect('マイベージにて、ポイントが付与されていること');
         MyPage::go($I);
-        $I->see('現在の所持ポイントは '.number_format($customerPoint).'pt です。');
+        $I->waitForText('現在の所持ポイントは '.number_format($customerPoint).'pt です。');
 
         // "ポイント換算レート"に任意の値を設定し、ポイント利用の確認を行う
         $I->wantTo('EA0701-UC01-T16 ポイント設定(有効) ポイント換算レート');
@@ -374,7 +374,7 @@ class EA07BasicinfoCest
 
         $I->expect('所持ポイントが表示されていること');
         CartPage::go($I)->レジに進む();
-        $I->see('利用ポイント');
+        $I->waitForText('利用ポイント');
         $I->see(number_format($customerPoint).' pt が利用可能です。');
 
         $I->amGoingTo('利用ポイントを設定');
@@ -388,7 +388,7 @@ class EA07BasicinfoCest
 
         $I->amGoingTo('注文完了 (ポイントが減算される)');
         ShoppingConfirmPage::at($I)->注文する();
-        $I->see('ご注文ありがとうございました');
+        $I->waitForText('ご注文ありがとうございました');
         $customerPoint -= $expected_point;
 
         $I->expect('管理画面・受注管理にて、利用ポイントが計算されていること');
@@ -428,7 +428,7 @@ class EA07BasicinfoCest
 
         $I->expect('マイベージにて、ポイントが減少していること');
         MyPage::go($I);
-        $I->see('現在の所持ポイントは '.number_format($customerPoint).'pt です。');
+        $I->waitForText('現在の所持ポイントは '.number_format($customerPoint).'pt です。');
     }
 
     public function basicinfo_ポイント設定_無効(AcceptanceTester $I)
@@ -459,7 +459,7 @@ class EA07BasicinfoCest
 
         $I->amGoingTo('注文完了');
         ShoppingConfirmPage::at($I)->注文する();
-        $I->see('ご注文ありがとうございました');
+        $I->waitForText('ご注文ありがとうございました');
 
         $I->expect('マイベージにて、加算ポイントが表示されていないこと');
         MyPage::go($I)->注文履歴詳細(0);
@@ -497,7 +497,7 @@ class EA07BasicinfoCest
             ->入力(TradelawSettingPage::$その他06, 'その他06名称', 'その他06説明')
             ->登録();
 
-        $I->see('保存しました', TradelawSettingPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, TradelawSettingPage::$登録完了メッセージ);
 
         $I->expect('「特定商取引法に基づく表記」ページを表示して変更が反映されていることを確認します');
 
@@ -543,19 +543,19 @@ class EA07BasicinfoCest
             ->カートに入れる(1)
             ->カートへ進む();
         CartPage::go($I)->レジに進む();
-        $I->see('引き渡し時期名称', ['css' => '#shopping-form div.ec-orderConfirm']);
-        $I->see('引き渡し時期説明', ['css' => '#shopping-form div.ec-orderConfirm']);
-        $I->see('返品交換について名称', ['css' => '#shopping-form div.ec-orderConfirm']);
-        $I->see('返品交換について説明', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->waitForText('引き渡し時期名称', 10, ['css' => '#shopping-form']);
+        $I->waitForText('引き渡し時期説明', 10, ['css' => '#shopping-form']);
+        $I->waitForText('返品交換について名称', 10, ['css' => '#shopping-form']);
+        $I->waitForText('返品交換について説明', 10, ['css' => '#shopping-form']);
 
         ShoppingPage::at($I)->確認する();
-        $I->see('引き渡し時期名称', ['css' => '#shopping-form div.ec-orderConfirm']);
-        $I->see('引き渡し時期説明', ['css' => '#shopping-form div.ec-orderConfirm']);
-        $I->see('返品交換について名称', ['css' => '#shopping-form div.ec-orderConfirm']);
-        $I->see('返品交換について説明', ['css' => '#shopping-form div.ec-orderConfirm']);
+        $I->waitForText('引き渡し時期名称', 10, ['css' => '#shopping-form']);
+        $I->waitForText('引き渡し時期説明', 10, ['css' => '#shopping-form']);
+        $I->waitForText('返品交換について名称', 10, ['css' => '#shopping-form']);
+        $I->waitForText('返品交換について説明', 10, ['css' => '#shopping-form']);
 
         ShoppingConfirmPage::at($I)->注文する();
-        $I->see('ご注文ありがとうございました');
+        $I->waitForText('ご注文ありがとうございました');
     }
 
     public function basicinfo_会員規約(AcceptanceTester $I)
@@ -572,7 +572,7 @@ class EA07BasicinfoCest
             ->入力_内容($after)
             ->登録();
 
-        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, PageEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/help/agreement');
         $I->see($test_text);
@@ -585,7 +585,7 @@ class EA07BasicinfoCest
         // 表示
         $PaymentManagePage = PaymentManagePage::go($I);
 
-        $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(1));
+        $I->waitForText('郵便振替', 10, $PaymentManagePage->一覧_支払方法(1));
     }
 
     /**
@@ -600,15 +600,15 @@ class EA07BasicinfoCest
         $PaymentManagePage = PaymentManagePage::go($I);
 
         // 入れ替え
-        $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(1));
+        $I->waitForText('郵便振替', 10, $PaymentManagePage->一覧_支払方法(1));
         $PaymentManagePage->一覧_下に(1);
 
         $PaymentManagePage = PaymentManagePage::go($I);
-        $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(2));
+        $I->waitForText('郵便振替', 10, $PaymentManagePage->一覧_支払方法(2));
 
         $PaymentManagePage->一覧_上に(2);
         $PaymentManagePage = PaymentManagePage::go($I);
-        $I->see('郵便振替', $PaymentManagePage->一覧_支払方法(1));
+        $I->waitForText('郵便振替', 10, $PaymentManagePage->一覧_支払方法(1));
     }
 
     /**
@@ -632,10 +632,10 @@ class EA07BasicinfoCest
             ->登録();
 
         PaymentEditPage::at($I);
-        $I->see('保存しました', PaymentEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, PaymentEditPage::$登録完了メッセージ);
 
         $PaymentManagePage = PaymentManagePage::go($I);
-        $I->see('payment method1', $PaymentManagePage->一覧_支払方法(1));
+        $I->waitForText('payment method1', 10, $PaymentManagePage->一覧_支払方法(1));
     }
 
     /**
@@ -657,10 +657,10 @@ class EA07BasicinfoCest
             ->登録();
 
         PaymentEditPage::at($I);
-        $I->see('保存しました', PaymentEditPage::$登録完了メッセージ);
 
+        $I->waitForText('保存しました', 10, PaymentEditPage::$登録完了メッセージ);
         $PaymentManagePage = PaymentManagePage::go($I);
-        $I->see('payment method2', $PaymentManagePage->一覧_支払方法(1));
+        $I->waitForText('payment method2', 10, $PaymentManagePage->一覧_支払方法(1));
     }
 
     /**
@@ -677,12 +677,13 @@ class EA07BasicinfoCest
         PaymentEditPage::at($I)
             ->入力_支払方法('dummy payment')
             ->登録();
+        $I->waitForText('保存しました', 10, PaymentEditPage::$登録完了メッセージ);
 
         // 削除
         $page = PaymentManagePage::go($I);
         $before = $page->一覧_件数取得();
         $page->一覧_削除(1);
-        $I->see('削除しました', PaymentEditPage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, PaymentEditPage::$登録完了メッセージ);
 
         $after = PaymentManagePage::go($I)->一覧_件数取得();
         $I->assertEquals($before - 1, $after);
@@ -695,7 +696,7 @@ class EA07BasicinfoCest
         // 表示
         $DeliveryManagePage = DeliveryManagePage::go($I);
 
-        $I->see('サンプル宅配', $DeliveryManagePage->一覧_名称(2));
+        $I->waitForText('サンプル宅配', 10, $DeliveryManagePage->一覧_名称(2));
     }
 
     /**
@@ -722,10 +723,10 @@ class EA07BasicinfoCest
 
         $Page->登録();
         DeliveryEditPage::at($I);
-        $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, DeliveryEditPage::$登録完了メッセージ);
 
         $DeliveryManagePage = DeliveryManagePage::go($I);
-        $I->see('配送業者名', $DeliveryManagePage->一覧_名称(2));
+        $I->waitForText('配送業者名', 10, $DeliveryManagePage->一覧_名称(2));
     }
 
     /**
@@ -746,10 +747,10 @@ class EA07BasicinfoCest
             ->登録();
 
         DeliveryEditPage::at($I);
-        $I->see('保存しました', DeliveryEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, DeliveryEditPage::$登録完了メッセージ);
 
         $DeliveryManagePage = DeliveryManagePage::go($I);
-        $I->see('配送業者名1', $DeliveryManagePage->一覧_名称(2));
+        $I->waitForText('配送業者名1', 10, $DeliveryManagePage->一覧_名称(2));
     }
 
     /**
@@ -764,7 +765,7 @@ class EA07BasicinfoCest
         $page = DeliveryManagePage::go($I);
         $before = $page->一覧_件数取得();
         $page->一覧_削除(2);
-        $I->see('削除しました', DeliveryManagePage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, DeliveryManagePage::$登録完了メッセージ);
 
         $after = DeliveryManagePage::go($I)->一覧_件数取得();
         $I->assertEquals($before - 1, $after);
@@ -779,16 +780,16 @@ class EA07BasicinfoCest
         $I->wantTo('EA0706-UC02-T01 配送方法一覧順序変更');
 
         $DeliveryManagePage = DeliveryManagePage::go($I);
-        $I->see('サンプル宅配 / サンプル宅配', $DeliveryManagePage->一覧_名称(2));
-        $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(3));
+        $I->waitForText('サンプル宅配 / サンプル宅配', 10, $DeliveryManagePage->一覧_名称(2));
+        $I->waitForText('サンプル業者 / サンプル業者', 10, $DeliveryManagePage->一覧_名称(3));
 
         $DeliveryManagePage->一覧_下に(2);
-        $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(2));
-        $I->see('サンプル宅配 / サンプル宅配', $DeliveryManagePage->一覧_名称(3));
+        $I->waitForText('サンプル業者 / サンプル業者', 10, $DeliveryManagePage->一覧_名称(2));
+        $I->waitForText('サンプル宅配 / サンプル宅配', 10, $DeliveryManagePage->一覧_名称(3));
 
         $DeliveryManagePage->一覧_上に(3);
-        $I->see('サンプル宅配 / サンプル宅配', $DeliveryManagePage->一覧_名称(2));
-        $I->see('サンプル業者 / サンプル業者', $DeliveryManagePage->一覧_名称(3));
+        $I->waitForText('サンプル宅配 / サンプル宅配', 10, $DeliveryManagePage->一覧_名称(2));
+        $I->waitForText('サンプル業者 / サンプル業者', 10, $DeliveryManagePage->一覧_名称(3));
     }
 
     /**
@@ -803,15 +804,15 @@ class EA07BasicinfoCest
         $TaxManagePage = TaxManagePage::go($I);
 
         // 一覧
-        $I->see('税率設定', '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
-        $I->see('10%', '#ex-tax_rule-1 > td.align-middle.text-end');
+        $I->waitForText('税率設定', 10, '#page_admin_setting_shop_tax > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div > div.card-header');
+        $I->waitForText('10%', 10, '#ex-tax_rule-1 > td.align-middle.text-end');
 
         // 登録
         $TaxManagePage
             ->入力_消費税率(1, '8')
             ->入力_適用日(date('Y'), date('m'), date('d'))
             ->共通税率設定_登録();
-        $I->see('8%', $TaxManagePage->一覧_税率(2));
+        $I->waitForText('8%', 10, $TaxManagePage->一覧_税率(2));
 
         // edit
         $TaxManagePage
@@ -819,12 +820,12 @@ class EA07BasicinfoCest
             ->入力_消費税率(2, 12)
             ->決定(2);
 
-        $I->see('保存しました', TaxManagePage::$登録完了メッセージ);
-        $I->see('12%', $TaxManagePage->一覧_税率(2));
+        $I->waitForText('保存しました', 10, TaxManagePage::$登録完了メッセージ);
+        $I->waitForText('12%', 10, $TaxManagePage->一覧_税率(2));
 
         // 削除
         $TaxManagePage->一覧_削除(2);
-        $I->see('削除しました', TaxManagePage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, TaxManagePage::$登録完了メッセージ);
     }
 
     /**
@@ -842,7 +843,7 @@ class EA07BasicinfoCest
             ->入力_件名($title)
             ->登録();
 
-        $I->see('保存しました', MailSettingsPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, MailSettingsPage::$登録完了メッセージ);
 
         // 結果確認
         $I->resetEmails();
@@ -868,7 +869,7 @@ class EA07BasicinfoCest
             ->削除()
             ->設定();
 
-        $I->see('保存しました', CsvSettingsPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, CsvSettingsPage::$登録完了メッセージ);
 
         // CSVダウンロード
         OrderManagePage::go($I)->受注CSVダウンロード実行();
@@ -894,7 +895,7 @@ class EA07BasicinfoCest
             ->入力_色('#19406C')
             ->登録();
 
-        $I->see('保存しました', OrderStatusSettingsPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, OrderStatusSettingsPage::$登録完了メッセージ);
 
         OrderStatusSettingsPage::go($I);
         $I->seeInField(OrderStatusSettingsPage::$名称_マイページ, '注文受付');
@@ -921,7 +922,7 @@ class EA07BasicinfoCest
                 ->入力_タイトル($title)
                 ->入力_日付($date->format('Y-m-d'))
                 ->登録();
-            $I->see('保存しました', CalendarSettingsPage::$登録完了メッセージ);
+            $I->waitForText('保存しました', 10, CalendarSettingsPage::$登録完了メッセージ);
         }
 
         // レイアウト設定でカレンダーブロックを登録
@@ -929,11 +930,11 @@ class EA07BasicinfoCest
         LayoutEditPage::at($I)
             ->ブロックを移動('カレンダー', '#position_7')
             ->登録();
-        $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, LayoutEditPage::$登録完了メッセージ);
 
         // フロント画面でカレンダーが表示されていることを確認
         $I->amOnPage('/');
-        $I->see('カレンダー', ['class' => 'ec-layoutRole__mainBottom']);
+        $I->waitForText('カレンダー', 10, ['class' => 'ec-layoutRole__mainBottom']);
 
         // フロント画面で定休日にクラス .ec-calendar__holiday が設定されていることを確認
         $I->seeElement(['xpath' => '//table[@id="this-month-table"]//td[contains(@class,"ec-calendar__holiday")][text()="'.$holidays['定休日1']->format('j').'"]']);
@@ -965,7 +966,7 @@ class EA07BasicinfoCest
 
         $I->expect('認証キーの登録ボタンをクリックします。');
         $I->click(['css' => '.btn-ec-conversion']);
-        $I->see('保存しました');
+        $I->waitForText('保存しました');
     }
 
     public function basicinfo_税設定_適格請求書発行事業者登録番号(AcceptanceTester $I)
@@ -980,7 +981,7 @@ class EA07BasicinfoCest
             ->入力_適格請求書発行事業者登録番号('T1234567890123')
             ->登録();
 
-        $I->see('保存しました', ShopSettingPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, ShopSettingPage::$登録完了メッセージ);
 
         $I->expect('納品書を出力します');
         $findOrders = Fixtures::get('findOrders'); // Closure
@@ -988,7 +989,7 @@ class EA07BasicinfoCest
             return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
         });
         $OrderListPage = OrderManagePage::go($I)->検索();
-        $I->see('検索結果：'.count($TargetOrders).'件が該当しました', OrderManagePage::$検索結果_メッセージ);
+        $I->waitForText('検索結果：'.count($TargetOrders).'件が該当しました', 10, OrderManagePage::$検索結果_メッセージ);
 
         $OrderListPage->すべてチェック();
         $OrderListPage->要素をクリック('#form_bulk #bulkExportPdf');
@@ -997,7 +998,7 @@ class EA07BasicinfoCest
         $I->switchToWindow('newwin');
 
         // Check redirect to form pdf information
-        $I->see('納品書出力受注管理', OrderManagePage::$タイトル要素);
+        $I->waitForText('納品書出力受注管理', 10, OrderManagePage::$タイトル要素);
 
         $I->click('.btn-ec-conversion');
         $I->wait(2);
