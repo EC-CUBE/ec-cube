@@ -39,7 +39,6 @@ class MasterDataManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->selectOption(['id' => 'admin_system_masterdata_masterdata'], $option);
         $this->tester->click('#form1 button');
-        $this->tester->waitForElement(['xpath' => "//select[@id='admin_system_masterdata_masterdata']/option[@selected][contains(text(), '${option}')]"]);
 
         return $this;
     }

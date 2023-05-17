@@ -45,9 +45,7 @@ class CartPage extends AbstractFrontPage
 
     public function 商品数量($index)
     {
-        $selector = ['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amount']"];
-        $this->tester->waitForElement($selector);
-        return $this->tester->grabTextFrom($selector);
+        return $this->tester->grabTextFrom(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amount']"]);
     }
 
     public function 明細数()

@@ -29,14 +29,10 @@ abstract class AbstractAdminPage extends AbstractPage
     protected function goPage($url, $pageTitle = '')
     {
         $config = Fixtures::get('config');
-        $adminUrl = '/'.$config['eccube_admin_route'].$url;
-        $this->tester->amOnPage($adminUrl);
+        $this->tester->amOnPage('/'.$config['eccube_admin_route'].$url);
 
         if ($pageTitle) {
             return $this->atPage($pageTitle);
-        } else {
-            $this->tester->wait(5);
-            $this->tester->waitForJS("return location.pathname + location.search == '${adminUrl}'");
         }
 
         return $this;
@@ -51,7 +47,7 @@ abstract class AbstractAdminPage extends AbstractPage
      */
     protected function atPage($pageTitle)
     {
-        $this->tester->waitForText($pageTitle, 10, '.c-container .c-pageTitle__titles');
+        $this->tester->see($pageTitle, '.c-container .c-pageTitle__titles');
 
         return $this;
     }

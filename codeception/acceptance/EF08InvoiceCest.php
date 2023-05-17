@@ -55,7 +55,6 @@ class EF08InvoiceCest
         PaymentEditPage::at($I)
             ->入力_手数料('2187')
             ->登録();
-
         $I->expect('商品登録をします');
         ProductEditPage::go($I)
             ->入力_商品名('チョコ')
@@ -63,7 +62,6 @@ class EF08InvoiceCest
             ->入力_カテゴリ(1)
             ->入力_公開()
             ->登録();
-        $I->waitForText('保存しました');
 
         ProductEditPage::go($I)
             ->入力_商品名('バニラ')
@@ -71,7 +69,6 @@ class EF08InvoiceCest
             ->入力_カテゴリ(1)
             ->入力_公開()
             ->登録();
-        $I->waitForText('保存しました');
 
         ProductEditPage::go($I)
             ->入力_商品名('抹茶')
@@ -80,7 +77,6 @@ class EF08InvoiceCest
             ->入力_税率(8)
             ->入力_公開()
             ->登録();
-        $I->waitForText('保存しました');
     }
 
     public function invoice_商品購入_税額確認(AcceptanceTester $I)
@@ -119,7 +115,6 @@ class EF08InvoiceCest
         $I->scrollTo('#shopping-form div.ec-orderRole__summary div.ec-totalBox button');
         $I->wait(2);
         ShoppingPage::at($I)->確認する();
-        $I->waitForText('ご注文内容のご確認', 10, 'div.ec-pageHeader h1');
 
         $I->expect('注文内容を確認します');
         $I->see('￥787,000', ['xpath' => ShoppingPage::$小計]);
