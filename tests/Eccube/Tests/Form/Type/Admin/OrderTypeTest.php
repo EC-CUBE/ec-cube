@@ -41,6 +41,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'phone_number' => '012-345-6789',
         'email' => 'default@example.com',
         'discount' => '1',
+        'use_point' => '',
         'delivery_fee_total' => '1',
         'charge' => '1',
         'Payment' => '1', // dtb_payment?
@@ -175,5 +176,21 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['postal_code'] = '012345678';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['postal_code']->isValid());
+    }
+
+
+    public function testInValidUsePointHasMinus()
+    {
+        $this->formData['use_point'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['use_point']->isValid());
+    }
+
+    public function testInvalidUsePointToLong()
+    {
+        $this->formData['use_point'] = '1234567890123';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['use_point']->isValid());
     }
 }

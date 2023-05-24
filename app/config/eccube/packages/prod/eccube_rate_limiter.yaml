@@ -1,0 +1,40 @@
+eccube:
+    rate_limiter:
+        forgot:
+            route: forgot
+            method: [ 'POST' ]
+            type: ip
+            limit: 5
+            interval: '30 minutes'
+        entry:
+            route: entry
+            method: [ 'POST' ]
+            params:
+                mode: complete
+            type: ip
+            limit: 5
+            interval: '30 minutes'
+        contact:
+            route: contact
+            method: [ 'POST' ]
+            params:
+                mode: complete
+            type: ip
+            limit: 5
+            interval: '30 minutes'
+        shopping_confirm_ip:
+            route: ~
+            limit: 25
+            interval: '30 minutes'
+        shopping_confirm_customer:
+            route: ~
+            limit: 10
+            interval: '30 minutes'
+        shopping_checkout_ip:
+            route: ~
+            limit: 25
+            interval: '30 minutes'
+        shopping_checkout_customer:
+            route: ~
+            limit: 10
+            interval: '30 minutes'

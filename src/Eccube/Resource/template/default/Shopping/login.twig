@@ -25,8 +25,8 @@ file that was distributed with this source code.
 
             <div class="ec-grid3__cell2">
                 <form name="shopping_login" id="shopping_login" method="post" action="{{ url('mypage_login') }}">
-                    <input type="hidden" name="_target_path" value="{{ path('shopping') }}" />
-                    <input type="hidden" name="_failure_path" value="{{ path('shopping_login') }}" />
+                    <input type="hidden" name="_target_path" value="{{ url('shopping') }}" />
+                    <input type="hidden" name="_failure_path" value="{{ url('shopping_login') }}" />
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <div class="ec-login">
                         <div class="ec-login__icon">

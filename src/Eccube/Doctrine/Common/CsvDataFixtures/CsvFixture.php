@@ -80,7 +80,7 @@ class CsvFixture implements FixtureInterface
                 $index++;
             }
             // batch insert
-            $result = $prepare->execute();
+            $prepare->execute();
             $this->file->next();
             // 大きなサイズのCSVを扱えるようタイムアウトを延長する
             $seconds

@@ -66,6 +66,7 @@ class InstallController extends AbstractController
         'cURL',
         'fileinfo',
         'intl',
+        'sodium'
     ];
 
     protected $recommendedModules = [

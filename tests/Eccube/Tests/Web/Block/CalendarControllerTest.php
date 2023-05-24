@@ -36,7 +36,7 @@ class CalendarControllerTest extends AbstractWebTestCase
     public function testNextMonthTitle()
     {
         $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
-        $this->expected = Carbon::now()->startOfMonth()->addMonth(1)->format('Y年n月');
+        $this->expected = Carbon::now()->startOfMonth()->addMonth()->format('Y年n月');
         $this->actual = $crawler->filter('#next-month-title')->text();
         $this->verify();
     }
@@ -58,19 +58,19 @@ class CalendarControllerTest extends AbstractWebTestCase
     public function testHolidayStyle()
     {
         // 土日以外の日を取得
-        $targetHoliday = Carbon::now()->addDay(1);
+        $targetHoliday = Carbon::now()->addDay();
 
         if ($targetHoliday->isSaturday()) {
-            if (!$targetHoliday->copy()->addDay(2)->isCurrentMonth()) {
-                $targetHoliday = $targetHoliday->addDay(-2);
+            if (!$targetHoliday->copy()->addDays(2)->isCurrentMonth()) {
+                $targetHoliday = $targetHoliday->addDays(-2);
             } else {
-                $targetHoliday = $targetHoliday->addDay(2);
+                $targetHoliday = $targetHoliday->addDays(2);
             }
         } elseif ($targetHoliday->isSunday()) {
-            if (!$targetHoliday->copy()->addDay(1)->isCurrentMonth()) {
-                $targetHoliday = $targetHoliday->addDay(-2);
+            if (!$targetHoliday->copy()->addDay()->isCurrentMonth()) {
+                $targetHoliday = $targetHoliday->addDays(-2);
             } else {
-                $targetHoliday = $targetHoliday->addDay(1);
+                $targetHoliday = $targetHoliday->addDays(1);
             }
         }
 
@@ -97,17 +97,17 @@ class CalendarControllerTest extends AbstractWebTestCase
         if ($sundayDayOfWeekNumber == 0) { // Sun
             $sunday = $firstDayOfThisMonth->copy();
         } elseif ($sundayDayOfWeekNumber == 1) { // Mon
-            $sunday = $firstDayOfThisMonth->copy()->addDay(6);
+            $sunday = $firstDayOfThisMonth->copy()->addDays(6);
         } elseif ($sundayDayOfWeekNumber == 2) { // Tue
-            $sunday = $firstDayOfThisMonth->copy()->addDay(5);
+            $sunday = $firstDayOfThisMonth->copy()->addDays(5);
         } elseif ($sundayDayOfWeekNumber == 3) { // Wed
-            $sunday = $firstDayOfThisMonth->copy()->addDay(4);
+            $sunday = $firstDayOfThisMonth->copy()->addDays(4);
         } elseif ($sundayDayOfWeekNumber == 4) { // Thu
-            $sunday = $firstDayOfThisMonth->copy()->addDay(3);
+            $sunday = $firstDayOfThisMonth->copy()->addDays(3);
         } elseif ($sundayDayOfWeekNumber == 5) { // Fri
-            $sunday = $firstDayOfThisMonth->copy()->addDay(2);
+            $sunday = $firstDayOfThisMonth->copy()->addDays(2);
         } elseif ($sundayDayOfWeekNumber == 6) { // Sat
-            $sunday = $firstDayOfThisMonth->copy()->addDay(1);
+            $sunday = $firstDayOfThisMonth->copy()->addDays(1);
         }
         // 日曜の前日が今月かどうかで月初の土曜日を取得
         $saturday = null;

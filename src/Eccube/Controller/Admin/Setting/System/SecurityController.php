@@ -61,6 +61,17 @@ class SecurityController extends AbstractController
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
             $env = file_get_contents($envFile);
 
+            $frontAllowHosts = \json_encode(
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_allow_hosts'])), function ($str) {
+                    return StringUtil::isNotBlank($str);
+                })
+            );
+            $frontDenyHosts = \json_encode(
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_deny_hosts'])), function ($str) {
+                    return StringUtil::isNotBlank($str);
+                })
+            );
+
             $adminAllowHosts = \json_encode(
                 array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function ($str) {
                     return StringUtil::isNotBlank($str);
@@ -73,6 +84,8 @@ class SecurityController extends AbstractController
             );
 
             $env = StringUtil::replaceOrAddEnv($env, [
+                'ECCUBE_FRONT_ALLOW_HOSTS' => "'{$frontAllowHosts}'",
+                'ECCUBE_FRONT_DENY_HOSTS' => "'{$frontDenyHosts}'",
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_ADMIN_DENY_HOSTS' => "'{$adminDenyHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? '1' : '0',

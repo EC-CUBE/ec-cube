@@ -263,7 +263,6 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $request->get('pluginCode');
 
-        $log = null;
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode);
 
@@ -344,7 +343,6 @@ class OwnerStoreController extends AbstractController
         $pluginCode = $request->get('pluginCode');
         $version = $request->get('version');
 
-        $log = null;
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
 
@@ -425,7 +423,6 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $request->get('pluginCode');
 
-        $log = null;
         try {
             $Plugin = $this->pluginRepository->findByCode($pluginCode);
             if (!$Plugin) {

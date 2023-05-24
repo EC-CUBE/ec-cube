@@ -461,9 +461,9 @@ EOL;
 
 namespace Plugin\\${code}\\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\\Repository\\AbstractRepository;
 use Plugin\\${code}\\Entity\\Config;
-use Symfony\\Bridge\\Doctrine\\RegistryInterface;
 
 /**
  * ConfigRepository
@@ -476,9 +476,9 @@ class ConfigRepository extends AbstractRepository
     /**
      * ConfigRepository constructor.
      *
-     * @param RegistryInterface \$registry
+     * @param ManagerRegistry \$registry
      */
-    public function __construct(RegistryInterface \$registry)
+    public function __construct(ManagerRegistry \$registry)
     {
         parent::__construct(\$registry, Config::class);
     }

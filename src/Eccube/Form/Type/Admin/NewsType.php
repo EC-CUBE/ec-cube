@@ -50,6 +50,10 @@ class NewsType extends AbstractType
                 'with_seconds' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
                 ],
             ])
             ->add('title', TextType::class, [
@@ -73,6 +77,7 @@ class NewsType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'purify_html' => true,
                 'attr' => [
                     'rows' => 8,
                 ],

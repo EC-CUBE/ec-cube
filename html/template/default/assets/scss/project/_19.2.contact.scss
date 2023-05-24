@@ -18,6 +18,9 @@ Styleguide 19.2
   & &__actions {
     padding-top:20px;
   }
+  p{
+    margin:16px 0;
+  }
 }
 .ec-contactConfirmRole {
   @include container;

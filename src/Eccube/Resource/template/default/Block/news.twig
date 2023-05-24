@@ -74,7 +74,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="ec-newsRole__newsDescription">
-                        {{ News.description|raw|purify|nl2br }}
+                        {{ News.description|raw|nl2br }}
                         {% if News.url %}
                             <br>
                             <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{{ 'front.block.news.see_details'|trans }}</a>

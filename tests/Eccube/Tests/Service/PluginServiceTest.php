@@ -100,7 +100,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         $f = new Filesystem();
 
-        return $f->remove($path);
+        $f->remove($path);
     }
 
     // 必要最小限のファイルのプラグインのインストールとアンインストールを検証
