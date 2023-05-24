@@ -75,6 +75,7 @@ class SecurityType extends AbstractType
         $denyHosts = $this->eccubeConfig->get('eccube_admin_deny_hosts');
         $denyHosts = implode("\n", $denyHosts);
 
+        $routes = $this->getRouteCollection();
         $allowFrontHosts = $this->eccubeConfig->get('eccube_front_allow_hosts');
         $allowFrontHosts = implode("\n", $allowFrontHosts);
 
