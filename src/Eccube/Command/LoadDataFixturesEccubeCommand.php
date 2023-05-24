@@ -113,6 +113,7 @@ EOF
             'email04' => $admin_mail,
             'update_date' => new \DateTime(),
             'discriminator_type' => 'baseinfo',
+            'option_mail_notifier' => true,
         ], [
             'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
         ]);

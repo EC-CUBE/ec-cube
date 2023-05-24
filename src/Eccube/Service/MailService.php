@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
@@ -29,6 +30,7 @@ use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -749,6 +751,79 @@ class MailService
             'ShippingItems' => $ShippingItems,
             'Order' => $Order,
         ]);
+    }
+
+    /**
+     * 会員情報変更時にメール通知
+     *
+     * @param Customer $Customer
+     * @param Request $Request
+     * @param $eventName
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function sendEventNotifyMail(Customer $Customer, Request $Request, $eventName)
+    {
+        log_info('会員情報変更通知メール送信処理開始');
+        log_info($eventName);
+
+        // メールテンプレートの取得 IDでの取得は現行環境での差異があるため
+        $tpl_name = "Mail/event_notify.twig";
+        $MailTemplate = $this->mailTemplateRepository->createQueryBuilder('mt')
+            ->where('mt.file_name = :file_name')
+            ->setParameter('file_name', $tpl_name)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'BaseInfo' => $this->BaseInfo,
+            'Customer' => $Customer,
+            'userAgent' => $Request->headers->get('User-Agent'),
+            'eventName' => $eventName,
+            'ipAddress' => $_SERVER['REMOTE_ADDR'],
+        ]);
+
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
+
+        // メアドの変更があった場合、前のメアドにも送信
+        $preEmail = $Request->get('preEmail');
+        if ($Customer->getEmail() != $preEmail) {
+            $message->addTo($preEmail);
+        }
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Customer' => $Customer,
+                'userAgent' => $Request->headers->get('User-Agent'),
+                'eventName' => $eventName,
+                'ipAddress' => $_SERVER['REMOTE_ADDR'],
+            ]);
+
+            $message
+                ->text($body)
+                ->html($htmlBody);
+        } else {
+            $message->text($body);
+        }
+
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
+
+        log_info('会員情報変更通知メール送信処理完了');
     }
 
     /**

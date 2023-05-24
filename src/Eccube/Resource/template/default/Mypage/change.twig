@@ -118,6 +118,7 @@ file that was distributed with this source code.
                                 <dl>
                                     <dt>
                                         {{ form_label(form.email, 'common.mail_address', { 'label_attr': { 'class': 'ec-label' }}) }}
+                                        <input type="hidden" name="preEmail" value="{{ preEmail }}">
                                     </dt>
                                     <dd>
                                         <div class="ec-input{{ has_errors(form.email.first) ? ' error' }}">

@@ -14,12 +14,16 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -43,14 +47,29 @@ class ChangeController extends AbstractController
      */
     protected $encoderFactory;
 
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+
     public function __construct(
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        BaseInfoRepository $baseInfoRepository,
+        MailService $mailService
     ) {
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
         $this->tokenStorage = $tokenStorage;
+        $this->BaseInfo = $baseInfoRepository->get();
+        $this->mailService = $mailService;
     }
 
     /**
@@ -93,6 +112,12 @@ class ChangeController extends AbstractController
                     $encoder->encodePassword($Customer->getPlainPassword(), $Customer->getSalt())
                 );
             }
+
+            if ($this->BaseInfo->isOptionMailNotifier()) {
+                // 会員情報変更時にメールを送信
+                $this->mailService->sendEventNotifyMail($Customer, $request, trans('front.mypage.customer.notify_title'));
+            }
+
             $this->entityManager->flush();
 
             log_info('会員編集完了');
@@ -111,6 +136,7 @@ class ChangeController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'preEmail' => $form->get('email')->getData(),
         ];
     }
 
