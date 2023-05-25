@@ -60,7 +60,7 @@ file that was distributed with this source code.
     {{ include('block.twig', {'Blocks': Layout.BodyAfter}) }}
 {% endif %}
 
-{% if isMaintenance %}
+{% if isMaintenance is defined and isMaintenance %}
     <div class="ec-maintenanceAlert">
         <div>
             <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
