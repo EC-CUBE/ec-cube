@@ -1,0 +1,29 @@
+name: 🐛 不具合報告(Bug Report)
+description: 脆弱性に関する報告はこちらからしないでください。
+labels: bug
+body:
+  - type: textarea
+    id: overview
+    attributes:
+      label: 概要(Overview)
+    validations:
+      required: true
+  - type: textarea
+    id: procedure
+    attributes:
+      label: 再現手順(Procedure)
+    validations:
+      required: true
+  - type: textarea
+    id: affected-versions
+    attributes:
+      label: 環境(Environment)
+      description:
+      placeholder: |
+        EC-CUBE: 4.2.x
+        PHP: 8.x.x
+        DB:
+           PostgresSQL x.x.x
+           MySQL x.x.x
+    validations:
+      required: true

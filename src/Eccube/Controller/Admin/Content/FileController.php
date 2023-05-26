@@ -304,13 +304,17 @@ class FileController extends AbstractController
                 if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
                 }
-                // phpファイルはアップロード不可
-                if ($file->getClientOriginalExtension() === 'php') {
-                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.phpfile_error'));
+                // 英数字, 半角スペース, _-.() のみ許可
+                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', $filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
                 }
                 // dotファイルはアップロード不可
                 if (strpos($filename, '.') === 0) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
+                }
+                // 許可した拡張子以外アップロード不可
+                if (!in_array(strtolower($file->getClientOriginalExtension()), $this->eccubeConfig['eccube_file_uploadable_extensions'], true)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.extension_error'));
                 }
             } catch (UnsupportedMediaTypeHttpException $e) {
                 if (!in_array($e->getMessage(), array_column($this->errors, 'message'))) {
@@ -484,6 +488,9 @@ class FileController extends AbstractController
      */
     protected function checkDir($targetDir, $topDir)
     {
+        if (strpos($targetDir, '..') !== false) {
+            return false;
+        }
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 

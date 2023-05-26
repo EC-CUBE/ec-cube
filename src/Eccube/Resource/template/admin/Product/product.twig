@@ -19,6 +19,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
+        $(document).on('drop dragover', function(e) {
+            e.preventDefault();
+        });
+
         $(function() {
             {% if has_class == false %}
             if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
@@ -38,6 +42,9 @@ file that was distributed with this source code.
             // ファイルアップロード
             // see https://pqina.nl/filepond/
             var inputFileElement = document.querySelector('input[type=file]');
+            {% if eccube_config.locale == 'ja' or eccube_config.locale == 'en' %}
+            FilePond.setOptions(FilePondLocale_{{ eccube_config.locale }});
+            {% endif %}
             FilePond.setOptions({
                 server: {
                     process: {
@@ -130,6 +137,24 @@ file that was distributed with this source code.
                     $('#upload-zone').find('.add_images[value="' + file.filename + '"]').remove(); // 追加後, バリデーションエラーが発生した後に削除した画像
                 }
             });
+            pond.on('initfile', function() {
+                $('#product_image_error').hide();
+            });
+            pond.on('error', function(error, file) {
+                var message = '{{ 'admin.common.upload_error'|trans }}';
+                if (error.main !== undefined) {
+                    message = `${error.main}: ${error.sub}`;
+                }
+                $('#product_image_error')
+                    .show()
+                    .find('.form-error-message').text(message);
+
+                // エラーメッセージが表示されてからプレビューエリアのエラーメッセージを非表示にする
+                setTimeout(function() {
+                    $('.filepond--file-status').hide();
+                }, 300);
+            });
+
             // バリデーションエラーが出た場合に画像を保持するための hidden を追加しておく
             var proto_image = '{{ form_widget(form.images.vars.prototype) }}';
             {% for image in form.images %}
@@ -294,6 +319,7 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="col mb-2">
                                             {{ form_widget(form.class.sale_type) }}
+                                            {{ form_errors(form.class.sale_type) }}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -311,6 +337,12 @@ file that was distributed with this source code.
                                             {{ form_widget(form.product_image, { attr : { style : 'display:none;' } }) }}
                                             {{ form_errors(form.product_image) }}
                                         </div><!-- /#upload-zone -->
+                                        <span class="invalid-feedback" id="product_image_error" style="display: none">
+                                            <span class="d-block">
+                                                <span class="form-error-icon badge bg-danger text-uppercase">{{ 'Error'|trans({}, 'validators') }}</span>
+                                                <span class="form-error-message"></span>
+                                            </span>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -410,6 +442,7 @@ file that was distributed with this source code.
                                                 {#</label>#}
                                                 {#</div>#}
                                                 {{ form_widget(form.class.stock_unlimited) }}
+                                                {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
                                         </div>
                                     </div>

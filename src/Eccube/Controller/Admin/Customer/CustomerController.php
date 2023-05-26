@@ -194,6 +194,10 @@ class CustomerController extends AbstractController
         if (is_null($Customer)) {
             throw new NotFoundHttpException();
         }
+        $secretKey = $this->customerRepository->getUniqueSecretKey();
+        $Customer->setSecretKey($secretKey);
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
 
         $activateUrl = $this->generateUrl(
             'entry_activate',
@@ -288,12 +292,12 @@ class CustomerController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 会員データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getCustomerQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);

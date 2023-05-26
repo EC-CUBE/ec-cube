@@ -105,13 +105,7 @@ file that was distributed with this source code.
             });
             // 編集キャンセル
             $('.sortable-item').on('click', 'button.action-edit-cancel', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value'));
-                });
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
+                location.href = '{{ url('admin_product_class_name') }}';
             });
 
             // 編集時, エラーがあれば入力欄を表示.

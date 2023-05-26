@@ -136,6 +136,7 @@ class MemberType extends AbstractType
                 $options['attr'] = [
                     'disabled' => 'disabled',
                 ];
+                $options['empty_data'] = $data->getLoginId();
                 $options['data'] = $data->getLoginId();
             }
 

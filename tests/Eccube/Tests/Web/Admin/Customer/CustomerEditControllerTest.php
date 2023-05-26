@@ -198,6 +198,50 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testShowOrders
+     */
+    public function testShowOrders()
+    {
+        $id = $this->Customer->getId();
+
+        //add Order paid status for this customer
+        $Order = $this->createOrder($this->Customer);
+        $OrderStatus = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::PAID);
+        $Order->setOrderStatus($OrderStatus);
+        $this->Customer->addOrder($Order);
+        $this->entityManager->persist($this->Customer);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_customer_edit', ['id' => $id])
+        );
+
+        // デフォルトの表示件数確認テスト
+        $this->expected = '50件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('デフォルトの表示件数確認テスト');
+
+        // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 999999]));
+        $this->expected = '50件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
+
+        // 表示件数70件テスト
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 70]));
+        $this->expected = '70件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('表示件数70件テスト');
+
+        // 表示件数はSESSIONから取得するテスト
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 100]));
+        $this->expected = '100件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('表示件数はSESSIONから取得するテスト');
+    }
+
+    /**
      * testCustomerWithdraw
      */
     public function testCustomerWithdraw()

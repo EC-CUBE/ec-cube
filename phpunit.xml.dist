@@ -17,12 +17,6 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="symfony/yaml" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
-
-        <!-- ###+ symfony/lock ### -->
-        <!-- Choose one of the stores below -->
-        <!-- postgresql+advisory://db_user:db_password@localhost/db_name -->
-        <env name="LOCK_DSN" value="semaphore"/>
-        <!-- ###- symfony/lock ### -->
     </php>
 
     <testsuites>

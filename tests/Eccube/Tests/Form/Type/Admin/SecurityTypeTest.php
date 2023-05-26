@@ -30,6 +30,8 @@ class SecurityTypeTest extends AbstractTypeTestCase
         'admin_route_dir' => 'admin',
         'admin_allow_hosts' => '',
         'admin_deny_hosts' => '',
+        'front_allow_hosts' => '',
+        'front_deny_hosts' => '',
         'trusted_hosts' => 'localhost',
     ];
 
@@ -132,5 +134,67 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->formData['trusted_hosts'] = '^127\.0\.0.1$,^localhost$';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
+    }
+
+    public function ipAddressParams()
+    {
+        return [
+            // 正常系（適切なIPアドレス表記として認める）
+            ['', true], // 空パターン
+            ['127.0.0.1', true], // IPアドレスのみ
+            ['192.168.56.1/0', true], // IPアドレスとビットマスク最小値
+            ['192.168.56.1/32', true], // IPアドレスとビットマスク最大値
+            ["127.0.0.1\n192.168.56.1/32", true], // 複数行に渡る記述
+            [str_repeat("127.0.0.1\n", 300), true], // 300回リピート（3000byte以内チェック）
+
+            // 異常系（IPアドレス表記として認めないパターン）
+            ['a', false], // 表記に従わない記述
+            ['192.168.56.1/33', false], // ビットマスク最大値を超えた値
+            ['192.168.56.1/a', false], // ビットマスクが不正な値
+            ["127.0.0.1\n192.168.56.1/33", false], // 複数行に渡る記述で2行目が不正な値
+            ['999.168.56.1/32', false], // IPアドレスの範囲外
+            [str_repeat("127.0.0.1\n", 301), false], // 301回リピート（3000byteオーバーチェック）
+        ];
+    }
+
+    /**
+     * @dataProvider ipAddressParams
+     */
+    public function testFrontAllowHost($ip, $valid)
+    {
+        $this->formData['front_allow_hosts'] = $ip;
+        $this->form->submit($this->formData);
+        $this->assertSame($valid, $this->form['front_allow_hosts']->isValid());
+    }
+
+    /**
+     * @dataProvider ipAddressParams
+     */
+    public function testFrontDenyHost($ip, $valid)
+    {
+        $this->formData['front_deny_hosts'] = $ip;
+        $this->form->submit($this->formData);
+        $this->assertSame($valid, $this->form['front_deny_hosts']->isValid());
+    }
+
+
+    /**
+     * @dataProvider ipAddressParams
+     */
+    public function testAdminAllowHost($ip, $valid)
+    {
+        $this->formData['admin_allow_hosts'] = $ip;
+        $this->form->submit($this->formData);
+        $this->assertSame($valid, $this->form['admin_allow_hosts']->isValid());
+    }
+
+    /**
+     * @dataProvider ipAddressParams
+     */
+    public function testAdminDenyHost($ip, $valid)
+    {
+        $this->formData['admin_deny_hosts'] = $ip;
+        $this->form->submit($this->formData);
+        $this->assertSame($valid, $this->form['admin_deny_hosts']->isValid());
     }
 }

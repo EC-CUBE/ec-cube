@@ -12,11 +12,9 @@ rm -rf $WORKSPACE/.editorconfig
 rm -rf $WORKSPACE/.gitignore
 rm -rf $WORKSPACE/.buildpath
 rm -rf $WORKSPACE/.gitmodules
-rm -rf $WORKSPACE/.php-cs-fixler.*
+rm -rf $WORKSPACE/.php-cs-fixer.*
 rm -rf $WORKSPACE/phpunit.xml.dist
 rm -rf $WORKSPACE/phpstan.neon.dist
-rm -rf $WORKSPACE/app.json
-rm -rf $WORKSPACE/Procfile
 rm -rf $WORKSPACE/LICENSE.txt
 rm -rf $WORKSPACE/README.md
 rm -rf $WORKSPACE/codeception.yml
@@ -28,8 +26,8 @@ rm -rf $WORKSPACE/.github
 rm -rf $WORKSPACE/zap
 rm -rf $WORKSPACE/docker-compose.owaspzap.*
 rm -rf $WORKSPACE/package.sh
-rm -rf $WORKSPACE/app/PluginData/Api/oauth/private.key
-rm -rf $WORKSPACE/app/PluginData/Api/oauth/public.key
+rm -rf $WORKSPACE/app/PluginData/Api42/oauth/private.key
+rm -rf $WORKSPACE/app/PluginData/Api42/oauth/public.key
 find $WORKSPACE -name "dummy" -print0 | xargs -0 rm -rf
 find $WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
 find $WORKSPACE -name ".git*" -type d -print0 | xargs -0 rm -rf
