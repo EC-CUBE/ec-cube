@@ -774,6 +774,12 @@ class ShoppingController extends AbstractShoppingController
             $this->cartService->save();
         }
 
+        // 購入エラー画面についてはwarninメッセージを出力しない為、warningレベルのメッセージが存在する場合、削除する.
+        // (warningが残っている場合、購入エラー画面以降のタイミングで誤って表示されてしまう為.)
+        if ($this->session->getFlashBag()->has('eccube.front.warning')) {
+            $this->session->getFlashBag()->get('eccube.front.warning');
+        }
+
         $event = new EventArgs(
             [],
             $request
