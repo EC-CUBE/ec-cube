@@ -770,19 +770,21 @@ class MailService
         log_info($eventName);
 
         // メールテンプレートの取得 IDでの取得は現行環境での差異があるため
-        $tpl_name = "Mail/event_notify.twig";
+        $tpl_name = 'Mail/event_notify.twig';
         $MailTemplate = $this->mailTemplateRepository->createQueryBuilder('mt')
             ->where('mt.file_name = :file_name')
             ->setParameter('file_name', $tpl_name)
             ->getQuery()
             ->getOneOrNullResult();
 
+        // IPアドレスを取得
+        $ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['SERVER_SOFTWARE'] : '0.0.0.0' ;
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
             'userAgent' => $Request->headers->get('User-Agent'),
             'eventName' => $eventName,
-            'ipAddress' => $_SERVER['REMOTE_ADDR'],
+            'ipAddress' => $ipAddress,
         ]);
 
         $message = (new Email())
@@ -793,12 +795,6 @@ class MailService
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
 
-        // メアドの変更があった場合、前のメアドにも送信
-        $preEmail = $Request->get('preEmail');
-        if ($Customer->getEmail() != $preEmail) {
-            $message->addTo($preEmail);
-        }
-
         // HTMLテンプレートが存在する場合
         $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
         if (!is_null($htmlFileName)) {
@@ -807,7 +803,7 @@ class MailService
                 'Customer' => $Customer,
                 'userAgent' => $Request->headers->get('User-Agent'),
                 'eventName' => $eventName,
-                'ipAddress' => $_SERVER['REMOTE_ADDR'],
+                'ipAddress' => $ipAddress,
             ]);
 
             $message
@@ -821,6 +817,19 @@ class MailService
             $this->mailer->send($message);
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
+        }
+
+        // メールアドレスの変更があった場合、変更前のメールアドレスにも送信
+        $preEmail = $Request->get('preEmail');
+        if (!is_null($preEmail) && $Customer->getEmail() != $preEmail) {
+            $message->to($this->convertRFCViolatingEmail($preEmail));
+
+            // メール送信
+            try {
+                $this->mailer->send($message);
+            } catch (TransportExceptionInterface $e) {
+                log_critical($e->getMessage());
+            }
         }
 
         log_info('会員情報変更通知メール送信処理完了');
