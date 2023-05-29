@@ -91,7 +91,7 @@ class SecurityType extends AbstractType
                         'pattern' => '/\A\w+\z/',
                     ]),
                     new Assert\Regex([
-                        'pattern' => "/\A^(?!($routes)$).*\z/",
+                        'pattern' => "/^(?!($routes)$).*$/",
                     ]),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
@@ -233,6 +233,7 @@ class SecurityType extends AbstractType
                 $arr = explode('/', $path);
                 foreach ($arr as $target) {
                     if (!empty($target)) {
+                        $target = preg_quote($target);
                         $frontRoutesUrlList[$target] = $target;
                     }
                 }
