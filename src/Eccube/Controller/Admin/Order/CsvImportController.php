@@ -143,7 +143,7 @@ class CsvImportController extends AbstractCsvImportController
 
             if (isset($row[$columnNames['tracking_number']])) {
                 // 半角英数字ハイフン以外エラー
-                if (!preg_match('/^[0-9a-zA-Z-]+$/u', $row[$columnNames['tracking_number']])) {
+                if (!preg_match('/^[0-9a-zA-Z-]*$/u', $row[$columnNames['tracking_number']])) {
                     $errors[] = trans('admin.common.csv_invalid_format_line_name', ['%line%' => $line + 1, '%name%' => $columnNames['tracking_number']]);
                     continue;
                 }

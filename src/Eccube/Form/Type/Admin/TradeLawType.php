@@ -51,6 +51,7 @@ class TradeLawType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'purify_html' => true,
                 'constraints' => [
                     new Assert\Length([
                         'max' => 4000,

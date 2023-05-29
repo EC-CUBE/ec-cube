@@ -93,3 +93,7 @@ FilePond.registerPlugin(
     FilePondPluginFileValidateSize
 );
 global.FilePond = FilePond;
+const FilePondLocale_en = require('filepond/locale/en-en.js');
+global.FilePondLocale_en = FilePondLocale_en.default;
+const FilePondLocale_ja = require('filepond/locale/ja-ja.js');
+global.FilePondLocale_ja = FilePondLocale_ja.default;

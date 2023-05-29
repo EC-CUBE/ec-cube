@@ -49,7 +49,7 @@ class EF06OtherCest
             'login_pass' => 'password',
         ]);
 
-        $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
+        $I->waitForText('ログインできませんでした。', 10, 'div.ec-login p.ec-errorMessage');
     }
 
     public function other_ログイン異常2(AcceptanceTester $I)
@@ -66,7 +66,7 @@ class EF06OtherCest
             'login_pass' => 'password',
         ]);
 
-        $I->see('ログインできませんでした。', 'div.ec-login p.ec-errorMessage');
+        $I->waitForText('ログインできませんでした。', 10, 'div.ec-login p.ec-errorMessage');
     }
 
     /**
@@ -82,7 +82,7 @@ class EF06OtherCest
         $I->click('#login_mypage a:first-child');
 
         // TOPページ>ログイン>パスワード再発行
-        $I->see('パスワードの再発行', 'div.ec-pageHeader h1');
+        $I->waitForText('パスワードの再発行', 10, 'div.ec-pageHeader h1');
 
         // メールアドレスを入力する
         // 「次のページへ」ボタンを押下する
@@ -92,7 +92,7 @@ class EF06OtherCest
         $I->submitForm('#form1', [
             'login_email' => $customer->getEmail(),
         ]);
-        $I->see('パスワードの再発行(メール送信)', 'div.ec-pageHeader h1');
+        $I->waitForText('パスワードの再発行(メール送信)', 10, 'div.ec-pageHeader h1');
 
         $I->seeEmailCount(1);
         $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
@@ -103,9 +103,9 @@ class EF06OtherCest
 
         $I->resetEmails();
         $I->amOnPage($url);
-        $I->see('パスワード再発行(再設定)', 'div.ec-pageHeader h1');
+        $I->waitForText('パスワード再発行(再設定)', 10, 'div.ec-pageHeader h1');
 
-        $password = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 20);
+        $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 16).'1234';
 
         // メルアド・新パスワード設定
         $I->submitForm('#form1', [
@@ -114,7 +114,7 @@ class EF06OtherCest
             'password[second]' => $password,
         ]);
 
-        $I->see('ログイン', 'div.ec-pageHeader h1');
+        $I->waitForText('ログイン', 10, 'div.ec-pageHeader h1');
         $I->loginAsMember($customer->getEmail(), $password);
     }
 
@@ -141,7 +141,7 @@ class EF06OtherCest
         $I->wantTo('EF0604-UC01-T01 当サイトについて');
         $I->amOnPage('/help/about');
 
-        $I->see('当サイトについて', 'div.ec-pageHeader h1');
+        $I->waitForText('当サイトについて', 10, 'div.ec-pageHeader h1');
         $baseinfo = Fixtures::get('baseinfo');
         $I->see($baseinfo->getShopName(), '#help_about_box__shop_name');
     }
@@ -154,8 +154,8 @@ class EF06OtherCest
         $I->wantTo('EF0605-UC01-T01 プライバシーポリシー');
         $I->amOnPage('/help/privacy');
 
-        $I->see('プライバシーポリシー', 'div.ec-pageHeader > h1');
-        $I->see('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 'main > div > div:nth-child(2) > div > p');
+        $I->waitForText('プライバシーポリシー', 10, 'div.ec-pageHeader > h1');
+        $I->waitForText('個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。', 10, 'main > div > div:nth-child(2) > div > p');
     }
 
     /**
@@ -166,7 +166,7 @@ class EF06OtherCest
         $I->wantTo('EF0606-UC01-T01 特定商取引法に基づく表記');
         $I->amOnPage('/help/tradelaw');
 
-        $I->see('特定商取引法に基づく表記', 'div.ec-pageHeader h1');
+        $I->waitForText('特定商取引法に基づく表記', 10, 'div.ec-pageHeader h1');
     }
 
     /**
@@ -181,7 +181,7 @@ class EF06OtherCest
         $new_email = microtime(true).'.'.$faker->safeEmail;
         $BaseInfo = Fixtures::get('baseinfo');
 
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
 
         $I->fillField(['id' => 'contact_name_name01'], '姓');
         $I->fillField(['id' => 'contact_name_name02'], '名');
@@ -196,11 +196,11 @@ class EF06OtherCest
         $I->fillField(['id' => 'contact_contents'], 'お問い合わせ内容の送信');
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 完了ページ
-        $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ(完了)', 10, 'div.ec-pageHeader h1');
 
         // メールチェック
         $message = $I->lastMessage();
@@ -222,7 +222,7 @@ class EF06OtherCest
         $new_email = microtime(true).'.'.$faker->safeEmail;
         $BaseInfo = Fixtures::get('baseinfo');
 
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
 
         $I->fillField(['id' => 'contact_name_name01'], '姓');
         $I->fillField(['id' => 'contact_name_name02'], '名');
@@ -238,11 +238,11 @@ class EF06OtherCest
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 確認画面 → 戻る
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--cancel');
 
         // 入力画面 → フォーム入力内容の再チェック
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
         $I->seeInFormFields('.ec-contactRole form', [
             'contact[name][name01]' => '姓',
             'contact[name][name02]' => '名',
@@ -255,11 +255,11 @@ class EF06OtherCest
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 確認画面 → 送信
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
         // 完了ページ
-        $I->see('お問い合わせ(完了)', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ(完了)', 10, 'div.ec-pageHeader h1');
 
         // メールチェック
         $message = $I->lastMessage();
@@ -277,17 +277,18 @@ class EF06OtherCest
         $I->wantTo('EF0607-UC01-T03 お問い合わせ 異常');
         $I->amOnPage('/contact');
 
-        $I->see('お問い合わせ', 'div.ec-pageHeader h1');
+        $I->waitForText('お問い合わせ', 10, 'div.ec-pageHeader h1');
 
         $I->click('div.ec-RegisterRole__actions button.ec-blockBtn--action');
 
-        $I->see('入力されていません', '.ec-contactRole .error .ec-errorMessage:last-child');
+        $I->waitForText('入力されていません', 10, '.ec-contactRole .error .ec-errorMessage:last-child');
     }
 
     public function other_サイトマップ(AcceptanceTester $I)
     {
         $I->wantTo('EF0608-UC01-T01_サイトマップ');
         $I->amOnPage('/sitemap.xml');
+        $I->wait(10);
 
         $I->see('/sitemap_page.xml');
         $I->see('/sitemap_category.xml');
@@ -304,24 +305,28 @@ class EF06OtherCest
 
         // 表示確認
         $I->amOnPage($sitemapUrl);
+        $I->wait(10);
         $I->see($topPageLoc);
 
         // メタ設定 → robots noindex → 非表示になる
         PageManagePage::go($I)->ページ編集('TOPページ');
         PageEditPage::at($I)->入力_メタ_robot('noindex')->登録();
         $I->amOnPage($sitemapUrl);
+        $I->wait(10);
         $I->dontSee($topPageLoc);
 
         // メタ設定 → robots none → 非表示になる
         PageManagePage::go($I)->ページ編集('TOPページ');
         PageEditPage::at($I)->入力_メタ_robot('none')->登録();
         $I->amOnPage($sitemapUrl);
+        $I->wait(10);
         $I->dontSee($topPageLoc);
 
         // メタ設定 → robots 解除 → 表示される
         PageManagePage::go($I)->ページ編集('TOPページ');
         PageEditPage::at($I)->入力_メタ_robot('')->登録();
         $I->amOnPage($sitemapUrl);
+        $I->wait(10);
         $I->see($topPageLoc);
     }
 
@@ -329,6 +334,7 @@ class EF06OtherCest
     {
         $I->wantTo('EF0608-UC01-T03_サイトマップ(カテゴリ)');
         $I->amOnPage('/sitemap_category.xml');
+        $I->wait(10);
 
         $I->see('/products/list?category_id=1');
     }
@@ -359,7 +365,7 @@ class EF06OtherCest
         // 在庫なし商品の準備
         $I->amOnPage($productEditUrl);
         ProductEditPage::at($I)->入力_在庫数(0)->登録();
-        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+        $I->waitForText('保存しました', 10, ProductEditPage::$登録結果メッセージ);
 
         // 公開・在庫切れ商品を表示しない
         $I->amOnPage($productEditUrl);

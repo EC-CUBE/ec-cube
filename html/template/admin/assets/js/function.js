@@ -119,6 +119,7 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 
 if (typeof Ladda !== 'undefined') {
     Ladda.bind('button[type=submit]', {timeout: 2000});
+    $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
 }
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
@@ -237,4 +238,18 @@ $(function() {
             e.preventDefault();
         }
     });
+});
+
+// input[type="datetime-local"]、初期クリック時に当日の0時0分を設定
+$(function() {
+    if( $('[type="datetime-local"]').length ){
+        $('[type="datetime-local"]').on('click',function(){
+            if( $(this).val() === '' && !$(this).hasClass('is_adjusted') ){
+                $(this).addClass('is_adjusted');
+                let date = new Date();
+                let adjusted_date = date.toLocaleDateString().split('/').map((e)=>{ return ( String(e).length < 2 )? "0"+e : e ; }).join('-');
+                $(this).val( adjusted_date + 'T00:00');
+            }
+        });
+    }
 });
