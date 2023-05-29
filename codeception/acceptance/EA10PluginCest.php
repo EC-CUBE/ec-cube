@@ -58,7 +58,7 @@ class EA10PluginCest
 
     public function test_install_enable_disable_remove_local(AcceptanceTester $I)
     {
-        Horizon_Store::start($I)
+        Horizon_Local::start($I)
             ->インストール()
             ->有効化()
             ->無効化()
