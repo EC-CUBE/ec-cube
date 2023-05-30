@@ -778,7 +778,7 @@ class MailService
             ->getOneOrNullResult();
 
         // IPアドレスを取得
-        $ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['SERVER_SOFTWARE'] : '0.0.0.0' ;
+        $ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0' ;
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
