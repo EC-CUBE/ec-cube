@@ -14,49 +14,25 @@ eccube:
             type: ip
             limit: 5
             interval: '30 minutes'
-        mypage_change_ip:
-            route: mypage_change
-            method: [ 'POST' ]
-            type: ip
-            limit: 25
-            interval: '30 minutes'
-        mypage_change_customer:
+        mypage_change:
             route: mypage_change
             method: [ 'POST' ]
             type: customer
             limit: 10
             interval: '30 minutes'
-        mypage_delivery_new_ip:
-            route: mypage_delivery_new
-            method: [ 'POST' ]
-            type: ip
-            limit: 25
-            interval: '30 minutes'
-        mypage_delivery_edit_ip:
-            route: mypage_delivery_edit
-            method: [ 'POST' ]
-            type: ip
-            limit: 25
-            interval: '30 minutes'
-        mypage_delivery_delete_ip:
-            route: mypage_delivery_delete
-            method: [ 'DELETE' ]
-            type: ip
-            limit: 25
-            interval: '30 minutes'
-        mypage_delivery_new_customer:
+        mypage_delivery_new:
             route: mypage_delivery_new
             method: [ 'POST' ]
             type: customer
             limit: 10
             interval: '30 minutes'
-        mypage_delivery_edit_customer:
+        mypage_delivery_edit:
             route: mypage_delivery_edit
             method: [ 'POST' ]
             type: customer
             limit: 10
             interval: '30 minutes'
-        mypage_delivery_delete_customer:
+        mypage_delivery_delete:
             route: mypage_delivery_delete
             method: [ 'DELETE' ]
             type: customer
