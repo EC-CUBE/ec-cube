@@ -363,4 +363,41 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->actual = $this->mailService->convertRFCViolatingEmail('a..a@example.com');
         $this->verify();
     }
+
+    public function testSendEventNotifyMail()
+    {
+        $userData = [
+            'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'ipAddress' => '192.168.0.100',
+            'preEmail' => 'abc@example.com',
+        ];
+        $eventName = '会員情報編集';
+
+        $this->mailService->sendEventNotifyMail($this->Customer, $userData, $eventName);
+        // 変更前と変更後の両方送られる関係で2
+        $this->assertEmailCount(2);
+
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員情報変更のお知らせ';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = $Message->getTo()[0]->getAddress();
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = $Message->getBcc()[0]->getAddress();
+        $this->verify();
+
+        $this->assertEmailTextBodyContains($Message, $eventName . ' がありましたのでお知らせいたします。');
+        $this->assertEmailHtmlBodyContains($Message, $eventName . ' がありましたのでお知らせいたします。');
+
+    }
 }
