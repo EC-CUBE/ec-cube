@@ -13,12 +13,12 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
-use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
@@ -30,11 +30,13 @@ use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailService
 {
@@ -757,34 +759,36 @@ class MailService
      * 会員情報変更時にメール通知
      *
      * @param Customer $Customer
-     * @param Request $Request
-     * @param $eventName
+     * @param array $userDate
+     *  - userAgent
+     *  - ipAddress
+     *  - preEmail
+     * @param String $eventName
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws NonUniqueResultException
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendEventNotifyMail(Customer $Customer, Request $Request, $eventName)
+    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userDate, string $eventName)
     {
         log_info('会員情報変更通知メール送信処理開始');
         log_info($eventName);
 
         // メールテンプレートの取得 IDでの取得は現行環境での差異があるため
-        $tpl_name = 'Mail/event_notify.twig';
+        $tpl_name = 'Mail/customer_change_notify.twig';
         $MailTemplate = $this->mailTemplateRepository->createQueryBuilder('mt')
             ->where('mt.file_name = :file_name')
             ->setParameter('file_name', $tpl_name)
             ->getQuery()
             ->getOneOrNullResult();
 
-        // IPアドレスを取得
-        $ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0' ;
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
-            'userAgent' => $Request->headers->get('User-Agent'),
+            'userAgent' => $userDate['userAgent'],
             'eventName' => $eventName,
-            'ipAddress' => $ipAddress,
+            'ipAddress' => $userDate['ipAddress'],
         ]);
 
         $message = (new Email())
@@ -801,9 +805,9 @@ class MailService
             $htmlBody = $this->twig->render($htmlFileName, [
                 'BaseInfo' => $this->BaseInfo,
                 'Customer' => $Customer,
-                'userAgent' => $Request->headers->get('User-Agent'),
+                'userAgent' => $userDate['userAgent'],
                 'eventName' => $eventName,
-                'ipAddress' => $ipAddress,
+                'ipAddress' => $userDate['ipAddress'],
             ]);
 
             $message
@@ -820,9 +824,8 @@ class MailService
         }
 
         // メールアドレスの変更があった場合、変更前のメールアドレスにも送信
-        $preEmail = $Request->get('preEmail');
-        if (!is_null($preEmail) && $Customer->getEmail() != $preEmail) {
-            $message->to($this->convertRFCViolatingEmail($preEmail));
+        if (!is_null($userDate['preEmail']) && $Customer->getEmail() != $userDate['preEmail']) {
+            $message->to($this->convertRFCViolatingEmail($userDate['preEmail']));
 
             // メール送信
             try {

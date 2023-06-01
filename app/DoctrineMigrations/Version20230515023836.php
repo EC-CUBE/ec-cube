@@ -26,12 +26,10 @@ final class Version20230515023836 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $id = $this->connection->fetchOne('SELECT MAX(id) + 1 FROM dtb_mail_template');
 
         $this->addSql("
-            INSERT INTO dtb_mail_template (id, creator_id, name, file_name, mail_subject, create_date, update_date, discriminator_type)
-            VALUES (?, null, '会員情報変更通知メール', 'Mail/event_notify.twig', '会員情報変更のお知らせ', '2017-03-07 10:14:52', '2017-03-07 10:14:52', 'mailtemplate');",
-            [$id]);
+            INSERT INTO dtb_mail_template (creator_id, name, file_name, mail_subject, create_date, update_date, discriminator_type)
+            VALUES (null, '会員情報変更通知メール', 'Mail/customer_change_notify.twig', '会員情報変更のお知らせ', '2017-03-07 10:14:52', '2017-03-07 10:14:52', 'mailtemplate');");
     }
 
     public function down(Schema $schema): void

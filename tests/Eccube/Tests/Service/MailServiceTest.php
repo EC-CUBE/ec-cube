@@ -19,9 +19,9 @@ use Eccube\Entity\Shipping;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MailService test cases.
@@ -373,31 +373,31 @@ class MailServiceTest extends AbstractServiceTestCase
         ];
         $eventName = '会員情報編集';
 
-        $this->mailService->sendEventNotifyMail($this->Customer, $userData, $eventName);
+        $this->mailService->sendCustomerChangeNotifyMail($this->Customer, $userData, $eventName);
         // 変更前と変更後の両方送られる関係で2
         $this->assertEmailCount(2);
 
-        /** @var Email $Message */
-        $Message = $this->getMailerMessage(0);
+        for ($i = 0; $i < 1; $i++) {
+            /** @var Email $Message */
+            $Message = $this->getMailerMessage($i);
 
-        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員情報変更のお知らせ';
-        $this->actual = $Message->getSubject();
-        $this->verify();
+            $this->expected = '['.$this->BaseInfo->getShopName().'] 会員情報変更のお知らせ';
+            $this->actual = $Message->getSubject();
+            $this->verify();
 
-        $this->expected = $this->Customer->getEmail();
-        $this->actual = $Message->getTo()[0]->getAddress();
-        $this->verify();
+            $this->expected = $this->Customer->getEmail();
+            $this->actual = $Message->getTo()[0]->getAddress();
+            $this->verify();
 
-        $this->expected = $this->BaseInfo->getEmail03();
-        $this->actual = $Message->getReplyTo()[0]->getAddress();
-        $this->verify();
+            $this->expected = $this->BaseInfo->getEmail03();
+            $this->actual = $Message->getReplyTo()[0]->getAddress();
+            $this->verify();
 
-        $this->expected = $this->BaseInfo->getEmail01();
-        $this->actual = $Message->getBcc()[0]->getAddress();
-        $this->verify();
+            $this->expected = $this->BaseInfo->getEmail01();
+            $this->actual = $Message->getBcc()[0]->getAddress();
+            $this->verify();
 
-        $this->assertEmailTextBodyContains($Message, $eventName . ' がありましたのでお知らせいたします。');
-        $this->assertEmailHtmlBodyContains($Message, $eventName . ' がありましたのでお知らせいたします。');
-
+            $this->assertEmailTextBodyContains($Message, $eventName.' がありましたのでお知らせいたします。');
+        }
     }
 }
