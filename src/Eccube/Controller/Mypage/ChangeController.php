@@ -53,7 +53,7 @@ class ChangeController extends AbstractController
     /**
      * @var baseInfoRepository
      */
-    protected  $baseInfoRepository;
+    protected $baseInfoRepository;
 
     private const SESSION_KEY_PRE_EMAIL = 'eccube.front.mypage.change.preEmail';
 

@@ -820,7 +820,7 @@ class MailService
         }
 
         // メールアドレスの変更があった場合、変更前のメールアドレスにも送信
-        if (!is_null($userData['preEmail']) && $Customer->getEmail() != $userData['preEmail']) {
+        if (isset($userData['preEmail']) && $Customer->getEmail() != $userData['preEmail']) {
             $message->to($this->convertRFCViolatingEmail($userData['preEmail']));
 
             // メール送信

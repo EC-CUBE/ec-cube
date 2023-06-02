@@ -419,8 +419,7 @@ class MailServiceTest extends AbstractServiceTestCase
     {
         $userData = [
             'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
-            'ipAddress' => '192.168.0.100',
-            'preEmail' => $this->Customer->getEmail(),
+            'ipAddress' => '192.168.0.100'
         ];
         $eventName = 'お届け先情報編集';
 

@@ -435,15 +435,12 @@ class ShippingMultipleController extends AbstractShoppingController
                 }
 
                 // 会員情報変更時にメールを送信
-                if($this->baseInfoRepository->get()->isOptionMailNotifier()) {
-                    $Customer = $this->getUser();
-
+                if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
                     // 情報のセット
                     $userData['userAgent'] = $request->headers->get('User-Agent');
                     $userData['ipAddress'] = $request->getClientIp();
 
                     $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
-
                 }
 
                 $CustomerAddress->setCustomer($Customer);

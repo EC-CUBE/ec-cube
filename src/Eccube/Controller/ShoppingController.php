@@ -700,7 +700,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 会員情報変更時にメールを送信
-            if($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+            if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
                 $Customer = $this->getUser();
 
                 // 情報のセット
