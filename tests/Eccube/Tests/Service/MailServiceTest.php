@@ -364,7 +364,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    public function testCustomerChangeNotifyMail01()
+    public function testCustomerChangeNotifyMailByEmailAddressChange()
     {
         $userData = [
             'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
@@ -415,7 +415,7 @@ class MailServiceTest extends AbstractServiceTestCase
     }
 
 
-    public function testCustomerChangeNotifyMail02()
+    public function testCustomerChangeNotifyMailByDeliveryAddressChange()
     {
         $userData = [
             'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',

@@ -30,10 +30,12 @@ file that was distributed with this source code.
                         <div class="body-text" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;text-align:left;color:#333333;">
                             {{ Customer.name01 }} {{ Customer.name02 }} 様<br>
                             <br>
+                            ※本メールは自動配信メールです。<br>
+                            <br>
                             {{ BaseInfo.shop_name }}でございます。<br/>
                             下記の日時に {{ eventName }} がありましたのでお知らせいたします。<br/>
                             <br/>
-                            日時：{{ date()|date('Y年m月d日 H時i分s秒') }}<br/>
+                            日時：{{ date()|date_sec }}<br/>
                             IPアドレス：{{ ipAddress }}<br/>
                             環境：{{ userAgent }}<br/>
                             <br/>
