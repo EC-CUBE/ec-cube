@@ -13,8 +13,11 @@
 
 use Codeception\Util\Fixtures;
 use Page\Front\CartPage;
+use Page\Front\CustomerAddressAddPage;
 use Page\Front\CustomerAddressEditPage;
 use Page\Front\CustomerAddressListPage;
+use Page\Front\CustomerAddressChangePage;
+use Page\Front\MultipleShippingPage;
 use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ShoppingConfirmPage;
@@ -422,6 +425,7 @@ class EF09ThrottlingCest
      */
     public function 配送先情報_追加(AcceptanceTester $I)
     {
+        $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -478,6 +482,7 @@ class EF09ThrottlingCest
      */
     public function 配送先情報_編集(AcceptanceTester $I)
     {
+        $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -553,7 +558,9 @@ class EF09ThrottlingCest
      * @param AcceptanceTester $I
      * @return void
      */
-    public function 配送先情報_削除(AcceptanceTester $I) {
+    public function 配送先情報_削除(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T14_配送先情報_削除');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -575,7 +582,6 @@ class EF09ThrottlingCest
                 ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
                 ->入力_電話番号('111-111-111')
                 ->登録する();
-
          }
 
         for ($i = 0; $i < 10; $i++) {
@@ -605,9 +611,136 @@ class EF09ThrottlingCest
         $I->expect('お届け先を削除します。');
         CustomerAddressListPage::at($I)
             ->削除(1);
-        CustomerAddressListPage::at($I)
-            ->削除(1);
 
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function order_お届け先追加(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T15_order_お届け先追加');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $nameSei = 'あいおい0302';
+        $nameMei = '名0302';
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+        ShoppingPage::at($I)->お届け先追加();
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を追加します。：'.$i);
+            // 新規お届け先追加
+            MultipleShippingPage::at($I)->新規お届け先を追加する();
+
+            CustomerAddressAddPage::at($I)
+                ->入力_姓($nameSei)
+                ->入力_名($nameMei)
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市北区2')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+                ->入力_電話番号('222-222-222')
+                ->登録する();
+
+            $I->wait(1);
+        }
+
+        // 新規お届け先追加
+        MultipleShippingPage::at($I)->新規お届け先を追加する();
+
+        CustomerAddressAddPage::at($I)
+            ->入力_姓($nameSei)
+            ->入力_名($nameMei)
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区2')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+            ->入力_電話番号('222-222-222')
+            ->登録する();
+
+        $I->wait(1);
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function order_お届け先変更(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T15_order_お届け先追加');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $nameSei = 'あいおい0302';
+        $nameMei = '名0302';
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を変更します。：'.$i);
+            // 新規お届け先追加
+            ShoppingPage::at($I)->お届け先変更();
+
+            CustomerAddressChangePage::at($I)->go($I)
+                ->入力_姓($nameSei)
+                ->入力_名($nameMei)
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市北区2')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+                ->入力_電話番号('222-222-222')
+                ->登録する();
+
+            $I->wait(1);
+        }
+
+        // 新規お届け先追加
+        ShoppingPage::at($I)->お届け先変更();
+
+        CustomerAddressChangePage::at($I)->go($I)
+            ->入力_姓($nameSei)
+            ->入力_名($nameMei)
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区2')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+            ->入力_電話番号('222-222-222')
+            ->登録する();
+
+        $I->wait(1);
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 }

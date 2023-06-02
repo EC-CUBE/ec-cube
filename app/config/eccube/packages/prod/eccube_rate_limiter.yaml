@@ -38,23 +38,11 @@ eccube:
             type: customer
             limit: 10
             interval: '30 minutes'
-        shopping_shipping_multiple_edit_ip:
-            route: shopping_shipping_multiple_edit
-            method: [ 'POST' ]
-            type: ip
-            limit: 25
-            interval: '30 minutes'
         shopping_shipping_multiple_edit_customer:
             route: shopping_shipping_multiple_edit
             method: [ 'POST' ]
             type: customer
             limit: 10
-            interval: '30 minutes'
-        shopping_shipping_edit_ip:
-            route: shopping_shipping_edit
-            method: [ 'POST' ]
-            type: ip
-            limit: 25
             interval: '30 minutes'
         shopping_shipping_edit_customer:
             route: shopping_shipping_edit
