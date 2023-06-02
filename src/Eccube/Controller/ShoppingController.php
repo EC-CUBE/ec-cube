@@ -24,6 +24,7 @@ use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Service\CartService;
@@ -72,6 +73,11 @@ class ShoppingController extends AbstractShoppingController
     protected $serviceContainer;
 
     /**
+     * @var baseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
      * @var TradeLawRepository
      */
     protected TradeLawRepository $tradeLawRepository;
@@ -94,7 +100,8 @@ class ShoppingController extends AbstractShoppingController
         RateLimiterFactory $shoppingConfirmIpLimiter,
         RateLimiterFactory $shoppingConfirmCustomerLimiter,
         RateLimiterFactory $shoppingCheckoutIpLimiter,
-        RateLimiterFactory $shoppingCheckoutCustomerLimiter
+        RateLimiterFactory $shoppingCheckoutCustomerLimiter,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
@@ -106,6 +113,7 @@ class ShoppingController extends AbstractShoppingController
         $this->shoppingConfirmCustomerLimiter = $shoppingConfirmCustomerLimiter;
         $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
         $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
+        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     /**
@@ -689,6 +697,17 @@ class ShoppingController extends AbstractShoppingController
 
             if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $this->entityManager->persist($CustomerAddress);
+            }
+
+            // 会員情報変更時にメールを送信
+            if($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                $Customer = $this->getUser();
+
+                // 情報のセット
+                $userData['userAgent'] = $request->headers->get('User-Agent');
+                $userData['ipAddress'] = $request->getClientIp();
+
+                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
             }
 
             // 合計金額の再計算

@@ -285,7 +285,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -344,7 +343,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -483,7 +481,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -528,7 +525,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
 
         return $message;
     }
@@ -593,7 +589,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -655,7 +650,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -759,18 +753,20 @@ class MailService
      * 会員情報変更時にメール通知
      *
      * @param Customer $Customer
-     * @param array $userDate
+     * @param array $userData
      *  - userAgent
      *  - ipAddress
      *  - preEmail
-     * @param String $eventName
+     * @param string $eventName
+     *
      * @return void
+     *
      * @throws LoaderError
      * @throws NonUniqueResultException
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userDate, string $eventName)
+    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userData, string $eventName)
     {
         log_info('会員情報変更通知メール送信処理開始');
         log_info($eventName);
@@ -786,9 +782,9 @@ class MailService
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
-            'userAgent' => $userDate['userAgent'],
+            'userAgent' => $userData['userAgent'],
             'eventName' => $eventName,
-            'ipAddress' => $userDate['ipAddress'],
+            'ipAddress' => $userData['ipAddress'],
         ]);
 
         $message = (new Email())
@@ -805,9 +801,9 @@ class MailService
             $htmlBody = $this->twig->render($htmlFileName, [
                 'BaseInfo' => $this->BaseInfo,
                 'Customer' => $Customer,
-                'userAgent' => $userDate['userAgent'],
+                'userAgent' => $userData['userAgent'],
                 'eventName' => $eventName,
-                'ipAddress' => $userDate['ipAddress'],
+                'ipAddress' => $userData['ipAddress'],
             ]);
 
             $message
@@ -824,8 +820,8 @@ class MailService
         }
 
         // メールアドレスの変更があった場合、変更前のメールアドレスにも送信
-        if (!is_null($userDate['preEmail']) && $Customer->getEmail() != $userDate['preEmail']) {
-            $message->to($this->convertRFCViolatingEmail($userDate['preEmail']));
+        if (!is_null($userData['preEmail']) && $Customer->getEmail() != $userData['preEmail']) {
+            $message->to($this->convertRFCViolatingEmail($userData['preEmail']));
 
             // メール送信
             try {

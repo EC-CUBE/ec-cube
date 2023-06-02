@@ -143,11 +143,10 @@ class DeliveryController extends AbstractController
             // 会員情報変更時にメールを送信
             if($this->BaseInfo->isOptionMailNotifier()) {
                 // 情報のセット
-                $userDate['userAgent'] = $request->headers->get('User-Agent');
-                $userDate['preEmail'] = $request->getSession()->get('preEmail');
-                $userDate['ipAddress'] = $request->getClientIp();
+                $userData['userAgent'] = $request->headers->get('User-Agent');
+                $userData['ipAddress'] = $request->getClientIp();
 
-                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userDate, trans('front.mypage.delivery.notify_title'));
+                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
             }
 
             log_info('お届け先登録完了', [$id]);
@@ -202,11 +201,10 @@ class DeliveryController extends AbstractController
         // 会員情報変更時にメールを送信
         if($this->BaseInfo->isOptionMailNotifier()) {
             // 情報のセット
-            $userDate['userAgent'] = $request->headers->get('User-Agent');
-            $userDate['preEmail'] = $request->getSession()->get('preEmail');
-            $userDate['ipAddress'] = $request->getClientIp();
+            $userData['userAgent'] = $request->headers->get('User-Agent');
+            $userData['ipAddress'] = $request->getClientIp();
 
-            $this->mailService->sendCustomerChangeNotifyMail($Customer, $userDate, trans('front.mypage.delivery.notify_title'));
+            $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
         }
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
