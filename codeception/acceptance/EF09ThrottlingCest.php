@@ -432,7 +432,7 @@ class EF09ThrottlingCest
 
         for ($i = 0; $i < 10; $i++) {
             $I->expect('お届け先を追加します。：'.$i);
-
+            $I->wait(10);
             // お届先作成
             // TOPページ>マイページ>お届け先編集
             MyPage::go($I)
@@ -454,6 +454,7 @@ class EF09ThrottlingCest
         }
 
         $I->expect('試行回数上限を超過します');
+        $I->wait(10);
 
         MyPage::go($I)
             ->お届け先編集()
@@ -504,9 +505,9 @@ class EF09ThrottlingCest
             ->入力_電話番号('111-111-111')
             ->登録する();
 
-
         for ($i = 0; $i < 10; $i++) {
             $I->expect('お届け先を編集します。：'.$i);
+            $I->wait(10);
 
             // お届先編集
             // TOPページ>マイページ>お届け先編集
@@ -528,6 +529,7 @@ class EF09ThrottlingCest
             }
 
         $I->expect('試行回数上限を超過します');
+        $I->wait(10);
 
         // お届先編集
         // TOPページ>マイページ>お届け先編集
@@ -567,6 +569,7 @@ class EF09ThrottlingCest
 
         for ($i = 0; $i < 10; $i++) {
             $I->expect('お届け先を追加します。：'.$i);
+            $I->wait(10);
 
             // TOPページ>マイページ>お届け先編集
             MyPage::go($I)->お届け先編集()->追加();
@@ -591,6 +594,8 @@ class EF09ThrottlingCest
         }
 
         $I->expect('試行回数上限を超過します');
+        $I->wait(10);
+
         // TOPページ>マイページ>お届け先編集
         MyPage::go($I)->お届け先編集()->追加();
 
