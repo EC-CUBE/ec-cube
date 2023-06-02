@@ -697,18 +697,19 @@ class ShoppingController extends AbstractShoppingController
 
             if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $this->entityManager->persist($CustomerAddress);
+
+                // 会員情報変更時にメールを送信
+                if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                    $Customer = $this->getUser();
+
+                    // 情報のセット
+                    $userData['userAgent'] = $request->headers->get('User-Agent');
+                    $userData['ipAddress'] = $request->getClientIp();
+
+                    $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+                }
             }
 
-            // 会員情報変更時にメールを送信
-            if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
-                $Customer = $this->getUser();
-
-                // 情報のセット
-                $userData['userAgent'] = $request->headers->get('User-Agent');
-                $userData['ipAddress'] = $request->getClientIp();
-
-                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
-            }
 
             // 合計金額の再計算
             $response = $this->executePurchaseFlow($Order);
