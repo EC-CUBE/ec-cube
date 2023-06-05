@@ -227,6 +227,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $option_remember_me = true;
 
         /**
+         * @var boolean
+         *
+         * @ORM\Column(name="option_mail_notifier", type="boolean", options={"default":false})
+         */
+        private $option_mail_notifier = false;
+
+        /**
          * @var string|null
          *
          * @ORM\Column(name="authentication_key", type="string", length=255, nullable=true)
@@ -942,6 +949,31 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         {
             return $this->option_remember_me;
         }
+
+        /**
+         * Set optionMailNotifier.
+         *
+         * @param boolean $optionRememberMe
+         *
+         * @return BaseInfo
+         */
+        public function setOptionMailNotifier($optionRememberMe)
+        {
+            $this->option_mail_notifier = $optionRememberMe;
+
+            return $this;
+        }
+
+        /**
+         * Get optionRememberMe.
+         *
+         * @return boolean
+         */
+        public function isOptionMailNotifier()
+        {
+            return $this->option_mail_notifier;
+        }
+
 
         /**
          * Set authenticationKey.

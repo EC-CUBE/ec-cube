@@ -535,7 +535,7 @@ class EF03OrderCest
         // メール確認
         $message = $I->lastMessage();
         $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
-        $I->seeEmailCount(1);
+        $I->seeEmailCount(2);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -744,7 +744,7 @@ class EF03OrderCest
         // メール確認
         $message = $I->lastMessage();
         $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
-        $I->seeEmailCount(1);
+        $I->seeEmailCount(2);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -906,7 +906,7 @@ class EF03OrderCest
         // メール確認
         $message = $I->lastMessage();
         $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
-        $I->seeEmailCount(1);
+        $I->seeEmailCount(2);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
