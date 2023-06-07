@@ -25,6 +25,7 @@ doctrine:
         types:
             datetime: 'Eccube\Doctrine\DBAL\Types\UTCDateTimeType'
             datetimetz: 'Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType'
+        default_connection: 'default'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
