@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-22.04 ]
         group:
           - 'test/front_login/contact.test.ts'
           - 'test/front_guest/about.test.ts'
