@@ -209,7 +209,7 @@ on:
 jobs:
   deploy:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
