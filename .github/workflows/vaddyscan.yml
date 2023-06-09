@@ -43,7 +43,7 @@ jobs:
           #   command1: 'EF03OrderCest:order_カート数量増やす'
           #   command2: 'EF03OrderCest:order_ゲスト購入情報変更'
           - vaddy_project: 'FRONT'
-            command1: 'EF03OrderCest:order_ゲスト購入'
+            command1: 'EA08SysteminfoCest'
     services:
       postgres:
         image: postgres:14
