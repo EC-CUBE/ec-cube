@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: 退会が完了いたしました
 front.mypage.withdraw_complete_message__body: |
   ご利用いただき誠にありがとうございました。
   またのご来店をお待ちしております。
+front.mypage.customer.notify_title: 会員情報編集
+front.mypage.delivery.notify_title: お届け先情報編集
 
 #------------------------------------------------------------------------------------
 # 商品
@@ -1125,9 +1127,9 @@ admin.setting.shop.shop.shop_name_kana: 店名(カナ)
 admin.setting.shop.shop.shop_name_en: 店名(英語表記)
 admin.setting.shop.shop.business_hour: 店舗営業時間
 admin.setting.shop.shop.email_from: 送信元メールアドレス(From)
-admin.setting.shop.shop.email_for_inquiries: 問い合わせ受付メールアドレス(From, ReplyTo)
-admin.setting.shop.shop.email_reply_to: 返信受付メールアドレス(ReplyTo)
-admin.setting.shop.shop.email_return_path: 送信エラー受付メールアドレス(ReturnPath)
+admin.setting.shop.shop.email_for_inquiries: 問い合わせ専用メールアドレス(From, ReplyTo)
+admin.setting.shop.shop.email_reply_to: 返信先メールアドレス(ReplyTo)
+admin.setting.shop.shop.email_return_path: 送信エラー通知メールアドレス(ReturnPath)
 admin.setting.shop.shop.good_traded: 取り扱い商品説明文
 admin.setting.shop.shop.message: 店舗からのメッセージ
 admin.setting.shop.shop.option_delivery_fee: 送料設定
@@ -1139,6 +1141,7 @@ admin.setting.shop.shop.option_customer_activate: 仮会員機能
 admin.setting.shop.shop.option_mypage_order_status_display: マイページに注文状況を表示
 admin.setting.shop.shop.option_favorite_product: お気に入り商品機能
 admin.setting.shop.shop.option_remember_me: 自動ログイン機能
+admin.setting.shop.shop.option_mail_notifier: 重要操作時メール通知機能
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
 admin.setting.shop.shop.option_tax: 税設定
@@ -1697,6 +1700,7 @@ tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにす�
 tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
+tooltip.setting.shop.shop.option_mail_notifier: フロント側での会員情報編集・配送先変更操作時にメール通知を行う機能です。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
 tooltip.setting.shop.shop.option_invoice_registration_number: 納品書に適格請求書発行事業者登録番号を表示できます。
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。

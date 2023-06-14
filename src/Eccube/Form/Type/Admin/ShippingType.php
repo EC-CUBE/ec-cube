@@ -180,6 +180,12 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
             ])
             ->add('tracking_number', TextType::class, [
                 'required' => false,

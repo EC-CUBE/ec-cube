@@ -66,6 +66,7 @@ class InstallController extends AbstractController
         'cURL',
         'fileinfo',
         'intl',
+        'sodium'
     ];
 
     protected $recommendedModules = [
@@ -839,6 +840,7 @@ class InstallController extends AbstractController
                 'email04' => $data['email'],
                 'update_date' => new \DateTime(),
                 'discriminator_type' => 'baseinfo',
+                'option_mail_notifier' => true,
             ], [
                 'update_date' => Types::DATETIMETZ_MUTABLE,
             ]);

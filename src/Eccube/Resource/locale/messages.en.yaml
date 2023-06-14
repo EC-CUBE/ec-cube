@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: You have canceled your membership
 front.mypage.withdraw_complete_message__body: |
  Thank you so much for supporting our store.
  We look forward to serving you again.
+front.mypage.customer.notify_title: Change customer information
+front.mypage.delivery.notify_title: Change delivery information
 
 #------------------------------------------------------------------------------------
 # Products
@@ -1139,6 +1141,7 @@ admin.setting.shop.shop.option_customer_activate: Temporary Customers
 admin.setting.shop.shop.option_mypage_order_status_display: Display order status in My Accounts
 admin.setting.shop.shop.option_favorite_product: Favorites
 admin.setting.shop.shop.option_remember_me: Auto Sign-in
+admin.setting.shop.shop.option_mail_notifier: mail notifier
 admin.setting.shop.shop.option_product: Product Settings
 admin.setting.shop.shop.nostock_hidden: Hide out-of-stock products
 admin.setting.shop.shop.option_tax: Taxes
@@ -1696,6 +1699,7 @@ tooltip.setting.shop.shop.option_delivery_fee_by_product: If turned on, you can 
 tooltip.setting.shop.shop.option_customer_activate: This will register a customer as a temporary customer until email verification is completed, after which s/he will be registered as a regular customer.
 tooltip.setting.shop.shop.option_favorite_product: This allows users to save their favorite products as Favorites.
 tooltip.setting.shop.shop.option_remember_me: Allow customers to automatically sign in for certain period of time.
+tooltip.setting.shop.shop.option_mail_notifier: Email notification when member information is edited or shipping address is changed on the Front Screen.
 tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax rate per product.
 tooltip.setting.shop.shop.option_invoice_registration_number: Invoice registration number can be displayed on the delivery note.
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.

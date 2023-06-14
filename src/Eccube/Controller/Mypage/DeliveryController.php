@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -39,10 +40,20 @@ class DeliveryController extends AbstractController
      */
     protected $customerAddressRepository;
 
-    public function __construct(BaseInfoRepository $baseInfoRepository, CustomerAddressRepository $customerAddressRepository)
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    public function __construct(
+        BaseInfoRepository $baseInfoRepository,
+        CustomerAddressRepository $customerAddressRepository,
+        MailService $mailService
+    )
     {
         $this->BaseInfo = $baseInfoRepository->get();
         $this->customerAddressRepository = $customerAddressRepository;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -129,6 +140,15 @@ class DeliveryController extends AbstractController
             $this->entityManager->persist($CustomerAddress);
             $this->entityManager->flush();
 
+            // 会員情報変更時にメールを送信
+            if($this->BaseInfo->isOptionMailNotifier()) {
+                // 情報のセット
+                $userData['userAgent'] = $request->headers->get('User-Agent');
+                $userData['ipAddress'] = $request->getClientIp();
+
+                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+            }
+
             log_info('お届け先登録完了', [$id]);
 
             $event = new EventArgs(
@@ -177,6 +197,15 @@ class DeliveryController extends AbstractController
             ], $request
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE);
+
+        // 会員情報変更時にメールを送信
+        if($this->BaseInfo->isOptionMailNotifier()) {
+            // 情報のセット
+            $userData['userAgent'] = $request->headers->get('User-Agent');
+            $userData['ipAddress'] = $request->getClientIp();
+
+            $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+        }
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 

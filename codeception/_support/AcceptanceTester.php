@@ -119,6 +119,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $I = $this;
         $I->amOnPage('/');
+        $I->waitForElement('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         $isLogin = $I->grabTextFrom('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         if ($isLogin == 'ログアウト') {
             $I->wait(1);

@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -58,7 +58,7 @@
     "@babel/preset-env": "^7.18.2",
     "autoprefixer": "^9.6.4",
     "babel-loader": "^8.2.5",
-    "browser-sync": "^2.27.11",
+    "browser-sync": "^2.28.3",
     "cross-env": "^7.0.2",
     "css-mqpacker": "^7.0.0",
     "gulp": "^4.0.2",
@@ -75,7 +75,7 @@
     "process": "^0.11.10",
     "sass": "^1.42.1",
     "sort-css-media-queries": "^1.4.3",
-    "webpack": "^5.73.0",
+    "webpack": "^5.76.0",
     "webpack-cli": "^4.9.2",
     "webpack-stream": "^7.0.0"
   }

@@ -259,7 +259,7 @@ class EntryController extends AbstractController
         );
 
         if (!$this->session->has('eccube.login.target.path')) {
-            $this->setLoginTargetPath($this->generateUrl('mypage'));
+            $this->setLoginTargetPath($this->generateUrl('mypage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         if (!is_null($qtyInCart)) {

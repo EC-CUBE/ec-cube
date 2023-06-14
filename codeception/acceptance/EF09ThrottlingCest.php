@@ -13,6 +13,12 @@
 
 use Codeception\Util\Fixtures;
 use Page\Front\CartPage;
+use Page\Front\CustomerAddressAddPage;
+use Page\Front\CustomerAddressEditPage;
+use Page\Front\CustomerAddressListPage;
+use Page\Front\CustomerAddressChangePage;
+use Page\Front\MultipleShippingPage;
+use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
@@ -212,9 +218,9 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    public function 非会員購入(AcceptanceTester $I)
+    public function 注文確認_非会員購入(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T08_非会員購入');
+        $I->wantTo('EF0901-UC01-T08_注文確認_非会員購入');
 
         $I->logoutAsMember();
 
@@ -265,9 +271,9 @@ class EF09ThrottlingCest
         return $page;
     }
 
-    public function 会員購入(AcceptanceTester $I)
+    public function 注文確認_会員購入(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T09_会員購入');
+        $I->wantTo('EF0901-UC01-T09_注文確認_会員購入');
 
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
@@ -293,6 +299,453 @@ class EF09ThrottlingCest
         CartPage::go($I)->レジに進む();
         // 注文確認画面へ
         ShoppingPage::at($I)->確認する();
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * checkoutでのスロットリングのテスト
+     * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
+     *
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 注文完了_非会員購入(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T10_注文完了_非会員購入');
+
+        $I->logoutAsMember();
+
+        for ($i = 0; $i < 25; $i++) {
+            $I->expect('非会員購入を行います：'.$i);
+            // カートへ進む
+            ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+            // レジに進む
+            CartPage::go($I)->レジに進む();
+            // 非会員情報入力
+            $ShoppingPage = ShoppingLoginPage::at($I)->ゲスト購入();
+            $this->inputGuestInfo($ShoppingPage)->次へ();
+            // 注文確認画面へ
+            ShoppingPage::at($I)->確認する();
+            // 注文完了
+            ShoppingConfirmPage::at($I)->注文する();
+            $I->see('ご注文完了', 'div.ec-pageHeader h1');
+        }
+
+        $I->expect('試行回数上限を超過します');
+        // カートへ進む
+        ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+        // レジに進む
+        CartPage::go($I)->レジに進む();
+        // 非会員情報入力
+        $ShoppingPage = ShoppingLoginPage::at($I)->ゲスト購入();
+        $this->inputGuestInfo($ShoppingPage)->次へ();
+        // 注文確認画面へ
+        ShoppingPage::at($I)->確認する();
+        // 注文完了
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。', 'div.ec-cartRole__error');
+    }
+
+    /**
+     * checkoutでのスロットリングのテスト
+     * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
+     *
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 注文完了_会員購入(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T11_注文完了_会員購入');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('会員購入を行います：'.$i);
+            // カートへ進む
+            ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+            // レジに進む
+            CartPage::go($I)->レジに進む();
+            // 注文確認画面へ
+            ShoppingPage::at($I)->確認する();
+            // 注文完了
+            ShoppingConfirmPage::at($I)->注文する();
+            $I->see('ご注文完了', 'div.ec-pageHeader h1');
+        }
+
+        $I->expect('試行回数上限を超過します');
+        // カートへ進む
+        ProductDetailPage::go($I, 2)->カートに入れる(1)->カートへ進む();
+        // レジに進む
+        CartPage::go($I)->レジに進む();
+        // 注文確認画面へ
+        ShoppingPage::at($I)->確認する();
+        // 注文完了
+        ShoppingConfirmPage::at($I)->注文する();
+        $I->see('購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。', 'div.ec-cartRole__error');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 会員情報編集(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T12_会員情報編集');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+        $form = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('会員情報を編集します。：'.$i);
+            MyPage::go($I)->会員情報編集();
+            // 会員情報・編集画面にて、登録ボタンをクリック
+            $I->submitForm('div.ec-editRole form', $form);
+
+            // 会員情報編集（完了）画面が表示される
+            $I->see('会員情報編集(完了)', 'div.ec-pageHeader h1');
+        }
+
+        $I->expect('試行回数上限を超過します');
+
+        MyPage::go($I)->会員情報編集();
+
+        // 会員情報・編集画面にて、登録ボタンをクリック
+        $I->submitForm('div.ec-editRole form', $form);
+
+        // 会員情報・編集画面にて、登録ボタンをクリック
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 配送先情報_追加(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を追加します。：'.$i);
+            $I->wait(10);
+            // お届先作成
+            // TOPページ>マイページ>お届け先編集
+            MyPage::go($I)
+                ->お届け先編集()
+                ->追加();
+
+            // 入力 & submit
+            CustomerAddressEditPage::at($I)
+                ->入力_姓('姓05')
+                ->入力_名('名05')
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市北区')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+                ->入力_電話番号('111-111-111')
+                ->登録する();
+        }
+
+        $I->expect('試行回数上限を超過します');
+        $I->wait(10);
+
+        MyPage::go($I)
+            ->お届け先編集()
+            ->追加();
+
+        // 入力 & submit
+        CustomerAddressEditPage::at($I)
+            ->入力_姓('姓05')
+            ->入力_名('名05')
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+            ->入力_電話番号('111-111-111')
+            ->登録する();
+
+        // 会員情報・編集画面にて、登録ボタンをクリック
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 配送先情報_編集(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        MyPage::go($I)
+            ->お届け先編集()
+            ->追加();
+
+        // 入力 & submit
+        CustomerAddressEditPage::at($I)
+            ->入力_姓('姓05')
+            ->入力_名('名05')
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+            ->入力_電話番号('111-111-111')
+            ->登録する();
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を編集します。：'.$i);
+            $I->wait(10);
+
+            // お届先編集
+            // TOPページ>マイページ>お届け先編集
+            MyPage::go($I)
+                ->お届け先編集()
+                ->変更(1);
+
+            CustomerAddressEditPage::at($I)
+                ->入力_姓('姓05')
+                ->入力_名('名05')
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市南区')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+                ->入力_電話番号('111-111-111')
+                ->登録する();
+            }
+
+        $I->expect('試行回数上限を超過します');
+        $I->wait(10);
+
+        // お届先編集
+        // TOPページ>マイページ>お届け先編集
+        MyPage::go($I)
+            ->お届け先編集()
+            ->変更(1);
+
+        CustomerAddressEditPage::at($I)
+            ->入力_姓('姓05')
+            ->入力_名('名05')
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市南区')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+            ->入力_電話番号('111-111-111')
+            ->登録する();
+
+        // 会員情報・編集画面にて、登録ボタンをクリック
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * customer_delivery_deleteでのスロットリングのテスト
+     * customer_delivery_newでの制限に引っかかるため、customer_delivery_newのlimiter上限値を変更してから実施してください。
+     *
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function 配送先情報_削除(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T14_配送先情報_削除');
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を追加します。：'.$i);
+            $I->wait(10);
+
+            // TOPページ>マイページ>お届け先編集
+            MyPage::go($I)->お届け先編集()->追加();
+
+            CustomerAddressEditPage::at($I)
+                ->入力_姓('姓0501')
+                ->入力_名('名0501')
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市西区')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+                ->入力_電話番号('111-111-111')
+                ->登録する();
+         }
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を削除します。：'.$i);
+            CustomerAddressListPage::at($I)
+                ->削除(1);
+        }
+
+        $I->expect('試行回数上限を超過します');
+        $I->wait(10);
+
+        // TOPページ>マイページ>お届け先編集
+        MyPage::go($I)->お届け先編集()->追加();
+
+        CustomerAddressEditPage::at($I)
+            ->入力_姓('姓0501')
+            ->入力_名('名0501')
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市西区')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
+            ->入力_電話番号('111-111-111')
+            ->登録する();
+
+        $I->wait(1);
+
+        $I->expect('お届け先を削除します。');
+        CustomerAddressListPage::at($I)
+            ->削除(1);
+
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function order_お届け先追加(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T15_order_お届け先追加');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $nameSei = 'あいおい0302';
+        $nameMei = '名0302';
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+        ShoppingPage::at($I)->お届け先追加();
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を追加します。：'.$i);
+            // 新規お届け先追加
+            MultipleShippingPage::at($I)->新規お届け先を追加する();
+
+            CustomerAddressAddPage::at($I)
+                ->入力_姓($nameSei)
+                ->入力_名($nameMei)
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市北区2')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+                ->入力_電話番号('222-222-222')
+                ->登録する();
+
+            $I->wait(1);
+        }
+
+        // 新規お届け先追加
+        MultipleShippingPage::at($I)->新規お届け先を追加する();
+
+        CustomerAddressAddPage::at($I)
+            ->入力_姓($nameSei)
+            ->入力_名($nameMei)
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区2')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+            ->入力_電話番号('222-222-222')
+            ->登録する();
+
+        $I->wait(1);
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
+    public function order_お届け先変更(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T15_order_お届け先追加');
+        $I->logoutAsMember();
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+
+        $nameSei = 'あいおい0302';
+        $nameMei = '名0302';
+
+        // 商品詳細パーコレータ カートへ
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        // ログイン
+        ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
+
+        for ($i = 0; $i < 10; $i++) {
+            $I->expect('お届け先を変更します。：'.$i);
+            // 新規お届け先追加
+            ShoppingPage::at($I)->お届け先変更();
+
+            CustomerAddressChangePage::at($I)->go($I)
+                ->入力_姓($nameSei)
+                ->入力_名($nameMei)
+                ->入力_セイ('セイ')
+                ->入力_メイ('メイ')
+                ->入力_郵便番号('530-0001')
+                ->入力_都道府県(['value' => '27'])
+                ->入力_市区町村名('大阪市北区2')
+                ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+                ->入力_電話番号('222-222-222')
+                ->登録する();
+
+            $I->wait(1);
+        }
+
+        // 新規お届け先追加
+        ShoppingPage::at($I)->お届け先変更();
+
+        CustomerAddressChangePage::at($I)->go($I)
+            ->入力_姓($nameSei)
+            ->入力_名($nameMei)
+            ->入力_セイ('セイ')
+            ->入力_メイ('メイ')
+            ->入力_郵便番号('530-0001')
+            ->入力_都道府県(['value' => '27'])
+            ->入力_市区町村名('大阪市北区2')
+            ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F2')
+            ->入力_電話番号('222-222-222')
+            ->登録する();
+
+        $I->wait(1);
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 }

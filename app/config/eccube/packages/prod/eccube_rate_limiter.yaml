@@ -14,6 +14,42 @@ eccube:
             type: ip
             limit: 5
             interval: '30 minutes'
+        mypage_change:
+            route: mypage_change
+            method: [ 'POST' ]
+            type: customer
+            limit: 10
+            interval: '30 minutes'
+        mypage_delivery_new:
+            route: mypage_delivery_new
+            method: [ 'POST' ]
+            type: customer
+            limit: 10
+            interval: '30 minutes'
+        mypage_delivery_edit:
+            route: mypage_delivery_edit
+            method: [ 'POST' ]
+            type: customer
+            limit: 10
+            interval: '30 minutes'
+        mypage_delivery_delete:
+            route: mypage_delivery_delete
+            method: [ 'DELETE' ]
+            type: customer
+            limit: 10
+            interval: '30 minutes'
+        shopping_shipping_multiple_edit_customer:
+            route: shopping_shipping_multiple_edit
+            method: [ 'POST' ]
+            type: customer
+            limit: 10
+            interval: '30 minutes'
+        shopping_shipping_edit_customer:
+            route: shopping_shipping_edit
+            method: [ 'POST' ]
+            type: customer
+            limit: 10
+            interval: '30 minutes'
         contact:
             route: contact
             method: [ 'POST' ]
@@ -27,6 +63,14 @@ eccube:
             limit: 25
             interval: '30 minutes'
         shopping_confirm_customer:
+            route: ~
+            limit: 10
+            interval: '30 minutes'
+        shopping_checkout_ip:
+            route: ~
+            limit: 25
+            interval: '30 minutes'
+        shopping_checkout_customer:
             route: ~
             limit: 10
             interval: '30 minutes'
