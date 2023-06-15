@@ -197,7 +197,7 @@ class PL01RecommendCest
         $I->clickWithLeftButton('.btn.btn-default.btn-sm');
         $I->fillField('#recommend_product_comment', '説明分テスト');
         $I->clickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
-        $I->see('おすすめ商品を登録しました。');
+        $I->retrySee('おすすめ商品を登録しました。');
         $I->see('sand-01');
         $I->see('説明分テスト');
         // フロント側チェック

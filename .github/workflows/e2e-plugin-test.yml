@@ -296,7 +296,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           DATE_LOCALE: 'en-us'
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g e2e_priority_plugin -x install -x uninstall --html main-report.html codeception/acceptance/Plugin/E2E
+        run: vendor/bin/codecept -vvv run acceptance --fail-fast 1 --env chrome,github_action -g e2e_priority_plugin -x install -x uninstall --html main-report.html codeception/acceptance/Plugin/E2E
       - name: Codeception (Main Process Testing)
         env:
           APP_ENV: 'dev'
@@ -308,7 +308,7 @@ jobs:
           GROUP: ${{ matrix.group }}
           DATE_LOCALE: 'en-us'
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g main -x e2e_priority_plugin --html main-report.html codeception/acceptance/Plugin/E2E
+        run: vendor/bin/codecept -vvv run acceptance --fail-fast 1 --env chrome,github_action -g main -x e2e_priority_plugin --html main-report.html codeception/acceptance/Plugin/E2E
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2

@@ -97,7 +97,7 @@ class PL02CouponCest
         $I->clickWithLeftButton('#coupon_coupon_type_2');
         $I->retryDontSee('商品情報');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
-        $I->see('クーポンを登録しました。');
+        $I->retrySee('クーポンを登録しました。');
         $couponRow = Locator::contains('//tr', 'ap_sd ' . $attachName);
         $I->see('ap_sd ' . $attachName, $couponRow);
         $I->see('有効', $couponRow);

@@ -169,7 +169,7 @@ class PL12MakerCest
         $I->selectOption('#admin_product_Maker', $brandName);
         $I->fillField('#admin_product_maker_url', $brandUrl);
         $I->click(Locator::contains('//button', '登録'));
-        $I->see('保存しました');
+        $I->retrySee('保存しました');
         $I->seeOptionIsSelected('#admin_product_Maker', $brandName);
         $I->seeInField('#admin_product_maker_url', $brandUrl);
 
@@ -205,7 +205,7 @@ class PL12MakerCest
         $I->selectOption('#admin_product_Maker', "");
         $I->fillField('#admin_product_maker_url', "");
         $I->click(Locator::contains('//button', '登録'));
-        $I->see('保存しました');
+        $I->retrySee('保存しました');
         $I->seeOptionIsSelected('#admin_product_Maker', "");
         $I->seeInField('#admin_product_maker_url', "");
 
