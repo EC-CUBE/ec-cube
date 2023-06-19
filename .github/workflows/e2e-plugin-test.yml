@@ -206,7 +206,7 @@ jobs:
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
         with:
-          chromedriver-version: '110.0.5481.30'
+          chromedriver-version: '112.0.5615.49'
       - name: Run Google Chrome in Japanese Language
         run: |
           sed '2 i export LANGUAGE=ja_JP' /opt/google/chrome/google-chrome
