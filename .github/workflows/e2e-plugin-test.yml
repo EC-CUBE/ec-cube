@@ -205,8 +205,6 @@ jobs:
 #          bin/console eccube:plugin:enable --code=Api42 --env=dev
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
-        with:
-          chromedriver-version: '112.0.5615.49'
       - name: Run Google Chrome in Japanese Language
         run: |
           sed '2 i export LANGUAGE=ja_JP' /opt/google/chrome/google-chrome
