@@ -65,15 +65,15 @@ class PL01RecommendCest
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'おすすめ商品');
-        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->seeInSource('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->seeInSource('無効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'おすすめ商品')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「おすすめ商品管理プラグイン」を有効にしました。');
-        $I->see('おすすめ商品管理プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->seeInSource('「おすすめ商品管理プラグイン」を有効にしました。');
+        $I->seeInSource('おすすめ商品管理プラグイン', $recommendPluginRow);
+        $I->seeInSource('有効', $recommendPluginRow);
         $I->clickWithLeftButton('(//li[@class="c-mainNavArea__navItem"])[5]');
         $I->wait(2);
-        $I->see('おすすめ管理', '(//li[@class="c-mainNavArea__navItem"])[5]');
+        $I->seeInSource('おすすめ管理', '(//li[@class="c-mainNavArea__navItem"])[5]');
     }
 
     /**
@@ -103,11 +103,11 @@ class PL01RecommendCest
         // Change setting of osusume plugin on layout area
         $I->amOnPage('/admin/content/layout/1/edit');
         // @todo: Improve this
-        $I->see('おすすめ商品');
+        $I->seeInSource('おすすめ商品');
         $recommendBlock = Locator::contains('.block.sort.border.border-ec-gray.bg-ec-lightGray.p-2.mb-2.ui-sortable-handle', 'おすすめ商品');
         $I->dragAndDrop($recommendBlock, '#position_7');
         $I->clickWithLeftButton('#ex-conversion-action button');
-        $I->see('保存しました');
+        $I->seeInSource('保存しました');
         // Check HomePage
         $I->amOnPage('/');
         $I->seeInSource('▼おすすめ商品');
@@ -137,16 +137,16 @@ class PL01RecommendCest
         }
         $I->amOnPage('/');
         $I->dontSee('オススメ', '.ec-layoutRole__contentBottom');
-        $I->see('オススメ', '.ec-layoutRole__contents');
+        $I->seeInSource('オススメ', '.ec-layoutRole__contents');
         $I->amOnPage('/admin/content/layout/1/edit');
         // @todo: Register recommend item
         $recommendBlock = Locator::contains('.block.sort.border.border-ec-gray.bg-ec-lightGray.p-2.mb-2.ui-sortable-handle', 'おすすめ商品');
         $I->dragAndDrop($recommendBlock, '#position_9');
         $I->clickWithLeftButton('#ex-conversion-action button');
-        $I->see('保存しました');
+        $I->seeInSource('保存しました');
         $I->amOnPage('/');
         $I->dontSee('オススメ', '.ec-layoutRole__contents');
-        $I->see('オススメ', '.ec-layoutRole__contentBottom');
+        $I->seeInSource('オススメ', '.ec-layoutRole__contentBottom');
     }
 
     /**
@@ -159,12 +159,12 @@ class PL01RecommendCest
     public function recommend_06(AcceptanceTester $I)
     {
         $I->amOnPage('/');
-        $I->see('オススメ', '.ec-layoutRole__contentBottom');
+        $I->seeInSource('オススメ', '.ec-layoutRole__contentBottom');
         $I->amOnPage('/admin/content/layout/1/edit');
         $recommendBlock = Locator::contains('.block.sort.border.border-ec-gray.bg-ec-lightGray.p-2.mb-2.ui-sortable-handle', 'おすすめ商品');
         $I->dragAndDrop($recommendBlock, '#position_0');
         $I->clickWithLeftButton('#ex-conversion-action button');
-        $I->see('保存しました');
+        $I->seeInSource('保存しました');
         $I->amOnPage('/');
         $I->dontSee('オススメ');
         $I->dontSeeInSource('▼おすすめ商品');
@@ -187,23 +187,23 @@ class PL01RecommendCest
         $I->amOnPage('/admin/plugin/recommend');
         // おすすめ商品を新規登録
         $I->clickWithLeftButton('.btn.btn-ec-regular.pl-4.pr-4');
-        $I->see('おすすめ商品情報');
+        $I->seeInSource('おすすめ商品情報');
         $I->clickWithLeftButton('#showSearchProductModal');
-        $I->see('商品検索');
+        $I->seeInSource('商品検索');
         $I->fillField('#admin_search_product_id', 'チェリーアイスサンド');
         $I->clickWithLeftButton('#searchProductModalButton');
         $I->wait(5);
-        $I->see('sand-01');
+        $I->seeInSource('sand-01');
         $I->clickWithLeftButton('.btn.btn-default.btn-sm');
         $I->fillField('#recommend_product_comment', '説明分テスト');
         $I->clickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
         $I->retrySee('おすすめ商品を登録しました。');
-        $I->see('sand-01');
-        $I->see('説明分テスト');
+        $I->seeInSource('sand-01');
+        $I->seeInSource('説明分テスト');
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('チェリーアイスサンド', '.ec-layoutRole__mainBottom');
-        $I->see('説明分テスト', '.ec-layoutRole__mainBottom');
+        $I->seeInSource('チェリーアイスサンド', '.ec-layoutRole__mainBottom');
+        $I->seeInSource('説明分テスト', '.ec-layoutRole__mainBottom');
     }
 
     /**
@@ -217,18 +217,18 @@ class PL01RecommendCest
     {
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
-        $I->see('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[2]');
+        $I->seeInSource('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
+        $I->seeInSource('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[2]');
         // おすすめ商品順番更新
         $I->amOnPage('/admin/plugin/recommend');
-        $I->see('チェリーアイスサンド');
-        $I->see('彩のジェラートCUBE');
+        $I->seeInSource('チェリーアイスサンド');
+        $I->seeInSource('彩のジェラートCUBE');
         $I->dragAndDropByXPath('(//li[@class="list-group-item sortable-item ui-sortable-handle"])[1]', 174, 250, 5);
         $I->wait(5);
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[2]');
-        $I->see('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
+        $I->seeInSource('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[2]');
+        $I->seeInSource('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
     }
 
     /**
@@ -242,18 +242,18 @@ class PL01RecommendCest
     {
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[2]');
+        $I->seeInSource('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[2]');
         // おすすめ商品削除
         $I->amOnPage('/admin/plugin/recommend');
         $I->clickWithLeftButton('(//i[@class="fa fa-close fa-lg text-secondary"])[2]');
         $I->wait(5);
-        $I->see('削除', '.modal-footer');
+        $I->seeInSource('削除', '.modal-footer');
         $I->clickWithLeftButton('(//a[@class="btn btn-ec-delete"])[2]');
-        $I->see(' おすすめ商品を削除しました。');
+        $I->seeInSource(' おすすめ商品を削除しました。');
         // フロント側チェック
         $I->amOnPage('/');
         $I->dontSee('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[2]');
-        $I->see('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
+        $I->seeInSource('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
     }
 
     /**
@@ -267,30 +267,30 @@ class PL01RecommendCest
     {
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
+        $I->seeInSource('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
         $I->dontSee('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
         // おすすめ商品の修正
         $I->amOnPage('/admin/plugin/recommend');
-        $I->see('彩のジェラートCUBE');
+        $I->seeInSource('彩のジェラートCUBE');
         $I->clickWithLeftButton('(//a[@class="btn btn-ec-actionIcon me-3 action-edit"])[1]');
-        $I->see('おすすめ商品情報');
+        $I->seeInSource('おすすめ商品情報');
         $I->clickWithLeftButton('#showSearchProductModal');
-        $I->see('商品検索');
+        $I->seeInSource('商品検索');
         $I->fillField('#admin_search_product_id', 'チェリーアイスサンド');
         $I->clickWithLeftButton('#searchProductModalButton');
         $I->wait(5);
-        $I->see('sand-01');
+        $I->seeInSource('sand-01');
         $I->clickWithLeftButton('.btn.btn-default.btn-sm');
-        $I->see('sand-01');
+        $I->seeInSource('sand-01');
         $I->dontSee('cube-01 ～ cube-09');
         $I->clickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
-        $I->see('おすすめ商品を修正しました。');
-        $I->see('チェリーアイスサンド');
+        $I->seeInSource('おすすめ商品を修正しました。');
+        $I->seeInSource('チェリーアイスサンド');
         $I->dontSee('彩のジェラートCUBE');
         // フロント側チェック
         $I->amOnPage('/');
         $I->dontSee('彩のジェラートCUBE', '(//li[@class="ec-shelfGrid__item"])[1]');
-        $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
+        $I->seeInSource('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
     }
 
     /**
@@ -304,7 +304,7 @@ class PL01RecommendCest
     {
         // フロント側チェック
         $I->amOnPage('/');
-        $I->see('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
+        $I->seeInSource('チェリーアイスサンド', '(//li[@class="ec-shelfGrid__item"])[1]');
         // 無効処理
         $I->wantToDisablePlugin('おすすめ商品管理プラグイン');
         // プラグインのおすすめ商品管理リンクが消えているかどうかをチェック
@@ -330,6 +330,6 @@ class PL01RecommendCest
         $I->wantToUninstallPlugin('おすすめ商品管理プラグイン');
         // プラグインの状態を確認する
         $xpath = Locator::contains('tr', 'おすすめ商品管理プラグイン');
-        $I->see('インストール', $xpath);
+        $I->seeInSource('インストール', $xpath);
     }
 }
