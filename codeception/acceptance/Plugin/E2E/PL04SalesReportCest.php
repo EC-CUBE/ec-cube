@@ -35,6 +35,7 @@ class PL04SalesReportCest
 {
     public function _before(AcceptanceTester $I)
     {
+        $I->retry(5, 200);
         $I->loginAsAdmin();
     }
 
@@ -63,12 +64,12 @@ class PL04SalesReportCest
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', '売上集計プラグイン');
-        $I->see('売上集計プラグイン');
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('売上集計プラグイン');
+        $I->retrySee('無効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'売上集計プラグイン')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「売上集計プラグイン」を有効にしました。');
-        $I->see('売上集計プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('「売上集計プラグイン」を有効にしました。');
+        $I->retrySee('売上集計プラグイン', $recommendPluginRow);
+        $I->retrySee('有効', $recommendPluginRow);
     }
 
     /**
@@ -78,7 +79,7 @@ class PL04SalesReportCest
      */
     public function sales_03(AcceptanceTester $I)
     {
-        // See Empty Orders Page
+        // retrySee Empty Orders Page
         $I->retry(10, 200);
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -99,8 +100,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
-        $I->see('売上管理');
-        $I->see('期間別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('期間別集計');
         $I->selectOption('#sales_report_monthly_year', '2022');
         $I->selectOption('#sales_report_monthly_month', '6');
         $I->clickWithLeftButton(Locator::contains('//button', '月度で集計'));
@@ -151,7 +152,7 @@ class PL04SalesReportCest
                 $rawData = (int) filter_var($genderData, FILTER_SANITIZE_NUMBER_INT);
                 $I->assertNotEquals(0, $rawData);
             }
-            $I->see(Carbon::instance($newOrders[$y - 3]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
+            $I->retrySee(Carbon::instance($newOrders[$y - 3]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
         }
     }
 
@@ -162,7 +163,7 @@ class PL04SalesReportCest
      */
     public function sales_04(AcceptanceTester $I)
     {
-        // See Empty Orders Page
+        // retrySee Empty Orders Page
         $I->retry(10, 200);
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -184,8 +185,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
-        $I->see('売上管理');
-        $I->see('期間別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('期間別集計');
 
         // Hacky way of filling dates without assigning offset of pointer to input field
         $this->inputDateTimeFields($I, '2022-04-01', '2022-05-31');
@@ -233,7 +234,7 @@ class PL04SalesReportCest
                 $I->assertNotEquals(0, $rawData);
             }
 
-            $I->see(Carbon::instance($newOrders[$y - 2]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
+            $I->retrySee(Carbon::instance($newOrders[$y - 2]->getOrderDate())->format('Y-m-d'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y));
         }
     }
 
@@ -245,7 +246,7 @@ class PL04SalesReportCest
      */
     public function sales_05(AcceptanceTester $I)
     {
-        // See Empty Orders Page
+        // retrySee Empty Orders Page
         $I->retry(10, 200);
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -268,8 +269,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
-        $I->see('売上管理');
-        $I->see('期間別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('期間別集計');
 
         // 月別
         $I->checkOption('#sales_report_unit_1');
@@ -321,7 +322,7 @@ class PL04SalesReportCest
                 $I->assertNotEquals(0, $rawData);
             }
 
-            $I->see(Carbon::create(2022, $y, 2)->format('Y-m'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
+            $I->retrySee(Carbon::create(2022, $y, 2)->format('Y-m'), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
         }
     }
 
@@ -332,7 +333,7 @@ class PL04SalesReportCest
      */
     public function sales_06(AcceptanceTester $I)
     {
-        // See Empty Orders Page
+        // retrySee Empty Orders Page
         $I->retry(10, 200);
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -355,8 +356,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
-        $I->see('売上管理');
-        $I->see('期間別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('期間別集計');
 
 
         // 曜日別
@@ -409,7 +410,7 @@ class PL04SalesReportCest
                 $I->assertNotEquals(0, $rawData);
             }
 
-            $I->see($daysOfWeek[$y - 1], sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
+            $I->retrySee($daysOfWeek[$y - 1], sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 1));
         }
     }
 
@@ -420,7 +421,7 @@ class PL04SalesReportCest
      */
     public function sales_07(AcceptanceTester $I)
     {
-        // See Empty Orders Page
+        // retrySee Empty Orders Page
         $I->retry(10, 200);
 
         $createCustomer = Fixtures::get('createCustomer');
@@ -442,8 +443,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/term');
-        $I->see('売上管理');
-        $I->see('期間別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('期間別集計');
 
         // 曜日別
         $I->checkOption('#sales_report_unit_3');
@@ -491,7 +492,7 @@ class PL04SalesReportCest
                 $I->assertNotEquals(0, $rawData);
             }
 
-            $I->see(str_pad($y, 2, '0', STR_PAD_LEFT), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 2));
+            $I->retrySee(str_pad($y, 2, '0', STR_PAD_LEFT), sprintf("(//table[@id='term-table']//tr)[%s]//td[1]", $y + 2));
         }
     }
 
@@ -524,8 +525,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/product');
-        $I->see('売上管理');
-        $I->see('商品別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('商品別集計');
 
 
         $I->selectOption('#sales_report_monthly_year', '2022');
@@ -548,8 +549,8 @@ class PL04SalesReportCest
         $I->assertNotEmpty((json_decode($graphData))->datasets);
 
         foreach ($newOrders as $order) {
-            $I->see($order->getProductOrderItems()[0]->getProductCode());
-            $I->see($order->getProductOrderItems()[0]->getProductName());
+            $I->retrySee($order->getProductOrderItems()[0]->getProductCode());
+            $I->retrySee($order->getProductOrderItems()[0]->getProductName());
         }
     }
 
@@ -582,8 +583,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/product');
-        $I->see('売上管理');
-        $I->see('商品別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('商品別集計');
 
         $this->inputDateTimeFields($I, '2022-04-01', '2022-04-02');
         $I->clickWithLeftButton(Locator::contains('//button', '期間で集計'));
@@ -604,8 +605,8 @@ class PL04SalesReportCest
         $I->assertNotEmpty((json_decode($graphData))->datasets);
 
         foreach ($newOrders as $order) {
-            $I->see($order->getProductOrderItems()[0]->getProductCode());
-            $I->see($order->getProductOrderItems()[0]->getProductName());
+            $I->retrySee($order->getProductOrderItems()[0]->getProductCode());
+            $I->retrySee($order->getProductOrderItems()[0]->getProductName());
         }
     }
 
@@ -638,8 +639,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/age');
-        $I->see('売上管理');
-        $I->see('年代別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('年代別集計');
 
 
         $I->selectOption('#sales_report_monthly_year', '2022');
@@ -661,7 +662,7 @@ class PL04SalesReportCest
         $I->assertNotEmpty((json_decode($graphData))->labels);
         $I->assertNotEmpty((json_decode($graphData))->datasets);
 
-        $I->see('0代');
+        $I->retrySee('0代');
         $I->dontSee('￥0');
     }
 
@@ -694,8 +695,8 @@ class PL04SalesReportCest
         $I->comment('Generated Sales Data...');
 
         $I->amOnPage('/admin/plugin/sales_report/age');
-        $I->see('売上管理');
-        $I->see('年代別集計');
+        $I->retrySee('売上管理');
+        $I->retrySee('年代別集計');
 
 
         $this->inputDateTimeFields($I, '2022-04-01', '2022-04-02');
@@ -716,7 +717,7 @@ class PL04SalesReportCest
         $I->assertNotEmpty((json_decode($graphData))->labels);
         $I->assertNotEmpty((json_decode($graphData))->datasets);
 
-        $I->see('0代');
+        $I->retrySee('0代');
         $I->dontSee('￥0');
     }
 
@@ -729,12 +730,12 @@ class PL04SalesReportCest
 // 無効処理
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', '売上集計プラグイン');
-        $I->see('売上集計プラグイン', "//tr[contains(.,'売上集計プラグイン')]");
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('売上集計プラグイン', "//tr[contains(.,'売上集計プラグイン')]");
+        $I->retrySee('有効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'売上集計プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「売上集計プラグイン」を無効にしました。');
-        $I->see('売上集計プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('「売上集計プラグイン」を無効にしました。');
+        $I->retrySee('売上集計プラグイン', $recommendPluginRow);
+        $I->retrySee('無効', $recommendPluginRow);
     }
 
     /**
@@ -749,7 +750,7 @@ class PL04SalesReportCest
         $I->wantToUninstallPlugin('売上集計プラグイン');
         // プラグインの状態を確認する
         $xpath = Locator::contains('tr', '売上集計プラグイン');
-        $I->see('インストール', $xpath);
+        $I->retrySee('インストール', $xpath);
     }
 
 

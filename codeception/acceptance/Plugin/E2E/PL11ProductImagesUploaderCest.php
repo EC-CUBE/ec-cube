@@ -30,6 +30,7 @@ class PL11ProductImagesUploaderCest
      */
     public function _before(AcceptanceTester $I)
     {
+        $I->retry(5, 200);
         $I->loginAsAdmin();
     }
 
@@ -54,12 +55,12 @@ class PL11ProductImagesUploaderCest
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', '商品画像一括アップロードプラグイン');
-        $I->see('商品画像一括アップロードプラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('商品画像一括アップロードプラグイン', $recommendPluginRow);
+        $I->retrySee('無効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'商品画像一括アップロードプラグイン')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「商品画像一括アップロードプラグイン」を有効にしました。');
-        $I->see('商品画像一括アップロードプラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('「商品画像一括アップロードプラグイン」を有効にしました。');
+        $I->retrySee('商品画像一括アップロードプラグイン', $recommendPluginRow);
+        $I->retrySee('有効', $recommendPluginRow);
     }
 
     /**
@@ -70,11 +71,11 @@ class PL11ProductImagesUploaderCest
     public function images_uploader_03(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/product_images_uploader/config');
-        $I->see('商品画像一括アップロードプラグイン');
-        $I->see('商品画像');
+        $I->retrySee('商品画像一括アップロードプラグイン');
+        $I->retrySee('商品画像');
         $I->attachFile('#config_image_file', 'plugins/e2e/PL11ProductImagesUploaderCest/cakes.zip');
         $I->clickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
-        $I->see('ファイルをアップロードしました。');
+        $I->retrySee('ファイルをアップロードしました。');
         assertFileExists(__DIR__.'/../../../../html/upload/save_image/muffin.jpg');
         assertFileExists(__DIR__.'/../../../../html/upload/save_image/blueberry.jpg');
         assertFileExists(__DIR__.'/../../../../html/upload/save_image/tart.jpg');
@@ -90,12 +91,12 @@ class PL11ProductImagesUploaderCest
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', '商品画像一括アップロードプラグイン');
-        $I->see('商品画像一括アップロードプラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('商品画像一括アップロードプラグイン', $recommendPluginRow);
+        $I->retrySee('有効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'商品画像一括アップロードプラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「商品画像一括アップロードプラグイン」を無効にしました。');
-        $I->see('商品画像一括アップロードプラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('「商品画像一括アップロードプラグイン」を無効にしました。');
+        $I->retrySee('商品画像一括アップロードプラグイン', $recommendPluginRow);
+        $I->retrySee('無効', $recommendPluginRow);
     }
 
     /**

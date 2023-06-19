@@ -33,6 +33,7 @@ class PL03MailMagazineCest
 
     public function _before(AcceptanceTester $I)
     {
+        $I->retry(5, 200);
         $I->loginAsAdmin();
     }
 
@@ -61,12 +62,12 @@ class PL03MailMagazineCest
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'メールマガジンプラグイン');
-        $I->see('メールマガジンプラグイン');
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('メールマガジンプラグイン');
+        $I->retrySee('無効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'メールマガジンプラグイン')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「メールマガジンプラグイン」を有効にしました。');
-        $I->see('メールマガジンプラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('「メールマガジンプラグイン」を有効にしました。');
+        $I->retrySee('メールマガジンプラグイン', $recommendPluginRow);
+        $I->retrySee('有効', $recommendPluginRow);
     }
 
     /**
@@ -79,12 +80,12 @@ class PL03MailMagazineCest
         $I->retry(7, 400);
         $I->generateCustomerAndLogin();
         $I->amOnPage('/mypage/change');
-        $I->see('メールマガジン送付について');
+        $I->retrySee('メールマガジン送付について');
         $I->dontSeeCheckboxIsChecked('#entry_mailmaga_flg_1');
         $I->dontSeeCheckboxIsChecked('#entry_mailmaga_flg_0');
         $I->checkOption('#entry_mailmaga_flg_0');
         $I->clickWithLeftButton(Locator::contains('//button', '登録する'));
-        $I->see('会員登録内容の変更が完了いたしました');
+        $I->retrySee('会員登録内容の変更が完了いたしました');
         $I->amOnPage('/mypage/change');
         $I->seeCheckboxIsChecked('#entry_mailmaga_flg_0');
         $I->dontSeeCheckboxIsChecked('#entry_mailmaga_flg_1');
@@ -121,8 +122,8 @@ class PL03MailMagazineCest
         $I->checkOption('#entry_user_policy_check');
         $I->clickWithLeftButton('//div[@class="ec-registerRole__actions"]//button[@type="submit"][@class="ec-blockBtn--action"]');
         $mailMagazineSection = Locator::contains('//dl', 'メールマガジン送付について');
-        $I->see('メールマガジン送付について', $mailMagazineSection);
-        $I->see('受け取る', $mailMagazineSection);
+        $I->retrySee('メールマガジン送付について', $mailMagazineSection);
+        $I->retrySee('受け取る', $mailMagazineSection);
         $I->clickWithLeftButton('//div[@class="ec-registerRole__actions"]//button[@type="submit"][@class="ec-blockBtn--action"]');
         $I->retrySee('会員登録ありがとうございます');
         // Check User without logging in.
@@ -143,7 +144,7 @@ class PL03MailMagazineCest
         $I->retry(7, 400);
         $I->generateCustomerAndLogin();
         $I->amOnPage(sprintf('/admin/customer/%s/edit', $I->asACustomer->getId()));
-        $I->see('メールマガジン送付について');
+        $I->retrySee('メールマガジン送付について');
         $I->dontSeeCheckboxIsChecked('#admin_customer_mailmaga_flg_0');
         $I->dontSeeCheckboxIsChecked('#admin_customer_mailmaga_flg_1');
         $I->checkOption('#admin_customer_mailmaga_flg_0');
@@ -175,14 +176,14 @@ class PL03MailMagazineCest
 
         $I->amOnPage('admin/plugin/mail_magazine/template');
         $I->clickWithLeftButton(Locator::contains('//a', 'テンプレートを新規登録'));
-        $I->see('テンプレート設定');
-        $I->see('テンプレート編集');
+        $I->retrySee('テンプレート設定');
+        $I->retrySee('テンプレート編集');
         $I->fillField('#mail_magazine_template_edit_subject', $Subject);
         $I->fillField('#mail_magazine_template_edit_body', $Body);
         $I->fillField('#mail_magazine_template_edit_htmlBody', $HtmlBody);
         $I->clickWithLeftButton(Locator::contains('//button', '登録'));
-        $I->see('メールテンプレート情報を保存しました。');
-        $I->see($Subject);
+        $I->retrySee('メールテンプレート情報を保存しました。');
+        $I->retrySee($Subject);
 
         $I->seeInRepository(MailMagazineTemplate::class, [
             'subject' => $Subject
@@ -205,7 +206,7 @@ class PL03MailMagazineCest
         $I->clickWithLeftButton($targetLine . Locator::contains('//a', '削除'));
         $I->retrySee('このテンプレートを削除しても宜しいですか？');
         $I->clickWithLeftButton(Locator::contains('//div[@class="modal show"]//button', '削除'));
-        $I->see('メールテンプレート情報を削除しました。');
+        $I->retrySee('メールテンプレート情報を削除しました。');
         $I->dontSee($SubjectID);
     }
 
@@ -229,10 +230,10 @@ class PL03MailMagazineCest
         $I->seeInField('#mail_magazine_body', $this->Body);
 //        $I->seeInField('#mail_magazine_htmlBody', $this->HtmlBody);
         $I->clickWithLeftButton(Locator::contains('//button', '確認画面へ'));
-        $I->see('配信内容の確認');
-        $I->see($this->Subject);
-        $I->see($this->Body);
-//        $I->see($this->HtmlBody);
+        $I->retrySee('配信内容の確認');
+        $I->retrySee($this->Subject);
+        $I->retrySee($this->Body);
+//        $I->retrySee($this->HtmlBody);
         $I->clickWithLeftButton('#sendMailMagazine');
         $I->acceptPopup();
         //$I->waitForText('送信中', 20);
@@ -260,7 +261,7 @@ class PL03MailMagazineCest
         $I->click($testRow. Locator::contains('//a', '削除'));
         $I->retrySee('この履歴を削除してもよろしいですか？');
         $I->clickWithLeftButton('.modal.show button.btn-ec-delete');
-        $I->see('配信履歴を削除しました。');
+        $I->retrySee('配信履歴を削除しました。');
     }
 
     /**
@@ -302,7 +303,7 @@ class PL03MailMagazineCest
                 break;
         }
         $I->clickWithLeftButton(Locator::contains('//button', '検索'));
-        $I->see($uniqueIdentifiers['correctId']);
+        $I->retrySee($uniqueIdentifiers['correctId']);
         $I->dontSee($uniqueIdentifiers['incorrectId']);
         $I->clickWithLeftButton(Locator::contains('//button', '配信内容を作成する'));
 
@@ -311,9 +312,9 @@ class PL03MailMagazineCest
         $I->seeInField('#mail_magazine_subject', $this->Subject);
         $I->seeInField('#mail_magazine_body', $this->Body);
         $I->clickWithLeftButton(Locator::contains('//button', '確認画面へ'));
-        $I->see('配信内容の確認');
-        $I->see($this->Subject);
-        $I->see($this->Body);
+        $I->retrySee('配信内容の確認');
+        $I->retrySee($this->Subject);
+        $I->retrySee($this->Body);
         $I->clickWithLeftButton('#sendMailMagazine');
         $I->acceptPopup();
         //$I->waitForText('送信中', 20);
@@ -330,29 +331,29 @@ class PL03MailMagazineCest
         switch ($example['action_id'])
         {
             case('mail_magazine_sex_1'):
-                $I->see('男性', Locator::contains('//tr', '性別'));
+                $I->retrySee('男性', Locator::contains('//tr', '性別'));
                 break;
             case('mail_magazine_birth_month'):
-                $I->see('1', Locator::contains('//tr', '誕生月'));
+                $I->retrySee('1', Locator::contains('//tr', '誕生月'));
                 break;
             case('mail_magazine_birth_start'):
-                $I->see('2000/01/01', Locator::contains('//tr', '誕生日'));
+                $I->retrySee('2000/01/01', Locator::contains('//tr', '誕生日'));
                 break;
             case('mail_magazine_buy_product_name'):
-                $I->see('彩のジェラートCUBE', Locator::contains('//tr', '購入商品名'));
+                $I->retrySee('彩のジェラートCUBE', Locator::contains('//tr', '購入商品名'));
                 break;
         }
         $I->moveBack();
         // Preview Mode
         $testRow = Locator::contains('//tr', $this->Subject);
         $I->click($testRow. Locator::contains('//a', 'プレビュー'));
-        $I->see($this->Subject);
+        $I->retrySee($this->Subject);
         $I->moveBack();
 
         // Receipt Mode
         $testRow = Locator::contains('//tr', $this->Subject);
         $I->click($testRow. Locator::contains('//a', '配信結果'));
-        $I->see($uniqueIdentifiers['correctId']);
+        $I->retrySee($uniqueIdentifiers['correctId']);
         $I->dontSee($uniqueIdentifiers['incorrectId']);
     }
 
@@ -377,12 +378,12 @@ class PL03MailMagazineCest
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'メールマガジンプラグイン');
-        $I->see('メールマガジンプラグイン', "//tr[contains(.,'メールマガジンプラグイン')]");
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('メールマガジンプラグイン', "//tr[contains(.,'メールマガジンプラグイン')]");
+        $I->retrySee('有効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'メールマガジンプラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「メールマガジンプラグイン」を無効にしました。');
-        $I->see('メールマガジンプラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('「メールマガジンプラグイン」を無効にしました。');
+        $I->retrySee('メールマガジンプラグイン', $recommendPluginRow);
+        $I->retrySee('無効', $recommendPluginRow);
     }
 
     /**
@@ -398,7 +399,7 @@ class PL03MailMagazineCest
         $I->wantToUninstallPlugin('メールマガジンプラグイン');
         // プラグインの状態を確認する
         $xpath = Locator::contains('tr', 'メルマガ管理プラグイン');
-        $I->see('インストール', $xpath);
+        $I->retrySee('インストール', $xpath);
     }
 
     public function getSymfonyService(string $id)
@@ -418,7 +419,7 @@ class PL03MailMagazineCest
                 $I->checkOption('#entry_sex_1');
                 $I->checkOption('#entry_mailmaga_flg_0');
                 $I->clickWithLeftButton('.ec-blockBtn--cancel');
-                $I->see('会員登録内容の変更が完了いたしました');
+                $I->retrySee('会員登録内容の変更が完了いたしました');
                 $I->amOnPage('/mypage/change');
                 $I->seeCheckboxIsChecked('#entry_sex_1');
                 $I->checkOption('#entry_mailmaga_flg_0');
@@ -429,7 +430,7 @@ class PL03MailMagazineCest
                 $I->checkOption('#entry_sex_2');
                 $I->checkOption('#entry_mailmaga_flg_0');
                 $I->clickWithLeftButton('.ec-blockBtn--cancel');
-                $I->see('会員登録内容の変更が完了いたしました');
+                $I->retrySee('会員登録内容の変更が完了いたしました');
                 $I->amOnPage('/mypage/change');
                 $I->seeCheckboxIsChecked('#entry_sex_2');
                 $I->seeCheckboxIsChecked('#entry_mailmaga_flg_0');
@@ -440,7 +441,7 @@ class PL03MailMagazineCest
                 $I->selectOption('#entry_birth_month', '1');
                 $I->checkOption('#entry_mailmaga_flg_0');
                 $I->clickWithLeftButton('.ec-blockBtn--cancel');
-                $I->see('会員登録内容の変更が完了いたしました');
+                $I->retrySee('会員登録内容の変更が完了いたしました');
                 $I->amOnPage('/mypage/change');
                 $I->seeOptionIsSelected('#entry_birth_month', '1');
                 $I->seeCheckboxIsChecked('#entry_mailmaga_flg_0');
@@ -451,7 +452,7 @@ class PL03MailMagazineCest
                 $I->selectOption('#entry_birth_month', '2');
                 $I->checkOption('#entry_mailmaga_flg_0');
                 $I->clickWithLeftButton('.ec-blockBtn--cancel');
-                $I->see('会員登録内容の変更が完了いたしました');
+                $I->retrySee('会員登録内容の変更が完了いたしました');
                 $I->amOnPage('/mypage/change');
                 $I->seeOptionIsSelected('#entry_birth_month', '2');
                 $I->seeCheckboxIsChecked('#entry_mailmaga_flg_0');
@@ -464,7 +465,7 @@ class PL03MailMagazineCest
                 $I->selectOption('#entry_birth_day', '2');
                 $I->checkOption('#entry_mailmaga_flg_0');
                 $I->clickWithLeftButton('.ec-blockBtn--cancel');
-                $I->see('会員登録内容の変更が完了いたしました');
+                $I->retrySee('会員登録内容の変更が完了いたしました');
                 $I->amOnPage('/mypage/change');
                 $I->seeOptionIsSelected('#entry_birth_year', '2000');
                 $I->seeOptionIsSelected('#entry_birth_month', '2');
@@ -479,7 +480,7 @@ class PL03MailMagazineCest
                 $I->selectOption('#entry_birth_day', '2');
                 $I->checkOption('#entry_mailmaga_flg_0');
                 $I->clickWithLeftButton('.ec-blockBtn--cancel');
-                $I->see('会員登録内容の変更が完了いたしました');
+                $I->retrySee('会員登録内容の変更が完了いたしました');
                 $I->amOnPage('/mypage/change');
                 $I->seeOptionIsSelected('#entry_birth_year', '1999');
                 $I->seeOptionIsSelected('#entry_birth_month', '2');
@@ -494,12 +495,12 @@ class PL03MailMagazineCest
                 $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
                 $I->retrySee('カートに追加しました。');
                 $I->clickWithLeftButton('a.ec-inlineBtn--action');
-                $I->see('ショッピングカート');
+                $I->retrySee('ショッピングカート');
                 $I->clickWithLeftButton('.ec-cartRole__actions a.ec-blockBtn--action');
                 $I->click(Locator::contains('//button', '確認する'));
                 // 確認画面
                 $I->click(Locator::contains('//button', '注文する'));
-                $I->see('ご注文ありがとうございました');
+                $I->retrySee('ご注文ありがとうございました');
                 $I->asACustomer->setMailmagaFlg(1);
                 $I->flushToDatabase();
                 $I->logoutAsMember();
@@ -509,12 +510,12 @@ class PL03MailMagazineCest
                 $I->clickWithLeftButton('.ec-blockBtn--action.add-cart');
                 $I->retrySee('カートに追加しました。');
                 $I->clickWithLeftButton('a.ec-inlineBtn--action');
-                $I->see('ショッピングカート');
+                $I->retrySee('ショッピングカート');
                 $I->clickWithLeftButton('.ec-cartRole__actions a.ec-blockBtn--action');
-                $I->see('ご注文手続き');
+                $I->retrySee('ご注文手続き');
                 $I->click(Locator::contains('//button', '確認する'));
                 $I->click(Locator::contains('//button', '注文する'));
-                $I->see('ご注文ありがとうございました');
+                $I->retrySee('ご注文ありがとうございました');
                 $I->asACustomer->setMailmagaFlg(1);
                 $I->flushToDatabase();
                 $I->logoutAsMember();

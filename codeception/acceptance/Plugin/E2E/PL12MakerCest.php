@@ -11,6 +11,7 @@ class PL12MakerCest
 {
     public function _before(AcceptanceTester $I)
     {
+        $I->retry(5, 200);
         $I->loginAsAdmin();
     }
 
@@ -35,12 +36,12 @@ class PL12MakerCest
     {
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'メーカー管理プラグイン');
-        $I->see('メーカー管理プラグイン');
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('メーカー管理プラグイン');
+        $I->retrySee('無効', $recommendPluginRow);
         $I->clickWithLeftButton("(" . $recommendPluginRow . "//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「メーカー管理プラグイン」を有効にしました。');
-        $I->see('メーカー管理プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('「メーカー管理プラグイン」を有効にしました。');
+        $I->retrySee('メーカー管理プラグイン', $recommendPluginRow);
+        $I->retrySee('有効', $recommendPluginRow);
     }
 
     /**
@@ -56,7 +57,7 @@ class PL12MakerCest
         $I->amOnPage('admin/maker');
         $this->registerMaker($I, $brandName);
         $I->waitForText('メーカーを保存しました。', 20);
-        $I->see($brandName);
+        $I->retrySee($brandName);
     }
 
     /**
@@ -82,7 +83,7 @@ class PL12MakerCest
         $I->retryFillField($makerRow . '//input[@type="text"]', $newBrandName);
         $I->click(Locator::contains($makerRow . '//button', '保存'));
         $I->waitForText('メーカーを保存しました。', 20);
-        $I->see($newBrandName);
+        $I->retrySee($newBrandName);
 
         $I->seeInRepository('Plugin\Maker42\Entity\Maker', ['name' => $newBrandName]);
         $I->dontSeeInRepository('Plugin\Maker42\Entity\Maker', ['name' => $brandName]);
@@ -131,15 +132,15 @@ class PL12MakerCest
         $this->registerMaker($I, $brandName2);
         $makerRow = Locator::contains('//li', $brandName1);
         $firstElement = Locator::firstElement('//li[@class="list-group-item sortable-item ui-sortable-handle"]');
-        $I->see($brandName2, $firstElement);
-        $I->see($brandName1);
+        $I->retrySee($brandName2, $firstElement);
+        $I->retrySee($brandName1);
 
         $I->dragAndDropByXPath($makerRow, 0, -20, 6);
         $I->wait(10);
         $I->amOnPage('admin/maker');
         $firstElement = Locator::firstElement('//li[@class="list-group-item sortable-item ui-sortable-handle"]');
-        $I->see($brandName1, $firstElement);
-        $I->see($brandName2);
+        $I->retrySee($brandName1, $firstElement);
+        $I->retrySee($brandName2);
     }
 
     /**
@@ -160,12 +161,12 @@ class PL12MakerCest
         $I->amOnPage('admin/maker');
         $this->registerMaker($I, $brandName);
         $I->waitForText('メーカーを保存しました。', 20);
-        $I->see($brandName);
+        $I->retrySee($brandName);
 
         // Back
 
         $I->amOnPage('/admin/product/product/1/edit');
-        $I->see('商品登録');
+        $I->retrySee('商品登録');
         $I->selectOption('#admin_product_Maker', $brandName);
         $I->fillField('#admin_product_maker_url', $brandUrl);
         $I->click(Locator::contains('//button', '登録'));
@@ -176,7 +177,7 @@ class PL12MakerCest
         // Front
 
         $I->amOnPage('products/detail/1');
-        $I->see($brandName);
+        $I->retrySee($brandName);
         $I->seeInSource($brandUrl);
     }
 
@@ -197,11 +198,11 @@ class PL12MakerCest
         $I->amOnPage('admin/maker');
         $this->registerMaker($I, $brandName);
         $I->waitForText('メーカーを保存しました。', 20);
-        $I->see($brandName);
+        $I->retrySee($brandName);
 
         // Back
         $I->amOnPage('/admin/product/product/1/edit');
-        $I->see('商品登録');
+        $I->retrySee('商品登録');
         $I->selectOption('#admin_product_Maker', "");
         $I->fillField('#admin_product_maker_url', "");
         $I->click(Locator::contains('//button', '登録'));
@@ -226,12 +227,12 @@ class PL12MakerCest
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', 'メーカー管理プラグイン');
-        $I->see('メーカー管理プラグイン', "//tr[contains(.,'メーカー管理プラグイン')]");
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('メーカー管理プラグイン', "//tr[contains(.,'メーカー管理プラグイン')]");
+        $I->retrySee('有効', $recommendPluginRow);
         $I->clickWithLeftButton("(" . $recommendPluginRow . "//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「メーカー管理プラグイン」を無効にしました。');
-        $I->see('メーカー管理プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('「メーカー管理プラグイン」を無効にしました。');
+        $I->retrySee('メーカー管理プラグイン', $recommendPluginRow);
+        $I->retrySee('無効', $recommendPluginRow);
     }
 
     /**
@@ -250,7 +251,7 @@ class PL12MakerCest
 
     private function registerMaker(AcceptanceTester $I, string $brandName)
     {
-        $I->see('メーカー管理');
+        $I->retrySee('メーカー管理');
         $I->fillField('#maker_name', $brandName);
         $I->click(Locator::contains('//button', '新規作成'));
     }

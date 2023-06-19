@@ -30,6 +30,7 @@ class PL05RelatedProductCest
 
     public function _before(AcceptanceTester $I)
     {
+        $I->retry(5, 200);
         $I->loginAsAdmin();
     }
 
@@ -58,12 +59,12 @@ class PL05RelatedProductCest
     {
         $I->amOnPage('/admin/store/plugin');
         $couponRow = Locator::contains('//tr', '関連商品プラグイン');
-        $I->see('関連商品プラグイン', $couponRow);
-        $I->see('無効', $couponRow);
+        $I->retrySee('関連商品プラグイン', $couponRow);
+        $I->retrySee('無効', $couponRow);
         $I->clickWithLeftButton("(//tr[contains(.,'関連商品プラグイン')]//i[@class='fa fa-play fa-lg text-secondary'])[1]");
-        $I->see('「関連商品プラグイン」を有効にしました。');
-        $I->see('関連商品プラグイン', $couponRow);
-        $I->see('有効', $couponRow);
+        $I->retrySee('「関連商品プラグイン」を有効にしました。');
+        $I->retrySee('関連商品プラグイン', $couponRow);
+        $I->retrySee('有効', $couponRow);
     }
 
     /**
@@ -79,7 +80,7 @@ class PL05RelatedProductCest
         $this->product = $Product;
         $this->relatedProduct = $RelatedProduct;
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $Product->getId()));
-        $I->see('関連商品');
+        $I->retrySee('関連商品');
         // Wait for javascript to load.
         $I->wait(10);
         $I->clickWithLeftButton('#RelatedProduct-search0');
@@ -90,12 +91,12 @@ class PL05RelatedProductCest
         $I->retrySee($RelatedProduct->getName());
         $I->wait(5);
         $I->retryClickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
-        $I->see('保存しました');
-        $I->see($RelatedProduct->getName());
+        $I->retrySee('保存しました');
+        $I->retrySee($RelatedProduct->getName());
         // フロント側
         $I->amOnPage(sprintf('/products/detail/%s', $Product->getId()));
-        $I->see($Product->getName());
-        $I->see($RelatedProduct->getName());
+        $I->retrySee($Product->getName());
+        $I->retrySee($RelatedProduct->getName());
         $I->seeInSource($RelatedProduct->getMainListImage());
     }
 
@@ -112,7 +113,7 @@ class PL05RelatedProductCest
         $RelatedProduct = $this->registerBaseProductDetails();
         $identityID = bin2hex(random_bytes(20));
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $Product->getId()));
-        $I->see('関連商品');
+        $I->retrySee('関連商品');
         // Wait for javascript to load.
         $I->wait(10);
         $I->clickWithLeftButton('#RelatedProduct-search0');
@@ -124,13 +125,13 @@ class PL05RelatedProductCest
         $I->wait(5);
         $I->fillField('#admin_product_RelatedProducts_0_content', $identityID);
         $I->retryClickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
-        $I->see('保存しました');
-        $I->see($RelatedProduct->getName());
+        $I->retrySee('保存しました');
+        $I->retrySee($RelatedProduct->getName());
         // フロント側
         $I->amOnPage(sprintf('/products/detail/%s', $Product->getId()));
-        $I->see($Product->getName());
-        $I->see($RelatedProduct->getName());
-        $I->see($identityID);
+        $I->retrySee($Product->getName());
+        $I->retrySee($RelatedProduct->getName());
+        $I->retrySee($identityID);
         $I->seeInSource($RelatedProduct->getMainListImage());
     }
 
@@ -152,7 +153,7 @@ class PL05RelatedProductCest
         }
 
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $Product->getId()));
-        $I->see('関連商品');
+        $I->retrySee('関連商品');
         // Wait for javascript to load.
         $I->wait(10);
 
@@ -174,17 +175,17 @@ class PL05RelatedProductCest
             $I->fillField('#admin_product_RelatedProducts_'.$key.'_content', $RelatedProductsDescriptionIDs[$key]);
         }
         $I->retryClickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
-        $I->see('保存しました');
+        $I->retrySee('保存しました');
         foreach ($RelatedProducts as $key => $relatedProduct) {
-            $I->see($relatedProduct->getName());
-            $I->see($RelatedProductsDescriptionIDs[$key]);
+            $I->retrySee($relatedProduct->getName());
+            $I->retrySee($RelatedProductsDescriptionIDs[$key]);
         }
         // フロント側
         $I->amOnPage(sprintf('/products/detail/%s', $Product->getId()));
-        $I->see($Product->getName());
+        $I->retrySee($Product->getName());
         foreach ($RelatedProducts as $key => $relatedProduct) {
-            $I->see($relatedProduct->getName());
-            $I->see($RelatedProductsDescriptionIDs[$key]);
+            $I->retrySee($relatedProduct->getName());
+            $I->retrySee($RelatedProductsDescriptionIDs[$key]);
             $I->seeInSource($relatedProduct->getMainListImage());
         }
     }
@@ -199,10 +200,10 @@ class PL05RelatedProductCest
 
         $this->related_03($I);
         $I->amOnPage(sprintf('/admin/product/product/%s/edit', $this->product->getId()));
-        $I->see('関連商品');
+        $I->retrySee('関連商品');
         // Wait for javascript to load.
         $I->wait(10);
-        $I->see($this->relatedProduct->getName());
+        $I->retrySee($this->relatedProduct->getName());
         $I->clickWithLeftButton('#RelatedProduct-delete0');
         $I->wait(1);
         $I->clickWithLeftButton('.btn.btn-ec-conversion.px-5.ladda-button');
@@ -223,9 +224,9 @@ class PL05RelatedProductCest
         $I->clickWithLeftButton('(//div[@id="RelatedProduct-product_area"]//a)[1]');
         $I->wait(5);
         assertStringContainsString(sprintf('/products/detail/%s', $this->relatedProduct->getId()), $I->grabFromCurrentUrl());
-        $I->see($this->relatedProduct->getName());
+        $I->retrySee($this->relatedProduct->getName());
         $I->seeInSource($this->relatedProduct->getMainListImage());
-        $I->see($this->relatedProduct->getDescriptionDetail());
+        $I->retrySee($this->relatedProduct->getDescriptionDetail());
     }
 
     /**
@@ -238,12 +239,12 @@ class PL05RelatedProductCest
         // 無効処理
         $I->amOnPage('/admin/store/plugin');
         $recommendPluginRow = Locator::contains('//tr', '関連商品プラグイン');
-        $I->see('関連商品プラグイン', $recommendPluginRow);
-        $I->see('有効', $recommendPluginRow);
+        $I->retrySee('関連商品プラグイン', $recommendPluginRow);
+        $I->retrySee('有効', $recommendPluginRow);
         $I->clickWithLeftButton("(//tr[contains(.,'関連商品プラグイン')]//i[@class='fa fa-pause fa-lg text-secondary'])[1]");
-        $I->see('「関連商品プラグイン」を無効にしました。');
-        $I->see('関連商品プラグイン', $recommendPluginRow);
-        $I->see('無効', $recommendPluginRow);
+        $I->retrySee('「関連商品プラグイン」を無効にしました。');
+        $I->retrySee('関連商品プラグイン', $recommendPluginRow);
+        $I->retrySee('無効', $recommendPluginRow);
     }
 
     /**
@@ -260,7 +261,7 @@ class PL05RelatedProductCest
         $I->wantToUninstallPlugin('関連商品プラグイン');
         // プラグインの状態を確認する
         $xpath = Locator::contains('tr', '関連商品プラグイン');
-        $I->see('インストール', $xpath);
+        $I->retrySee('インストール', $xpath);
     }
 
     /**
