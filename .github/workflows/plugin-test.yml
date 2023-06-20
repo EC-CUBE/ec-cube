@@ -1,7 +1,5 @@
 name: Plugin test for EC-CUBE
 on:
-
-on:
   push:
     branches:
       - '*'
