@@ -11,7 +11,9 @@ services:
       DATABASE_SERVER_VERSION: 14
       DATABASE_CHARSET: 'utf8'
       IGNORE_DATABASE_INITIALIZATION: 1
-
+    volumes:
+      ### 同期対象からコストの重いフォルダを除外 #####################
+      - ".:/var/www/html"
   postgres:
     build:
       context: .github/workflows/pgsql
