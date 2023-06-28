@@ -237,6 +237,7 @@ class OrderTest extends EccubeTestCase
     {
         $Order = $this->createTestOrder();
 
+        self::assertSame(790187, $this->getTaxableTotal(), '課税合計');
         self::assertSame(65160.0, $Order->getTotalByTaxRate()[8], '8%対象値引き後合計');
         self::assertSame(717868.0, $Order->getTotalByTaxRate()[10], '10%対象値引き後合計');
     }
@@ -250,6 +251,27 @@ class OrderTest extends EccubeTestCase
     }
 
     protected function createTestOrder()
+    {
+        $data = $this->getOrderItemData();
+        $Order = new Order();
+        foreach ($data as $row) {
+            $OrderItem = new OrderItem();
+            $OrderItem->setTaxType($row[0]);
+            $OrderItem->setTaxRate($row[1]);
+            $OrderItem->setPrice($row[2]);
+            $OrderItem->setTax($row[3]);
+            $OrderItem->setQuantity($row[4]);
+            $OrderItem->setOrderItemType($row[5]);
+            $OrderItem->setTaxDisplayType($row[6]);
+            $OrderItem->setRoundingType($row[7]);
+
+            $Order->addOrderItem($OrderItem);
+        }
+
+        return $Order;
+    }
+
+    protected function getOrderItemData()
     {
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
@@ -267,32 +289,31 @@ class OrderTest extends EccubeTestCase
 
         // 税率ごとに金額を集計する
         $data = [
-            [$Taxation, 10, 71141, round(71141 * (10/100)), 5, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
-            [$Taxation, 10, 92778, round(92778 * (10/100)), 4, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
-            [$Taxation, 8, 15221, round(15221 * (8/100)), 5, $ProductItem, $TaxExcluded, $RoundingType],      // 商品明細
-            [$Taxation, 10, -71141, round(-71141 * (10/100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],  // 課税値引き
-            [$Taxation, 8, -15221, round(-15221 * (8/100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],    // 課税値引き
-            [$Taxation, 10, 1000, round(1000 * (10/100)), 1, $DeliveryFee, $TaxIncluded, $RoundingType],    // 送料
-            [$Taxation, 10, 2187, round(1000 * (10/100)), 1, $Charge, $TaxIncluded, $RoundingType],    // 手数料
+            [$Taxation, 10, 71141, round(71141 * (10 / 100)), 5, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
+            [$Taxation, 10, 92778, round(92778 * (10 / 100)), 4, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
+            [$Taxation, 8, 15221, round(15221 * (8 / 100)), 5, $ProductItem, $TaxExcluded, $RoundingType],      // 商品明細
+            [$Taxation, 10, -71141, round(-71141 * (10 / 100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],  // 課税値引き
+            [$Taxation, 8, -15221, round(-15221 * (8 / 100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],    // 課税値引き
+            [$Taxation, 10, 1000, round(1000 * (10 / 100)), 1, $DeliveryFee, $TaxIncluded, $RoundingType],    // 送料
+            [$Taxation, 10, 2187, round(1000 * (10 / 100)), 1, $Charge, $TaxIncluded, $RoundingType],    // 手数料
             [$NonTaxable, 0, -7000, 0, 1, $DiscountItem, $TaxIncluded, $RoundingType],    // 不課税明細
             [$TaxExempt, 0, -159, 0, 1, $DiscountItem, $TaxIncluded, $RoundingType],     // 非課税明細
         ];
 
-        $Order = new Order();
-        foreach ($data as $row) {
-            $OrderItem = new OrderItem();
-            $OrderItem->setTaxType($row[0]);
-            $OrderItem->setTaxRate($row[1]);
-            $OrderItem->setPrice($row[2]);
-            $OrderItem->setTax($row[3]);
-            $OrderItem->setQuantity($row[4]);
-            $OrderItem->setOrderItemType($row[5]);
-            $OrderItem->setTaxDisplayType($row[6]);
-            $OrderItem->setRoundingType($row[7]);
+        return $data;
+    }
 
-            $Order->addOrderItem($OrderItem);
-        }
+    protected function getTaxableTotal()
+    {
+        $data = $this->getOrderItemData();
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $TaxExcluded = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+        $taxableItem = array_filter($data, function ($item) use ($Taxation) {
+            return $item[0] === $Taxation;
+        });
 
-        return $Order;
+        return array_reduce($taxableItem, function ($sum, $item) use ($TaxExcluded) {
+            return $sum + ($item[2] + $item[6] !== $TaxExcluded ? $item[3] : 0) * $item[4];
+        });
     }
 }
