@@ -185,7 +185,7 @@ front.entry.complete_message__temporary: |
  Please complete your sign-up by clicking on the URL in the email.
 front.entry.complete_message__activated: |
  Your sign-up is completed.
- Enjoy your shopping!
+ Please login with your email address and password and enjoy shopping!
 
 #------------------------------------------------------------------------------------
 # Password Reset
@@ -255,7 +255,7 @@ front.mypage.reorder_message: '*Please note that the price has been changed when
 front.mypage.mail_not_found: No email found.
 front.mypage.mail_list: Email History
 front.mypage.customer_complete_message__title: Customer information has been updated
-front.mypage.customer_complete_message__body: Please login with your email address and password and enjoy shopping!
+front.mypage.customer_complete_message__body: Please continue your shopping!
 front.mypage.favorite_count: '%count% item(s) found in Favorites'
 front.mypage.favorite_not_found: No item found in Favorites.
 front.mypage.customer_address_count: '%count% items are registered in Delivery Addresses'
