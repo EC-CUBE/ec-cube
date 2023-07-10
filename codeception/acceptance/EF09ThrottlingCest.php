@@ -483,7 +483,7 @@ class EF09ThrottlingCest
      */
     public function 配送先情報_編集(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
+        $I->wantTo('EF0901-UC01-T14_配送先情報_編集');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -562,7 +562,7 @@ class EF09ThrottlingCest
      */
     public function 配送先情報_削除(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T14_配送先情報_削除');
+        $I->wantTo('EF0901-UC01-T15_配送先情報_削除');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -626,7 +626,7 @@ class EF09ThrottlingCest
      */
     public function order_お届け先追加(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T15_order_お届け先追加');
+        $I->wantTo('EF0901-UC01-T16_order_お届け先追加');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
@@ -691,7 +691,7 @@ class EF09ThrottlingCest
      */
     public function order_お届け先変更(AcceptanceTester $I)
     {
-        $I->wantTo('EF0901-UC01-T15_order_お届け先追加');
+        $I->wantTo('EF0901-UC01-T17_order_お届け先変更');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
