@@ -530,7 +530,7 @@ class OrderHelper
         return $user;
     }
 
-        /**
+    /**
      * 税表示区分を取得する.
      *
      * - 商品: 税抜
