@@ -17,6 +17,9 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\OrderItemType;
+
 
 class OrderHelperTest extends EccubeTestCase
 {
@@ -72,20 +75,30 @@ class OrderHelperTest extends EccubeTestCase
 
     /**
      * 税表示区分が問題ないかを確認する
+     * @dataProvider taxDisplayTypeProvider
      */
-    public function testTaxDisplayType()
+    public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
     {
-        // 商品：税抜 OrderItemType::PRODUCT
-        self::assertSame($this->helper->getTaxDisplayType(1)['name'],'税抜');
-        // 送料：税込 OrderItemType::DELIVERY_FEE
-        self::assertSame($this->helper->getTaxDisplayType(2)['name'],'税込');
-        // 手数量：税込 OrderItemType::CHARGE
-        self::assertSame($this->helper->getTaxDisplayType(3)['name'],'税込');
-        // 値引：税抜 OrderItemType::DISCOUNT
-        self::assertSame($this->helper->getTaxDisplayType(4)['name'],'税抜');
-        // 税：税抜 OrderItemType::TAX
-        self::assertSame($this->helper->getTaxDisplayType(5)['name'],'税抜');
-        // ポイント値引き：税込 OrderItemType::POINT
-        self::assertSame($this->helper->getTaxDisplayType(6)['name'],'税込');
+        $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);
+
+        self::assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
+    }
+
+    public function taxDisplayTypeProvider()
+    {
+        // - 商品: 税抜
+        // - 送料: 税込
+        // - 手数料: 税込
+        // - 値引き: 税抜
+        // - 税: 税抜
+        // - ポイント値引き: 税込
+        return [
+            [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED],
+            [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED],
+            [OrderItemType::CHARGE, TaxDisplayType::INCLUDED],
+            [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED],
+            [OrderItemType::TAX, TaxDisplayType::EXCLUDED],
+            [OrderItemType::POINT, TaxDisplayType::INCLUDED],
+        ];
     }
 }
