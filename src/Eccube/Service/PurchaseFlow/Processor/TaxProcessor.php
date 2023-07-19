@@ -43,6 +43,11 @@ class TaxProcessor implements ItemHolderPreprocessor
     protected $taxRuleService;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * TaxProcessor constructor.
      *
      * @param TaxRuleRepository $taxRuleRepository
@@ -57,7 +62,7 @@ class TaxProcessor implements ItemHolderPreprocessor
         $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->taxRuleService = $taxRuleService;
-       $this->orderHelper = $orderHelper;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -144,5 +149,4 @@ class TaxProcessor implements ItemHolderPreprocessor
 
         return $this->entityManager->find(TaxType::class, $TaxType);
     }
-
 }
