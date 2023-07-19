@@ -223,7 +223,7 @@ class EditController extends AbstractController
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
         
         foreach ($TargetOrder->getOrderItems() as $orderItem) {
-            if($orderItem->getTaxDisplayType() == null){
+            if ($orderItem->getTaxDisplayType() == null) {
                 $orderItem->setTaxDisplayType($this->orderHelper->getTaxDisplayType($orderItem->getOrderItemType()));
             }
         }
