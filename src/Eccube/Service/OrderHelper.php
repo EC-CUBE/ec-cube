@@ -541,8 +541,7 @@ class OrderHelper
      *
      * @param $OrderItemType
      *
-     * @return TaxType
-     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     * @return TaxDisplayType
      */
     public function getTaxDisplayType($OrderItemType)
     {
