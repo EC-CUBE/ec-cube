@@ -19,9 +19,9 @@ use Eccube\Entity\Shipping;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MailService test cases.
@@ -362,5 +362,98 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = new Address('"a..a"@example.com');
         $this->actual = $this->mailService->convertRFCViolatingEmail('a..a@example.com');
         $this->verify();
+    }
+
+    public function testCustomerChangeNotifyMailByEmailAddressChange()
+    {
+        $userData = [
+            'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'ipAddress' => '192.168.0.100',
+            'preEmail' => 'abc@example.com',
+        ];
+        $eventName = '会員情報編集';
+
+        $this->mailService->sendCustomerChangeNotifyMail($this->Customer, $userData, $eventName);
+        // 変更前と変更後の両方送られる関係で2
+        $this->assertEmailCount(2);
+
+        // 変更前と変更後のメールをそれぞれチェック
+        for ($i = 0; $i < 2; $i++) {
+            /** @var Email $Message */
+            $Message = $this->getMailerMessage($i);
+
+            $this->expected = '['.$this->BaseInfo->getShopName().'] 会員情報変更のお知らせ';
+            $this->actual = $Message->getSubject();
+            $this->verify();
+
+            // 0が変更後。1が変更前
+            if ($i == 0) {
+                $this->expected = $this->Customer->getEmail();
+            } else {
+                $this->expected = $userData['preEmail'];
+            }
+            $this->actual = $Message->getTo()[0]->getAddress();
+            $this->verify();
+
+            $this->expected = $this->BaseInfo->getEmail03();
+            $this->actual = $Message->getReplyTo()[0]->getAddress();
+            $this->verify();
+
+            $this->expected = $this->BaseInfo->getEmail01();
+            $this->actual = $Message->getBcc()[0]->getAddress();
+            $this->verify();
+
+            $this->assertEmailTextBodyContains($Message, '会員情報編集 がありましたのでお知らせいたします。');
+            $this->assertEmailHtmlBodyContains($Message, '会員情報編集 がありましたのでお知らせいたします。');
+
+            $this->assertEmailTextBodyContains($Message, $userData['userAgent']);
+            $this->assertEmailHtmlBodyContains($Message, $userData['userAgent']);
+
+            $this->assertEmailTextBodyContains($Message, $userData['ipAddress']);
+            $this->assertEmailHtmlBodyContains($Message, $userData['ipAddress']);
+        }
+    }
+
+
+    public function testCustomerChangeNotifyMailByDeliveryAddressChange()
+    {
+        $userData = [
+            'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'ipAddress' => '192.168.0.100'
+        ];
+        $eventName = 'お届け先情報編集';
+
+        $this->mailService->sendCustomerChangeNotifyMail($this->Customer, $userData, $eventName);
+        // 変更前と変更後のアドレスは変わらないので1
+        $this->assertEmailCount(1);
+
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員情報変更のお知らせ';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = $Message->getTo()[0]->getAddress();
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = $Message->getBcc()[0]->getAddress();
+        $this->verify();
+
+        $this->assertEmailTextBodyContains($Message, 'お届け先情報編集 がありましたのでお知らせいたします。');
+        $this->assertEmailHtmlBodyContains($Message, 'お届け先情報編集 がありましたのでお知らせいたします。');
+
+        $this->assertEmailTextBodyContains($Message, $userData['userAgent']);
+        $this->assertEmailHtmlBodyContains($Message, $userData['userAgent']);
+
+        $this->assertEmailTextBodyContains($Message, $userData['ipAddress']);
+        $this->assertEmailHtmlBodyContains($Message, $userData['ipAddress']);
+
     }
 }
