@@ -160,6 +160,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      * - ポイント値引き: 税込
      *
      * @param $OrderItemType
+     * @deprecated OrderHelper::getTaxDisplayTypeを使用してください
      *
      * @return TaxDisplayType
      */
