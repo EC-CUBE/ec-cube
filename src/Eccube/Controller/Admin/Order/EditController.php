@@ -221,6 +221,12 @@ class EditController extends AbstractController
 
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
+        
+        foreach ($TargetOrder->getOrderItems() as $orderItem) {
+            if ($orderItem->getTaxDisplayType() == null) {
+                $orderItem->setTaxDisplayType($this->orderHelper->getTaxDisplayType($orderItem->getOrderItemType()));
+            }
+        }
 
         if ($form->isSubmitted() && $form['OrderItems']->isValid()) {
             $event = new EventArgs(

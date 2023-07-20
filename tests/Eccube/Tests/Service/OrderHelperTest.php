@@ -17,6 +17,9 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\OrderItemType;
+
 
 class OrderHelperTest extends EccubeTestCase
 {
@@ -68,5 +71,34 @@ class OrderHelperTest extends EccubeTestCase
         $this->helper->updateCustomerInfo($Order, $Customer);
         self::assertNotNull($Order->getName01());
         self::assertSame($Order->getName01(), $Customer->getName01());
+    }
+
+    /**
+     * 税表示区分が問題ないかを確認する
+     * @dataProvider taxDisplayTypeProvider
+     */
+    public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
+    {
+        $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);
+
+        self::assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
+    }
+
+    public function taxDisplayTypeProvider()
+    {
+        // - 商品: 税抜
+        // - 送料: 税込
+        // - 手数料: 税込
+        // - 値引き: 税抜
+        // - 税: 税抜
+        // - ポイント値引き: 税込
+        return [
+            [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED],
+            [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED],
+            [OrderItemType::CHARGE, TaxDisplayType::INCLUDED],
+            [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED],
+            [OrderItemType::TAX, TaxDisplayType::EXCLUDED],
+            [OrderItemType::POINT, TaxDisplayType::INCLUDED],
+        ];
     }
 }
