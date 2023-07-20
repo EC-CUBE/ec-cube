@@ -161,27 +161,10 @@ class TaxProcessor implements ItemHolderPreprocessor
      *
      * @param $OrderItemType
      *
-     * @return TaxType
+     * @return TaxDisplayType
      */
     protected function getTaxDisplayType($OrderItemType)
     {
-        if ($OrderItemType instanceof OrderItemType) {
-            $OrderItemType = $OrderItemType->getId();
-        }
-
-        switch ($OrderItemType) {
-            case OrderItemType::PRODUCT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::DELIVERY_FEE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::DISCOUNT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::CHARGE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::POINT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            default:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-        }
+        return $this->orderHelper->getTaxDisplayType($OrderItemType);
     }
 }
