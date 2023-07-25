@@ -11,7 +11,7 @@ parameters:
     env(ECCUBE_AUTH_MAGIC): '<change.me>'
     env(ECCUBE_COOKIE_NAME): 'eccube'
     env(ECCUBE_COOKIE_PATH): '/'
-    env(ECCUBE_COOKIE_LIFETIME): '0'
+    env(ECCUBE_COOKIE_LIFETIME): '604800'
     env(ECCUBE_GC_MAXLIFETIME): '1440'
     env(ECCUBE_PACKAGE_API_URL): 'https://package-api-c2.ec-cube.net/v42'
     env(ECCUBE_OWNERS_STORE_URL): 'https://www.ec-cube.net'
