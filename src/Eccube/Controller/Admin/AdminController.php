@@ -33,6 +33,7 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\PluginApiService;
+use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -86,6 +87,11 @@ class AdminController extends AbstractController
     protected $pluginApiService;
 
     /**
+     * @var SystemService
+     */
+    private $systemService;
+
+    /**
      * @var array 売り上げ状況用受注状況
      */
     private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
@@ -102,6 +108,7 @@ class AdminController extends AbstractController
      * @param CustomerRepository $custmerRepository
      * @param ProductRepository $productRepository
      * @param PluginApiService $pluginApiService
+     * @param SystemService $systemService
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -112,7 +119,8 @@ class AdminController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         CustomerRepository $custmerRepository,
         ProductRepository $productRepository,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
+        SystemService $systemService
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
@@ -123,6 +131,7 @@ class AdminController extends AbstractController
         $this->customerRepository = $custmerRepository;
         $this->productRepository = $productRepository;
         $this->pluginApiService = $pluginApiService;
+        $this->systemService = $systemService;
     }
 
     /**
@@ -169,6 +178,12 @@ class AdminController extends AbstractController
      */
     public function index(Request $request)
     {
+        // メンテナンスモードの判定
+        $is_maintenance_mode = $this->systemService->isMaintenanceMode();
+        if ($is_maintenance_mode) {
+            $this->addWarning('admin.common.notice_maintenance_mode', 'admin');
+        }
+
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
         $is_danger_admin_url = false;
         if ($adminRoute === 'admin') {
