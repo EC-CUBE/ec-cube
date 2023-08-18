@@ -8,3 +8,21 @@ services:
     #Twig\Extensions\DateExtension: ~
     # Twig\Extensions\IntlExtension: ~
     #Twig\Extensions\TextExtension: ~
+
+    eccube.twig_sandbox.policy:
+        class: Twig\Sandbox\SecurityPolicy
+        arguments:
+            $allowedTags: "%eccube.twig_sandbox.policy_tags%"
+            $allowedFilters: "%eccube.twig_sandbox.policy_filters%"
+            $allowedFunctions: "%eccube.twig_sandbox.policy_functions%"
+    eccube.twig_sandbox.extension:
+        class: Twig\Extension\SandboxExtension
+        arguments:
+            - '@eccube.twig_sandbox.policy'
+            - false
+        tags: ['twig.extension']
+parameters:
+    eccube.twig_sandbox.policy_tags: ['try', 'catch', 'endcatch']
+    eccube.twig_sandbox.policy_filters:
+        - 'escape'
+    eccube.twig_sandbox.policy_functions: []
