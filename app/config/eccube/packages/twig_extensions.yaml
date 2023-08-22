@@ -22,7 +22,7 @@ services:
             - false
         tags: ['twig.extension']
 parameters:
-    eccube.twig_sandbox.policy_tags: ['try', 'catch', 'endcatch']
+    eccube.twig_sandbox.policy_tags: []
     eccube.twig_sandbox.policy_filters:
         - 'escape'
     eccube.twig_sandbox.policy_functions: []
