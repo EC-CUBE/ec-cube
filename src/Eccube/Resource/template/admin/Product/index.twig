@@ -77,7 +77,7 @@ file that was distributed with this source code.
 
             toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             $('input[id^="check_"]').on('change', function() {
-                $('#trigger_check_all').prop('checked', false);
+                $('#trigger_check_all').prop('checked', $('input[id^="check_"]:not(:checked)').length === 0);
                 toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
             });
 
