@@ -12,9 +12,9 @@ services:
     eccube.twig_sandbox.policy:
         class: Twig\Sandbox\SecurityPolicy
         arguments:
-            $allowedTags: "%eccube.twig_sandbox.policy_tags%"
-            $allowedFilters: "%eccube.twig_sandbox.policy_filters%"
-            $allowedFunctions: "%eccube.twig_sandbox.policy_functions%"
+            $allowedTags: "%eccube.twig_sandbox.allowed_tags%"
+            $allowedFilters: "%eccube.twig_sandbox.allowed_filters%"
+            $allowedFunctions: "%eccube.twig_sandbox.allowed_functions%"
     eccube.twig_sandbox.extension:
         class: Twig\Extension\SandboxExtension
         arguments:
@@ -22,7 +22,7 @@ services:
             - false
         tags: ['twig.extension']
 parameters:
-    eccube.twig_sandbox.policy_tags: []
-    eccube.twig_sandbox.policy_filters:
+    eccube.twig_sandbox.allowed_tags: []
+    eccube.twig_sandbox.allowed_filters:
         - 'escape'
-    eccube.twig_sandbox.policy_functions: []
+    eccube.twig_sandbox.allowed_functions: []
