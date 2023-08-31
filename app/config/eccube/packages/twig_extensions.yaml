@@ -29,7 +29,7 @@ parameters:
         - 'flush'
         - 'for'
         - 'set'
-        - 'verbatium'
+        - 'verbatim'
         - 'if'
         - 'spaceless'
     eccube.twig_sandbox.allowed_filters:
