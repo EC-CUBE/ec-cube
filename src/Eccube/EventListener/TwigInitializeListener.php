@@ -253,6 +253,7 @@ class TwigInitializeListener implements EventSubscriberInterface
             $eccubeNav = $this->getDisplayEccubeNav($eccubeNav, $AuthorityRoles, $baseUrl);
         }
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
+        $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
     }
 
     /**
