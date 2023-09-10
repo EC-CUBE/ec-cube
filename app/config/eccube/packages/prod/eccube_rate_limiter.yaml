@@ -74,3 +74,9 @@ eccube:
             route: ~
             limit: 10
             interval: '30 minutes'
+        admin_two_factor_auth:
+            route: admin_two_factor_auth
+            method: [ 'POST' ]
+            type: [ ip, customer ]
+            limit: 5
+            interval: '30 minutes'
