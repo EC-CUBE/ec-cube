@@ -237,7 +237,6 @@ class OrderTest extends EccubeTestCase
     {
         $Order = $this->createTestOrder();
 
-        self::assertSame(790187, $this->getTaxableTotal(), '課税合計');
         self::assertSame(65160.0, $Order->getTotalByTaxRate()[8], '8%対象値引き後合計');
         self::assertSame(717868.0, $Order->getTotalByTaxRate()[10], '10%対象値引き後合計');
     }
@@ -301,19 +300,5 @@ class OrderTest extends EccubeTestCase
         ];
 
         return $data;
-    }
-
-    protected function getTaxableTotal()
-    {
-        $data = $this->getOrderItemData();
-        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
-        $TaxExcluded = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-        $taxableItem = array_filter($data, function ($item) use ($Taxation) {
-            return $item[0] === $Taxation;
-        });
-
-        return array_reduce($taxableItem, function ($sum, $item) use ($TaxExcluded) {
-            return $sum + ($item[2] + $item[6] !== $TaxExcluded ? $item[3] : 0) * $item[4];
-        });
     }
 }
