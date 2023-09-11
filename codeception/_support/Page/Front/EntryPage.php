@@ -55,4 +55,31 @@ class EntryPage extends AbstractFrontPage
 
         return $this;
     }
+
+    public function 新規会員登録_メアド指定($email, $form = [])
+    {
+        $this->tester->amOnPage('/entry');
+
+        $form += [
+            'entry[name][name01]' => '姓',
+            'entry[name][name02]' => '名',
+            'entry[kana][kana01]' => 'セイ',
+            'entry[kana][kana02]' => 'メイ',
+            'entry[postal_code]' => '530-0001',
+            'entry[address][pref]' => ['value' => '27'],
+            'entry[address][addr01]' => '大阪市北区',
+            'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
+            'entry[phone_number]' => '1234567890',
+            'entry[email][first]' => $email,
+            'entry[email][second]' => $email,
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
+            'entry[user_policy_check]' => '1',
+        ];
+        $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
+        $this->tester->seeInField(['id' => 'entry_email_first'], $form['entry[email][first]']);
+        $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
+
+        return $this;
+    }
 }
