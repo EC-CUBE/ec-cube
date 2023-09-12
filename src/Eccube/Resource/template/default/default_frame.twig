@@ -51,9 +51,7 @@ file that was distributed with this source code.
         {{ include('block.twig', {'Blocks': Layout.Head}) }}
     {% endif %}
     {# プラグイン用styleseetやmetatagなど #}
-    {% if plugin_assets is defined %}
-        {{ include('@admin/snippet.twig', { snippets: plugin_assets },sandboxed = true) }}
-    {% endif %}
+    {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
     <link rel="stylesheet" href="{{ asset('assets/css/customize.css', 'user_data') }}">
 </head>
 <body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">

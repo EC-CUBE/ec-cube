@@ -23,7 +23,7 @@ use Twig\TwigFunction;
 /**
  * \vendor\twig\twig\src\Extension\CoreExtension の拡張
  */
-class ignoreTwigSandboxErrorExtension extends AbstractExtension
+class IgnoreTwigSandboxErrorExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -47,28 +47,32 @@ class ignoreTwigSandboxErrorExtension extends AbstractExtension
      * @param $withContext
      * @param $ignoreMissing
      * @param $sandboxed
+     *
      * @return string|void
+     *
      * @throws LoaderError
      * @throws SecurityError
      */
-    function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false)
+    public function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false)
     {
-            try {
-                return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
-            } catch (SecurityError $e) {
-                $appEnv = $_SERVER['APP_ENV'];
-                // devではエラーが表示されるようにする
-                if ($appEnv == 'dev') {
-                    throw $e;
-                } else {
-                    log_warning($e->getMessage(), ['exception' => $e]);
-                    $sandbox = $env->getExtension(SandboxExtension::class);
+        try {
+            return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
+        } catch (SecurityError $e) {
 
-                    if (!$sandbox->isSandboxedGlobally()) {
-                        $sandbox->disableSandbox();
-                    }
+            // devではエラー画面が表示されるようにする
+            $appEnv = env('APP_ENV');
+            if ($appEnv === 'dev') {
+                throw $e;
+            } else {
+                // ログ出力
+                log_warning($e->getMessage(), ['exception' => $e]);
+
+                // 例外がスローされた場合、sandboxが効いた状態になってしまうため追加
+                $sandbox = $env->getExtension(SandboxExtension::class);
+                if (!$sandbox->isSandboxedGlobally()) {
+                    $sandbox->disableSandbox();
                 }
             }
         }
-
+    }
 }
