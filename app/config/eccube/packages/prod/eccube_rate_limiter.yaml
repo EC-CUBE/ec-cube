@@ -10,6 +10,8 @@ eccube:
             route: entry
             method: [ 'POST' ]
             type: ip
+            params:
+                mode: confirm
             limit: 10
             interval: '30 minutes'
         entry_complete:
