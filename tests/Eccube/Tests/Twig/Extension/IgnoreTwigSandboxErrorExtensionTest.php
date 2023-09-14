@@ -13,95 +13,89 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
-use Eccube\Common\EccubeConfig;
-//use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Web\AbstractWebTestCase;
-use Eccube\Twig\Extension\ignoreTwigSandboxErrorExtension;
-use Twig\Sandbox\SecurityError;
-use org\bovigo\vfs\vfsStream;
-use Twig\Extension\StringLoaderExtension;
+use Eccube\Entity\Page;
 
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
-     /**
-     * @var ignoreTwigSandboxErrorExtension
-     */
-    protected $sandbox;
-
     /**
-     * @var Twig\Environment
+     * @dataProvider twigSnippetsProvider
+     * @dataProvider twigVarFreeAreaProvider
      */
-    protected $twig;
-
-    protected $templateDir;
-    /**
-     * @var String
-     */
-    protected $template = [
-        'test_freearea.twig',
-        'test_metatag.twig',
-    ];
-
-    protected function setUp(): void
+    public function testFreeArea($snippet, $whitelisted)
     {
-        parent::setUp();
-        $EccubeConfig = static::getContainer()->get(EccubeConfig::class);
+        $Product = $this->createProduct();
+        $Product->setFreeArea('__RENDERED__'.$snippet);
+        $this->entityManager->flush();
 
-        // Twigを使用するテンプレートの読込み
-        $root = vfsStream::setup();
-        $this->templateDir = $root->url();
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $text = $crawler->text();
 
-        foreach ($this->template as $twig_file) {
-            // Preventing undefined errors
-            file_put_contents($this->templateDir.'/'.$twig_file, '');
-        }
-
-        $loader = new \Twig\Loader\FilesystemLoader([
-            $this->templateDir,
-        ]);
-
-        $tags = ['if', 'for', 'set', 'do'];
-        $filters = ['escape', 'join', 'length', 'escape', 'date'];
-        $functions = ['range'];
-
-        $policy = new \Twig\Sandbox\SecurityPolicy($tags, $filters, [], [], $functions);
-        $sandbox = new \Twig\Extension\SandboxExtension($policy, true);
-
-        $this->twig = new \Twig\Environment($loader);
-        $this->twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-        $this->twig->addExtension($sandbox);
+        // $snippetがsandboxで制限された場合はフリーエリアは空で出力されるため、__RENDERED__の出力有無で結果を確認する
+        self::assertStringContainsString($whitelisted ? '__RENDERED__' : '', $text);
     }
 
-    public function twigKeyWords()
+    /**
+     * @dataProvider twigSnippetsProvider
+     * @dataProvider twigVarMetaTagsProvider
+     */
+    public function testMetatags($snippet, $whitelisted)
     {
-        // 第1要素：入力値
-        // 第2要素：成功か否か
+        $Page = $this->entityManager->getRepository(Page::class)->find(1);
+        $Page->setMetaTags('__RENDERED__'.$snippet);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $this->generateUrl($Page->getUrl()));
+        $text = $crawler->text();
+
+        // $snippetがsandboxで制限された場合はメタタグエリアは空で出力されるため、__RENDERED__の出力有無で結果を確認する
+        self::assertStringContainsString($whitelisted ? '__RENDERED__' : '', $text);
+    }
+
+    public function twigSnippetsProvider()
+    {
+        // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
-            // Tag
+            ['{% set foo = "bar" %}', true],
+            ['{% spaceless %}<div> <strong>test</strong> </div>{% endspaceless %}', true],
+            ['{% flush %}', true],
+            ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', false],
+            ['{% macro input(name, value, type = "text", size = 20) %}<input type="{{ type }}" name="{{ name }}" value="{{ value|e }}" size="{{ size }}"/>{% endmacro %}', false],
+            ['{% sandbox %}{% include "user.html" %}{% endsandbox %}', false],
+            ['{{ "-5"|abs }}', true],
+            ['{{ "2020/02/01"|date_modify("+1 day")|date("m/d/Y") }}', true],
+            ['{{ [1, 2, 3, 4]|first }}', true],
+            ['{{ file|format_file(line, text = null) }}', false],
+            ['{{ [1, 2, 3]|reduce((carry, v) => carry + v) }}', false],
+            ['{{ "<p> <strong>test</strong> </p>" |raw }}', false],
+            ['{{ url("homepage") }}', true],
             ['{{ random(1, 100) }}', true],
-            ['{ "hello world"|upper }', true],
-            ['{dump(app)}', false],
-            ['{% do 1 + 2 %}', false],
+            ['{% for i in range(3, 0) %} {{ i }}, {% endfor %}', true],
+            ['{{ dump(9) }}', false],
+            ['{{ constant("RSS", date) }}', false],
+            ['{{ include(template_from_string("Hello")) }}', false],
         ];
     }
 
-    /**
-     * @dataProvider twigKeyWords
-     */
-    public function testIgnoreSandboxFreeArea($context, $expected)
+    public function twigVarFreeAreaProvider()
     {
-        $file = $this->templateDir.'/'.$this->template[0];
-        $source = "<div>{{ include(template_from_string(" . $context . ")) }}</div>";
+        // 0: twigスニペット, 1: ホワイトリスト対象かどうか
+        return [
+            ['{{ app.user }}', false],
+            ['{{ Product.name }}', true],
+            ['{{ app.request.uri }}', true],
+            ['{{ app.request.getUri }}', true],
+        ];
+    }
 
-        file_put_contents($file, $source);
-
-        $actual = true;
-        try {
-            ignoreTwigSandboxErrorExtension::twig_include($this->twig, [], $this->template[0], [], true, false, true);
-        } catch (SecurityError $e) {
-            $actual = false;
-        }
-
-        $this->assertSame($expected, $actual);
+    public function twigVarMetaTagsProvider()
+    {
+        // 0: twigスニペット, 1: ホワイトリスト対象かどうか
+        return [
+            ['{{ app.debug }}', false],
+            ['{{ BaseInfo.shop_name }}', true],
+            ['{{ app.request.uri }}', true],
+            ['{{ app.request.getUri }}', true],
+        ];
     }
 }
