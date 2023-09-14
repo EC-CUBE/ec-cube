@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
-use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Entity\Page;
+use Eccube\Tests\Web\AbstractWebTestCase;
 
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
