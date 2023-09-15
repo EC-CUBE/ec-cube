@@ -10,7 +10,7 @@ eccube:
             route: entry
             method: [ 'POST' ]
             type: ip
-            limit: 30
+            limit: 25
             interval: '30 minutes'
         entry_complete:
             route: entry
