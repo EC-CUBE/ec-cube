@@ -762,7 +762,7 @@ class EF09ThrottlingCest
 
         // 重複するメールアドレスを繰り返し登録
         $I->expect('試行回数上限を超過します');
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             \Page\Front\EntryPage::go($I)
                 ->新規会員登録_メアド指定($email);
         }
