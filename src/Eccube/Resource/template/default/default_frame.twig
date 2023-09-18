@@ -68,6 +68,14 @@ file that was distributed with this source code.
         </div>
     </div>
 {% endif %}
+{% if isDebugMode %}
+    <div class="ec-debugModeAlert">
+        <div>
+            <div class="ec-debugModeAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+            {{ 'front.under_debug_mode'|trans }}
+        </div>
+    </div>
+{% endif %}
 
 <div class="ec-layoutRole">
     {# Layout: HEADER #}

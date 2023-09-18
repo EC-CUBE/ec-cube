@@ -10471,6 +10471,35 @@ Styleguide 11.2.7
 .ec-maintenanceAlert + * {
   margin-top: 50px;
 }
+
+/* devモードの追加 */
+.ec-debugModeAlert {
+  background: steelblue;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: white;
+  z-index: 9999;
+  display: flex;
+  font-weight: bold;
+}
+.ec-debugModeAlert > * {
+  margin: auto;
+}
+.ec-debugModeAlert .ec-debugModeAlert__icon {
+  display: inline-block;
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  fill: #fff;
+  vertical-align: top;
+}
+.ec-debugModeAlert + * {
+  margin-top: 50px;
+}
+
 /**
 メディアクエリ
 SP フォーストで記述する。
