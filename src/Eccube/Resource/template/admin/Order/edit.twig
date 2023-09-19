@@ -180,7 +180,7 @@ file that was distributed with this source code.
                 var deliveryId = $(this).val();
                 var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
                 $shippingDeliveryTime.find('option').remove();
-                $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+                $shippingDeliveryTime.append($('<option></option>').val('').text('{{ 'admin.common.select__unspecified'|trans }}'));
                 if (typeof(times[deliveryId]) !== 'undefined') {
                     for (var timeId in times[deliveryId]) {
                         timeValue = times[deliveryId][timeId];
