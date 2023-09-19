@@ -754,7 +754,7 @@ class EF09ThrottlingCest
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
 
         // 仮会員を1件登録
-        $email = 'test@ec-cube.com';
+        $email = $email = uniqid().microtime(true).'@example.com';
         $I->expect('会員登録を行います：');
         \Page\Front\EntryPage::go($I)
             ->新規会員登録_メアド指定($email);
