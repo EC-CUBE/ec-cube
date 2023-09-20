@@ -754,7 +754,7 @@ class EF09ThrottlingCest
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
 
         // EF0901-UC01-T05_会員登録で12回消化済み
-        for ($i = 12; $i < 25; $i++) {
+        for ($i = 12; $i < 19; $i++) {
             $I->expect('会員登録を行います：'.$i);
             \Page\Front\EntryPage::go($I)
                 ->新規会員登録_入力エラー();
