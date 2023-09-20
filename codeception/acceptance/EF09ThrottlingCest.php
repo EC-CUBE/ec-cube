@@ -749,4 +749,23 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
+    public function 会員登録_入力(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T18_会員登録_入力');
+
+        $email = uniqid().microtime(true).'@example.com';
+
+        // EF0901-UC01-T05_会員登録で12回消化済みであるが標準リミットである25回実行
+        for ($i = 0; $i < 25; $i++) {
+            $I->expect('会員登録を行います：'.$i);
+            \Page\Front\EntryPage::go($I)
+                ->新規会員登録_メアド指定($email);
+        }
+
+        $I->expect('試行回数上限を超過します');
+        \Page\Front\EntryPage::go($I)
+            ->新規会員登録_メアド指定($email);
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
 }
