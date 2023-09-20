@@ -755,16 +755,15 @@ class EF09ThrottlingCest
 
         $email = uniqid().microtime(true).'@example.com';
 
-        // EF0901-UC01-T05_会員登録で12回消化済みであるが標準リミットである25回実行
-        for ($i = 0; $i < 25; $i++) {
-            $I->expect('会員登録を行います：'.$i);
+        // EF0901-UC01-T05_会員登録で12回消化済み
+        for ($i = 12; $i < 25; $i++) {
+            $I->expect('会員登録を行います：');
             \Page\Front\EntryPage::go($I)
-                ->新規会員登録_メアド指定($email);
+                ->新規会員登録_入力エラー();
         }
-
         $I->expect('試行回数上限を超過します');
         \Page\Front\EntryPage::go($I)
-            ->新規会員登録_メアド指定($email);
+            ->新規会員登録_入力エラー();
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 

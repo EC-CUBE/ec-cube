@@ -56,16 +56,17 @@ class EntryPage extends AbstractFrontPage
         return $this;
     }
 
-    public function 新規会員登録_メアド指定($email, $form = [])
+    public function 新規会員登録_入力エラー($form = [])
     {
         $this->tester->amOnPage('/entry');
+        $email = uniqid().microtime(true).'@example.com';
 
         $form += [
-            'entry[name][name01]' => '姓',
-            'entry[name][name02]' => '名',
-            'entry[kana][kana01]' => 'セイ',
-            'entry[kana][kana02]' => 'メイ',
-            'entry[postal_code]' => '530-0001',
+            'entry[name][name01]' => '',
+            'entry[name][name02]' => '',
+            'entry[kana][kana01]' => '',
+            'entry[kana][kana02]' => '',
+            'entry[postal_code]' => '',
             'entry[address][pref]' => ['value' => '27'],
             'entry[address][addr01]' => '大阪市北区',
             'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
