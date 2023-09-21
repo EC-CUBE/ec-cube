@@ -24,10 +24,6 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             // 初期表示時のsort noを保持.
@@ -172,21 +168,21 @@ file that was distributed with this source code.
                                             {% endif %}
                                         </span>
                                         </div>
-                                        <div class="col-3 text-right">
-                                            <a class="btn btn-ec-actionIcon mr-2 action-up{{ loop.first ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                        <div class="col-3 text-end">
+                                            <a class="btn btn-ec-actionIcon me-2 action-up{{ loop.first ? ' disabled' }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-2 action-down{{ loop.last ? ' disabled' }}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                            <a class="btn btn-ec-actionIcon me-2 action-down{{ loop.last ? ' disabled' }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                             </a>
-                                            <a class="btn btn-ec-actionIcon mr-2 action-visible" href="{{ url('admin_setting_shop_payment_visible', {'id': Payment.id }) }}"
-                                               data-tooltip="true" data-placement="top" title="{{ Payment.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
+                                            <a class="btn btn-ec-actionIcon me-2 action-visible" href="{{ url('admin_setting_shop_payment_visible', {'id': Payment.id }) }}"
+                                               data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Payment.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
                                                data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
                                                 <i class="fa fa-toggle-{{ Payment.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                             </a>
-                                            <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'admin.common.delete'|trans }}">
-                                                <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
+                                                <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                    data-url="{{ url('admin_setting_shop_payment_delete', {'id' : Payment.id}) }}"
                                                    data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Payment.method }) }}">
                                                     <i class="fa fa-close fa-lg text-secondary"></i>
@@ -203,18 +199,18 @@ file that was distributed with this source code.
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title font-weight-bold">
+                                        <h5 class="modal-title fw-bold">
                                             {{ 'admin.common.delete_modal__title'|trans }}
                                         </h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
+                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+
                                         </button>
                                     </div>
-                                    <div class="modal-body text-left">
-                                        <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                    <div class="modal-body text-start">
+                                        <p class="text-start modal-message"><!-- jsでメッセージを挿入 --></p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                        <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                             {{ 'admin.common.cancel'|trans }}
                                         </button>
                                         <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}

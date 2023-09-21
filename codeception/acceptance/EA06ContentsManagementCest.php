@@ -14,13 +14,17 @@
 use Codeception\Util\Fixtures;
 use Page\Admin\BlockEditPage;
 use Page\Admin\BlockManagePage;
+use Page\Admin\CssManagePage;
 use Page\Admin\FileManagePage;
+use Page\Admin\JavaScriptManagePage;
 use Page\Admin\LayoutEditPage;
 use Page\Admin\LayoutManagePage;
+use Page\Admin\MaintenanceManagePage;
 use Page\Admin\NewsEditPage;
 use Page\Admin\NewsManagePage;
 use Page\Admin\PageEditPage;
 use Page\Admin\PageManagePage;
+use Page\Front\TopPage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -45,28 +49,28 @@ class EA06ContentsManagementCest
 
     public function contentsmanagement_新着情報管理(AcceptanceTester $I)
     {
-        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC02-T02/UC03-T01) 新着情報管理（作成・編集・削除）');
+        $I->wantTo('EA0601-UC01-T01(& UC02-T01/UC03-T01) 新着情報管理（作成・編集・削除）');
 
         // EA0601-UC01-T01_新着情報管理（新規作成）
         NewsManagePage::go($I)->新規登録();
 
         NewsEditPage::of($I)
-            ->入力_日付(date('Y-m-d'))
+            ->入力_日付(date('Y-m-d').'T00:00:00')
             ->入力_タイトル('news_title1')
             ->入力_本文('newsnewsnewsnewsnews')
             ->登録();
 
-        $I->see('保存しました', NewsManagePage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, NewsManagePage::$登録完了メッセージ);
 
         // EA0601-UC02-T01_新着情報管理（編集）
         NewsManagePage::go($I)->一覧_編集(2);
-        $new_title = 'news_title ' . uniqid();
+        $new_title = 'news_title '.uniqid();
 
         NewsEditPage::of($I)
             ->入力_タイトル($new_title)
             ->登録();
 
-        $I->see('保存しました', NewsManagePage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, NewsManagePage::$登録完了メッセージ);
 
         $NewsListPage = NewsManagePage::go($I);
         $I->assertEquals($new_title, $NewsListPage->一覧_タイトル(2));
@@ -74,6 +78,7 @@ class EA06ContentsManagementCest
         // EA0601-UC03-T01_新着情報管理（削除）
         $NewsListPage->一覧_削除(2);
         $NewsListPage->ポップアップを受け入れます(2);
+        $I->waitForText('削除しました', 10, NewsManagePage::$登録完了メッセージ);
 
         $I->assertNotEquals($new_title, $NewsListPage->一覧_タイトル(2));
     }
@@ -103,7 +108,7 @@ class EA06ContentsManagementCest
                 ->入力_ファイル('upload.txt')
                 ->アップロード();
 
-            $I->see('upload.txt', $FileManagePage->ファイル名(1));
+            $I->waitForText('upload.txt', 10, $FileManagePage->ファイル名(1));
 
             $FileManagePage->一覧_ダウンロード(1);
             $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
@@ -116,7 +121,7 @@ class EA06ContentsManagementCest
 
             $FileManagePage->一覧_表示(1);
             $I->switchToNewWindow();
-            $I->see('This is uploaded file.');
+            $I->waitForText('This is uploaded file.');
 
             FileManagePage::go($I)
                 ->一覧_削除(1)
@@ -127,14 +132,14 @@ class EA06ContentsManagementCest
                 ->入力_フォルダ名('folder1')
                 ->フォルダ作成();
 
-            $I->see('folder1', $FileManagePage->ファイル名(1));
+            $I->waitForText('folder1', 10, $FileManagePage->ファイル名(1));
 
             $FileManagePage->一覧_ファイル名_クリック(1);
-            $I->see('folder1', $FileManagePage->パンくず(2));
+            $I->waitForText('folder1', 10, $FileManagePage->パンくず(2));
 
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
-            $I->see('ファイル管理コンテンツ管理', '.c-pageTitle');
+            $I->waitForText('ファイル管理コンテンツ管理', 10, '.c-pageTitle');
 
             FileManagePage::go($I)
                 ->一覧_削除(1)
@@ -152,7 +157,25 @@ class EA06ContentsManagementCest
             ->入力_ファイル('upload.php')
             ->アップロード();
 
-        $I->see('phpファイルはアップロードできません', '#form1 .errormsg');
+        $I->waitForText('アップロードできないファイル拡張子です。', 10, '#form1 .errormsg');
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_ファイル管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0602-UC01-T10 ファイル管理 (ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/file_manager');
+        $I->waitForText('この機能は管理者によって制限されています。');
     }
 
     /**
@@ -176,21 +199,21 @@ class EA06ContentsManagementCest
             ->入力_内容($page)
             ->入力_PC用レイアウト('下層ページ用レイアウト')
             ->登録();
-        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, PageEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/user_data/'.$page);
-        $I->see($page, 'body');
+        $I->waitForText($page, 10, 'body');
 
         /* 編集 */
         PageManagePage::go($I)->ページ編集($page);
         PageEditPage::at($I)
             ->入力_内容("{% extends 'default_frame.twig' %}")
             ->登録();
-        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, PageEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/user_data/'.$page);
         $config = Fixtures::get('config');
-        $I->seeElement('div.ec-layoutRole__footer');
+        $I->seeElement('footer.ec-layoutRole__footer');
 
         /* レイアウト編集 */
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
@@ -198,9 +221,9 @@ class EA06ContentsManagementCest
             ->ブロックを移動('新着情報', '#position_4')
             ->登録();
 
-        $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, LayoutEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
-        $I->see('新着情報', '.ec-newsRole');
+        $I->waitForText('新着情報', 10, '.ec-newsRole');
 
         LayoutManagePage::go($I)->レイアウト編集('下層ページ用レイアウト');
         LayoutEditPage::at($I)
@@ -235,10 +258,31 @@ class EA06ContentsManagementCest
 
         /* 削除 */
         PageManagePage::go($I)->削除($page);
-        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, PageEditPage::$登録完了メッセージ);
         $I->amOnPage('/user_data/'.$page);
         $I->seeInTitle('ページがみつかりません');
     }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_ページ管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0603-UC01-T04 ページ管理 (ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/page/new');
+        $I->waitForText('この機能は管理者によって制限されています。');
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/page/1/edit');
+        $I->waitForText('この機能は管理者によって制限されています。');
+    }
+
 
     public function contentsmanagement_レイアウト管理(AcceptanceTester $I)
     {
@@ -262,7 +306,7 @@ class EA06ContentsManagementCest
             ->端末種別('PC')
             ->ブロックを移動('新着情報', '#position_3')
             ->登録();
-        $I->see('保存しました');
+        $I->waitForText('保存しました');
 
         // レイアウトを適用した新規ページを作成
         PageManagePage::go($I)->新規入力();
@@ -272,7 +316,7 @@ class EA06ContentsManagementCest
             ->入力_URL($pageName)
             ->入力_PC用レイアウト($layoutName)
             ->登録();
-        $I->see('保存しました', PageEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, PageEditPage::$登録完了メッセージ);
 
         // 作成したページの表示確認 (新着情報がヘッダエリアに表示されていることを確認)
         $I->amOnPage('/user_data/'.$pageName);
@@ -283,7 +327,7 @@ class EA06ContentsManagementCest
         LayoutEditPage::at($I)
             ->ブロックを移動('新着情報', '#position_10')
             ->登録();
-        $I->see('保存しました', LayoutEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, LayoutEditPage::$登録完了メッセージ);
 
         // 編集したページの表示確認 (新着情報がフッタエリアに表示されていることを確認)
         $I->amOnPage('/user_data/'.$pageName);
@@ -292,15 +336,15 @@ class EA06ContentsManagementCest
 
         // レイアウトの削除 → レイアウトを適用したページがあるため削除できない
         LayoutManagePage::go($I)->削除($layoutName);
-        $I->see('削除できませんでした', LayoutManagePage::$登録完了メッセージ);
+        $I->waitForText('削除できませんでした', 10, LayoutManagePage::$登録完了メッセージ);
 
         // レイアウトを適用したページを削除
         PageManagePage::go($I)->削除($pageName);
-        $I->see('削除しました', PageEditPage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, PageEditPage::$登録完了メッセージ);
 
         // レイアウトの削除
         LayoutManagePage::go($I)->削除($layoutName);
-        $I->see('削除しました', LayoutManagePage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, LayoutManagePage::$登録完了メッセージ);
         $I->cantSee($layoutName, '.contentsArea');
     }
 
@@ -339,7 +383,7 @@ class EA06ContentsManagementCest
             ->入力_ファイル名($block)
             ->入力_データ('<div id='.$block.'>block1</div>')
             ->登録();
-        $I->see('保存しました', BlockEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, BlockEditPage::$登録完了メッセージ);
 
         // TOPページにブロックを配置
         LayoutManagePage::go($I)->レイアウト編集('トップページ用レイアウト');
@@ -348,16 +392,16 @@ class EA06ContentsManagementCest
             ->登録();
 
         $I->amOnPage('/');
-        $I->see('block1', ['id' => $block]);
+        $I->waitForText('block1', 10, ['id' => $block]);
 
         BlockManagePage::go($I)->編集(1);
         BlockEditPage::at($I)
             ->入力_データ('<div id='.$block.'>welcome</div>')
             ->登録();
-        $I->see('保存しました', BlockEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, BlockEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/');
-        $I->see('welcome', ['id' => $block]);
+        $I->waitForText('welcome', 10, ['id' => $block]);
 
         // EA0604-UC01-T03_ブロック管理（削除）
         BlockManagePage::go($I)
@@ -366,5 +410,164 @@ class EA06ContentsManagementCest
 
         $I->amOnPage('/');
         $I->dontSeeElement(['id' => $block]);
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_ブロック管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0604-UC01-T04 ブロック管理 (ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/block/new');
+        $I->waitForText('この機能は管理者によって制限されています。');
+
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/block/1/edit');
+        $I->waitForText('この機能は管理者によって制限されています。');
+    }
+
+
+    public function contentsmanagement_CSS管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0606-UC01-T01_CSS管理');
+
+        CssManagePage::go($I)->入力(
+            '.ec-headerNaviRole { display: none; }'
+        )->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->dontSee('お気に入り', '.ec-headerNaviRole');
+
+        CssManagePage::go($I)
+            ->入力('.ec-headerNaviRole { }')
+            ->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->waitForText('お気に入り', 10, '.ec-headerNaviRole');
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_CSS管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0606-UC01-T02_CSS管理(ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/css');
+        $I->waitForText('この機能は管理者によって制限されています。');
+    }
+
+    public function contentsmanagement_JavaScript管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC01-T01_JavaScript管理');
+
+        $test_text = 'テストのテキスト';
+
+        JavaScriptManagePage::go($I)->入力(
+            "$('.ec-headerNaviRole').append('{$test_text}');"
+        )->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->waitForText($test_text, 10, '.ec-headerNaviRole');
+
+        JavaScriptManagePage::go($I)->入力('/* */')->登録();
+        $I->amOnPage('/');
+        $I->reloadPage();
+        $I->dontSee($test_text, '.ec-headerNaviRole');
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function contentsmanagement_JavaScript管理_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC01-T02_JavaScript管理(ファイルアップロード制限)');
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/content/js');
+        $I->waitForText('この機能は管理者によって制限されています。');
+    }
+
+
+    public function contentsmanagement_メンテナンス管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0607-UC08-T01_メンテナンス管理');
+
+        $I->expect('メンテナンスモードを有効にします');
+        MaintenanceManagePage::go($I)
+            ->メンテナンス有効無効();
+        $I->waitForText('メンテナンスモードを有効にしました。', 10, MaintenanceManagePage::$完了メッセージ);
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->waitForText('メンテナンスモードが有効になっています。',  null,'#page_homepage > div.ec-maintenanceAlert > div');
+        $I->waitForText('全ての商品', 10, TopPage::$検索_カテゴリ選択);
+
+        $I->expect('ログアウトします');
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->waitForText('ただいまメンテナンス中です。', 10, 'body > div > div > div > div > p.ec-404Role__title.ec-reportHeading');
+
+        // 画面遷移がスムーズにいかない場合があるため、ログイン画面に遷移させておく
+        $account = Fixtures::get('admin_account');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/login');
+        $I->submitForm('#form1', [
+            'login_id' => $account['member'],
+            'password' => $account['password'],
+        ]);
+
+        $I->expect('メンテナンスモードを無効にします');
+
+        MaintenanceManagePage::go($I)
+            ->メンテナンス有効無効();
+        $I->waitForText('メンテナンスモードを無効にしました。', 10, MaintenanceManagePage::$完了メッセージ);
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->waitForText('全ての商品', 10, TopPage::$検索_カテゴリ選択);
+    }
+
+    public function contentsmanagement_キャッシュ管理(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0608-UC01-T01_キャッシュ管理');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->waitForText('EC-CUBE SHOP', 10, 'h1');
+
+        $I->expect('キャッシュを削除します');
+        $config = Fixtures::get('config');
+        $I->amOnPage("/{$config['eccube_admin_route']}/content/cache");
+
+        $I->click('.c-contentsArea .btn-ec-conversion');
+        $I->waitForElement('.alert', 10);
+        $I->waitForText('削除しました', 10, '.alert');
+
+        $I->expect('トップページを確認します');
+        $I->amOnPage('/');
+        $I->waitForText('EC-CUBE SHOP', 10, 'h1');
     }
 }

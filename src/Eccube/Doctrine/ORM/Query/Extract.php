@@ -92,20 +92,20 @@ class Extract extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
-        $driver = $sqlWalker->getConnection()->getDriver()->getName();
+        $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
         // UTCとの時差(秒数)
         $diff = intval(date('Z'));
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
         switch ($driver) {
-            case 'pdo_sqlite':
+            case 'sqlite':
                 $sql = sprintf(
                     "CAST(STRFTIME('%s', DATETIME(%s, '${op}{$second} SECONDS')) AS INTEGER)",
                     $this->formats[$this->field],
                     $this->source->dispatch($sqlWalker));
                 break;
-            case 'pdo_pgsql':
+            case 'postgresql':
                 $sql = sprintf(
                     "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
                     $this->field,

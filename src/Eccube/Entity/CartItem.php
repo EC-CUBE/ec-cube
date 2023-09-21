@@ -259,6 +259,8 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         public function setCart(Cart $Cart)
         {
             $this->Cart = $Cart;
+
+            return $this;
         }
     }
 }

@@ -20,9 +20,8 @@ use Eccube\Entity\ProductClass;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as HttpClient;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -40,7 +39,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $expected;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $client;
 
@@ -57,19 +56,18 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Client を生成しトランザクションを開始する.
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        self::bootKernel();
         $this->client = static::createClient();
-        $this->entityManager = self::$container->get('doctrine')->getManager();
-        $this->eccubeConfig = self::$container->get(EccubeConfig::class);
+        $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+        $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
     }
 
     /**
      * トランザクションをロールバックする.
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -111,7 +109,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createMember($username = null)
     {
-        return self::$container->get(Generator::class)->createMember($username);
+        return static::getContainer()->get(Generator::class)->createMember($username);
     }
 
     /**
@@ -123,7 +121,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createCustomer($email = null)
     {
-        return self::$container->get(Generator::class)->createCustomer($email);
+        return static::getContainer()->get(Generator::class)->createCustomer($email);
     }
 
     /**
@@ -136,7 +134,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
-        return self::$container->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
+        return static::getContainer()->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
     }
 
     /**
@@ -148,7 +146,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createNonMember($email = null)
     {
-        return self::$container->get(Generator::class)->createNonMember($email);
+        return static::getContainer()->get(Generator::class)->createNonMember($email);
     }
 
     /**
@@ -161,7 +159,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createProduct($product_name = null, $product_class_num = 3)
     {
-        return self::$container->get(Generator::class)->createProduct($product_name, $product_class_num);
+        return static::getContainer()->get(Generator::class)->createProduct($product_name, $product_class_num);
     }
 
     /**
@@ -177,7 +175,7 @@ abstract class EccubeTestCase extends WebTestCase
         $ProductClasses = $Product->getProductClasses();
 
         // 後方互換のため最初の1つのみ渡す
-        return self::$container->get(Generator::class)->createOrder($Customer, [$ProductClasses[0]]);
+        return static::getContainer()->get(Generator::class)->createOrder($Customer, [$ProductClasses[0]]);
     }
 
     /**
@@ -190,7 +188,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)
     {
-        return self::$container->get(Generator::class)->createOrder($Customer, $ProductClasses);
+        return static::getContainer()->get(Generator::class)->createOrder($Customer, $ProductClasses);
     }
 
     /**
@@ -206,7 +204,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
-        return self::$container->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
+        return static::getContainer()->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
 
     /**
@@ -216,7 +214,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createPage()
     {
-        return self::$container->get(Generator::class)->createPage();
+        return static::getContainer()->get(Generator::class)->createPage();
     }
 
     /**
@@ -226,7 +224,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)
     {
-        return self::$container->get(Generator::class)->createLoginHistory($user_name, $client_ip, $status, $Member);
+        return static::getContainer()->get(Generator::class)->createLoginHistory($user_name, $client_ip, $status, $Member);
     }
 
     /**
@@ -277,125 +275,6 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
-     * MailCatcher を初期化する.
-     *
-     * このメソッドは主に setUp() メソッドでコールされる.
-     * MailCatcher が起動してない場合は, テストをスキップする.
-     * MailCatcher については \Eccube\Tests\Service\MailServiceTest のコメントを参照してください
-     *
-     * @see \Eccube\Tests\Service\MailServiceTest
-     * @see http://mailcatcher.me/
-     * @deprecated
-     */
-    protected function initializeMailCatcher()
-    {
-        $this->checkMailCatcherStatus();
-    }
-
-    /**
-     * MailCatcher の起動状態をチェックする.
-     *
-     * MailCatcher が起動していない場合は, テストをスキップする.
-     *
-     * @deprecated
-     */
-    protected function checkMailCatcherStatus()
-    {
-        trigger_error('MailCatcher is deprecated. Please implementation to the EccubeTestCase::getMailCollector().', E_USER_ERROR);
-        try {
-            $httpClient = new HttpClient();
-            $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
-            if ($response->getStatusCode() !== 200) {
-                throw new HttpException($response->getStatusCode());
-            }
-        } catch (HttpException $e) {
-            $this->markTestSkipped($e->getMailCatcherMessage().'['.$e->getStatusCode().']');
-        } catch (\Exception $e) {
-            $message = 'MailCatcher is not available';
-            $this->markTestSkipped($message);
-            log_error($message);
-        }
-    }
-
-    /**
-     * MailCatcher のメッセージをすべて削除する.
-     *
-     * @deprecated
-     */
-    protected function cleanUpMailCatcherMessages()
-    {
-        try {
-            $httpClient = new HttpClient();
-            $response = $httpClient->delete(self::MAILCATCHER_URL.'messages');
-        } catch (\Exception $e) {
-            log_error('['.get_class().'] '.$e->getMessage());
-        }
-    }
-
-    /**
-     * MailCatcher のメッセージをすべて取得する.
-     *
-     * @return array MailCatcher のメッセージの配列
-     *
-     * @deprecated
-     */
-    protected function getMailCatcherMessages()
-    {
-        $httpClient = new HttpClient();
-        $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
-
-        return json_decode($response->getBody(true));
-    }
-
-    /**
-     * MailCatcher のメッセージを ID を指定して取得する.
-     *
-     * @param integer $id メッセージの ID
-     *
-     * @return object MailCatcher のメッセージ
-     *
-     * @deprecated
-     */
-    protected function getMailCatcherMessage($id)
-    {
-        $httpClient = new HttpClient();
-        $response = $httpClient->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-
-        return json_decode($response->getBody(true));
-    }
-
-    /**
-     * MailCatcher のメッセージソースをデコードする.
-     *
-     * @param object $Message MailCatcher のメッセージ
-     *
-     * @return string デコードされた eml 形式のソース
-     *
-     * @deprecated
-     */
-    protected function parseMailCatcherSource($Message)
-    {
-        return quoted_printable_decode($Message->source);
-    }
-
-    /**
-     * Get the MailCollector
-     *
-     * @param boolean $sendRequest True to send requests internally.
-     *
-     * @return MessageDataCollector
-     */
-    protected function getMailCollector($sendRequest = true)
-    {
-        if ($sendRequest) {
-            $this->client->enableProfiler();
-            $this->client->request('POST', '/');
-        }
-
-        return $this->client->getProfile()->getCollector('swiftmailer');
-    }
-
-    /**
      * Generates a URL from the given parameters.
      *
      * @param string $route         The name of the route
@@ -409,7 +288,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return self::$container->get('router')->generate($route, $parameters, $referenceType);
+        return static::getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
 
     /**
@@ -427,6 +306,6 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function getCsrfToken($csrfTokenId)
     {
-        return self::$container->get('security.csrf.token_manager')->getToken($csrfTokenId);
+        return static::getContainer()->get('security.csrf.token_manager')->getToken($csrfTokenId);
     }
 }

@@ -93,6 +93,35 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 検索_入力_フリー検索($value)
+    {
+        $this->tester->fillField(self::$検索条件_プロダクト, $value);
+
+        return $this;
+    }
+
+    public function 詳細検索_入力_タグ($value)
+    {
+        $this->tester->selectOption(['id' => 'admin_search_product_tag_id'], 1);
+
+        return $this;
+    }
+
+    public function 詳細検索ボタンをクリック()
+    {
+        $this->tester->click(self::$詳細検索ボタン);
+
+        return $this;
+    }
+
+    public function 検索を実行()
+    {
+        $this->tester->click(self::$検索ボタン);
+        $this->tester->see('商品一覧商品管理', '.c-pageTitle');
+
+        return $this;
+    }
+
     /**
      * 検索結果の指定した行の規格設定に遷移。
      *
@@ -114,7 +143,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      */
     public function 検索結果_複製($rowNum)
     {
-        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(2) > a");
+        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(2) > a");
 
         return $this;
     }
@@ -128,7 +157,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      */
     public function 検索結果_確認($rowNum)
     {
-        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(1) > a");
+        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(1) > a");
 
         return $this;
     }
@@ -196,7 +225,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function 検索結果_削除()
     {
-        $this->tester->click(['css' => '#btn_bulk button[data-target="#bulkDeleteModal"]']);
+        $this->tester->click(['css' => '#btn_bulk button[data-bs-target="#bulkDeleteModal"]']);
         $this->tester->wait(1);
 
         return $this;
@@ -211,7 +240,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function Accept_複製する($rowNum)
     {
-        $modalCssSelector = "#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(2) div.modal";
+        $modalCssSelector = "#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(2) div.modal";
         $this->tester->waitForElementVisible(['css' => $modalCssSelector]);
         $this->tester->click($modalCssSelector.' div.modal-footer a.btn-ec-conversion');
 
@@ -251,6 +280,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     {
         $this->tester->wait(5);
         $csv = $this->tester->getLastDownloadFile('/^product_\d{14}\.csv$/');
+
         return mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
     }
 
@@ -276,5 +306,19 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(['id' => 'bulkDeleteDone']);
 
         return $this;
+    }
+
+    public function assertSortedList($index, $order)
+    {
+        $values = $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child('.$index.')');
+
+        $expect = $values;
+        if ($order === 'asc') {
+            sort($expect);
+        } else {
+            rsort($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
     }
 }

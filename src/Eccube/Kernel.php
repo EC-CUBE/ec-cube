@@ -41,7 +41,6 @@ use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
-use Eccube\Validator\EmailValidator\NoRFCEmailValidator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -56,7 +55,14 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    public const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+
+        $this->loadEntityProxies();
+    }
 
     public function getCacheDir()
     {
@@ -108,7 +114,7 @@ class Kernel extends BaseKernel
     public function boot()
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
-        $this->loadEntityProxies();
+        // $this->loadEntityProxies();
 
         parent::boot();
 
@@ -118,30 +124,23 @@ class Kernel extends BaseKernel
         $timezone = $container->getParameter('timezone');
         UTCDateTimeType::setTimeZone($timezone);
         UTCDateTimeTzType::setTimeZone($timezone);
-        date_default_timezone_set($timezone);
 
-        // RFC違反のメールを送信できるよう独自のValidationを設定
-        if (!$container->getParameter('eccube_rfc_email_check')) {
-            // RFC違反のメールを許容する
-            \Swift_DependencyContainer::getInstance()
-                ->register('email.validator')
-                ->asSharedInstanceOf(NoRFCEmailValidator::class);
-        }
+        date_default_timezone_set($timezone);
 
         $Logger = $container->get('eccube.logger');
         if ($Logger !== null && $Logger instanceof \Eccube\Log\Logger) {
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator !== null && $Translator instanceof \Symfony\Component\Translation\TranslatorInterface) {
-            TranslatorFacade::init($container, $Translator);
+        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
+            TranslatorFacade::init($Translator);
         }
 
         /** @var AnnotationReaderFacade $AnnotationReaderFacade */
         $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
         $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
         if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
-            AnnotationReaderFacade::init($container, $AnnotationReader);
+            AnnotationReaderFacade::init($AnnotationReader);
         }
     }
 

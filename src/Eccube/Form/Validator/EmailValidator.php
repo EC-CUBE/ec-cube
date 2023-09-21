@@ -37,8 +37,8 @@ class EmailValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Email');
         }
 
-        if ($constraint->strict) {
-            $baseEmailValidator = new BaseEmailValidator($constraint->strict);
+        if ($constraint->mode === Email::VALIDATION_MODE_STRICT) {
+            $baseEmailValidator = new BaseEmailValidator(Email::VALIDATION_MODE_STRICT);
             $baseEmailValidator->initialize($this->context);
             $baseEmailValidator->validate($value, $constraint);
 
@@ -62,50 +62,5 @@ class EmailValidator extends ConstraintValidator
                 ->setCode(Email::INVALID_FORMAT_ERROR)
                 ->addViolation();
         }
-
-        $host = (string) substr($value, strrpos($value, '@') + 1);
-
-        // Check for host DNS resource records
-        if ($constraint->checkMX) {
-            if (!$this->checkMX($host)) {
-                $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ value }}', $this->formatValue($value))
-                    ->setCode(Email::MX_CHECK_FAILED_ERROR)
-                    ->addViolation();
-            }
-
-            return;
-        }
-
-        if ($constraint->checkHost && !$this->checkHost($host)) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setCode(Email::HOST_CHECK_FAILED_ERROR)
-                ->addViolation();
-        }
-    }
-
-    /**
-     * Check DNS Records for MX type.
-     *
-     * @param string $host Host
-     *
-     * @return bool
-     */
-    private function checkMX($host)
-    {
-        return '' !== $host && checkdnsrr($host, 'MX');
-    }
-
-    /**
-     * Check if one of MX, A or AAAA DNS RR exists.
-     *
-     * @param string $host Host
-     *
-     * @return bool
-     */
-    private function checkHost($host)
-    {
-        return '' !== $host && ($this->checkMX($host) || (checkdnsrr($host, 'A') || checkdnsrr($host, 'AAAA')));
     }
 }

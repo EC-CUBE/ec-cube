@@ -38,7 +38,7 @@ if (!class_exists(ProductStatus::class, false)) {
          *
          * @var integer
          */
-        const DISPLAY_SHOW = 1;
+        public const DISPLAY_SHOW = 1;
 
         /**
          * 非公開
@@ -48,7 +48,7 @@ if (!class_exists(ProductStatus::class, false)) {
          *
          * @var integer
          */
-        const DISPLAY_HIDE = 2;
+        public const DISPLAY_HIDE = 2;
 
         /**
          * 廃止
@@ -60,6 +60,6 @@ if (!class_exists(ProductStatus::class, false)) {
          *
          * @var integer
          */
-        const DISPLAY_ABOLISHED = 3;
+        public const DISPLAY_ABOLISHED = 3;
     }
 }

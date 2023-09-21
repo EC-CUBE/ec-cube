@@ -23,13 +23,13 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Twig\Extension\TaxExtension;
-use setasign\Fpdi\TcpdfFpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 
 /**
  * Class OrderPdfService.
  * Do export pdf function.
  */
-class OrderPdfService extends TcpdfFpdi
+class OrderPdfService extends Fpdi
 {
     /** @var OrderRepository */
     protected $orderRepository;
@@ -46,29 +46,29 @@ class OrderPdfService extends TcpdfFpdi
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    protected $eccubeConfig;
 
     /**
      * @var EccubeExtension
      */
-    private $eccubeExtension;
+    protected $eccubeExtension;
 
     /**
      * @var TaxExtension
      */
-    private $taxExtension;
+    protected $taxExtension;
 
     // ====================================
     // 定数宣言
     // ====================================
 
     /** ダウンロードするPDFファイルのデフォルト名 */
-    const DEFAULT_PDF_FILE_NAME = 'nouhinsyo.pdf';
+    public const DEFAULT_PDF_FILE_NAME = 'nouhinsyo.pdf';
 
     /** FONT ゴシック */
-    const FONT_GOTHIC = 'kozgopromedium';
+    public const FONT_GOTHIC = 'kozgopromedium';
     /** FONT 明朝 */
-    const FONT_SJIS = 'kozminproregular';
+    public const FONT_SJIS = 'kozminproregular';
 
     // ====================================
     // 変数宣言
@@ -80,35 +80,35 @@ class OrderPdfService extends TcpdfFpdi
     /** 購入詳細情報 ラベル配列
      * @var array
      */
-    private $labelCell = [];
+    protected $labelCell = [];
 
     /*** 購入詳細情報 幅サイズ配列
      * @var array
      */
-    private $widthCell = [];
+    protected $widthCell = [];
 
     /** 最後に処理した注文番号 @var string */
-    private $lastOrderId = null;
+    protected $lastOrderId = null;
 
     // --------------------------------------
     // Font情報のバックアップデータ
     /** @var string フォント名 */
-    private $bakFontFamily;
+    protected $bakFontFamily;
     /** @var string フォントスタイル */
-    private $bakFontStyle;
+    protected $bakFontStyle;
     /** @var string フォントサイズ */
-    private $bakFontSize;
+    protected $bakFontSize;
     // --------------------------------------
 
     // lfTextのoffset
-    private $baseOffsetX = 0;
-    private $baseOffsetY = -4;
+    protected $baseOffsetX = 0;
+    protected $baseOffsetY = -4;
 
     /** ダウンロードファイル名 @var string */
-    private $downloadFileName = null;
+    protected $downloadFileName = null;
 
     /** 発行日 @var string */
-    private $issueDate = '';
+    protected $issueDate = '';
 
     /**
      * OrderPdfService constructor.
@@ -189,9 +189,6 @@ class OrderPdfService extends TcpdfFpdi
 
         // 出荷番号をStringからarrayに変換
         $ids = explode(',', $formData['ids']);
-
-        // 空文字列の場合のデフォルトメッセージを設定する
-        $this->setDefaultData($formData);
 
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
@@ -302,21 +299,31 @@ class OrderPdfService extends TcpdfFpdi
         $this->setBasePosition();
 
         // ショップ名
-        $this->lfText(125, 60, $this->baseInfoRepository->getShopName(), 8, 'B');
+        $this->lfText(125, 58, $this->baseInfoRepository->getShopName(), 8, 'B');
+
+        //郵便番号
+        $this->lfText(121, 63, "\u{3012}". ' ' . mb_substr($this->baseInfoRepository->getPostalCode(), 0, 3) . ' - ' . mb_substr($this->baseInfoRepository->getPostalCode(), 3, 4), 8);
+
 
         // 都道府県+所在地
         $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
-        $this->lfText(125, 65, $text, 8);
+        $this->lfText(125, 66, $text, 8);
         $this->lfText(125, 69, $this->baseInfoRepository->getAddr02(), 8);
 
         // 電話番号
         $text = 'TEL: '.$this->baseInfoRepository->getPhoneNumber();
-        $this->lfText(125, 72, $text, 8); //TEL・FAX
+        $this->lfText(125, 72, $text, 8); // TEL・FAX
 
         // メールアドレス
         if (strlen($this->baseInfoRepository->getEmail01()) > 0) {
             $text = 'Email: '.$this->baseInfoRepository->getEmail01();
             $this->lfText(125, 75, $text, 8); // Email
+        }
+
+        // インボイス登録番号
+        if (!empty($this->baseInfoRepository->getInvoiceRegistrationNumber())) {
+            $text = '登録番号: '.$this->baseInfoRepository->getInvoiceRegistrationNumber();
+            $this->lfText(125, 79, $text, 8);
         }
 
         // user_dataにlogo.pngが配置されている場合は優先的に読み込む
@@ -336,9 +343,9 @@ class OrderPdfService extends TcpdfFpdi
      */
     protected function renderMessageData(array $formData)
     {
-        $this->lfText(27, 70, $formData['message1'], 8); //メッセージ1
-        $this->lfText(27, 74, $formData['message2'], 8); //メッセージ2
-        $this->lfText(27, 78, $formData['message3'], 8); //メッセージ3
+        $this->lfText(27, 70, $formData['message1'], 8); // メッセージ1
+        $this->lfText(27, 74, $formData['message2'], 8); // メッセージ2
+        $this->lfText(27, 78, $formData['message3'], 8); // メッセージ3
     }
 
     /**
@@ -353,6 +360,10 @@ class OrderPdfService extends TcpdfFpdi
 
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
 
+        // 行頭近くの場合、表示崩れがあるためもう一個字下げする
+        if (270 <= $this->GetY()) {
+            $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
+        }
         $this->SetFont(self::FONT_GOTHIC, 'B', 9);
         $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 2, 'L', 0, '');
 
@@ -380,7 +391,7 @@ class OrderPdfService extends TcpdfFpdi
         // フォント情報のバックアップ
         $this->backupFont();
 
-        //文書タイトル（納品書・請求書）
+        // 文書タイトル（納品書・請求書）
         $this->SetFont(self::FONT_GOTHIC, '', 15);
         $this->Cell(0, 10, $title, 0, 2, 'C', 0, '');
         $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
@@ -409,11 +420,15 @@ class OrderPdfService extends TcpdfFpdi
 
         $Order = $Shipping->getOrder();
 
+        // 購入者郵便番号(3012は郵便マークのUTFコード)
+        $text = "\u{3012}" . ' ' . mb_substr($Shipping->getPostalCode(), 0, 3) . ' - ' . mb_substr($Shipping->getPostalCode(), 3, 4);
+        $this->lfText(22, 43, $text, 10);
+
         // 購入者都道府県+住所1
         // $text = $Order->getPref().$Order->getAddr01();
         $text = $Shipping->getPref().$Shipping->getAddr01();
         $this->lfText(27, 47, $text, 10);
-        $this->lfText(27, 51, $Shipping->getAddr02(), 10); //購入者住所2
+        $this->lfText(27, 51, $Shipping->getAddr02(), 10); // 購入者住所2
 
         // 購入者氏名
         if (null !== $Shipping->getCompanyName()) {
@@ -433,14 +448,14 @@ class OrderPdfService extends TcpdfFpdi
         // =========================================
         $this->SetFont(self::FONT_SJIS, '', 10);
 
-        //ご注文日
+        // ご注文日
         $orderDate = $Order->getCreateDate()->format('Y/m/d H:i');
         if ($Order->getOrderDate()) {
             $orderDate = $Order->getOrderDate()->format('Y/m/d H:i');
         }
 
         $this->lfText(25, 125, $orderDate, 10);
-        //注文番号
+        // 注文番号
         $this->lfText(25, 135, $Order->getOrderNo(), 10);
 
         // 総合計金額
@@ -559,14 +574,6 @@ class OrderPdfService extends TcpdfFpdi
             $arrOrder[$i][2] = '合計';
             $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($Order->getTaxableTotal());
 
-            foreach ($Order->getTaxableTotalByTaxRate() as $rate => $total) {
-                ++$i;
-                $arrOrder[$i][0] = '';
-                $arrOrder[$i][1] = '';
-                $arrOrder[$i][2] = '('.$rate.'%対象)';
-                $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($total);
-            }
-
             ++$i;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
@@ -598,6 +605,30 @@ class OrderPdfService extends TcpdfFpdi
 
         // PDFに設定する
         $this->setFancyTable($this->labelCell, $arrOrder, $this->widthCell);
+
+        // インボイス対応
+        $this->backupFont();
+        $this->SetLineWidth(.3);
+        $this->SetFont(self::FONT_SJIS, '', 6);
+
+        $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        // 行頭近くの場合、表示崩れがあるためもう一個字下げする
+        if (270 <= $this->GetY()) {
+            $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        }
+        $width = array_reduce($this->widthCell, function ($n, $w) {
+            return $n + $w;
+        });
+        $this->SetX(20);
+        $message = '';
+        foreach ($Order->getTotalByTaxRate() as $rate => $total) {
+            $message .= '('.$rate.'%対象: ';
+            $message .= $this->eccubeExtension->getPriceFilter($total);
+            $message .= ' 内消費税: '.$this->eccubeExtension->getPriceFilter($Order->getTaxByTaxRate()[$rate]).')'.PHP_EOL;
+        }
+        $this->MultiCell($width, 4, $message, 0, 'R', 0, '');
+
+        $this->restoreFont();
     }
 
     /**
@@ -624,8 +655,6 @@ class OrderPdfService extends TcpdfFpdi
 
     /**
      * Colored table.
-     *
-     * TODO: 後の列の高さが大きい場合、表示が乱れる。
      *
      * @param array $header 出力するラベル名一覧
      * @param array $data   出力するデータ
@@ -661,15 +690,9 @@ class OrderPdfService extends TcpdfFpdi
         $this->SetFont('');
         // Data
         $fill = 0;
-        $h = 4;
-        foreach ($data as $row) {
-            // 行のの処理
+        $writeRow = function($row, $cellHeight, $fill, $isBorder) use($w) {
             $i = 0;
-            $h = 4;
-            $this->Cell(5, $h, '', 0, 0, '', 0, '');
-
-            // Cellの高さを保持
-            $cellHeight = 0;
+            $h = 0;
             foreach ($row as $col) {
                 // 列の処理
                 // TODO: 汎用的ではない処理。この指定は呼び出し元で行うようにしたい。
@@ -688,18 +711,37 @@ class OrderPdfService extends TcpdfFpdi
                 $this->MultiCell(
                     $w[$i], // セル幅
                     $cellHeight, // セルの最小の高さ
-                    $col, // 文字列
-                    1, // 境界線の描画方法を指定
+                    !$isBorder ? $col : '', // 文字列
+                    $isBorder ? 1 : 0, // 境界線の描画方法を指定
                     $align, // テキストの整列
                     $fill, // 背景の塗つぶし指定
-                    $ln                 // 出力後のカーソルの移動方法
+                    $ln // 出力後のカーソルの移動方法
                 );
                 $h = $this->getLastH();
-
-                ++$i;
+                $i++;
             }
+            return $cellHeight;
+        };
+
+        foreach ($data as $row) {
+            // 行の処理
+            $h = 4;
+            $this->Cell(5, $h, '', 0, 0, '', 0, '');
+            if ((277 - $this->getY()) < ($h * 4)) {
+                $this->checkPageBreak($this->PageBreakTrigger + 1);
+            }
+
+            $x = $this->getX();
+            $y = $this->getY();
+            // 1度目は文字だけ出力し、行の高さ最大を取得
+            $h = $writeRow($row, $h, $fill, false);
+            $this->setXY($x, $y);
+            // 2度目に最大の高さに合わせて、境界線を描画
+            $writeRow($row, $h, $fill, true);
+
             $fill = !$fill;
         }
+        $h = 4;
         $this->Cell(5, $h, '', 0, 0, '', 0, '');
         $this->Cell(array_sum($w), 0, '', 'T');
         $this->SetFillColor(255);
@@ -724,27 +766,6 @@ class OrderPdfService extends TcpdfFpdi
         $this->SetX($actualX);
         $actualY = is_null($y) ? $result['top'] : $y;
         $this->SetY($actualY);
-    }
-
-    /**
-     * データが設定されていない場合にデフォルト値を設定する.
-     *
-     * @param array $formData
-     */
-    protected function setDefaultData(array &$formData)
-    {
-        $defaultList = [
-            'title' => trans('admin.order.delivery_note_title__default'),
-            'message1' => trans('admin.order.delivery_note_message__default1'),
-            'message2' => trans('admin.order.delivery_note_message__default2'),
-            'message3' => trans('admin.order.delivery_note_message__default3'),
-        ];
-
-        foreach ($defaultList as $key => $value) {
-            if (is_null($formData[$key])) {
-                $formData[$key] = $value;
-            }
-        }
     }
 
     /**

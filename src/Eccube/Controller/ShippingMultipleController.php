@@ -22,10 +22,12 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\ShippingMultipleType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -67,6 +69,16 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $orderRepository;
 
     /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @var baseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
      * ShippingMultipleController constructor.
      *
      * @param PrefRepository $prefRepository
@@ -82,7 +94,9 @@ class ShippingMultipleController extends AbstractShoppingController
         OrderItemTypeRepository $orderItemTypeRepository,
         OrderHelper $orderHelper,
         CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow
+        PurchaseFlow $cartPurchaseFlow,
+        BaseInfoRepository $baseInfoRepository,
+        MailService $mailService
     ) {
         $this->prefRepository = $prefRepository;
         $this->orderRepository = $orderRepository;
@@ -90,6 +104,8 @@ class ShippingMultipleController extends AbstractShoppingController
         $this->orderHelper = $orderHelper;
         $this->cartService = $cartService;
         $this->cartPurchaseFlow = $cartPurchaseFlow;
+        $this->baseInfoRepository = $baseInfoRepository;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -155,7 +171,7 @@ class ShippingMultipleController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -319,7 +335,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE);
 
             log_info('複数配送設定処理完了', [$Order->getId()]);
 
@@ -396,7 +412,7 @@ class ShippingMultipleController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -418,6 +434,15 @@ class ShippingMultipleController extends AbstractShoppingController
                     ];
                 }
 
+                // 会員情報変更時にメールを送信
+                if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                    // 情報のセット
+                    $userData['userAgent'] = $request->headers->get('User-Agent');
+                    $userData['ipAddress'] = $request->getClientIp();
+
+                    $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+                }
+
                 $CustomerAddress->setCustomer($Customer);
                 $this->entityManager->persist($CustomerAddress);
                 $this->entityManager->flush();
@@ -436,7 +461,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE);
 
             log_info('複数配送のお届け先追加処理完了');
 

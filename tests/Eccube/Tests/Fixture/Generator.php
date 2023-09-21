@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Fixture;
 
-use bheller\ImagesGenerator\ImagesGeneratorProvider;
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
@@ -55,7 +55,6 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
-use Faker\Factory as Faker;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -203,6 +202,11 @@ class Generator
         $Member = new Member();
         if (is_null($username)) {
             $username = $faker->word;
+            do {
+                $loginId = $faker->word;
+            } while ($this->memberRepository->findBy(['login_id' => $loginId]));
+        } else {
+            $loginId = $username;
         }
         $Work = $this->entityManager->find(\Eccube\Entity\Master\Work::class, 1);
         $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
@@ -213,7 +217,7 @@ class Generator
         $password = $this->passwordEncoder->encodePassword($password, $salt);
 
         $Member
-            ->setLoginId($username)
+            ->setLoginId($loginId)
             ->setName($username)
             ->setSalt($salt)
             ->setPassword($password)
@@ -238,7 +242,9 @@ class Generator
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->safeEmail;
+            do {
+                $email = $faker->safeEmail;
+            } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
@@ -334,7 +340,9 @@ class Generator
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->safeEmail;
+            do {
+                $email = $faker->safeEmail;
+            } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
@@ -369,20 +377,18 @@ class Generator
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
-     * @param string $image_type 生成する画像タイプ.
-     *        cats の場合は猫の画像を生成する(時間がかかる).
-     *        not null の場合はダミー画像を自動生成する(GD Extension が必要).
-     *        null の場合は、画像を生成せずにファイル名のみを設定する.
+     * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
      *
      * @return \Eccube\Entity\Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3, $image_type = null)
+    public function createProduct($product_name = null, $product_class_num = 3, $with_image = false)
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
         $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $DeliveryDurations = $this->durationRepository->findAll();
+        $ProductCodesGenerated = [];
 
         $Product = new Product();
         if (is_null($product_name)) {
@@ -401,25 +407,16 @@ class Generator
         $this->entityManager->persist($Product);
         $this->entityManager->flush();
 
-        $faker2 = Faker::create($this->locale);
-        $faker2->addProvider(new ImagesGeneratorProvider($faker2));
+        $faker2 = \Faker\Factory::create($this->locale);
+
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
-            if ($image_type) {
+            if ($with_image) {
                 $width = $faker->numberBetween(480, 640);
                 $height = $faker->numberBetween(480, 640);
-                if ($image_type == 'cats') {
-                    $image = $faker->uuid.'.jpg';
-                    $src = file_get_contents('https://placekitten.com/'.$width.'/'.$height);
-                    file_put_contents(__DIR__.'/../../../../html/upload/save_image/'.$image, $src);
-                } else {
-                    $image = $faker2->imageGenerator(
-                        __DIR__.'/../../../../html/upload/save_image',
-                        $width,
-                        $height,
-                        'png', false, true, '#cccccc', '#ffffff'
-                    );
-                }
+                $image = $faker->uuid.'.jpg';
+                $src = file_get_contents('https://placekitten.com/'.$width.'/'.$height);
+                file_put_contents(__DIR__.'/../../../../html/upload/save_image/'.$image, $src);
             } else {
                 $image = $faker->word.'.jpg';
             }
@@ -457,8 +454,12 @@ class Generator
             $this->entityManager->persist($ProductStock);
             $this->entityManager->flush();
             $ProductClass = new ProductClass();
+            do {
+                $ProductCode = $faker->word;
+            } while (in_array($ProductCode, $ProductCodesGenerated));
+            $ProductCodesGenerated[] = $ProductCode;
             $ProductClass
-                ->setCode($faker->word)
+                ->setCode($ProductCode)
                 ->setCreator($Member)
                 ->setStock($ProductStock->getStock())
                 ->setProductStock($ProductStock)
@@ -502,8 +503,12 @@ class Generator
         } else {
             $ProductClass->setVisible(true);
         }
+        do {
+            $ProductCode = $faker->word;
+        } while (in_array($ProductCode, $ProductCodesGenerated));
+        $ProductCodesGenerated[] = $ProductCode;
         $ProductClass
-            ->setCode($faker->word)
+            ->setCode($ProductCode)
             ->setCreator($Member)
             ->setStock($ProductStock->getStock())
             ->setProductStock($ProductStock)
@@ -643,6 +648,8 @@ class Generator
         $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+
         /** @var ProductClass $ProductClass */
         foreach ($ProductClasses as $ProductClass) {
             if (!$ProductClass->isVisible()) {
@@ -662,6 +669,7 @@ class Generator
                 ->setTaxType($Taxation) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
+                ->setPointRate($BaseInfo->getBasicPointRate())
             ;
             if ($ProductClass->hasClassCategory1()) {
                 $OrderItem
@@ -837,10 +845,16 @@ class Generator
         $faker = $this->getFaker();
         /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
+        do {
+            $url = $faker->word;
+        } while ($this->pageRepository->findBy(['url' => $url]));
+        do {
+            $filename = $faker->word;
+        } while ($this->pageRepository->findBy(['file_name' => $filename]));
         $Page
             ->setName($faker->word)
-            ->setUrl($faker->word)
-            ->setFileName($faker->word)
+            ->setUrl($url)
+            ->setFileName($filename)
             ->setAuthor($faker->word)
             ->setDescription($faker->word)
             ->setKeyword($faker->word)
@@ -885,64 +899,11 @@ class Generator
     /**
      * Faker を生成する.
      *
-     * @return Faker\Generator
+     * @return \Faker\Generator
      *
-     * @see https://github.com/fzaninotto/Faker
      */
     protected function getFaker()
     {
-        return new Generator_Faker(Faker::create($this->locale));
+        return \Faker\Factory::create($this->locale);
     }
 }
-
-class Generator_Faker extends Faker
-{
-    private $faker;
-
-    public function __construct(\Faker\Generator $faker)
-    {
-        $this->faker = $faker;
-    }
-
-    public function __get($attribute)
-    {
-        return $this->faker->$attribute;
-    }
-
-    public function __call($method, $attributes)
-    {
-        return call_user_func_array([$this->faker, $method], $attributes);
-    }
-
-    public function __isset($name)
-    {
-        if (isset($this->faker->$name)) {
-            return true;
-        }
-
-        foreach ($this->faker->getProviders() as $provider) {
-            if (method_exists($provider, $name)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-// class Generator_FakerTest extends EccubeTestCase
-// {
-//     public function testKana01ShouldNotEmptyInJAJP()
-//     {
-//         $generator = new Generator($this->app, 'ja_JP');
-//         $Customer = $generator->createCustomer();
-//         self::assertNotEmpty($Customer->getKana01());
-//     }
-
-//     public function testKana01ShouldEmptyInENUS()
-//     {
-//         $generator = new Generator($this->app, 'en_US');
-//         $Customer = $generator->createCustomer();
-//         self::assertEmpty($Customer->getKana01());
-//     }
-// }

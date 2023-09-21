@@ -16,6 +16,8 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\MappingException as ORMMappingException;
+use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -60,17 +62,17 @@ class PluginService
      */
     protected $composerService;
 
-    const VENDOR_NAME = 'ec-cube';
+    public const VENDOR_NAME = 'ec-cube';
 
     /**
      * Plugin type/library of ec-cube
      */
-    const ECCUBE_LIBRARY = 1;
+    public const ECCUBE_LIBRARY = 1;
 
     /**
      * Plugin type/library of other (except ec-cube)
      */
-    const OTHER_LIBRARY = 2;
+    public const OTHER_LIBRARY = 2;
 
     /**
      * @var string %kernel.project_dir%
@@ -250,9 +252,7 @@ class PluginService
     public function postInstall($config, $source)
     {
         // dbにプラグイン登録
-
         $this->entityManager->getConnection()->beginTransaction();
-
         try {
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
@@ -276,10 +276,16 @@ class PluginService
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
 
-            $this->entityManager->flush();
-            $this->entityManager->getConnection()->commit();
+            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+                $this->entityManager->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $this->entityManager->getConnection()->rollback();
+            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($this->entityManager->getConnection()->isRollbackOnly()) {
+                    $this->entityManager->getConnection()->rollback();
+                }
+            }
+
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -336,7 +342,7 @@ class PluginService
                     $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
-                        $chain = $ormConfig->getMetadataDriverImpl();
+                        $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
                         $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
@@ -589,18 +595,22 @@ class PluginService
         }
         $this->unregisterPlugin($plugin);
 
-        // スキーマを更新する
-        $this->generateProxyAndUpdateSchema($plugin, $config, true);
+        try {
+            // スキーマを更新する
+            $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
-        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
-        $this->schemaService->dropTable($namespace);
+            // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+            $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+            $this->schemaService->dropTable($namespace);
+        } catch (PersistenceMappingException $e) {
+        } catch (ORMMappingException $e) {
+            // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
+        }
 
         if ($force) {
             $this->deleteFile($pluginDir);
             $this->removeAssets($plugin->getCode());
         }
-
         $this->pluginApiService->pluginUninstalled($plugin);
 
         return true;
@@ -711,13 +721,12 @@ class PluginService
      */
     public function update(Plugin $plugin, $path)
     {
-        $pluginBaseDir = null;
         $tmp = null;
         try {
             $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
-            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            $this->unpackPluginArchive($path, $tmp); // 一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readConfig($tmp);
@@ -769,9 +778,15 @@ class PluginService
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            $em->getConnection()->commit();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                $em->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($em->getConnection()->isRollbackOnly()) {
+                    $em->getConnection()->rollback();
+                }
+            }
             throw $e;
         }
     }
@@ -974,23 +989,5 @@ class PluginService
         }
 
         return $index;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return bool
-     */
-    private function isEnable($code)
-    {
-        $Plugin = $this->pluginRepository->findOneBy([
-            'enabled' => Constant::ENABLED,
-            'code' => $code,
-        ]);
-        if ($Plugin) {
-            return true;
-        }
-
-        return false;
     }
 }

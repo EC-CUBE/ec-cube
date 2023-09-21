@@ -31,7 +31,7 @@ while (!@file_exists($parent.'/vendor/autoload.php')) {
 
 require $parent.'/vendor/autoload.php';
 if (file_exists($parent.'/.env')) {
-    (new Dotenv($parent))->overload();
+    (Dotenv::createUnsafeMutable($parent, '.env'))->load();
 }
 
 Request::setTrustedProxies(['127.0.0.1', '::1', 'REMOTE_ADDR'], Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
@@ -74,10 +74,12 @@ ob_start();
 class MockSessionHandler extends \SessionHandler
 {
     private $data;
+    private $sessionId;
 
-    public function __construct($data = null)
+    public function __construct($data = '', $sessionId = null)
     {
         $this->data = $data;
+        $this->sessionId = $sessionId;
     }
 
     public function getData()
@@ -85,6 +87,7 @@ class MockSessionHandler extends \SessionHandler
         return $this->data;
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         return parent::open($path, $name);
@@ -101,6 +104,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         $this->data = $handler->getData();
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         echo __FUNCTION__, "\n";
@@ -171,7 +175,13 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
 
     protected function doRead($sessionId)
     {
+        if (isset($this->sessionId) && $sessionId !== $this->sessionId) {
+            echo __FUNCTION__ . ": invalid sessionId\n";
+
+            return '';
+        }
         echo __FUNCTION__.': ', $this->data, "\n";
+        $this->sessionId = $sessionId;
 
         return $this->data;
     }
@@ -179,6 +189,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     protected function doWrite($sessionId, $data)
     {
         echo __FUNCTION__.': ', $data, "\n";
+        $this->sessionId = $sessionId;
 
         return true;
     }
@@ -186,6 +197,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     protected function doDestroy($sessionId)
     {
         echo __FUNCTION__, "\n";
+        $this->sessionId = $sessionId;
 
         return true;
     }

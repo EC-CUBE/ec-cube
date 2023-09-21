@@ -52,9 +52,9 @@ class SearchProductController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE);
 
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         $form = $builder->getForm();
         $form->handleRequest($request);

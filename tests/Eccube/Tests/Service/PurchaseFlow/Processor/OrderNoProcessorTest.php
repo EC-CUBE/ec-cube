@@ -46,7 +46,7 @@ class OrderNoProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertRegExp($expected, (string) $Order->getOrderNo());
+        self::assertMatchesRegularExpression($expected, (string) $Order->getOrderNo());
     }
 
     public function processDataProvider()

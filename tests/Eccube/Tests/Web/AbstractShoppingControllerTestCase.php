@@ -26,12 +26,12 @@ use Eccube\Util\StringUtil;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -63,7 +63,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
-    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
+    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 2)
     {
         if ($Customer) {
             $this->loginTo($Customer);

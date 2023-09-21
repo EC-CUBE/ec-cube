@@ -105,7 +105,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE);
 
         return [
             'Deliveries' => $Deliveries,
@@ -117,7 +117,7 @@ class DeliveryController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
-    public function edit(Request $request, $id = null, EccubeExtension $extension)
+    public function edit(Request $request, EccubeExtension $extension, $id = null)
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -176,7 +176,7 @@ class DeliveryController extends AbstractController
             $DeliveryFeesIndex[$DeliveryFee->getPref()->getId()] = $DeliveryFee;
         }
         ksort($DeliveryFeesIndex);
-        foreach ($DeliveryFeesIndex as $timeId => $DeliveryFee) {
+        foreach ($DeliveryFeesIndex as $DeliveryFee) {
             $Delivery->addDeliveryFee($DeliveryFee);
         }
 
@@ -192,7 +192,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -260,7 +260,7 @@ class DeliveryController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -325,7 +325,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE);
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -357,7 +357,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE);
 
         $this->addSuccess($message, 'admin');
 

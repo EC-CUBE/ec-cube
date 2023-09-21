@@ -99,7 +99,7 @@ class EF05MypageCest
      */
     public function mypage_お気に入り一覧(AcceptanceTester $I)
     {
-        $I->wantTo('EF0508-UC01-T01 Mypage お気に入り一覧');
+        $I->wantTo('EF0503-UC01-T02 Mypage お気に入り一覧');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -114,6 +114,7 @@ class EF05MypageCest
         // お気に入り登録
         ProductDetailPage::go($I, 2)->お気に入りに追加();
 
+        $I->wantTo('EF0503-UC01-T03 Mypage お気に入り一覧');
         MyPage::go($I)->お気に入り一覧();
         $I->see('チェリーアイスサンド', 'ul.ec-favoriteRole__itemList li:nth-child(1) p.ec-favoriteRole__itemTitle');
 
@@ -152,8 +153,8 @@ class EF05MypageCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
         ];
 
         $findPluginByCode = Fixtures::get('findPluginByCode');
@@ -283,7 +284,7 @@ class EF05MypageCest
         $I->wait(1);
 
         // 確認
-        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div:nth-child(2) > p');
+        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div:nth-child(2) > p');
     }
 
     public function mypage_退会手続き未実施(AcceptanceTester $I)

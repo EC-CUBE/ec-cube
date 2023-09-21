@@ -13,7 +13,7 @@
 
 namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\MappingException;
 
 class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
 {
@@ -33,8 +33,8 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
             return $this->classNames;
         }
 
-        if (!$this->paths) {
-            throw MappingException::pathRequired();
+        if ($this->paths === []) {
+            throw MappingException::pathRequiredForDriver(static::class);
         }
 
         $classes = [];

@@ -35,7 +35,8 @@ abstract class AbstractPage
      */
     protected function goPage($url, $pageTitle = '')
     {
-        $this->tester->amOnPage('/'.$url);
+        $this->tester->amOnPage($url);
+        $this->tester->waitForJS("return location.pathname + location.search == '${url}'", 30);
 
         return $this;
     }

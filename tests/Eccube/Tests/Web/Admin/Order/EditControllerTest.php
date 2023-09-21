@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Master\OrderStatus;
@@ -61,14 +62,14 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     protected $customerRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
         $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->cartService = self::$container->get(CartService::class);
+        $this->cartService = static::getContainer()->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
     }
@@ -163,6 +164,62 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->expected = $Customer->getLastBuyDate();
         $this->actual = $EditedCustomer->getLastBuyDate();
         $this->verify();
+    }
+
+    /**
+     * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
+
+     * 下記のものをチェックします。
+     *     ・ ID属性の追加
+     *     ・ <script> スクリプトインジェクション
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     * @return void
+     */
+    public function testOrderMailXSSAttackPrevention()
+    {
+        // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $MailHistory = (New MailHistory())->setMailHtmlBody(
+        "<div id='dangerous-id' class='safe_to_use_class'>
+                    <p>メール内容＃１</p>
+                    <script>alert('XSS Attack')</script>
+                    <a href='https://www.google.com'>safe html</a>
+                </div>"
+        )
+            ->setOrder($Order)
+            ->setMailSubject("テスト")
+            ->setMailBody("テスト内容")
+            ->setSendDate(new \DateTime())
+            ->setCreator($this->createMember());
+        $this->entityManager->persist($MailHistory);
+        $this->entityManager->flush($MailHistory);
+        $this->entityManager->refresh($Order);
+
+        // 1つの新着情報を保存した後にホームページにアクセスする。
+        // Request Homepage after saving a single news item
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        // <div>タグから危険なid属性が削除されていることを確認する。
+        // Find that dangerous id attributes are removed from <div> tags.
+        $testNewsArea_notFoundTest = $crawler->filter('#dangerous-id');
+        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+
+        // 安全なclass属性が出力されているかどうかを確認する。
+        // Find if classes (which are safe) have been outputted
+        $testNewsArea = $crawler->filter('.safe_to_use_class');
+        $this->assertEquals(1, $testNewsArea->count());
+
+        // 安全なHTMLが存在するかどうかを確認する
+        // Find if the safe HTML exists
+        $this->assertStringContainsString('<p>メール内容＃１</p>', $testNewsArea->outerHtml());
+        $this->assertStringContainsString('<a href="https://www.google.com">safe html</a>', $testNewsArea->outerHtml());
+
+        // 安全でないスクリプトが存在しないかどうかを確認する
+        // Find if the unsafe script does not exist
+        $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
     }
 
     public function testOrderCustomerInfo()
@@ -406,7 +463,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
             $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = self::$container->get(TaxRuleService::class)->getTax($orderItem['price']);
+            $tax = static::getContainer()->get(TaxRuleService::class)->getTax($orderItem['price']);
             $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
@@ -642,5 +699,28 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertNull($EditedOrder->getSex());
         $this->assertNull($EditedOrder->getJob());
         $this->assertNull($EditedOrder->getBirth());
+    }
+
+    /**
+     * 受注登録時にその他明細(初期の価格0円)をゼロ除算なしに正しく追加できるかどうかのテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5533
+     */
+    public function testAddOrderItemOrderWithoutZeroDivision()
+    {
+        $Product = null;
+        $charge = 0;
+        $formData = $this->createFormData($this->Customer, $Product, $charge);
+        unset($formData['OrderStatus']);
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_new'),
+            [
+                'order' => $formData,
+                'mode' => '',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

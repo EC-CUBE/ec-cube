@@ -15,13 +15,15 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * OrderRepository
@@ -35,6 +37,10 @@ class OrderRepository extends AbstractRepository
      * @var Queries
      */
     protected $queries;
+
+    public const COLUMNS = [
+        'order' => 'o.name01', 'orderer' => 'o.id', 'shipping_id' => 's.id', 'purchase_product' => 'oi.product_name', 'quantity' => 'oi.quantity', 'payment_method' => 'o.payment_method', 'order_status' => 'o.OrderStatus', 'purchase_price' => 'o.total', 'shipping_status' => 's.shipping_date', 'tracking_number' => 's.tracking_number', 'delivery' => 's.name01',
+    ];
 
     /**
      * OrderRepository constructor.
@@ -71,7 +77,44 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param  array        $searchData
+     * @param array{
+     *         order_id?:string|int,
+     *         order_no?:string,
+     *         order_id_start?:string|int,
+     *         order_id_end?:string|int,
+     *         multi?:string|int|null,
+     *         status?:OrderStatus[]|int[],
+     *         company_name?:string,
+     *         name?:string,
+     *         kana?:string,
+     *         email?:string,
+     *         phone_number?:string,
+     *         sex?:Sex[],
+     *         payment?:Payment[],
+     *         order_datetime_start?:\DateTime,
+     *         order_datetime_end?:\DateTime,
+     *         order_date_start?:\DateTime,
+     *         order_date_end?:\DateTime,
+     *         payment_datetime_start?:\DateTime,
+     *         payment_datetime_end?:\DateTime,
+     *         payment_date_start?:\DateTime,
+     *         payment_date_end?:\DateTime,
+     *         update_datetime_start?:\DateTime,
+     *         update_datetime_end?:\DateTime,
+     *         update_date_start?:\DateTime,
+     *         update_date_end?:\DateTime,
+     *         payment_total_start?:string|int,
+     *         payment_total_end?:string|int,
+     *         payment_product_name?:string,
+     *         shipping_mail?:Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT,
+     *         tracking_number?:string,
+     *         shipping_delivery_datetime_start?:\DateTime,
+     *         shipping_delivery_datetime_end?:\DateTime,
+     *         shipping_delivery_date_start?:\DateTime,
+     *         shipping_delivery_date_end?:\DateTime,
+     *         sortkey?:string,
+     *         sorttype?:string
+     *     } $searchData
      *
      * @return QueryBuilder
      */
@@ -106,7 +149,7 @@ class OrderRepository extends AbstractRepository
         }
         // multi
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            //スペース除去
+            // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $multi = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
@@ -114,11 +157,11 @@ class OrderRepository extends AbstractRepository
             }
             $qb
                 ->andWhere('o.id = :multi OR CONCAT(o.name01, o.name02) LIKE :likemulti OR '.
-                            'CONCAT(o.kana01, o.kana02) LIKE :likemulti OR o.company_name LIKE :company_name OR '.
-                            'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
+                    "CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :likemulti OR o.company_name LIKE :multi_company_name OR ".
+                    'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%'.$clean_key_multi.'%')
-                ->setParameter('company_name', '%'.$searchData['multi'].'%'); // 会社名はスペースを除去せず検索
+                ->setParameter('multi_company_name', '%'.$searchData['multi'].'%'); // 会社名はスペースを除去せず検索
         }
 
         // order_id_end
@@ -162,7 +205,7 @@ class OrderRepository extends AbstractRepository
         if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
             $clean_kana = preg_replace('/\s+|[　]+/u', '', $searchData['kana']);
             $qb
-                ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
+                ->andWhere("CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :kana")
                 ->setParameter('kana', '%'.$clean_kana.'%');
         }
 
@@ -175,7 +218,7 @@ class OrderRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
             $qb
                 ->andWhere('o.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');
@@ -352,8 +395,16 @@ class OrderRepository extends AbstractRepository
         }
 
         // Order By
-        $qb->orderBy('o.update_date', 'DESC');
-        $qb->addorderBy('o.id', 'DESC');
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            $qb->addOrderBy('o.update_date', 'DESC');
+            $qb->addOrderBy('o.id', 'DESC');
+        } else {
+            $qb->orderBy('o.update_date', 'DESC');
+            $qb->addorderBy('o.id', 'DESC');
+        }
 
         return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }

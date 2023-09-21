@@ -1,124 +1,117 @@
-import { Builder, By, until } from 'selenium-webdriver'
-import { ZapClient, Mode, ContextType, Risk } from '../../utils/ZapClient';
+import { test, expect, chromium, Page } from '@playwright/test';
+import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { SeleniumCapabilities } from '../../utils/SeleniumCapabilities';
-const zapClient = new ZapClient('http://127.0.0.1:8090');
+import { ZapClient, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
+const zapClient = new ZapClient();
 
-jest.setTimeout(6000000);
+const url = `${PlaywrightConfig.use.baseURL}/contact`;
 
-const baseURL = 'https://ec-cube';
-const url = baseURL + '/contact';
+test.describe.serial('お問い合わせフォームのテストをします', () => {
+  let page: Page;
+  test.beforeAll(async () => {
+    await zapClient.startSession(ContextType.FrontGuest, 'front_guest_contact');
 
-beforeAll(async () => {
-  await zapClient.setMode(Mode.Protect);
-  await zapClient.newSession('/zap/wrk/sessions/front_guest_contact', true);
-  await zapClient.importContext(ContextType.FrontGuest);
-});
+    const browser = await chromium.launch();
+    page = await browser.newPage();
+    await page.goto(url);
+  });
 
-test('お問い合わせ - GET', async () => {
-  const driver = await new Builder()
-    .withCapabilities(SeleniumCapabilities)
-    .build();
+  test('お問い合わせページを表示します', async () => {
+    await expect(page).toHaveTitle(/お問い合わせ/);
+  });
 
-  try {
-    await driver.get(url);
-    const title = await driver.wait(
-      until.elementLocated(By.className('ec-pageHeader'))
-      , 10000).getText();
-    expect(title).toBe('お問い合わせ');
+  test('タイトルを確認します', async () => {
+    await page.textContent('.ec-pageHeader')
+      .then(title => expect(title).toContain('お問い合わせ'));
+  });
 
-    const scanId = await zapClient.activeScan(url, false, true, null, 'GET', null);
+  test.describe('テストを実行します[GET] @attack', () => {
+    let scanId: number;
+    test('アクティブスキャンを実行します', async () => {
+      scanId = await zapClient.activeScan(url, false, true, null, 'GET', null);
+      await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
+    });
 
-    await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
+    test('結果を確認します', async () => {
+      await zapClient.getAlerts(url, 0, 1, Risk.High)
+        .then(alerts => expect(alerts).toEqual([]));
+    });
+  });
 
-    await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach(alert => {
-        throw new Error(alert.name);
-      }));
-  } finally {
-    driver && await driver.quit()
-  }
-});
+  test('お問い合わせ内容を入力します', async () => {
+    await page.fill('#contact_name_name01', '石');
+    await page.fill('#contact_name_name02', '球部');
+    await page.fill('#contact_kana_kana01', 'イシ');
+    await page.fill('#contact_kana_kana02', 'キュウブ');
+    await page.fill('#contact_postal_code', '5300001');
+    await page.selectOption('#contact_address_pref', { label: '大阪府' });
+    await page.fill('#contact_address_addr01', '大阪市北区梅田');
+    await page.fill('#contact_address_addr02', '2-4-9');
+    await page.fill('#contact_phone_number', '9999999999');
+    await page.fill('#contact_email', 'zap_user@example.com');
+    await page.fill('#contact_contents', 'お問い合わせ入力');
+    await page.click('button >> text=確認ページへ');
+  });
 
+  test('入力内容を確認します', async () => {
+    await expect(page.locator('#contact_email')).toBeHidden();
+    await expect(page.locator('#contact_email')).toHaveValue('zap_user@example.com');
+  });
 
-test('お問い合わせ(入力ページ→確認ページ) - POST', async () => {
-  const driver = await new Builder()
-    .withCapabilities(SeleniumCapabilities)
-    .build();
+  let message: HttpMessage;
+  test('HttpMessage を取得します', async () => {
+    message = await zapClient.getLastMessage(url);
+  });
 
-  try {
-    await driver.get(url);
-    const title = await driver.wait(
-      until.elementLocated(By.className('ec-pageHeader'))
-      , 10000).getText();
-    expect(title).toBe('お問い合わせ');
+  let completeRequestBody: string;
+  test('確認→完了画面の requestBody に書き換えます', async () => {
+    completeRequestBody = message.requestBody.replace(/mode=confirm/, 'mode=complete&mode_complete=dummy');
+    expect(completeRequestBody).toContain('mode=complete');
+  });
 
-    await driver.findElement(By.id('contact_name_name01')).sendKeys('石');
-    await driver.findElement(By.id('contact_name_name02')).sendKeys('球部');
-    await driver.findElement(By.id('contact_postal_code')).sendKeys('5300001');
-    await driver.findElement(By.xpath('//*[@id="contact_address_pref"]/option[2]')).click();
-    await driver.findElement(By.id('contact_address_addr01')).sendKeys('大阪市北区梅田');
-    await driver.findElement(By.id('contact_address_addr02')).sendKeys('2-4-9');
-    await driver.findElement(By.id('contact_phone_number')).sendKeys('999999999');
-    await driver.findElement(By.id('contact_email')).sendKeys('zap_user@example.com');
-    await driver.findElement(By.id('contact_contents')).sendKeys('お問い合わせ入力');
-    await driver.findElement(By.xpath('//*[@id="page_contact"]/div[1]/div[2]/div/div/div[2]/div/form/div[2]/div/div/button')).click();
+  test('CSRFトークン を取得し直します', async () => {
+    await page.goto(url);
+    const token = await page.inputValue('#contact__token');
+    completeRequestBody = completeRequestBody.replace(/contact%5B_token%5D=[a-zA-Z0-9\-_]+/, `contact%5B_token%5D=${token}`);
+    expect(completeRequestBody).toMatch(token);
+  });
 
-    const message = await zapClient.getLastMessage(url);
-    const scanId = await zapClient.activeScan(url, false, true, null, 'POST', message.requestBody);
-
-    await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
-
-    await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach(alert => {
-        throw new Error(alert.name);
-      }));
-  } finally {
-    driver && await driver.quit()
-  }
-});
-
-test('お問い合わせ(確認ページ→完了ページ) - POST', async () => {
-  const driver = await new Builder()
-    .withCapabilities(SeleniumCapabilities)
-    .build();
-
-  try {
-    await driver.get(url);
-    const title = await driver.wait(
-      until.elementLocated(By.className('ec-pageHeader'))
-      , 10000).getText();
-    expect(title).toBe('お問い合わせ');
-
-    await driver.findElement(By.id('contact_name_name01')).sendKeys('石');
-    await driver.findElement(By.id('contact_name_name02')).sendKeys('球部');
-    await driver.findElement(By.id('contact_postal_code')).sendKeys('5300001');
-    await driver.findElement(By.xpath('//*[@id="contact_address_pref"]/option[2]')).click();
-    await driver.findElement(By.id('contact_address_addr01')).sendKeys('大阪市北区梅田');
-    await driver.findElement(By.id('contact_address_addr02')).sendKeys('2-4-9');
-    await driver.findElement(By.id('contact_phone_number')).sendKeys('999999999');
-    await driver.findElement(By.id('contact_email')).sendKeys('zap_user@example.com');
-    await driver.findElement(By.id('contact_contents')).sendKeys('お問い合わせ入力');
-    await driver.findElement(By.xpath('//*[@id="page_contact"]/div[1]/div[2]/div/div/div[2]/div/form/div[2]/div/div/button')).click();
-
-    const message = await zapClient.getLastMessage(url);
-    // 確認画面→完了画面に requestBody を書き換える
-    const requestBody = message.requestBody.replace(/mode=confirm/, 'mode=complete&mode2=dummy');
-    // Content-Length を書き換えて手動リクエストを送信する
-    await zapClient.sendRequest(
-      message.requestHeader.replace('Content-Length: ' + message.requestBody.length, 'Content-Length: ' + requestBody.length) + requestBody
+  let completeMessage: HttpMessage;
+  test('content-length を書き換えて手動リクエストを送信します', async () => {
+    const requestHeader = message.requestHeader.replace(
+      'Content-Length: ' + message.requestBody.length,
+      'Content-Length: ' + completeRequestBody.length
     );
+    await zapClient.sendRequest(requestHeader + completeRequestBody);
+    completeMessage = await zapClient.getLastMessage(url);
+  });
 
-    const completeMessage = await zapClient.getLastMessage(url);
-    const scanId = await zapClient.activeScan(url, false, true, null, 'POST', completeMessage.requestBody);
+  test.describe('テストを実行します[POST][入力→確認] @attack', () => {
+    let scanId: number;
+    test('アクティブスキャンを実行します', async () => {
+      scanId = await zapClient.activeScan(url, false, true, null, 'POST', message.requestBody);
+      await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
+    });
 
-    await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000);
+    test('結果を確認します', async () => {
+      await zapClient.getAlerts(url, 0, 1, Risk.High)
+        .then(alerts => expect(alerts).toEqual([]));
+    });
+  });
 
-    await zapClient.getAlerts(url, 0, 1, Risk.High)
-      .then(alerts => alerts.forEach(alert => {
-        throw new Error(alert.name);
-      }));
-  } finally {
-    driver && await driver.quit()
-  }
+  test.describe('テストを実行します[POST][確認→完了] @attack', () => {
+    let scanId: number;
+    test('アクティブスキャンを実行します', async () => {
+      expect(completeMessage.responseHeader).toContain('HTTP/1.1 302 Found');
+      expect(completeMessage.responseHeader).toContain('Location: /contact/complete');
+
+      scanId = await zapClient.activeScan(url, false, true, null, 'POST', completeMessage.requestBody);
+      await intervalRepeater(async () => await zapClient.getActiveScanStatus(scanId), 5000, page);
+    });
+
+    test('結果を確認します', async () => {
+      await zapClient.getAlerts(url, 0, 1, Risk.High)
+        .then(alerts => expect(alerts).toEqual([]));
+    });
+  });
 });

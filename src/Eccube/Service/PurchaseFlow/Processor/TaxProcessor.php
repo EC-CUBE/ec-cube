@@ -23,6 +23,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\TaxRuleService;
+use Eccube\Service\OrderHelper;
 
 class TaxProcessor implements ItemHolderPreprocessor
 {
@@ -42,6 +43,11 @@ class TaxProcessor implements ItemHolderPreprocessor
     protected $taxRuleService;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * TaxProcessor constructor.
      *
      * @param TaxRuleRepository $taxRuleRepository
@@ -50,11 +56,13 @@ class TaxProcessor implements ItemHolderPreprocessor
     public function __construct(
         EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
-        TaxRuleService $taxRuleService
+        TaxRuleService $taxRuleService,
+        OrderHelper $orderHelper
     ) {
         $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->taxRuleService = $taxRuleService;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -77,7 +85,7 @@ class TaxProcessor implements ItemHolderPreprocessor
                 $item->setTaxType($this->getTaxType($OrderItemType));
             }
             if (!$item->getTaxDisplayType()) {
-                $item->setTaxDisplayType($this->getTaxDisplayType($OrderItemType));
+                $item->setTaxDisplayType($this->orderHelper->getTaxDisplayType($OrderItemType));
             }
 
             // 税区分: 非課税, 不課税
@@ -152,28 +160,12 @@ class TaxProcessor implements ItemHolderPreprocessor
      * - ポイント値引き: 税込
      *
      * @param $OrderItemType
+     * @deprecated OrderHelper::getTaxDisplayTypeを使用してください
      *
-     * @return TaxType
+     * @return TaxDisplayType
      */
     protected function getTaxDisplayType($OrderItemType)
     {
-        if ($OrderItemType instanceof OrderItemType) {
-            $OrderItemType = $OrderItemType->getId();
-        }
-
-        switch ($OrderItemType) {
-            case OrderItemType::PRODUCT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::DELIVERY_FEE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::DISCOUNT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::CHARGE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::POINT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            default:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-        }
+        return $this->orderHelper->getTaxDisplayType($OrderItemType);
     }
 }

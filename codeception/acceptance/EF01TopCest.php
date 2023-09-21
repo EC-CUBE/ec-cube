@@ -95,7 +95,7 @@ class EF01TopCest
         $I->wantTo('EF0101-UC01-T02 TOPページ 新着情報');
 
         $createNews = Fixtures::get('createNews');
-        $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.ec-cube.net');
+        $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.example.com');
 
         $this->clearDoctrineCache();
 
@@ -107,7 +107,7 @@ class EF01TopCest
         $I->wait(1);
 
         // 押下された新着情報のセクションが広がり、詳細情報、リンクが表示される
-        $I->assertContains('コメント1', $topPage->新着情報詳細(1));
+        $I->assertStringContainsString('コメント1', $topPage->新着情報詳細(1));
 
         // 「詳しくはこちら」リンクを押下する
         $topPage->新着情報リンククリック(1);

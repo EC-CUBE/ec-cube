@@ -57,7 +57,7 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['purify_html']) {
+        if ($this->context->isFront() && $options['purify_html']) {
             $builder->addEventSubscriber(
                 new HTMLPurifierListener()
             );

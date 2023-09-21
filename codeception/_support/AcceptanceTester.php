@@ -70,7 +70,7 @@ class AcceptanceTester extends \Codeception\Actor
             $I->click('body div.popover .popover-body a:last-child');
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
-            $I->see('ログイン', '#form1 > button');
+            $I->see('ログイン', '#form1 > div > button');
         }
     }
 
@@ -79,7 +79,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         if ($dir == '') {
             $config = Fixtures::get('config');
-            $I->amOnPage('/'.$config['eccube_admin_route']);
+            $I->amOnPage('/'.$config['eccube_admin_route'].'/');
         } else {
             $I->amOnPage('/'.$dir);
         }
@@ -94,13 +94,14 @@ class AcceptanceTester extends \Codeception\Actor
             'login_pass' => $password,
         ]);
         $I->see('新着情報', '.ec-secHeading__ja');
-        $I->see('ログアウト', ['css' => 'div.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
+        $I->see('ログアウト', ['css' => 'header.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
     }
 
     public function logoutAsMember()
     {
         $I = $this;
         $I->amOnPage('/');
+        $I->waitForElement('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         $isLogin = $I->grabTextFrom('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         if ($isLogin == 'ログアウト') {
             $I->wait(1);

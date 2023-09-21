@@ -56,7 +56,7 @@ class MailHistoryRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $faker = $this->getFaker();

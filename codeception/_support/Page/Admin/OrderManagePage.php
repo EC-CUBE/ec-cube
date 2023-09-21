@@ -46,6 +46,8 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public function 検索($value = '')
     {
         $this->tester->fillField(['id' => 'admin_search_order_multi'], $value);
+        $this->tester->scrollTo('#search_submit', 0, -100);
+        $this->tester->wait(1);
         $this->tester->click('#search_form #search_submit');
 
         return $this;
@@ -171,7 +173,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_メール通知($rowNum)
     {
-        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(1) > a"]);
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(1) > a"]);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
@@ -196,7 +198,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 個別メール送信($rowNum)
     {
-        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3.text-center > div > div:nth-child(1) > a"]);
+        $this->tester->click(['css' => "#search_result > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3.text-center > div > div:nth-child(1) > a"]);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
         $this->tester->click(['id' => 'bulkChange']);
@@ -249,10 +251,13 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 出荷済にする($rowNum)
     {
+        $this->tester->scrollTo('#search_result');
+        $this->tester->wait(1);
         $this->tester->click("#search_result > tbody > tr:nth-child($rowNum) a[data-type='status']");
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->click(['id' => 'notificationMail']);
         $this->tester->scrollTo(['id' => 'bulkChange']);
+        $this->tester->wait(1);
         $this->tester->click(['id' => 'bulkChange']);
         $this->tester->waitForElementVisible(['id' => 'bulkChangeComplete']);
 
@@ -276,8 +281,42 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 件数変更($num)
     {
-        $this->tester->selectOption('#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(1) > select', '/admin/order/page/1?page_count='.$num);
+        $this->tester->selectOption('#form_bulk > div.row.justify-content-between.mb-2 > div.col-5.text-end > div:nth-child(1) > select', '/admin/order/page/1?page_count='.$num);
 
         return $this;
+    }
+
+    public function assertSortedStatusList($order)
+    {
+        $values = $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(4)');
+        $expect = $values;
+        usort($expect, function ($a, $b) {
+            // order_status でソート
+            $statusList = ['新規受付', '注文取消し', '対応中', '発送済み', '入金済み', '決済処理中', '購入処理中', '返品'];
+            return array_search($a, $statusList) > array_search($b, $statusList);
+        });
+
+        if ($order === 'desc') {
+            $expect = array_reverse($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
+    }
+
+    public function assertSortedPriceList($order)
+    {
+        $values = array_map(function($s) {
+            // 一覧の購入金額の文字列から金額だけを抽出
+            return (int)preg_replace('/(\n.*|\D)/', '', $s);
+        }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(5)'));
+
+        $expect = $values;
+        if ($order === 'asc') {
+            sort($expect);
+        } else {
+            rsort($expect);
+        }
+
+        $this->tester->assertEquals($expect, $values);
     }
 }

@@ -177,14 +177,15 @@ class PluginGenerateCommand extends Command
      */
     protected function createConfig($pluginDir, $name, $code, $version)
     {
+        $lowerCode = mb_strtolower($code);
         $source = <<<EOL
 {
-  "name": "ec-cube/$code",
+  "name": "ec-cube/$lowerCode",
   "version": "$version",
   "description": "$name",
   "type": "eccube-plugin",
   "require": {
-    "ec-cube/plugin-installer": "~0.0.7"
+    "ec-cube/plugin-installer": "~0.0.7 || ^2.0"
   },
   "extra": {
     "code": "$code"
@@ -208,7 +209,7 @@ on:
 jobs:
   deploy:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -460,9 +461,9 @@ EOL;
 
 namespace Plugin\\${code}\\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\\Repository\\AbstractRepository;
 use Plugin\\${code}\\Entity\\Config;
-use Symfony\\Bridge\\Doctrine\\RegistryInterface;
 
 /**
  * ConfigRepository
@@ -475,9 +476,9 @@ class ConfigRepository extends AbstractRepository
     /**
      * ConfigRepository constructor.
      *
-     * @param RegistryInterface \$registry
+     * @param ManagerRegistry \$registry
      */
-    public function __construct(RegistryInterface \$registry)
+    public function __construct(ManagerRegistry \$registry)
     {
         parent::__construct(\$registry, Config::class);
     }
@@ -567,7 +568,7 @@ EOL;
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>名前</span><span
-                                            class="badge badge-primary ml-1">必須</span></div>
+                                            class="badge bg-primary ml-1">必須</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}

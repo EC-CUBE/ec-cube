@@ -29,14 +29,14 @@ file that was distributed with this source code.
                         </div>
 
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row align-items-center">
                                 <label class="col-auto control-label">{{ 'admin.store.install.label'|trans }}</label>
                                 <div class="col-sm-9">
                                     {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
                                     {% for error in errors %}
                                         <div class="errormsg text-danger">{{ error.message|trans }}</div>
                                     {% endfor %}
-                                    <button class="btn btn-primary mt-3 px-5" type="submit">{{ 'admin.common.upload'|trans }}</button>
+                                    <button class="btn btn-primary px-5" type="submit">{{ 'admin.common.upload'|trans }}</button>
                                 </div>
                             </div>
                         </div>

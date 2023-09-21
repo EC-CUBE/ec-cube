@@ -15,8 +15,8 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\ClassName;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ClassNameRepository
