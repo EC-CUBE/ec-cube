@@ -12,6 +12,9 @@
  */
 
 use Codeception\Util\Fixtures;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
+use Eccube\Repository\ProductStockRepository;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
 use Page\Admin\ClassCategoryManagePage;
@@ -31,14 +34,28 @@ use Page\Admin\ProductTagPage;
  */
 class EA03ProductCest
 {
-    const ページタイトル = '#main .page-header';
-    const ページタイトルStyleGuide = '.c-pageTitle';
+    /** @var EntityManager */
+    private EntityManager $em;
+
+    /** @var Connection */
+    private $conn;
+
+    /** @var ProductStockRepository */
+    private ProductStockRepository $productStockRepository;
+
+    public const ページタイトル = '#main .page-header';
+    public const ページタイトルStyleGuide = '.c-pageTitle';
 
     public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
+
+        // DB接続
+        $this->em = Fixtures::get('entityManager');
+        $this->conn = $this->em->getConnection();
+        $this->productStockRepository = $this->em->getRepository(\Eccube\Entity\ProductStock::class);
     }
 
     public function _after(AcceptanceTester $I)
@@ -1005,5 +1022,52 @@ class EA03ProductCest
             ->検索を実行();
 
         $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
+    }
+
+    public function product_一覧からの規格編集規格あり3(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC03-T01 一覧からの規格編集 規格あり3');
+
+        $findProducts = Fixtures::get('findProducts');
+        $Products = array_filter($findProducts(), function ($Product) {
+            return $Product->hasProductClass();
+        });
+        $Product = array_pop($Products);
+
+        // 先頭のproductClass要素に対してStockを登録する
+        ProductManagePage::go($I)
+            ->検索($Product->getName())
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->規格管理();
+
+        ProductClassEditPage::at($I)
+            ->入力_在庫数無制限(1)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->無効_在庫数無制限(1)
+            ->入力_個数(1, 100)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->無効_規格(1)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->有効_規格(1)
+            ->入力_個数(1, 10)
+            ->入力_販売価格(1, 5000)
+            ->登録();
+
+        // 個数を取得
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $stock = $ProductClass->getStock();
+
+        // 個数のズレがないか検査
+        $I->assertEquals(10, $stock, 'Stockが一致');
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
     }
 }

@@ -51,6 +51,22 @@ class ProductClassEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 無効_規格($rowNum)
+    {
+        --$rowNum;
+        $this->tester->uncheckOption(['id' => "product_class_matrix_product_classes_${rowNum}_checked"]);
+
+        return $this;
+    }
+
+    public function 有効_規格($rowNum)
+    {
+        --$rowNum;
+        $this->tester->checkOption(['id' => "product_class_matrix_product_classes_${rowNum}_checked"]);
+
+        return $this;
+    }
+
     public function 入力_在庫数無制限($rowNum)
     {
         --$rowNum;
@@ -59,10 +75,26 @@ class ProductClassEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 無効_在庫数無制限($rowNum)
+    {
+        --$rowNum;
+        $this->tester->uncheckOption(['id' => "product_class_matrix_product_classes_${rowNum}_stock_unlimited"]);
+
+        return $this;
+    }
+
     public function 入力_販売価格($rowNum, $value)
     {
         --$rowNum;
         $this->tester->fillField(['id' => "product_class_matrix_product_classes_${rowNum}_price02"], $value);
+
+        return $this;
+    }
+
+    public function 入力_個数($rowNum, $value)
+    {
+        --$rowNum;
+        $this->tester->fillField(['id' => "product_class_matrix_product_classes_${rowNum}_stock"], $value);
 
         return $this;
     }
