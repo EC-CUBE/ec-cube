@@ -56,6 +56,7 @@ class EA03ProductCest
         $this->em = Fixtures::get('entityManager');
         $this->conn = $this->em->getConnection();
         $this->productStockRepository = $this->em->getRepository(\Eccube\Entity\ProductStock::class);
+        $this->productClassRepository = $this->em->getRepository(\Eccube\Entity\ProductClass::class);
     }
 
     public function _after(AcceptanceTester $I)
@@ -1024,6 +1025,11 @@ class EA03ProductCest
         $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
     public function product_一覧からの規格編集規格あり3(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC03-T01 一覧からの規格編集 規格あり3');
@@ -1061,13 +1067,17 @@ class EA03ProductCest
             ->入力_販売価格(1, 5000)
             ->登録();
 
+        // EntityManagerをクリア
+        $this->em->refresh($Product);
+        $this->em->clear();
+
         // 個数を取得
         $ProductClasses = $Product->getProductClasses();
         $ProductClass = $ProductClasses[0];
         $stock = $ProductClass->getStock();
 
         // 個数のズレがないか検査
-        $I->assertEquals(10, $stock, 'Stockが一致');
+        $I->assertEquals('10', $stock, 'Stockが一致');
         $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
     }
 }
