@@ -80,13 +80,7 @@ class RateLimiterListener implements EventSubscriberInterface
             $factory = $this->locator->get($limiterId);
             if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
                 $User = $this->requestContext->getCurrentUser();
-                if ($User instanceof Customer) {
-                    $limiter = $factory->create($User->getId());
-                    if (!$limiter->consume()->isAccepted()) {
-                        throw new TooManyRequestsHttpException();
-                    }
-                }
-                if ($User instanceof Member) {
+                if ($User instanceof Customer || $User instanceof Member) {
                     $limiter = $factory->create($User->getId());
                     if (!$limiter->consume()->isAccepted()) {
                         throw new TooManyRequestsHttpException();
