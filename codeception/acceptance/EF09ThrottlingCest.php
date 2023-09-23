@@ -754,14 +754,13 @@ class EF09ThrottlingCest
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
 
         // キャッシュを削除
-        $I->loginAsAdmin();
-        $I->amOnPage('/');
-        $I->waitForText('EC-CUBE SHOP', 10, 'h1');
-        $config = Fixtures::get('config');
-        $I->amOnPage("/{$config['eccube_admin_route']}/content/cache");
-        $I->click('.c-contentsArea .btn-ec-conversion');
-        $I->waitForElement('.alert', 10);
-        $I->waitForText('削除しました', 10, '.alert');
+        $fs = new Symfony\Component\Filesystem\Filesystem();
+        foreach (['prod', 'codeception'] as $env) {
+            $cacheDir = __DIR__."/../../var/cache/${env}/pools";
+            if ($fs->exists($cacheDir)) {
+                $fs->remove($cacheDir);
+            }
+        }
 
         // 会員登録（エラーとなるパターン）を実行
         for ($i = 0; $i < 25; $i++) {
