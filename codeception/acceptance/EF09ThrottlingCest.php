@@ -132,7 +132,7 @@ class EF09ThrottlingCest
         ]);
     }
 
-    public function 会員登録(AcceptanceTester $I)
+    public function 仮会員登録(AcceptanceTester $I)
     {
         $I->wantTo('EF0901-UC01-T05_会員登録');
 
@@ -749,6 +749,13 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
+    /**
+     * entryでのスロットリングのテスト
+     * entry_completeでの制限に引っかかるため、entry_completeのlimiter上限値を変更してから実施してください。
+     *
+     * @param AcceptanceTester $I
+     * @return void
+     */
     public function 会員登録_入力(AcceptanceTester $I)
     {
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
