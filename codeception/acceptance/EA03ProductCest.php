@@ -14,7 +14,6 @@
 use Codeception\Util\Fixtures;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
-use Eccube\Repository\ProductStockRepository;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
 use Page\Admin\ClassCategoryManagePage;
@@ -40,9 +39,6 @@ class EA03ProductCest
     /** @var Connection */
     private $conn;
 
-    /** @var ProductStockRepository */
-    private ProductStockRepository $productStockRepository;
-
     const ページタイトル = '#main .page-header';
     const ページタイトルStyleGuide = '.c-pageTitle';
 
@@ -55,7 +51,6 @@ class EA03ProductCest
         // DB接続
         $this->em = Fixtures::get('entityManager');
         $this->conn = $this->em->getConnection();
-        $this->productStockRepository = $this->em->getRepository(\Eccube\Entity\ProductStock::class);
     }
 
     public function _after(AcceptanceTester $I)
