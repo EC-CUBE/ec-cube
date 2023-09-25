@@ -108,7 +108,7 @@ jobs:
                       mode: complete
                   type: ip
                   limit: 1024
-                  iinterval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+                  interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
