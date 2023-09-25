@@ -56,7 +56,6 @@ class EA03ProductCest
         $this->em = Fixtures::get('entityManager');
         $this->conn = $this->em->getConnection();
         $this->productStockRepository = $this->em->getRepository(\Eccube\Entity\ProductStock::class);
-        $this->productClassRepository = $this->em->getRepository(\Eccube\Entity\ProductClass::class);
     }
 
     public function _after(AcceptanceTester $I)
