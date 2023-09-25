@@ -43,8 +43,8 @@ class EA03ProductCest
     /** @var ProductStockRepository */
     private ProductStockRepository $productStockRepository;
 
-    public const ページタイトル = '#main .page-header';
-    public const ページタイトルStyleGuide = '.c-pageTitle';
+    const ページタイトル = '#main .page-header';
+    const ページタイトルStyleGuide = '.c-pageTitle';
 
     public function _before(AcceptanceTester $I)
     {
@@ -282,9 +282,9 @@ class EA03ProductCest
         $I->seeElement(ProductClassEditPage::$初期化ボタン);
     }
 
-    public function product_一覧からの規格編集規格あり2(AcceptanceTester $I)
+    public function product_一覧からの規格編集_規格あり_規格登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり2');
+        $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり 規格登録');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -375,9 +375,9 @@ class EA03ProductCest
     /**
      * ATTENTION 削除すると後続の規格編集関連のテストが失敗するため、最後に実行する
      */
-    public function product_一覧からの規格編集規格あり1(AcceptanceTester $I)
+    public function product_一覧からの規格編集規格あり(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり1');
+        $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -1030,9 +1030,9 @@ class EA03ProductCest
      * @throws \Doctrine\ORM\TransactionRequiredException
      * @throws \Doctrine\ORM\Exception\ORMException
      */
-    public function product_一覧からの規格編集規格あり3(AcceptanceTester $I)
+    public function product_一覧からの規格編集_規格あり_規格操作(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC03-T01 一覧からの規格編集 規格あり3');
+        $I->wantTo('EA0310-UC02-T03 一覧からの規格編集 規格あり 規格操作');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -1067,12 +1067,11 @@ class EA03ProductCest
             ->入力_販売価格(1, 5000)
             ->登録();
 
-        // EntityManagerをクリア
-        $this->em->refresh($Product);
-        $this->em->clear();
-
         // 個数を取得
         $ProductClasses = $Product->getProductClasses();
+        $this->em->refresh($Product);
+        $this->em->refresh($ProductClasses[0]);
+
         $ProductClass = $ProductClasses[0];
         $stock = $ProductClass->getStock();
 
