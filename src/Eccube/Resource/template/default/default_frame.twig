@@ -16,7 +16,7 @@ file that was distributed with this source code.
     <meta name="eccube-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
     <title>{{ BaseInfo.shop_name }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
     {% if Page.meta_tags is not empty %}
-        {{ include(template_from_string(Page.meta_tags)) }}
+        {{ include(template_from_string(Page.meta_tags), sandboxed = true) }}
         {% if Page.description is not empty %}
             <meta name="description" content="{{ Page.description }}">
         {% endif %}
