@@ -1026,7 +1026,7 @@ class EA03ProductCest
      */
     public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T03 一覧からの規格編集 規格あり 規格操作');
+        $I->wantTo('EA0310-UC02-T03 一覧からの規格編集 規格あり 重複在庫の修正');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
