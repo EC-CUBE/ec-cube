@@ -48,9 +48,7 @@ class EA03ProductCest
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
 
-        // DB接続
         $this->em = Fixtures::get('entityManager');
-        $this->conn = $this->em->getConnection();
     }
 
     public function _after(AcceptanceTester $I)
@@ -1020,11 +1018,13 @@ class EA03ProductCest
     }
 
     /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/6029
+     *
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
      * @throws \Doctrine\ORM\Exception\ORMException
      */
-    public function product_一覧からの規格編集_規格あり_規格操作(AcceptanceTester $I)
+    public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC02-T03 一覧からの規格編集 規格あり 規格操作');
 
@@ -1061,12 +1061,12 @@ class EA03ProductCest
             ->入力_販売価格(1, 5000)
             ->登録();
 
-        // 個数を取得
+        // テストデータ投入時に、上記の規格在庫操作が反映されないためリフレッシュする。
         $ProductClasses = $Product->getProductClasses();
         $this->em->refresh($Product);
         $this->em->refresh($ProductClasses[0]);
-
         $ProductClass = $ProductClasses[0];
+
         $stock = $ProductClass->getStock();
 
         // 個数のズレがないか検査
