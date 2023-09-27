@@ -37,7 +37,7 @@ class EA03ProductCest
     private EntityManager $em;
 
     /** @var Connection */
-    private $conn;
+    private Connection $conn;
 
     const ページタイトル = '#main .page-header';
     const ページタイトルStyleGuide = '.c-pageTitle';
@@ -1071,14 +1071,12 @@ class EA03ProductCest
         $ProductClass = $ProductClasses[0];
         $id = $ProductClass->getId();
 
-        // DBからレコード数とStockを取得
-        $sql = 'SELECT count(*), stock FROM dtb_product_stock WHERE product_class_id = ?';
-        $result = $this->conn->fetchAssociative($sql, [$id]);
-        $count = $result['count(*)'];
-        $stock = $result['stock'];
-
-        // 個数のズレがないか検査
-        $I->assertEquals('10', $stock, 'Stockが一致');
+        // 該当IDの商品が1つか確認
+        $count = $this->conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?', [$id]);
         $I->assertEquals('1', $count, '該当データは1件です');
+
+        // 個数のズレがないか確認
+        $stock = $this->conn->fetchOne('SELECT stock FROM dtb_product_stock WHERE product_class_id = ?', [$id]);
+        $I->assertEquals('10', $stock, 'Stockが一致');
     }
 }
