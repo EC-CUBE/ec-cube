@@ -77,7 +77,6 @@ class EntryPage extends AbstractFrontPage
             'entry[plain_password][second]' => 'password1234',
             'entry[user_policy_check]' => '1',
         ];
-        $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
         $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
 
         return $this;
