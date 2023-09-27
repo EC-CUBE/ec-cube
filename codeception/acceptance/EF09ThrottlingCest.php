@@ -749,7 +749,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    public function 会員登録_入力(AcceptanceTester $I)
+    public function 新規会員登録_入力(AcceptanceTester $I)
     {
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
 
