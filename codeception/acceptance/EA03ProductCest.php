@@ -49,6 +49,7 @@ class EA03ProductCest
         $I->loginAsAdmin();
 
         $this->em = Fixtures::get('entityManager');
+        $this->conn = $this->em->getConnection();
     }
 
     public function _after(AcceptanceTester $I)
@@ -1023,6 +1024,7 @@ class EA03ProductCest
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
      * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
     {
@@ -1061,16 +1063,22 @@ class EA03ProductCest
             ->入力_販売価格(1, 5000)
             ->登録();
 
-        // テストデータ投入時に、上記の規格在庫操作が反映されないためリフレッシュする。
-        $ProductClasses = $Product->getProductClasses();
-        $this->em->refresh($Product);
-        $this->em->refresh($ProductClasses[0]);
-        $ProductClass = $ProductClasses[0];
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
 
-        $stock = $ProductClass->getStock();
+        /** 重複して在庫が登録されていないのかチェック **/
+        // idを取得
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $id = $ProductClass->getId();
+
+        // DBからレコード数とStockを取得
+        $sql = 'SELECT count(*), stock FROM dtb_product_stock WHERE product_class_id = ?';
+        $result = $this->conn->fetchAssociative($sql, [$id]);
+        $count = $result['count(*)'];
+        $stock = $result['stock'];
 
         // 個数のズレがないか検査
         $I->assertEquals('10', $stock, 'Stockが一致');
-        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
+        $I->assertEquals('1', $count, '該当データは1件です');
     }
 }
