@@ -6,15 +6,13 @@ eccube:
             type: ip
             limit: 5
             interval: '30 minutes'
-        # 新規会員登録（入力）画面で mode = confirm の場合に発生
-        entry:
+        entry: # 存在しているメールアドレスの確認を防止するためのスロットリング
             route: entry
             method: [ 'POST' ]
             type: ip
             limit: 25
             interval: '30 minutes'
-        # 新規会員登録（入力）画面で 「確認画面から戻る」場合に発生
-        entry_complete:
+        entry_complete: # 不正な会員登録を防止するためのスロットリング
             route: entry
             method: [ 'POST' ]
             params:
