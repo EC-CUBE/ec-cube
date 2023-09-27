@@ -6,12 +6,14 @@ eccube:
             type: ip
             limit: 5
             interval: '30 minutes'
+        # 新規会員登録（入力）画面で mode = confirm の場合に発生
         entry:
             route: entry
             method: [ 'POST' ]
             type: ip
             limit: 25
             interval: '30 minutes'
+        # 新規会員登録（入力）画面で 「確認画面から戻る」場合に発生
         entry_complete:
             route: entry
             method: [ 'POST' ]
