@@ -32,7 +32,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         $text = $crawler->text();
 
         // $snippetがsandboxで制限された場合はフリーエリアは空で出力されるため、__RENDERED__の出力有無で結果を確認する
-        self::assertStringContainsString($whitelisted ? '__RENDERED__' : '', $text);
+        self::assertContains($whitelisted ? '__RENDERED__' : '', $text);
     }
 
     /**
@@ -49,7 +49,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         $text = $crawler->text();
 
         // $snippetがsandboxで制限された場合はメタタグエリアは空で出力されるため、__RENDERED__の出力有無で結果を確認する
-        self::assertStringContainsString($whitelisted ? '__RENDERED__' : '', $text);
+        self::assertContains($whitelisted ? '__RENDERED__' : '', $text);
     }
 
     public function twigSnippetsProvider()
