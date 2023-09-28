@@ -15,11 +15,20 @@ namespace Page\Front;
 
 class EntryPage extends AbstractFrontPage
 {
+
+    private $formData = [];
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);
     }
 
+    /**
+     * @param $I
+     * @param $id
+     *
+     * @return EntryPage
+     */
     public static function go($I)
     {
         $page = new self($I);
@@ -28,11 +37,11 @@ class EntryPage extends AbstractFrontPage
         return $page;
     }
 
-    public function 新規会員登録($form = [])
+    public function フォーム入力($form = [])
     {
         $this->tester->amOnPage('/entry');
         $email = uniqid().microtime(true).'@example.com';
-
+    
         $form += [
             'entry[name][name01]' => '姓',
             'entry[name][name02]' => '名',
@@ -49,10 +58,20 @@ class EntryPage extends AbstractFrontPage
             'entry[plain_password][second]' => 'password1234',
             'entry[user_policy_check]' => '1',
         ];
-        $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
-        $this->tester->seeInField(['id' => 'entry_email_first'], $form['entry[email][first]']);
-        $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
+        $this->formData = $form;
+        return $this;
+    }
+    
+    public function 同意する()
+    {
+        $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $this->formData, ['css' => 'button.ec-blockBtn--action']);
+        $this->tester->seeInField(['id' => 'entry_email_first'], $this->formData['entry[email][first]']);
+        return $this;
+    }
 
+    public function 登録する()
+    {
+        $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
         return $this;
     }
 }

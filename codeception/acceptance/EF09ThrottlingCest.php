@@ -24,6 +24,8 @@ use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingNonmemberPage;
 use Page\Front\ShoppingPage;
+use Page\Front\EntryPage;
+
 
 /**
  * @group throttling
@@ -138,14 +140,18 @@ class EF09ThrottlingCest
 
         for ($i = 0; $i < 5; $i++) {
             $I->expect('会員登録を行います：'.$i);
-            \Page\Front\EntryPage::go($I)
-                ->新規会員登録();
+            EntryPage::go($I)
+                ->フォーム入力()
+                ->同意する()
+                ->登録する();
             $I->see('現在、仮会員の状態です。', 'p.ec-reportDescription');
         }
 
         $I->expect('試行回数上限を超過します');
-        \Page\Front\EntryPage::go($I)
-            ->新規会員登録();
+        EntryPage::go($I)
+            ->フォーム入力()
+            ->同意する()
+            ->登録する();
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
@@ -753,15 +759,16 @@ class EF09ThrottlingCest
     {
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
 
-        \Page\Front\EntryPage::go($I);
-
         for ($i = 0; $i < 25; $i++) {
             $I->expect('会員登録を行います：'.$i);
-            $I->click('.ec-registerRole form button.ec-blockBtn--action');
-            $I->see('入力されていません。','p.ec-errorMessage');
+            EntryPage::go($I)
+                ->フォーム入力()
+                ->登録する();
         }
-        $I->expect('試行回数上限を超過します');
-        $I->click('.ec-registerRole form button.ec-blockBtn--action');
+
+        EntryPage::go($I)
+                ->フォーム入力()
+                ->登録する();
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
