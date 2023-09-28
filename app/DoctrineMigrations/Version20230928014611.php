@@ -39,7 +39,7 @@ WHERE product_class_id_count > 1;
             foreach ($exists as $pc_id => $value) {
                 $stock = $this->connection->fetchOne("SELECT stock FROM dtb_product_class WHERE id = :id", ["id" => $pc_id]);
                 $this->addSql("DELETE FROM dtb_product_stock WHERE product_class_id = :pc_id", ["pc_id" => $pc_id]);
-                $this->addSql("INSERT INTO dtb_product_stock (product_class_id, creator_id, stock, create_date, update_date, discriminator_type) VALUES (:pc_id, NULL, :stock, CURRENT_TIME, CURRENT_TIME, 'productstock')", ["pc_id" => $pc_id, "stock" => $stock]);
+                $this->addSql("INSERT INTO dtb_product_stock (product_class_id, creator_id, stock, create_date, update_date, discriminator_type) VALUES (:pc_id, NULL, :stock, CURRENT_DATE, CURRENT_DATE, 'productstock')", ["pc_id" => $pc_id, "stock" => $stock]);
             }
         }
     }
