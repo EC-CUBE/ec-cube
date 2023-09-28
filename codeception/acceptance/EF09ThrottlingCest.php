@@ -753,16 +753,15 @@ class EF09ThrottlingCest
     {
         $I->wantTo('EF0901-UC01-T18_会員登録_入力');
 
-        // 会員登録（エラーとなるパターン）を実行
+        \Page\Front\EntryPage::go($I);
+
         for ($i = 0; $i < 25; $i++) {
             $I->expect('会員登録を行います：'.$i);
-            \Page\Front\EntryPage::go($I)
-                ->新規会員登録_入力エラー();
+            $I->click('.ec-registerRole form button.ec-blockBtn--action');
             $I->see('入力されていません。','p.ec-errorMessage');
         }
         $I->expect('試行回数上限を超過します');
-        \Page\Front\EntryPage::go($I)
-            ->新規会員登録_入力エラー();
+        $I->click('.ec-registerRole form button.ec-blockBtn--action');
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
