@@ -758,6 +758,7 @@ class EF09ThrottlingCest
             $I->expect('会員登録を行います：'.$i);
             \Page\Front\EntryPage::go($I)
                 ->新規会員登録_入力エラー();
+            $I->see('入力されていません。','p.ec-errorMessage');
         }
         $I->expect('試行回数上限を超過します');
         \Page\Front\EntryPage::go($I)
