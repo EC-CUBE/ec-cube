@@ -251,27 +251,6 @@ class OrderTest extends EccubeTestCase
 
     protected function createTestOrder()
     {
-        $data = $this->getOrderItemData();
-        $Order = new Order();
-        foreach ($data as $row) {
-            $OrderItem = new OrderItem();
-            $OrderItem->setTaxType($row[0]);
-            $OrderItem->setTaxRate($row[1]);
-            $OrderItem->setPrice($row[2]);
-            $OrderItem->setTax($row[3]);
-            $OrderItem->setQuantity($row[4]);
-            $OrderItem->setOrderItemType($row[5]);
-            $OrderItem->setTaxDisplayType($row[6]);
-            $OrderItem->setRoundingType($row[7]);
-
-            $Order->addOrderItem($OrderItem);
-        }
-
-        return $Order;
-    }
-
-    protected function getOrderItemData()
-    {
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
         $TaxExempt = $this->entityManager->find(TaxType::class, TaxType::TAX_EXEMPT);
@@ -288,17 +267,32 @@ class OrderTest extends EccubeTestCase
 
         // 税率ごとに金額を集計する
         $data = [
-            [$Taxation, 10, 71141, round(71141 * (10 / 100)), 5, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
-            [$Taxation, 10, 92778, round(92778 * (10 / 100)), 4, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
-            [$Taxation, 8, 15221, round(15221 * (8 / 100)), 5, $ProductItem, $TaxExcluded, $RoundingType],      // 商品明細
-            [$Taxation, 10, -71141, round(-71141 * (10 / 100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],  // 課税値引き
-            [$Taxation, 8, -15221, round(-15221 * (8 / 100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],    // 課税値引き
-            [$Taxation, 10, 1000, round(1000 * (10 / 100)), 1, $DeliveryFee, $TaxIncluded, $RoundingType],    // 送料
-            [$Taxation, 10, 2187, round(1000 * (10 / 100)), 1, $Charge, $TaxIncluded, $RoundingType],    // 手数料
+            [$Taxation, 10, 71141, round(71141 * (10/100)), 5, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
+            [$Taxation, 10, 92778, round(92778 * (10/100)), 4, $ProductItem, $TaxExcluded, $RoundingType],    // 商品明細
+            [$Taxation, 8, 15221, round(15221 * (8/100)), 5, $ProductItem, $TaxExcluded, $RoundingType],      // 商品明細
+            [$Taxation, 10, -71141, round(-71141 * (10/100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],  // 課税値引き
+            [$Taxation, 8, -15221, round(-15221 * (8/100)), 1, $DiscountItem, $TaxExcluded, $RoundingType],    // 課税値引き
+            [$Taxation, 10, 1000, round(1000 * (10/100)), 1, $DeliveryFee, $TaxIncluded, $RoundingType],    // 送料
+            [$Taxation, 10, 2187, round(1000 * (10/100)), 1, $Charge, $TaxIncluded, $RoundingType],    // 手数料
             [$NonTaxable, 0, -7000, 0, 1, $DiscountItem, $TaxIncluded, $RoundingType],    // 不課税明細
             [$TaxExempt, 0, -159, 0, 1, $DiscountItem, $TaxIncluded, $RoundingType],     // 非課税明細
         ];
 
-        return $data;
+        $Order = new Order();
+        foreach ($data as $row) {
+            $OrderItem = new OrderItem();
+            $OrderItem->setTaxType($row[0]);
+            $OrderItem->setTaxRate($row[1]);
+            $OrderItem->setPrice($row[2]);
+            $OrderItem->setTax($row[3]);
+            $OrderItem->setQuantity($row[4]);
+            $OrderItem->setOrderItemType($row[5]);
+            $OrderItem->setTaxDisplayType($row[6]);
+            $OrderItem->setRoundingType($row[7]);
+
+            $Order->addOrderItem($OrderItem);
+        }
+
+        return $Order;
     }
 }
