@@ -6,7 +6,13 @@ eccube:
             type: ip
             limit: 5
             interval: '30 minutes'
-        entry:
+        entry: # 存在しているメールアドレスの確認を防止するためのスロットリング
+            route: entry
+            method: [ 'POST' ]
+            type: ip
+            limit: 25
+            interval: '30 minutes'
+        entry_complete: # 不正な会員登録を防止するためのスロットリング
             route: entry
             method: [ 'POST' ]
             params:
