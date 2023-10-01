@@ -10474,7 +10474,7 @@ Styleguide 11.2.7
 
 /* devモードの追加 */
 .ec-debugModeAlert {
-  background: steelblue;
+  background: red;
   height: 50px;
   position: fixed;
   top: 0;
@@ -10498,6 +10498,9 @@ Styleguide 11.2.7
 }
 .ec-debugModeAlert + * {
   margin-top: 50px;
+}
+.ec-twoModeAlert + * {
+  margin-top: 100px;
 }
 
 /**
