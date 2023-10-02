@@ -20,7 +20,7 @@ file that was distributed with this source code.
         $(function() {
             toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
             $('input[id^="check_"]').on('change', function() {
-                $('#toggle_check_all').prop('checked', false);
+                $('#toggle_check_all').prop('checked', $('input[id^="check_"]:not(:checked)').length === 0);
                 toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
             });
 
