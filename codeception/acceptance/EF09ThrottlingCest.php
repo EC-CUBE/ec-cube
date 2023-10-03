@@ -824,6 +824,7 @@ class EF09ThrottlingCest
         for ($i = 0; $i < 5; $i++) {
             $I->fillField(['id' => 'admin_two_factor_auth_device_token'], 'aaaaa'.$i);
             $I->click('認証');
+            $I->waitForText('トークンに誤りがあります。再度入力してください。');
         }
 
         // トークン入力の試行回数制限を超過
