@@ -72,6 +72,7 @@ jobs:
           vaddy-auth-key: "${{ secrets.VADDY_AUTH_KEY }}"
 
       - name: "Scan 1"
+        if: ${{ matrix.command2 != '' }}
         uses: ./.github/workflows/vaddy/scan
         with:
           command: "${{ matrix.command1 }}"
