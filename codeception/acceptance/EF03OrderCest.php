@@ -345,7 +345,7 @@ class EF03OrderCest
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/3133
-     * @vaddy
+     * @group vaddy
      */
     public function order_ログインしてカートをマージ(AcceptanceTester $I)
     {
