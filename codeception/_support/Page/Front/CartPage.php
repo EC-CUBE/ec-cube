@@ -38,11 +38,13 @@ class CartPage extends AbstractFrontPage
 
     public function 商品名($index)
     {
+        $this->tester->waitForElementVisible(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__name']"]);
         return $this->tester->grabTextFrom(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__name']"]);
     }
 
     public function 商品数量($index)
     {
+        $this->tester->waitForElementVisible(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amount']"]);
         return $this->tester->grabTextFrom(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amount']"]);
     }
 
@@ -53,6 +55,7 @@ class CartPage extends AbstractFrontPage
 
     public function 商品数量増やす($index)
     {
+        $this->tester->waitForElementVisible(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amountUpDown']/a[contains(@class, 'ec-cartRow__amountUpButton')]"]);
         $this->tester->click(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amountUpDown']/a[contains(@class, 'ec-cartRow__amountUpButton')]"]);
 
         return $this;
@@ -60,6 +63,7 @@ class CartPage extends AbstractFrontPage
 
     public function 商品数量減らす($index)
     {
+        $this->tester->waitForElementVisible(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amountUpDown']/a[contains(@class, 'ec-cartRow__amountDownButton')]"]);
         $this->tester->click(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amountUpDown']/a[contains(@class, 'ec-cartRow__amountDownButton')]"]);
 
         return $this;
@@ -67,6 +71,7 @@ class CartPage extends AbstractFrontPage
 
     public function 商品削除($index)
     {
+        $this->tester->waitForElementVisible(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//li[@class='ec-cartRow__delColumn']/a"]);
         $this->tester->click(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//li[@class='ec-cartRow__delColumn']/a"]);
         $this->tester->acceptPopup();
 
