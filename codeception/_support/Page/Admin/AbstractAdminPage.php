@@ -47,6 +47,7 @@ abstract class AbstractAdminPage extends AbstractPage
      */
     protected function atPage($pageTitle)
     {
+        $this->tester->wait(1);
         $this->tester->see($pageTitle, '.c-container .c-pageTitle__titles');
 
         return $this;

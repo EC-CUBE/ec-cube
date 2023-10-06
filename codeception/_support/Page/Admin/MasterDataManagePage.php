@@ -45,6 +45,7 @@ class MasterDataManagePage extends AbstractAdminPageStyleGuide
 
     public function 入力_ID($row, $value)
     {
+        $this->tester->waitForElementVisible(['css' => "#form2 table tbody tr:nth-child({$row}) td:nth-child(1) input"]);
         $this->tester->fillField(['css' => "#form2 table tbody tr:nth-child({$row}) td:nth-child(1) input"], $value);
 
         return $this;
