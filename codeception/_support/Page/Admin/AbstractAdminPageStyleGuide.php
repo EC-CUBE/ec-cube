@@ -24,6 +24,7 @@ abstract class AbstractAdminPageStyleGuide extends AbstractAdminPage
      */
     protected function atPage($pageTitle)
     {
+        $this->tester->wait(1);
         $this->tester->see($pageTitle, '.c-pageTitle');
 
         return $this;
