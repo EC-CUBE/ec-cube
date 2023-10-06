@@ -374,7 +374,7 @@ class EA08SysteminfoCest
             ->行追加()
             ->入力(1, ['1' => '店舗オーナー'], '/setting')
             ->登録();
-        $I->see('保存しました', AuthorityManagePage::$完了メッセージ);
+        $I->waitForText('保存しました', 10, AuthorityManagePage::$完了メッセージ);
 
         $I->wantTo('EA0805-UC01-T02 権限管理 - 登録');
 

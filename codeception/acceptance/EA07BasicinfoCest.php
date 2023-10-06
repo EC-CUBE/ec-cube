@@ -599,7 +599,7 @@ class EA07BasicinfoCest
         $page = PaymentManagePage::go($I);
         $before = $page->一覧_件数取得();
         $page->一覧_削除(1);
-        $I->see('削除しました', PaymentEditPage::$登録完了メッセージ);
+        $I->waitForText('削除しました', 10, PaymentEditPage::$登録完了メッセージ);
 
         $after = PaymentManagePage::go($I)->一覧_件数取得();
         $I->assertEquals($before - 1, $after);
