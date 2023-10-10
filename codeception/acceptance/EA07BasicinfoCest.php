@@ -594,6 +594,7 @@ class EA07BasicinfoCest
         PaymentEditPage::at($I)
             ->入力_支払方法('dummy payment')
             ->登録();
+        $I->waitForText('保存しました', 10, PaymentEditPage::$登録完了メッセージ);
 
         // 削除
         $page = PaymentManagePage::go($I);

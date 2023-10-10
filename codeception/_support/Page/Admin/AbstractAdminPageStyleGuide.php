@@ -24,9 +24,6 @@ abstract class AbstractAdminPageStyleGuide extends AbstractAdminPage
      */
     protected function atPage($pageTitle)
     {
-        if ($pageTitle === '権限管理システム設定' || $pageTitle === '支払方法一覧店舗設定') {
-            $this->tester->wait(3);
-        }
         $this->tester->see($pageTitle, '.c-pageTitle');
 
         return $this;

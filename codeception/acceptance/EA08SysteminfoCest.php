@@ -366,6 +366,7 @@ class EA08SysteminfoCest
                 'authority' => '店舗オーナー',
             ])
             ->登録();
+        $I->waitForText('保存しました', 10, '.c-contentsArea .alert-success');
 
         $I->wantTo('EA0805-UC01-T01 権限管理 - 登録');
 
