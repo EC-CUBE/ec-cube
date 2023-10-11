@@ -439,7 +439,7 @@ file that was distributed with this source code.
         </div>
         {% if Product.freearea %}
              <div class="ec-productRole__description">
-                 {{ include(template_from_string(Product.freearea)) }}
+                 {{ include(template_from_string(Product.freearea), sandboxed = true) }}
             </div>
         {% endif %}
     </div>
