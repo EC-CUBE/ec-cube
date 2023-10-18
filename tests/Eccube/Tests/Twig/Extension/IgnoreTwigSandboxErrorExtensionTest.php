@@ -74,6 +74,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
             ['{{ dump(9) }}', false],
             ['{{ constant("RSS", date) }}', false],
             ['{{ include(template_from_string("Hello")) }}', false],
+            ['{{ Product.main_list_image|no_image_product }}', true],
         ];
     }
 
