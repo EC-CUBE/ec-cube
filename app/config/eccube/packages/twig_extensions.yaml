@@ -22,6 +22,8 @@ services:
             - '@eccube.twig_sandbox.policy'
             - false
         tags: ['twig.extension']
+    Eccube\Twig\Sandbox\SecurityPolicyDecorator:
+        decorates: 'eccube.twig_sandbox.policy'
 parameters:
     eccube.twig_sandbox.allowed_tags:
         - 'apply'
