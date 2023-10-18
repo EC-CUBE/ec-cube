@@ -85,6 +85,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
             ['{{ Product.name }}', true],
             ['{{ app.request.uri }}', true],
             ['{{ app.request.getUri }}', true],
+            ['{{ Product.main_list_image|no_image_product }}', true],
         ];
     }
 
