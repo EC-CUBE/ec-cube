@@ -772,7 +772,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    public function 管理画面二段階認証($I)
+    public function 管理画面二段階認証(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
 
