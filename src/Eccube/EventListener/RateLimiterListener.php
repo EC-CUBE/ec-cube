@@ -15,6 +15,7 @@ namespace Eccube\EventListener;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Eccube\Request\Context;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RateLimiterListener implements EventSubscriberInterface
 {
@@ -49,7 +51,6 @@ class RateLimiterListener implements EventSubscriberInterface
         if (!isset($limiterConfigs[$route])) {
             return;
         }
-
         $method = $request->getMethod();
 
         foreach ($limiterConfigs[$route] as $id => $config) {
@@ -74,12 +75,11 @@ class RateLimiterListener implements EventSubscriberInterface
             if (!$this->locator->has($limiterId)) {
                 continue;
             }
-
             /** @var RateLimiterFactory $factory */
             $factory = $this->locator->get($limiterId);
-            if (in_array('customer', $config['type'])) {
+            if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
                 $User = $this->requestContext->getCurrentUser();
-                if ($User instanceof Customer) {
+                if ($User instanceof UserInterface) {
                     $limiter = $factory->create($User->getId());
                     if (!$limiter->consume()->isAccepted()) {
                         throw new TooManyRequestsHttpException();

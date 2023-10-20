@@ -24,6 +24,8 @@ use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingNonmemberPage;
 use Page\Front\ShoppingPage;
+use Page\Front\EntryPage;
+
 
 /**
  * @group throttling
@@ -138,14 +140,18 @@ class EF09ThrottlingCest
 
         for ($i = 0; $i < 5; $i++) {
             $I->expect('会員登録を行います：'.$i);
-            \Page\Front\EntryPage::go($I)
-                ->新規会員登録();
+            EntryPage::go($I)
+                ->フォーム入力()
+                ->同意する()
+                ->登録する();
             $I->see('現在、仮会員の状態です。', 'p.ec-reportDescription');
         }
 
         $I->expect('試行回数上限を超過します');
-        \Page\Front\EntryPage::go($I)
-            ->新規会員登録();
+        EntryPage::go($I)
+            ->フォーム入力()
+            ->同意する()
+            ->登録する();
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
@@ -747,5 +753,84 @@ class EF09ThrottlingCest
 
         $I->wait(1);
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    public function 新規会員登録_入力(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0901-UC01-T18_会員登録_入力');
+
+        for ($i = 0; $i < 25; $i++) {
+            $I->expect('会員登録を行います：'.$i);
+            EntryPage::go($I)
+                ->フォーム入力()
+                ->登録する();
+        }
+
+        EntryPage::go($I)
+                ->フォーム入力()
+                ->登録する();
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
+    }
+
+    public function 管理画面二段階認証(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+
+        // 二段階認証を有効にしてメンバーを新規作成
+        $config = Fixtures::get('config');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member/new');
+        $I->see('メンバー登録システム設定', '.c-pageTitle');
+
+        $login_id = 'admin_'.\Eccube\Util\StringUtil::random(6);
+        $password = 'password1234';
+        $I->fillField(['id' => 'admin_member_name'], '管理者');
+        $I->fillField(['id' => 'admin_member_department'], 'admin_throttling');
+        $I->fillField(['id' => 'admin_member_login_id'], $login_id);
+        $I->fillField(['id' => 'admin_member_plain_password_first'], $password);
+        $I->fillField(['id' => 'admin_member_plain_password_second'], $password);
+        $I->selectOption(['id' => 'admin_member_Authority'], 'システム管理者');
+        $I->click("label[for='admin_member_Work_1']"); // 稼働
+        $I->click("label[for='admin_member_two_factor_auth_enabled']"); // 有効
+        $I->click('#member_form .c-conversionArea__container button');
+        $I->see('保存しました', '.c-contentsArea .alert-success');
+
+        $I->logoutAsAdmin();
+
+        // 作成したメンバーでログイン
+        $I->submitForm('#form1', [
+            'login_id' => $login_id,
+            'password' => $password,
+        ]);
+
+        // 二段階認証のセットアップ
+        $secret = $I->executeJS('return $("#admin_two_factor_auth_auth_key").val();');
+        $tfa = new \RobThree\Auth\TwoFactorAuth();
+        $code = $tfa->getCode($secret);
+        $I->fillField(['id' => 'admin_two_factor_auth_device_token'], $code);
+        $I->click('登録');
+        $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles');
+
+        // ログアウトし、二段階認証を試行する
+        $I->logoutAsAdmin();
+
+        $I->resetCookie('eccube_2fa'); // 2要素認証のクッキーを削除
+
+        $I->submitForm('#form1', [
+            'login_id' => $login_id,
+            'password' => $password,
+        ]);
+
+        // トークン入力画面で5回入力
+        for ($i = 0; $i < 5; $i++) {
+            $I->fillField(['id' => 'admin_two_factor_auth_device_token'], 'aaaaa'.$i);
+            $I->click('認証');
+            $I->waitForText('トークンに誤りがあります。再度入力してください。');
+        }
+
+        // トークン入力の試行回数制限を超過
+        $I->fillField(['id' => 'admin_two_factor_auth_device_token'], 'aaaaaa');
+        $I->click('認証');
+
+        $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p');
     }
 }

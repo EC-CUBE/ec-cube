@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                                             ->ifArray()
                                             ->then(fn (array $v) => \array_map(fn ($method) => \strtolower($method), $v))
                                         ->end()
-                                    ->enumPrototype()->values(['ip', 'customer'])->end()
+                                    ->enumPrototype()->values(['ip', 'customer', 'user'])->end()
                                         ->defaultValue([])
                                     ->end()
                                     ->arrayNode('method')

@@ -107,7 +107,7 @@ file that was distributed with this source code.
             var deliveryId = $(this).val();
             var $shippingDeliveryTime = $(this).parents('.card-body').find("select[id$='_DeliveryTime']");
             $shippingDeliveryTime.find('option').remove();
-            $shippingDeliveryTime.append($('<option></option>').val('').text(trans('admin.common.select__unspecified')));
+            $shippingDeliveryTime.append($('<option></option>').val('').text('{{ 'admin.common.select__unspecified'|trans }}'));
             if (typeof(times[deliveryId]) !== 'undefined') {
                 for (var timeId in times[deliveryId]) {
                     timeValue = times[deliveryId][timeId];
