@@ -65,7 +65,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
             ['{% set foo = "bar" %}', true],
             ['{% spaceless %}<div> <strong>test</strong> </div>{% endspaceless %}', true],
             ['{% flush %}', true],
-            ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', true], // escapeはホワイトリストにあります。しかし、false？
+            ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', true],
             ['{% macro input(name, value, type = "text", size = 20) %}<input type="{{ type }}" name="{{ name }}" value="{{ value|e }}" size="{{ size }}"/>{% endmacro %}', false],
             ['{% sandbox %}{% include "user.html" %}{% endsandbox %}', false],
             ['{{ "-5"|abs }}', true],
