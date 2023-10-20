@@ -48,8 +48,15 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         $crawler = $this->client->request('GET', $this->generateUrl($Page->getUrl()));
         $text = $crawler->text();
 
-        // $snippetがsandboxで制限された場合はメタタグエリアは空で出力されるため、__RENDERED__の出力有無で結果を確認する
-        self::assertStringContainsString($whitelisted ? '__RENDERED__' : '', $text);
+        // ホワイトリストに入っている場合__RENDERED__が表示される
+        if ($whitelisted) {
+            self::assertStringContainsString('__RENDERED__', $text);
+        } else {
+            self::assertStringNotContainsString('__RENDERED__', $text);
+        }
+        // 入力可能ではない値の場合は、システムエラーが発生する
+        self::assertStringNotContainsString('システムエラーが発生しました', $text);
+
     }
 
     public function twigSnippetsProvider()
@@ -59,7 +66,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
             ['{% set foo = "bar" %}', true],
             ['{% spaceless %}<div> <strong>test</strong> </div>{% endspaceless %}', true],
             ['{% flush %}', true],
-            ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', false],
+            ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', true],
             ['{% macro input(name, value, type = "text", size = 20) %}<input type="{{ type }}" name="{{ name }}" value="{{ value|e }}" size="{{ size }}"/>{% endmacro %}', false],
             ['{% sandbox %}{% include "user.html" %}{% endsandbox %}', false],
             ['{{ "-5"|abs }}', true],
@@ -74,6 +81,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
             ['{{ dump(9) }}', false],
             ['{{ constant("RSS", date) }}', false],
             ['{{ include(template_from_string("Hello")) }}', false],
+            ['{{ Product.main_list_image|no_image_product }}', true],
         ];
     }
 

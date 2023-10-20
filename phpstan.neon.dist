@@ -1,2 +1,6 @@
 parameters:
   level: 1
+  ignoreErrors:
+    -
+      message: "#^Function twig_include not found\\.$#"
+      path: src/Eccube/Twig/Extension/IgnoreTwigSandboxErrorExtension.php
