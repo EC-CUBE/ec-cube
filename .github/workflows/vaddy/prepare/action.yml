@@ -157,5 +157,5 @@ runs:
                             prefs:
                                 download.default_directory: '%PWD%/codeception/_support/_downloads'
                 MailCatcher:
-                    url: 'mailcatcher'
+                    url: '172.17.0.1'
                     port: 1080" > codeception/_envs/local.yml
