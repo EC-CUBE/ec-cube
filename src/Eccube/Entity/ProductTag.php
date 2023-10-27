@@ -65,7 +65,7 @@ if (!class_exists(ProductTag::class)) {
         private $create_date;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductTag")
          *
@@ -77,7 +77,7 @@ if (!class_exists(ProductTag::class)) {
         private $Product;
 
         /**
-         * @var Tag
+         * @var Tag|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Tag", inversedBy="ProductTag")
          *
@@ -89,7 +89,7 @@ if (!class_exists(ProductTag::class)) {
         private $Tag;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

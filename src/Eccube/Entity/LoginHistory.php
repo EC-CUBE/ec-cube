@@ -44,14 +44,14 @@ if (!class_exists(LoginHistory::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(type="text",nullable=true)
          */
         private $user_name;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(type="text",nullable=true)
          */
@@ -84,7 +84,7 @@ if (!class_exists(LoginHistory::class)) {
         private $Status;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

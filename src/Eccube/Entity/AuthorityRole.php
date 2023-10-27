@@ -64,7 +64,7 @@ if (!class_exists(AuthorityRole::class)) {
         private $update_date;
 
         /**
-         * @var Master\Authority
+         * @var Master\Authority|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
          *
@@ -76,7 +76,7 @@ if (!class_exists(AuthorityRole::class)) {
         private $Authority;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

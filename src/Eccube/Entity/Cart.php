@@ -55,14 +55,14 @@ if (!class_exists(Cart::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="cart_key", type="string", nullable=true)
          */
         private $cart_key;
 
         /**
-         * @var Customer
+         * @var Customer|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer")
          *
@@ -79,7 +79,7 @@ if (!class_exists(Cart::class)) {
         private $lock = false;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection|CartItem[]
+         * @var \Doctrine\Common\Collections\Collection<int,CartItem>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist"})
          *
@@ -95,7 +95,7 @@ if (!class_exists(Cart::class)) {
         private $pre_order_id;
 
         /**
-         * @var string
+         * @var string|float
          *
          * @ORM\Column(name="total_price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
@@ -162,6 +162,8 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @param string $cartKey
+         *
+         * @return Cart
          */
         public function setCartKey(string $cartKey)
         {
@@ -203,7 +205,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  int             $pre_order_id
+         * @param  string $pre_order_id
          *
          * @return Cart
          */
@@ -237,7 +239,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return ArrayCollection|CartItem[]
+         * @return \Doctrine\Common\Collections\Collection<int,CartItem>
          */
         public function getCartItems()
         {
@@ -270,7 +272,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Set total.
          *
-         * @param int $total_price
+         * @param string $total_price
          *
          * @return Cart
          */

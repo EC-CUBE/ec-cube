@@ -68,7 +68,7 @@ if (!class_exists(Tag::class)) {
         protected $sort_no;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ProductTag>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Tag")
          */
@@ -183,7 +183,7 @@ if (!class_exists(Tag::class)) {
         /**
          * Get productTag.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int, ProductTag>
          */
         public function getProductTag()
         {

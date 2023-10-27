@@ -247,7 +247,7 @@ if (!class_exists(OrderItem::class)) {
         private $processor_name;
 
         /**
-         * @var Order
+         * @var Order|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderItems")
          *
@@ -259,7 +259,7 @@ if (!class_exists(OrderItem::class)) {
         private $Order;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product")
          *
@@ -271,7 +271,7 @@ if (!class_exists(OrderItem::class)) {
         private $Product;
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
          *
@@ -283,7 +283,7 @@ if (!class_exists(OrderItem::class)) {
         private $ProductClass;
 
         /**
-         * @var Shipping
+         * @var Shipping|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Shipping", inversedBy="OrderItems")
          *
@@ -295,7 +295,7 @@ if (!class_exists(OrderItem::class)) {
         private $Shipping;
 
         /**
-         * @var RoundingType
+         * @var RoundingType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
          *
@@ -307,7 +307,7 @@ if (!class_exists(OrderItem::class)) {
         private $RoundingType;
 
         /**
-         * @var Master\TaxType
+         * @var Master\TaxType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\TaxType")
          *
@@ -319,7 +319,7 @@ if (!class_exists(OrderItem::class)) {
         private $TaxType;
 
         /**
-         * @var TaxDisplayType
+         * @var TaxDisplayType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\TaxDisplayType")
          *
@@ -331,7 +331,7 @@ if (!class_exists(OrderItem::class)) {
         private $TaxDisplayType;
 
         /**
-         * @var OrderItemType
+         * @var OrderItemType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderItemType")
          *
@@ -499,7 +499,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set price.
          *
-         * @param float|int|string $price
+         * @param string $price
          *
          * @return OrderItem
          */
@@ -524,7 +524,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set quantity.
          *
-         * @param float|int|string $quantity
+         * @param string $quantity
          *
          * @return OrderItem
          */
@@ -556,7 +556,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param float|int|string $tax
+         * @param string $tax
          *
          * @return $this
          */
@@ -570,7 +570,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param float|int|string $taxRate
+         * @param string $taxRate
          *
          * @return OrderItem
          */
@@ -715,6 +715,9 @@ if (!class_exists(OrderItem::class)) {
             return $this->Order;
         }
 
+        /**
+         * @return int|null
+         */
         public function getOrderId()
         {
             if (is_object($this->getOrder())) {
@@ -807,6 +810,8 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * @param RoundingType $RoundingType
+         *
+         * @return $this
          */
         public function setRoundingType(?RoundingType $RoundingType = null)
         {
@@ -832,7 +837,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxType
          *
-         * @return Master\TaxType
+         * @return Master\TaxType|null
          */
         public function getTaxType()
         {

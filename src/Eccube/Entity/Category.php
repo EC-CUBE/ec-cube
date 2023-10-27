@@ -196,14 +196,14 @@ if (!class_exists(Category::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\ORM\PersistentCollection<int,ProductCategory>
+         * @var \Doctrine\Common\Collections\Collection<int,ProductCategory>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Category", fetch="EXTRA_LAZY")
          */
         private $ProductCategories;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,Category>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\Category", mappedBy="Parent")
          *
@@ -214,7 +214,7 @@ if (!class_exists(Category::class)) {
         private $Children;
 
         /**
-         * @var Category
+         * @var Category|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Children")
          *
@@ -226,7 +226,7 @@ if (!class_exists(Category::class)) {
         private $Parent;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *
@@ -405,7 +405,7 @@ if (!class_exists(Category::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,ProductCategory>
          */
         public function getProductCategories()
         {
@@ -441,7 +441,7 @@ if (!class_exists(Category::class)) {
         /**
          * Get children.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,Category>
          */
         public function getChildren()
         {

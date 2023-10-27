@@ -110,7 +110,7 @@ if (!class_exists(News::class)) {
         private $visible;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

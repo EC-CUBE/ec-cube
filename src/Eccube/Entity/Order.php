@@ -402,14 +402,14 @@ if (!class_exists(Order::class)) {
         private $message;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="name02", type="string", length=255)
          */
@@ -479,35 +479,35 @@ if (!class_exists(Order::class)) {
         private $birth;
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $subtotal = '0';
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="discount", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $discount = '0';
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $delivery_fee_total = '0';
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $charge = '0';
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          *
@@ -516,14 +516,14 @@ if (!class_exists(Order::class)) {
         private $tax = '0';
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $total = '0';
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="payment_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
@@ -604,7 +604,7 @@ if (!class_exists(Order::class)) {
         private $complete_mail_message;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection|OrderItem[]
+         * @var \Doctrine\Common\Collections\Collection<int,OrderItem>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
          */
@@ -629,7 +629,7 @@ if (!class_exists(Order::class)) {
         private $MailHistories;
 
         /**
-         * @var Customer
+         * @var Customer|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="Orders")
          *
@@ -641,7 +641,7 @@ if (!class_exists(Order::class)) {
         private $Customer;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
          *
@@ -653,7 +653,7 @@ if (!class_exists(Order::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *
@@ -665,7 +665,7 @@ if (!class_exists(Order::class)) {
         private $Pref;
 
         /**
-         * @var Master\Sex
+         * @var Master\Sex|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
          *
@@ -677,7 +677,7 @@ if (!class_exists(Order::class)) {
         private $Sex;
 
         /**
-         * @var Master\Job
+         * @var Master\Job|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
          *
@@ -689,7 +689,7 @@ if (!class_exists(Order::class)) {
         private $Job;
 
         /**
-         * @var Payment
+         * @var Payment|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment")
          *
@@ -701,7 +701,7 @@ if (!class_exists(Order::class)) {
         private $Payment;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
          *
@@ -715,7 +715,7 @@ if (!class_exists(Order::class)) {
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
-         * @var Master\CustomerOrderStatus
+         * @var Master\CustomerOrderStatus|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
          *
@@ -729,7 +729,7 @@ if (!class_exists(Order::class)) {
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
-         * @var Master\OrderStatusColor
+         * @var Master\OrderStatusColor|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
          *
@@ -741,7 +741,7 @@ if (!class_exists(Order::class)) {
         private $OrderStatusColor;
 
         /**
-         * @var Master\OrderStatus
+         * @var Master\OrderStatus|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
          *
@@ -1149,7 +1149,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set subtotal.
          *
-         * @param string $subtotal
+         * @param float|int|string $subtotal
          *
          * @return Order
          */
@@ -1200,7 +1200,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set deliveryFeeTotal.
          *
-         * @param string $deliveryFeeTotal
+         * @param float|int|string $deliveryFeeTotal
          *
          * @return Order
          */
@@ -1215,7 +1215,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get deliveryFeeTotal.
          *
-         * @return string
+         * @return float|int|string
          */
         #[\Override]
         public function getDeliveryFeeTotal()
@@ -1226,7 +1226,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set charge.
          *
-         * @param string $charge
+         * @param float|int|string $charge
          *
          * @return Order
          */
@@ -1251,7 +1251,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set tax.
          *
-         * @param string $tax
+         * @param float|int|string $tax
          *
          * @return Order
          *
@@ -1280,7 +1280,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set total.
          *
-         * @param string $total
+         * @param float|int|string $total
          *
          * @return Order
          */
@@ -1295,7 +1295,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get total.
          *
-         * @return string
+         * @return float|int|string
          */
         #[\Override]
         public function getTotal()
@@ -1306,7 +1306,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set paymentTotal.
          *
-         * @param string $paymentTotal
+         * @param float|int|string $paymentTotal
          *
          * @return Order
          */
@@ -1600,7 +1600,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get orderItems.
          *
-         * @return \Doctrine\Common\Collections\Collection|OrderItem[]
+         * @return \Doctrine\Common\Collections\Collection<int,OrderItem>
          */
         public function getOrderItems()
         {
@@ -1938,6 +1938,8 @@ if (!class_exists(Order::class)) {
 
         /**
          * @param ItemInterface $item
+         *
+         * @return void
          */
         #[\Override]
         public function addItem(ItemInterface $item)

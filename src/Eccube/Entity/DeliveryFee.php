@@ -50,7 +50,7 @@ if (!class_exists(DeliveryFee::class)) {
         private $fee;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryFees")
          *
@@ -62,7 +62,7 @@ if (!class_exists(DeliveryFee::class)) {
         private $Delivery;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *

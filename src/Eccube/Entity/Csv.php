@@ -99,7 +99,7 @@ if (!class_exists(Csv::class)) {
         private $update_date;
 
         /**
-         * @var Master\CsvType
+         * @var Master\CsvType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
          *
@@ -111,7 +111,7 @@ if (!class_exists(Csv::class)) {
         private $CsvType;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

@@ -57,7 +57,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         private $update_date;
 
         /**
-         * @var Customer
+         * @var Customer|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
          *
@@ -69,7 +69,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         private $Customer;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
          *

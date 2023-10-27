@@ -126,7 +126,7 @@ if (!class_exists(Member::class)) {
         private $password;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="salt", type="string", length=255, nullable=true)
          */
@@ -140,7 +140,7 @@ if (!class_exists(Member::class)) {
         private $sort_no;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="two_factor_auth_key",type="string",length=255,nullable=true,options={"fixed":false})
          */
@@ -175,7 +175,7 @@ if (!class_exists(Member::class)) {
         private $login_date;
 
         /**
-         * @var Master\Work
+         * @var Master\Work|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
          *
@@ -187,7 +187,7 @@ if (!class_exists(Member::class)) {
         private $Work;
 
         /**
-         * @var Master\Authority
+         * @var Master\Authority|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
          *
@@ -199,7 +199,7 @@ if (!class_exists(Member::class)) {
         private $Authority;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

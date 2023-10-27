@@ -56,7 +56,7 @@ if (!class_exists(DeliveryTime::class)) {
         private $delivery_time;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryTimes")
          *

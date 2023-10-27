@@ -96,7 +96,7 @@ if (!class_exists(ProductStock::class)) {
         private $update_date;
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="ProductStock")
          *
@@ -108,7 +108,7 @@ if (!class_exists(ProductStock::class)) {
         private $ProductClass;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

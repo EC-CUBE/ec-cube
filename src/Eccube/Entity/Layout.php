@@ -230,7 +230,7 @@ if (!class_exists(Layout::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="layout_name", type="string", length=255, nullable=true)
          */
@@ -251,14 +251,14 @@ if (!class_exists(Layout::class)) {
         private $update_date;
 
         /**
-         * @var Collection
+         * @var Collection<int,BlockPosition>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Layout", cascade={"persist","remove"})
          */
         private $BlockPositions;
 
         /**
-         * @var Collection
+         * @var Collection<int,PageLayout>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
          *
@@ -267,7 +267,7 @@ if (!class_exists(Layout::class)) {
         private $PageLayouts;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
          *
@@ -387,6 +387,8 @@ if (!class_exists(Layout::class)) {
          * Remove blockPosition
          *
          * @param BlockPosition $blockPosition
+         *
+         * @return void
          */
         public function removeBlockPosition(BlockPosition $blockPosition)
         {
@@ -396,7 +398,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get blockPositions
          *
-         * @return Collection
+         * @return Collection<int, BlockPosition>
          */
         public function getBlockPositions()
         {
@@ -421,6 +423,8 @@ if (!class_exists(Layout::class)) {
          * Remove pageLayoutLayout
          *
          * @param PageLayout $PageLayout
+         *
+         * @return void
          */
         public function removePageLayout(PageLayout $PageLayout)
         {
@@ -430,7 +434,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get pageLayoutLayouts
          *
-         * @return Collection
+         * @return Collection<int, PageLayout>
          */
         public function getPageLayouts()
         {
@@ -454,7 +458,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get deviceType
          *
-         * @return Master\DeviceType
+         * @return Master\DeviceType|null
          */
         public function getDeviceType()
         {

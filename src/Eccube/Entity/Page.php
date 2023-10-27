@@ -142,14 +142,14 @@ if (!class_exists(Page::class)) {
         private $meta_tags;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,PageLayout>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Page", cascade={"persist","remove"})
          */
         private $PageLayouts;
 
         /**
-         * @var Page
+         * @var Page|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
          *
@@ -459,7 +459,7 @@ if (!class_exists(Page::class)) {
         /**
          * Get pageLayoutLayout.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,PageLayout>
          */
         public function getPageLayouts()
         {
@@ -484,6 +484,8 @@ if (!class_exists(Page::class)) {
          * Remove pageLayoutLayout
          *
          * @param PageLayout $PageLayout
+         *
+         * @return void
          */
         public function removePageLayout(PageLayout $PageLayout)
         {

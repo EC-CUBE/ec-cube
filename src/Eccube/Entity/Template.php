@@ -93,7 +93,7 @@ if (!class_exists(Template::class)) {
         private $update_date;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
          *

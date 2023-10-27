@@ -87,7 +87,7 @@ if (!class_exists(MailTemplate::class)) {
         private $update_date;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

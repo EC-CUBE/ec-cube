@@ -204,28 +204,28 @@ if (!class_exists(ProductClass::class)) {
         private $stock_unlimited = false;
 
         /**
-         * @var string|null
+         * @var float|string|null
          *
          * @ORM\Column(name="sale_limit", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true})
          */
         private $sale_limit;
 
         /**
-         * @var string|null
+         * @var float|string|null
          *
          * @ORM\Column(name="price01", type="decimal", precision=12, scale=2, nullable=true)
          */
         private $price01;
 
         /**
-         * @var string
+         * @var float|int|string
          *
          * @ORM\Column(name="price02", type="decimal", precision=12, scale=2)
          */
         private $price02;
 
         /**
-         * @var string|null
+         * @var float|string|null
          *
          * @ORM\Column(name="delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
          */
@@ -260,28 +260,28 @@ if (!class_exists(ProductClass::class)) {
         private $currency_code;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true}, nullable=true)
          */
         private $point_rate;
 
         /**
-         * @var ProductStock
+         * @var ProductStock|null
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductStock", mappedBy="ProductClass", cascade={"persist","remove"})
          */
         private $ProductStock;
 
         /**
-         * @var TaxRule
+         * @var TaxRule|null
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\TaxRule", mappedBy="ProductClass", cascade={"persist","remove"})
          */
         private $TaxRule;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductClasses")
          *
@@ -293,7 +293,7 @@ if (!class_exists(ProductClass::class)) {
         private $Product;
 
         /**
-         * @var Master\SaleType
+         * @var Master\SaleType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\SaleType")
          *
@@ -305,7 +305,7 @@ if (!class_exists(ProductClass::class)) {
         private $SaleType;
 
         /**
-         * @var ClassCategory
+         * @var ClassCategory|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassCategory")
          *
@@ -317,7 +317,7 @@ if (!class_exists(ProductClass::class)) {
         private $ClassCategory1;
 
         /**
-         * @var ClassCategory
+         * @var ClassCategory|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassCategory")
          *
@@ -329,7 +329,7 @@ if (!class_exists(ProductClass::class)) {
         private $ClassCategory2;
 
         /**
-         * @var DeliveryDuration
+         * @var DeliveryDuration|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryDuration")
          *
@@ -341,7 +341,7 @@ if (!class_exists(ProductClass::class)) {
         private $DeliveryDuration;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *
