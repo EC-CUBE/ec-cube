@@ -102,7 +102,7 @@ if (!class_exists(Cart::class)) {
         private $total_price;
 
         /**
-         * @var string
+         * @var float|int|string
          *
          * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
@@ -256,7 +256,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  CartItem[]          $CartItems
+         * @param  \Doctrine\Common\Collections\Collection<int,CartItem> $CartItems
          *
          * @return Cart
          */

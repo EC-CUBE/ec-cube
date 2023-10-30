@@ -71,7 +71,7 @@ class LogController extends AbstractController
         if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download' && $form->isValid()) {
             $bufferSize = 1024 * 50;
             $response = new StreamedResponse();
-            $response->headers->set('Content-Length', filesize($logFile));
+            $response->headers->set('Content-Length', (string) filesize($logFile));
             $response->headers->set('Content-Disposition', 'attachment; filename='.basename($logFile));
             $response->headers->set('Content-Type', 'application/octet-stream');
             $response->setCallback(function () use ($logFile, $bufferSize) {

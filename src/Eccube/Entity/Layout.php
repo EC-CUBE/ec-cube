@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 if (!class_exists(Layout::class)) {
@@ -127,7 +128,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @param int $targetId
          *
-         * @return BlockPosition[]
+         * @return BlockPosition[]|Collection<int,mixed>
          */
         public function getBlockPositionsByTargetId($targetId)
         {
@@ -250,14 +251,14 @@ if (!class_exists(Layout::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Layout", cascade={"persist","remove"})
          */
         private $BlockPositions;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
          *
@@ -395,7 +396,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get blockPositions
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection
          */
         public function getBlockPositions()
         {
@@ -429,7 +430,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get pageLayoutLayouts
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection
          */
         public function getPageLayouts()
         {

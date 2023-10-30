@@ -536,7 +536,7 @@ class PluginController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array
+     * @return array|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
     #[Template('@admin/Store/authentication_setting.twig')]

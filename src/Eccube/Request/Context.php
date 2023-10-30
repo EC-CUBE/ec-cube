@@ -14,10 +14,9 @@
 namespace Eccube\Request;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Member;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Context
 {
@@ -80,7 +79,7 @@ class Context
     }
 
     /**
-     * @return Member|Customer|null
+     * @return UserInterface|null
      */
     public function getCurrentUser()
     {

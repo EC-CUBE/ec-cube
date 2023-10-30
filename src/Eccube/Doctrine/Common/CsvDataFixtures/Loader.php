@@ -25,7 +25,7 @@ use Symfony\Component\Yaml\Yaml;
 class Loader
 {
     /**
-     * @var CsvFixture[]
+     * @var CsvFixture[]|FixtureInterface[]
      */
     protected $fixtures;
 

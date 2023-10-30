@@ -35,7 +35,7 @@ if (!class_exists(ProductTag::class)) {
          * Get tag_id
          * use csv export
          *
-         * @return int
+         * @return int|null
          */
         public function getTagId()
         {

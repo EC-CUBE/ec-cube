@@ -115,7 +115,7 @@ if (!class_exists(OrderPdf::class)) {
         private $visible = true;
 
         /**
-         * @return string
+         * @return int
          */
         public function getMemberId()
         {
@@ -319,7 +319,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @param bool $visible
          *
-         * @return Delivery
+         * @return OrderPdf
          */
         public function setVisible($visible)
         {

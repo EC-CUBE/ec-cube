@@ -124,7 +124,7 @@ class OwnerStoreController extends AbstractController
      * @param int $page_no
      * @param PaginatorInterface $paginator
      *
-     * @return array
+     * @return array|RedirectResponse
      */
     #[Route('/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
     #[Route('/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
@@ -514,7 +514,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Plugin $Plugin
      *
-     * @return array
+     * @return array|RedirectResponse
      */
     #[Route('/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Store/plugin_confirm.twig')]

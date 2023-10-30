@@ -76,6 +76,7 @@ class RateLimiterListener implements EventSubscriberInterface
             /** @var RateLimiterFactory $factory */
             $factory = $this->locator->get($limiterId);
             if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
+                /** @var Customer|Member $User */
                 $User = $this->requestContext->getCurrentUser();
                 if ($User instanceof UserInterface) {
                     $limiter = $factory->create($User->getId());

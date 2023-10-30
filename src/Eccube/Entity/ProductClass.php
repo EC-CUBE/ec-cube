@@ -172,7 +172,7 @@ if (!class_exists(ProductClass::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          *

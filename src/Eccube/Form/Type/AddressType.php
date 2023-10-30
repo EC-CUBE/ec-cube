@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AddressType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $config;
 

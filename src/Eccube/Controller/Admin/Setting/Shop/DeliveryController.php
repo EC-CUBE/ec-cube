@@ -68,7 +68,7 @@ class DeliveryController extends AbstractController
     protected $deliveryTimeRepository;
 
     /**
-     * @var DeliveryTimeRepository
+     * @var SaleTypeRepository
      */
     protected $saleTypeRepository;
 

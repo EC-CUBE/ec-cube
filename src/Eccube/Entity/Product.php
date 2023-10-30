@@ -213,7 +213,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Stock min
          *
-         * @return int
+         * @return int|null
          */
         public function getStockMin()
         {
@@ -227,7 +227,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Stock max
          *
-         * @return int
+         * @return int|null
          */
         public function getStockMax()
         {
@@ -241,7 +241,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockUnlimited min
          *
-         * @return int
+         * @return int|null
          */
         public function getStockUnlimitedMin()
         {
@@ -255,7 +255,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockUnlimited max
          *
-         * @return int
+         * @return int|null
          */
         public function getStockUnlimitedMax()
         {
@@ -269,7 +269,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01 min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01Min()
         {
@@ -285,7 +285,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01 max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01Max()
         {
@@ -301,7 +301,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02 min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02Min()
         {
@@ -315,7 +315,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02 max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02Max()
         {
@@ -329,7 +329,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01IncTax min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01IncTaxMin()
         {
@@ -343,7 +343,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01IncTax max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01IncTaxMax()
         {
@@ -357,7 +357,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02IncTax min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02IncTaxMin()
         {
@@ -371,7 +371,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02IncTax max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02IncTaxMax()
         {
@@ -385,7 +385,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Product_code min
          *
-         * @return int
+         * @return string|null
          */
         public function getCodeMin()
         {
@@ -404,7 +404,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Product_code max
          *
-         * @return int
+         * @return string|null
          */
         public function getCodeMax()
         {

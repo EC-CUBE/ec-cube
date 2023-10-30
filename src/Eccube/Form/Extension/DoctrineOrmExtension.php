@@ -13,9 +13,7 @@
 
 namespace Eccube\Form\Extension;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\FormAppend;
 use Eccube\Annotation\FormExtension;
@@ -34,12 +32,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DoctrineOrmExtension extends AbstractTypeExtension
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
     /**
-     * @var AnnotationReader
+     * @var Reader
      */
     protected $reader;
 
