@@ -18,6 +18,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,7 +67,7 @@ class LogController extends AbstractController
         }
         $logDir = $this->getParameter('kernel.logs_dir').DIRECTORY_SEPARATOR.$this->getParameter('kernel.environment');
         $logFile = $logDir.'/'.$formData['files'];
-
+        /** @var Form $form */
         if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download' && $form->isValid()) {
             $bufferSize = 1024 * 50;
             $response = new StreamedResponse();

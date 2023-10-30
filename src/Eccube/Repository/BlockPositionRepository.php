@@ -14,7 +14,9 @@
 namespace Eccube\Repository;
 
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
+use Eccube\Entity\Layout;
 
 /**
  * BlockPositionRepository
@@ -44,10 +46,12 @@ class BlockPositionRepository extends AbstractRepository
     /**
      * レイアウトに紐づくブロックの個数分登録を行う
      *
-     * @param  array|null $data
-     * @param  $Blocks
-     * @param  $UnusedBlocks
-     * @param  Eccube\Entity\Layout|null $Layout
+     * @param  array<mixed>|null $data
+     * @param  Block[] $Blocks
+     * @param  Block[]|null $UnusedBlocks
+     * @param  Layout|null $Layout
+     *
+     * @return void
      */
     public function register($data, $Blocks, $UnusedBlocks, $Layout)
     {
@@ -60,7 +64,7 @@ class BlockPositionRepository extends AbstractRepository
                 continue;
             }
             // 未使用ブロックはinsertしない
-            if ($data['section_'.$i] == \Eccube\Entity\Layout::TARGET_ID_UNUSED) {
+            if ($data['section_'.$i] == Layout::TARGET_ID_UNUSED) {
                 continue;
             }
             $Block = $this->blockRepository->find($data['block_id_'.$i]);

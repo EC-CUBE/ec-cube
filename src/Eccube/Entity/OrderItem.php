@@ -39,7 +39,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get price IncTax
          *
-         * @return string
+         * @return float|string
          */
         public function getPriceIncTax()
         {
@@ -60,7 +60,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @return int
+         * @return int|null
          */
         public function getOrderItemTypeId()
         {
@@ -499,7 +499,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set price.
          *
-         * @param string $price
+         * @param float|int|string $price
          *
          * @return OrderItem
          */
@@ -524,7 +524,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set quantity.
          *
-         * @param string $quantity
+         * @param float|int|string $quantity
          *
          * @return OrderItem
          */
@@ -539,7 +539,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get quantity.
          *
-         * @return string
+         * @return float|string
          */
         #[\Override]
         public function getQuantity()
@@ -556,7 +556,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param string $tax
+         * @param float|int|string $tax
          *
          * @return $this
          */
@@ -570,7 +570,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param string $taxRate
+         * @param float|int|string $taxRate
          *
          * @return OrderItem
          */
@@ -880,7 +880,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get orderItemType
          *
-         * @return OrderItemType
+         * @return OrderItemType|null
          */
         #[\Override]
         public function getOrderItemType()

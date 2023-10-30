@@ -242,9 +242,8 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
      *
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
     #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]

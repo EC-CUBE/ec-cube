@@ -2029,7 +2029,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)

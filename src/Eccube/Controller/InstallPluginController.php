@@ -53,7 +53,6 @@ class InstallPluginController extends InstallController
      * 有効化可能なプラグイン一覧を返します.
      *
      * @param Request $request
-     * @param string $code
      *
      * @return JsonResponse
      */

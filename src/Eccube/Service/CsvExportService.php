@@ -29,6 +29,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Util\FormUtil;
+use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -291,7 +292,7 @@ class CsvExportService
         $page = 1;
         $limit = 100;
         while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
-            /** @var \Knp\Component\Pager\Pagination\AbstractPagination<int, mixed> $results */
+            /** @var AbstractPagination<int, mixed> $results */
             if (!$results->valid()) {
                 break;
             }

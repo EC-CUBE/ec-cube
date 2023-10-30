@@ -115,7 +115,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return string
+         * @return float|string
          */
         #[\Override]
         public function getPrice()
@@ -137,7 +137,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return string
+         * @return float|string
          */
         #[\Override]
         public function getQuantity()

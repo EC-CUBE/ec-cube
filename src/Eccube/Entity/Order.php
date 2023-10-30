@@ -1319,7 +1319,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get paymentTotal.
          *
-         * @return string
+         * @return float|string
          */
         public function getPaymentTotal()
         {

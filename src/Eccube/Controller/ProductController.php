@@ -423,7 +423,7 @@ class ProductController extends AbstractController
     /**
      * ページタイトルの設定
      *
-     * @param  array|null $searchData
+     * @param  array<mixed>|null $searchData
      *
      * @return string
      */

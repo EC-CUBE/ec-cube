@@ -16,6 +16,7 @@ namespace Eccube\Service\Calculator;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 
 class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {

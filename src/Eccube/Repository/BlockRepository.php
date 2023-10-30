@@ -79,9 +79,9 @@ class BlockRepository extends AbstractRepository
     /**
      * 未設定のブロックを取得
      *
-     * @param  Ecube\Entity\Block[]  $Blocks
+     * @param  Block[]  $Blocks
      *
-     * @return Ecube\Entity\Block[]|null
+     * @return Block[]|null
      */
     public function getUnusedBlocks($Blocks)
     {

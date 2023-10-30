@@ -126,7 +126,7 @@ class OrderType extends AbstractType
 
         // 支払い方法のプルダウンを生成
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            /** @var Order $Order */
+            /** @var Order|null $Order */
             $Order = $event->getData();
             if (null === $Order || !$Order->getId()) {
                 return;

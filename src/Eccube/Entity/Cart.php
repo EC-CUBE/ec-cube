@@ -247,7 +247,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Alias of getCartItems()
          *
-         * @return ItemCollection
+         * @return ItemCollection<int,CartItem>
          */
         #[\Override]
         public function getItems()
@@ -282,7 +282,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return string
+         * @return float|string
          */
         public function getTotalPrice()
         {

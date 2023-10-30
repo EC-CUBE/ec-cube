@@ -509,7 +509,7 @@ if (!class_exists(Member::class)) {
         /**
          * Set Work
          *
-         * @param Master\Work
+         * @param Master\Work|null $work
          *
          * @return Member
          */

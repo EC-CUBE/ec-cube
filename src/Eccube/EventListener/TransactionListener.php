@@ -90,6 +90,8 @@ class TransactionListener implements EventSubscriberInterface
      * Kernel exception listener callback.
      *
      * @param ExceptionEvent $event
+     *
+     * @return void
      */
     public function onKernelException(ExceptionEvent $event)
     {
@@ -118,7 +120,9 @@ class TransactionListener implements EventSubscriberInterface
     /**
      *  Kernel terminate listener callback.
      *
-     * @param PostResponseEvent $event
+     * @param TerminateEvent $event
+     *
+     * @return void
      */
     public function onKernelTerminate(TerminateEvent $event)
     {

@@ -168,14 +168,14 @@ if (!class_exists(Customer::class)) {
         private $last_buy_date;
 
         /**
-         * @var string|null
+         * @var float|string|null
          *
          * @ORM\Column(name="buy_times", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
          */
         private $buy_times = '0';
 
         /**
-         * @var string|null
+         * @var float|string|null
          *
          * @ORM\Column(name="buy_total", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
@@ -203,7 +203,7 @@ if (!class_exists(Customer::class)) {
         private $reset_expire;
 
         /**
-         * @var string
+         * @var float|string
          *
          * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
          */
@@ -798,7 +798,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get buyTimes.
          *
-         * @return string|null
+         * @return float|string|null
          */
         public function getBuyTimes()
         {
@@ -822,7 +822,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get buyTotal.
          *
-         * @return string|null
+         * @return float|string|null
          */
         public function getBuyTotal()
         {
@@ -1180,7 +1180,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Set point
          *
-         * @param string $point
+         * @param float|string $point
          *
          * @return Customer
          */

@@ -52,8 +52,9 @@ class TwoFactorAuthListener implements EventSubscriberInterface
 
     /**
      * @param EccubeConfig $eccubeConfig
+     * @param Context $requestContext,
      * @param UrlGeneratorInterface $router
-     * @param Context $context,
+     * @param TwoFactorAuthService $twoFactorAuthService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,

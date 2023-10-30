@@ -987,7 +987,7 @@ if (!class_exists(Product::class)) {
          * Get Tag
          * フロント側タグsort_no順の配列を作成する
          *
-         * @return []Tag
+         * @return Tag[]
          */
         public function getTags()
         {
