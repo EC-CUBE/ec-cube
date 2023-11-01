@@ -34,6 +34,8 @@ class PurchaseFlowResult
     }
 
     /**
+     * @param ProcessResult $processResult
+     *
      * @return void
      */
     public function addProcessResult(ProcessResult $processResult)

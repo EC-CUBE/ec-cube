@@ -29,6 +29,7 @@ interface PurchaseProcessor
      * @param PurchaseContext $context
      *
      * @return void
+     * @return void
      *
      * @throws PurchaseException
      */
@@ -40,6 +41,7 @@ interface PurchaseProcessor
      * @param ItemHolderInterface $target
      * @param PurchaseContext     $context
      *
+     * @return void
      * @return void
      *
      * @throws PurchaseException
