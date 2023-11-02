@@ -323,6 +323,9 @@ class OrderHelper
         return $Order;
     }
 
+    /**
+     * @return void
+     */
     public function removeSession()
     {
         $this->session->remove(self::SESSION_ORDER_ID);
@@ -335,6 +338,8 @@ class OrderHelper
      *
      * @param Order $Order
      * @param Customer $Customer
+     *
+     * @return void
      */
     public function updateCustomerInfo(Order $Order, Customer $Customer)
     {
@@ -343,6 +348,9 @@ class OrderHelper
         }
     }
 
+    /**
+     * @return string
+     */
     public function createPreOrderId()
     {
         // ランダムなpre_order_idを作成
@@ -359,6 +367,12 @@ class OrderHelper
         return $preOrderId;
     }
 
+    /**
+     * @param Order $Order
+     * @param Customer $Customer
+     *
+     * @return void
+     */
     protected function setCustomer(Order $Order, Customer $Customer)
     {
         if ($Customer->getId()) {
@@ -377,7 +391,7 @@ class OrderHelper
     }
 
     /**
-     * @param Collection|ArrayCollection|CartItem[]|array<int, CartItem> $CartItems
+     * @param Collection<int, CartItem>|ArrayCollection<int, CartItem>|CartItem[]|array<int, CartItem> $CartItems
      *
      * @return OrderItem[]
      */
@@ -442,6 +456,8 @@ class OrderHelper
 
     /**
      * @param Shipping $Shipping
+     *
+     * @return void
      */
     protected function setDefaultDelivery(Shipping $Shipping)
     {
@@ -466,6 +482,8 @@ class OrderHelper
 
     /**
      * @param Order $Order
+     *
+     * @return void
      */
     protected function setDefaultPayment(Order $Order)
     {
@@ -502,7 +520,9 @@ class OrderHelper
     /**
      * @param Order $Order
      * @param Shipping $Shipping
-     * @param array $OrderItems
+     * @param array<int, OrderItem> $OrderItems
+     *
+     * @return void
      */
     protected function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
     {
@@ -515,10 +535,14 @@ class OrderHelper
     }
 
     /**
-     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
-     *
+     * @param mixed $attribute
+     * @param null $subject
      * @param string $attribute
      * @param string|null $subject
+     *
+     * @return bool
+     *
+     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
      */
     private function isGranted($attribute, $subject = null): bool
     {
@@ -527,6 +551,8 @@ class OrderHelper
 
     /**
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     *
+     * @return UserInterface|null
      */
     private function getUser(): ?UserInterface
     {
@@ -550,7 +576,7 @@ class OrderHelper
      * - 手数料: 税込
      * - ポイント値引き: 税込
      *
-     * @param $OrderItemType
+     * @param OrderItemType $OrderItemType
      *
      * @return TaxDisplayType
      */

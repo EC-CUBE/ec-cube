@@ -80,6 +80,14 @@ class Cash implements PaymentMethodInterface
     }
 
     /**
+     * @return FormInterface
+     */
+    public function getFormType()
+    {
+        return $this->form;
+    }
+
+    /**
      * {@inheritdoc}
      */
     #[\Override]

@@ -541,7 +541,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get quantity.
          *
-         * @return string
+         * @return string|float|int
          */
         #[\Override]
         public function getQuantity()

@@ -23,6 +23,11 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Twig\Extension\TaxExtension;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\Filter\FilterException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use setasign\Fpdi\PdfReader\PdfReaderException;
 use setasign\Fpdi\Tcpdf\Fpdi;
 
 /**
@@ -78,16 +83,16 @@ class OrderPdfService extends Fpdi
     public $baseInfoRepository;
 
     /** 購入詳細情報 ラベル配列
-     * @var array
+     * @var array<int, string>
      */
     protected $labelCell = [];
 
-    /*** 購入詳細情報 幅サイズ配列
-     * @var array
+    /** 購入詳細情報 幅サイズ配列
+     * @var array<int, float|int>
      */
     protected $widthCell = [];
 
-    /** 最後に処理した注文番号 @var string */
+    /** @var string|null 最後に処理した注文番号 */
     protected $lastOrderId;
 
     // --------------------------------------
@@ -96,18 +101,24 @@ class OrderPdfService extends Fpdi
     protected $bakFontFamily;
     /** @var string フォントスタイル */
     protected $bakFontStyle;
-    /** @var float|string フォントサイズ */
+    /** @var string|float|null フォントサイズ */
     protected $bakFontSize;
     // --------------------------------------
 
     // lfTextのoffset
+    /**
+     * @var int
+     */
     protected $baseOffsetX = 0;
+    /**
+     * @var int
+     */
     protected $baseOffsetY = -4;
 
-    /** ダウンロードファイル名 @var string */
+    /** @var string|null ダウンロードファイル名 */
     protected $downloadFileName;
 
-    /** 発行日 @var string */
+    /** @var string 発行日 */
     protected $issueDate = '';
 
     /**
@@ -161,19 +172,35 @@ class OrderPdfService extends Fpdi
     /**
      * 注文情報からPDFファイルを作成する.
      *
-     * @param array $formData
-     *                        [KEY]
-     *                        ids: 注文番号
-     *                        issue_date: 発行日
-     *                        title: タイトル
-     *                        message1: メッセージ1行目
-     *                        message2: メッセージ2行目
-     *                        message3: メッセージ3行目
-     *                        note1: 備考1行目
-     *                        note2: 備考2行目
-     *                        note3: 備考3行目
+     * @param array{
+     *     ids: string,
+     *     issue_date: \DateTime,
+     *     title: string,
+     *     message1: string,
+     *     message2: string,
+     *     message3: string,
+     *     note1: string,
+     *     note2: string,
+     *     note3: string
+     *  } $formData
+     *  [KEY]
+     *  ids:
+     *  issue_date: 発行日
+     *  title: タイトル
+     *  message1: メッセージ1行目
+     *  message2: メッセージ2行目
+     *  message3: メッセージ3行目
+     *  note1: 備考1行目
+     *  note2: 備考2行目
+     *  note3: 備考3行目
      *
      * @return bool
+     *
+     * @throws CrossReferenceException
+     * @throws FilterException
+     * @throws PdfParserException
+     * @throws PdfReaderException
+     * @throws PdfTypeException
      */
     public function makePdf(array $formData)
     {
@@ -267,6 +294,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * フッターに発行日を出力する.
+     *
+     * @return void
      */
     #[\Override]
     public function Footer()
@@ -276,6 +305,14 @@ class OrderPdfService extends Fpdi
 
     /**
      * 作成するPDFのテンプレートファイルを指定する.
+     *
+     * @return void
+     *
+     * @throws CrossReferenceException
+     * @throws FilterException
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     * @throws PdfReaderException
      */
     protected function addPdfPage()
     {
@@ -293,6 +330,8 @@ class OrderPdfService extends Fpdi
     /**
      * PDFに店舗情報を設定する
      * ショップ名、ロゴ画像以外はdtb_helpに登録されたデータを使用する.
+     *
+     * @return void
      */
     protected function renderShopData()
     {
@@ -342,7 +381,9 @@ class OrderPdfService extends Fpdi
     /**
      * メッセージを設定する.
      *
-     * @param array $formData
+     * @param array<string, string> $formData
+     *
+     * @return void
      */
     protected function renderMessageData(array $formData)
     {
@@ -354,7 +395,9 @@ class OrderPdfService extends Fpdi
     /**
      * PDFに備考を設定数.
      *
-     * @param array $formData
+     * @param array<string, string> $formData
+     *
+     * @return void
      */
     protected function renderEtcData(array $formData)
     {
@@ -385,6 +428,8 @@ class OrderPdfService extends Fpdi
      * タイトルをPDFに描画する.
      *
      * @param string $title
+     *
+     * @return void
      */
     protected function renderTitle($title)
     {
@@ -408,6 +453,8 @@ class OrderPdfService extends Fpdi
      * 購入者情報を設定する.
      *
      * @param Shipping $Shipping
+     *
+     * @return void
      */
     protected function renderOrderData(Shipping $Shipping)
     {
@@ -483,6 +530,8 @@ class OrderPdfService extends Fpdi
      * 購入商品詳細情報を設定する.
      *
      * @param Shipping $Shipping
+     *
+     * @return void
      */
     protected function renderOrderDetailData(Shipping $Shipping)
     {
@@ -640,11 +689,13 @@ class OrderPdfService extends Fpdi
     /**
      * PDFへのテキスト書き込み
      *
-     * @param int    $x     X座標
-     * @param int    $y     Y座標
-     * @param string $text  テキスト
-     * @param int    $size  フォントサイズ
+     * @param int $x X座標
+     * @param int $y Y座標
+     * @param string $text テキスト
+     * @param int $size フォントサイズ
      * @param string $style フォントスタイル
+     *
+     * @return void
      */
     protected function lfText($x, $y, $text, $size = 0, $style = '')
     {
@@ -662,9 +713,11 @@ class OrderPdfService extends Fpdi
     /**
      * Colored table.
      *
-     * @param array $header 出力するラベル名一覧
-     * @param array $data   出力するデータ
-     * @param array $w      出力するセル幅一覧
+     * @param array<int, string> $header 出力するラベル名一覧
+     * @param array<int, array<int, string>> $data 出力するデータ
+     * @param array<int, int> $w 出力するセル幅一覧
+     *
+     * @return void
      */
     protected function setFancyTable($header, $data, $w)
     {
@@ -760,8 +813,8 @@ class OrderPdfService extends Fpdi
     /**
      * 基準座標を設定する.
      *
-     * @param int|float $x
-     * @param int|float $y
+     * @param int|float|null $x
+     * @param int|float|null $y
      *
      * @return void
      */
@@ -779,6 +832,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * Font情報のバックアップ.
+     *
+     * @return void
      */
     protected function backupFont()
     {
@@ -790,6 +845,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * Font情報の復元.
+     *
+     * @return void
      */
     protected function restoreFont()
     {
