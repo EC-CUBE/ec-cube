@@ -558,7 +558,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param string $tax
+         * @param string|float $tax
          *
          * @return $this
          */
@@ -572,7 +572,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param string $taxRate
+         * @param string|int $taxRate
          *
          * @return OrderItem
          */
@@ -610,7 +610,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxAdjust.
          *
-         * @return string
+         * @return string|float|int
          */
         public function getTaxAdjust()
         {

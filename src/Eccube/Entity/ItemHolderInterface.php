@@ -135,4 +135,25 @@ interface ItemHolderInterface
      * @return Customer|null
      */
     public function getCustomer();
+
+    /**
+     * 出荷情報を追加します - 注文のみ
+     *
+     * @return ArrayCollection
+     */
+    public function getShippings();
+
+    /**
+     * 注文ステータスを返す - 注文のみ
+     *
+     * @return mixed
+     */
+    public function getOrderStatus();
+
+    /**
+     * 商品の受注明細を取得 - 注文のみ
+     *
+     * @return OrderItem[]
+     */
+    public function getProductOrderItems();
 }

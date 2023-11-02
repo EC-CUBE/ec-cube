@@ -68,8 +68,10 @@ class TaxProcessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @return void
      *
      * @throws \Doctrine\ORM\NoResultException
      */
@@ -136,9 +138,9 @@ class TaxProcessor implements ItemHolderPreprocessor
      * - 手数料: 課税
      * - ポイント値引き: 不課税
      *
-     * @param $OrderItemType
+     * @param OrderItemType|int $OrderItemType 明細種別
      *
-     * @return TaxType
+     * @return TaxType 税区分
      */
     protected function getTaxType($OrderItemType)
     {
@@ -162,11 +164,11 @@ class TaxProcessor implements ItemHolderPreprocessor
      * - 手数料: 税込
      * - ポイント値引き: 税込
      *
-     * @param $OrderItemType
+     * @param OrderItemType|int $OrderItemType 明細種別
      *
      * @deprecated OrderHelper::getTaxDisplayTypeを使用してください
      *
-     * @return TaxDisplayType
+     * @return TaxDisplayType 税表示区分
      */
     protected function getTaxDisplayType($OrderItemType)
     {
