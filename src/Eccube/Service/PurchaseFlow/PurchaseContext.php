@@ -67,21 +67,35 @@ class PurchaseContext extends \SplObjectStorage
         return $this->user;
     }
 
+    /**
+     * @param string $flowType
+     *
+     * @return void
+     */
     public function setFlowType($flowType)
     {
         $this->flowType = $flowType;
     }
 
+    /**
+     * @return bool
+     */
     public function isOrderFlow()
     {
         return $this->flowType === self::ORDER_FLOW;
     }
 
+    /**
+     * @return bool
+     */
     public function isShoppingFlow()
     {
         return $this->flowType === self::SHOPPING_FLOW;
     }
 
+    /**
+     * @return bool
+     */
     public function isCartFlow()
     {
         return $this->flowType === self::CART_FLOW;
