@@ -21,10 +21,19 @@ class PluginContext
     private const string MODE_INSTALL = 'install';
     private const string MODE_UNINSTALL = 'uninstall';
 
+    /**
+     * @var string
+     */
     private $mode;
 
+    /**
+     * @var string|int
+     */
     private $code;
 
+    /**
+     * @var array<string, mixed>
+     */
     private $composerJson;
 
     /**
@@ -32,36 +41,61 @@ class PluginContext
      */
     private $eccubeConfig;
 
+    /**
+     * @param EccubeConfig $eccubeConfig
+     */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    /**
+     * @return bool
+     */
     public function isInstall()
     {
         return $this->mode === self::MODE_INSTALL;
     }
 
+    /**
+     * @return bool
+     */
     public function isUninstall()
     {
         return $this->mode === self::MODE_UNINSTALL;
     }
 
+    /**
+     * @return string
+     */
     public function setInstall()
     {
         return $this->mode = self::MODE_INSTALL;
     }
 
+    /**
+     * @return string
+     */
     public function setUninstall()
     {
         return $this->mode = self::MODE_UNINSTALL;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return void
+     */
     public function setCode(string $code)
     {
         $this->code = $code;
     }
 
+    /**
+     * @return array<string, mixed>
+     *
+     * @throws PluginException
+     */
     public function getComposerJson(): array
     {
         if ($this->composerJson) {
@@ -81,6 +115,11 @@ class PluginContext
         return $this->composerJson;
     }
 
+    /**
+     * @return array<string, string>
+     *
+     * @throws PluginException
+     */
     public function getExtraEntityNamespaces(): array
     {
         $json = $this->getComposerJson();

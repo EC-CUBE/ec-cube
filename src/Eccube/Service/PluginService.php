@@ -14,6 +14,8 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException as ORMMappingException;
 use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
@@ -201,9 +203,13 @@ class PluginService
     }
 
     /**
-     * @param $code string sプラグインコード
-     * @param bool $notExists
+     * @param string $code プラグインコード
+     * @param mixed $notExists
      *
+     * @return void
+     *
+     * @throws ConnectionException
+     * @throws Exception
      * @throws PluginException
      */
     public function installWithCode($code, $notExists = false)
@@ -246,6 +252,10 @@ class PluginService
     }
 
     // インストール事前処理
+
+    /**
+     * @return void
+     */
     public function preInstall()
     {
         // キャッシュの削除
@@ -253,7 +263,16 @@ class PluginService
         //        $this->cacheUtil->clearCache();
     }
 
-    // インストール事後処理
+    /**
+     * @param array<string, string|int> $config
+     * @param string|int $source
+     *
+     * @return void
+     *
+     * @throws PluginException
+     * @throws ConnectionException
+     * @throws Exception
+     */
     public function postInstall($config, $source)
     {
         // dbにプラグイン登録
@@ -305,9 +324,11 @@ class PluginService
      * プラグインの Proxy ファイルを生成して UpdateSchema を実行する.
      *
      * @param Plugin $plugin プラグインオブジェクト
-     * @param array $config プラグインの composer.json の配列
+     * @param array<string, string|int> $config プラグインの composer.json の配列
      * @param bool $uninstall アンインストールする場合は true
      * @param bool $saveMode SQL を即時実行する場合は true
+     *
+     * @return void
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
     {
@@ -324,9 +345,11 @@ class PluginService
      *
      * @param callable $callback Proxy ファイルを生成した後に実行されるコールバック関数
      * @param Plugin $plugin プラグインオブジェクト
-     * @param array $config プラグインの composer.json の配列
+     * @param array<string, int|string> $config プラグインの composer.json の配列
      * @param bool $uninstall アンインストールする場合は true
      * @param string $tmpProxyOutputDir Proxy ファイルを出力する一時ディレクトリ
+     *
+     * @return void
      */
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
@@ -376,6 +399,11 @@ class PluginService
         }
     }
 
+    /**
+     * @return string
+     *
+     * @throws PluginException
+     */
     public function createTempDir()
     {
         $tempDir = $this->projectRoot.'/var/cache/'.$this->environment.'/Plugin';
@@ -389,6 +417,11 @@ class PluginService
         return $d;
     }
 
+    /**
+     * @param array<int, string> $arr
+     *
+     * @return void
+     */
     public function deleteDirs($arr)
     {
         foreach ($arr as $dir) {
@@ -402,6 +435,8 @@ class PluginService
     /**
      * @param string $archive
      * @param string $dir
+     *
+     * @return void
      *
      * @throws PluginException
      */
@@ -424,8 +459,10 @@ class PluginService
     }
 
     /**
-     * @param $dir
-     * @param array $config_cache
+     * @param string $dir
+     * @param array<string, string|int> $config_cache
+     *
+     * @return void
      *
      * @throws PluginException
      */
@@ -454,9 +491,9 @@ class PluginService
     }
 
     /**
-     * @param $pluginDir
+     * @param string $pluginDir
      *
-     * @return array
+     * @return array<string, string|int>
      *
      * @throws PluginException
      */
@@ -488,6 +525,11 @@ class PluginService
         ];
     }
 
+    /**
+     * @param string $string
+     *
+     * @return bool
+     */
     public function checkSymbolName($string)
     {
         return strlen((string) $string) < 256 && preg_match('/^\w+$/', (string) $string);
@@ -498,6 +540,8 @@ class PluginService
 
     /**
      * @param string $path
+     *
+     * @return void
      */
     public function deleteFile($path)
     {
@@ -505,6 +549,13 @@ class PluginService
         $f->remove($path);
     }
 
+    /**
+     * @param string $code
+     *
+     * @return void
+     *
+     * @throws PluginException
+     */
     public function checkSamePlugin($code)
     {
         /** @var Plugin|null $Plugin */
@@ -514,6 +565,11 @@ class PluginService
         }
     }
 
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
     public function calcPluginDir($code)
     {
         return $this->projectRoot.'/app/Plugin/'.$code;
@@ -521,6 +577,8 @@ class PluginService
 
     /**
      * @param string $d
+     *
+     * @return void
      *
      * @throws PluginException
      */
@@ -533,8 +591,8 @@ class PluginService
     }
 
     /**
-     * @param $meta
-     * @param string|int $source
+     * @param array<string, string|int> $meta
+     * @param int $source
      *
      * @return Plugin
      *
@@ -563,8 +621,10 @@ class PluginService
     }
 
     /**
-     * @param $meta
+     * @param array<string, string|int> $meta
      * @param string $method
+     *
+     * @return void
      */
     public function callPluginManagerMethod($meta, $method)
     {
@@ -622,6 +682,13 @@ class PluginService
         return true;
     }
 
+    /**
+     * @param Plugin $p
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     public function unregisterPlugin(Plugin $p)
     {
         $em = $this->entityManager;
@@ -629,6 +696,13 @@ class PluginService
         $em->flush();
     }
 
+    /**
+     * @param Plugin $plugin
+     *
+     * @return true
+     *
+     * @throws \Exception
+     */
     public function disable(Plugin $plugin)
     {
         return $this->enable($plugin, false);
@@ -642,7 +716,7 @@ class PluginService
      * @param string|null $outputDir 出力先
      * @param bool $uninstall プラグイン削除の場合はtrue
      *
-     * @return array 生成されたファイルのパス
+     * @return array<int, string> 生成されたファイルのパス
      */
     private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null, $uninstall = false)
     {
@@ -678,6 +752,15 @@ class PluginService
         );
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param bool $enable
+     *
+     * @return true
+     *
+     * @throws Exception
+     * @throws PluginException
+     */
     public function enable(Plugin $plugin, $enable = true)
     {
         $em = $this->entityManager;
@@ -759,7 +842,9 @@ class PluginService
      * Update plugin
      *
      * @param Plugin $plugin
-     * @param array  $meta     Config data
+     * @param array<string, string|int>  $meta     Config data
+     *
+     * @return void
      *
      * @throws \Exception
      */
@@ -804,7 +889,7 @@ class PluginService
      *
      * @param array<string, string|int>|Plugin $plugin format as plugin from api
      *
-     * @return array<mixed>
+     * @return array<int, string>
      *
      * @throws PluginException
      */
@@ -827,7 +912,7 @@ class PluginService
      *
      * @param string $pluginCode
      *
-     * @return array plugin code
+     * @return array<int, string> plugin code
      */
     public function findDependentPluginNeedDisable($pluginCode)
     {
@@ -841,7 +926,7 @@ class PluginService
      * @param string $pluginCode
      * @param bool   $enableOnly
      *
-     * @return array plugin code
+     * @return array<int, string> plugin code
      */
     public function findDependentPlugin($pluginCode, $enableOnly = false)
     {
@@ -888,7 +973,7 @@ class PluginService
      *                      self::OTHER_LIBRARY only return library/plugin of 3rd part ex: symfony, composer, ...
      *                      default : return all library/plugin
      *
-     * @return array format [packageName1 => version1, packageName2 => version2]
+     * @return array<string, string> format [packageName1 => version1, packageName2 => version2]
      */
     public function getDependentByCode($pluginCode, $libraryType = null)
     {
@@ -916,7 +1001,7 @@ class PluginService
      * Format array dependent plugin to string
      * It is used for commands.
      *
-     * @param array $packages   format [packageName1 => version1, packageName2 => version2]
+     * @param array<string, string> $packages   format [packageName1 => version1, packageName2 => version2]
      * @param bool  $getVersion
      *
      * @return string format if version=true: "packageName1:version1 packageName2:version2", if version=false: "packageName1 packageName2"
@@ -939,7 +1024,9 @@ class PluginService
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
      *
-     * @param $pluginCode
+     * @param string $pluginCode
+     *
+     * @return void
      */
     public function copyAssets($pluginCode)
     {
@@ -956,6 +1043,8 @@ class PluginService
      * コピーしたリソースファイル等を削除
      *
      * @param string $pluginCode
+     *
+     * @return void
      */
     public function removeAssets($pluginCode)
     {
@@ -971,7 +1060,7 @@ class PluginService
     /**
      * Plugin is exist check
      *
-     * @param array  $plugins    get from api
+     * @param array<string, string|int>  $plugins    get from api
      * @param string $pluginCode
      *
      * @return false|int|string

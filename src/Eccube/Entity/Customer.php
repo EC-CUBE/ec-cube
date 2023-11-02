@@ -1203,7 +1203,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get point
          *
-         * @return string
+         * @return string|int
          */
         public function getPoint()
         {

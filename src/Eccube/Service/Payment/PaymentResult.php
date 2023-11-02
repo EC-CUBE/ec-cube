@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PaymentResult
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $errors = [];
 
@@ -66,7 +66,7 @@ class PaymentResult
     /**
      * 決済が失敗した場合のエラーの配列を返します.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getErrors()
     {
@@ -76,7 +76,7 @@ class PaymentResult
     /**
      * 決済が失敗した場合のエラーの配列を設定します.
      *
-     * @param array $errors
+     * @param array<int, string> $errors
      *
      * @return PaymentResult
      */

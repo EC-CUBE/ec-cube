@@ -209,7 +209,7 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set source.
          *
-         * @param string $source
+         * @param string|int $source
          *
          * @return Plugin
          */

@@ -1109,7 +1109,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Get pointConversionRate
          *
-         * @return string
+         * @return string|int|float
          */
         public function getPointConversionRate()
         {
