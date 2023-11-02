@@ -65,6 +65,8 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -91,6 +93,8 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      * Add charge item to item holder
      *
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {

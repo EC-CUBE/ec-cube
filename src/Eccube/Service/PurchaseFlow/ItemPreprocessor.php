@@ -23,6 +23,8 @@ interface ItemPreprocessor
     /**
      * @param ItemInterface   $item
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     public function process(ItemInterface $item, PurchaseContext $context);
 }

@@ -526,7 +526,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set quantity.
          *
-         * @param string $quantity
+         * @param string|int $quantity
          *
          * @return OrderItem
          */

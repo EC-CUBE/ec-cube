@@ -44,6 +44,8 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)

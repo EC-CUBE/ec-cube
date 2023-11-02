@@ -39,6 +39,12 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
         $this->orderStatusRepository = $orderStatusRepository;
     }
 
+    /**
+     * @param ItemHolderInterface $target 注文 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @return void
+     */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {

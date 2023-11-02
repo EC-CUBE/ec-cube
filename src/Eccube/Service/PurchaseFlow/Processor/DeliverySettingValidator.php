@@ -49,10 +49,12 @@ class DeliverySettingValidator extends ItemValidator
      */
 
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
+     * @param ItemInterface $item 明細アイテム
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws InvalidItemException
+     * @return void
+     *
+     * @throws InvalidItemException 配送業者が設定されていない場合
      */
     #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context)
@@ -72,8 +74,10 @@ class DeliverySettingValidator extends ItemValidator
     /**
      * handle
      *
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
+     * @param ItemInterface $item 明細アイテム
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @return void
      */
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context)
