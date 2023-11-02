@@ -55,6 +55,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -78,6 +80,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -94,6 +98,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
@@ -103,6 +109,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)

@@ -44,6 +44,8 @@ class PreOrderIdValidator implements PurchaseProcessor
      * @param ItemHolderInterface $target
      * @param PurchaseContext $context
      *
+     * @return void
+     *
      * @throws PurchaseException
      */
     #[\Override]
@@ -57,6 +59,8 @@ class PreOrderIdValidator implements PurchaseProcessor
      *
      * @param ItemHolderInterface $target
      * @param PurchaseContext $context
+     *
+     * @return void
      *
      * @throws PurchaseException
      */
@@ -72,8 +76,12 @@ class PreOrderIdValidator implements PurchaseProcessor
      * 別のorder_idが渡されてきた場合に処理が継続されないようにするため、
      * orderのpre_order_idがsessionのpre_order_idと一致するか確認する
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @return void
+     *
+     * @throws BadRequestHttpException pre_order_idが一致しない場合 OR Cartがない場合 OR $itemHolderが受注でない場合
      */
     #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)

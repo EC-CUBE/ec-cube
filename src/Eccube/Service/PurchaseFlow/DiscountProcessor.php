@@ -47,7 +47,7 @@ interface DiscountProcessor
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
-     * @return ProcessResult|null
+     * @return ProcessResult|void|null
      */
     public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }

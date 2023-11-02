@@ -1718,7 +1718,7 @@ if (!class_exists(Order::class)) {
          *
          * @return Customer|null
          */
-        public function getCustomer()
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
