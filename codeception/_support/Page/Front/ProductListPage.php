@@ -30,6 +30,7 @@ class ProductListPage extends AbstractFrontPage
 
     public function 表示件数設定($num)
     {
+        $this->tester->waitForElementVisible(['css' => "select[name = 'disp_number']"]);
         $this->tester->selectOption(['css' => "select[name = 'disp_number']"], "${num}件");
 
         return $this;
@@ -37,6 +38,7 @@ class ProductListPage extends AbstractFrontPage
 
     public function 表示順設定($sort)
     {
+        $this->tester->waitForElementVisible(['css' => "select[name = 'orderby']"]);
         $this->tester->selectOption(['css' => "select[name = 'orderby']"], $sort);
 
         return $this;

@@ -100,6 +100,7 @@ class EF02ProductCest
 
         // 表示件数の選択リストを変更する
         $listPage->表示件数設定(40);
+        $I->wait(1);
 
         // 変更された表示件数分が1画面に表示される
         $expected = ($productNum >= 40) ? 40 : $productNum;
