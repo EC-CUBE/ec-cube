@@ -15,6 +15,7 @@ namespace Eccube\Doctrine\Common\CsvDataFixtures;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
@@ -45,6 +46,10 @@ class CsvFixture implements FixtureInterface
     #[\Override]
     public function load(ObjectManager $manager)
     {
+        if ($manager instanceof EntityManagerInterface === false) {
+            return;
+        }
+
         // 日本語windowsの場合はインストール時にエラーとなるので英語のロケールをセット
         // ロケールがミスマッチしてSplFileObject::READ_CSVができないのを回避
         if ('\\' === DIRECTORY_SEPARATOR) {
@@ -57,7 +62,6 @@ class CsvFixture implements FixtureInterface
         // ヘッダ行を取得
         $headers = $this->file->current();
         $this->file->next();
-
         // ファイル名からテーブル名を取得
         $table_name = str_replace('.'.$this->file->getExtension(), '', $this->file->getFilename());
         $sql = $this->getSql($table_name, $headers);

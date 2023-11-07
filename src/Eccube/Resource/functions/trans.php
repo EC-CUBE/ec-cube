@@ -20,9 +20,15 @@ function trans($id, array $parameters = [], $domain = null, $locale = null)
     return $Translator->trans($id, $parameters, $domain, $locale);
 }
 
+/**
+ * @deprecated  transを使用してください。
+ *
+ * @param mixed $id
+ * @param mixed $number
+ * @param mixed|null $domain
+ * @param mixed|null $locale
+ */
 function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
 {
-    $Translator = TranslatorFacade::create();
-
-    return $Translator->transChoice($id, $number, $parameters, $domain, $locale);
+    return trans($id, $parameters, $domain, $locale);
 }

@@ -224,10 +224,8 @@ class TemplateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var \Eccube\Entity\Template $Template */
             $Template = $form->getData();
-
             $TemplateExists = $this->templateRepository->findByCode($Template->getCode());
-
-            // テンプレートコードの重複チェック.
+            // テンプレートコードの重複チェック.s
             if ($TemplateExists) {
                 $form['code']->addError(new FormError(trans('admin.store.template.template_code_already_exists')));
 

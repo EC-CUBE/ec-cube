@@ -832,7 +832,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param PaymentMethodInterface $paymentMethod
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|void
      */
     protected function executeApply(PaymentMethodInterface $paymentMethod)
     {

@@ -120,7 +120,7 @@ class LoginHistoryListener implements EventSubscriberInterface
         $Member = null;
         $userName = null;
         $passport = $event->getPassport();
-        if ($passport->hasBadge(UserBadge::class)) {
+        if ($passport->hasBadge(UserBadge::class) && $passport->getBadge(UserBadge::class) instanceof UserBadge) {
             $userName = $passport->getBadge(UserBadge::class)
                 ->getUserIdentifier();
             $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);

@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
 trait PointTrait
 {
     /**
-     * @var string
+     * @var string|int|float
      *
      * @ORM\Column(name="add_point", type="decimal", precision=12, scale=0, options={"unsigned":true,"default":0})
      */
     private $add_point = '0';
 
     /**
-     * @var string
+     * @var string|int|float
      *
      * @ORM\Column(name="use_point", type="decimal", precision=12, scale=0, options={"unsigned":true,"default":0})
      */
@@ -72,7 +72,7 @@ trait PointTrait
     /**
      * Get usePoint
      *
-     * @return string
+     * @return string|int|float
      */
     public function getUsePoint()
     {

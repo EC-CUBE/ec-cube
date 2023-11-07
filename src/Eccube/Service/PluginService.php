@@ -290,11 +290,16 @@ class PluginService
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
 
-            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+            /** @var \PDO $nativeConnection */
+            $nativeConnection = $this->entityManager->getConnection()->getNativeConnection();
+
+            if ($nativeConnection->inTransaction()) {
                 $this->entityManager->getConnection()->commit();
             }
         } catch (\Exception $e) {
-            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+            /** @var \PDO $nativeConnection */
+            $nativeConnection = $this->entityManager->getConnection()->getNativeConnection();
+            if ($nativeConnection->inTransaction()) {
                 if ($this->entityManager->getConnection()->isRollbackOnly()) {
                     $this->entityManager->getConnection()->rollback();
                 }
@@ -784,11 +789,16 @@ class PluginService
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+
+            /** @var \PDO $nativeConnection */
+            $nativeConnection = $em->getConnection()->getNativeConnection();
+            if ($nativeConnection->inTransaction()) {
                 $em->getConnection()->commit();
             }
         } catch (\Exception $e) {
-            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+            /** @var \PDO $nativeConnection */
+            $nativeConnection = $em->getConnection()->getNativeConnection();
+            if ($nativeConnection->inTransaction()) {
                 if ($em->getConnection()->isRollbackOnly()) {
                     $em->getConnection()->rollback();
                 }
