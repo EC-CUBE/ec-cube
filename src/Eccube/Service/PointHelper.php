@@ -118,6 +118,11 @@ class PointHelper
      */
     public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
     {
+        // 注文明細以外は処理しない.
+        if ($itemHolder instanceof Order === false) {
+            return;
+        }
+
         $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
@@ -155,10 +160,12 @@ class PointHelper
      */
     public function removePointDiscountItem(ItemHolderInterface $itemHolder)
     {
-        foreach ($itemHolder->getItems() as $item) {
-            if ($item->getProcessorName() == PointProcessor::class) {
-                $itemHolder->removeOrderItem($item);
-                $this->entityManager->remove($item);
+        if ($itemHolder instanceof Order) {
+            foreach ($itemHolder->getItems() as $item) {
+                if ($item instanceof OrderItem && $item->getProcessorName() == PointProcessor::class) {
+                    $itemHolder->removeOrderItem($item);
+                    $this->entityManager->remove($item);
+                }
             }
         }
     }

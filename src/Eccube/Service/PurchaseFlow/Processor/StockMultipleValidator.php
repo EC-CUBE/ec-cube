@@ -45,43 +45,45 @@ class StockMultipleValidator extends ItemHolderValidator
     #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        $OrderItemsByProductClass = [];
-        /** @var Shipping $Shipping */
-        foreach ($itemHolder->getShippings() as $Shipping) {
-            foreach ($Shipping->getOrderItems() as $Item) {
-                if ($Item->isProduct()) {
-                    $id = $Item->getProductClass()->getId();
-                    $OrderItemsByProductClass[$id][] = $Item;
+        if ($itemHolder instanceof Order) {
+            $OrderItemsByProductClass = [];
+            /** @var Shipping $Shipping */
+            foreach ($itemHolder->getShippings() as $Shipping) {
+                foreach ($Shipping->getOrderItems() as $Item) {
+                    if ($Item->isProduct()) {
+                        $id = $Item->getProductClass()->getId();
+                        $OrderItemsByProductClass[$id][] = $Item;
+                    }
                 }
             }
-        }
 
-        foreach ($OrderItemsByProductClass as $id => $Items) {
-            /** @var ProductClass $ProductClass */
-            $ProductClass = $this->productClassRepository->find($id);
-            if ($ProductClass->isStockUnlimited()) {
-                continue;
-            }
-            $stock = $ProductClass->getStock();
+            foreach ($OrderItemsByProductClass as $id => $Items) {
+                /** @var ProductClass $ProductClass */
+                $ProductClass = $this->productClassRepository->find($id);
+                if ($ProductClass->isStockUnlimited()) {
+                    continue;
+                }
+                $stock = $ProductClass->getStock();
 
-            if ($stock == 0) {
+                if ($stock == 0) {
+                    foreach ($Items as $Item) {
+                        $Item->setQuantity(0);
+                    }
+                    $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
+                }
+                $isOver = false;
                 foreach ($Items as $Item) {
-                    $Item->setQuantity(0);
+                    if ($stock - $Item->getQuantity() >= 0) {
+                        $stock = $stock - $Item->getQuantity();
+                    } else {
+                        $Item->setQuantity($stock);
+                        $stock = 0;
+                        $isOver = true;
+                    }
                 }
-                $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
-            }
-            $isOver = false;
-            foreach ($Items as $Item) {
-                if ($stock - $Item->getQuantity() >= 0) {
-                    $stock = $stock - $Item->getQuantity();
-                } else {
-                    $Item->setQuantity($stock);
-                    $stock = 0;
-                    $isOver = true;
+                if ($isOver) {
+                    $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
                 }
-            }
-            if ($isOver) {
-                $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
             }
         }
     }

@@ -76,6 +76,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             return;
         }
 
+        /** @var Order $itemHolder */
         $usePoint = $itemHolder->getUsePoint();
         $discount = $this->pointHelper->pointToDiscount($usePoint);
 
