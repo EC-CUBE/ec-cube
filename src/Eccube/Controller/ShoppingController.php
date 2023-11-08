@@ -40,6 +40,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -798,8 +799,10 @@ class ShoppingController extends AbstractShoppingController
 
         // 購入エラー画面についてはwarninメッセージを出力しない為、warningレベルのメッセージが存在する場合、削除する.
         // (warningが残っている場合、購入エラー画面以降のタイミングで誤って表示されてしまう為.)
-        if ($this->session->getFlashBag()->has('eccube.front.warning')) {
-            $this->session->getFlashBag()->get('eccube.front.warning');
+        /** @var Session $session */
+        $session = $this->session;
+        if ($session->getFlashBag()->has('eccube.front.warning')) {
+            $session->getFlashBag()->get('eccube.front.warning');
         }
 
         $event = new EventArgs(
@@ -837,7 +840,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param PaymentMethodInterface $paymentMethod
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
     protected function executeApply(PaymentMethodInterface $paymentMethod)
     {

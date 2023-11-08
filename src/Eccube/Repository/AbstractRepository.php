@@ -19,7 +19,7 @@ use Eccube\Entity\AbstractEntity;
 abstract class AbstractRepository extends ServiceEntityRepository
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 

@@ -805,7 +805,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Set optionNostockHidden.
          *
-         * @param int $optionNostockHidden
+         * @param bool $optionNostockHidden
          *
          * @return BaseInfo
          */

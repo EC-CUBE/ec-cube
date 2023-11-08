@@ -409,7 +409,7 @@ class AdminController extends AbstractController
     /**
      * @param array $excludes
      *
-     * @return array<int|string,mixed>|Request|null
+     * @return array<int|string,mixed>|null
      */
     protected function getOrderEachStatus(array $excludes)
     {

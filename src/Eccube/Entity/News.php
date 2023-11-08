@@ -300,7 +300,7 @@ if (!class_exists(News::class)) {
         }
 
         /**
-         * @return int
+         * @return bool
          */
         public function isVisible()
         {
