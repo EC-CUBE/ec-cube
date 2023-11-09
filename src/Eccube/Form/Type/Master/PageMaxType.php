@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
@@ -24,14 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PageMaxType extends AbstractType
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     /**
      * {@inheritdoc}
      */

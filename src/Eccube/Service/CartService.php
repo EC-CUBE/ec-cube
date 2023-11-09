@@ -300,7 +300,7 @@ class CartService
                 $Cart->addCartItem($item);
                 $item->setCart($Cart);
             } else {
-                /** @var Cart $Cart */
+                /** @var Cart|null $Cart */
                 $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
                 if ($Cart) {
                     foreach ($Cart->getCartItems() as $i) {

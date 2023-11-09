@@ -299,7 +299,7 @@ class OrderType extends AbstractType
      */
     public function addOrderStatusForm(FormEvent $event)
     {
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $event->getData();
         if (null === $Order || ($Order && !$Order->getId())) {
             return;

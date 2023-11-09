@@ -185,7 +185,7 @@ if (!class_exists(Page::class)) {
         /**
          * Get id
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {

@@ -97,11 +97,6 @@ class PluginService
     private $pluginApiService;
 
     /**
-     * @var SystemService
-     */
-    private $systemService;
-
-    /**
      * @var PluginContext
      */
     private $pluginContext;
@@ -118,7 +113,6 @@ class PluginService
      * @param CacheUtil $cacheUtil
      * @param ComposerServiceInterface $composerService
      * @param PluginApiService $pluginApiService
-     * @param SystemService $systemService
      * @param PluginContext $pluginContext
      */
     public function __construct(
@@ -131,7 +125,6 @@ class PluginService
         CacheUtil $cacheUtil,
         ComposerServiceInterface $composerService,
         PluginApiService $pluginApiService,
-        SystemService $systemService,
         PluginContext $pluginContext,
     ) {
         $this->entityManager = $entityManager;
@@ -145,7 +138,6 @@ class PluginService
         $this->cacheUtil = $cacheUtil;
         $this->composerService = $composerService;
         $this->pluginApiService = $pluginApiService;
-        $this->systemService = $systemService;
         $this->pluginContext = $pluginContext;
     }
 
@@ -228,7 +220,7 @@ class PluginService
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
                 $code = preg_replace('/^ec-cube\//i', '', (string) $req['name']);
-                /** @var Plugin $DependPlugin */
+                /** @var Plugin|null $DependPlugin */
                 $DependPlugin = $this->pluginRepository->findByCode($code);
 
                 return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
@@ -518,7 +510,7 @@ class PluginService
 
     public function checkSamePlugin($code)
     {
-        /** @var Plugin $Plugin */
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
         if ($Plugin && $Plugin->isInitialized()) {
             throw new PluginException('plugin already installed.');

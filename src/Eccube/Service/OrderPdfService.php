@@ -194,7 +194,7 @@ class OrderPdfService extends Fpdi
             $this->lastOrderId = $id;
 
             // 出荷番号から出荷情報を取得する
-            /** @var Shipping $Shipping */
+            /** @var Shipping|null $Shipping */
             $Shipping = $this->shippingRepository->find($id);
             if (!$Shipping) {
                 // 出荷情報の取得ができなかった場合
