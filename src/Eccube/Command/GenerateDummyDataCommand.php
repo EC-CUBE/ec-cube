@@ -183,7 +183,7 @@ EOF
                 }
                 $this->entityManager->flush();
                 $j++;
-                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0 && $j > 0) {
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0) {
                     $output->writeln(' ...'.$j);
                 }
             }

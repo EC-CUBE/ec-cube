@@ -803,7 +803,7 @@ class InstallController extends AbstractController
         $locale = env('ECCUBE_LOCALE', 'ja_JP');
         $locale = str_replace('_', '-', $locale);
         $locales = \Locale::parseLocale($locale);
-        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+        $localeDir = empty($locales) ? 'ja' : $locales['language'];
 
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
         $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);

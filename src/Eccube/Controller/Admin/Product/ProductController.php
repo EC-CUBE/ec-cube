@@ -623,7 +623,15 @@ class ProductController extends AbstractController
 
                 $this->entityManager->flush();
 
-                if ($product_image = $request->request->all()['admin_product']['product_image'] ?? []) {
+                /**
+                 * @var array<string, Product>|Product[] $admin_product
+                 */
+                $admin_product = $request->request->all()['admin_product'] ?? null;
+                if (is_array($admin_product) && array_key_exists('product_image', $admin_product)) {
+                    /**
+                     * @var array<int, ProductImage>|ProductImage[] $product_image
+                     */
+                    $product_image = $admin_product['product_image'];
                     foreach ($product_image as $sortNo => $filename) {
                         $ProductImage = $this->productImageRepository
                             ->findOneBy([

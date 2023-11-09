@@ -74,13 +74,13 @@ class LoginHistoryRepository extends AbstractRepository
         }
 
         // create_datetime
-        if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
+        if (!empty($searchData['create_datetime_start'])) {
             $qb
                 ->andWhere('lh.create_date >= :create_datetime_start')
                 ->setParameter('create_datetime_start', $searchData['create_datetime_start']);
         }
 
-        if (!empty($searchData['create_datetime_end']) && $searchData['create_datetime_end']) {
+        if (!empty($searchData['create_datetime_end'])) {
             $date = clone $searchData['create_datetime_end'];
             $qb
                 ->andWhere('lh.create_date < :create_datetime_end')
@@ -88,13 +88,13 @@ class LoginHistoryRepository extends AbstractRepository
         }
 
         // create_date 時間までは要らない人のために残しておきたい
-        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+        if (!empty($searchData['create_date_start'])) {
             $qb
                 ->andWhere('lh.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $searchData['create_date_start']);
         }
 
-        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+        if (!empty($searchData['create_date_end'])) {
             $date = clone $searchData['create_date_end'];
             $date->modify('+1 days');
             $qb

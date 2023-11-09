@@ -145,13 +145,13 @@ class ShippingRepository extends AbstractRepository
         }
 
         // oreder_date
-        if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
+        if (!empty($searchData['order_date_start'])) {
             $date = $searchData['order_date_start'];
             $qb
                 ->andWhere('o.order_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
         }
-        if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
+        if (!empty($searchData['order_date_end'])) {
             $date = clone $searchData['order_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -161,13 +161,13 @@ class ShippingRepository extends AbstractRepository
         }
 
         // shipping_delivery_date
-        if (!empty($searchData['shipping_delivery_date_start']) && $searchData['shipping_delivery_date_start']) {
+        if (!empty($searchData['shipping_delivery_date_start'])) {
             $date = $searchData['shipping_delivery_date_start'];
             $qb
                 ->andWhere('s.shipping_delivery_date >= :shipping_delivery_date_start')
                 ->setParameter('shipping_delivery_date_start', $date);
         }
-        if (!empty($searchData['shipping_delivery_date_end']) && $searchData['shipping_delivery_date_end']) {
+        if (!empty($searchData['shipping_delivery_date_end'])) {
             $date = clone $searchData['shipping_delivery_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -177,13 +177,13 @@ class ShippingRepository extends AbstractRepository
         }
 
         // shipping_date
-        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
+        if (!empty($searchData['shipping_date_start'])) {
             $date = $searchData['shipping_date_start'];
             $qb
                 ->andWhere('s.shipping_date >= :shipping_date_start')
                 ->setParameter('shipping_date_start', $date);
         }
-        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
+        if (!empty($searchData['shipping_date_end'])) {
             $date = clone $searchData['shipping_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -193,13 +193,13 @@ class ShippingRepository extends AbstractRepository
         }
 
         // update_date
-        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+        if (!empty($searchData['update_date_start'])) {
             $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('s.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+        if (!empty($searchData['update_date_end'])) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days');

@@ -75,7 +75,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 foreach ($props as $prop) {
                     $anno = $this->reader->getPropertyAnnotation($prop, FormAppend::class);
                     if ($anno) {
-                        $options = is_null($anno->options) ? [] : $anno->options;
+                        $options = empty($anno->options) ? [] : $anno->options;
                         $options['eccube_form_options'] = [
                             'auto_render' => (true === $anno->auto_render),
                             'form_theme' => $anno->form_theme,

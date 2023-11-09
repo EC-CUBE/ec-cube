@@ -93,7 +93,13 @@ class CsvImportController extends AbstractCsvImportController
         ];
     }
 
-    protected function loadCsv(CsvImportService $csv, &$errors)
+    /**
+     * @param CsvImportService|bool $csv
+     * @param $errors
+     *
+     * @return void
+     */
+    protected function loadCsv($csv, &$errors)
     {
         $columnConfig = $this->getColumnConfig();
 
