@@ -22,6 +22,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 {
     /** @var \SessionHandlerInterface */
     private $handler;
+
     /** @var string */
     private $sessionName;
 

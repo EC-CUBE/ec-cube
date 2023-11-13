@@ -31,7 +31,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContext;
 
 class AddCartType extends AbstractType
 {
@@ -166,7 +165,6 @@ class AddCartType extends AbstractType
             'data_class' => CartItem::class,
             'id_add_product_id' => true,
             'constraints' => [
-                // FIXME new Assert\Callback(array($this, 'validate')),
             ],
         ]);
     }
@@ -191,39 +189,5 @@ class AddCartType extends AbstractType
     public function getBlockPrefix()
     {
         return 'add_cart';
-    }
-
-    /**
-     * validate
-     *
-     * @param mixed $data
-     * @param ExecutionContext $context
-     *
-     * @return void
-     */
-    public function validate($data, ExecutionContext $context)
-    {
-        $context->getValidator()->validate($data['product_class_id'], [
-            new Assert\NotBlank(),
-        ], '[product_class_id]');
-        if ($this->Product->getClassName1()) {
-            $context->validateValue($data['classcategory_id1'], [ // @phpstan-ignore-line TODO このメソッドは使用されているか要確認
-                new Assert\NotBlank(),
-                new Assert\NotEqualTo([
-                    'value' => '__unselected',
-                    'message' => 'form_error.not_selected',
-                ]),
-            ], '[classcategory_id1]');
-        }
-        // 商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
-        if ($this->Product->getClassName2()) {
-            $context->getValidator()->validate($data['classcategory_id2'], [
-                new Assert\NotBlank(),
-                new Assert\NotEqualTo([
-                    'value' => '__unselected',
-                    'message' => 'form_error.not_selected',
-                ]),
-            ], '[classcategory_id2]');
-        }
     }
 }
