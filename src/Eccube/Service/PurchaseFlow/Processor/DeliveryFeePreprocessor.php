@@ -145,7 +145,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                 ->setQuantity(1)
                 ->setOrderItemType($DeliveryFeeType)
                 ->setShipping($Shipping)
-                ->setOrder($itemHolder)
+                ->setOrder($Order)
                 ->setTaxDisplayType($TaxInclude)
                 ->setTaxType($Taxation)
                 ->setProcessorName(DeliveryFeePreprocessor::class);

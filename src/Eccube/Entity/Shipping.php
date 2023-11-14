@@ -345,7 +345,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set name01.
          *
-         * @param string $name01
+         * @param string|null $name01
          *
          * @return Shipping
          */
@@ -369,7 +369,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set name02.
          *
-         * @param string $name02
+         * @param string|null $name02
          *
          * @return Shipping
          */

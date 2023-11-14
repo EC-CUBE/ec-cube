@@ -534,7 +534,7 @@ class PluginService
 
     /**
      * @param $meta
-     * @param int $source
+     * @param string|int $source
      *
      * @return Plugin
      *
@@ -548,7 +548,7 @@ class PluginService
             $p->setName($meta['name'])
                 ->setEnabled(false)
                 ->setVersion($meta['version'])
-                ->setSource($source)
+                ->setSource((string) $source)
                 ->setCode($meta['code']);
 
             $this->entityManager->persist($p);

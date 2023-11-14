@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    public function addRateLimiterSection(NodeDefinition|ArrayNodeDefinition $rootNode): void
+    public function addRateLimiterSection(ArrayNodeDefinition|NodeDefinition $rootNode): void
     {
         // @phpstan-ignore-next-line XXX ArrayNodeDefinition の筈だが、何故か NodeDefinition と判定されてしまう
         $rootNode

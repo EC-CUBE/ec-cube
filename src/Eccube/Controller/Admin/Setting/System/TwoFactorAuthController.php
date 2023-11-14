@@ -102,6 +102,7 @@ class TwoFactorAuthController extends AbstractController
     #[Template('@admin/two_factor_auth_set.twig')]
     public function set(Request $request)
     {
+        /** @var \Eccube\Entity\Member $Member */
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
@@ -115,6 +116,7 @@ class TwoFactorAuthController extends AbstractController
     #[Template('@admin/Setting/System/two_factor_auth_edit.twig')]
     public function edit(Request $request)
     {
+        /** @var \Eccube\Entity\Member $Member */
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');

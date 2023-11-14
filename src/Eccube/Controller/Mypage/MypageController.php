@@ -141,6 +141,7 @@ class MypageController extends AbstractController
     #[Template('Mypage/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator)
     {
+        /** @var Customer $Customer */
         $Customer = $this->getUser();
 
         // 購入処理中/決済処理中ステータスの受注を非表示にする.

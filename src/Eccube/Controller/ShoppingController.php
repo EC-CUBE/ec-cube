@@ -331,7 +331,7 @@ class ShoppingController extends AbstractShoppingController
             $Customer = $this->getUser();
             if ($Customer instanceof Customer) {
                 log_info('[注文確認] 会員ベースのスロットリングを実行します.');
-                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create($Customer->getId());
+                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create((string) $Customer->getId());
                 if (!$customerLimiter->consume()->isAccepted()) {
                     log_info('[注文確認] 試行回数制限を超過しました(会員ベース)');
                     throw new TooManyRequestsHttpException();
@@ -447,7 +447,7 @@ class ShoppingController extends AbstractShoppingController
                 $Customer = $this->getUser();
                 if ($Customer instanceof Customer) {
                     log_info('[注文完了] 会員ベースのスロットリングを実行します.');
-                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create($Customer->getId());
+                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create((string) $Customer->getId());
                     if (!$customerLimiter->consume()->isAccepted()) {
                         log_info('[注文完了] 試行回数制限を超過しました(会員ベース)');
                         throw new TooManyRequestsHttpException();
@@ -674,7 +674,9 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // ログイン時は会員と紐付け
-            $CustomerAddress->setCustomer($this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $CustomerAddress->setCustomer($Customer);
         } else {
             // 非会員時はお届け先をセット
             $CustomerAddress->setFromShipping($Shipping);
@@ -705,6 +707,7 @@ class ShoppingController extends AbstractShoppingController
 
                 // 会員情報変更時にメールを送信
                 if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                    /** @var Customer $Customer */
                     $Customer = $this->getUser();
 
                     // 情報のセット

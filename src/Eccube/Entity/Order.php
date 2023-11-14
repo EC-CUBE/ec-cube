@@ -1945,7 +1945,9 @@ if (!class_exists(Order::class)) {
         #[\Override]
         public function addItem(ItemInterface $item)
         {
-            $this->OrderItems->add($item);
+            if ($item instanceof OrderItem) {
+                $this->OrderItems->add($item);
+            }
         }
 
         #[\Override]

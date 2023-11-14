@@ -96,7 +96,7 @@ class OrderPdfService extends Fpdi
     protected $bakFontFamily;
     /** @var string フォントスタイル */
     protected $bakFontStyle;
-    /** @var string フォントサイズ */
+    /** @var float|string フォントサイズ */
     protected $bakFontSize;
     // --------------------------------------
 
@@ -286,7 +286,7 @@ class OrderPdfService extends Fpdi
         $tplIdx = $this->importPage(1);
 
         // テンプレートに使うテンプレートファイルのページ番号を指定
-        $this->useTemplate($tplIdx, null, null, null, null, true);
+        $this->useTemplate($tplIdx, 0, 0, null, null, true);
         $this->setPageMark();
     }
 
@@ -361,21 +361,21 @@ class OrderPdfService extends Fpdi
         // フォント情報のバックアップ
         $this->backupFont();
 
-        $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
+        $this->Cell(0, 10, '', 0, 1, 'C', false, '');
 
         // 行頭近くの場合、表示崩れがあるためもう一個字下げする
         if (270 <= $this->GetY()) {
-            $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
+            $this->Cell(0, 10, '', 0, 1, 'C', false, '');
         }
         $this->SetFont(self::FONT_GOTHIC, 'B', 9);
-        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 2, 'L', 0, '');
+        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0, null);
 
         $this->SetFont(self::FONT_SJIS, '', 8);
 
         $this->Ln();
         // rtrimを行う
         $text = preg_replace('/\s+$/us', '', $formData['note1']."\n".$formData['note2']."\n".$formData['note3']);
-        $this->MultiCell(0, 4, $text, '', 2, 'L', 0, '');
+        $this->MultiCell(0, 4, $text, '', 'L', false, 0, null);
 
         // フォント情報の復元
         $this->restoreFont();
@@ -396,9 +396,9 @@ class OrderPdfService extends Fpdi
 
         // 文書タイトル（納品書・請求書）
         $this->SetFont(self::FONT_GOTHIC, '', 15);
-        $this->Cell(0, 10, $title, 0, 2, 'C', 0, '');
-        $this->Cell(0, 66, '', 0, 2, 'R', 0, '');
-        $this->Cell(5, 0, '', 0, 0, 'R', 0, '');
+        $this->Cell(0, 10, $title, 0, 2, 'C', false, '');
+        $this->Cell(0, 66, '', 0, 2, 'R', false, '');
+        $this->Cell(5, 0, '', 0, 0, 'R', false, '');
 
         // フォント情報の復元
         $this->restoreFont();
@@ -470,9 +470,9 @@ class OrderPdfService extends Fpdi
             $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
             $this->setBasePosition(120, 95.5);
-            $this->Cell(5, 7, '', 0, 0, '', 0, '');
-            $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', 0, '');
-            $this->Cell(0, 45, '', 0, 2, '', 0, '');
+            $this->Cell(5, 7, '', 0, 0, '', false, '');
+            $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', false, '');
+            $this->Cell(0, 45, '', 0, 2, '', false, '');
         }
 
         // フォント情報の復元
@@ -617,10 +617,10 @@ class OrderPdfService extends Fpdi
         $this->SetLineWidth(.3);
         $this->SetFont(self::FONT_SJIS, '', 6);
 
-        $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+        $this->Cell(0, 0, '', 0, 1, 'C', false, '');
         // 行頭近くの場合、表示崩れがあるためもう一個字下げする
         if (270 <= $this->GetY()) {
-            $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
+            $this->Cell(0, 0, '', 0, 1, 'C', false, '');
         }
         $width = array_reduce($this->widthCell, function ($n, $w) {
             return $n + $w;
@@ -632,7 +632,7 @@ class OrderPdfService extends Fpdi
             $message .= $this->eccubeExtension->getPriceFilter($total);
             $message .= ' 内消費税: '.$this->eccubeExtension->getPriceFilter($Order->getTaxByTaxRate()[$rate]).')'.PHP_EOL;
         }
-        $this->MultiCell($width, 4, $message, 0, 'R', 0, '');
+        $this->MultiCell($width, 4, $message, 0, 'R', false, 1);
 
         $this->restoreFont();
     }
@@ -683,10 +683,10 @@ class OrderPdfService extends Fpdi
         $this->SetFont('', 'B');
 
         // Header
-        $this->Cell(5, 7, '', 0, 0, '', 0, '');
+        $this->Cell(5, 7, '', 0, 0, '', false, '');
         $count = count($header);
         for ($i = 0; $i < $count; ++$i) {
-            $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
+            $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', true);
         }
         $this->Ln();
 
@@ -733,7 +733,7 @@ class OrderPdfService extends Fpdi
         foreach ($data as $row) {
             // 行の処理
             $h = 4;
-            $this->Cell(5, $h, '', 0, 0, '', 0, '');
+            $this->Cell(5, $h, '', 0, 0, '', false, '');
             if ((277 - $this->getY()) < ($h * 4)) {
                 $this->checkPageBreak($this->PageBreakTrigger + 1);
             }
@@ -749,7 +749,7 @@ class OrderPdfService extends Fpdi
             $fill = !$fill;
         }
         $h = 4;
-        $this->Cell(5, $h, '', 0, 0, '', 0, '');
+        $this->Cell(5, $h, '', 0, 0, '', false, '');
         $this->Cell(array_sum($w), 0, '', 'T');
         $this->SetFillColor(255);
 
@@ -760,8 +760,8 @@ class OrderPdfService extends Fpdi
     /**
      * 基準座標を設定する.
      *
-     * @param int $x
-     * @param int $y
+     * @param int|float $x
+     * @param int|float $y
      */
     protected function setBasePosition($x = null, $y = null)
     {

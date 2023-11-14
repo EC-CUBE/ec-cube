@@ -66,7 +66,7 @@ class OrderNoProcessor implements ItemHolderPreprocessor
             $format = $this->eccubeConfig['eccube_order_no_format'];
             if (empty($format)) {
                 // フォーマットが設定されていなければ受注IDが設定される
-                $Order->setOrderNo($Order->getId());
+                $Order->setOrderNo((string) $Order->getId());
             } else {
                 do {
                     $orderNo = preg_replace_callback('/\{(.*)}/U', function ($matches) use ($Order) {
@@ -87,7 +87,7 @@ class OrderNoProcessor implements ItemHolderPreprocessor
                                         if ($res[0] === 'id') {
                                             return sprintf("%0{$res[1]}d", $Order->getId());
                                         } elseif ($res[0] === 'random') {
-                                            $random = random_int(1, (int) str_repeat('9', $res[1]));
+                                            $random = random_int(1, (int) str_repeat('9', (int) $res[1]));
 
                                             return sprintf("%0{$res[1]}d", $random);
                                         } elseif ($res[0] === 'random_alnum') {

@@ -83,7 +83,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get price01 IncTax
          *
-         * @return string
+         * @return float|string
          */
         public function getPrice01IncTax()
         {
@@ -107,7 +107,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get price02 IncTax
          *
-         * @return string
+         * @return float|string
          */
         public function getPrice02IncTax()
         {

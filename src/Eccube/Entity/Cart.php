@@ -196,7 +196,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  string $pre_order_id
+         * @param string|null $pre_order_id
          *
          * @return Cart
          */
@@ -321,7 +321,9 @@ if (!class_exists(Cart::class)) {
         #[\Override]
         public function addItem(ItemInterface $item)
         {
-            $this->CartItems->add($item);
+            if ($item instanceof CartItem) {
+                $this->CartItems->add($item);
+            }
         }
 
         /**
@@ -329,7 +331,9 @@ if (!class_exists(Cart::class)) {
          */
         public function removeItem(ItemInterface $item)
         {
-            $this->CartItems->removeElement($item);
+            if ($item instanceof CartItem) {
+                $this->CartItems->removeElement($item);
+            }
         }
 
         /**
