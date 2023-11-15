@@ -55,9 +55,11 @@ class EntityProxyService
      * @param array<int, array<int, string>>|array<int,string> $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
      * @param array<int, array<int, array<int, string>>>|array<int,string> $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
      * @param string $outputDir 出力先
-     * @param OutputInterface $output ログ出力
+     * @param OutputInterface|null $output ログ出力
      *
-     * @return array 生成したファイルのリスト
+     * @return array<int, string> 生成したファイルのリスト
+     *
+     * @throws \ReflectionException
      */
     public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null)
     {
@@ -140,9 +142,9 @@ class EntityProxyService
     /**
      * 複数のディレクトリセットをスキャンしてディレクトリセットごとのEntityとTraitのマッピングを返します.
      *
-     * @param array<mixed> $dirSets スキャン対象ディレクトリリストの配列
+     * @param array<int, string> $dirSets スキャン対象ディレクトリリストの配列
      *
-     * @return array<mixed> ディレクトリセットごとのEntityとTraitのマッピング
+     * @return array<int, string> ディレクトリセットごとのEntityとTraitのマッピング
      *
      * @throws \ReflectionException
      */
@@ -251,7 +253,9 @@ class EntityProxyService
      * EntityからTraitを削除.
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
-     * @param $trait string 削除するTraitのFQCN
+     * @param string $trait  削除するTraitのFQCN
+     *
+     * @return void
      */
     private function removeTrait($entityTokens, $trait)
     {
@@ -291,9 +295,9 @@ class EntityProxyService
      * - プラグインのTrait -> \Plugin\Xxx\Entity\XxxTrait
      * - 本体でuseされているTrait -> PointTrait
      *
-     * @param $name
+     * @param string $name
      *
-     * @return array|Token[]
+     * @return array<int, Token>|Token[]
      */
     private function convertTraitNameToTokens($name)
     {
@@ -319,6 +323,8 @@ class EntityProxyService
      * remove block to 'if (!class_exists(<class name>)) { }'
      *
      * @param Tokens $entityTokens
+     *
+     * @return void
      */
     private function removeClassExistsBlock(Tokens $entityTokens)
     {

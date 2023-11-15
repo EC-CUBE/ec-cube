@@ -123,7 +123,7 @@ class OutputParser
      * @param array<mixed> $rowArray
      * @param string $key
      *
-     * @return array
+     * @return array<string, string>
      */
     private static function parseArrayInfoOutput($rowArray, $key)
     {

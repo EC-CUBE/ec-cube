@@ -479,6 +479,8 @@ class CartService
      * カートキーで指定したインデックスにあるカートを優先にする
      *
      * @param string $cartKey カートキー
+     *
+     * @return void
      */
     public function setPrimary($cartKey)
     {
@@ -499,6 +501,9 @@ class CartService
         $this->save();
     }
 
+    /**
+     * @return \Symfony\Component\Security\Core\User\UserInterface|void|null
+     */
     protected function getUser()
     {
         if (null === $token = $this->tokenStorage->getToken()) {
@@ -515,6 +520,9 @@ class CartService
 
     /**
      * @param string $allocatedId
+     * @param Customer|null $Customer
+     *
+     * @return string
      */
     protected function createCartKey($allocatedId, ?Customer $Customer = null)
     {

@@ -41,12 +41,9 @@ use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 /**
  * CSV reader
  *
- * @template TKey
- *
- * @template-covariant TValue
- *
- * @template-implements \Iterator<TKey, TValue>
- * @template-implements \SeekableIterator<Tkey,TValue>
+ * @implements \Iterator<int, array<int, string>>
+ * @implements \SeekableIterator<int, array<int, string>>
+ * @implements \Countable<int>
  */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
@@ -70,7 +67,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Column headers as read from the CSV file
      *
-     * @var array
+     * @var array<int, string|int>
      */
     protected $columnHeaders = [];
 
@@ -93,7 +90,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Faulty CSV rows
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $errors = [];
 
@@ -141,7 +138,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * If a header row has been set, an associative array will be returned
      *
-     * @return array|null
+     * @return array<int, string>|null
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -177,7 +174,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Get column headers
      *
-     * @return array
+     * @return array<int, string|int>
      */
     public function getColumnHeaders()
     {
@@ -187,7 +184,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Set column headers
      *
-     * @param array $columnHeaders
+     * @param array<int, string> $columnHeaders
+     *
+     * @return void
      */
     public function setColumnHeaders(array $columnHeaders)
     {
@@ -300,7 +299,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<int, string>
      */
     public function getFields()
     {
@@ -312,7 +311,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param int $number Row number
      *
-     * @return array
+     * @return array<int, string>|null
      */
     public function getRow($number)
     {
@@ -382,7 +381,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param int $rowNumber Row number
      *
-     * @return array|string|false
+     * @return array<int, string>|string|false
      */
     protected function readHeaderRow($rowNumber)
     {
@@ -402,9 +401,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => 'first', $duplicate1 => 'second', $duplicate2 => 'third'
      *
-     * @param array $headers
+     * @param array<int, string> $headers
      *
-     * @return array
+     * @return array<int, string>
      */
     protected function incrementHeaders(array $headers)
     {
@@ -433,9 +432,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => ['first', 'second', 'third']
      *
-     * @param array $line
+     * @param array<int, string> $line
      *
-     * @return array<mixed>
+     * @return array<int, string|array>
      */
     protected function mergeDuplicates(array $line)
     {
