@@ -22,7 +22,7 @@ abstract class OrderByCustomizer implements QueryCustomizer
 {
     /**
      * @param QueryBuilder $builder
-     * @param array|null $params
+     * @param array $params
      * @param string $queryKey
      *
      * @return void

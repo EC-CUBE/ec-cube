@@ -59,7 +59,7 @@ EOF
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getEntityManager(null);
+        $em = $this->getEntityManager($this->getDoctrine()->getDefaultManagerName());
 
         // for full locale code cases
         $locale = env('ECCUBE_LOCALE', 'ja_JP');

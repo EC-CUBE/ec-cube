@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class LogController extends AbstractController
 {
     /**
-     * @return array|StreamedResponse
+     * @return array<string, mixed>|StreamedResponse
      */
     #[Route('/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/log.twig')]
@@ -69,9 +69,14 @@ class LogController extends AbstractController
         $logFile = $logDir.'/'.$formData['files'];
         /** @var Form $form */
         if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download' && $form->isValid()) {
+            $fileSizeLogFile = filesize($logFile);
+            if ($fileSizeLogFile === false) {
+                throw new \Exception('ファイルサイズの取得に失敗しました。');
+            }
+
             $bufferSize = 1024 * 50;
             $response = new StreamedResponse();
-            $response->headers->set('Content-Length', (string) filesize($logFile));
+            $response->headers->set('Content-Length', (string) $fileSizeLogFile);
             $response->headers->set('Content-Disposition', 'attachment; filename='.basename($logFile));
             $response->headers->set('Content-Type', 'application/octet-stream');
             $response->setCallback(function () use ($logFile, $bufferSize) {

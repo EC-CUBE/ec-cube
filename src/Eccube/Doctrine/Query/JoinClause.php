@@ -135,8 +135,8 @@ class JoinClause
         } else {
             $builder->innerJoin($this->join, $this->alias, $this->conditionType, $this->condition, $this->indexBy);
         }
-        $this->whereCustomizer->customize($builder, null, '');
-        $this->orderByCustomizer->customize($builder, null, '');
+        $this->whereCustomizer->customize($builder, [], '');
+        $this->orderByCustomizer->customize($builder, [], '');
     }
 }
 
