@@ -182,6 +182,8 @@ class CartService
 
     /**
      * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     *
+     * @return void
      */
     public function mergeFromPersistedCart()
     {
@@ -276,6 +278,11 @@ class CartService
         return $allCartItems;
     }
 
+    /**
+     * @param array<int, CartItem> $cartItems
+     *
+     * @return void
+     */
     protected function restoreCarts($cartItems)
     {
         foreach ($this->getCarts() as $Cart) {
@@ -326,8 +333,8 @@ class CartService
     /**
      * カートに商品を追加します.
      *
-     * @param $ProductClass ProductClass 商品規格
-     * @param $quantity int 数量
+     * @param ProductClass|int $ProductClass  商品規格
+     * @param int $quantity 数量
      *
      * @return bool 商品を追加できた場合はtrue
      */
@@ -363,6 +370,11 @@ class CartService
         return true;
     }
 
+    /**
+     * @param int|ProductClass $ProductClass
+     *
+     * @return bool
+     */
     public function removeProduct($ProductClass)
     {
         if (!$ProductClass instanceof ProductClass) {
@@ -394,6 +406,9 @@ class CartService
         return true;
     }
 
+    /**
+     * @return void
+     */
     public function save()
     {
         $cartKeys = [];
@@ -469,6 +484,8 @@ class CartService
 
     /**
      * @param CartItemComparator $cartItemComparator
+     *
+     * @return void
      */
     public function setCartItemComparator($cartItemComparator)
     {

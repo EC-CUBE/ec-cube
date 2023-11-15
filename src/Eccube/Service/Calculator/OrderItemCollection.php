@@ -25,8 +25,15 @@ use Eccube\Entity\OrderItem;
  */
 class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
+    /**
+     * @var string
+     */
     protected $type;
 
+    /**
+     * @param array<int, OrderItem> $OrderItems
+     * @param string|null $type
+     */
     public function __construct($OrderItems, $type = null)
     {
         // $OrderItems が Collection だったら toArray(); する
@@ -34,6 +41,12 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
         parent::__construct($OrderItems);
     }
 
+    /**
+     * @param \Closure $func
+     * @param mixed|null $initial
+     *
+     * @return mixed|null
+     */
     public function reduce(\Closure $func, $initial = null)
     {
         return array_reduce($this->toArray(), $func, $initial);
@@ -91,6 +104,8 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      * TODO 暫定対応. 本来は明細種別でチェックする.
      *
      * @param string $productName
+     *
+     * @return bool
      */
     public function hasProductByName($productName)
     {
@@ -120,6 +135,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
         return !$filteredItems->isEmpty();
     }
 
+    /**
+     * @return mixed|string
+     */
     public function getType()
     {
         return $this->type;
