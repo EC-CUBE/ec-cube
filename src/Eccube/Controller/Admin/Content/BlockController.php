@@ -50,6 +50,11 @@ class BlockController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
     #[Template('@admin/Content/block.twig')]
     public function index(Request $request)
@@ -74,6 +79,13 @@ class BlockController extends AbstractController
         ];
     }
 
+    /**
+     * @param int|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException|\Twig\Error\LoaderError
+     */
     #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Content/block_edit.twig')]
@@ -177,6 +189,9 @@ class BlockController extends AbstractController
         ];
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil)
     {

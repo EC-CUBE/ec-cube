@@ -43,6 +43,9 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
         $this->passwordHasher = $passwordHasher;
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

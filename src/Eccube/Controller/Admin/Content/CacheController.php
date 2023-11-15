@@ -23,6 +23,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CacheController extends AbstractController
 {
+    /**
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/cache', name: 'admin_content_cache', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/cache.twig')]
     public function index(Request $request, CacheUtil $cacheUtil, SystemService $systemService)

@@ -64,6 +64,9 @@ class PageController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/page', name: 'admin_content_page', methods: ['GET'])]
     #[Template('@admin/Content/page.twig')]
     public function index(Request $request, RouterInterface $router)
@@ -84,6 +87,11 @@ class PageController extends AbstractController
         ];
     }
 
+    /**
+     * @param string|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/page/new', name: 'admin_content_page_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/page/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_page_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/page_edit.twig')]
@@ -249,6 +257,11 @@ class PageController extends AbstractController
         ];
     }
 
+    /**
+     * @param string|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/content/page/{id}/delete', name: 'admin_content_page_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
     {

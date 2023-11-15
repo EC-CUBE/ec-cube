@@ -26,6 +26,9 @@ class PluginSchemaUpdateCommand extends Command
 
     protected static $defaultName = 'eccube:plugin:schema-update';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

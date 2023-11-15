@@ -130,6 +130,11 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         }
     }
 
+    /**
+     * @param string $outputDir
+     *
+     * @return void
+     */
     protected function removeOutputDir($outputDir)
     {
         if (file_exists($outputDir)) {

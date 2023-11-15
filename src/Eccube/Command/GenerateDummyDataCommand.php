@@ -57,6 +57,9 @@ class GenerateDummyDataCommand extends Command
         $this->productRepository = $productRepository;
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

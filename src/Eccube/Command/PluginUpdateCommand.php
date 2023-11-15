@@ -25,6 +25,9 @@ class PluginUpdateCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:update';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

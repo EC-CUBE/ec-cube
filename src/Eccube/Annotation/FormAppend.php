@@ -34,7 +34,7 @@ final class FormAppend
     public $type;
 
     /**
-     * @var array
+     * @var array<int,mixed>
      */
     public $options;
 
