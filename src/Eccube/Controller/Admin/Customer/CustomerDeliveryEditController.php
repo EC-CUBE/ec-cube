@@ -41,6 +41,14 @@ class CustomerDeliveryEditController extends AbstractController
 
     /**
      * お届け先編集画面.
+     *
+     * @param Request $request
+     * @param Customer $Customer
+     * @param string|null $did
+     *
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/new', name: 'admin_customer_delivery_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/edit', name: 'admin_customer_delivery_edit', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['GET', 'POST'])]
@@ -119,6 +127,15 @@ class CustomerDeliveryEditController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param Customer $Customer
+     * @param string $did
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/delete', name: 'admin_customer_delivery_delete', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Customer $Customer, $did)
     {

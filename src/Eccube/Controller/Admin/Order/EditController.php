@@ -176,6 +176,14 @@ class EditController extends AbstractController
 
     /**
      * 受注登録/編集画面.
+     *
+     * @param Request $request
+     * @param RouterInterface $router
+     * @param string|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
@@ -409,9 +417,12 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @param Request $request
-     * @param int $page_no
+     * @param PaginatorInterface $paginator
+     * @param int|null $page_no
      *
-     * @return array
+     * @return array<string,mixed>
+     *
+     * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/order/search/customer/html', name: 'admin_order_search_customer_html', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/order/search/customer/html/page/{page_no}', name: 'admin_order_search_customer_html_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
@@ -566,6 +577,13 @@ class EditController extends AbstractController
         throw new BadRequestHttpException();
     }
 
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param string|null $page_no
+     *
+     * @return array<string,mixed>|void
+     */
     #[Route('/%eccube_admin_route%/order/search/product', name: 'admin_order_search_product', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/order/search/product/page/{page_no}', name: 'admin_order_search_product_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Order/search_product.twig')]
@@ -659,7 +677,9 @@ class EditController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array
+     * @return array<string,mixed>
+     *
+     * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/order/search/order_item_type', name: 'admin_order_search_order_item_type', methods: ['POST'])]
     #[Template('@admin/Order/order_item_type.twig')]

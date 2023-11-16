@@ -124,6 +124,13 @@ class ShippingController extends AbstractController
 
     /**
      * 出荷登録/編集画面.
+     *
+     * @param Request $request
+     * @param Order $Order
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_shipping_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/shipping.twig')]

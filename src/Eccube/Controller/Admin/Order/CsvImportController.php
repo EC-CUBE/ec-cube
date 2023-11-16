@@ -47,6 +47,10 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     *
      * @throws \Doctrine\DBAL\ConnectionException
      */
     #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
@@ -94,8 +98,8 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @param CsvImportService|bool $csv
-     * @param $errors
+     * @param CsvImportService<int,mixed>|bool $csv
+     * @param array<mixed> $errors
      *
      * @return void
      */
@@ -196,6 +200,10 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
     public function csvTemplate(Request $request)
@@ -205,6 +213,9 @@ class CsvImportController extends AbstractCsvImportController
         return $this->sendTemplateResponse($request, $columns, 'shipping.csv');
     }
 
+    /**
+     * @return array<string,array<string,mixed>>
+     */
     protected function getColumnConfig()
     {
         return [
