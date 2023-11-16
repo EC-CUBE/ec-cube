@@ -47,6 +47,11 @@ class SystemController
         $this->systemService = $systemService;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
     #[Template('@admin/Setting/System/system.twig')]
     public function index(Request $request)
@@ -67,6 +72,11 @@ class SystemController
         ];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     #[Route('/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
     public function phpinfo(Request $request)
     {

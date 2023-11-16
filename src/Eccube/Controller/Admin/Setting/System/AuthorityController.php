@@ -40,6 +40,11 @@ class AuthorityController extends AbstractController
         $this->authorityRoleRepository = $authorityRoleRepository;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/authority.twig')]
     public function index(Request $request)

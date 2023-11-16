@@ -117,6 +117,10 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録画面.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/entry', name: 'entry', methods: ['GET', 'POST'])]
     #[Route('/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
@@ -219,6 +223,8 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録完了画面.
+     *
+     * @return array<empty>
      */
     #[Route('/entry/complete', name: 'entry_complete', methods: ['GET'])]
     #[Template('Entry/complete.twig')]
@@ -229,6 +235,14 @@ class EntryController extends AbstractController
 
     /**
      * 会員のアクティベート（本会員化）を行う.
+     *
+     * @param Request $request
+     * @param mixed $secret_key
+     * @param mixed $qtyInCart
+     *
+     * @return array<string,mixed>
+     *
+     * @throws HttpException\NotFoundHttpException
      */
     #[Route('/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
     #[Template('Entry/activate.twig')]
@@ -270,7 +284,7 @@ class EntryController extends AbstractController
      * 会員登録処理を行う
      *
      * @param Request $request
-     * @param $secret_key
+     * @param mixed $secret_key
      *
      * @return \Eccube\Entity\Cart|mixed
      */

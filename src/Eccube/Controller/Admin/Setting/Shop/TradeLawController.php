@@ -40,6 +40,8 @@ class TradeLawController extends AbstractController
      * 特定商取引法設定の初期表示・登録
      *
      * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/tradelaw.twig')]

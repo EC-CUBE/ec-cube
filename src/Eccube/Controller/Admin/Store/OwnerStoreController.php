@@ -71,7 +71,9 @@ class OwnerStoreController extends AbstractController
      * @var PluginApiService
      */
     protected $pluginApiService;
-
+    /**
+     * @var string
+     */
     private static $vendorName = 'ec-cube';
 
     /** @var BaseInfo */
@@ -93,7 +95,7 @@ class OwnerStoreController extends AbstractController
      * @param ValidatorInterface $validatorInterface
      *
      * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException|\Exception
      */
     public function __construct(
         PluginRepository $pluginRepository,
@@ -124,7 +126,7 @@ class OwnerStoreController extends AbstractController
      * @param int $page_no
      * @param PaginatorInterface $paginator
      *
-     * @return array|RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      */
     #[Route('/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
     #[Route('/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
@@ -227,8 +229,9 @@ class OwnerStoreController extends AbstractController
      * Do confirm page
      *
      * @param Request $request
+     * @param string|int $id
      *
-     * @return RedirectResponse|Response
+     * @return array<string,mixed>|RedirectResponse
      *
      * @throws PluginException
      */
@@ -514,7 +517,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Plugin $Plugin
      *
-     * @return array|RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      */
     #[Route('/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Store/plugin_confirm.twig')]

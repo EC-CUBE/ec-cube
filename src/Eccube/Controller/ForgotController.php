@@ -72,6 +72,10 @@ class ForgotController extends AbstractController
 
     /**
      * パスワードリマインダ.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
     #[Template('Forgot/index.twig')]
@@ -143,6 +147,12 @@ class ForgotController extends AbstractController
 
     /**
      * 再設定URL送信完了画面.
+     *
+     * @param Request $request
+     *
+     * @return array<empty>
+     *
+     * @throws HttpException\NotFoundHttpException
      */
     #[Route('/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
     #[Template('Forgot/complete.twig')]
@@ -157,6 +167,13 @@ class ForgotController extends AbstractController
 
     /**
      * パスワード再発行実行画面.
+     *
+     * @param Request $request
+     * @param string $reset_key
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws HttpException\NotFoundHttpException
      */
     #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
     #[Template('Forgot/reset.twig')]

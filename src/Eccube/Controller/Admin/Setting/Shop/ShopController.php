@@ -53,8 +53,11 @@ class ShopController extends AbstractController
 
     /**
      * @param Request $request
+     * @param CacheUtil $cacheUtil
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/shop_master.twig')]

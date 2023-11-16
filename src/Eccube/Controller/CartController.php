@@ -72,6 +72,10 @@ class CartController extends AbstractController
 
     /**
      * カート画面.
+     *
+     * @param Request $request
+     *
+     * @return array<string,mixed>
      */
     #[Route('/cart', name: 'cart', methods: ['GET'])]
     #[Template('Cart/index.twig')]
@@ -127,7 +131,7 @@ class CartController extends AbstractController
     }
 
     /**
-     * @param $Carts
+     * @param \Eccube\Entity\Cart[] $Carts
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
@@ -183,6 +187,11 @@ class CartController extends AbstractController
      *      - 個数が0になる場合は、明細を削除する
      * - 削除
      *      - 明細を削除する
+     *
+     * @param string $operation
+     * @param string|int $productClassId
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
     public function handleCartItem($operation, $productClassId)
@@ -224,6 +233,11 @@ class CartController extends AbstractController
 
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
+     *
+     * @param Request $request
+     * @param string $cart_key
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
     #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
     public function buystep(Request $request, $cart_key)

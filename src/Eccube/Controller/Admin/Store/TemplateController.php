@@ -60,8 +60,9 @@ class TemplateController extends AbstractController
      * テンプレート一覧画面
      *
      * @param Request $request
+     * @param CacheUtil $cacheUtil
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
     #[Template('@admin/Store/template.twig')]
@@ -166,6 +167,12 @@ class TemplateController extends AbstractController
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @param \Eccube\Entity\Template $Template
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, \Eccube\Entity\Template $Template)
     {
@@ -208,7 +215,7 @@ class TemplateController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
     #[Template('@admin/Store/template_add.twig')]
