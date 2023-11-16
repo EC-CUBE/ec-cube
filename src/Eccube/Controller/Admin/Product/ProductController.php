@@ -147,6 +147,13 @@ class ProductController extends AbstractController
         $this->tagRepository = $tagRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param int|null $page_no
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
     #[Route('/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
     #[Template('@admin/Product/index.twig')]
@@ -281,6 +288,14 @@ class ProductController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param Product $Product
+     *
+     * @return array<string,mixed>
+     *
+     * @throws BadRequestHttpException
+     */
     #[Route('/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Product/product_class_popup.twig')]
     public function loadProductClasses(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] ?Product $Product)
@@ -311,6 +326,12 @@ class ProductController extends AbstractController
      * 画像アップロード時にリクエストされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
     #[Route('/%eccube_admin_route%/product/product/image/process', name: 'admin_product_image_process', methods: ['POST'])]
     public function imageProcess(Request $request)
@@ -362,6 +383,12 @@ class ProductController extends AbstractController
      * アップロード画像を取得する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
     public function imageLoad(Request $request)
@@ -396,6 +423,12 @@ class ProductController extends AbstractController
      * アップロード画像をすぐ削除する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/product/image/revert', name: 'admin_product_image_revert', methods: ['DELETE'])]
     public function imageRevert(Request $request)
@@ -415,6 +448,16 @@ class ProductController extends AbstractController
         throw new NotFoundHttpException();
     }
 
+    /**
+     * @param Request $request
+     * @param RouterInterface $router
+     * @param CacheUtil $cacheUtil
+     * @param int|string|null $id
+     *
+     * @return RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException|\Exception
+     */
     #[Route('/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/product/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_product_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/product.twig')]
@@ -747,6 +790,15 @@ class ProductController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     * @param int|string|null $id
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @throws \Exception
+     */
     #[Route('/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
     {
@@ -836,6 +888,14 @@ class ProductController extends AbstractController
         }
     }
 
+    /**
+     * @param Request $request
+     * @param int|string|null $id
+     *
+     * @return RedirectResponse
+     *
+     * @throws \Exception
+     */
     #[Route('/%eccube_admin_route%/product/product/{id}/copy', requirements: ['id' => '\d+'], name: 'admin_product_product_copy', methods: ['POST'])]
     public function copy(Request $request, $id = null)
     {
@@ -1066,6 +1126,7 @@ class ProductController extends AbstractController
      *
      * @param Request $request
      * @param ProductStatus $ProductStatus
+     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      */

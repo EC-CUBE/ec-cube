@@ -50,6 +50,11 @@ class PaymentController extends AbstractController
         $this->paymentRepository = $paymentRepository;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
     #[Template('@admin/Setting/Shop/payment.twig')]
     public function index(Request $request)
@@ -73,6 +78,12 @@ class PaymentController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param Payment|null $Payment
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_payment_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/payment_edit.twig')]
@@ -159,6 +170,12 @@ class PaymentController extends AbstractController
      * 画像アップロード時にリクエストされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
     public function imageProcess(Request $request)
@@ -207,6 +224,12 @@ class PaymentController extends AbstractController
      * アップロード画像を取得する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
     public function imageLoad(Request $request)
@@ -238,6 +261,12 @@ class PaymentController extends AbstractController
      * アップロード画像をすぐ削除する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
     public function imageRevert(Request $request)
@@ -297,6 +326,11 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
+    /**
+     * @param Payment $Payment
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visible(Payment $Payment)
     {
@@ -319,6 +353,8 @@ class PaymentController extends AbstractController
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)

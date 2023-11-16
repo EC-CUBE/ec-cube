@@ -443,26 +443,4 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
         return $values;
     }
-
-    /**
-     * 行の文字エンコーディングを変換する.
-     *
-     * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
-     * それ以外の環境では何もしない。
-     *
-     * @deprecated 使用していないため削除予定
-     *
-     * @param string[] $row
-     */
-    protected function convertEncodingRows($row)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
-            foreach ($row as &$col) {
-                $col = mb_convert_encoding($col, 'UTF-8', 'SJIS-win');
-            }
-        }
-
-        return $row;
-    }
 }

@@ -55,6 +55,14 @@ class ClassNameController extends AbstractController
         $this->csvExportService = $csvExportService;
     }
 
+    /**
+     * @param Request $request
+     * @param string|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/class_name/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_class_name_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/class_name.twig')]
@@ -144,6 +152,14 @@ class ClassNameController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param ClassName $ClassName
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
+     */
     #[Route('/%eccube_admin_route%/product/class_name/{id}/delete', name: 'admin_product_class_name_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, ClassName $ClassName)
     {
@@ -170,6 +186,13 @@ class ClassNameController extends AbstractController
         return $this->redirectToRoute('admin_product_class_name');
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response|void
+     *
+     * @throws BadRequestHttpException
+     */
     #[Route('/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)
     {

@@ -52,6 +52,10 @@ class OrderStatusController extends AbstractController
 
     /**
      * 受注ステータス編集画面.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/order_status.twig')]
