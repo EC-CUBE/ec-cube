@@ -88,10 +88,7 @@ class CsvFixture implements FixtureInterface
             $prepare->execute();
             $this->file->next();
             // 大きなサイズのCSVを扱えるようタイムアウトを延長する
-            $seconds
-                = is_numeric(ini_get('max_execution_time'))
-                ? intval(ini_get('max_execution_time'))
-                : intval(get_cfg_var('max_execution_time'));
+            $seconds = intval(ini_get('max_execution_time'));
             set_time_limit($seconds);
         }
         $Connection->commit();

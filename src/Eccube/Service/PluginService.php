@@ -430,14 +430,10 @@ class PluginService
      */
     public function checkPluginArchiveContent($dir, array $config_cache = [])
     {
-        try {
-            if (!empty($config_cache)) {
-                $meta = $config_cache;
-            } else {
-                $meta = $this->readConfig($dir);
-            }
-        } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
-            throw new PluginException($e->getMessage(), $e->getCode(), $e);
+        if (!empty($config_cache)) {
+            $meta = $config_cache;
+        } else {
+            $meta = $this->readConfig($dir);
         }
 
         if (!is_array($meta)) {

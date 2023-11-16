@@ -33,7 +33,8 @@ if (!class_exists(ProductClass::class)) {
     {
         private $price01_inc_tax;
         private $price02_inc_tax;
-        private $tax_rate = false;
+        /** @var string|null */
+        private $tax_rate;
 
         /**
          * 商品規格名を含めた商品名を返す.
@@ -130,7 +131,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set tax_rate
          *
-         * @param  string $tax_rate
+         * @param  string|null $tax_rate
          *
          * @return ProductClass
          */
@@ -144,7 +145,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get tax_rate
          *
-         * @return bool
+         * @return string|null
          */
         public function getTaxRate()
         {
