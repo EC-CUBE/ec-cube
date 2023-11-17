@@ -147,7 +147,7 @@ class PluginGenerateCommand extends Command
     /**
      * @param mixed $code
      *
-     * @return mixed
+     * @return string
      */
     public function validateCode($code)
     {
@@ -170,7 +170,7 @@ class PluginGenerateCommand extends Command
     }
 
     /**
-     * @param mixed $version
+     * @param string $version
      *
      * @return mixed
      */

@@ -55,7 +55,7 @@ class AbstractCsvImportController extends AbstractController
 
     /**
      * @param Request $request
-     * @param array<mixed> $columns
+     * @param array<int,mixed> $columns
      * @param string $filename
      *
      * @return StreamedResponse
