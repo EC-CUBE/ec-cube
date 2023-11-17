@@ -21,6 +21,11 @@ class TwigBlockPass implements CompilerPassInterface
 {
     public const TWIG_BLOCK_TAG = 'eccube.twig_block';
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
     #[\Override]
     public function process(ContainerBuilder $container)
     {

@@ -31,7 +31,9 @@ if (!class_exists(ProductClass::class)) {
      */
     class ProductClass extends AbstractEntity
     {
+        /** @var string|null */
         private $price01_inc_tax;
+        /** @var string|null */
         private $price02_inc_tax;
         /** @var string|null */
         private $tax_rate;

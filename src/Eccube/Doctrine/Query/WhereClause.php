@@ -177,6 +177,11 @@ class WhereClause
         return new WhereClause(self::expr()->in($x, $y), self::isMap($param) ? $param : [$y => $param]);
     }
 
+    /**
+     * @param mixed $arrayOrMap
+     *
+     * @return bool
+     */
     private static function isMap($arrayOrMap)
     {
         return array_values($arrayOrMap) !== $arrayOrMap;
@@ -303,6 +308,8 @@ class WhereClause
      * QueryBuilderにWHERE句を組み立てます。
      *
      * @param QueryBuilder $builder
+     *
+     * @return void
      */
     public function build(QueryBuilder $builder)
     {

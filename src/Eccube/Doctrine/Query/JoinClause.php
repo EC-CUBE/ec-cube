@@ -20,16 +20,31 @@ use Doctrine\ORM\QueryBuilder;
  */
 class JoinClause
 {
+    /**
+     * @var mixed
+     */
     private $join;
 
+    /**
+     * @var mixed
+     */
     private $alias;
 
+    /**
+     * @var mixed|null
+     */
     private $conditionType;
-
+    /**
+     * @var mixed|null
+     */
     private $condition;
-
+    /**
+     * @var mixed|null
+     */
     private $indexBy;
-
+    /**
+     * @var bool
+     */
     private $leftJoin;
 
     /**
@@ -46,11 +61,11 @@ class JoinClause
      * JoinClause constructor.
      *
      * @param bool $leftJoin
-     * @param $join
-     * @param $alias
-     * @param $conditionType
-     * @param $condition
-     * @param $indexBy
+     * @param mixed $join
+     * @param mixed $alias
+     * @param mixed|null $conditionType
+     * @param mixed|null $condition
+     * @param mixed|null $indexBy
      */
     private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
     {
@@ -69,11 +84,11 @@ class JoinClause
      *
      * @see QueryBuilder::innerJoin()
      *
-     * @param $join
-     * @param $alias
-     * @param $conditionType
-     * @param $condition
-     * @param $indexBy
+     * @param mixed $join
+     * @param mixed $alias
+     * @param mixed|null $conditionType
+     * @param mixed|null $condition
+     * @param mixed|null $indexBy
      *
      * @return JoinClause
      */
@@ -87,11 +102,11 @@ class JoinClause
      *
      * @see QueryBuilder::leftJoin()
      *
-     * @param $join
-     * @param $alias
-     * @param $conditionType
-     * @param $condition
-     * @param $indexBy
+     * @param mixed $join
+     * @param mixed $alias
+     * @param mixed|null $conditionType
+     * @param mixed|null $condition
+     * @param mixed|null $indexBy
      *
      * @return JoinClause
      */
@@ -128,6 +143,11 @@ class JoinClause
         return $this;
     }
 
+    /**
+     * @param QueryBuilder $builder
+     *
+     * @return void
+     */
     public function build(QueryBuilder $builder)
     {
         if ($this->leftJoin) {
@@ -153,8 +173,8 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
     }
 
     /**
-     * @param array $params
-     * @param $queryKey
+     * @param array<mixed> $params
+     * @param string $queryKey
      *
      * @return WhereClause[]
      */
@@ -183,14 +203,19 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      */
     private $orderByClauses = [];
 
+    /**
+     * @param OrderByClause $orderByClause
+     *
+     * @return void
+     */
     public function add(OrderByClause $orderByClause)
     {
         $this->orderByClauses[] = $orderByClause;
     }
 
     /**
-     * @param array $params
-     * @param $queryKey
+     * @param array<mixed> $params
+     * @param string $queryKey
      *
      * @return OrderByClause[]
      */

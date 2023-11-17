@@ -73,6 +73,10 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap index
+     *
+     * @param PaginatorInterface $paginator
+     *
+     * @return Response
      */
     #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
     public function index(PaginatorInterface $paginator)
@@ -115,6 +119,8 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap of product categories
+     *
+     * @return Response
      */
     #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
     public function category()
@@ -160,6 +166,8 @@ class SitemapController extends AbstractController
      * Output sitemap of pages
      *
      * Output sitemap of pages without 'noindex' in meta robots.
+     *
+     * @return Response
      */
     #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
     public function page()
@@ -195,7 +203,7 @@ class SitemapController extends AbstractController
     /**
      * Output XML response by data.
      *
-     * @param array $data
+     * @param array<string,mixed> $data
      * @param string $template_name
      *
      * @return Response

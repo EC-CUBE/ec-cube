@@ -36,7 +36,9 @@ class Loader
      *
      * @param string $dir
      *
-     * @return array fixtures.
+     * @return array<mixed> fixtures.
+     *
+     * @throws \InvalidArgumentException|\Exception
      */
     public function loadFromDirectory($dir)
     {
@@ -90,7 +92,7 @@ class Loader
      *
      * @param \Iterator $Iterator Iterator of \SplFileInfo
      *
-     * @return array fixtures.
+     * @return array<mixed> fixtures.
      */
     public function loadFromIterator(\Iterator $Iterator)
     {
@@ -105,11 +107,19 @@ class Loader
         return $fixtures;
     }
 
+    /**
+     * @return FixtureInterface[]|CsvFixture[]
+     */
     public function getFixtures()
     {
         return $this->fixtures;
     }
 
+    /**
+     * @param FixtureInterface $fixture
+     *
+     * @return void
+     */
     public function addFixture(FixtureInterface $fixture)
     {
         $this->fixtures[] = $fixture;

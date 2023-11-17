@@ -64,7 +64,7 @@ class EccubeDataCollector extends DataCollector
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getPlugins()
     {
@@ -105,6 +105,8 @@ class EccubeDataCollector extends DataCollector
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function collect(Request $request, Response $response, ?\Throwable $exception = null)
@@ -145,6 +147,9 @@ class EccubeDataCollector extends DataCollector
         }
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     public function reset()
     {

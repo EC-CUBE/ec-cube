@@ -221,6 +221,9 @@ if (!class_exists(CartItem::class)) {
             return false;
         }
 
+        /**
+         * @return Master\OrderItemType
+         */
         #[\Override]
         public function getOrderItemType()
         {
@@ -277,6 +280,8 @@ if (!class_exists(CartItem::class)) {
 
         /**
          * @param Cart $Cart
+         *
+         * @return $this
          */
         public function setCart(Cart $Cart)
         {

@@ -30,6 +30,8 @@ class InitSubscriber implements EventSubscriber
 
     /**
      * @param ConnectionEventArgs $args
+     *
+     * @return void
      */
     public function postConnect(ConnectionEventArgs $args)
     {

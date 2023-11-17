@@ -202,7 +202,7 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の値引き明細を返す.
          *
-         * @return array
+         * @return array<mixed>
          */
         public function getTaxableDiscountItems()
         {
@@ -228,7 +228,7 @@ if (!class_exists(Order::class)) {
         /**
          * 非課税・不課税の値引き明細を返す.
          *
-         * @return array
+         * @return array<mixed>
          */
         public function getTaxFreeDiscountItems()
         {
@@ -1690,7 +1690,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get mailHistories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,MailHistory>
          */
         public function getMailHistories()
         {

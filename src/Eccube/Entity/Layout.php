@@ -72,6 +72,9 @@ if (!class_exists(Layout::class)) {
             return (string) $this->name;
         }
 
+        /**
+         * @return bool
+         */
         public function isDefault()
         {
             return in_array($this->id, [self::DEFAULT_LAYOUT_PREVIEW_PAGE, self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
@@ -139,66 +142,105 @@ if (!class_exists(Layout::class)) {
             );
         }
 
+        /**
+         * @return Block[]
+         */
         public function getUnused()
         {
             return $this->getBlocks(self::TARGET_ID_UNUSED);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getHead()
         {
             return $this->getBlocks(self::TARGET_ID_HEAD);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getBodyAfter()
         {
             return $this->getBlocks(self::TARGET_ID_BODY_AFTER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getHeader()
         {
             return $this->getBlocks(self::TARGET_ID_HEADER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getContentsTop()
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_TOP);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getSideLeft()
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_LEFT);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getMainTop()
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_TOP);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getMainBottom()
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_BOTTOM);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getSideRight()
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_RIGHT);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getContentsBottom()
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getFooter()
         {
             return $this->getBlocks(self::TARGET_ID_FOOTER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getDrawer()
         {
             return $this->getBlocks(self::TARGET_ID_DRAWER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getCloseBodyBefore()
         {
             return $this->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE);

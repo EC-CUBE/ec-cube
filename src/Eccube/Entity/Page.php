@@ -43,6 +43,9 @@ if (!class_exists(Page::class)) {
         // ご利用規約ページID
         public const AGREEMENT_PAGE_ID = 19;
 
+        /**
+         * @return array|Layout[]
+         */
         public function getLayouts()
         {
             $Layouts = [];
@@ -517,7 +520,7 @@ if (!class_exists(Page::class)) {
         }
 
         /**
-         * @param $layoutId
+         * @param int $layoutId
          *
          * @return int|null
          */

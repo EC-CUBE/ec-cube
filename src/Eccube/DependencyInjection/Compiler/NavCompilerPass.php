@@ -21,6 +21,11 @@ class NavCompilerPass implements CompilerPassInterface
 {
     public const NAV_TAG = 'eccube.nav';
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
     #[\Override]
     public function process(ContainerBuilder $container)
     {

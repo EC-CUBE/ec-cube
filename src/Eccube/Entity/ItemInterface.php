@@ -57,6 +57,9 @@ interface ItemInterface
      */
     public function isTax();
 
+    /**
+     * @return Master\OrderItemType|null
+     */
     public function getOrderItemType();
 
     /**
@@ -76,11 +79,19 @@ interface ItemInterface
 
     /**
      * @param string $quantity
+     *
+     * @return ItemInterface
      */
     public function setQuantity($quantity);
 
+    /**
+     * @return int
+     */
     public function getId();
 
+    /**
+     * @return string|null
+     */
     public function getPointRate();
 
     /**

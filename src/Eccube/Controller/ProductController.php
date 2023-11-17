@@ -73,7 +73,9 @@ class ProductController extends AbstractController
      * @var ProductListMaxRepository
      */
     protected $productListMaxRepository;
-
+    /**
+     * @var string
+     */
     private $title = '';
 
     /**
@@ -107,6 +109,11 @@ class ProductController extends AbstractController
 
     /**
      * 商品一覧画面.
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return array<string,mixed>
      */
     #[Route('/products/list', name: 'product_list', methods: ['GET'])]
     #[Template('Product/list.twig')]
@@ -208,7 +215,9 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return array
+     * @return array<string,mixed>
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/products/detail/{id}', name: 'product_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('Product/detail.twig')]
@@ -255,6 +264,11 @@ class ProductController extends AbstractController
 
     /**
      * お気に入り追加.
+     *
+     * @param Request $request
+     * @param Product $Product
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addFavorite(Request $request, Product $Product)
@@ -302,6 +316,13 @@ class ProductController extends AbstractController
 
     /**
      * カートに追加.
+     *
+     * @param Request $request
+     * @param Product $Product
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function addCart(Request $request, Product $Product)

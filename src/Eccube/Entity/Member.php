@@ -37,6 +37,11 @@ if (!class_exists(Member::class)) {
      */
     class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
+        /**
+         * @param ClassMetadata $metadata
+         *
+         * @return void
+         */
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
             $metadata->addConstraint(new UniqueEntity([
@@ -73,6 +78,8 @@ if (!class_exists(Member::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
@@ -115,6 +122,8 @@ if (!class_exists(Member::class)) {
          * @Assert\NotBlank()
          *
          * @Assert\Length(max=4096)
+         *
+         * @var string|null
          */
         private $plainPassword;
 

@@ -284,6 +284,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Alias of setTotalPrice.
+         *
+         * @param string $total
+         *
+         * @return Cart
          */
         #[\Override]
         public function setTotal($total)
@@ -317,6 +321,8 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @param ItemInterface $item
+         *
+         * @return void
          */
         #[\Override]
         public function addItem(ItemInterface $item)
@@ -328,6 +334,8 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @param ItemInterface $item
+         *
+         * @return void
          */
         public function removeItem(ItemInterface $item)
         {
@@ -349,6 +357,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return Cart
          */
         #[\Override]
         public function setDeliveryFeeTotal($total)
@@ -376,7 +388,9 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param Customer $Customer
+         * @param Customer|null $Customer
+         *
+         * @return Cart
          */
         public function setCustomer(?Customer $Customer = null)
         {
@@ -459,6 +473,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return void
          */
         #[\Override]
         public function setDiscount($total)
@@ -468,6 +486,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return void
          */
         #[\Override]
         public function setCharge($total)
@@ -477,6 +499,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return void
          *
          * @deprecated
          */

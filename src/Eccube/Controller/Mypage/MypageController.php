@@ -94,6 +94,11 @@ class MypageController extends AbstractController
 
     /**
      * ログイン画面.
+     *
+     * @param Request $request
+     * @param AuthenticationUtils $utils
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
     #[Template('Mypage/login.twig')]
@@ -136,6 +141,11 @@ class MypageController extends AbstractController
 
     /**
      * マイページ.
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return array<string,mixed>
      */
     #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
     #[Template('Mypage/index.twig')]
@@ -174,6 +184,11 @@ class MypageController extends AbstractController
 
     /**
      * 購入履歴詳細を表示する.
+     *
+     * @param Request $request
+     * @param string|int $order_no
+     *
+     * @return array<string,mixed>
      */
     #[Route('/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
     #[Template('Mypage/history.twig')]
@@ -219,6 +234,13 @@ class MypageController extends AbstractController
 
     /**
      * 再購入を行う.
+     *
+     * @param Request $request
+     * @param int|string $order_no
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
     public function order(Request $request, $order_no)
@@ -307,6 +329,13 @@ class MypageController extends AbstractController
 
     /**
      * お気に入り商品を表示する.
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return array<string,mixed>
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
     #[Template('Mypage/favorite.twig')]
@@ -344,6 +373,13 @@ class MypageController extends AbstractController
 
     /**
      * お気に入り商品を削除する.
+     *
+     * @param Request $request
+     * @param Product $Product
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws BadRequestHttpException
      */
     #[Route('/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Product $Product)

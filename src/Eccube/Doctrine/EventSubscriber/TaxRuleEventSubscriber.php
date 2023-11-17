@@ -34,11 +34,17 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $this->taxRuleService = $taxRuleService;
     }
 
+    /**
+     * @return object|null
+     */
     public function getTaxRuleService()
     {
         return $this->taxRuleService;
     }
 
+    /**
+     * @return array|string[]
+     */
     #[\Override]
     public function getSubscribedEvents()
     {
@@ -50,6 +56,11 @@ class TaxRuleEventSubscriber implements EventSubscriber
         ];
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     *
+     * @return void
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
@@ -62,6 +73,11 @@ class TaxRuleEventSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     *
+     * @return void
+     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
@@ -74,6 +90,11 @@ class TaxRuleEventSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     *
+     * @return void
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
@@ -86,6 +107,11 @@ class TaxRuleEventSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     *
+     * @return void
+     */
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();

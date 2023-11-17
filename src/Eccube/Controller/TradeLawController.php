@@ -31,6 +31,9 @@ class TradeLawController extends AbstractController
         $this->tradeLawRepository = $tradeLawRepository;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[Route('/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
     #[Template('Help/tradelaw.twig')]
     public function index()

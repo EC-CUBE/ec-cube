@@ -110,6 +110,10 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * 複数配送処理
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_multiple.twig')]
@@ -381,6 +385,10 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * 会員ログイン時は会員のお届け先に追加する
      * 非会員時はセッションに追加する
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_multiple_edit.twig')]

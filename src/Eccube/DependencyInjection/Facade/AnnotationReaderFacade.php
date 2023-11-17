@@ -59,6 +59,9 @@ class AnnotationReaderFacade
         return self::$Reader;
     }
 
+    /**
+     * @return Reader
+     */
     public function getAnnotationReader()
     {
         return self::$Reader;

@@ -53,7 +53,9 @@ class InstallController extends AbstractController
 
     /** @var string */
     public const TRANSACTION_CHECK_FILE = '/var/.httransaction';
-
+    /**
+     * @var string[]
+     */
     protected $requiredModules = [
         'pdo',
         'phar',
@@ -71,11 +73,15 @@ class InstallController extends AbstractController
         'intl',
         'sodium',
     ];
-
+    /**
+     * @var string[]
+     */
     protected $recommendedModules = [
         'hash',
     ];
-
+    /**
+     * @var string[]
+     */
     protected $eccubeDirs = [
         'app/Plugin',
         'app/PluginData',
@@ -85,7 +91,9 @@ class InstallController extends AbstractController
         'var',
         'vendor',
     ];
-
+    /**
+     * @var string[]
+     */
     protected $eccubeFiles = [
         'composer.json',
         'composer.lock',
@@ -129,7 +137,11 @@ class InstallController extends AbstractController
     /**
      * ようこそ.
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     *
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
     #[Template('step1.twig')]
@@ -168,7 +180,9 @@ class InstallController extends AbstractController
     /**
      * ディレクトリとファイルの書き込み権限をチェック.
      *
-     * @return array
+     * @return array<string,mixed>
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/install/step2', name: 'install_step2', methods: ['GET'])]
     #[Template('step2.twig')]
@@ -243,6 +257,8 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
+     * @param Request $request
+     *
      * @return array<string, mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
@@ -313,7 +329,9 @@ class InstallController extends AbstractController
     /**
      * データベースの設定.
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     *
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
@@ -361,7 +379,9 @@ class InstallController extends AbstractController
     /**
      * データベースの初期化.
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     *
+     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
@@ -441,6 +461,12 @@ class InstallController extends AbstractController
 
     /**
      * インストール完了
+     *
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/install/complete', name: 'install_complete', methods: ['GET'])]
     #[Template('complete.twig')]
@@ -501,22 +527,41 @@ class InstallController extends AbstractController
         ];
     }
 
+    /**
+     * @param SessionInterface $session
+     *
+     * @return mixed
+     */
     protected function getSessionData(SessionInterface $session)
     {
         return $session->get('eccube.session.install', []);
     }
 
+    /**
+     * @param SessionInterface $session
+     *
+     * @return void
+     */
     protected function removeSessionData(SessionInterface $session)
     {
         $session->clear();
     }
 
+    /**
+     * @param SessionInterface $session
+     * @param array<mixed> $data
+     *
+     * @return void
+     */
     protected function setSessionData(SessionInterface $session, $data = [])
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
     }
 
+    /**
+     * @return void
+     */
     protected function checkModules()
     {
         foreach ($this->requiredModules as $module) {
@@ -554,6 +599,13 @@ class InstallController extends AbstractController
         }
     }
 
+    /**
+     * @param array<string,mixed> $params
+     *
+     * @return Connection
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function createConnection(array $params)
     {
         if (str_contains((string) $params['url'], 'mysql')) {
@@ -577,6 +629,13 @@ class InstallController extends AbstractController
         return $conn;
     }
 
+    /**
+     * @param Connection $conn
+     *
+     * @return EntityManager
+     *
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
     protected function createEntityManager(Connection $conn)
     {
         $paths = [
@@ -594,6 +653,8 @@ class InstallController extends AbstractController
     }
 
     /**
+     * @param array<string,mixed> $params
+     *
      * @return string|null
      */
     public function createDatabaseUrl(array $params)
@@ -636,7 +697,9 @@ class InstallController extends AbstractController
     /**
      * @param string $url
      *
-     * @return array
+     * @return array<string,mixed>
+     *
+     * @throws \Exception
      */
     public function extractDatabaseUrl($url)
     {
@@ -664,6 +727,8 @@ class InstallController extends AbstractController
     }
 
     /**
+     * @param array<string,mixed> $params
+     *
      * @return string
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
@@ -724,7 +789,7 @@ class InstallController extends AbstractController
     /**
      * @param string $url
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function extractMailerUrl($url)
     {
@@ -783,6 +848,13 @@ class InstallController extends AbstractController
         return $options;
     }
 
+    /**
+     * @param EntityManager $em
+     *
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function dropTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
@@ -791,6 +863,13 @@ class InstallController extends AbstractController
         $em->getConnection()->executeQuery('DROP TABLE IF EXISTS doctrine_migration_versions');
     }
 
+    /**
+     * @param EntityManager $em
+     *
+     * @return void
+     *
+     * @throws \Doctrine\ORM\Tools\ToolsException
+     */
     protected function createTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
@@ -798,6 +877,11 @@ class InstallController extends AbstractController
         $schemaTool->createSchema($metadatas);
     }
 
+    /**
+     * @param EntityManager $em
+     *
+     * @return void
+     */
     protected function importCsv(EntityManager $em)
     {
         // for full locale code cases
@@ -813,6 +897,14 @@ class InstallController extends AbstractController
         $executer->execute($fixtures);
     }
 
+    /**
+     * @param Connection $conn
+     * @param array<string,mixed> $data
+     *
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function insert(Connection $conn, array $data)
     {
         $conn->beginTransaction();
@@ -865,6 +957,14 @@ class InstallController extends AbstractController
         }
     }
 
+    /**
+     * @param Connection $conn
+     * @param array<string,mixed> $data
+     *
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function update(Connection $conn, array $data)
     {
         $conn->beginTransaction();
@@ -910,9 +1010,9 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
+     * @param array<string,mixed> $params
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function createAppData($params, EntityManager $em)
     {
@@ -931,7 +1031,9 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array $params
+     * @param array<string,mixed> $params
+     *
+     * @return $this
      */
     protected function sendAppData($params, EntityManager $em)
     {
@@ -960,7 +1062,11 @@ class InstallController extends AbstractController
     }
 
     /**
+     * @param EntityManager $em
+     *
      * @return string
+     *
+     * @throws \Exception
      */
     public function getDatabaseVersion(EntityManager $em)
     {

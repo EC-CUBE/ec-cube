@@ -191,6 +191,14 @@ class InstallPluginController extends InstallController
     /**
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
+     *
+     * @param Request $request
+     * @param ComposerApiService $composerApiService
+     * @param EventDispatcherInterface $dispatcher
+     *
+     * @return JsonResponse
+     *
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
     public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher)
@@ -224,6 +232,9 @@ class InstallPluginController extends InstallController
         return $this->json(['success' => true]);
     }
 
+    /**
+     * @return void
+     */
     private function clearCacheOnTerminate()
     {
         // KernelEvents::TERMINATE で強制的にキャッシュを削除する

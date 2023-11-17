@@ -129,6 +129,8 @@ if (!class_exists(Customer::class)) {
          * @Assert\NotBlank()
          *
          * @Assert\Length(max=4096)
+         *
+         * @var string|null
          */
         private $plain_password;
 
@@ -349,12 +351,19 @@ if (!class_exists(Customer::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
         {
         }
 
+        /**
+         * @param ClassMetadata $metadata
+         *
+         * @return void
+         */
         // TODO: できればFormTypeで行いたい
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {

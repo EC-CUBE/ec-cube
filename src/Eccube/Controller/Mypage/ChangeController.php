@@ -72,6 +72,13 @@ class ChangeController extends AbstractController
 
     /**
      * 会員情報編集画面.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws \Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[Route('/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
     #[Template('Mypage/change.twig')]
@@ -148,6 +155,10 @@ class ChangeController extends AbstractController
 
     /**
      * 会員情報編集完了画面.
+     *
+     * @param Request $request
+     *
+     * @return array<empty>
      */
     #[Route('/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
     #[Template('Mypage/change_complete.twig')]

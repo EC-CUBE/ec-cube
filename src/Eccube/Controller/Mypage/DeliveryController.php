@@ -58,6 +58,10 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先一覧画面.
+     *
+     * @param Request $request
+     *
+     * @return array<string,mixed>
      */
     #[Route('/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
     #[Template('Mypage/delivery.twig')]
@@ -72,6 +76,13 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先編集画面.
+     *
+     * @param Request $request
+     * @param string|int|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws \Exception
      */
     #[Route('/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
@@ -172,6 +183,13 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先を削除する.
+     *
+     * @param Request $request
+     * @param CustomerAddress $CustomerAddress
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
      */
     #[Route('/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CustomerAddress $CustomerAddress)

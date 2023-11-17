@@ -18,7 +18,9 @@ interface PurchaseInterface
     /**
      * 合計金額を設定します。
      *
-     * @param $total|int
+     * @param int $total
+     *
+     * @return mixed
      */
     public function setTotal($total);
 
@@ -29,5 +31,8 @@ interface PurchaseInterface
      */
     public function getTotal();
 
+    /**
+     * @return mixed
+     */
     public function getItems();
 }

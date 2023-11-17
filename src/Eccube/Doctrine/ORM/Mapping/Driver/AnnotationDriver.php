@@ -17,8 +17,16 @@ use Doctrine\Persistence\Mapping\MappingException;
 
 class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
 {
+    /**
+     * @var string
+     */
     protected $trait_proxies_directory;
 
+    /**
+     * @param string $dir
+     *
+     * @return void
+     */
     public function setTraitProxiesDirectory($dir)
     {
         $this->trait_proxies_directory = $dir;

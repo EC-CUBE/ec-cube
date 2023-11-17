@@ -35,6 +35,13 @@ class PurchaseFlowPass implements CompilerPassInterface
     public const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
     public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     */
     #[\Override]
     public function process(ContainerBuilder $container)
     {
