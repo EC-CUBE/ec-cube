@@ -47,7 +47,7 @@ class OrderStatusRepository extends AbstractRepository
      * @param int $limit
      * @param int $offset
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      *
      * @see EntityRepository::findBy()
      */

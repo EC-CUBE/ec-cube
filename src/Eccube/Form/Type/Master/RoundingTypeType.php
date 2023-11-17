@@ -35,12 +35,18 @@ class RoundingTypeType extends AbstractType
         ]);
     }
 
+    /**
+     * @return string
+     */
     #[\Override]
     public function getParent()
     {
         return MasterType::class;
     }
 
+    /**
+     * @return string
+     */
     #[\Override]
     public function getBlockPrefix()
     {

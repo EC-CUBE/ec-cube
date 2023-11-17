@@ -16,6 +16,7 @@ namespace Eccube\Repository;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
+use Eccube\Entity\Master\DeviceType;
 
 /**
  * BlocRepository
@@ -44,6 +45,11 @@ class BlockRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    /**
+     * @param DeviceType $DeviceType
+     *
+     * @return Block
+     */
     public function newBlock($DeviceType)
     {
         $Block = new Block();
@@ -58,7 +64,7 @@ class BlockRepository extends AbstractRepository
     /**
      * ブロック一覧の取得.
      *
-     * @param  \Eccube\Entity\Master\DeviceType $DeviceType
+     * @param  DeviceType $DeviceType
      *
      * @return \Symfony\Component\HttpFoundation\Request|null
      */
@@ -79,9 +85,9 @@ class BlockRepository extends AbstractRepository
     /**
      * 未設定のブロックを取得
      *
-     * @param  Block[]  $Blocks
+     * @param  array<int, Block> $Blocks
      *
-     * @return Block[]|null
+     * @return array<int, Block>|null
      */
     public function getUnusedBlocks($Blocks)
     {

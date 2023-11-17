@@ -15,6 +15,7 @@ namespace Eccube\Repository;
 
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
 
 /**
@@ -33,9 +34,9 @@ class DeliveryRepository extends AbstractRepository
     /**
      * 複数の販売種別から配送業者を取得
      *
-     * @param $saleTypes
+     * @param array<int, SaleType> $saleTypes
      *
-     * @return array
+     * @return array<int, Delivery>
      */
     public function getDeliveries($saleTypes)
     {
@@ -54,10 +55,10 @@ class DeliveryRepository extends AbstractRepository
     /**
      * 選択可能な配送業者を取得
      *
-     * @param $saleTypes
-     * @param $payments
+     * @param array<int, SaleType> $saleTypes
+     * @param array<int, Payment> $payments
      *
-     * @return array
+     * @return array<int, Delivery>
      */
     public function findAllowedDeliveries($saleTypes, $payments)
     {

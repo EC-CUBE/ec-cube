@@ -29,6 +29,9 @@ class PluginRepository extends AbstractRepository
         parent::__construct($registry, Plugin::class);
     }
 
+    /**
+     * @return array<int, Plugin>
+     */
     public function findAllEnabled()
     {
         return $this->findBy(['enabled' => '1']);

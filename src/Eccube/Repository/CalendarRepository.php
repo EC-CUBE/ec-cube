@@ -57,7 +57,7 @@ class CalendarRepository extends AbstractRepository
     /**
      * getListOrderByIdDesc
      *
-     * @return array|null
+     * @return array<int, Calendar>|null
      */
     public function getListOrderByIdDesc()
     {
@@ -75,7 +75,7 @@ class CalendarRepository extends AbstractRepository
      * @param Carbon $startDate 取得開始日
      * @param Carbon $endDate 取得終了日
      *
-     * @return array|null
+     * @return array<int, Calendar>|null
      */
     public function getHolidayList(Carbon $startDate, Carbon $endDate)
     {
@@ -96,6 +96,8 @@ class CalendarRepository extends AbstractRepository
      * delete.
      *
      * @param int|Calendar $Calendar
+     *
+     * @return void
      *
      * @throws NoResultException
      * @throws ORMException

@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ShippingMultipleItemType extends AbstractType
 {
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig<string, mixed>
      */
     protected $eccubeConfig;
 
@@ -97,7 +97,7 @@ class ShippingMultipleItemType extends AbstractType
      * {@inheritdoc}
      *
      * @param FormBuilderInterface $builder
-     * @param array<mixed> $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */

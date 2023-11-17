@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
@@ -82,6 +83,9 @@ class CustomerRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    /**
+     * @return Customer
+     */
     public function newCustomer()
     {
         $CustomerStatus = $this->getEntityManager()
@@ -128,6 +132,8 @@ class CustomerRepository extends AbstractRepository
      *     } $searchData
      *
      * @return QueryBuilder
+     *
+     * @throws Exception
      */
     public function getQueryBuilderBySearchData($searchData)
     {
@@ -360,7 +366,7 @@ class CustomerRepository extends AbstractRepository
     /**
      * 仮会員をシークレットキーで検索する.
      *
-     * @param $secretKey
+     * @param string $secretKey
      *
      * @return Customer|null 見つからない場合はnullを返す.
      */
@@ -375,7 +381,7 @@ class CustomerRepository extends AbstractRepository
     /**
      * 本会員をemailで検索する.
      *
-     * @param $email
+     * @param string $email
      *
      * @return Customer|null 見つからない場合はnullを返す.
      */
@@ -390,8 +396,8 @@ class CustomerRepository extends AbstractRepository
     /**
      * 本会員をリセットキー、またはリセットキーとメールアドレスで検索する.
      *
-     * @param $resetKey
-     * @param $email
+     * @param string $resetKey
+     * @param string|null $email
      *
      * @return Customer|null 見つからない場合はnullを返す.
      */
@@ -428,9 +434,9 @@ class CustomerRepository extends AbstractRepository
      * 仮会員, 本会員の会員を返す.
      * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
      *
-     * @param array $criteria
+     * @param array<string, mixed> $criteria
      *
-     * @return Customer[]
+     * @return array<int, Customer>
      */
     public function getNonWithdrawingCustomers(array $criteria = [])
     {

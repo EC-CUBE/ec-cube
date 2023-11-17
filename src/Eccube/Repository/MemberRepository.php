@@ -13,8 +13,8 @@
 
 namespace Eccube\Repository;
 
-use Doctrine\DBAL\Exception\DriverException;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Member;
 
@@ -35,6 +35,8 @@ class MemberRepository extends AbstractRepository
      * 管理ユーザの表示順を一つ上げる.
      *
      * @param Member $Member
+     *
+     * @return void
      *
      * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
      */
@@ -61,6 +63,8 @@ class MemberRepository extends AbstractRepository
      *
      * @param Member $Member
      *
+     * @return void
+     *
      * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
      */
     public function down(Member $Member)
@@ -85,6 +89,11 @@ class MemberRepository extends AbstractRepository
      * 管理ユーザを登録します.
      *
      * @param Member $Member
+     *
+     * @return void
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     #[\Override]
     public function save($Member)
@@ -108,8 +117,7 @@ class MemberRepository extends AbstractRepository
      *
      * @param Member $Member
      *
-     * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
-     * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
+     * @return void
      */
     #[\Override]
     public function delete($Member)

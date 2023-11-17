@@ -28,7 +28,7 @@ class CustomerAddressType extends AbstractType
      * {@inheritDoc}
      *
      * @param FormBuilderInterface $builder
-     * @param array<mixed> $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */

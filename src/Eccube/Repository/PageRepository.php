@@ -68,7 +68,7 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param $route
+     * @param string $route
      *
      * @return Page
      */
@@ -130,10 +130,10 @@ class PageRepository extends AbstractRepository
      *
      * この関数は, dtb_Page の情報を検索する.
      *
-     * @param  string                            $where 追加の検索条件
-     * @param  string[]                          $parameters 追加の検索パラメーター
+     * @param  string    $where 追加の検索条件
+     * @param  string[]  $parameters 追加の検索パラメーター
      *
-     * @return array                             ページ属性の配列
+     * @return array<int, mixed> ページ属性の配列
      */
     public function getPageList($where = null, $parameters = [])
     {

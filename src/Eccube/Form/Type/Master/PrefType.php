@@ -40,6 +40,8 @@ class PrefType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getBlockPrefix()
@@ -49,6 +51,8 @@ class PrefType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getParent()

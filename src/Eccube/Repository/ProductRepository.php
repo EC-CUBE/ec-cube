@@ -98,10 +98,10 @@ class ProductRepository extends AbstractRepository
     /**
      * Find the Products with sorted ClassCategories.
      *
-     * @param array $ids Product in ids
+     * @param array<int, int|string> $ids Product in ids
      * @param string $indexBy The index for the from.
      *
-     * @return ArrayCollection|array
+     * @return ArrayCollection<int, mixed>|array<int, mixed>|null
      */
     public function findProductsWithSortedClassCategories(array $ids, $indexBy = null)
     {

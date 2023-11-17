@@ -15,6 +15,8 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\ClassCategory;
 
@@ -40,9 +42,9 @@ class ClassCategoryRepository extends AbstractRepository
     /**
      * 規格カテゴリの一覧を取得します.
      *
-     * @param \Eccube\Entity\ClassName $ClassName 検索対象の規格名オブジェクト. 指定しない場合は、すべての規格を対象に取得します.
+     * @param \Eccube\Entity\ClassName|null $ClassName 検索対象の規格名オブジェクト. 指定しない場合は、すべての規格を対象に取得します.
      *
-     * @return array 規格カテゴリの配列
+     * @return array<int, ClassCategory> 規格カテゴリの配列
      */
     public function getList(?\Eccube\Entity\ClassName $ClassName = null)
     {
@@ -63,6 +65,9 @@ class ClassCategoryRepository extends AbstractRepository
      * @param ClassCategory $ClassCategory
      *
      * @return void
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     #[\Override]
     public function save($ClassCategory)
@@ -90,6 +95,8 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @param ClassCategory $ClassCategory
      *
+     * @return void
+     *
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
@@ -113,7 +120,9 @@ class ClassCategoryRepository extends AbstractRepository
     /**
      * 規格カテゴリの表示/非表示を切り替える.
      *
-     * @param $ClassCategory
+     * @param ClassCategory $ClassCategory
+     *
+     * @return void
      */
     public function toggleVisibility($ClassCategory)
     {

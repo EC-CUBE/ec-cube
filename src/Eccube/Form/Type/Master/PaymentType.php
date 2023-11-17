@@ -44,6 +44,8 @@ class PaymentType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getBlockPrefix()
@@ -53,6 +55,8 @@ class PaymentType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getParent()

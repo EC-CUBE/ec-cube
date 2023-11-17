@@ -30,6 +30,13 @@ class LayoutRepository extends AbstractRepository
         parent::__construct($registry, Layout::class);
     }
 
+    /**
+     * @param int|string $id
+     *
+     * @return float|int|mixed|string|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function get($id)
     {
         try {

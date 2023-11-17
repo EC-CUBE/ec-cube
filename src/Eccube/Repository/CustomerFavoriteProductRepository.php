@@ -33,6 +33,8 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     /**
      * @param \Eccube\Entity\Customer $Customer
      * @param \Eccube\Entity\Product  $Product
+     *
+     * @return void
      */
     public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
     {
@@ -94,6 +96,8 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      * お気に入りを削除します.
      *
      * @param CustomerFavoriteProduct $CustomerFavoriteProduct
+     *
+     * @return void
      */
     #[\Override]
     public function delete($CustomerFavoriteProduct)

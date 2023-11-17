@@ -43,7 +43,7 @@ class LoginHistoryRepository extends AbstractRepository
     }
 
     /**
-     * @param $searchData
+     * @param array<string, mixed> $searchData
      *
      * @return \Doctrine\ORM\QueryBuilder
      */

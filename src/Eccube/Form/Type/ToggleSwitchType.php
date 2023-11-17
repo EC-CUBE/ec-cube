@@ -26,7 +26,7 @@ class ToggleSwitchType extends AbstractType
      *
      * @param FormView $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */
@@ -54,6 +54,9 @@ class ToggleSwitchType extends AbstractType
         ]);
     }
 
+    /**
+     * @return string
+     */
     #[\Override]
     public function getParent()
     {

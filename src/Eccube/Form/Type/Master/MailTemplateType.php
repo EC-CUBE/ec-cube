@@ -46,6 +46,8 @@ class MailTemplateType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getBlockPrefix()
@@ -55,6 +57,8 @@ class MailTemplateType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getParent()

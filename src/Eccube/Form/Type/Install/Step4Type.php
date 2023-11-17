@@ -46,9 +46,11 @@ class Step4Type extends AbstractType
      * {@inheritdoc}
      *
      * @param FormBuilderInterface $builder
-     * @param array<mixed> $options
+     * @param array<string, mixed> $options
      *
      * @return void
+     *
+     * @throws \Exception
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)

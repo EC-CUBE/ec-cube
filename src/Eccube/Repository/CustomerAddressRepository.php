@@ -38,6 +38,8 @@ class CustomerAddressRepository extends AbstractRepository
      * お届け先を削除します.
      *
      * @param CustomerAddress $CustomerAddress
+     *
+     * @return void
      */
     #[\Override]
     public function delete($CustomerAddress)

@@ -32,7 +32,7 @@ class AuthorityRoleRepository extends AbstractRepository
     /**
      * 権限、拒否URLでソートする
      *
-     * @return array
+     * @return array<int, AuthorityRole>
      */
     public function findAllSort()
     {

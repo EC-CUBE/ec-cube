@@ -15,6 +15,8 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\ClassName;
 
@@ -39,7 +41,7 @@ class ClassNameRepository extends AbstractRepository
     /**
      * 規格一覧を取得する.
      *
-     * @return array 規格の配列
+     * @return array<int, ClassName> 規格の配列
      */
     public function getList()
     {
@@ -55,6 +57,11 @@ class ClassNameRepository extends AbstractRepository
      * 規格を保存する.
      *
      * @param ClassName $ClassName
+     *
+     * @return void
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     #[\Override]
     public function save($ClassName)
@@ -76,6 +83,8 @@ class ClassNameRepository extends AbstractRepository
      * 規格を削除する.
      *
      * @param ClassName $ClassName
+     *
+     * @return void
      *
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.

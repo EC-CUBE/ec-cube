@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
@@ -57,6 +58,8 @@ class OrderRepository extends AbstractRepository
     /**
      * @param int $orderId
      * @param OrderStatus $Status
+     *
+     * @return void
      */
     public function changeStatus($orderId, OrderStatus $Status)
     {
@@ -436,7 +439,7 @@ class OrderRepository extends AbstractRepository
      * @return int
      *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function countByOrderStatus($OrderStatusOrId)
     {
@@ -452,7 +455,11 @@ class OrderRepository extends AbstractRepository
      * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
      *
      * @param Customer $Customer
-     * @param array $OrderStatuses
+     * @param array<int, int> $OrderStatuses
+     *
+     * @return void
+     *
+     * @throws NonUniqueResultException
      */
     public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
     {

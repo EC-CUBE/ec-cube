@@ -91,7 +91,7 @@ class OrderType extends AbstractType
      * {@inheritdoc}
      *
      * @param FormBuilderInterface $builder
-     * @param array<mixed> $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */
@@ -263,9 +263,9 @@ class OrderType extends AbstractType
      * 配送方法に紐づく支払い方法を取得する
      * 各配送方法に共通する支払い方法のみ返す.
      *
-     * @param Delivery[] $Deliveries
+     * @param array<int, Delivery> $Deliveries
      *
-     * @return ArrayCollection<int,Payment>
+     * @return ArrayCollection<int, Payment>
      */
     private function getPayments($Deliveries)
     {
@@ -302,8 +302,8 @@ class OrderType extends AbstractType
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param ArrayCollection<int,Payment> $Payments
-     * @param float|int $total
+     * @param ArrayCollection $Payments
+     * @param string $total
      *
      * @return Payment[]
      */
