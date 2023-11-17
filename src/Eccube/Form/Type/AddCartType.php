@@ -53,7 +53,9 @@ class AddCartType extends AbstractType
      * @var ProductClassRepository
      */
     protected $productClassRepository;
-
+    /**
+     * @var ManagerRegistry
+     */
     protected $doctrine;
 
     public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
@@ -64,6 +66,11 @@ class AddCartType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -156,6 +163,10 @@ class AddCartType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
@@ -169,8 +180,14 @@ class AddCartType extends AbstractType
         ]);
     }
 
-    /*
+    /**
      * {@inheritdoc}
+     *
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function finishView(FormView $view, FormInterface $form, array $options)

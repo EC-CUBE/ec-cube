@@ -41,6 +41,11 @@ class ExceptionListener implements EventSubscriberInterface
         $this->requestContext = $requestContext;
     }
 
+    /**
+     * @param ExceptionEvent $event
+     *
+     * @return void
+     */
     public function onKernelException(ExceptionEvent $event)
     {
         $title = trans('exception.error_title');
@@ -124,7 +129,7 @@ class ExceptionListener implements EventSubscriberInterface
      *  * array('eventName' => array('methodName', $priority))
      *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
      *
-     * @return array The event names to listen to
+     * @return array<string,mixed> The event names to listen to
      */
     #[\Override]
     public static function getSubscribedEvents()

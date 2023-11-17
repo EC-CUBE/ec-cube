@@ -89,6 +89,11 @@ class OrderType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -180,6 +185,13 @@ class OrderType extends AbstractType
         });
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -197,6 +209,13 @@ class OrderType extends AbstractType
         return '_shopping_order';
     }
 
+    /**
+     * @param FormInterface $form
+     * @param Payment[] $choices
+     * @param Payment|null $data
+     *
+     * @return void
+     */
     private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null)
     {
         $message = trans('front.shopping.payment_method_unselected');
@@ -246,7 +265,7 @@ class OrderType extends AbstractType
      *
      * @param Delivery[] $Deliveries
      *
-     * @return ArrayCollection
+     * @return ArrayCollection<int,Payment>
      */
     private function getPayments($Deliveries)
     {
@@ -283,8 +302,8 @@ class OrderType extends AbstractType
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param ArrayCollection $Payments
-     * @param $total
+     * @param ArrayCollection<int,Payment> $Payments
+     * @param float|int $total
      *
      * @return Payment[]
      */

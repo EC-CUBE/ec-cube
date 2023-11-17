@@ -52,6 +52,8 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Disable transaction listener.
+     *
+     * @return void
      */
     public function disable()
     {
@@ -62,6 +64,8 @@ class TransactionListener implements EventSubscriberInterface
      * Kernel request listener callback.
      *
      * @param RequestEvent $event
+     *
+     * @return void
      */
     public function onKernelRequest(RequestEvent $event)
     {
@@ -151,7 +155,7 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * Return the events to subscribe to.
      *
-     * @return array
+     * @return array<string,mixed>
      */
     #[\Override]
     public static function getSubscribedEvents()

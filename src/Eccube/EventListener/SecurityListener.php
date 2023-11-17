@@ -28,12 +28,23 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
+    /**
+     * @var EntityManagerInterface
+     */
     protected $em;
-
+    /**
+     * @var CartService
+     */
     protected $cartService;
 
+    /**
+     * @var PurchaseFlow
+     */
     protected $purchaseFlow;
 
+    /**
+     * @var RequestStack
+     */
     protected $requestStack;
 
     public function __construct(
@@ -50,6 +61,8 @@ class SecurityListener implements EventSubscriberInterface
 
     /**
      * @param InteractiveLoginEvent $event
+     *
+     * @return void
      */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
@@ -101,7 +114,7 @@ class SecurityListener implements EventSubscriberInterface
      * * array('eventName' => array('methodName', $priority))
      * * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
      *
-     * @return array The event names to listen to
+     * @return array<string,mixed> The event names to listen to
      */
     #[\Override]
     public static function getSubscribedEvents()

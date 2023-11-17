@@ -32,7 +32,7 @@ class TemplateEvent extends Event
     private $source;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $parameters;
 
@@ -42,12 +42,12 @@ class TemplateEvent extends Event
     private $response;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $assets = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $snippets = [];
 
@@ -56,7 +56,7 @@ class TemplateEvent extends Event
      *
      * @param string $view
      * @param string $source
-     * @param array $parameters
+     * @param array<mixed> $parameters
      * @param Response|null $response
      */
     public function __construct($view, $source, array $parameters = [], ?Response $response = null)
@@ -77,6 +77,8 @@ class TemplateEvent extends Event
 
     /**
      * @param string $view
+     *
+     * @return void
      */
     public function setView($view)
     {
@@ -93,6 +95,8 @@ class TemplateEvent extends Event
 
     /**
      * @param string $source
+     *
+     * @return void
      */
     public function setSource($source)
     {
@@ -100,7 +104,7 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return mixed
      */
@@ -110,8 +114,10 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return void
      */
     public function setParameter($key, $value)
     {
@@ -119,7 +125,7 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return bool
      */
@@ -129,7 +135,7 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getParameters()
     {
@@ -137,7 +143,9 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param array $parameters
+     * @param array<mixed> $parameters
+     *
+     * @return void
      */
     public function setParameters($parameters)
     {
@@ -154,6 +162,8 @@ class TemplateEvent extends Event
 
     /**
      * @param Response|null $response
+     *
+     * @return void
      */
     public function setResponse($response)
     {
@@ -166,7 +176,7 @@ class TemplateEvent extends Event
      * ここで追加したコードは, <head></head>内に出力される
      * javascriptの読み込みやcssの読み込みに利用する.
      *
-     * @param $asset
+     * @param string $asset
      * @param bool $include twigファイルとしてincludeするかどうか
      *
      * @return $this
@@ -185,7 +195,7 @@ class TemplateEvent extends Event
      *
      * ここで追加したコードは, </body>タグ直前に出力される
      *
-     * @param $snippet
+     * @param string $snippet
      * @param bool $include twigファイルとしてincludeするかどうか
      *
      * @return $this

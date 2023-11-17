@@ -22,6 +22,11 @@ class CustomerStatusType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,6 +35,13 @@ class CustomerStatusType extends AbstractType
         $options['sex_options']['required'] = $options['required'];
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {

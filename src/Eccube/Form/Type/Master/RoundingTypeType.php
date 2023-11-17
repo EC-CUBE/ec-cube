@@ -19,6 +19,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoundingTypeType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {

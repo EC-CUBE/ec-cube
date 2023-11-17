@@ -49,6 +49,11 @@ class DoctrineOrmExtension extends AbstractTypeExtension
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -59,6 +64,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 $form = $event->getForm();
                 $config = $form->getConfig();
                 // data_classオプションが必要
+                /** @var class-string|null $class */
                 $class = $config->getDataClass();
                 if (is_null($class)) {
                     return;
@@ -90,6 +96,13 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         );
     }
 
+    /**
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array<mixed> $options
+     *
+     * @return void
+     */
     #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -110,6 +123,11 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         $view->vars['eccube_form_options'] = $options;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -26,8 +26,10 @@ class PluginManager extends AbstractPluginManager
     /**
      * Install the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
     public function install(array $meta, ContainerInterface $container)
     {
@@ -37,8 +39,10 @@ class PluginManager extends AbstractPluginManager
     /**
      * Update the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
     public function update(array $meta, ContainerInterface $container)
     {
@@ -50,8 +54,10 @@ class PluginManager extends AbstractPluginManager
     /**
      * Enable the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
     public function enable(array $meta, ContainerInterface $container)
     {
@@ -61,8 +67,10 @@ class PluginManager extends AbstractPluginManager
     /**
      * Disable the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
     public function disable(array $meta, ContainerInterface $container)
     {
@@ -74,8 +82,10 @@ class PluginManager extends AbstractPluginManager
     /**
      * Uninstall the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
     public function uninstall(array $meta, ContainerInterface $container)
     {

@@ -22,6 +22,8 @@ class PluginApiException extends \Exception
      * PluginApiException constructor.
      *
      * @param array<string, string>|null $curlInfo
+     *
+     * @return void
      */
     public function __construct($curlInfo)
     {
@@ -29,6 +31,11 @@ class PluginApiException extends \Exception
         $this->curlInfo = $curlInfo;
     }
 
+    /**
+     * @param mixed $info
+     *
+     * @return string
+     */
     private static function getResponseErrorMessage($info)
     {
         if (!empty($info)) {

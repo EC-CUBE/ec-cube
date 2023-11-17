@@ -31,6 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TaxRuleType extends AbstractType
 {
+    /**
+     * @var TaxRuleRepository
+     */
     protected $taxRuleRepository;
 
     public function __construct(TaxRuleRepository $taxRuleRepository)
@@ -40,6 +43,11 @@ class TaxRuleType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -97,6 +105,10 @@ class TaxRuleType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)

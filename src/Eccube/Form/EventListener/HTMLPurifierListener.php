@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormEvents;
 class HTMLPurifierListener implements EventSubscriberInterface
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     #[\Override]
     public static function getSubscribedEvents(): array

@@ -38,6 +38,14 @@ class RateLimiterListener implements EventSubscriberInterface
         $this->requestContext = $requestContext;
     }
 
+    /**
+     * @param ControllerEvent $event
+     *
+     * @return void
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function onController(ControllerEvent $event)
     {
         if (!$event->isMainRequest()) {
