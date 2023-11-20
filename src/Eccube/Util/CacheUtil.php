@@ -32,7 +32,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class CacheUtil implements EventSubscriberInterface
 {
     public const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
-
+    /**
+     * @var bool
+     */
     private $clearCacheAfterResponse = false;
 
     /**
@@ -58,12 +60,21 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * @param string $env
+     *
+     * @return void
      */
     public function clearCache($env = null)
     {
         $this->clearCacheAfterResponse = $env;
     }
 
+    /**
+     * @param TerminateEvent $event
+     *
+     * @return string|void
+     *
+     * @throws \Exception
+     */
     public function forceClearCache(TerminateEvent $event)
     {
         if ($this->clearCacheAfterResponse === false) {
@@ -146,6 +157,8 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * Twigキャッシュを削除します.
+     *
+     * @return void
      */
     public function clearTwigCache()
     {

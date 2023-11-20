@@ -36,8 +36,9 @@ class FileController extends AbstractController
 {
     public const SJIS = 'sjis-win';
     public const UTF = 'UTF-8';
+
     /**
-     * @var array<mixed>
+     * @var array<int,array<string,string>>
      */
     private $errors = [];
     /**

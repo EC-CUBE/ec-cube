@@ -20,9 +20,7 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class Normalize extends FunctionNode
 {
-    /**
-     * @var
-     */
+    /** @var string */
     protected $string;
     public const FROM = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー';
     public const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';

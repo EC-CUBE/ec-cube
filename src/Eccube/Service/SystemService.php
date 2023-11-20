@@ -139,6 +139,9 @@ class SystemService implements EventSubscriberInterface
      *
      * @param bool $isEnable
      * @param string $mode
+     * @param bool $force
+     *
+     * @return void
      */
     public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE, bool $force = false)
     {
@@ -149,6 +152,9 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @return string|null
+     */
     public function getMaintenanceToken(): ?string
     {
         $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
@@ -163,6 +169,10 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * KernelEvents::TERMINATE で設定されるEvent
+     *
+     * @param TerminateEvent $event
+     *
+     * @return void
      */
     public function disableMaintenanceEvent(TerminateEvent $event)
     {
@@ -171,6 +181,12 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param string $mode
+     * @param bool $force
+     *
+     * @return void
+     */
     public function enableMaintenance($mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
         if ($force || !$this->isMaintenanceMode()) {

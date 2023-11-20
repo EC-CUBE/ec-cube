@@ -22,7 +22,7 @@ class FormUtil
      *
      * @param FormInterface $form
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getViewData(FormInterface $form)
     {
@@ -49,7 +49,7 @@ class FormUtil
      * formオブジェクトにviewdataをsubmitし, マッピングした結果を返す.
      *
      * @param FormInterface $form
-     * @param $viewData
+     * @param mixed $viewData
      *
      * @return mixed
      */

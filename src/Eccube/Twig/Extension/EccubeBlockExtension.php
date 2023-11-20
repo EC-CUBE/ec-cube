@@ -23,12 +23,19 @@ class EccubeBlockExtension extends AbstractExtension
 
     protected $blockTemplates;
 
+    /**
+     * @param Environment $twig
+     * @param array<mixed> $blockTemplates
+     */
     public function __construct(Environment $twig, array $blockTemplates)
     {
         $this->twig = $twig;
         $this->blockTemplates = $blockTemplates;
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[\Override]
     public function getFunctions()
     {

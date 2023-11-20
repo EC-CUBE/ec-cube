@@ -23,7 +23,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function parseRequire($output)
     {
@@ -49,7 +49,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function parseInfo($output)
     {
@@ -91,7 +91,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function parseList($output)
     {
@@ -120,7 +120,7 @@ class OutputParser
     }
 
     /**
-     * @param $rowArray
+     * @param array<mixed> $rowArray
      * @param string $key
      *
      * @return array

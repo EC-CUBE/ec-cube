@@ -140,9 +140,11 @@ class EntityProxyService
     /**
      * 複数のディレクトリセットをスキャンしてディレクトリセットごとのEntityとTraitのマッピングを返します.
      *
-     * @param $dirSets array スキャン対象ディレクトリリストの配列
+     * @param array<mixed> $dirSets スキャン対象ディレクトリリストの配列
      *
-     * @return array ディレクトリセットごとのEntityとTraitのマッピング
+     * @return array<mixed> ディレクトリセットごとのEntityとTraitのマッピング
+     *
+     * @throws \ReflectionException
      */
     private function scanTraits($dirSets)
     {
@@ -205,7 +207,9 @@ class EntityProxyService
      * EntityにTraitを追加.
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
-     * @param $trait string 追加するTraitのFQCN
+     * @param string $trait 追加するTraitのFQCN
+     *
+     * @return void
      */
     private function addTrait($entityTokens, $trait)
     {

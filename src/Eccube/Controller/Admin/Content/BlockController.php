@@ -80,6 +80,10 @@ class BlockController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param Environment $twig
+     * @param Filesystem $fs
+     * @param CacheUtil $cacheUtil
      * @param int|null $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>

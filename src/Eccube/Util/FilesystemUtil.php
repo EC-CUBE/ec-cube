@@ -18,7 +18,7 @@ class FilesystemUtil
     /**
      * Format file size to human readable
      *
-     * @param $size
+     * @param int|false $size
      * @param int $decimals
      *
      * @return string

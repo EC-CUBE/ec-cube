@@ -40,7 +40,7 @@ class IntlExtension extends AbstractExtension
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param Environment $env
-     * @param $date
+     * @param \DateTimeInterface|string|null $date
      *
      * @return bool|string
      */
@@ -60,7 +60,7 @@ class IntlExtension extends AbstractExtension
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param Environment $env
-     * @param $date
+     * @param \DateTimeInterface|string|null $date
      *
      * @return bool|string
      */
@@ -80,7 +80,7 @@ class IntlExtension extends AbstractExtension
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param Environment $env
-     * @param $date
+     * @param \DateTimeInterface|string|null $date
      *
      * @return bool|string
      */
@@ -95,7 +95,7 @@ class IntlExtension extends AbstractExtension
 
     /**
      * @param Environment $env
-     * @param $date
+     * @param \DateTimeInterface|string|null $date
      *
      * @return bool|string
      */

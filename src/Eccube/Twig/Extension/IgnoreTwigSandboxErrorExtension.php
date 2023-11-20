@@ -41,12 +41,12 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * app_env = prodの場合、エラーを表示しない
      *
      * @param Environment $env
-     * @param $context
-     * @param $template
-     * @param $variables
-     * @param $withContext
-     * @param $ignoreMissing
-     * @param $sandboxed
+     * @param array<mixed> $context
+     * @param array<mixed>|string $template
+     * @param array<mixed> $variables
+     * @param bool $withContext
+     * @param bool $ignoreMissing
+     * @param bool $sandboxed
      *
      * @return string|null
      *
