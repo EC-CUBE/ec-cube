@@ -18,6 +18,11 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 
+/**
+ * @var OrderItemCollection<int, OrderItem|ItemInterface>
+ *
+ * @extends ArrayCollection<int, mixed>
+ */
 class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
     protected $type;
@@ -34,7 +39,11 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
         return array_reduce($this->toArray(), $func, $initial);
     }
 
-    // 明細種別ごとに返すメソッド作る
+    /**
+     * 明細種別ごとに返すメソッド作る
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     */
     public function getProductClasses()
     {
         return $this->filter(
@@ -43,6 +52,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
             });
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     */
     public function getDeliveryFees()
     {
         return $this->filter(
@@ -51,6 +63,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
             });
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     */
     public function getCharges()
     {
         return $this->filter(
@@ -59,6 +74,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
             });
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     */
     public function getDiscounts()
     {
         return $this->filter(

@@ -760,7 +760,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get orderItems.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,OrderItem>
+         * @return ItemCollection
          */
         public function getOrderItems()
         {

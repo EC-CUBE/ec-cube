@@ -19,7 +19,7 @@ trait ValidatorTrait
 {
     /**
      * @param string $errorCode
-     * @param ProductClass $ProductClass
+     * @param ProductClass|null $ProductClass
      * @param bool $warning
      *
      * @throws InvalidItemException

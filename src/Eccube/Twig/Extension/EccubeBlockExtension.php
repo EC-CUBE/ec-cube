@@ -19,8 +19,13 @@ use Twig\TwigFunction;
 
 class EccubeBlockExtension extends AbstractExtension
 {
+    /**
+     * @var Environment
+     */
     protected $twig;
-
+    /**
+     * @var mixed[]
+     */
     protected $blockTemplates;
 
     /**

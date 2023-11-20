@@ -123,7 +123,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $member_id
+         * @param int $member_id
          *
          * @return $this
          */
@@ -203,7 +203,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $message3
+         * @param string|null $message3
          *
          * @return $this
          */
@@ -283,7 +283,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $create_date
+         * @param \DateTime|string $create_date
          *
          * @return $this
          */
@@ -303,7 +303,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $update_date
+         * @param \DateTime|string $update_date
          *
          * @return $this
          */

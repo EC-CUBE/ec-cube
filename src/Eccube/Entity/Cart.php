@@ -220,6 +220,16 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
+         * カートの中に出荷データがないので、空のコレクションを返します。
+         *
+         * @return ArrayCollection<empty>
+         */
+        public function getShippings()
+        {
+            return new ArrayCollection();
+        }
+
+        /**
          * @return Cart
          */
         public function clearCartItems()
@@ -240,7 +250,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Alias of getCartItems()
          *
-         * @return ItemCollection<int,CartItem>
+         * @return ItemCollection<int,ItemInterface>
          */
         #[\Override]
         public function getItems()
@@ -510,6 +520,26 @@ if (!class_exists(Cart::class)) {
         public function setTax($total)
         {
             // TODO quiet
+        }
+
+        /**
+         * 注文ではないので、nullを返します。
+         *
+         * @return null
+         */
+        public function getOrderStatus()
+        {
+            return null;
+        }
+
+        /**
+         * {@inheritdoc}
+         *
+         * @return ArrayCollection<empty>
+         */
+        public function getProductOrderItems()
+        {
+            return new ArrayCollection();
         }
     }
 }

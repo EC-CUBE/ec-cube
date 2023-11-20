@@ -802,9 +802,9 @@ class PluginService
      * Get array require by plugin
      * Todo: need define dependency plugin mechanism
      *
-     * @param array|Plugin $plugin format as plugin from api
+     * @param array<string, string|int>|Plugin $plugin format as plugin from api
      *
-     * @return array|mixed
+     * @return array<mixed>
      *
      * @throws PluginException
      */

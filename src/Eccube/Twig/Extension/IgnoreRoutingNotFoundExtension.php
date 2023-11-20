@@ -96,7 +96,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
     }
 
     /**
-     * @param Node $argsNode The arguments of the path/url function
+     * @param Node<mixed> $argsNode The arguments of the path/url function
      *
      * @return array<mixed> An array with the contexts the URL is safe
      *

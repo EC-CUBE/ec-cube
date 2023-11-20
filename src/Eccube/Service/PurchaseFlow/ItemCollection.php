@@ -15,15 +15,23 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 
+/**
+ * @extends ArrayCollection<int, ItemInterface|OrderItem|CartItem>
+ */
 class ItemCollection extends ArrayCollection
 {
     protected $type;
 
+    /**
+     * @param array<int,ItemInterface>|array<int,OrderItem>|Collection<int, ItemInterface>|Collection<int,OrderItem>|array<int,CartItem>|Collection<int,CartItem> $Items
+     * @param string|null $type
+     */
     public function __construct($Items, $type = null)
     {
         $this->type = is_null($type) ? Order::class : $type;
