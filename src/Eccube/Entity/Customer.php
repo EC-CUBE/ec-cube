@@ -377,7 +377,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {

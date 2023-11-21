@@ -97,10 +97,10 @@ class CustomerRepository extends AbstractRepository
     }
 
     /**
-     * @param array{
+     * @param array<mixed>|array{
      *         multi?:string,
      *         pref?:Pref,
-     *         sex?:Sex[]|ArrayCollection,
+     *         sex?:Sex[]|ArrayCollection<mixed>,
      *         birth_month?:string|int,
      *         birth_start?:\DateTime,
      *         birth_end?:\DateTime,
@@ -121,7 +121,7 @@ class CustomerRepository extends AbstractRepository
      *         last_buy_datetime_end?:\DateTime,
      *         last_buy_start?:\DateTime,
      *         last_buy_end?:\DateTime,
-     *         customer_status?:CustomerStatus[]|ArrayCollection,
+     *         customer_status?:CustomerStatus[]|ArrayCollection<mixed>,
      *         buy_product_name?:string,
      *         sortkey?:string,
      *         sorttype?:string

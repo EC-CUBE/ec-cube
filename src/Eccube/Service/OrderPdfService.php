@@ -762,6 +762,8 @@ class OrderPdfService extends Fpdi
      *
      * @param int|float $x
      * @param int|float $y
+     *
+     * @return void
      */
     protected function setBasePosition($x = null, $y = null)
     {

@@ -34,6 +34,7 @@ class RepositoryExtension extends AbstractExtension
     {
         return [
             new TwigFunction('repository', function ($entity) {
+                /** @var class-string $entity */
                 $repository = $this->em->getRepository($entity);
 
                 return $repository;

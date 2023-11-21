@@ -234,7 +234,7 @@ class CartService
     }
 
     /**
-     * @param CartItem[]|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
+     * @param array<int,CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
      *
      * @return CartItem[]
      */
@@ -251,10 +251,10 @@ class CartService
     }
 
     /**
-     * @param $cartItems
-     * @param $allCartItems
+     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
+     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $allCartItems
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function mergeCartItems($cartItems, $allCartItems)
     {
@@ -293,7 +293,9 @@ class CartService
 
         foreach ($cartItems as $item) {
             $allocatedId = $this->cartItemAllocator->allocate($item);
-            $cartKey = $this->createCartKey($allocatedId, $this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $cartKey = $this->createCartKey($allocatedId, $Customer);
 
             if (isset($Carts[$cartKey])) {
                 $Cart = $Carts[$cartKey];
@@ -396,7 +398,9 @@ class CartService
     {
         $cartKeys = [];
         foreach ($this->carts as $Cart) {
-            $Cart->setCustomer($this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $Cart->setCustomer($Customer);
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);

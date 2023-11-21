@@ -21,7 +21,7 @@ use Eccube\Entity\OrderItem;
 /**
  * @var OrderItemCollection<int, OrderItem|ItemInterface>
  *
- * @extends ArrayCollection<int, mixed>
+ * @extends \Doctrine\Common\Collections\ArrayCollection<int, mixed>
  */
 class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
@@ -42,7 +42,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     /**
      * 明細種別ごとに返すメソッド作る
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
     public function getProductClasses()
     {
@@ -53,7 +53,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
     public function getDeliveryFees()
     {
@@ -64,7 +64,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
     public function getCharges()
     {
@@ -75,7 +75,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, ItemInterface>
+     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
     public function getDiscounts()
     {

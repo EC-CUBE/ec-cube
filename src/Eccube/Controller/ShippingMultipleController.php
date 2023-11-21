@@ -223,6 +223,7 @@ class ShippingMultipleController extends AbstractShoppingController
             // お届け先情報をすべて削除
             /** @var Shipping $Shipping */
             foreach ($Order->getShippings() as $Shipping) {
+                /** @var OrderItem $OrderItem */
                 foreach ($Shipping->getOrderItems() as $OrderItem) {
                     $Shipping->removeOrderItem($OrderItem);
                     $Order->removeOrderItem($OrderItem);

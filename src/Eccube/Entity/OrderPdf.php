@@ -29,10 +29,11 @@ if (!class_exists(OrderPdf::class)) {
      */
     class OrderPdf extends AbstractEntity
     {
+        /** @var mixed */
         public $ids;
-
+        /** @var \DateTime|string */
         public $issue_date;
-
+        /** @var mixed */
         public $default;
 
         /**

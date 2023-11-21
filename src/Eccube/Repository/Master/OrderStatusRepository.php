@@ -83,7 +83,7 @@ class OrderStatusRepository extends AbstractRepository
     /**
      * find All Array
      *
-     * @return array
+     * @return array<int, array<int, mixed>>
      */
     public function findAllArray()
     {

@@ -111,9 +111,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param array $menus
+     * @param array<mixed> $menus
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getActiveMenus($menus = [])
     {
@@ -128,6 +128,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * return No Image filename
      *
+     * @param string|null $image
      * @param string $image
      *
      * @return string
@@ -230,7 +231,7 @@ class EccubeExtension extends AbstractExtension
      * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
      * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
      *
-     * @param $id
+     * @param int|float|string $id
      *
      * @return Product|null
      */
@@ -311,8 +312,8 @@ class EccubeExtension extends AbstractExtension
     /**
      * Display file extension icon
      *
-     * @param $ext
-     * @param $attr
+     * @param mixed $ext
+     * @param array<mixed> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string
