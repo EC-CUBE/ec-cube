@@ -92,7 +92,7 @@ class Loader
      *
      * @param \Iterator $Iterator Iterator of \SplFileInfo
      *
-     * @return array<mixed> fixtures.
+     * @return array<int,CsvFixture> fixtures.
      */
     public function loadFromIterator(\Iterator $Iterator)
     {

@@ -222,7 +222,7 @@ class CategoryController extends AbstractController
     /**
      * @param Request $request
      * @param CacheUtil $cacheUtil
-     * @param string|null $id
+     * @param string $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *

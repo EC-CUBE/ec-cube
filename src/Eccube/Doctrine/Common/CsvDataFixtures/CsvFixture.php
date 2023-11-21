@@ -141,7 +141,7 @@ class CsvFixture implements FixtureInterface
      * INSERT を生成する.
      *
      * @param string $table_name テーブル名
-     * @param array<mixed> $headers カラム名の配列
+     * @param array<int,string> $headers カラム名の配列
      *
      * @return string INSERT 文
      */

@@ -27,7 +27,7 @@ class MasterdataController extends AbstractController
 {
     /**
      * @param Request $request
-     * @param mixed|null $entity
+     * @param class-string|null $entity
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|array<string,mixed>
      */

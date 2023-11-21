@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 class ReloadSafeAnnotationDriver extends AnnotationDriver
 {
     /**
-     * @var array<mixed> 新しく生成されたProxyファイルのリスト
+     * @var array<int,string|false> 新しく生成されたProxyファイルのリスト
      */
     protected $newProxyFiles;
     /**
@@ -36,7 +36,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
     protected $outputDir;
 
     /**
-     * @param array<mixed> $newProxyFiles
+     * @param array<int,string> $newProxyFiles
      *
      * @return void
      */
@@ -128,7 +128,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      *
      * @param string $sourceFile  ソースファイル
      *
-     * @return array<mixed> ソースファイルに含まれるクラス名のリスト
+     * @return array<int,string> ソースファイルに含まれるクラス名のリスト
      */
     private function getClassNamesFromTokens($sourceFile)
     {

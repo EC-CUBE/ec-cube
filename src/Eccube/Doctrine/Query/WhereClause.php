@@ -178,7 +178,7 @@ class WhereClause
     }
 
     /**
-     * @param mixed $arrayOrMap
+     * @param array<int, string>|array<string, string> $arrayOrMap
      *
      * @return bool
      */

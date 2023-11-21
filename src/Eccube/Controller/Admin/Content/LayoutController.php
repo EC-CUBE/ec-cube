@@ -148,6 +148,8 @@ class LayoutController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
      * @param string|null $id
      * @param string|null $previewPageId
      *

@@ -21,25 +21,25 @@ use Doctrine\ORM\QueryBuilder;
 class JoinClause
 {
     /**
-     * @var mixed
+     * @var string
      */
     private $join;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $alias;
 
     /**
-     * @var mixed|null
+     * @var string|null
      */
     private $conditionType;
     /**
-     * @var mixed|null
+     * @var string|null
      */
     private $condition;
     /**
-     * @var mixed|null
+     * @var string|null
      */
     private $indexBy;
     /**
@@ -61,11 +61,11 @@ class JoinClause
      * JoinClause constructor.
      *
      * @param bool $leftJoin
-     * @param mixed $join
-     * @param mixed $alias
-     * @param mixed|null $conditionType
-     * @param mixed|null $condition
-     * @param mixed|null $indexBy
+     * @param string $join
+     * @param string $alias
+     * @param string|null $conditionType
+     * @param string|null $condition
+     * @param string|null $indexBy
      */
     private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
     {
@@ -84,11 +84,11 @@ class JoinClause
      *
      * @see QueryBuilder::innerJoin()
      *
-     * @param mixed $join
-     * @param mixed $alias
-     * @param mixed|null $conditionType
-     * @param mixed|null $condition
-     * @param mixed|null $indexBy
+     * @param string $join
+     * @param string $alias
+     * @param string|null $conditionType
+     * @param string|null $condition
+     * @param string|null $indexBy
      *
      * @return JoinClause
      */
@@ -102,11 +102,11 @@ class JoinClause
      *
      * @see QueryBuilder::leftJoin()
      *
-     * @param mixed $join
-     * @param mixed $alias
-     * @param mixed|null $conditionType
-     * @param mixed|null $condition
-     * @param mixed|null $indexBy
+     * @param string $join
+     * @param string $alias
+     * @param string|null $conditionType
+     * @param string|null $condition
+     * @param string|null $indexBy
      *
      * @return JoinClause
      */

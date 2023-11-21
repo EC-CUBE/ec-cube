@@ -90,7 +90,7 @@ class CalendarController extends AbstractController
      * @param array<mixed> $holidayListOfTwoMonths 定休日リスト
      * @param Carbon $targetDate ターゲット日
      *
-     * @return array<int,array<string,mixed>> カレンダーの配列
+     * @return array<int,array<string,string>> カレンダーの配列
      */
     private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
     {
@@ -129,7 +129,7 @@ class CalendarController extends AbstractController
      *
      * @param Carbon $firstDateOfTargetMonth 月初日
      *
-     * @return array<mixed> カレンダーの配列
+     * @return array<int,array<string,string>> カレンダーの配列
      */
     private function createCalendar(Carbon $firstDateOfTargetMonth)
     {

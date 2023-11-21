@@ -25,6 +25,8 @@ class TwigBlockPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     #[\Override]
     public function process(ContainerBuilder $container)

@@ -100,7 +100,7 @@ class LogController extends AbstractController
      * parse log file
      *
      * @param string $logFile
-     * @param mixed $formData
+     * @param array<string,string> $formData
      *
      * @return array<int,mixed>
      */

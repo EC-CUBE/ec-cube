@@ -727,7 +727,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,mixed> $params
+     * @param array<string,string> $params
      *
      * @return string
      *
@@ -1010,9 +1010,9 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,mixed> $params
+     * @param array<string,string> $params
      *
-     * @return array<string,mixed>
+     * @return array<string,string>
      */
     public function createAppData($params, EntityManager $em)
     {

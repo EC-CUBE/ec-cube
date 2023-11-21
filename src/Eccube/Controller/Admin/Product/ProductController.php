@@ -150,7 +150,7 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param PaginatorInterface $paginator
-     * @param int|null $page_no
+     * @param string|null $page_no
      *
      * @return array<string,mixed>
      */

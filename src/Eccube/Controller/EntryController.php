@@ -237,8 +237,8 @@ class EntryController extends AbstractController
      * 会員のアクティベート（本会員化）を行う.
      *
      * @param Request $request
-     * @param mixed $secret_key
-     * @param mixed $qtyInCart
+     * @param string $secret_key
+     * @param string|null $qtyInCart
      *
      * @return array<string,mixed>
      *
@@ -284,7 +284,7 @@ class EntryController extends AbstractController
      * 会員登録処理を行う
      *
      * @param Request $request
-     * @param mixed $secret_key
+     * @param string $secret_key
      *
      * @return \Eccube\Entity\Cart|mixed
      */

@@ -64,7 +64,7 @@ class EccubeDataCollector extends DataCollector
     }
 
     /**
-     * @return array<mixed>
+     * @return array<string, array<string,mixed>>
      */
     public function getPlugins()
     {

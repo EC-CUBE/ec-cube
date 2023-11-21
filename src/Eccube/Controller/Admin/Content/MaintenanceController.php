@@ -36,6 +36,8 @@ class MaintenanceController extends AbstractController
     /**
      * メンテナンス管理ページを表示
      *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/content/maintenance', name: 'admin_content_maintenance', methods: ['GET', 'POST'])]
@@ -79,7 +81,9 @@ class MaintenanceController extends AbstractController
      * キャッシュ管理やプラグインのインストール等の操作時にajax経由で解除する
      * 権限管理設定でアクセス不可になるのを避けるため、ルーティングは/admin/disable_maintenanceで設定しています
      *
+     * @param Request $request
      * @param string $mode
+     * @param SystemService $systemService
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *

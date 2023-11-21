@@ -99,7 +99,7 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * @param CsvImportService<int,mixed>|bool $csv
-     * @param array<mixed> $errors
+     * @param array<int,string> $errors
      *
      * @return void
      */
@@ -214,7 +214,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @return array<string,array<string,mixed>>
+     * @return array<string,array<string,bool|string>>
      */
     protected function getColumnConfig()
     {
