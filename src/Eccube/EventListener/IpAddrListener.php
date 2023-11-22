@@ -42,6 +42,8 @@ class IpAddrListener implements EventSubscriberInterface
      * @param RequestEvent $event
      *
      * @return void
+     *
+     * @throws AccessDeniedHttpException|\Exception
      */
     public function onKernelRequest(RequestEvent $event)
     {
@@ -82,7 +84,7 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed $hostList
+     * @param array<int,string> $hostList
      * @param string|null $clientIp
      *
      * @return bool
@@ -102,7 +104,7 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string,array<string, int>>
+     * @return array<string,array<int, string|int>>
      */
     #[\Override]
     public static function getSubscribedEvents()
