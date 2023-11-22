@@ -115,7 +115,7 @@ if (!class_exists(Category::class)) {
         }
 
         /**
-         * @return array<mixed>
+         * @return array<int,mixed>
          */
         public function getDescendants()
         {

@@ -202,7 +202,7 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の値引き明細を返す.
          *
-         * @return array<mixed>
+         * @return array<int, OrderItem>
          */
         public function getTaxableDiscountItems()
         {
@@ -229,7 +229,7 @@ if (!class_exists(Order::class)) {
         /**
          * 非課税・不課税の値引き明細を返す.
          *
-         * @return array<mixed>
+         * @return array<int,OrderItem>
          */
         public function getTaxFreeDiscountItems()
         {
