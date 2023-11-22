@@ -20,7 +20,7 @@ interface PurchaseInterface
      *
      * @param int|float|string $total
      *
-     * @return mixed
+     * @return ItemHolderInterface
      */
     public function setTotal($total);
 

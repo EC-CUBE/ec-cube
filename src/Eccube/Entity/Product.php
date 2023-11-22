@@ -37,43 +37,43 @@ if (!class_exists(Product::class)) {
          */
         private $_calc = false;
         /**
-         * @var array<mixed>
+         * @var array<int,bool>
          */
         private $stockFinds = [];
         /**
-         * @var array<mixed>
+         * @var array<int,string|null>
          */
         private $stocks = [];
         /**
-         * @var array<mixed>
+         * @var array<int,bool>
          */
         private $stockUnlimiteds = [];
         /**
-         * @var array<mixed>
+         * @var array<int, string|null>
          */
         private $price01 = [];
         /**
-         * @var array<mixed>
+         * @var array<int, string|null>
          */
         private $price02 = [];
         /**
-         * @var array<mixed>
+         * @var array<int, string|null>
          */
         private $price01IncTaxs = [];
         /**
-         * @var array<mixed>
+         * @var array<int, string|null>
          */
         private $price02IncTaxs = [];
         /**
-         * @var array<mixed>
+         * @var array<int, string|null>
          */
         private $codes = [];
         /**
-         * @var array<mixed>
+         * @var array<string|int, string|null>
          */
         private $classCategories1 = [];
         /**
-         * @var array<mixed>
+         * @var array<string|int, string|null>
          */
         private $classCategories2 = [];
         /**
@@ -205,7 +205,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get getClassCategories1
          *
-         * @return array<mixed>
+         * @return array<int, string|null>
          */
         public function getClassCategories1()
         {
@@ -215,7 +215,7 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return array<mixed>
+         * @return array<string,int>
          */
         public function getClassCategories1AsFlip()
         {
@@ -227,7 +227,7 @@ if (!class_exists(Product::class)) {
          *
          * @param string $class_category1
          *
-         * @return array<mixed>
+         * @return array<int, string|null>
          */
         public function getClassCategories2($class_category1)
         {
@@ -239,7 +239,7 @@ if (!class_exists(Product::class)) {
         /**
          * @param string $class_category1
          *
-         * @return array<mixed>
+         * @return array<string,int>
          */
         public function getClassCategories2AsFlip($class_category1)
         {
@@ -471,7 +471,7 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return mixed|null
+         * @return ProductImage|null
          */
         public function getMainListImage()
         {
@@ -481,7 +481,7 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return mixed|null
+         * @return ProductImage|null
          */
         public function getMainFileName()
         {
