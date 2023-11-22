@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormEvents;
 class TruncateHyphenListener implements EventSubscriberInterface
 {
     /**
-     * @return array<mixed>
+     * @return array<string,string>
      */
     #[\Override]
     public static function getSubscribedEvents()

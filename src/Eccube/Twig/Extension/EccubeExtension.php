@@ -312,8 +312,8 @@ class EccubeExtension extends AbstractExtension
     /**
      * Display file extension icon
      *
-     * @param mixed $ext
-     * @param array<mixed> $attr
+     * @param string $ext
+     * @param array<string,string> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string

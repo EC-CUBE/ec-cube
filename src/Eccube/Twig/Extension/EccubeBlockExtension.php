@@ -24,13 +24,13 @@ class EccubeBlockExtension extends AbstractExtension
      */
     protected $twig;
     /**
-     * @var mixed[]
+     * @var array<int,string|\Eccube\Twig\Template>
      */
     protected $blockTemplates;
 
     /**
      * @param Environment $twig
-     * @param array<mixed> $blockTemplates
+     * @param array<int,string|\Eccube\Twig\Template> $blockTemplates
      */
     public function __construct(Environment $twig, array $blockTemplates)
     {

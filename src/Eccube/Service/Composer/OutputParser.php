@@ -23,7 +23,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array<mixed>
+     * @return array<string,array<string,string>>
      */
     public static function parseRequire($output)
     {
@@ -49,7 +49,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array<mixed>
+     * @return array<int|string,array<int,string>|string>
      */
     public static function parseInfo($output)
     {

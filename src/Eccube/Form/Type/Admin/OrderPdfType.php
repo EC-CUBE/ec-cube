@@ -53,7 +53,7 @@ class OrderPdfType extends AbstractType
      * Build config type form.
      *
      * @param FormBuilderInterface $builder
-     * @param array<mixed>         $options
+     * @param array<string, mixed>         $options
      *
      * @return void
      */

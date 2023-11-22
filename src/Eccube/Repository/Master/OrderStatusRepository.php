@@ -42,8 +42,8 @@ class OrderStatusRepository extends AbstractRepository
      *
      * TODO Abstract メソッドにしたい
      *
-     * @param array $criteria
-     * @param array $orderBy
+     * @param array<string, mixed> $criteria
+     * @param array<string|int, string> $orderBy
      * @param int $limit
      * @param int $offset
      *
