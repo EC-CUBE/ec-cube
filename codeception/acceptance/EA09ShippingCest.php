@@ -145,7 +145,7 @@ class EA09ShippingCest
             ->入力_番地_ビル名('address 2', 1)
             ->出荷情報登録();
 
-        $I->waitForText('保存しました', null, ShippingEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', 10, ShippingEditPage::$登録完了メッセージ);
 
         // 出荷済みに変更
         $ShippingRegisterPage

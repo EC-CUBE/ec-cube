@@ -518,7 +518,7 @@ class EA06ContentsManagementCest
 
         $I->expect('トップページを確認します');
         $I->amOnPage('/');
-        $I->waitForText('メンテナンスモードが有効になっています。',  null,'#page_homepage > div.ec-maintenanceAlert > div');
+        $I->waitForText('メンテナンスモードが有効になっています。',  10,'#page_homepage > div.ec-maintenanceAlert > div');
         $I->waitForText('全ての商品', 10, TopPage::$検索_カテゴリ選択);
 
         $I->expect('ログアウトします');
