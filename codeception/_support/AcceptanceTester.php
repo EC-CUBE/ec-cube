@@ -11,6 +11,7 @@
  * file that was distributed with this source code.
  */
 
+use Codeception\Scenario;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
 use Facebook\WebDriver\WebDriverBy;
@@ -37,7 +38,7 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
-    public function getScenario()
+    public function getScenario(): Scenario
     {
         return $this->scenario;
     }
