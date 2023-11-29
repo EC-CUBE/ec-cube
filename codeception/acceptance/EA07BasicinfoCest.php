@@ -352,7 +352,7 @@ class EA07BasicinfoCest
         OrderManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->see($expected_point, OrderEditPage::$加算ポイント);
+        $I->see((string)$expected_point, OrderEditPage::$加算ポイント);
 
         $I->amGoingTo('発送済みにする (ポイントが付与される)');
         OrderEditPage::at($I)
@@ -403,7 +403,7 @@ class EA07BasicinfoCest
             ->一覧_編集(1);
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
         $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
-        $I->see($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100)), OrderEditPage::$加算ポイント);
+        $I->see((string)($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100))), OrderEditPage::$加算ポイント);
 
         $I->expect('ポイント付与率を変更しても, 注文のポイントに影響無いことを確認します');
         // see https://github.com/EC-CUBE/ec-cube/pull/5571
@@ -418,7 +418,7 @@ class EA07BasicinfoCest
 
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
         $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
-        $I->see($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100)), OrderEditPage::$加算ポイント);
+        $I->see((string)($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100))), OrderEditPage::$加算ポイント);
 
         $I->expect('管理画面・会員管理にて、ポイントが減少していること');
         CustomerManagePage::go($I)

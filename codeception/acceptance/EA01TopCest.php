@@ -58,7 +58,7 @@ class EA01TopCest
         $NewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == \Eccube\Entity\Master\OrderStatus::NEW;
         });
-        $I->see(count($NewOrders), TopPage::$受付状況_新規受付数);
+        $I->see((string)count($NewOrders), TopPage::$受付状況_新規受付数);
 
         // 新規受付をクリックすると「受注管理＞新規受付」のページに遷移することを確認
         $I->click(TopPage::$受付状況_新規受付);
