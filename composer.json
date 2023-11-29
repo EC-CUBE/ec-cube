@@ -12,7 +12,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.1",
         "ext-curl": "*",
         "ext-intl": "*",
         "ext-json": "*",
@@ -186,7 +186,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.4.0"
+            "php": "8.1.0"
         },
         "preferred-install": {
             "*": "dist"

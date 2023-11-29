@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
+        php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -158,7 +158,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
+        php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -305,7 +305,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
+        php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -452,7 +452,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
+        php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin

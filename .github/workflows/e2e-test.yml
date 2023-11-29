@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.4 ]
+        php: [ 8.1 ]
         db: [ pgsql ]
         group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'installer' ]
         include:
