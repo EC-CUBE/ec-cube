@@ -14,6 +14,7 @@
 namespace Eccube\Security\Http\Authentication;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -24,7 +25,7 @@ class EccubeAuthenticationSuccessHandler extends DefaultAuthenticationSuccessHan
     /**
      * {@inheritdoc}
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         try {
             $response = parent::onAuthenticationSuccess($request, $token);

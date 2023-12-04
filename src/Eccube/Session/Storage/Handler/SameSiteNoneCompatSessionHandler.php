@@ -47,7 +47,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         $this->sessionName = $sessionName;
         // see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L35-L37
@@ -61,7 +61,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doRead($sessionId)
+    protected function doRead($sessionId): string
     {
         return $this->handler->read($sessionId);
     }
@@ -70,7 +70,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
-    public function updateTimestamp($sessionId, $data)
+    public function updateTimestamp($sessionId, $data): bool
     {
         return $this->write($sessionId, $data);
     }
@@ -78,7 +78,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($sessionId, $data)
+    protected function doWrite($sessionId, $data): bool
     {
         return $this->handler->write($sessionId, $data);
     }
@@ -89,7 +89,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * @see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L126-L167
      */
     #[\ReturnTypeWillChange]
-    public function destroy($sessionId)
+    public function destroy($sessionId): bool
     {
         if (\PHP_VERSION_ID < 70000) {
             $this->prefetchData = null;
@@ -145,7 +145,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doDestroy($sessionId)
+    protected function doDestroy($sessionId): bool
     {
         $this->doDestroy = false;
 
@@ -155,8 +155,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return $this->handler->close();
     }
@@ -165,7 +164,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
-    public function gc($maxlifetime)
+    public function gc($maxlifetime): int|false
     {
         return $this->handler->gc($maxlifetime);
     }
