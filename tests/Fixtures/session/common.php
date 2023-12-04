@@ -97,6 +97,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
 {
     private $handler;
     private $data;
+    private $sessionId;
 
     public function __construct(SessionHandlerInterface $handler)
     {
@@ -112,6 +113,10 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return parent::open($path, $name);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
     public function validateId($sessionId)
     {
         echo __FUNCTION__, "\n";
@@ -122,6 +127,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         echo __FUNCTION__, "\n";
@@ -132,6 +138,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data)
     {
         echo __FUNCTION__, "\n";
@@ -142,6 +149,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         echo __FUNCTION__, "\n";
@@ -152,6 +160,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         echo __FUNCTION__, "\n";
@@ -159,6 +168,10 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return parent::destroy($sessionId);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         echo __FUNCTION__, "\n";
@@ -166,6 +179,10 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
     public function gc($maxLifetime)
     {
         echo __FUNCTION__, "\n";

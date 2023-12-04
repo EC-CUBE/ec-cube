@@ -132,8 +132,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * If a header row has been set, an associative array will be returned
      *
-     * @return array
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         // If the CSV has no column headers just return the line
@@ -217,7 +218,10 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * If a header row has been set, the pointer is set just below the header
      * row. That way, when you iterate over the rows, that header row is
      * skipped.
+     *
+     * @return void
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->file->rewind();
@@ -229,6 +233,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         if (null === $this->count) {
@@ -245,6 +250,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->file->next();
@@ -253,6 +259,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->file->valid();
@@ -261,6 +268,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->file->key();
@@ -269,6 +277,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function seek($pointer)
     {
         $this->file->seek($pointer);
