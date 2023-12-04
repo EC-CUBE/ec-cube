@@ -74,6 +74,7 @@
         "symfony/http-foundation": "^6.4",
         "symfony/http-kernel": "^6.4",
         "symfony/intl": "^6.4",
+        "symfony/lock": "^6.4",
         "symfony/mailer": "^6.4",
         "symfony/maker-bundle": "^1.0",
         "symfony/monolog-bridge": "^6.4",
