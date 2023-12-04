@@ -138,7 +138,9 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EF09ThrottlingCest::${METHOD} --html report.html
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EF09ThrottlingCest::${METHOD} --html report.html
 
       - name: Upload evidence
         if: failure()

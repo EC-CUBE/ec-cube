@@ -137,7 +137,9 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
@@ -284,7 +286,9 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
@@ -431,7 +435,9 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2
@@ -581,7 +587,9 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
         uses: actions/upload-artifact@v2

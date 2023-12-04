@@ -130,7 +130,9 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
 
       - name: Codeception with Restrict file upload
         if: ${{ matrix.group == 'restrict-fileupload' }}
@@ -143,7 +145,9 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
 
       - name: Upload evidence
         if: failure()

@@ -114,6 +114,7 @@ jobs:
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action_docker.yml
           vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP}
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 

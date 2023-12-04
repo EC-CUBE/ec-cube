@@ -149,7 +149,7 @@ jobs:
                           chromeOptions:
                               args: ["--headless", "--disable-gpu"]
                               prefs:
-                                  download.default_directory: '%PWD%/codeception/_support/_downloads'
+                                  download.default_directory: '${GITHUB_WORKSPACE}/codeception/_support/_downloads'
                   MailCatcher:
                       url: 'mail'
                       port: 1080" > codeception/_envs/local.yml
