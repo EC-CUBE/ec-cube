@@ -1,4 +1,4 @@
-ARG TAG=7.4-apache-bullseye
+ARG TAG=8.1-apache-bullseye
 FROM php:${TAG}
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
