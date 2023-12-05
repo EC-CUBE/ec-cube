@@ -216,3 +216,9 @@ services:
 
     Eccube\EventListener\RateLimiterListener:
         arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
+
+    Eccube\Security\PasswordHasher\PasswordHasher:
+        arguments:
+            - '%eccube_auth_magic%'
+            - '%eccube_auth_type%'
+            - '%eccube_password_hash_algos%'

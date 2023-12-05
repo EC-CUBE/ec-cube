@@ -1,12 +1,16 @@
 security:
     enable_authenticator_manager: true
-    encoders:
-        # Our user class and the algorithm we'll use to encode passwords
-        # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
-        Eccube\Entity\Member:
-          id: Eccube\Security\Core\Encoder\PasswordEncoder
+    password_hashers:
+        legacy:
+            id: 'Eccube\Security\PasswordHasher\PasswordHasher'
         Eccube\Entity\Customer:
-          id: Eccube\Security\Core\Encoder\PasswordEncoder
+            algorithm: 'auto'
+            migrate_from:
+                - legacy
+        Eccube\Entity\Member:
+            algorithm: 'auto'
+            migrate_from:
+                - legacy
     providers:
         # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
         # In this example, users are stored via Doctrine in the database
