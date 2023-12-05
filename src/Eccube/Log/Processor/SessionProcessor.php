@@ -13,16 +13,16 @@
 
 namespace Eccube\Log\Processor;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Eccube\Session\Session;
 
 class SessionProcessor
 {
     /**
-     * @var SessionInterface
+     * @var Session
      */
     protected $session;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(Session $session)
     {
         $this->session = $session;
     }

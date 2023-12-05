@@ -16,12 +16,11 @@ namespace Eccube\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
+use Eccube\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -86,10 +85,10 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param SessionInterface $session
+     * @param Session $session
      * @required
      */
-    public function setSession(SessionInterface $session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
