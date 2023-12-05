@@ -55,6 +55,7 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -147,6 +148,11 @@ class Generator
     protected $session;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * @var PurchaseFlow
      */
     protected $orderPurchaseFlow;
@@ -167,7 +173,7 @@ class Generator
         TagRepository $tagRepository,
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
-        SessionInterface $session,
+        RequestStack $requestStack,
         $locale = 'ja_JP'
     ) {
         $this->locale = $locale;
@@ -186,7 +192,7 @@ class Generator
         $this->tagRepository = $tagRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -312,12 +318,12 @@ class Generator
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-            $customerAddresses = unserialize($this->session->get($sessionCustomerAddressKey));
+            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey));
             if (!is_array($customerAddresses)) {
                 $customerAddresses = [];
             }
             $customerAddresses[] = $CustomerAddress;
-            $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->requestStack->getSession()->set($sessionCustomerAddressKey, serialize($customerAddresses));
         } else {
             $this->entityManager->persist($CustomerAddress);
             $this->entityManager->flush();
@@ -362,10 +368,10 @@ class Generator
         $nonMember = [];
         $nonMember['customer'] = $Customer;
         $nonMember['pref'] = $Customer->getPref()->getId();
-        $this->session->set($sessionKey, $nonMember);
+        $this->requestStack->getSession()->set($sessionKey, $nonMember);
 
         $customerAddresses = [];
-        $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+        $this->requestStack->getSession()->set($sessionCustomerAddressKey, serialize($customerAddresses));
 
         return $Customer;
     }
