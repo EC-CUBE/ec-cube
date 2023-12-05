@@ -18,7 +18,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
@@ -26,14 +25,14 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
     protected static $defaultName = 'eccube:fixtures:load';
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
 
-    public function __construct(ManagerRegistry $registry, ContainerInterface $container)
+    public function __construct(ManagerRegistry $registry, EccubeConfig $eccubeConfig)
     {
         parent::__construct($registry);
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     protected function configure()
@@ -67,7 +66,6 @@ EOF
         $login_id = env('ECCUBE_ADMIN_USER', 'admin');
         $login_password = env('ECCUBE_ADMIN_PASS', 'password');
 
-        $eccubeConfig = $this->container->get(EccubeConfig::class);
         $encoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($eccubeConfig);
 
         $salt = \Eccube\Util\StringUtil::random(32);
@@ -119,20 +117,20 @@ EOF
         ]);
 
         $faviconPath = '/assets/img/common/favicon.ico';
-        if (!file_exists($this->container->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+        if (!file_exists($this->eccubeConfig->get('eccube_html_dir').'/user_data'.$faviconPath)) {
             $file = new Filesystem();
             $file->copy(
-                $this->container->getParameter('eccube_html_front_dir').$faviconPath,
-                $this->container->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+                $this->eccubeConfig->get('eccube_html_front_dir').$faviconPath,
+                $this->eccubeConfig->get('eccube_html_dir').'/user_data'.$faviconPath
             );
         }
 
         $logoPath = '/assets/pdf/logo.png';
-        if (!file_exists($this->container->getParameter('eccube_html_dir').'/user_data'.$logoPath)) {
+        if (!file_exists($this->eccubeConfig->get('eccube_html_dir').'/user_data'.$logoPath)) {
             $file = new Filesystem();
             $file->copy(
-                $this->container->getParameter('eccube_html_admin_dir').$logoPath,
-                $this->container->getParameter('eccube_html_dir').'/user_data'.$logoPath
+                $this->eccubeConfig->get('eccube_html_admin_dir').$logoPath,
+                $this->eccubeConfig->get('eccube_html_dir').'/user_data'.$logoPath
             );
         }
 
