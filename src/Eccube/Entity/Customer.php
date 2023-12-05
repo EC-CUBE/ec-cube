@@ -1218,5 +1218,10 @@ if (!class_exists('\Eccube\Entity\Customer')) {
                 $this->password,
                 $this->salt) = unserialize($serialized);
         }
+
+        public function getUserIdentifier(): string
+        {
+            return $this->email;
+        }
     }
 }

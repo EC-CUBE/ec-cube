@@ -600,5 +600,10 @@ if (!class_exists('\Eccube\Entity\Member')) {
                 $this->password,
                 $this->salt) = unserialize($serialized);
         }
+
+        public function getUserIdentifier(): string
+        {
+            return $this->email;
+        }
     }
 }
