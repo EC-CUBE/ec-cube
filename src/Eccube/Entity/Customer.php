@@ -312,7 +312,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * {@inheritdoc}
          */
-        public function getRoles()
+        public function getRoles(): array
         {
             return ['ROLE_USER'];
         }
