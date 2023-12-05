@@ -86,4 +86,10 @@ class CustomerProvider implements UserProviderInterface
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
     }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        // FIXME deprecated
+        return $this->loadUserByUsername($identifier);
+    }
 }

@@ -83,4 +83,10 @@ class MemberProvider implements UserProviderInterface
     {
         return Member::class === $class || is_subclass_of($class, Member::class);
     }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        // FIXME deprecated
+        return $this->loadUserByUsername($identifier);
+    }
 }
