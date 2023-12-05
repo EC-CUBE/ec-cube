@@ -15,29 +15,30 @@ namespace Eccube\Security\Http\Authentication;
 
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\HttpUtils;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 
-class EccubeLogoutSuccessHandler extends DefaultLogoutSuccessHandler
+class EccubeLogoutSuccessHandler implements EventSubscriberInterface
 {
     /** @var Context */
     protected $context;
 
-    public function __construct(HttpUtils $httpUtils, Context $context, $targetUrl = '/')
+    public function __construct(Context $context)
     {
-        parent::__construct($httpUtils, $targetUrl);
         $this->context = $context;
     }
 
-    public function onLogoutSuccess(Request $request)
+    public function onLogout(LogoutEvent $event)
     {
-        $response = parent::onLogoutSuccess($request);
-
         if ($this->context->isAdmin()) {
+            $response = $event->getResponse();
             $response->headers->clearCookie(SystemService::MAINTENANCE_TOKEN_KEY);
         }
+    }
 
-        return $response;
+    public static function getSubscribedEvents()
+    {
+        return [LogoutEvent::class => 'onLogout'];
     }
 }
