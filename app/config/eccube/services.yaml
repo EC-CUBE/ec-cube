@@ -222,3 +222,8 @@ services:
             - '%eccube_auth_magic%'
             - '%eccube_auth_type%'
             - '%eccube_password_hash_algos%'
+
+    Eccube\Controller\ShoppingController:
+        arguments:
+            $serviceContainer: !tagged_locator { tag: 'eccube_payment_method' }
+        tags: [ 'controller.service_arguments' ]
