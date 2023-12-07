@@ -22,9 +22,9 @@ use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -46,9 +46,9 @@ class ForgotController extends AbstractController
     protected $customerRepository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var UserPasswordHasherInterface
      */
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     /**
      * ForgotController constructor.
@@ -56,18 +56,18 @@ class ForgotController extends AbstractController
      * @param ValidatorInterface $validator
      * @param MailService $mailService
      * @param CustomerRepository $customerRepository
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param UserPasswordHasherInterface $encoderFactory
      */
     public function __construct(
         ValidatorInterface $validator,
         MailService $mailService,
         CustomerRepository $customerRepository,
-        EncoderFactoryInterface $encoderFactory
+        UserPasswordHasherInterface $passwordHasher
     ) {
         $this->validator = $validator;
         $this->mailService = $mailService;
         $this->customerRepository = $customerRepository;
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -207,18 +207,9 @@ class ForgotController extends AbstractController
                 ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
             if ($Customer) {
                 // パスワードの発行・更新
-                $encoder = $this->encoderFactory->getEncoder($Customer);
-                $pass = $form->get('password')->getData();
-                $Customer->setPassword($pass);
+                $password = $this->passwordHasher->hashPassword($Customer, $form->get('password')->getData());
+                $Customer->setPassword($password);
 
-                // 発行したパスワードの暗号化
-                if ($Customer->getSalt() === null) {
-                    $Customer->setSalt($this->encoderFactory->getEncoder($Customer)->createSalt());
-                }
-                $encPass = $encoder->encodePassword($pass, $Customer->getSalt());
-
-                // パスワードを更新
-                $Customer->setPassword($encPass);
                 // リセットキーをクリア
                 $Customer->setResetKey(null);
 

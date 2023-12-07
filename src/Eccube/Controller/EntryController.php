@@ -27,11 +27,11 @@ use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -63,9 +63,9 @@ class EntryController extends AbstractController
     protected $customerRepository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var UserPasswordHasherInterface
      */
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     /**
      * @var TokenStorageInterface
@@ -90,7 +90,7 @@ class EntryController extends AbstractController
      * @param MailService $mailService
      * @param BaseInfoRepository $baseInfoRepository
      * @param CustomerRepository $customerRepository
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param PasswordHasher $passwordHasher
      * @param ValidatorInterface $validatorInterface
      * @param TokenStorageInterface $tokenStorage
      */
@@ -100,7 +100,7 @@ class EntryController extends AbstractController
         MailService $mailService,
         BaseInfoRepository $baseInfoRepository,
         CustomerRepository $customerRepository,
-        EncoderFactoryInterface $encoderFactory,
+        UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface $validatorInterface,
         TokenStorageInterface $tokenStorage,
         PageRepository $pageRepository
@@ -109,7 +109,7 @@ class EntryController extends AbstractController
         $this->mailService = $mailService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->customerRepository = $customerRepository;
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasher = $passwordHasher;
         $this->recursiveValidator = $validatorInterface;
         $this->tokenStorage = $tokenStorage;
         $this->cartService = $cartService;
@@ -168,13 +168,9 @@ class EntryController extends AbstractController
                 case 'complete':
                     log_info('会員登録開始');
 
-                    $encoder = $this->encoderFactory->getEncoder($Customer);
-                    $salt = $encoder->createSalt();
-                    $password = $encoder->encodePassword($Customer->getPlainPassword(), $salt);
+                    $password = $this->passwordHasher->hashPassword($Customer, $Customer->getPlainPassword());
                     $secretKey = $this->customerRepository->getUniqueSecretKey();
-
                     $Customer
-                        ->setSalt($salt)
                         ->setPassword($password)
                         ->setSecretKey($secretKey)
                         ->setPoint(0);
