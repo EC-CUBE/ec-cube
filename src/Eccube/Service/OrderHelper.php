@@ -37,16 +37,12 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Session\Session;
 use Eccube\Util\StringUtil;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderHelper
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * @var string 非会員情報を保持するセッションのキー
      */
@@ -119,8 +115,17 @@ class OrderHelper
      */
     protected $entityManager;
 
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
     public function __construct(
-        ContainerInterface $container,
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -130,9 +135,10 @@ class OrderHelper
         DeviceTypeRepository $deviceTypeRepository,
         PrefRepository $prefRepository,
         MobileDetect $mobileDetector,
-        Session $session
+        Session $session,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
     ) {
-        $this->container = $container;
         $this->orderRepository = $orderRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderItemTypeRepository = $orderItemTypeRepository;
@@ -143,6 +149,8 @@ class OrderHelper
         $this->prefRepository = $prefRepository;
         $this->mobileDetector = $mobileDetector;
         $this->session = $session;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -511,7 +519,7 @@ class OrderHelper
      */
     private function isGranted($attribute, $subject = null): bool
     {
-        return $this->container->get('security.authorization_checker')->isGranted($attribute, $subject);
+        return $this->authorizationChecker->isGranted($attribute, $subject);
     }
 
     /**
@@ -519,7 +527,7 @@ class OrderHelper
      */
     private function getUser(): ?UserInterface
     {
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 

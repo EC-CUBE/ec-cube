@@ -59,6 +59,8 @@ services:
 
     Eccube\Service\Composer\ComposerServiceInterface:
         factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
+        arguments:
+            $container: !service_locator [ '@Eccube\Service\Composer\ComposerApiService' ]
 
     Eccube\Service\Composer\ComposerApiService:
         lazy: true
@@ -69,6 +71,8 @@ services:
         public: true
 
     Eccube\Service\PluginService:
+        arguments:
+            $container: !service_locator [ '@doctrine' ]
         lazy: true
         public: true
 
@@ -227,3 +231,7 @@ services:
         arguments:
             $serviceContainer: !tagged_locator { tag: 'eccube_payment_method' }
         tags: [ 'controller.service_arguments' ]
+
+    Eccube\Util\CacheUtil:
+        arguments:
+            $container: !tagged_locator { tag: 'cache.pool.clearer' }
