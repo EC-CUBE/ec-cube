@@ -140,7 +140,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
 class DummyCustomer implements UserInterface
 {
-    public function getRoles()
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
