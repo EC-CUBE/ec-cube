@@ -164,4 +164,10 @@ class DummyCustomer implements UserInterface
     {
         return;
     }
+
+    public function getUserIdentifier(): string
+    {
+        // FIXME deprecated
+        return $this->getUsername();
+    }
 }
