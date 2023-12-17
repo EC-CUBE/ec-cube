@@ -2,6 +2,9 @@ services:
     _defaults:
         public: true
 
+    session:
+        class: Eccube\Session\Session
+        autowire: true
     # テスト時はCsrfTokenManagerはMockを利用する
     security.csrf.token_manager:
         class: Eccube\Tests\Mock\CsrfTokenManagerMock
