@@ -24,7 +24,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->createSession();
+        // TODO このタイミングだとセッションは生成できないのでいったんコメントアウト
+        // $this->createSession();
     }
 
     protected function tearDown(): void
