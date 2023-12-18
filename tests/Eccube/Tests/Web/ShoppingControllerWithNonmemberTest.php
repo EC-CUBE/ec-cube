@@ -161,7 +161,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->markTestIncomplete('Shipping edit is not implemented.');
 
         $faker = $this->getFaker();
-        $client = $this->createClient();
+        $client = $this->client;
 
         $this->scenarioCartIn($client);
         $formData = $this->createNonmemberFormData();
@@ -218,7 +218,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->markTestIncomplete('Shipping edit is not implemented.');
 
         $faker = $this->getFaker();
-        $client = $this->createClient();
+        $client = $this->client;
 
         $this->scenarioCartIn($client);
         $formData = $this->createNonmemberFormData();
