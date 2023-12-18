@@ -76,7 +76,7 @@ class EccubeConfig implements \ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        $this->set($offset, $value);
+        throw new \Exception();
     }
 
     /**
