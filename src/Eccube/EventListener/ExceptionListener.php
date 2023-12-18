@@ -105,7 +105,7 @@ class ExceptionListener implements EventSubscriberInterface
             $content = $title;
         }
 
-        $event->setResponse(Response::create($content, $statusCode));
+        $event->setResponse(new Response($content, $statusCode));
     }
 
     /**

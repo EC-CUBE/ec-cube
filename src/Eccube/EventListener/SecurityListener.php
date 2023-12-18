@@ -79,7 +79,7 @@ class SecurityListener implements EventSubscriberInterface
     /**
      * @param AuthenticationFailureEvent $event
      */
-    public function onAuthenticationFailure(AuthenticationFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));

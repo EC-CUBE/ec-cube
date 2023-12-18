@@ -59,17 +59,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      */
     public function loginTo(UserInterface $User)
     {
-        $firewall = 'admin';
-        $role = ['ROLE_ADMIN'];
-        if ($User instanceof \Eccube\Entity\Customer) {
-            $firewall = 'customer';
-            $role = ['ROLE_USER'];
-        }
-        $token = new UsernamePasswordToken($User, $firewall, $role);
-
-        $session = $this->client->getContainer()->get('session');
-        $session->set('_security_'.$firewall, serialize($token));
-        $session->save();
+        $this->client->loginUser($User);
 
         return $this->client;
     }

@@ -16,10 +16,12 @@ namespace Eccube\Command;
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Member;
 use Eccube\Security\PasswordHasher\PasswordHasher;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
@@ -31,11 +33,11 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
     protected $eccubeConfig;
 
     /**
-     * @var PasswordHasher
+     * @var UserPasswordHasherInterface
      */
     protected $passwordHasher;
 
-    public function __construct(ManagerRegistry $registry, EccubeConfig $eccubeConfig, PasswordHasher $passwordHasher)
+    public function __construct(ManagerRegistry $registry, EccubeConfig $eccubeConfig, UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct($registry);
         $this->eccubeConfig = $eccubeConfig;
@@ -73,7 +75,7 @@ EOF
         $login_id = env('ECCUBE_ADMIN_USER', 'admin');
         $login_password = env('ECCUBE_ADMIN_PASS', 'password');
 
-        $password = $this->passwordHasher->hash($login_password);
+        $password = $this->passwordHasher->hashPassword(new Member(), $login_password);
 
         $conn = $em->getConnection();
         $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
@@ -84,7 +86,7 @@ EOF
             'id' => $member_id,
             'login_id' => $login_id,
             'password' => $password,
-            'salt' => 'n/a',
+            //'salt' => 'n/a',
             'work_id' => 1,
             'authority_id' => 0,
             'creator_id' => 1,

@@ -16,7 +16,7 @@ framework:
         gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true
         cookie_samesite: none
-        cookie_secure: auto
+        cookie_secure: true
 
     # When using the HTTP Cache, ESI allows to render page fragments separately
     # and with different cache configurations for each fragment
