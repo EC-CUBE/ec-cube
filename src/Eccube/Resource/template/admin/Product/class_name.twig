@@ -139,7 +139,10 @@ file that was distributed with this source code.
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" class="row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
+                                        <div class="col-auto align-self-center">
+                                            <span>{{ 'admin.product.class_name'|trans }}</span>
+                                            <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
                                         <div class="col-3 me-2">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name) }}
