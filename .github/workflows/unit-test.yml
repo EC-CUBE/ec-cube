@@ -59,10 +59,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-
+          extensions: :xdebug
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
