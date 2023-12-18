@@ -36,6 +36,14 @@ npm ci # 初回およびpackage-lock.jsonに変更があったとき
 npm run build # Sass のビルド
 ```
 
+[`docker compose` を使用している場合](https://doc4.ec-cube.net/quickstart/docker_compose_install)は以下のコマンドを実行してください
+``` shell
+# 初回およびpackage-lock.jsonに変更があったとき
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npm ci
+# Sass のビルド
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npm run build
+```
+
 ### JavaScript のビルド方法
 
 フロントエンドで使用する JavaScript のライブラリは npm で管理されています。
@@ -55,6 +63,16 @@ JavaScript ライブラリのみをビルドしたい場合は以下でも可能
 ```shell
 npx webpack
 ```
+
+[`docker compose` を使用している場合](https://doc4.ec-cube.net/quickstart/docker_compose_install)は以下のコマンドを実行してください
+``` shell
+# 初回およびpackage-lock.jsonに変更があったとき
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npm ci
+# Sass のビルド
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npx webpack
+# JavaScript ライブラリのみのビルド
+```
+
 
 ### 動作確認環境
 
