@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
@@ -56,6 +57,11 @@ class AbstractController extends Controller
      * @var Session
      */
     protected $session;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
 
     /**
      * @param EccubeConfig $eccubeConfig
@@ -109,6 +115,16 @@ class AbstractController extends Controller
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @param RouterInterface $router
+     * @return void
+     * @required
+     */
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
     }
 
     public function addSuccess($message, $namespace = 'front')
@@ -230,7 +246,7 @@ class AbstractController extends Controller
      */
     public function forwardToRoute($route, array $path = [], array $query = [])
     {
-        $Route = $this->get('router')->getRouteCollection()->get($route);
+        $Route = $this->router->getRouteCollection()->get($route);
         if (!$Route) {
             throw new RouteNotFoundException(sprintf('The named route "%s" as such route does not exist.', $route));
         }
