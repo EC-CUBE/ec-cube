@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -59,7 +60,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      */
     public function loginTo(UserInterface $User)
     {
-        $this->client->loginUser($User);
+        $firewallContext = $User instanceof Customer ? 'customer' : 'admin';
+        $this->client->loginUser($User, $firewallContext);
 
         return $this->client;
     }
