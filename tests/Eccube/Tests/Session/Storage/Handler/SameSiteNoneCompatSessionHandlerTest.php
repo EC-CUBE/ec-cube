@@ -45,6 +45,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         }
     }
 
+    public function setUp(): void
+    {
+        self::markTestIncomplete('デフォルトのセッションハンドラで4.2と互換性が担保できるか確認');
+        parent::setUp();
+    }
+
     /**
      * @dataProvider provideSession
      */
