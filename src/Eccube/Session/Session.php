@@ -14,11 +14,13 @@
 namespace Eccube\Session;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 
-class Session implements SessionInterface
+class Session implements SessionInterface, FlashBagAwareSessionInterface
 {
     private RequestStack $requestStack;
 
@@ -125,5 +127,10 @@ class Session implements SessionInterface
     public function getMetadataBag(): MetadataBag
     {
         return $this->getSession()->getMetadataBag();
+    }
+
+    public function getFlashBag(): FlashBagInterface
+    {
+        return $this->getSession()->getFlashBag();
     }
 }
