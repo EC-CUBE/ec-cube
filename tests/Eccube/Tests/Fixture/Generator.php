@@ -57,6 +57,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Fixture Object Generator.
@@ -73,9 +74,9 @@ class Generator
     protected $entityManager;
 
     /**
-     * @var PasswordEncoder
+     * @var UserPasswordHasherInterface
      */
-    protected $passwordEncoder;
+    protected $passwordHasher;
 
     /**
      * @var MemberRepository
@@ -159,7 +160,7 @@ class Generator
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        PasswordEncoder $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
         CategoryRepository $categoryRepository,
         CustomerRepository $customerRepository,
@@ -178,7 +179,7 @@ class Generator
     ) {
         $this->locale = $locale;
         $this->entityManager = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
         $this->categoryRepository = $categoryRepository;
         $this->customerRepository = $customerRepository;
@@ -218,14 +219,12 @@ class Generator
         $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
         $Creator = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
 
-        $salt = bin2hex(openssl_random_pseudo_bytes(5));
         $password = 'password';
-        $password = $this->passwordEncoder->encodePassword($password, $salt);
+        $password = $this->passwordHasher->hashPassword($Member, $password);
 
         $Member
             ->setLoginId($loginId)
             ->setName($username)
-            ->setSalt($salt)
             ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
@@ -258,8 +257,7 @@ class Generator
         $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
         $Job = $this->entityManager->find(\Eccube\Entity\Master\Job::class, $faker->numberBetween(1, 18));
 
-        $salt = $this->passwordEncoder->createSalt();
-        $password = $this->passwordEncoder->encodePassword('password', $salt);
+        $password = $this->passwordHasher->hashPassword($Customer, 'password');
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -276,7 +274,6 @@ class Generator
             ->setSex($Sex)
             ->setJob($Job)
             ->setPassword($password)
-            ->setSalt($salt)
             ->setSecretKey($this->customerRepository->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME

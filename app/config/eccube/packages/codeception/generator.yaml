@@ -2,7 +2,7 @@ services:
   Eccube\Tests\Fixture\Generator:
     arguments:
       - '@doctrine.orm.default_entity_manager'
-      - '@Eccube\Security\Core\Encoder\PasswordEncoder'
+      - '@security.user_password_hasher'
       - '@Eccube\Repository\MemberRepository'
       - '@Eccube\Repository\CategoryRepository'
       - '@Eccube\Repository\CustomerRepository'
