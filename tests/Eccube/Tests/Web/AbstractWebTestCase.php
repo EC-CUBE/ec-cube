@@ -82,6 +82,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
             // get the session id from the session cookie if it exists
             $session->setId($cookie->getValue());
             $session->start();
+            $session->save();
         } else {
             // or create a new session id and a session cookie
             $session->start();
