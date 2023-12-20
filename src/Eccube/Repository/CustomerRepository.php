@@ -88,7 +88,9 @@ class CustomerRepository extends AbstractRepository
 
         $Customer = new \Eccube\Entity\Customer();
         $Customer
-            ->setStatus($CustomerStatus);
+            ->setStatus($CustomerStatus)
+            ->setSecretKey($this->getUniqueSecretKey())
+            ->setPoint(0);
 
         return $Customer;
     }

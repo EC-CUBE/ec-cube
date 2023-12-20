@@ -169,11 +169,7 @@ class EntryController extends AbstractController
                     log_info('会員登録開始');
 
                     $password = $this->passwordHasher->hashPassword($Customer, $Customer->getPlainPassword());
-                    $secretKey = $this->customerRepository->getUniqueSecretKey();
-                    $Customer
-                        ->setPassword($password)
-                        ->setSecretKey($secretKey)
-                        ->setPoint(0);
+                    $Customer->setPassword($password);
 
                     $this->entityManager->persist($Customer);
                     $this->entityManager->flush();
