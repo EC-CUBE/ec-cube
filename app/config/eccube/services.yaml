@@ -60,7 +60,8 @@ services:
     Eccube\Service\Composer\ComposerServiceInterface:
         factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
         arguments:
-            $container: !service_locator [ '@Eccube\Service\Composer\ComposerApiService' ]
+            $container: !service_locator
+                Eccube\Service\Composer\ComposerApiService: '@Eccube\Service\Composer\ComposerApiService'
 
     Eccube\Service\Composer\ComposerApiService:
         lazy: true
@@ -72,7 +73,9 @@ services:
 
     Eccube\Service\PluginService:
         arguments:
-            $container: !service_locator [ '@doctrine' ]
+            $container: !service_locator
+                doctrine: '@doctrine'
+                Doctrine\Bundle\DoctrineBundle\Registry: '@doctrine'
         lazy: true
         public: true
 
