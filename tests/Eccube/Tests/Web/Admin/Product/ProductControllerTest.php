@@ -526,7 +526,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterNoStock()
     {
-        $this->expectOutputRegex('/Product with stock 01/');
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
         /** @var $ProductClass ProductClass */
@@ -561,6 +560,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
         $this->client->request('GET', $csvExportUrl);
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/Product with stock 01/', $content);
     }
 
     /**
@@ -568,7 +570,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterPrivate()
     {
-        $this->expectOutputRegex('/Product with status 01/');
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
@@ -600,6 +601,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
         $this->client->request('GET', $csvExportUrl);
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/Product with status 01/', $content);
     }
 
     /**
@@ -607,7 +611,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterPublic()
     {
-        $this->expectOutputRegex('/[Product with status 01]{1}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
@@ -639,6 +642,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
         $this->client->request('GET', $csvExportUrl);
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/[Product with status 01]{1}/', $content);
     }
 
     /**
@@ -718,13 +724,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
-        $this->expectOutputRegex('/Product name [10-1]/');
         $csvExportUrl = $crawler->filter('.btn-ec-regular')->selectLink('CSVダウンロード')->link()->getUri();
         $this->client->request('GET', $csvExportUrl);
 
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/Product name [10-1]/', $content);
+
         // get list product after call admin_product_export function
-        $data = ob_get_contents();
-        $arr = explode("\n", $data);
+        $arr = explode("\n", $content);
         // unset header
         unset($arr[0]);
         $actualIds = [];

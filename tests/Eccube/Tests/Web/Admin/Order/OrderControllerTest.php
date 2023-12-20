@@ -294,12 +294,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
-        $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
-
         $this->client->request(
             'GET',
             $this->generateUrl('admin_order_export_order')
         );
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
     }
 
     /**
