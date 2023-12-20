@@ -277,7 +277,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '有効な値ではありません。';
+        $this->expected = '選択した値は無効です。';
         $this->actual = $crawler->filter('p.ec-errorMessage')->text();
         $this->verify();
     }
