@@ -15,8 +15,9 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
@@ -24,9 +25,6 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // TODO このタイミングだとセッションは生成できないのでいったんコメントアウト
-        // $this->createSession();
     }
 
     protected function tearDown(): void
@@ -66,14 +64,39 @@ abstract class AbstractWebTestCase extends EccubeTestCase
         return $this->client;
     }
 
-    public function createSession()
+    /**
+     * https://github.com/symfony/symfony/discussions/46961
+     *
+     * @param KernelBrowser $client
+     * @return Session
+     */
+    public function createSession(KernelBrowser $client): Session
     {
-        // セッションが途中できれてしまうような事象が発生するため
-        // https://github.com/symfony/symfony/issues/13450#issuecomment-353745790
-        $session = $this->client->getContainer()->get('session');
-        $session->set('dummy', 'dummy');
-        $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
+        $cookie = $client->getCookieJar()->get('MOCKSESSID');
+
+        // create a new session object
+        $container = static::getContainer();
+        $session = $container->get('session.factory')->createSession();
+
+        if ($cookie) {
+            // get the session id from the session cookie if it exists
+            $session->setId($cookie->getValue());
+            $session->start();
+        } else {
+            // or create a new session id and a session cookie
+            $session->start();
+            $session->save();
+
+            $sessionCookie = new Cookie(
+                $session->getName(),
+                $session->getId(),
+                null,
+                null,
+                'localhost',
+            );
+            $client->getCookieJar()->set($sessionCookie);
+        }
+
+        return $session;
     }
 }

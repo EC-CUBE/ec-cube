@@ -69,11 +69,15 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        static::getContainer()->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+
+        $session = $this->createSession($this->client);
+        $session->set('eccube.front.shopping.order.id', $Order->getId());
+        $session->save();
+
         $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertNull(static::getContainer()->get('session')->get('eccube.front.shopping.order.id'));
+        $this->assertNull($session->get('eccube.front.shopping.order.id'));
     }
 
 
@@ -104,7 +108,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 1つの新着情報を保存した後にホームページにアクセスする。
         // Request Homepage after saving a single news item
-        static::getContainer()->get('session')->set('eccube.front.shopping.order.id', $Order->getId());
+        $session = $this->createSession($this->client);
+        $session->set('eccube.front.shopping.order.id', $Order->getId());
+        $session->save();
         $crawler = $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
         // <div>タグから危険なid属性が削除されていることを確認する。
