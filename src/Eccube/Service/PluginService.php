@@ -343,7 +343,6 @@ class PluginService
                         $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
-                        $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
                     }
                 }
 
