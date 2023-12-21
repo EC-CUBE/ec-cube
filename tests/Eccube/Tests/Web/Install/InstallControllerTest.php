@@ -21,8 +21,10 @@ use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @group cache-clear-install
@@ -70,18 +72,22 @@ class InstallControllerTest extends AbstractWebTestCase
         }
 
         $formFactory = static::getContainer()->get('form.factory');
-        $encoder = static::getContainer()->get(PasswordEncoder::class);
+        $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
 
-        $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($encoder, $cacheUtil);
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+        $this->session = new \Eccube\Session\Session($requestStack);
+        $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
         $this->controller->setSession($this->session);
 
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
-        $propContainer->setValue($this->controller, self::$container);
+        $propContainer->setValue($this->controller, self::getContainer());
 
         $this->request = $this->createMock(Request::class);
     }

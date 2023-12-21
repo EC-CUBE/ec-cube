@@ -26,6 +26,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\Customer;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
@@ -39,6 +40,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InstallController extends AbstractController
@@ -89,18 +91,18 @@ class InstallController extends AbstractController
     ];
 
     /**
-     * @var PasswordEncoder
+     * @var UserPasswordHasherInterface
      */
-    protected $encoder;
+    protected $passwordHasher;
 
     /**
      * @var CacheUtil
      */
     protected $cacheUtil;
 
-    public function __construct(PasswordEncoder $encoder, CacheUtil $cacheUtil)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, CacheUtil $cacheUtil)
     {
-        $this->encoder = $encoder;
+        $this->passwordHasher = $passwordHasher;
         $this->cacheUtil = $cacheUtil;
     }
 
@@ -823,9 +825,7 @@ class InstallController extends AbstractController
     {
         $conn->beginTransaction();
         try {
-            $salt = StringUtil::random(32);
-            $this->encoder->setAuthMagic($data['auth_magic']);
-            $password = $this->encoder->encodePassword($data['login_pass'], $salt);
+            $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
                 ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
@@ -853,7 +853,6 @@ class InstallController extends AbstractController
                 'id' => $member_id,
                 'login_id' => $data['login_id'],
                 'password' => $password,
-                'salt' => $salt,
                 'work_id' => 1,
                 'authority_id' => 0,
                 'creator_id' => 1,
