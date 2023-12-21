@@ -286,7 +286,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -353,7 +353,7 @@ EOD;
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -556,7 +556,7 @@ EOD;
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
