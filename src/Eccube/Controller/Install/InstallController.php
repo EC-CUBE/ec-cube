@@ -19,6 +19,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
@@ -254,7 +255,7 @@ class InstallController extends AbstractController
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
-    public function step3(Request $request)
+    public function step3(Request $request, EntityManagerInterface $entityManager)
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -265,7 +266,7 @@ class InstallController extends AbstractController
         // 再インストールの場合は環境変数から復旧
         if ($this->isInstalled()) {
             // ショップ名/メールアドレス
-            $conn = $this->entityManager->getConnection();
+            $conn = $entityManager->getConnection();
             $stmt = $conn->query('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
             $row = $stmt->fetch();
             $sessionData['shop_name'] = $row['shop_name'];

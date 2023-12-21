@@ -123,7 +123,8 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep3()
     {
-        $this->actual = $this->controller->step3($this->request);
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $this->actual = $this->controller->step3($this->request, $entityManager);
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
         $this->assertInstanceOf(Request::class, $this->actual['request']);
