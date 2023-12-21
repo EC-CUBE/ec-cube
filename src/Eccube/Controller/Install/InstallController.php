@@ -882,23 +882,20 @@ class InstallController extends AbstractController
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
             $stmt->bindParam(':login_id', $data['login_id']);
             $row = $stmt->executeQuery();
-            $this->encoder->setAuthMagic($data['auth_magic']);
-            $password = $this->encoder->encodePassword($data['login_pass'], $salt);
+            $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row) {
                 // 同一の管理者IDであればパスワードのみ更新
-                $sth = $conn->prepare('UPDATE dtb_member set password = :password, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;');
+                $sth = $conn->prepare('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;');
                 $sth->execute([
                     ':password' => $password,
-                    ':salt' => $salt,
                     ':login_id' => $data['login_id'],
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, salt, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password , :salt , '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
+                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
                 $sth->execute([
                     ':login_id' => $data['login_id'],
                     ':password' => $password,
-                    ':salt' => $salt,
                 ]);
             }
             $stmt = $conn->prepare('UPDATE dtb_base_info set
