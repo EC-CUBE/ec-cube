@@ -93,16 +93,18 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.11025'
         run: |
-          vendor/bin/phpunit --group cache-clear
-          vendor/bin/phpunit --group cache-clear-install
-          vendor/bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
-          vendor/bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group cache-clear
+          php -c php.ini vendor/bin/phpunit --group cache-clear-install
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
       ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
       ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener を削除する
       ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
@@ -119,4 +121,6 @@ jobs:
           rm -r app/Plugin/*
           git checkout app/Plugin
           rm -r var/cache
-          vendor/bin/phpunit --group plugin-service
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group plugin-service
