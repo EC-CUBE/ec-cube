@@ -101,7 +101,7 @@
         "tecnickcom/tcpdf": "^6.2",
         "twig/extra-bundle": "^3.3",
         "twig/intl-extra": "^3.3",
-        "twig/twig": "^2.15",
+        "twig/twig": "^3.8",
         "vlucas/phpdotenv": "v5.4"
     },
     "require-dev": {
