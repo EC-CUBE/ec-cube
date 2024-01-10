@@ -36,6 +36,8 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      */
     public function __construct(\SessionHandlerInterface $handler)
     {
+        parent::__construct($handler);
+
         $this->handler = $handler;
 
         ini_set('session.cookie_secure', $this->getCookieSecure());
