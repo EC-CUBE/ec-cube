@@ -215,8 +215,6 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductFavoriteAddThroughLogin()
     {
-        $this->markTestIncomplete('後続のPHPUnitを走らせるためいったんスキップ');
-
         // お気に入り商品機能を有効化
         $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionFavoriteProduct(true);
