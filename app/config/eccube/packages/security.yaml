@@ -43,6 +43,7 @@ security:
                 interval: '%eccube_login_throttling_interval%'
             logout:
                 path: admin_logout
+                target: admin_login
         customer:
             pattern: ^/
             provider: customer_provider
