@@ -112,6 +112,9 @@ jobs:
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
 
+      - name: Install fonts
+        run: sudo apt install fonts-ipafont fonts-ipaexfont
+
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
