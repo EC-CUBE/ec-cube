@@ -75,6 +75,7 @@ services:
         arguments:
             $container: !service_locator
                 doctrine: '@doctrine'
+                doctrine.orm.entity_manager: '@doctrine'
                 Doctrine\Bundle\DoctrineBundle\Registry: '@doctrine'
         lazy: true
         public: true
