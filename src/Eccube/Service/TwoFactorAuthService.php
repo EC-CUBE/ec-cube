@@ -18,6 +18,7 @@ use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TwoFactorAuthService
@@ -38,9 +39,9 @@ class TwoFactorAuthService
     protected $eccubeConfig;
 
     /**
-     * @var UserPasswordHasherInterface
+     * @var PasswordHasherFactoryInterface
      */
-    protected $passwordHasher;
+    protected $passwordHasherFactory;
 
     /**
      * @var RequestStack
@@ -75,11 +76,11 @@ class TwoFactorAuthService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        UserPasswordHasherInterface $passwordHasher,
+        PasswordHasherFactoryInterface $passwordHasherFactory,
         RequestStack $requestStack
     ) {
         $this->eccubeConfig = $eccubeConfig;
-        $this->passwordHasher = $passwordHasher;
+        $this->passwordHasherFactory = $passwordHasherFactory;
         $this->requestStack = $requestStack;
         $this->request = $requestStack->getCurrentRequest();
         $this->tfa = new TwoFactorAuth();
@@ -103,13 +104,14 @@ class TwoFactorAuthService
     {
         if (($json = $this->request->cookies->get($this->cookieName))) {
             $configs = json_decode($json);
-            $encodedString = $this->passwordHasher->hashPassword($Member, $Member->getId().$Member->getTwoFactorAuthKey());
+            $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
+
             if (
                 $configs
                 && isset($configs->{$Member->getId()})
                 && ($config = $configs->{$Member->getId()})
                 && property_exists($config, 'key')
-                && $config->key === $encodedString
+                && $hasher->verify($config->key, $Member->getId().$Member->getTwoFactorAuthKey())
                 && (
                     $this->expire == 0
                     || (property_exists($config, 'date') && ($config->date && $config->date > date('U', strtotime('-'.$this->expire.' day'))))
@@ -129,7 +131,8 @@ class TwoFactorAuthService
      */
     public function createAuthedCookie($Member)
     {
-        $encodedString = $this->passwordHasher->hashPassword($Member, $Member->getId().$Member->getTwoFactorAuthKey());
+        $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
+        $encodedString = $hasher->hash($Member->getId().$Member->getTwoFactorAuthKey());
 
         $configs = json_decode('{}');
         if (($json = $this->request->cookies->get($this->cookieName))) {
