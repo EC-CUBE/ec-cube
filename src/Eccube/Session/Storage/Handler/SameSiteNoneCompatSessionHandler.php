@@ -40,9 +40,11 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 
         $this->handler = $handler;
 
-        ini_set('session.cookie_secure', $this->getCookieSecure());
-        ini_set('session.cookie_samesite', $this->getCookieSameSite());
-        ini_set('session.cookie_path', $this->getCookiePath());
+        if (!headers_sent()) {
+            ini_set('session.cookie_secure', $this->getCookieSecure());
+            ini_set('session.cookie_samesite', $this->getCookieSameSite());
+            ini_set('session.cookie_path', $this->getCookiePath());
+        }
     }
 
     /**
