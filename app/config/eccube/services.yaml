@@ -75,8 +75,11 @@ services:
         arguments:
             $container: !service_locator
                 doctrine: '@doctrine'
-                doctrine.orm.entity_manager: '@doctrine'
-                Doctrine\Bundle\DoctrineBundle\Registry: '@doctrine'
+                Doctrine\Common\Persistence\ManagerRegistry: '@doctrine'
+                Doctrine\Persistence\ManagerRegistry: '@doctrine'
+                doctrine.orm.default_entity_manager: '@doctrine.orm.default_entity_manager'
+                doctrine.orm.entity_manager: '@doctrine.orm.default_entity_manager'
+                Doctrine\ORM\EntityManagerInterface: '@doctrine.orm.default_entity_manager'
         lazy: true
         public: true
 
