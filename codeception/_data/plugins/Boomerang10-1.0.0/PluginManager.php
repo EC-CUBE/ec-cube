@@ -5,7 +5,7 @@ namespace Plugin\Boomerang10;
 use Doctrine\ORM\EntityManager;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\Boomerang\Entity\Bar;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {

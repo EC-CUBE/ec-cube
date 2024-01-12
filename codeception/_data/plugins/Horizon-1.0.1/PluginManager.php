@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\Horizon\Entity\Dash;
 use Plugin\Horizon\Repository\DashRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {

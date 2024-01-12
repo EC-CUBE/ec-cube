@@ -5,7 +5,7 @@ namespace Plugin\Emperor;
 use Doctrine\ORM\EntityManager;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\Emperor\Entity\Bar;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
