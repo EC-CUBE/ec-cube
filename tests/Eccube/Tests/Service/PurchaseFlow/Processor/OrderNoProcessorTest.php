@@ -69,6 +69,7 @@ class OrderNoProcessorTest extends EccubeTestCase
             ['{random_alnum}', '/^123$/'],
             ['{random_alnum,1}', '/^[[:alnum:]]{1}$/'],
             ['{random_alnum,10}', '/^[[:alnum:]]{10}$/'],
+            ['{random_alpha,10}', '/^[[:alpha:]]{10}$/'],
             ['order_no', '/order_no/'],
             ['{hoge}', '/123/'],
             ['ORDER_{yy}_{mm}_{dd}_{id,5}_{random,5}_{random_alnum,10}',
