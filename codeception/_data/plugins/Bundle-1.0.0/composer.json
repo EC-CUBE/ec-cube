@@ -7,6 +7,7 @@
     "ec-cube/plugin-installer": "^2.0",
     "league/oauth2-server-bundle": "^0.5",
     "nyholm/psr7": "^1.2",
+    "php-http/message-factory": "*",
     "webonyx/graphql-php": "^14.0"
   },
   "extra": {
