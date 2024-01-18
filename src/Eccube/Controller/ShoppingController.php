@@ -40,6 +40,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -666,6 +667,12 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping_error');
         }
 
+        $Customer = $this->getUser();
+        $addressCurrNum = count($Customer->getCustomerAddresses());
+        $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
+        if ($addressCurrNum >= $addressMax) {
+            throw new NotFoundHttpException();
+        }
         $CustomerAddress = new CustomerAddress();
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // ログイン時は会員と紐付け
