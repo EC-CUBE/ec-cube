@@ -26,8 +26,6 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     private $doDestroy;
     /** @var string */
     private $sessionName;
-    /** @var string|null */
-    private $prefetchData;
     /** @var string */
     private $newSessionId;
 
@@ -95,9 +93,6 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     #[\ReturnTypeWillChange]
     public function destroy($sessionId): bool
     {
-        if (\PHP_VERSION_ID < 70000) {
-            $this->prefetchData = null;
-        }
         if (!headers_sent() && filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN)) {
             if (!$this->sessionName) {
                 throw new \LogicException(sprintf('Session name cannot be empty, did you forget to call "parent::open()" in "%s"?.', \get_class($this)));
@@ -126,20 +121,16 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
                     header($h, false);
                 }
             } else {
-                if (\PHP_VERSION_ID < 70300) {
-                    setcookie($this->sessionName, '', 0, ini_get('session.cookie_path'), ini_get('session.cookie_domain'), filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN), filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN));
-                } else {
-                    setcookie($this->sessionName, '',
-                              [
-                                  'expires' => 0,
-                                  'path' => $this->getCookiePath(),
-                                  'domain' => ini_get('session.cookie_domain'),
-                                  'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
-                                  'httponly' => filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN),
-                                  'samesite' => $this->getCookieSameSite(),
-                              ]
-                    );
-                }
+                setcookie($this->sessionName, '',
+                    [
+                      'expires' => 0,
+                      'path' => $this->getCookiePath(),
+                      'domain' => ini_get('session.cookie_domain'),
+                      'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
+                      'httponly' => filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN),
+                      'samesite' => $this->getCookieSameSite(),
+                    ]
+                );
             }
         }
 
@@ -178,7 +169,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      */
     public function getCookieSameSite()
     {
-        if ($this->shouldSendSameSiteNone() && \PHP_VERSION_ID >= 70300 && $this->getCookieSecure()) {
+        if ($this->shouldSendSameSiteNone() && $this->getCookieSecure()) {
             return Cookie::SAMESITE_NONE;
         }
 
@@ -190,12 +181,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      */
     public function getCookiePath()
     {
-        $cookiePath = env('ECCUBE_COOKIE_PATH', '/');
-        if ($this->shouldSendSameSiteNone() && \PHP_VERSION_ID < 70300 && $this->getCookieSecure()) {
-            return $cookiePath.'; SameSite='.Cookie::SAMESITE_NONE;
-        }
-
-        return $cookiePath;
+        return env('ECCUBE_COOKIE_PATH', '/');
     }
 
     /**
