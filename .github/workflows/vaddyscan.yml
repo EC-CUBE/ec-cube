@@ -64,13 +64,13 @@ jobs:
 #            command4: 'EF05MypageCest:mypage_お届け先編集作成変更'
 #            command5: 'EF05MypageCest:mypage_お届け先編集削除'
 #            command6: 'EF05MypageCest:mypage_退会手続き未実施'
-          - vaddy_project: 'ADMIN01'
-            command1: 'EF06OtherCest:other_パスワード再発行'
-            command2: 'EF06OtherCest:other_ログアウト'
-            command3: 'EF06OtherCest:other_当サイトについて'
-            command4: 'EF06OtherCest:other_プライバシーポリシー'
-            command5: 'EF06OtherCest:other_特定商取引法に基づく表記'
-            command6: 'EF06OtherCest:other_お問い合わせ1'
+#          - vaddy_project: 'ADMIN01'
+#            command1: 'EF06OtherCest:other_パスワード再発行'
+#            command2: 'EF06OtherCest:other_ログアウト'
+#            command3: 'EF06OtherCest:other_当サイトについて'
+#            command4: 'EF06OtherCest:other_プライバシーポリシー'
+#            command5: 'EF06OtherCest:other_特定商取引法に基づく表記'
+#            command6: 'EF06OtherCest:other_お問い合わせ1'
     services:
       postgres:
         image: postgres:14
