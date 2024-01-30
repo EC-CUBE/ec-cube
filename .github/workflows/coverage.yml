@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.1 ]
+        php: [ 8.3 ]
         db: [ pgsql ]
         include:
           - db: pgsql
@@ -47,7 +47,7 @@ jobs:
 
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php8.1-pcov
+          sudo apt-fast install -y php8.3-pcov
           sudo phpenmod -s cli pcov
 
       - name: Initialize Composer
@@ -70,7 +70,10 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
         continue-on-error: true
-        run: php -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+        run: |
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v2
@@ -83,7 +86,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.1 ]
+        php: [ 8.3 ]
         db: [ pgsql ]
         group: [ admin01, admin02, admin03, front, installer ]
         include:
@@ -134,11 +137,22 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          TRUSTED_HOSTS: '127.0.0.1,localhost'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
+          echo "DATABASE_URL=${DATABASE_URL}" >> .env
+          echo "DATABASE_SERVER_VERSION=${DATABASE_SERVER_VERSION}" >> .env
+          echo "MAILER_DSN=${MAILER_DSN}" >> .env
+          echo "ECCUBE_PACKAGE_API_URL=${ECCUBE_PACKAGE_API_URL}" >> .env
+          echo "TRUSTED_HOSTS=${TRUSTED_HOSTS}" >> .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
+
+      - name: Install fonts
+        run: sudo apt install fonts-ipafont fonts-ipaexfont
 
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
@@ -160,10 +174,9 @@ jobs:
             (cd codeception/_data/plugins/$d; tar zcf ../../../../repos/${d}.tgz *)
           done
 
-
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php8.1-pcov
+          sudo apt-fast install -y php8.3-pcov
           sudo phpenmod -s cli pcov
 
       - name: Setup codeception
@@ -173,21 +186,10 @@ jobs:
           sed -i "7a include __DIR__.'/c3.php';" index.php
 
       - name: Start PHP Development Server
-        env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 &
+        run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception
         env:
-          APP_ENV: ${{ matrix.app_env }}
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
         continue-on-error: true
