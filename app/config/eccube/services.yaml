@@ -80,6 +80,7 @@ services:
                 doctrine.orm.default_entity_manager: '@doctrine.orm.default_entity_manager'
                 doctrine.orm.entity_manager: '@doctrine.orm.default_entity_manager'
                 Doctrine\ORM\EntityManagerInterface: '@doctrine.orm.default_entity_manager'
+                Eccube\Common\EccubeConfig: '@Eccube\Common\EccubeConfig'
         lazy: true
         public: true
 
