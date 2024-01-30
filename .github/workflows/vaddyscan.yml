@@ -1,0 +1,194 @@
+name: VAddy-test
+on: push
+jobs:
+  vaddy:
+    name: VAddy
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+#          - vaddy_project: 'ADMIN01'
+#            command1: 'EA03ProductCest'
+#            command2: 'EA05CustomerCest'
+#            command3: 'EA04OrderCest:order_個別出荷済みステータス変更'
+#            command4: 'EA04OrderCest:order_納品書の一括出力'
+#            command5: 'EA04OrderCest:order_受注メール通知'
+#            command6: 'EA04OrderCest:order_受注削除'
+#            command7: 'EA04OrderCest:order_受注CSVダウンロード'
+#            command8: 'EA04OrderCest:order_受注登録'
+#            command9: 'EA06ContentsManagementCest'
+#          - vaddy_project: 'ADMIN02'
+#            command1: 'EA04OrderCest:order_受注編集'
+#          - vaddy_project: 'FRONT'
+#            command1: '                 -x delivery -x basicsetting -x taxrule -x mailsetting -x csvsetting -x orderstatus -x pluginauth EA07BasicinfoCest'
+#            command2: '-x paymentmethod             -x basicsetting -x taxrule -x mailsetting -x csvsetting -x orderstatus -x pluginauth EA07BasicinfoCest'
+#            command3: '-x paymentmethod -x delivery                            -x mailsetting -x csvsetting -x orderstatus               EA07BasicinfoCest'
+#          - vaddy_project: 'ADMIN01'
+#            command1: '-x paymentmethod -x delivery -x basicsetting -x taxrule                              -x orderstatus -x pluginauth EA07BasicinfoCest'
+#            command2: '-x paymentmethod -x delivery -x basicsetting -x taxrule -x mailsetting -x csvsetting                -x pluginauth EA07BasicinfoCest'
+#          - vaddy_project: 'ADMIN02' // 時間オーバー
+#            command1: '-x admin -x plugin -x order'
+#          - vaddy_project: 'FRONT'
+#            command1: 'EF03OrderCest:order_ログインユーザ購入複数配送'
+#            command2: 'EF03OrderCest:order_ログインしてカートをマージ'
+#            command3: 'EF03OrderCest:order_カート数量減らす'
+#          - vaddy_project: 'ADMIN01'
+#            command1: 'EF03OrderCest:order_カート数量増やす'
+#            command2: 'EF03OrderCest:order_ゲスト購入情報変更'
+#          - vaddy_project: 'ADMIN02'
+#            command1: '-x admin -x front'
+#            command2: 'EA09ShippingCest'
+#          - vaddy_project: 'FRONT'
+#            command1: 'EF03OrderCest:order_ログインユーザ購入複数配送'
+#            command2: 'EF03OrderCest:order_ログインしてカートをマージ'
+#            command3: 'EF03OrderCest:order_カート数量減らす'
+#          - vaddy_project: 'ADMIN01'
+#            command1: 'EF03OrderCest:order_カート数量増やす'
+#            command2: 'EF03OrderCest:order_ゲスト購入情報変更'
+#          - vaddy_project: 'ADMIN02'
+#            command1: 'EA08SysteminfoCest'
+#          - vaddy_project: 'FRONT'
+#            command1: 'EF03OrderCest:order_ゲスト購入'
+#          - vaddy_project: 'ADMIN01'
+#            command1: 'EF01TopCest:topページ_初期表示'
+#            command2: 'EF02ProductCest:product_商品一覧ソート'
+#            command3: 'EF02ProductCest:product_商品詳細カート4'
+#          - vaddy_project: 'ADMIN02'
+#            command1: 'EF04CustomerCest:customer_会員登録正常'
+#            command2: 'EF04CustomerCest:customer_会員登録利用規約'
+#          - vaddy_project: 'FRONT'
+#            command1: 'EF05MypageCest:mypage_ご注文履歴詳細'
+#            command2: 'EF05MypageCest:mypage_お気に入り一覧'
+#            command3: 'EF05MypageCest:mypage_会員情報編集'
+#            command4: 'EF05MypageCest:mypage_お届け先編集作成変更'
+#            command5: 'EF05MypageCest:mypage_お届け先編集削除'
+#            command6: 'EF05MypageCest:mypage_退会手続き未実施'
+          - vaddy_project: 'ADMIN01'
+            command1: 'EF06OtherCest:other_パスワード再発行'
+            command2: 'EF06OtherCest:other_ログアウト'
+            command3: 'EF06OtherCest:other_当サイトについて'
+            command4: 'EF06OtherCest:other_プライバシーポリシー'
+            command5: 'EF06OtherCest:other_特定商取引法に基づく表記'
+            command6: 'EF06OtherCest:other_お問い合わせ1'
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: "Prepare"
+        uses: ./.github/workflows/vaddy/prepare
+        with:
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+          vaddy-user: "${{ secrets.VADDY_USER }}"
+          vaddy-auth-key: "${{ secrets.VADDY_AUTH_KEY }}"
+
+      - name: "Scan 1"
+        if: ${{ matrix.command1 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command1 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 2"
+        if: ${{ matrix.command2 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command2 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 3"
+        if: ${{ matrix.command3 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command3 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 4"
+        if: ${{ matrix.command4 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command4 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 5"
+        if: ${{ matrix.command5 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command5 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 6"
+        if: ${{ matrix.command6 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command6 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 7"
+        if: ${{ matrix.command7 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command7 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 8"
+        if: ${{ matrix.command8 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command8 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+      - name: "Scan 9"
+        if: ${{ matrix.command9 != '' }}
+        uses: ./.github/workflows/vaddy/scan
+        with:
+          command: "${{ matrix.command9 }}"
+          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+
+#      - name: VAddy private net logs
+#        if: ${{ always() }}
+#        working-directory: /tmp/go-vaddy-master/privatenet
+#        run: cat vaddy/*.txt

@@ -503,6 +503,7 @@ admin.common.move_to_confirm_move_only: Move
 admin.common.move_to_confirm_save_and_move: Save & Move
 admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
 admin.common.restrict_file_upload_info: 'If this feature is used infrequently, disabling it while not in use provides additional security. You can disable this feature by setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1.'
+admin.common.notice_maintenance_mode: 'Currently in maintenance mode.'
 
 
 # Labels related to entity

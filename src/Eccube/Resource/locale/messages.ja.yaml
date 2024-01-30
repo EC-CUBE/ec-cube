@@ -503,6 +503,7 @@ admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
 admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
 admin.common.restrict_file_upload_info: 'この機能の利用頻度が低い場合、使用しない間は無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定することで機能を無効化することが可能です。'
+admin.common.notice_maintenance_mode: '現在メンテナンスモード中です。'
 
 
 # エンティティに関連するラベル
