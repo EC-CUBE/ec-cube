@@ -115,6 +115,10 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('t')
+                    ->orderBy('t.sort_no', 'DESC');
+                },
             ])
             ->add('create_date_start', DateType::class, [
                 'label' => 'admin.common.create_date__start',

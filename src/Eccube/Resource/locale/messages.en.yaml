@@ -185,7 +185,7 @@ front.entry.complete_message__temporary: |
  Please complete your sign-up by clicking on the URL in the email.
 front.entry.complete_message__activated: |
  Your sign-up is completed.
- Enjoy your shopping!
+ Please login with your email address and password and enjoy shopping!
 
 #------------------------------------------------------------------------------------
 # Password Reset
@@ -255,7 +255,7 @@ front.mypage.reorder_message: '*Please note that the price has been changed when
 front.mypage.mail_not_found: No email found.
 front.mypage.mail_list: Email History
 front.mypage.customer_complete_message__title: Customer information has been updated
-front.mypage.customer_complete_message__body: Please login with your email address and password and enjoy shopping!
+front.mypage.customer_complete_message__body: Please continue your shopping!
 front.mypage.favorite_count: '%count% item(s) found in Favorites'
 front.mypage.favorite_not_found: No item found in Favorites.
 front.mypage.customer_address_count: '%count% items are registered in Delivery Addresses'
@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: You have canceled your membership
 front.mypage.withdraw_complete_message__body: |
  Thank you so much for supporting our store.
  We look forward to serving you again.
+front.mypage.customer.notify_title: Change customer information
+front.mypage.delivery.notify_title: Change delivery information
 
 #------------------------------------------------------------------------------------
 # Products
@@ -501,6 +503,7 @@ admin.common.move_to_confirm_move_only: Move
 admin.common.move_to_confirm_save_and_move: Save & Move
 admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
 admin.common.restrict_file_upload_info: 'If this feature is used infrequently, disabling it while not in use provides additional security. You can disable this feature by setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1.'
+admin.common.notice_maintenance_mode: 'Currently in maintenance mode.'
 
 
 # Labels related to entity
@@ -1139,6 +1142,7 @@ admin.setting.shop.shop.option_customer_activate: Temporary Customers
 admin.setting.shop.shop.option_mypage_order_status_display: Display order status in My Accounts
 admin.setting.shop.shop.option_favorite_product: Favorites
 admin.setting.shop.shop.option_remember_me: Auto Sign-in
+admin.setting.shop.shop.option_mail_notifier: mail notifier
 admin.setting.shop.shop.option_product: Product Settings
 admin.setting.shop.shop.nostock_hidden: Hide out-of-stock products
 admin.setting.shop.shop.option_tax: Taxes
@@ -1696,6 +1700,7 @@ tooltip.setting.shop.shop.option_delivery_fee_by_product: If turned on, you can 
 tooltip.setting.shop.shop.option_customer_activate: This will register a customer as a temporary customer until email verification is completed, after which s/he will be registered as a regular customer.
 tooltip.setting.shop.shop.option_favorite_product: This allows users to save their favorite products as Favorites.
 tooltip.setting.shop.shop.option_remember_me: Allow customers to automatically sign in for certain period of time.
+tooltip.setting.shop.shop.option_mail_notifier: Email notification when member information is edited or shipping address is changed on the Front Screen.
 tooltip.setting.shop.shop.option_product_tax: If turned on, you can set the tax rate per product.
 tooltip.setting.shop.shop.option_invoice_registration_number: Invoice registration number can be displayed on the delivery note.
 tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system is enabled.

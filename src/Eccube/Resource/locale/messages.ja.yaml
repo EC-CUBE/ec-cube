@@ -185,7 +185,7 @@ front.entry.complete_message__temporary: |
   メール本文内のURLをクリックすると、本会員登録が完了となります。
 front.entry.complete_message__activated: |
   会員登録が完了しました。
-  それでは、ショッピングをお楽しみください。
+  メールアドレスとパスワードでログイン後、ショッピングをお楽しみください。
 
 #------------------------------------------------------------------------------------
 # パスワード再発行
@@ -255,7 +255,7 @@ front.mypage.reorder_message: ※金額が変更されている商品がある�
 front.mypage.mail_not_found: メール履歴はありません。
 front.mypage.mail_list: メール配信履歴一覧
 front.mypage.customer_complete_message__title: 会員登録内容の変更が完了いたしました
-front.mypage.customer_complete_message__body: メールアドレスとパスワードでログイン後、ショッピングをお楽しみください。
+front.mypage.customer_complete_message__body: それでは、引き続きショッピングをお楽しみください。
 front.mypage.favorite_count: '%count%件のお気に入りがあります'
 front.mypage.favorite_not_found: お気に入りは登録されていません。
 front.mypage.customer_address_count: '%count%件のお届け先があります'
@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: 退会が完了いたしました
 front.mypage.withdraw_complete_message__body: |
   ご利用いただき誠にありがとうございました。
   またのご来店をお待ちしております。
+front.mypage.customer.notify_title: 会員情報編集
+front.mypage.delivery.notify_title: お届け先情報編集
 
 #------------------------------------------------------------------------------------
 # 商品
@@ -501,6 +503,7 @@ admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
 admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
 admin.common.restrict_file_upload_info: 'この機能の利用頻度が低い場合、使用しない間は無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定することで機能を無効化することが可能です。'
+admin.common.notice_maintenance_mode: '現在メンテナンスモード中です。'
 
 
 # エンティティに関連するラベル
@@ -1139,6 +1142,7 @@ admin.setting.shop.shop.option_customer_activate: 仮会員機能
 admin.setting.shop.shop.option_mypage_order_status_display: マイページに注文状況を表示
 admin.setting.shop.shop.option_favorite_product: お気に入り商品機能
 admin.setting.shop.shop.option_remember_me: 自動ログイン機能
+admin.setting.shop.shop.option_mail_notifier: 重要操作時メール通知機能
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
 admin.setting.shop.shop.option_tax: 税設定
@@ -1697,6 +1701,7 @@ tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにす�
 tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
+tooltip.setting.shop.shop.option_mail_notifier: フロント側での会員情報編集・配送先変更操作時にメール通知を行う機能です。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
 tooltip.setting.shop.shop.option_invoice_registration_number: 納品書に適格請求書発行事業者登録番号を表示できます。
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。

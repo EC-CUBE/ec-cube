@@ -22,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -43,16 +44,24 @@ class SecurityType extends AbstractType
     protected $requestStack;
 
     /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
      * SecurityType constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param ValidatorInterface $validator
+     * @param RequestStack $requestStack
+     * @param RouterInterface $router
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack)
+    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack, RouterInterface $router)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->validator = $validator;
         $this->requestStack = $requestStack;
+        $this->router = $router;
     }
 
     /**
@@ -66,6 +75,7 @@ class SecurityType extends AbstractType
         $denyHosts = $this->eccubeConfig->get('eccube_admin_deny_hosts');
         $denyHosts = implode("\n", $denyHosts);
 
+        $routes = $this->getRouteCollection();
         $allowFrontHosts = $this->eccubeConfig->get('eccube_front_allow_hosts');
         $allowFrontHosts = implode("\n", $allowFrontHosts);
 
@@ -79,6 +89,9 @@ class SecurityType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                     new Assert\Regex([
                         'pattern' => '/\A\w+\z/',
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "/^(?!($routes)$).*$/",
                     ]),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
@@ -200,6 +213,34 @@ class SecurityType extends AbstractType
                 }
             })
         ;
+    }
+
+    /**
+     * フロントURL一覧を取得
+     * @return string
+     */
+    private function getRouteCollection(): string
+    {
+        $frontRoutesUrlList = [];
+        $routes = $this->router->getRouteCollection();
+        foreach ($routes as $routeName => $route) {
+            $path = $route->getPath();
+            // 管理画面以外
+            if (false === stripos($routeName, 'admin')
+                && false === stripos($path, '/_')
+                && false === stripos($path, 'admin')
+            ) {
+                $arr = explode('/', $path);
+                foreach ($arr as $target) {
+                    if (!empty($target)) {
+                        $target = preg_quote($target);
+                        $frontRoutesUrlList[$target] = $target;
+                    }
+                }
+            }
+        }
+
+        return implode('|', $frontRoutesUrlList);
     }
 
     /**

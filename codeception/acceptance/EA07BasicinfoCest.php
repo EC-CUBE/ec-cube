@@ -98,10 +98,13 @@ class EA07BasicinfoCest
         // 会員登録
         $faker = Fixtures::get('faker');
         $email = microtime(true).'.'.$faker->safeEmail;
-        EntryPage::go($I)->新規会員登録([
-            'entry[email][first]' => $email,
-            'entry[email][second]' => $email,
-        ]);
+        EntryPage::go($I)
+            ->フォーム入力([
+                'entry[email][first]' => $email,
+                'entry[email][second]' => $email,
+            ])
+            ->同意する()
+            ->登録する();
 
         // 会員ステータスのチェック
         $page = CustomerManagePage::go($I);
@@ -119,10 +122,13 @@ class EA07BasicinfoCest
         // 会員登録
         $I->logoutAsMember();
         $email = microtime(true).'.'.$faker->safeEmail;
-        EntryPage::go($I)->新規会員登録([
-            'entry[email][first]' => $email,
-            'entry[email][second]' => $email,
-        ]);
+        EntryPage::go($I)
+            ->フォーム入力([
+                'entry[email][first]' => $email,
+                'entry[email][second]' => $email,
+            ])
+            ->同意する()
+            ->登録する();
         $I->logoutAsMember();
 
         // 会員ステータスのチェック

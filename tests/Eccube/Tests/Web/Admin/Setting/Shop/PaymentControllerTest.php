@@ -226,7 +226,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->actual = $this->client->getResponse()->isRedirection();
         $this->verify();
 
-        $this->assertFileNotExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $this->assertFileDoesNotExist($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
         $fs->remove($path.'/temp_image/new_image.png');
         $fs->remove($path.'/save_image/new_image.png');
     }

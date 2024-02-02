@@ -37,7 +37,13 @@ file that was distributed with this source code.
                         <div class="ec-cardCollapse collapse show" id="newsForm" style="">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-3"><span>{{ 'admin.content.news.publish_date'|trans }}</span></div>
+                                    <div class="col-3">
+                                        <span>{{ 'admin.content.news.publish_date'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">
+                                                {{ 'admin.common.required'|trans }}
+                                        </span>
+                                    </div>
+
                                     <div class="col mb-2">
                                         {{ form_widget(form.publish_date) }}
                                         {{ form_errors(form.publish_date) }}
@@ -45,7 +51,12 @@ file that was distributed with this source code.
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-3"><span>{{ 'admin.content.news.title'|trans }}</span></div>
+                                    <div class="col-3">
+                                        <span>{{ 'admin.content.news.title'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">
+                                                {{ 'admin.common.required'|trans }}
+                                        </span>
+                                    </div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.title) }}
                                         {{ form_errors(form.title) }}

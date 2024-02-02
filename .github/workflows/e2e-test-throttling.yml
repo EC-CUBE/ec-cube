@@ -21,7 +21,7 @@ jobs:
       matrix:
         php: [ 8.1 ]
         db: [ pgsql ]
-        method: [ フロント画面ログイン_IP, フロント画面ログイン_会員, 管理画面ログイン_IP, 管理画面ログイン_会員, 会員登録, 問い合わせ, パスワード再発行, 注文確認_非会員購入, 注文確認_会員購入, 注文完了_非会員購入, 注文完了_会員購入 ]
+        method: [ フロント画面ログイン_IP, フロント画面ログイン_会員, 管理画面ログイン_IP, 管理画面ログイン_会員, 会員登録, 問い合わせ, パスワード再発行, 注文確認_非会員購入, 注文確認_会員購入, 注文完了_非会員購入, 注文完了_会員購入, 会員情報編集, 配送先情報_追加, 配送先情報_編集, 配送先情報_削除, order_お届け先追加, order_お届け先変更, 新規会員登録_入力, 管理画面二段階認証 ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -67,6 +67,25 @@ jobs:
                       interval: '30 minutes'
                   shopping_checkout_customer:
                       route: ~
+                      limit: 10
+                      interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+
+      # delivery deleteのテストするため、delivery addの上限値を変更する
+      - name: Fix limiter limi for delivery delete
+        if: startsWith(matrix.method, '配送先情報_削除')
+        run: |
+          echo "eccube:
+              rate_limiter:
+                  mypage_delivery_new:
+                      route: mypage_delivery_new
+                      method: [ 'POST' ]
+                      type: customer
+                      limit: 1024
+                      interval: '30 minutes'
+                  mypage_delivery_delete:
+                      route: mypage_delivery_delete
+                      method: [ 'DELETE' ]
+                      type: customer
                       limit: 10
                       interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 
