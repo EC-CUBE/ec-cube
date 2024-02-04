@@ -49,10 +49,6 @@ class GenerateProxyCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // アノテーションを読み込めるように設定.
-        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
-        //AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../src');
-
         $projectDir = $this->eccubeConfig->get('kernel.project_dir');
         $includeDirs = [$projectDir.'/app/Customize/Entity'];
 
