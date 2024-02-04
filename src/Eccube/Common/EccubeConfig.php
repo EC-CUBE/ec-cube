@@ -76,17 +76,17 @@ class EccubeConfig implements \ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        throw new \Exception();
+        throw new \LogicException();
     }
 
     /**
      * @param mixed $offset
      *
-     * @throws \Exception
+     * @throws \LogicException
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        throw new \Exception();
+        throw new \LogicException();
     }
 }
