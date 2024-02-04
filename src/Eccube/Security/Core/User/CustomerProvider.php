@@ -51,16 +51,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      */
     public function loadUserByUsername($username): Customer
     {
-        $Customer = $this->customerRepository->findOneBy([
-            'email' => $username,
-            'Status' => CustomerStatus::REGULAR,
-        ]);
-
-        if (null === $Customer) {
-            throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return $Customer;
+        return $this->loadUserByIdentifier($username);
     }
 
     /**
@@ -98,8 +89,16 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        // FIXME deprecated
-        return $this->loadUserByUsername($identifier);
+        $Customer = $this->customerRepository->findOneBy([
+            'email' => $identifier,
+            'Status' => CustomerStatus::REGULAR,
+        ]);
+
+        if (null === $Customer) {
+            throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $identifier));
+        }
+
+        return $Customer;
     }
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
