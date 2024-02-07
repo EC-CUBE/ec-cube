@@ -18,9 +18,10 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\Job;
-use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Master\Sex;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
@@ -174,6 +175,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
      *     ・ <script> スクリプトインジェクション
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     *
      * @return void
      */
     public function testOrderMailXSSAttackPrevention()
@@ -181,16 +183,16 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $MailHistory = (New MailHistory())->setMailHtmlBody(
-        "<div id='dangerous-id' class='safe_to_use_class'>
+        $MailHistory = (new MailHistory())->setMailHtmlBody(
+            "<div id='dangerous-id' class='safe_to_use_class'>
                     <p>メール内容＃１</p>
                     <script>alert('XSS Attack')</script>
                     <a href='https://www.google.com'>safe html</a>
                 </div>"
         )
             ->setOrder($Order)
-            ->setMailSubject("テスト")
-            ->setMailBody("テスト内容")
+            ->setMailSubject('テスト')
+            ->setMailBody('テスト内容')
             ->setSendDate(new \DateTime())
             ->setCreator($this->createMember());
         $this->entityManager->persist($MailHistory);
@@ -448,8 +450,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 管理画面から受注登録
         $this->client->request(
             'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
-            'order' => $formData,
-            'mode' => 'register',
+                'order' => $formData,
+                'mode' => 'register',
             ]
         );
 
@@ -458,27 +460,48 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrder = $this->orderRepository->find($Order->getId());
         $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
 
-        //税金計算
-        $totalTax = 0;
-        foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
-            //商品数変更3個追加
-            $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
-            $tax = static::getContainer()->get(TaxRuleService::class)->getTax($orderItem['price']);
-            $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
+        $addingQuantity = 3;
+        foreach ($formDataForEdit['OrderItems'] as $index => $orderItem) {
+            // 商品数変更3個追加
+            $formDataForEdit['OrderItems'][$index]['quantity'] = $orderItem['quantity'] + $addingQuantity;
         }
 
         // 管理画面で受注編集する
         $this->client->request(
             'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
-            'order' => $formDataForEdit,
-            'mode' => 'register',
+                'order' => $formDataForEdit,
+                'mode' => 'register',
             ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
         $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
 
-        //確認する「トータル税金」
+        // 税金計算
+        $taxableItem = array_filter($EditedOrder->getOrderItems()->toArray(), function ($OrderItem) {
+            return !is_null($OrderItem->getTaxType()) && $OrderItem->getTaxType()->getId() === TaxType::TAXATION;
+        });
+        $totalTaxByTaxRate = [];
+        $totalByTaxRate = [];
+        foreach ($taxableItem as $OrderItem) {
+            $totalPrice = $OrderItem->getPriceIncTax() * ($OrderItem->getQuantity() + $addingQuantity);
+            $taxRate = $OrderItem->getTaxRate();
+            $totalByTaxRate[$taxRate] = isset($totalByTaxRate[$taxRate])
+                ? $totalByTaxRate[$taxRate] + $totalPrice
+                : $totalPrice;
+        }
+        foreach ($totalByTaxRate as $rate => $price) {
+            $tax = static::getContainer()->get(TaxRuleService::class)
+                ->roundByRoundingType($price * ($rate / (100 + $rate)), \Eccube\Entity\Master\RoundingType::ROUND);
+            $totalTaxByTaxRate[$rate] = $tax;
+        }
+        $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
+            $sum += $tax;
+
+            return $sum;
+        }, 0);
+
+        // 確認する「トータル税金」
         $this->expected = $totalTax;
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
@@ -597,8 +620,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 管理画面で受注編集する
         $this->client->request(
             'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
-            'order' => $formDataForEdit,
-            'mode' => 'register',
+                'order' => $formDataForEdit,
+                'mode' => 'register',
             ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
