@@ -29,7 +29,7 @@ file that was distributed with this source code.
                 </div>
                 <p class="ec-404Role__title ec-reportHeading">{{ error_title }}</p>
                 <p class="ec-404Role__description ec-reportDescription">{{ error_message }}</p>
-                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
+                <a class="ec-blockBtn--cancel" href="{{ app.request.basePath ~ '/' }}">{{ 'common.go_to_top'|trans }}</a>
             </div>
         </div>
     </div>

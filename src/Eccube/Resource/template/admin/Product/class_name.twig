@@ -105,13 +105,7 @@ file that was distributed with this source code.
             });
             // 編集キャンセル
             $('.sortable-item').on('click', 'button.action-edit-cancel', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value'));
-                });
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
+                location.href = '{{ url('admin_product_class_name') }}';
             });
 
             // 編集時, エラーがあれば入力欄を表示.
@@ -145,7 +139,10 @@ file that was distributed with this source code.
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
                                     <form role="form" class="row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_name') }}">
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.product.class_name'|trans }}</span></div>
+                                        <div class="col-auto align-self-center">
+                                            <span>{{ 'admin.product.class_name'|trans }}</span>
+                                            <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
                                         <div class="col-3 me-2">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name) }}

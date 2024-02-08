@@ -167,6 +167,8 @@ class ShopMasterType extends AbstractType
             ->add('option_mypage_order_status_display', ToggleSwitchType::class)
             // 自動ログイン
             ->add('option_remember_me', ToggleSwitchType::class)
+            // 会員の重要操作時にメールを通知する
+            ->add('option_mail_notifier', ToggleSwitchType::class)
             // お気に入り商品設定
             ->add('option_favorite_product', ToggleSwitchType::class)
             // 在庫切れ商品を非表示にする

@@ -2,6 +2,8 @@ parameters:
     # EC-CUBE default env parameters
     env(ECCUBE_ADMIN_ROUTE): 'admin'
     env(ECCUBE_USER_DATA_ROUTE): 'user_data'
+    env(ECCUBE_FRONT_ALLOW_HOSTS): '[]'
+    env(ECCUBE_FRONT_DENY_HOSTS): '[]'
     env(ECCUBE_ADMIN_ALLOW_HOSTS): '[]'
     env(ECCUBE_ADMIN_DENY_HOSTS): '[]'
     env(ECCUBE_FORCE_SSL): '0'
@@ -24,6 +26,8 @@ parameters:
     eccube_mailer_dsn: '%env(MAILER_DSN)%'
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_user_data_route: '%env(ECCUBE_USER_DATA_ROUTE)%'
+    eccube_front_allow_hosts: '%env(json:ECCUBE_FRONT_ALLOW_HOSTS)%'
+    eccube_front_deny_hosts: '%env(json:ECCUBE_FRONT_DENY_HOSTS)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
     eccube_admin_deny_hosts: '%env(json:ECCUBE_ADMIN_DENY_HOSTS)%'
     eccube_force_ssl: '%env(bool:ECCUBE_FORCE_SSL)%'
@@ -95,6 +99,7 @@ parameters:
     eccube_official_site_url: https://www.ec-cube.net
     eccube_community_site_url: https://xoops.ec-cube.net
     eccube_document_url: http://doc4.ec-cube.net
+    eccube_manual_url: https://www.ec-cube.net/manual/ec-cube4/
     eccube_name_len: 16
     eccube_kana_len: 25
     eccube_address1_len: 32
@@ -131,6 +136,7 @@ parameters:
     # {id,桁数}: dtb_order.idの桁数分0埋め(桁数を超えたらそのまま表示)
     # {random,桁数}: ランダムな数値を桁数分作成
     # {random_alnum,桁数} : ランダムな半角英数大文字を桁数分作成
+    # {random_alpha,桁数} : ランダムな半角英字大文字を桁数分作成
     eccube_order_no_format: ''
     eccube_order_pdf_message_len: 30
     eccube_news_start_year: 2000
@@ -151,5 +157,19 @@ parameters:
       - admin_content_css
       - admin_content_js
       - admin_store_template_install
+    eccube_file_uploadable_extensions: # ファイル管理でアップロード可能な拡張子
+      - jpg
+      - jpeg
+      - png
+      - gif
+      - webp
+      - svg
+      - ico
+      - html
+      - htm
+      - js
+      - css
+      - txt
+      - pdf
     eccube_login_throttling_max_attempts: 5
     eccube_login_throttling_interval: '30 minutes'

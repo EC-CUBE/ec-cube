@@ -29,6 +29,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchCustomerType extends AbstractType
@@ -401,6 +404,39 @@ class SearchCustomerType extends AbstractType
                 'label' => 'admin.list.sort.type',
                 'required' => false,
             ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+
+                # 登録日
+                $create_datetime_start = $form['create_datetime_start']->getData();
+                $create_datetime_end = $form['create_datetime_end']->getData();
+
+                if (!empty($create_datetime_start) && !empty($create_datetime_end)) {
+                    if ($create_datetime_start > $create_datetime_end) {
+                        $form['create_datetime_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+
+                # 更新日
+                $update_datetime_start = $form['update_datetime_start']->getData();
+                $update_datetime_end = $form['update_datetime_end']->getData();
+
+                if (!empty($update_datetime_start) && !empty($update_datetime_end)) {
+                    if ($update_datetime_start > $update_datetime_end) {
+                        $form['update_datetime_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+
+                # 最終購入日
+                $last_buy_start = $form['last_buy_start']->getData();
+                $last_buy_end = $form['last_buy_end']->getData();
+
+                if (!empty($last_buy_start) && !empty($last_buy_end)) {
+                    if ($last_buy_start > $last_buy_end) {
+                        $form['last_buy_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+            })
         ;
     }
 

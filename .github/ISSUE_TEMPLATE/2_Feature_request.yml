@@ -1,0 +1,17 @@
+name: 🚀 改善要望(Feature Request)
+description: こんな機能が欲しいなど
+body:
+  - type: textarea
+    id: overview
+    attributes:
+      label: 概要(Overview)
+      description:
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: 期待する内容(Expect) or 要望(Requirement)
+      description:
+    validations:
+      required: true

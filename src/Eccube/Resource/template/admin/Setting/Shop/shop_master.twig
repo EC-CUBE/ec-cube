@@ -124,17 +124,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row mb-3">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.email_for_inquiries'|trans }}"><span>{{ 'admin.setting.shop.shop.email_for_inquiries'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
-                                    <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
-                                </div>
-                                <div class="col mb-2">
-                                    {{ form_widget(form.email02) }}
-                                    {{ form_errors(form.email02) }}
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-3">
-                                    <div class="d-inline-block" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.email_reply_to'|trans }}"><span>{{ 'admin.setting.shop.shop.email_reply_to'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.email_reply_to'|trans }}"><span>{{ 'admin.setting.shop.shop.email_reply_to'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
                                     <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                 </div>
                                 <div class="col mb-2">
@@ -150,6 +140,16 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     {{ form_widget(form.email04) }}
                                     {{ form_errors(form.email04) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.email_for_inquiries'|trans }}"><span>{{ 'admin.setting.shop.shop.email_for_inquiries'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                    <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.email02) }}
+                                    {{ form_errors(form.email02) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -258,6 +258,15 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_remember_me) }}
                                     {{ form_errors(form.option_remember_me) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.option_mail_notifier'|trans }}"><span>{{ 'admin.setting.shop.shop.option_mail_notifier'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_mail_notifier) }}
+                                    {{ form_errors(form.option_mail_notifier) }}
                                 </div>
                             </div>
                         </div>

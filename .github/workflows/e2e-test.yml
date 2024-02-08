@@ -15,7 +15,7 @@ on:
 jobs:
   codeception:
     name: Codeception
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -81,6 +81,9 @@ jobs:
 
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
+
+      - name: Install fonts
+        run: sudo apt install fonts-ipafont fonts-ipaexfont
 
       - name: Run chromedriver
         run: |

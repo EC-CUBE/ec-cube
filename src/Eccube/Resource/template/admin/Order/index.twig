@@ -582,9 +582,9 @@ file that was distributed with this source code.
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                                <div class="row justify-content-md-center mb-4"></div>
+                                <div class="row justify-content-md-center"></div>
                             </div>
-                            <div class="row justify-content-md-center mb-4">
+                            <div class="row justify-content-md-center pb-4 mb-4">
                                 {% if pagination.totalItemCount > 0 %}
                                     {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
                                 {% endif %}
@@ -625,7 +625,7 @@ file that was distributed with this source code.
                                     <div class="fw-bold mb-2 notificationMail">{{ 'admin.order.to_shipped__confirm_send_mail'|trans }}</div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="notificationMail">
-                                        <label class="form-check-label notificationMail">
+                                        <label class="form-check-label notificationMail" for="notificationMail">
                                             {{ 'admin.order.to_shipped__confirm_send_mail_in_same_time'|trans }}
                                         </label>
                                     </div>

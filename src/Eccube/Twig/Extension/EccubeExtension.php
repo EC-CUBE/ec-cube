@@ -24,6 +24,7 @@ use Symfony\Component\Intl\Currencies;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Twig\TwigTest;
 
 class EccubeExtension extends AbstractExtension
 {
@@ -79,6 +80,18 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('ellipsis', [$this, 'getEllipsis']),
             new TwigFilter('time_ago', [$this, 'getTimeAgo']),
             new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
+        ];
+    }
+
+    /**
+     * Returns a list of tests.
+     *
+     * @return TwigTest[]
+     */
+    public function getTests()
+    {
+        return [
+            new TwigTest('integer', function ($value) { return  is_integer($value); }),
         ];
     }
 
@@ -278,7 +291,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @param $ext
      * @param $attr
-     * @param $iconOnly アイコンのクラス名のみ返す場合はtrue
+     * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string
      */

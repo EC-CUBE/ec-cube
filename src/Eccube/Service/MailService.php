@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -29,10 +30,13 @@ use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailService
 {
@@ -281,7 +285,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -340,7 +343,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -439,7 +441,7 @@ class MailService
 
         $message = (new Email())
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
-            ->from(new Address($this->BaseInfo->getEmail03(), $this->BaseInfo->getShopName()))
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
             ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
             ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
@@ -479,7 +481,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -525,7 +526,6 @@ class MailService
             log_critical($e->getMessage());
         }
 
-
         return $message;
     }
 
@@ -551,6 +551,7 @@ class MailService
             ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
             ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
             ->replyTo($this->BaseInfo->getEmail03())
             ->returnPath($this->BaseInfo->getEmail04());
 
@@ -588,7 +589,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -650,7 +650,6 @@ class MailService
         } catch (TransportExceptionInterface $e) {
             log_critical($e->getMessage());
         }
-
     }
 
     /**
@@ -748,6 +747,91 @@ class MailService
             'ShippingItems' => $ShippingItems,
             'Order' => $Order,
         ]);
+    }
+
+    /**
+     * 会員情報変更時にメール通知
+     *
+     * @param Customer $Customer
+     * @param array $userData
+     *  - userAgent
+     *  - ipAddress
+     *  - preEmail
+     * @param string $eventName
+     *
+     * @return void
+     *
+     * @throws LoaderError
+     * @throws NonUniqueResultException
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userData, string $eventName)
+    {
+        log_info('会員情報変更通知メール送信処理開始');
+        log_info($eventName);
+
+        // メールテンプレートの取得 IDでの取得は現行環境での差異があるため
+        $tpl_name = 'Mail/customer_change_notify.twig';
+        $MailTemplate = $this->mailTemplateRepository->createQueryBuilder('mt')
+            ->where('mt.file_name = :file_name')
+            ->setParameter('file_name', $tpl_name)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'BaseInfo' => $this->BaseInfo,
+            'Customer' => $Customer,
+            'userAgent' => $userData['userAgent'],
+            'eventName' => $eventName,
+            'ipAddress' => $userData['ipAddress'],
+        ]);
+
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->convertRFCViolatingEmail($Customer->getEmail()))
+            ->bcc($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
+
+        // HTMLテンプレートが存在する場合
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'BaseInfo' => $this->BaseInfo,
+                'Customer' => $Customer,
+                'userAgent' => $userData['userAgent'],
+                'eventName' => $eventName,
+                'ipAddress' => $userData['ipAddress'],
+            ]);
+
+            $message
+                ->text($body)
+                ->html($htmlBody);
+        } else {
+            $message->text($body);
+        }
+
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            log_critical($e->getMessage());
+        }
+
+        // メールアドレスの変更があった場合、変更前のメールアドレスにも送信
+        if (isset($userData['preEmail']) && $Customer->getEmail() != $userData['preEmail']) {
+            $message->to($this->convertRFCViolatingEmail($userData['preEmail']));
+
+            // メール送信
+            try {
+                $this->mailer->send($message);
+            } catch (TransportExceptionInterface $e) {
+                log_critical($e->getMessage());
+            }
+        }
+
+        log_info('会員情報変更通知メール送信処理完了');
     }
 
     /**

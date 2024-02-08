@@ -1,4 +1,5 @@
-FROM php:7.4-apache-bullseye
+ARG TAG=7.4-apache-bullseye
+FROM php:${TAG}
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
 
@@ -39,12 +40,6 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-  && apt update \
-  && apt install -y nodejs \
-  && apt clean \
-  ;
-
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
   && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
   && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
@@ -53,6 +48,8 @@ RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
 RUN a2enmod rewrite headers ssl
 # Enable SSL
 RUN ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
+# see https://stackoverflow.com/questions/73294020/docker-couldnt-create-the-mpm-accept-mutex/73303983#73303983
+RUN echo "Mutex posixsem" >> /etc/apache2/apache2.conf
 EXPOSE 443
 
 # Use the default production configuration

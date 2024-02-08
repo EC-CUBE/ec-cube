@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -23,6 +24,7 @@ use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Service\CartService;
@@ -37,6 +39,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -69,9 +73,22 @@ class ShoppingController extends AbstractShoppingController
     protected $serviceContainer;
 
     /**
+     * @var baseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
      * @var TradeLawRepository
      */
     protected TradeLawRepository $tradeLawRepository;
+
+    protected RateLimiterFactory $shoppingConfirmIpLimiter;
+
+    protected RateLimiterFactory $shoppingConfirmCustomerLimiter;
+
+    protected RateLimiterFactory $shoppingCheckoutIpLimiter;
+
+    protected RateLimiterFactory $shoppingCheckoutCustomerLimiter;
 
     public function __construct(
         CartService $cartService,
@@ -79,7 +96,12 @@ class ShoppingController extends AbstractShoppingController
         OrderRepository $orderRepository,
         OrderHelper $orderHelper,
         ContainerInterface $serviceContainer,
-        TradeLawRepository $tradeLawRepository
+        TradeLawRepository $tradeLawRepository,
+        RateLimiterFactory $shoppingConfirmIpLimiter,
+        RateLimiterFactory $shoppingConfirmCustomerLimiter,
+        RateLimiterFactory $shoppingCheckoutIpLimiter,
+        RateLimiterFactory $shoppingCheckoutCustomerLimiter,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
@@ -87,6 +109,11 @@ class ShoppingController extends AbstractShoppingController
         $this->orderHelper = $orderHelper;
         $this->serviceContainer = $serviceContainer;
         $this->tradeLawRepository = $tradeLawRepository;
+        $this->shoppingConfirmIpLimiter = $shoppingConfirmIpLimiter;
+        $this->shoppingConfirmCustomerLimiter = $shoppingConfirmCustomerLimiter;
+        $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
+        $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
+        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     /**
@@ -293,6 +320,23 @@ class ShoppingController extends AbstractShoppingController
                 return $response;
             }
 
+            log_info('[注文確認] IPベースのスロットリングを実行します.');
+            $ipLimiter = $this->shoppingConfirmIpLimiter->create($request->getClientIp());
+            if (!$ipLimiter->consume()->isAccepted()) {
+                log_info('[注文確認] 試行回数制限を超過しました(IPベース)');
+                throw new TooManyRequestsHttpException();
+            }
+
+            $Customer = $this->getUser();
+            if ($Customer instanceof Customer) {
+                log_info('[注文確認] 会員ベースのスロットリングを実行します.');
+                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create($Customer->getId());
+                if (!$customerLimiter->consume()->isAccepted()) {
+                    log_info('[注文確認] 試行回数制限を超過しました(会員ベース)');
+                    throw new TooManyRequestsHttpException();
+                }
+            }
+
             log_info('[注文確認] PaymentMethod::verifyを実行します.', [$Order->getPayment()->getMethodClass()]);
             $paymentMethod = $this->createPaymentMethod($Order, $form);
             $PaymentResult = $paymentMethod->verify();
@@ -391,6 +435,23 @@ class ShoppingController extends AbstractShoppingController
 
                 if ($response) {
                     return $response;
+                }
+
+                log_info('[注文完了] IPベースのスロットリングを実行します.');
+                $ipLimiter = $this->shoppingCheckoutIpLimiter->create($request->getClientIp());
+                if (!$ipLimiter->consume()->isAccepted()) {
+                    log_info('[注文完了] 試行回数制限を超過しました(IPベース)');
+                    throw new TooManyRequestsHttpException();
+                }
+
+                $Customer = $this->getUser();
+                if ($Customer instanceof Customer) {
+                    log_info('[注文完了] 会員ベースのスロットリングを実行します.');
+                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create($Customer->getId());
+                    if (!$customerLimiter->consume()->isAccepted()) {
+                        log_info('[注文完了] 試行回数制限を超過しました(会員ベース)');
+                        throw new TooManyRequestsHttpException();
+                    }
                 }
 
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
@@ -636,7 +697,19 @@ class ShoppingController extends AbstractShoppingController
 
             if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $this->entityManager->persist($CustomerAddress);
+
+                // 会員情報変更時にメールを送信
+                if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                    $Customer = $this->getUser();
+
+                    // 情報のセット
+                    $userData['userAgent'] = $request->headers->get('User-Agent');
+                    $userData['ipAddress'] = $request->getClientIp();
+
+                    $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+                }
             }
+
 
             // 合計金額の再計算
             $response = $this->executePurchaseFlow($Order);
@@ -719,6 +792,12 @@ class ShoppingController extends AbstractShoppingController
             $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             $this->cartService->setPreOrderId(null);
             $this->cartService->save();
+        }
+
+        // 購入エラー画面についてはwarninメッセージを出力しない為、warningレベルのメッセージが存在する場合、削除する.
+        // (warningが残っている場合、購入エラー画面以降のタイミングで誤って表示されてしまう為.)
+        if ($this->session->getFlashBag()->has('eccube.front.warning')) {
+            $this->session->getFlashBag()->get('eccube.front.warning');
         }
 
         $event = new EventArgs(

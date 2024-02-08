@@ -13,8 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
@@ -652,5 +654,48 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->expected = 'バニラ';
         $this->actual = $classCategories[7];
         $this->assertStringContainsString($this->expected, $this->actual);
+    }
+
+    /**
+     * 商品規格の初期化時は物理削除する.
+     * @see https://github.com/EC-CUBE/ec-cube/pull/5853
+     */
+    public function testCopyAndInitializeProductClasses()
+    {
+        $Product = $this->createProduct(null, 3); // 3個の規格を持つ商品を作成
+        $AllProducts = $this->productRepository->findAll();
+        $params = [
+            'id' => $Product->getId(),
+            Constant::TOKEN_NAME => 'dummy',
+        ];
+        $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
+        $this->assertTrue($this->client->getResponse()->isRedirect(), '商品コピーが正常に完了しました');
+
+
+        preg_match('|product/product/([0-9]+)/edit|', $this->client->getResponse()->headers->get('Location') ?? '', $matches);
+        list(,$product_id) = $matches;
+        $ProductClasses = $this->entityManager->getRepository(ProductClass::class)->findBy(
+            [
+                'Product' => $product_id,
+                'visible' => true
+            ]
+        );
+        $this->assertCount(3, $ProductClasses, '規格の数が3個であること');
+
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_product_class', ['id' => $product_id]));
+
+        $form = $crawler->selectButton('規格を初期化')->form();
+        $this->client->submit($form);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertStringContainsString('商品規格を初期化しました', $crawler->filter('.alert-success')->text());
+
+        $ProductClasses = $this->entityManager->getRepository(ProductClass::class)->findBy(
+            [
+                'Product' => $product_id
+            ]
+        );
+
+        $this->assertCount(1, $ProductClasses, '規格の数が1個であること');
     }
 }

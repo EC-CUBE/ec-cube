@@ -185,7 +185,7 @@ front.entry.complete_message__temporary: |
   メール本文内のURLをクリックすると、本会員登録が完了となります。
 front.entry.complete_message__activated: |
   会員登録が完了しました。
-  それでは、ショッピングをお楽しみください。
+  メールアドレスとパスワードでログイン後、ショッピングをお楽しみください。
 
 #------------------------------------------------------------------------------------
 # パスワード再発行
@@ -271,6 +271,8 @@ front.mypage.withdraw_complete_message__title: 退会が完了いたしました
 front.mypage.withdraw_complete_message__body: |
   ご利用いただき誠にありがとうございました。
   またのご来店をお待ちしております。
+front.mypage.customer.notify_title: 会員情報編集
+front.mypage.delivery.notify_title: お届け先情報編集
 
 #------------------------------------------------------------------------------------
 # 商品
@@ -414,6 +416,7 @@ admin.common.create_complete: 作成しました
 admin.common.system_error: システムエラーが発生しました
 admin.common.to_show_complete: '「%name%」を表示にしました。'
 admin.common.to_hide_complete: '「%name%」を非表示にしました。'
+admin.common.date_range_error: 終了日時は、開始日時より大きく設定してください
 
 # action系のラベル
 admin.common.save: 保存
@@ -501,6 +504,7 @@ admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
 admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
 admin.common.restrict_file_upload_info: 'この機能の利用頻度が低い場合、使用しない間は無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定することで機能を無効化することが可能です。'
+admin.common.notice_maintenance_mode: '現在メンテナンスモード中です。'
 
 
 # エンティティに関連するラベル
@@ -757,6 +761,8 @@ admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
 admin.product.product_csv.tax_rate_col: 税率
 admin.product.product_csv.tax_rate_description: 商品別税率機能設定が有効の場合、0以上の数値を設定
+admin.product.product_csv.product_class_visible_flag_col: 商品規格表示フラグ
+admin.product.product_csv.product_class_visible_flag_description: 0:非表示 1:表示を指定します。未指定の場合は更新しません。
 
 # カテゴリCSV雛形
 admin.product.category_csv.category_id_col: カテゴリID
@@ -990,8 +996,9 @@ admin.content.file.folder_name_symbol_error: 使用できない文字が含ま�
 admin.content.file.folder_name_period_error: ピリオド(.)で始まる名前は使用できません。
 admin.content.file.dir_exists: '%file_name% は既に使用されています。別のフォルダ名を入力してください'
 admin.content.file.same_name_folder_exists: 'ファイルと同じ名前のフォルダが存在するためアップロードできません。'
-admin.content.file.phpfile_error: 'phpファイルはアップロードできません。'
+admin.content.file.phpfile_error: 'phpファイルはアップロードできません。' # 未使用
 admin.content.file.dotfile_error: '.で始まるファイルはアップロードできません。'
+admin.content.file.extension_error: 'アップロードできないファイル拡張子です。'
 admin.content.layout_delete: レイアウトを削除
 admin.content.layout_no_page: ページが登録されていません
 admin.content.layout__card_title: レイアウト概要
@@ -1122,9 +1129,9 @@ admin.setting.shop.shop.shop_name_kana: 店名(カナ)
 admin.setting.shop.shop.shop_name_en: 店名(英語表記)
 admin.setting.shop.shop.business_hour: 店舗営業時間
 admin.setting.shop.shop.email_from: 送信元メールアドレス(From)
-admin.setting.shop.shop.email_for_inquiries: 問い合わせ受付メールアドレス(From, ReplyTo)
-admin.setting.shop.shop.email_reply_to: 返信受付メールアドレス(ReplyTo)
-admin.setting.shop.shop.email_return_path: 送信エラー受付メールアドレス(ReturnPath)
+admin.setting.shop.shop.email_for_inquiries: 問い合わせ専用メールアドレス(From, ReplyTo)
+admin.setting.shop.shop.email_reply_to: 返信先メールアドレス(ReplyTo)
+admin.setting.shop.shop.email_return_path: 送信エラー通知メールアドレス(ReturnPath)
 admin.setting.shop.shop.good_traded: 取り扱い商品説明文
 admin.setting.shop.shop.message: 店舗からのメッセージ
 admin.setting.shop.shop.option_delivery_fee: 送料設定
@@ -1136,6 +1143,7 @@ admin.setting.shop.shop.option_customer_activate: 仮会員機能
 admin.setting.shop.shop.option_mypage_order_status_display: マイページに注文状況を表示
 admin.setting.shop.shop.option_favorite_product: お気に入り商品機能
 admin.setting.shop.shop.option_remember_me: 自動ログイン機能
+admin.setting.shop.shop.option_mail_notifier: 重要操作時メール通知機能
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
 admin.setting.shop.shop.option_tax: 税設定
@@ -1311,6 +1319,10 @@ admin.setting.system.authority.deny_url_is_invalid: 「/」を必ず記入して
 #------------------------------------------------------------------------------------
 
 admin.setting.system.security__card_title: セキュリティ設定
+admin.setting.system.security_admin_url__card_title: 管理画面URL設定
+admin.setting.system.security_admin_ip_limit__card_title: 管理画面IP制限設定
+admin.setting.system.security_front_ip_limit__card_title: フロント画面IP制限設定
+admin.setting.system.security_connect_card_title: 接続設定
 admin.setting.system.security.admin_url: 管理画面URL
 admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
 admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
@@ -1318,16 +1330,27 @@ admin.setting.system.security.ip_limit: IP制限(許可リスト)
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
   アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
+  IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.ip_limit_sample: |
-  127.0.0.1
+  127.0.0.1/28
   192.0.2.1
 admin.setting.system.security.ip_limit_deny: IP制限(拒否リスト)
 admin.setting.system.security.ip_limit_description_deny: |
   特定のIPアドレスからの管理機能へのアクセスを拒否します。
   アクセスを拒否するIPアドレスを1行ずつ入力してください。
+  IPアドレスはサブネットマスク表記に対応しています。
+admin.setting.system.security.front_ip_limit_description: |
+  フロント画面へのアクセスを特定のIPアドレスからの接続のみに制限します。
+  アクセスを許可するIPアドレスを1行ずつ入力してください。何も入力しない場合は全てを許可します。
+  IPアドレスはサブネットマスク表記に対応しています。
+admin.setting.system.security.front_ip_limit_description_deny: |
+  特定のIPアドレスからのフロント画面へのアクセスを拒否します。
+  アクセスを拒否するIPアドレスを1行ずつ入力してください。
+  IPアドレスはサブネットマスク表記に対応しています。
 admin.setting.system.security.force_ssl: SSLを強制
 admin.setting.system.security.force_ssl_description: httpsからの接続でなければSSL制限を設定できません。
 admin.setting.system.security.ip_limit_invalid_ipv4: '%ip%はIPv4アドレスではありません。'
+admin.setting.system.security.ip_limit_invalid_ip_and_submask: '%ip%はIPv4/ビットマスクの形式ではありません。'
 admin.setting.system.security.ip_limit_invalid_https: 'httpの場合には設定できません。'
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
 admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
@@ -1614,6 +1637,7 @@ admin.info: 情報
 admin.info.official_site: 公式サイト
 admin.info.community: 開発コミュニティ
 admin.info.document: ドキュメント
+admin.info.manual: 管理・運用マニュアル
 
 #------------------------------------------------------------------------------------
 # ツールチップ
@@ -1688,6 +1712,7 @@ tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにす�
 tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
+tooltip.setting.shop.shop.option_mail_notifier: フロント側での会員情報編集・配送先変更操作時にメール通知を行う機能です。
 tooltip.setting.shop.shop.option_product_tax: オンにすると、商品別に税率を設定することができるようになります。
 tooltip.setting.shop.shop.option_invoice_registration_number: 納品書に適格請求書発行事業者登録番号を表示できます。
 tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイント機能を有効化できます。
@@ -1713,9 +1738,11 @@ tooltip.setting.system.member.work: 一時的に非稼働にすることが可�
 tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
 tooltip.setting.system.two_factor_auth.qr_code: QRコードを2段階認証用スマートフォンアプリで読み込み、表示された6桁の数字を入力してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
+tooltip.setting.system.security.front_ip_limit: フロント画面にアクセスできる接続元のIPアドレスを制限します。
+tooltip.setting.system.security.front_ip_limit_deny: フロント画面へのアクセスを拒否する接続元のIPアドレスを指定します。
 tooltip.setting.system.security.ip_limit: 管理画面にログインできる接続元のIPアドレスを制限します。
 tooltip.setting.system.security.ip_limit_deny: 管理画面へのアクセスを拒否する接続元のIPアドレスを指定します。
-tooltip.setting.system.security.force_ssl: ショップサイトと管理画面への接続をSSL(https)での接続に制限します。
+tooltip.setting.system.security.force_ssl: フロント画面と管理画面への接続をSSL(https)での接続に制限します。
 tooltip.setting.system.security.trusted_hosts: 設定されたホスト名以外でのアクセスを拒否します。
 tooltip.setting.system.login_history.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。より詳細な条件を指定するには［詳細検索］を開いてください。
 tooltip.setting.system.log_display: アクセスやエラー状況などのログを確認できます。
@@ -1800,6 +1827,7 @@ exception.error_message_can_not_access: お探しのページはアクセスが�
 exception.error_title_not_found: ページがみつかりません。
 exception.error_message_not_found: URLに間違いがないかご確認ください。
 exception.error_message_restrict_url: この機能は管理者によって制限されています。
+exception.error_message_rate_limit: 試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。
 
 #------------------------------------------------------------------------------------
 # PurchaseFlow
