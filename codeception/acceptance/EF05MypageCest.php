@@ -252,7 +252,7 @@ class EF05MypageCest
 
     /**
      * @group excludeCoverage
-     * @vaddy
+     * @group vaddy
      */
     public function mypage_お届け先編集削除(AcceptanceTester $I)
     {

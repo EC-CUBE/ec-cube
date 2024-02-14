@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  nodejs:
+    image: node:20-bullseye
+    volumes:
+      - "./:/var/www/html"
+      - "node_modules:/var/www/html/node_modules"
+    working_dir: /var/www/html

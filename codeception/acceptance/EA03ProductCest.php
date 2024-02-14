@@ -12,6 +12,8 @@
  */
 
 use Codeception\Util\Fixtures;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
 use Page\Admin\ClassCategoryManagePage;
@@ -31,6 +33,12 @@ use Page\Admin\ProductTagPage;
  */
 class EA03ProductCest
 {
+    /** @var EntityManager */
+    private EntityManager $em;
+
+    /** @var Connection */
+    private Connection $conn;
+
     const ページタイトル = '#main .page-header';
     const ページタイトルStyleGuide = '.c-pageTitle';
 
@@ -39,6 +47,9 @@ class EA03ProductCest
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
+
+        $this->em = Fixtures::get('entityManager');
+        $this->conn = $this->em->getConnection();
     }
 
     public function _after(AcceptanceTester $I)
@@ -264,9 +275,9 @@ class EA03ProductCest
         $I->seeElement(ProductClassEditPage::$初期化ボタン);
     }
 
-    public function product_一覧からの規格編集規格あり2(AcceptanceTester $I)
+    public function product_一覧からの規格編集_規格あり_規格登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり2');
+        $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり 規格登録');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -357,9 +368,9 @@ class EA03ProductCest
     /**
      * ATTENTION 削除すると後続の規格編集関連のテストが失敗するため、最後に実行する
      */
-    public function product_一覧からの規格編集規格あり1(AcceptanceTester $I)
+    public function product_一覧からの規格編集規格あり(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり1');
+        $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -1005,5 +1016,67 @@ class EA03ProductCest
             ->検索を実行();
 
         $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/6029
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC02-T03 一覧からの規格編集 規格あり 重複在庫の修正');
+
+        $findProducts = Fixtures::get('findProducts');
+        $Products = array_filter($findProducts(), function ($Product) {
+            return $Product->hasProductClass();
+        });
+        $Product = array_pop($Products);
+
+        // 先頭のproductClass要素に対してStockを登録する
+        ProductManagePage::go($I)
+            ->検索($Product->getName())
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->規格管理();
+
+        ProductClassEditPage::at($I)
+            ->入力_在庫数無制限(1)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->無効_在庫数無制限(1)
+            ->入力_個数(1, 100)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->無効_規格(1)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->有効_規格(1)
+            ->入力_個数(1, 10)
+            ->入力_販売価格(1, 5000)
+            ->登録();
+
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
+
+        /** 重複して在庫が登録されていないのかチェック **/
+        // idを取得
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $id = $ProductClass->getId();
+
+        // 該当IDの商品が1つか確認
+        $count = $this->conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?', [$id]);
+        $I->assertEquals('1', $count, '該当データは1件です');
+
+        // 個数のズレがないか確認
+        $stock = $this->conn->fetchOne('SELECT stock FROM dtb_product_stock WHERE product_class_id = ?', [$id]);
+        $I->assertEquals('10', $stock, 'Stockが一致');
     }
 }

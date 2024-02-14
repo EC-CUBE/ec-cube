@@ -253,10 +253,20 @@ file that was distributed with this source code.
                                     <th class="pt-2 pb-2">{{ ClassName1 ? ClassName1.name }}</th>
                                     <th class="pt-2 pb-2">{{ ClassName2 ? ClassName2.name }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.stock__short'|trans }}</th>
+                                    <th class="pt-2 pb-2">
+                                        {{ 'admin.product.stock__short'|trans }}
+                                        <span class="badge bg-primary ms-1">
+                                            {{ 'admin.common.required'|trans }}
+                                        </span>
+                                    </th>
                                     <th class="pt-2 pb-2">{{ 'admin.product.sale_limit'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.product.normal_price'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.sale_price'|trans }}</th>
+                                    <th class="pt-2 pb-2">
+                                        {{ 'admin.product.sale_price'|trans }}
+                                        <span class="badge bg-primary ms-1">
+                                            {{ 'admin.common.required'|trans }}
+                                        </span>
+                                    </th>
                                     {% if BaseInfo.option_product_delivery_fee %}
                                         <th class="pt-2 pb-2">{{ 'admin.product.delivery_fee'|trans }}</th>
                                     {% endif %}

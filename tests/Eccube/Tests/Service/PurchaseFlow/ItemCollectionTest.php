@@ -122,12 +122,16 @@ class ItemCollectionTest extends EccubeTestCase
     {
         shuffle($this->Items);
 
-        $this->expected = [1 => '商品', 2 => '送料', 3 => '手数料', 4 => '割引'];
+        $this->expected = [1 => '商品', 2 => '送料', 3 => '手数料'];
         $this->actual = [];
         $Items = (new ItemCollection($this->Items))->sort();
         foreach ($Items as $Item) {
             $this->actual[$Item->getOrderItemType()->getId()] = $Item->getOrderItemType()->getName();
         }
+        if (array_key_exists(6, $this->actual)) {
+            $this->expected[6] = 'ポイント';
+        }
+        $this->expected[4] = '割引';
 
         $this->verify();
     }

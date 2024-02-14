@@ -648,6 +648,7 @@ class Generator
         $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $ItemPoint = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
 
         /** @var ProductClass $ProductClass */
@@ -726,6 +727,19 @@ class Generator
             ->setOrderItemType($ItemDiscount); // 値引き明細
         // $Shipping->addOrderItem($OrderItemDiscount); // Shipping には登録しない
         $Order->addOrderItem($OrderItemDiscount);
+
+        if (($point = mt_rand(0, min($Customer->getPoint(), $Order->getPaymentTotal()))) > 0) {
+            $OrderItemPoint = new OrderItem();
+            $OrderItemPoint
+                ->setOrder($Order)
+                ->setProductName('ポイント')
+                ->setPrice($point * -1)
+                ->setQuantity(1)
+                ->setTaxType($NonTaxable)
+                ->setTaxDisplayType($TaxInclude)
+                ->setOrderItemType($ItemPoint);
+            $Order->addOrderItem($OrderItemPoint);
+        }
 
         $this->orderPurchaseFlow->validate($Order, new PurchaseContext($Order));
 
@@ -900,7 +914,6 @@ class Generator
      * Faker を生成する.
      *
      * @return \Faker\Generator
-     *
      */
     protected function getFaker()
     {
