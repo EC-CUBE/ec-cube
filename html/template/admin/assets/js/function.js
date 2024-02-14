@@ -118,6 +118,9 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 /////////// 2重submit制御.
 
 if (typeof Ladda !== 'undefined') {
+    // a[token-for-anchor] を押下されるとJavaScriptで formを作成してPOSTする仕様になっていて、
+    // aタグにdisable属性を付与しても駄目（form生成&postしてしまう）だったので、cssでpointer-event:none;しています。
+    // https://github.com/EC-CUBE/ec-cube/pull/5971
     Ladda.bind('button[type=submit],a[token-for-anchor]', {timeout: 2000});
     $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
 }
