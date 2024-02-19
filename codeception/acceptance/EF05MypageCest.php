@@ -12,11 +12,17 @@
  */
 
 use Codeception\Util\Fixtures;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use Page\Front\CustomerAddressEditPage;
 use Page\Front\CustomerAddressListPage;
 use Page\Front\HistoryPage;
 use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
+use Page\Front\ShoppingPage;
+use Page\Front\CartPage;
+use Eccube\Entity\CustomerAddress;
+use Eccube\Repository\CustomerAddressRepository;
 
 /**
  * @group front
@@ -25,8 +31,23 @@ use Page\Front\ProductDetailPage;
  */
 class EF05MypageCest
 {
+    /** @var EntityManager */
+    private EntityManager $em;
+
+    /** @var Connection */
+    private Connection $conn;
+    
+    protected $Customer;
+
+    /**
+     * @var CustomerAddressRepository
+     */
+    protected $customerAddressRepository;
+
     public function _before(AcceptanceTester $I)
     {
+        $this->em = Fixtures::get('entityManager');
+        $this->conn = $this->em->getConnection();
     }
 
     public function _after(AcceptanceTester $I)
@@ -252,7 +273,7 @@ class EF05MypageCest
 
     /**
      * @group excludeCoverage
-     * @group vaddy
+     * @vaddy
      */
     public function mypage_お届け先編集削除(AcceptanceTester $I)
     {
@@ -285,6 +306,78 @@ class EF05MypageCest
 
         // 確認
         $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div:nth-child(2) > p');
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6081
+     */
+    public function mypage_お届け先上限確認(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0506-UC03-T02 Mypage お届け先上限確認');
+        $createCustomer = Fixtures::get('createCustomer');
+        $config = Fixtures::get('config');
+        $max = $config['eccube_deliv_addr_max'];
+
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        // 19件のお届け先を登録
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = Fixtures::get('entityManager');
+        
+        $this->customerAddressRepository = $em->getRepository(\Eccube\Entity\CustomerAddress::class);
+        
+        for ($i = 0; $i < $max; $i++) {
+            $customerAddress = new \Eccube\Entity\CustomerAddress();
+            $customerAddress
+                ->setCustomer($customer)
+                ->setName01($customer->getName01())
+                ->setName02($customer->getName02())
+                ->setKana01($customer->getKana01())
+                ->setKana02($customer->getKana02())
+                ->setCompanyName($customer->getCompanyName())
+                ->setPhoneNumber($customer->getPhoneNumber())
+                ->setPostalCode($customer->getPostalCode())
+                ->setPref($customer->getPref())
+                ->setAddr01($customer->getAddr01())
+                ->setAddr02($customer->getAddr02());
+
+            $em->persist($customerAddress);
+        }
+        
+        $em->flush();
+
+        // TOPページ>マイページ>お届け先一覧で上限に達していることを確認
+        MyPage::go($I)->お届け先編集();
+
+        $I->wait(1);
+
+        $I->see(sprintf('お届け先登録の上限の%s件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。', 20), '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div:nth-child(3) > div > div');
+
+        // ご注文手続き画面で上限に達していることを確認
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        ShoppingPage::at($I)->お届け先変更();
+
+        $I->wait(1);
+        
+        $I->see(sprintf('お届け先登録の上限の%s件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。', 20), 'div.ec-registerRole > div > div > div ');
+
+        // 受注に紐づくidに直接アクセスしても登録されないことを確認
+        // URLから受注に紐づくIDを抽出 /shopping/shipping/{id}
+        $redirectUrl = $I->grabFromCurrentUrl();
+        $shipping_id = preg_replace('/\/shopping\/shipping\/(\d+)/', '$1', $redirectUrl);
+
+        // URLに直接アクセス /shopping/shipping_edit/{id}
+        $I->amOnPage('/shopping/shipping_edit/'.$shipping_id);
+
+        // 404であることを確認
+        $I->seeInTitle('ページがみつかりません');
     }
 
     public function mypage_退会手続き未実施(AcceptanceTester $I)
