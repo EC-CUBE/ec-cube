@@ -28,12 +28,12 @@ class PurchaseFlowPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
-    public const ITEM_PREPROCESSOR_TAG = 'eccube.item.preprocessor';
     public const ITEM_VALIDATOR_TAG = 'eccube.item.validator';
-    public const ITEM_HOLDER_PREPROCESSOR_TAG = 'eccube.item.holder.preprocessor';
     public const ITEM_HOLDER_VALIDATOR_TAG = 'eccube.item.holder.validator';
-    public const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
+    public const ITEM_PREPROCESSOR_TAG = 'eccube.item.preprocessor';
+    public const ITEM_HOLDER_PREPROCESSOR_TAG = 'eccube.item.holder.preprocessor';
     public const DISCOUNT_PROCESSOR_TAG = 'eccube.discount.processor';
+    public const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
     public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
     public function process(ContainerBuilder $container)
