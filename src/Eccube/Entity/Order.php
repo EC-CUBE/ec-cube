@@ -141,6 +141,9 @@ if (!class_exists('\Eccube\Entity\Order')) {
             $roundingTypes = $this->getRoundingTypeByTaxRate();
             $tax = [];
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+                if (is_null($roundingTypes[$rate])) {
+                    continue;
+                }
                 $tax[$rate] = TaxRuleService::roundByRoundingType(
                     $this->getTaxableTotal() ?
                         ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)) : 0,
