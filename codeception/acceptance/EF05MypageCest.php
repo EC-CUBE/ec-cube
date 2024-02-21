@@ -21,7 +21,6 @@ use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ShoppingPage;
 use Page\Front\CartPage;
-use Eccube\Entity\CustomerAddress;
 use Eccube\Repository\CustomerAddressRepository;
 
 /**
@@ -36,13 +35,11 @@ class EF05MypageCest
 
     /** @var Connection */
     private Connection $conn;
-    
-    protected $Customer;
 
     /**
      * @var CustomerAddressRepository
      */
-    protected $customerAddressRepository;
+    protected CustomerAddressRepository $customerAddressRepository;
 
     public function _before(AcceptanceTester $I)
     {
