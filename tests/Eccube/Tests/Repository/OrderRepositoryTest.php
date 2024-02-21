@@ -16,6 +16,8 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -34,7 +36,7 @@ class OrderRepositoryTest extends EccubeTestCase
     /** @var OrderRepository */
     protected $orderRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
@@ -200,6 +202,124 @@ class OrderRepositoryTest extends EccubeTestCase
             ['company_name', '株式会社　会社名', 1], // 全角スペース
             ['company_name', '姓', 0],
             ['company_name', 'セイ', 0],
+        ];
+    }
+
+    /**
+     * AND 条件についてテストします。
+     *
+     * すべて一致する検索条件を、1項目ずつ一致しない値に置き換えて確認します。
+     *
+     * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_testAndCondition
+     */
+    public function testGetQueryBuilderBySearchDataForAdmin_testAndCondition(array $searchWord, int $expected)
+    {
+        // 基本の検索条件に一致するデータを作成します
+        $this->Order
+            ->setOrderStatus($this->entityManager->getReference(OrderStatus::class, OrderStatus::NEW))
+            ->setName01('姓')
+            ->setName02('名')
+            ->setKana01('セイ')
+            ->setKana02('メイ')
+            ->setCompanyName('会社名')
+            ->setEmail('alice@example.com')
+            ->setPhoneNumber('00000000000')
+            ->setPayment($this->entityManager->getReference(Payment::class, 1))
+            ->setOrderDate(new \DateTime('2022-01-01T10:00:00Z'))
+            ->setPaymentDate(new \DateTime('2022-02-01T10:00:00Z'))
+            ->setPaymentTotal('1000');
+        $Shipping = $this->Order->getShippings()[0];
+        $Shipping
+            ->setTrackingNumber('12345')
+            ->setMailSendDate(null)
+            ->setShippingDeliveryDate(new \DateTime('2022-03-01T10:00:00Z'));
+        $OrderItem = $this->Order->getOrderItems()[0];
+        $OrderItem
+            ->setProductName('商品名');
+        $this->orderRepository->save($this->Order);
+        $this->entityManager->flush();
+
+        // 基本の検索条件 (すべて一致する条件)
+        $baseSearchData = [
+            'multi' => '姓',
+            'status' => [OrderStatus::NEW],
+            'name' => '姓',
+            'kana' =>'セイ',
+            'company_name' => '会社名',
+            'email' => 'alice@example.com',
+            'phone_number' => '00000000000',
+            'order_no' => $this->Order->getOrderNo(),
+            'tracking_number' => '12345',
+            'shipping_mail' => [Shipping::SHIPPING_MAIL_UNSENT],
+            'payment' => [1],
+            'order_datetime_start' => new \DateTime('2022-01-01T10:00:00Z'),
+            'order_datetime_end' => new \DateTime('2022-01-01T10:00:01Z'),
+            'payment_datetime_start' => new \DateTime('2022-02-01T10:00:00Z'),
+            'payment_datetime_end' => new \DateTime('2022-02-01T10:00:01Z'),
+            'update_datetime_start' => 'PT0S',
+            'update_datetime_end' => 'PT1S',
+            'shipping_delivery_datetime_start' => new \DateTime('2022-03-01T10:00:00Z'),
+            'shipping_delivery_datetime_end' => new \DateTime('2022-03-01T10:00:01Z'),
+            'payment_total_start' => '1000',
+            'payment_total_end' => '1000',
+            'buy_product_name' => '商品名',
+        ];
+
+        $searchData = array_merge($baseSearchData, $searchWord);
+
+        // dataProvider 内で直接指定することが難しい値を変換します
+        if (isset($searchData['payment'])) {
+            $searchData['payment'] = \array_map(function ($item) {
+                return $this->entityManager->getReference(Payment::class, $item);
+            }, $searchData['payment']);
+        }
+        if (isset($searchData['update_datetime_start'])) {
+            $searchData['update_datetime_start'] = $this->Order->getUpdateDate()
+                ->add(new \DateInterval($searchData['update_datetime_start']))
+                ->format('Y-m-d H:i:s');
+        }
+        if (isset($searchData['update_datetime_end'])) {
+            $searchData['update_datetime_end'] = $this->Order->getUpdateDate()
+                ->add(new \DateInterval($searchData['update_datetime_end']))
+                ->format('Y-m-d H:i:s');
+        }
+
+        $actual = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData)
+            ->getQuery()
+            ->getResult();
+
+        self::assertCount($expected, $actual);
+    }
+
+    public function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition()
+    {
+        return [
+            // 基本の検索条件で検索結果が返ってくること
+            [[], 1],
+
+            // 1 項目ずつ一致しない条件に置き換えると検索結果が返ってこないこと
+            [['status' => [OrderStatus::CANCEL]], 0],
+            [['multi' => '一致しないキーワード'], 0],
+            [['name' =>  '一致しないキーワード'], 0],
+            [['kana' =>  '一致しないキーワード'], 0],
+            [['company_name' =>  '一致しないキーワード'], 0],
+            [['email' =>  '一致しないキーワード'], 0],
+            [['phone_number' =>  '11111111111'], 0],
+            [['order_no' =>  '一致しないキーワード'], 0],
+            [['tracking_number' =>  '一致しないキーワード'], 0],
+            [['shipping_mail' =>  [Shipping::SHIPPING_MAIL_SENT]], 0],
+            [['payment' => [2]], 0],
+            [['order_datetime_start' => new \DateTime('2022-01-01T10:00:01Z')], 0],
+            [['order_datetime_end' => new \DateTime('2022-01-01T10:00:00Z')], 0],
+            [['payment_datetime_start' => new \DateTime('2022-02-01T10:00:01Z')], 0],
+            [['payment_datetime_end' => new \DateTime('2022-02-01T10:00:00Z')], 0],
+            [['update_datetime_start' => 'PT1S'], 0],
+            [['update_datetime_end' => 'PT0S'], 0],
+            [['shipping_delivery_datetime_start' => new \DateTime('2022-03-01T10:00:01Z')], 0],
+            [['shipping_delivery_datetime_end' => new \DateTime('2022-03-01T10:00:00Z')], 0],
+            [['payment_total_start' => '1001'], 0],
+            [['payment_total_end' => '999'], 0],
+            [['buy_product_name' => '一致しないキーワード'], 0],
         ];
     }
 }

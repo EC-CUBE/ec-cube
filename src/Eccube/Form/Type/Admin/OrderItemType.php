@@ -153,7 +153,18 @@ class OrderItemType extends AbstractType
                         'message' => 'form_error.float_only',
                     ]),
                 ],
-            ]);
+            ])
+            ->add('point_rate', HiddenType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Range(['min' => 0]),
+                    new Assert\Regex([
+                        'pattern' => "/^\d+(\.\d+)?$/u",
+                        'message' => 'form_error.float_only',
+                    ]),
+                ],
+            ])
+            ;
 
         $builder
             ->add($builder->create('order_item_type', HiddenType::class)
@@ -310,7 +321,7 @@ class OrderItemType extends AbstractType
      */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
     {
-        if (empty($errors)) {
+        if (count($errors) < 1) {
             return;
         }
 

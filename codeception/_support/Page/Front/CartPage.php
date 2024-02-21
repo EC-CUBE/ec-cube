@@ -15,6 +15,8 @@ namespace Page\Front;
 
 class CartPage extends AbstractFrontPage
 {
+    public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/../../dd/span';
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);
@@ -43,7 +45,9 @@ class CartPage extends AbstractFrontPage
 
     public function 商品数量($index)
     {
-        return $this->tester->grabTextFrom(['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amount']"]);
+        $selector = ['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()=${index}]//div[@class='ec-cartRow__amount']"];
+        $this->tester->waitForElement($selector);
+        return $this->tester->grabTextFrom($selector);
     }
 
     public function 明細数()

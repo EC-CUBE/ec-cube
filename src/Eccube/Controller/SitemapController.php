@@ -13,7 +13,9 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Page;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\PageRepository;
@@ -54,6 +56,11 @@ class SitemapController extends AbstractController
     private $router;
 
     /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
      * SitemapController constructor.
      */
     public function __construct(
@@ -61,13 +68,15 @@ class SitemapController extends AbstractController
         PageRepository $pageRepository,
         ProductListOrderByRepository $productListOrderByRepository,
         ProductRepository $productRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        BaseInfoRepository $baseInfoRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->pageRepository = $pageRepository;
         $this->productListOrderByRepository = $productListOrderByRepository;
         $this->productRepository = $productRepository;
         $this->router = $router;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -136,6 +145,10 @@ class SitemapController extends AbstractController
      */
     public function product(Request $request, PaginatorInterface $paginator)
     {
+        // Doctrine SQLFilter
+        if ($this->BaseInfo->isOptionNostockHidden()) {
+            $this->entityManager->getFilters()->enable('option_nostock_hidden');
+        }
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
@@ -202,7 +215,7 @@ class SitemapController extends AbstractController
     private function outputXml(array $data, $template_name = 'sitemap.xml.twig')
     {
         $response = new Response();
-        $response->headers->set('Content-Type', 'application/xml'); //Content-Typeを設定
+        $response->headers->set('Content-Type', 'application/xml'); // Content-Typeを設定
 
         return $this->render(
             $template_name,

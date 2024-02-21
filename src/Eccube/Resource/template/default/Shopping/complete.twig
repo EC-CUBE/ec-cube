@@ -60,30 +60,28 @@ file that was distributed with this source code.
 </div>
 
 <div class="ec-cartCompleteRole">
+    <div class="ec-reportHeading">
+        <h2>{{ 'front.shopping.complete_message__title'|trans }}</h2>
+    </div>
     <div class="ec-off3Grid ec-text-ac">
         <div class="ec-off3Grid__cell">
-            <div class="ec-reportHeading">
-                <h2>{{ 'front.shopping.complete_message__title'|trans }}</h2>
-            </div>
             <p class="ec-reportDescription">
                 {{ 'front.shopping.complete_message__body'|trans|nl2br }}
                 {% if Order.id %}
                     <br /><br /><strong>{{ 'front.shopping.order_no'|trans }} : {{ Order.orderNo }}</strong>
                 {% endif %}
             </p>
-
             {% if Order.complete_message is not empty %}
-                {{ Order.complete_message|raw }}
+                {{ Order.complete_message|raw|purify }}
             {% endif %}
-
-            <div class="ec-off4Grid">
-                {% if hasNextCart %}
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">{{ 'front.shopping.continue'|trans }}</a></div>
-                {% else %}
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a></div>
-                {% endif %}
-            </div>
         </div>
+    </div>
+    <div class="ec-off4Grid">
+        {% if hasNextCart %}
+            <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">{{ 'front.shopping.continue'|trans }}</a></div>
+        {% else %}
+            <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a></div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

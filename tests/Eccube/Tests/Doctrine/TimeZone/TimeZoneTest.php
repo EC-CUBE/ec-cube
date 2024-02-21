@@ -29,7 +29,7 @@ class TimeZoneTest extends EccubeTestCase
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -81,7 +81,7 @@ class TimeZoneTest extends EccubeTestCase
         $this->entityManager->flush($product);
 
         // jstでcreate dateを登録
-        $timezone = new \DateTimeZone(self::$container->getParameter('timezone'));
+        $timezone = new \DateTimeZone(static::getContainer()->getParameter('timezone'));
         $createDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 
         $product->setCreateDate($createDate);
@@ -123,7 +123,7 @@ class TimeZoneTest extends EccubeTestCase
         $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
 
         // convertToPHPValueでjst時刻に変換可能
-        $timezone = new \DateTimeZone(self::$container->getParameter('timezone'));
+        $timezone = new \DateTimeZone(static::getContainer()->getParameter('timezone'));
         $expected = new \DateTime('2000-01-01 00:00:00', $timezone);
         $actual = $this->entityManager->getConnection()->convertToPHPValue($product['create_date'], 'datetimetz');
 
@@ -133,7 +133,7 @@ class TimeZoneTest extends EccubeTestCase
     public function testDbalInsert()
     {
         // jstで登録
-        $timezone = new \DateTimeZone(self::$container->getParameter('timezone'));
+        $timezone = new \DateTimeZone(static::getContainer()->getParameter('timezone'));
         $createDate = new \DateTime('2000-01-01 00:00:00', $timezone);
         $updateDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 

@@ -57,11 +57,11 @@ class StockMultipleValidatorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->validator = self::$container->get(StockMultipleValidator::class);
+        $this->validator = static::getContainer()->get(StockMultipleValidator::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()->first();
         $this->Order = $this->createOrderWithProductClasses($this->createCustomer(),

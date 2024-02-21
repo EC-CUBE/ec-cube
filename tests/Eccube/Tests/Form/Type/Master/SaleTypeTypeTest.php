@@ -25,7 +25,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     /** @var SaleTypeRepository */
     protected $saleTypeRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->saleTypeRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);

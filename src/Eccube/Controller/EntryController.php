@@ -144,7 +144,7 @@ class EntryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -170,7 +170,7 @@ class EntryController extends AbstractController
 
                     $encoder = $this->encoderFactory->getEncoder($Customer);
                     $salt = $encoder->createSalt();
-                    $password = $encoder->encodePassword($Customer->getPassword(), $salt);
+                    $password = $encoder->encodePassword($Customer->getPlainPassword(), $salt);
                     $secretKey = $this->customerRepository->getUniqueSecretKey();
 
                     $Customer
@@ -191,7 +191,7 @@ class EntryController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE);
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
@@ -258,6 +258,10 @@ class EntryController extends AbstractController
             ]
         );
 
+        if (!$this->session->has('eccube.login.target.path')) {
+            $this->setLoginTargetPath($this->generateUrl('mypage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
         if (!is_null($qtyInCart)) {
             return [
                 'qtyInCart' => $qtyInCart,
@@ -303,7 +307,7 @@ class EntryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE);
 
         // メール送信
         $this->mailService->sendCustomerCompleteMail($Customer);
@@ -315,16 +319,9 @@ class EntryController extends AbstractController
             $qtyInCart += $Cart->getTotalQuantity();
         }
 
-        // 本会員登録してログイン状態にする
-        $token = new UsernamePasswordToken($Customer, null, 'customer', ['ROLE_USER']);
-        $this->tokenStorage->setToken($token);
-        $request->getSession()->migrate(true);
-
         if ($qtyInCart) {
             $this->cartService->save();
         }
-
-        log_info('ログイン済に変更', [$this->getUser()->getId()]);
 
         return $qtyInCart;
     }

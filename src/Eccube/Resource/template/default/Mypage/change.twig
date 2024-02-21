@@ -132,22 +132,22 @@ file that was distributed with this source code.
                                 </dl>
                                 <dl>
                                     <dt>
-                                        {{ form_label(form.password, 'common.password', { 'label_attr': {'class': 'ec-label' }}) }}
+                                        {{ form_label(form.plain_password, 'common.password', { 'label_attr': {'class': 'ec-label' }}) }}
                                     </dt>
                                     <dd>
-                                        <div class="ec-input{{ has_errors(form.password.first) ? ' error' }}">
-                                            {{ form_widget(form.password.first, {
+                                        <div class="ec-input{{ has_errors(form.plain_password.first) ? ' error' }}">
+                                            {{ form_widget(form.plain_password.first, {
                                                 'attr': { 'placeholder': 'common.password_sample'|trans({ '%min%': eccube_config.eccube_password_min_len, '%max%': eccube_config.eccube_password_max_len }) },
                                                 'type': 'password'
                                             }) }}
-                                            {{ form_errors(form.password.first) }}
+                                            {{ form_errors(form.plain_password.first) }}
                                         </div>
-                                        <div class="ec-input{{ has_errors(form.password.second) ? ' error' }}">
-                                            {{ form_widget(form.password.second, {
+                                        <div class="ec-input{{ has_errors(form.plain_password.second) ? ' error' }}">
+                                            {{ form_widget(form.plain_password.second, {
                                                 'attr': { 'placeholder': 'common.repeated_confirm'|trans },
                                                 'type': 'password'
                                             }) }}
-                                            {{ form_errors(form.password.second) }}
+                                            {{ form_errors(form.plain_password.second) }}
                                         </div>
                                     </dd>
                                 </dl>
@@ -194,7 +194,8 @@ file that was distributed with this source code.
                                     {% else %}
                                         <dl>
                                             <dt>
-                                                {{ form_label(f) }}
+                                                {% set label_class =  f.vars.label_attr.class is defined ? f.vars.label_attr.class : '' %}
+                                                {{ form_label(f, f.vars.label, { 'label_attr': {'class': label_class ~ ' ec-label' }}) }}
                                             </dt>
                                             <dd>
                                                 <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">

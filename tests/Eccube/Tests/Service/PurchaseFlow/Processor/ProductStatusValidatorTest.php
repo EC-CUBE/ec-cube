@@ -43,13 +43,13 @@ class ProductStatusValidatorTest extends EccubeTestCase
      */
     protected $ProductClass;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = self::$container->get(ProductStatusValidator::class);
+        $this->validator = static::getContainer()->get(ProductStatusValidator::class);
         $this->cartItem = new CartItem();
         $this->cartItem->setQuantity(10);
         $this->cartItem->setProductClass($this->ProductClass);
@@ -80,6 +80,19 @@ class ProductStatusValidatorTest extends EccubeTestCase
     {
         $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_HIDE);
         $this->Product->setStatus($ProductStatus);
+
+        $this->validator->execute($this->cartItem, new PurchaseContext());
+
+        self::assertEquals(0, $this->cartItem->getQuantity());
+    }
+
+
+    /**
+     * 無効になっている商品規格の場合は明細の個数を0に設定する.
+     */
+    public function testProductClassVisibleFalse()
+    {
+        $this->ProductClass->setVisible(false);
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 

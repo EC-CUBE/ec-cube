@@ -30,7 +30,7 @@ class ProductDetailPage extends AbstractFrontPage
     {
         $page = new self($I);
 
-        return $page->goPage('products/detail/'.$id);
+        return $page->goPage('/products/detail/'.$id);
     }
 
     public function カテゴリ選択($categories)

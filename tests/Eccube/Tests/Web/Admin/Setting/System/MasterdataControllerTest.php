@@ -27,11 +27,11 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     private $session;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->session = self::$container->get('session');
+        $this->session = static::getContainer()->get('session');
     }
 
     protected $entityTest = 'Eccube-Entity-Master-Sex';
@@ -71,7 +71,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $crawler->filter('.table.table-sm')->html();
         $this->expected = $this->entityManager->getRepository($entityName)->find(1)->getName();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -108,7 +108,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
+        $this->assertStringContainsString('入力されていません。', $html);
 
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
@@ -138,7 +138,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
+        $this->assertStringContainsString('入力されていません。', $html);
 
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);

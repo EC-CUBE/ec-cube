@@ -14,10 +14,10 @@
 namespace Plugin\AnnotatedRouting\Controller;
 
 use Eccube\Application;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Method;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(value="/arc", service=AnnotatedRoutingController::class)

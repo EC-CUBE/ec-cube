@@ -14,10 +14,13 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,14 +45,30 @@ class ChangeController extends AbstractController
      */
     protected $encoderFactory;
 
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @var baseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    private const SESSION_KEY_PRE_EMAIL = 'eccube.front.mypage.change.preEmail';
+
     public function __construct(
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        BaseInfoRepository $baseInfoRepository,
+        MailService $mailService
     ) {
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
         $this->tokenStorage = $tokenStorage;
+        $this->baseInfoRepository = $baseInfoRepository;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -60,12 +79,9 @@ class ChangeController extends AbstractController
      */
     public function index(Request $request)
     {
+        /** @var Customer $Customer */
         $Customer = $this->getUser();
-        $LoginCustomer = clone $Customer;
-        $this->entityManager->detach($LoginCustomer);
-
-        $previous_password = $Customer->getPassword();
-        $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
+        $Customer->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
@@ -77,7 +93,7 @@ class ChangeController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -86,17 +102,29 @@ class ChangeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('会員編集開始');
 
-            if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
-                $Customer->setPassword($previous_password);
-            } else {
+            if ($Customer->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
                 $encoder = $this->encoderFactory->getEncoder($Customer);
                 if ($Customer->getSalt() === null) {
                     $Customer->setSalt($encoder->createSalt());
                 }
                 $Customer->setPassword(
-                    $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt())
+                    $encoder->encodePassword($Customer->getPlainPassword(), $Customer->getSalt())
                 );
             }
+
+            // 会員情報変更時にメールを送信
+            if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                // 情報のセット
+                $userData['userAgent'] = $request->headers->get('User-Agent');
+                $userData['preEmail'] = $request->getSession()->get(self::SESSION_KEY_PRE_EMAIL);
+                $userData['ipAddress'] = $request->getClientIp();
+
+                // メール送信
+                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.customer.notify_title'));
+            }
+
+            $this->session->remove(self::SESSION_KEY_PRE_EMAIL);
+
             $this->entityManager->flush();
 
             log_info('会員編集完了');
@@ -108,12 +136,13 @@ class ChangeController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE);
 
             return $this->redirect($this->generateUrl('mypage_change_complete'));
         }
 
-        $this->tokenStorage->getToken()->setUser($LoginCustomer);
+        $preEmail = $form->get('email')->getData();
+        $this->session->set(self::SESSION_KEY_PRE_EMAIL, $preEmail);
 
         return [
             'form' => $form->createView(),

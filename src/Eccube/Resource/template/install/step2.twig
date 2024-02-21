@@ -33,14 +33,14 @@ file that was distributed with this source code.
 {% endif %}
                             </textarea>
                             <ul class="btn_area">
-                                <li>
+                                <li class="d-grid gap-2">
                                     {% if noWritePermissions|length > 0 %}
                                         <a href="{{ path('install_step2') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.update'|trans }}</a>
                                     {% else %}
                                         <a href="{{ path('install_step3') }}" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</a>
                                     {% endif %}
                                 </li>
-                                <li><a href="{{ path('install_step1') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
+                                <li class="d-grid gap-2"><a href="{{ path('install_step1') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
                             </ul>
                         </div><!-- /.col -->
                     </div>

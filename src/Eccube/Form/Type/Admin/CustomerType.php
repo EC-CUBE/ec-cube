@@ -88,7 +88,10 @@ class CustomerType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_email_len'],
+                    ]),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
@@ -105,24 +108,19 @@ class CustomerType extends AbstractType
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\LessThanOrEqual([
                         'value' => date('Y-m-d', strtotime('-1 day')),
                         'message' => 'form_error.select_is_future_or_now_date',
                     ]),
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
                 ],
             ])
-            ->add('password', RepeatedPasswordType::class, [
-                // 'type' => 'password',
-                'first_options' => [
-                    'label' => 'member.label.pass',
-                ],
-                'second_options' => [
-                    'label' => 'member.label.verify_pass',
-                ],
-            ])
+            ->add('plain_password', RepeatedPasswordType::class)
             ->add('status', CustomerStatusType::class, [
                 'required' => true,
                 'constraints' => [
@@ -135,10 +133,10 @@ class CustomerType extends AbstractType
                 [
                     'required' => false,
                     'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => "/^\d+$/u",
-                            'message' => 'form_error.numeric_only',
-                        ]),
+                        new Assert\NotBlank(),
+                        new Assert\Range([
+                            'min' => "-".$this->eccubeConfig['eccube_price_max'],
+                            'max' => $this->eccubeConfig['eccube_price_max']])
                     ],
                 ]
             )
@@ -155,8 +153,8 @@ class CustomerType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
 

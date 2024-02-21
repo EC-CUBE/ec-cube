@@ -16,9 +16,11 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
+use Eccube\Service\TaxRuleService;
 
 if (!class_exists('\Eccube\Entity\Order')) {
     /**
@@ -47,13 +49,17 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * 課税対象の明細を返す.
          *
-         * @return array
+         * @return OrderItem[]
          */
         public function getTaxableItems()
         {
             $Items = [];
 
             foreach ($this->OrderItems as $Item) {
+                if (null === $Item->getTaxType()) {
+                    continue;
+                }
+
                 if ($Item->getTaxType()->getId() == TaxType::TAXATION) {
                     $Items[] = $Item;
                 }
@@ -90,13 +96,64 @@ if (!class_exists('\Eccube\Entity\Order')) {
                 $totalPrice = $Item->getTotalPrice();
                 $taxRate = $Item->getTaxRate();
                 $total[$taxRate] = isset($total[$taxRate])
-                        ? $total[$taxRate] + $totalPrice
-                        : $totalPrice;
+                    ? $total[$taxRate] + $totalPrice
+                    : $totalPrice;
             }
 
             krsort($total);
 
             return $total;
+        }
+
+        /**
+         * 明細の合計額を税率ごとに集計する.
+         *
+         * 不課税, 非課税の値引明細は税率ごとに按分する.
+         *
+         * @return int[]
+         */
+        public function getTotalByTaxRate()
+        {
+            $roundingTypes = $this->getRoundingTypeByTaxRate();
+            $total = [];
+            foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+                $total[$rate] = TaxRuleService::roundByRoundingType(
+                    $this->getTaxableTotal() ?
+                        $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal() : 0,
+                    $roundingTypes[$rate]->getId()
+                );
+            }
+
+            ksort($total);
+
+            return $total;
+        }
+
+        /**
+         * 税額を税率ごとに集計する.
+         *
+         * 不課税, 非課税の値引明細は税率ごとに按分する.
+         *
+         * @return int[]
+         */
+        public function getTaxByTaxRate()
+        {
+            $roundingTypes = $this->getRoundingTypeByTaxRate();
+            $tax = [];
+            foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+                if (is_null($roundingTypes[$rate])) {
+                    continue;
+                }
+                $tax[$rate] = TaxRuleService::roundByRoundingType(
+                    $this->getTaxableTotal() ?
+                        ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)) : 0,
+                    $roundingTypes[$rate]->getId()
+                );
+            }
+
+            ksort($tax);
+
+            return $tax;
         }
 
         /**
@@ -106,7 +163,8 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscountItems()
         {
-            return array_filter($this->getTaxableItems(), function (OrderItem $Item) {
+            $items = (new ItemCollection($this->getTaxableItems()))->sort()->toArray();
+            return array_filter($items, function (OrderItem $Item) {
                 return $Item->isDiscount();
             });
         }
@@ -130,9 +188,37 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxFreeDiscountItems()
         {
-            return array_filter($this->OrderItems->toArray(), function (OrderItem $Item) {
+            $items = (new ItemCollection($this->getOrderItems()))->sort()->toArray();
+            return array_filter($items, function (OrderItem $Item) {
                 return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
             });
+        }
+
+        /**
+         * 非課税・不課税の値引き額を返す.
+         *
+         * @return int|float
+         */
+        public function getTaxFreeDiscount()
+        {
+            return array_reduce($this->getTaxFreeDiscountItems(), function ($sum, OrderItem $Item) {
+                return $sum += $Item->getTotalPrice();
+            }, 0);
+        }
+
+        /**
+         * 税率ごとの丸め規則を取得する.
+         *
+         * @return array<string, RoundingType>
+         */
+        public function getRoundingTypeByTaxRate()
+        {
+            $roundingTypes = [];
+            foreach ($this->getTaxableItems() as $Item) {
+                $roundingTypes[$Item->getTaxRate()] = $Item->getRoundingType();
+            }
+
+            return $roundingTypes;
         }
 
         /**
@@ -233,7 +319,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTotalPrice()
         {
-            @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
+            @trigger_error('The ' . __METHOD__ . ' method is deprecated.', E_USER_DEPRECATED);
 
             return $this->getPaymentTotal();
         }
@@ -604,14 +690,13 @@ if (!class_exists('\Eccube\Entity\Order')) {
         public function __construct(Master\OrderStatus $orderStatus = null)
         {
             $this->setDiscount(0)
-            ->setSubtotal(0)
-            ->setTotal(0)
-            ->setPaymentTotal(0)
-            ->setCharge(0)
-            ->setTax(0)
-            ->setDeliveryFeeTotal(0)
-            ->setOrderStatus($orderStatus)
-        ;
+                ->setSubtotal(0)
+                ->setTotal(0)
+                ->setPaymentTotal(0)
+                ->setCharge(0)
+                ->setTax(0)
+                ->setDeliveryFeeTotal(0)
+                ->setOrderStatus($orderStatus);
 
             $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
             $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1035,9 +1120,9 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Get discount.
          *
+         * @return string
          * @deprecated 4.0.3 から値引きは課税値引きと 非課税・不課税の値引きの2種に分かれる. 課税値引きについてはgetTaxableDiscountを利用してください.
          *
-         * @return string
          */
         public function getDiscount()
         {
@@ -1492,7 +1577,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         public function getShippings()
         {
             $criteria = Criteria::create()
-            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
+                ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
 
             return $this->Shippings->matching($criteria);
         }

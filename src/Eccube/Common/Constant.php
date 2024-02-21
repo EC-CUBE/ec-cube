@@ -18,20 +18,20 @@ class Constant
     /**
      * EC-CUBE VERSION.
      */
-    const VERSION = '4.1-rc';
+    public const VERSION = '4.2.3';
 
     /**
      * Enable value.
      */
-    const ENABLED = 1;
+    public const ENABLED = 1;
 
     /**
      * Disable value.
      */
-    const DISABLED = 0;
+    public const DISABLED = 0;
 
     /**
      * Csrf Token Name.
      */
-    const TOKEN_NAME = '_token';
+    public const TOKEN_NAME = '_token';
 }

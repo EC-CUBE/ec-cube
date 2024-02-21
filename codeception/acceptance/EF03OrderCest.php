@@ -71,9 +71,9 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('彩のジェラートCUBE', $CartPage->商品名(1));
-        $I->assertContains('チョコ', $CartPage->商品名(1));
-        $I->assertContains('16mm × 16mm', $CartPage->商品名(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $CartPage->商品名(1));
+        $I->assertStringContainsString('チョコ', $CartPage->商品名(1));
+        $I->assertStringContainsString('16mm × 16mm', $CartPage->商品名(1));
         $I->assertEquals(1, $CartPage->商品数量(1));
     }
 
@@ -95,6 +95,9 @@ class EF03OrderCest
             ->商品削除(1);
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_カート数量増やす(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T03 カート 数量増やす');
@@ -115,6 +118,9 @@ class EF03OrderCest
         $I->assertEquals('2', $cartPage->商品数量(1));
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_カート数量減らす(AcceptanceTester $I)
     {
         $I->wantTo('EF0301-UC01-T04 カート 数量減らす');
@@ -134,6 +140,9 @@ class EF03OrderCest
         $I->assertEquals('1', $cartPage->商品数量(1));
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ログインユーザ購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0302-UC01-T01 ログインユーザ購入');
@@ -162,7 +171,7 @@ class EF03OrderCest
 
         // メール確認
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
@@ -181,6 +190,9 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ゲスト購入(AcceptanceTester $I)
     {
         $I->wantTo('EF0302-UC02-T01 ゲスト購入');
@@ -228,7 +240,7 @@ class EF03OrderCest
 
         // 確認
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
@@ -247,6 +259,9 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ゲスト購入情報変更(AcceptanceTester $I)
     {
         $I->wantTo('EF0305-UC02-T01 ゲスト購入 情報変更'); // EF0305-UC04-T01も一緒にテスト
@@ -310,7 +325,7 @@ class EF03OrderCest
         ShoppingConfirmPage::at($I)->注文する();
 
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$new_email, $BaseInfo->getEmail01()] as $email) {
             // TODO 注文した商品の内容もチェックしたい
@@ -330,6 +345,7 @@ class EF03OrderCest
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/3133
+     * @group vaddy
      */
     public function order_ログインしてカートをマージ(AcceptanceTester $I)
     {
@@ -374,7 +390,7 @@ class EF03OrderCest
 
         // メール確認
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
@@ -395,6 +411,9 @@ class EF03OrderCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
+    /**
+     * @group vaddy
+     */
     public function order_ログインユーザ購入複数配送(AcceptanceTester $I)
     {
         // チェック用変数
@@ -515,8 +534,8 @@ class EF03OrderCest
 
         // メール確認
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
-        $I->seeEmailCount(1);
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(2);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -724,8 +743,8 @@ class EF03OrderCest
 
         // メール確認
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
-        $I->seeEmailCount(1);
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(2);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -886,8 +905,8 @@ class EF03OrderCest
 
         // メール確認
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
-        $I->seeEmailCount(1);
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->seeEmailCount(2);
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {
             $I->seeInLastEmailSubjectTo($email, 'ご注文ありがとうございます');
             $I->seeInLastEmailTo($email, $customer->getName01().' '.$customer->getName02().' 様');
@@ -998,7 +1017,7 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('チェリーアイスサンド', $CartPage->商品名(1));
+        $I->assertStringContainsString('チェリーアイスサンド', $CartPage->商品名(1));
 
         /*
          * ブラウザ2で未ログインのまま別の商品を入れる
@@ -1009,7 +1028,7 @@ class EF03OrderCest
             ->カートへ進む();
 
         $I->assertEquals(1, $CartPage->明細数());
-        $I->assertContains('彩のジェラートCUBE', $CartPage->商品名(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $CartPage->商品名(1));
 
         /*
          * ブラウザ2でログインするとブラウザ1のカートとマージされている

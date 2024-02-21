@@ -193,7 +193,7 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page", methods={"GET", "POST"})
      * @Template("@admin/Order/index.twig")
      */
-    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
@@ -204,7 +204,7 @@ class OrderController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -299,13 +299,23 @@ class OrderController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
+        $sortKey = $searchData['sortkey'];
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count
-        );
+        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count
+            );
+        } else {
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                ['wrap-queries' => true]
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -398,12 +408,12 @@ class OrderController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType($csvTypeId);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 受注データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getOrderQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
@@ -438,12 +448,12 @@ class OrderController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER);
 
                         $ExportCsvRow->pushData();
                     }
 
-                    //$row[] = number_format(memory_get_usage(true));
+                    // $row[] = number_format(memory_get_usage(true));
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
@@ -452,7 +462,6 @@ class OrderController extends AbstractController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
-        $response->send();
 
         return $response;
     }
@@ -701,6 +710,9 @@ class OrderController extends AbstractController
             ]);
         }
 
+        // TCPDF::Outputを実行するとプロパティが初期化されるため、ファイル名を事前に取得しておく
+        $pdfFileName = $orderPdfService->getPdfFileName();
+
         // ダウンロードする
         $response = new Response(
             $orderPdfService->outputPdf(),
@@ -712,9 +724,9 @@ class OrderController extends AbstractController
 
         // レスポンスヘッダーにContent-Dispositionをセットし、ファイル名を指定
         if ($downloadKind == 1) {
-            $response->headers->set('Content-Disposition', 'attachment; filename="'.$orderPdfService->getPdfFileName().'"');
+            $response->headers->set('Content-Disposition', 'attachment; filename="'.$pdfFileName.'"');
         } else {
-            $response->headers->set('Content-Disposition', 'inline; filename="'.$orderPdfService->getPdfFileName().'"');
+            $response->headers->set('Content-Disposition', 'inline; filename="'.$pdfFileName.'"');
         }
 
         log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);

@@ -53,7 +53,7 @@ class MailController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/Shop/mail.twig")
      */
-    public function index(Request $request, MailTemplate $Mail = null, Environment $twig, CacheUtil $cacheUtil)
+    public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, MailTemplate $Mail = null)
     {
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
@@ -65,7 +65,7 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
@@ -126,7 +126,7 @@ class MailController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -149,7 +149,7 @@ class MailController extends AbstractController
      */
     public function preview(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -161,7 +161,7 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE);
 
         return [
             'html_body' => $html_body,

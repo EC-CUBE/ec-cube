@@ -63,6 +63,9 @@ class EF05MypageCest
         $I->see('詳細を見る', 'div.ec-historyRole p.ec-historyListHeader__action a');
     }
 
+    /**
+     * @group vaddy
+     */
     public function mypage_ご注文履歴詳細(AcceptanceTester $I)
     {
         $I->wantTo('EF0503-UC01-T01 Mypage ご注文履歴詳細');
@@ -92,10 +95,11 @@ class EF05MypageCest
 
     /**
      * @group excludeCoverage
+     * @group vaddy
      */
     public function mypage_お気に入り一覧(AcceptanceTester $I)
     {
-        $I->wantTo('EF0508-UC01-T01 Mypage お気に入り一覧');
+        $I->wantTo('EF0503-UC01-T02 Mypage お気に入り一覧');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -110,6 +114,7 @@ class EF05MypageCest
         // お気に入り登録
         ProductDetailPage::go($I, 2)->お気に入りに追加();
 
+        $I->wantTo('EF0503-UC01-T03 Mypage お気に入り一覧');
         MyPage::go($I)->お気に入り一覧();
         $I->see('チェリーアイスサンド', 'ul.ec-favoriteRole__itemList li:nth-child(1) p.ec-favoriteRole__itemTitle');
 
@@ -118,6 +123,9 @@ class EF05MypageCest
         $I->acceptPopup();
     }
 
+    /**
+     * @group vaddy
+     */
     public function mypage_会員情報編集(AcceptanceTester $I)
     {
         $I->wantTo('EF0504-UC01-T01 Mypage 会員情報編集');
@@ -145,8 +153,8 @@ class EF05MypageCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
         ];
 
         $findPluginByCode = Fixtures::get('findPluginByCode');
@@ -182,6 +190,9 @@ class EF05MypageCest
         $I->see('お届け先一覧', 'div.ec-pageHeader h1');
     }
 
+    /**
+     * @group vaddy
+     */
     public function mypage_お届け先編集作成変更(AcceptanceTester $I)
     {
         $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成変更');
@@ -241,10 +252,11 @@ class EF05MypageCest
 
     /**
      * @group excludeCoverage
+     * @group vaddy
      */
     public function mypage_お届け先編集削除(AcceptanceTester $I)
     {
-        $I->wantTo('EF0503-UC01-T01 Mypage お届け先編集削除');
+        $I->wantTo('EF0506-UC03-T01 Mypage お届け先編集削除');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -272,7 +284,7 @@ class EF05MypageCest
         $I->wait(1);
 
         // 確認
-        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div:nth-child(2) > p');
+        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div:nth-child(2) > p');
     }
 
     public function mypage_退会手続き未実施(AcceptanceTester $I)
@@ -295,6 +307,9 @@ class EF05MypageCest
         MyPage::at($I);
     }
 
+    /**
+     * @group vaddy
+     */
     public function mypage_退会手続き(AcceptanceTester $I)
     {
         $I->wantTo('EF0507-UC03-T02 Mypage 退会手続き');

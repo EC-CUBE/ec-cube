@@ -38,7 +38,7 @@ class EccubeBlockExtension extends AbstractExtension
                 }
                 $files = $this->blockTemplates;
                 foreach ($files as $file) {
-                    $template = $this->twig->loadTemplate($file);
+                    $template = $this->twig->load($file);
                     if ($template->hasBlock($name, $context)) {
                         return $template->renderBlock($name, $context);
                     }

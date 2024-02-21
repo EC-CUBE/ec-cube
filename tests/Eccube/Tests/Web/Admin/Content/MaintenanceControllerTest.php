@@ -19,19 +19,19 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
 {
     private $maintenance_file_path;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->maintenance_file_path
-            = self::$container->getParameter('eccube_content_maintenance_file_path');
+            = static::getContainer()->getParameter('eccube_content_maintenance_file_path');
 
         if (file_exists($this->maintenance_file_path)) {
             unlink($this->maintenance_file_path);
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

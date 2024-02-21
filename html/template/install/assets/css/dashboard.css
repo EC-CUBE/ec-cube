@@ -1161,7 +1161,17 @@ textarea.disp_area {
 .step1 .note_box {
 	margin: 32px 0;
 }
+.form-check{
+	display: inline-block;
+}
+.form-select{
+	font-size: 1.6rem;
+}
 
+.badge-danger{
+	--bs-bg-opacity: 1;
+	background-color: rgba(var(--bs-danger-rgb),var(--bs-bg-opacity))!important;
+}
 /*	Step4
 ============================ */
 
@@ -1221,6 +1231,74 @@ textarea.disp_area {
 }
 .step7 .column .btn_area {
 	padding-top: 5px; 
+}
+
+/*
+トグルスイッチ
+
+２要素の選択を行うコンポーネントです。クリックすることで切り替えを行うことが出来ます。
+
+Markup:
+div(style="padding:20px; background:#eee;")
+  // `(style="padding:20px;, background:#eee;")` はスタイルガイドにおけるサンプル表示の都合上付与しています。
+  +b.c-toggleSwitch
+    +e.btn
+      input(type="checkbox" id="switch")
+      label(for="switch")
+    +e.label
+      span 公開
+
+Styleguide 8.0
+*/
+.c-toggleSwitch {
+  display: inline-block;
+}
+.c-toggleSwitch__btn {
+  display: inline-block;
+  height: 30px;
+}
+.c-toggleSwitch__btn input[type=checkbox] + label {
+  margin-bottom: 0;
+  width: 50px;
+  height: 30px;
+  background: #D3D3D3;
+  display: inline-block;
+  border-radius: 25px;
+  position: relative;
+  cursor: pointer;
+}
+.c-toggleSwitch__btn input[type=checkbox] + label:after {
+  content: "";
+  display: inline-block;
+  width: 27px;
+  height: 26px;
+  background: #FFF;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s;
+}
+.c-toggleSwitch__btn input[type=checkbox] {
+  margin-bottom: 0;
+  display: none;
+}
+.c-toggleSwitch__btn input[type=checkbox]:checked + label {
+  background-color: #25B877;
+}
+.c-toggleSwitch__btn input[type=checkbox]:checked + label:after {
+  left: 21.5px;
+}
+.c-toggleSwitch__label {
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: top;
+  height: 30px;
+  color: #fff;
+}
+.c-toggleSwitch__label span {
+  vertical-align: middle;
+  line-height: 2;
 }
 
 @media print {

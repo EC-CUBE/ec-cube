@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,9 +30,9 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
      */
     protected $container;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ManagerRegistry $registry, ContainerInterface $container)
     {
-        parent::__construct();
+        parent::__construct($registry);
         $this->container = $container;
     }
 
@@ -74,7 +75,7 @@ EOF
 
         $conn = $em->getConnection();
         $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-            ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
+            ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
 
         $conn->insert('dtb_member', [
@@ -92,15 +93,15 @@ EOF
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
-            'create_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+            'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
+            'create_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
         ]);
 
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
         $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
         $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-            ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
+            ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
             : null;
 
         $conn->insert('dtb_base_info', [
@@ -112,8 +113,9 @@ EOF
             'email04' => $admin_mail,
             'update_date' => new \DateTime(),
             'discriminator_type' => 'baseinfo',
+            'option_mail_notifier' => true,
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+            'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
         ]);
 
         $faviconPath = '/assets/img/common/favicon.ico';

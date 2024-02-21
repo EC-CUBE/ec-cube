@@ -12,6 +12,7 @@
  */
 
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\CustomerEditPage;
 use Page\Admin\CustomerManagePage;
@@ -70,9 +71,39 @@ class EA05CustomerCest
         $I->see('検索条件に誤りがあります', CustomerManagePage::$検索結果_エラーメッセージ);
     }
 
+    public function customer_一覧でのソート(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0501-UC07-T01 一覧でのソート');
+        $page = CustomerManagePage::go($I);
+
+        // ID横の上矢印をクリック
+        $I->click('a[data-sortkey="customer_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="customer_id"] .fa-arrow-up');
+        $page->assertSortedIdList('asc');
+
+        // ID横の下矢印をクリック
+        $I->click('a[data-sortkey="customer_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="customer_id"] .fa-arrow-down');
+        $page->assertSortedIdList('desc');
+
+        // 名前横の上矢印をクリック
+        $I->click('[data-sortkey="name"]');
+        $I->seeElement('.listSort-current[data-sortkey="name"] .fa-arrow-up');
+        $page->assertSortedNameList('asc');
+
+        // 名前横の下矢印をクリック
+        $I->click('a[data-sortkey="name"]');
+        $I->seeElement('.listSort-current[data-sortkey="name"] .fa-arrow-down');
+        $page->assertSortedNameList('desc');
+    }
+
+    /**
+     * @group vaddy
+     */
     public function customer_会員登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0502-UC01-T02(& UC01-T02) 会員登録');
+        $I->wantTo('EA0502-UC01-T01 会員登録');
+
         $faker = Fixtures::get('faker');
         $email = microtime(true).'.'.$faker->safeEmail;
 
@@ -87,18 +118,17 @@ class EA05CustomerCest
             ->入力_番地_ビル名('ブリーゼタワー13F')
             ->入力_Eメール($email)
             ->入力_電話番号('111-111-111')
-            ->入力_パスワード('password')
-            ->入力_パスワード確認('password');
+            ->入力_パスワード('password1234')
+            ->入力_パスワード確認('password1234');
 
         $findPluginByCode = Fixtures::get('findPluginByCode');
-        $Plugin = $findPluginByCode('MailMagazine');
+        $Plugin = $findPluginByCode('MailMagazine42');
         if ($Plugin) {
             $I->amGoingTo('メルマガプラグインを発見したため、メルマガを購読します');
             $I->click('#admin_customer_mailmaga_flg_0');
         }
 
         $CustomerRegisterPage->登録();
-        /* ブラウザによるhtml5のエラーなのでハンドリング不可 */
         $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
     }
 
@@ -112,6 +142,9 @@ class EA05CustomerCest
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     */
     public function customer_会員編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0502-UC02-T01 会員編集');
@@ -138,10 +171,6 @@ class EA05CustomerCest
 
         $CustomerRegisterPage->登録();
         $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
-
-        $CustomerRegisterPage
-            ->入力_姓('')
-            ->登録();
     }
 
     public function customer_会員編集_必須項目未入力(AcceptanceTester $I)
@@ -166,6 +195,35 @@ class EA05CustomerCest
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
     }
 
+    /**
+     * @group vaddy
+     */
+    public function customer_会員編集_注文履歴あり(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0502-UC02-T03 会員編集_注文履歴あり');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $createOrders = Fixtures::get('createOrders');
+        $createOrders($customer, 20, [], OrderStatus::NEW);
+
+        $CustomerListPage = CustomerManagePage::go($I)
+            ->検索($customer->getEmail());
+
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+
+        $CustomerListPage->一覧_編集(1);
+
+        $CustomerRegisterPage = CustomerEditPage::at($I)
+            ->入力_姓('testuser-2');
+
+        $CustomerRegisterPage->登録();
+        $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
+    }
+
+    /**
+     * @group vaddy
+     */
     public function customer_会員削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC03-T01 会員削除');
@@ -200,6 +258,7 @@ class EA05CustomerCest
     /**
      * @env firefox
      * @env chrome
+     * @group vaddy
      */
     public function customer_CSV出力(AcceptanceTester $I)
     {
@@ -227,6 +286,9 @@ class EA05CustomerCest
         $I->assertEquals('2', $value);
     }
 
+    /**
+     * @group vaddy
+     */
     public function customer_仮会員メール再送(AcceptanceTester $I)
     {
         $I->wantTo('EA0501-UC06-T01(& UC06-T02) 仮会員メール再送');
@@ -239,11 +301,12 @@ class EA05CustomerCest
 
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
+            ->一覧_仮会員メール再送(1, false)
             ->一覧_仮会員メール再送(1);
         $I->wait(5);
 
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
 
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {

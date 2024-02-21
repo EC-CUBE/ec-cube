@@ -66,29 +66,29 @@ file that was distributed with this source code.
                                             <div class="row justify-content-end">
                                                 <div class="col-auto text-center">
                                                     <a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}"
-                                                       class="btn btn-ec-actionIcon action-download" data-toggle="tooltip" data-placement="top"
+                                                       class="btn btn-ec-actionIcon action-download" data-bs-toggle="tooltip" data-bs-placement="top"
                                                        title="{{ 'admin.common.download'|trans }}">
                                                         <i class="fa fa-cloud-download fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                                 <div class="col-auto text-center">
-                                                    <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                                                         <a class="btn btn-ec-actionIcon action-delete {% if Template.default_template or eccube_config.eccube_theme_code == Template.code %}disabled{% endif %}"
-                                                           data-toggle="modal" data-target="#confirmModal-{{ loop.index }}">
+                                                           data-bs-toggle="modal" data-bs-target="#confirmModal-{{ loop.index }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i></a>
                                                     </div>
                                                     <div class="modal fade" id="confirmModal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="confirmModal-{{ loop.index }}" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                    <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%': Template.name }) }}</p>
+                                                                <div class="modal-body text-start">
+                                                                    <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({ '%name%': Template.name }) }}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                     <a class="btn btn-ec-delete" data-confirm="false"
                                                                        href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                         {{ 'admin.common.delete'|trans }}

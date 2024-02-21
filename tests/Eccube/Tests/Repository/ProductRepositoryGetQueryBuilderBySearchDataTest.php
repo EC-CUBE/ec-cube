@@ -65,13 +65,13 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->productListOrderByRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductListOrderBy::class);
-        $this->paginator = self::$container->get('knp_paginator');
+        $this->paginator = static::getContainer()->get('knp_paginator');
 
         $this->ProductListMax = new ProductListMax();
         $this->ProductListOrderBy = new ProductListOrderBy();
@@ -354,6 +354,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
             'dtb_product_stock',
             'dtb_product_class',
             'dtb_product_category',
+            'dtb_product_tag',
             'dtb_product',
         ];
         $this->deleteAllRows($tables);

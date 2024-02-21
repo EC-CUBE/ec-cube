@@ -1,13 +1,14 @@
 <?php
 
 use Eccube\Kernel;
-use Symfony\Component\Debug\Debug;
+use Eccube\Service\SystemService;
+use Symfony\Component\ErrorHandler\Debug;
 use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
 // システム要件チェック
-if (version_compare(PHP_VERSION, '7.1.3') < 0) {
-    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.1.3. See the <a href="http://www.ec-cube.net/product/system.php" target="_blank">system requirements</a> page for more information.');
+if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.4.0. See the <a href="https://doc4.ec-cube.net/quickstart/requirement" target="_blank">system requirements</a> page for more information.');
 }
 
 $autoload = __DIR__.'/vendor/autoload.php';
@@ -24,15 +25,16 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 
     if (file_exists(__DIR__.'/.env')) {
-        (new Dotenv(__DIR__))->overload();
+        (Dotenv::createUnsafeMutable(__DIR__))->load();
 
         if (strpos(getenv('DATABASE_URL'), 'sqlite') !== false && !extension_loaded('pdo_sqlite')) {
-            (new Dotenv(__DIR__, '.env.install'))->overload();
+            (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
         }
     } else {
-        (new Dotenv(__DIR__, '.env.install'))->overload();
+        (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
     }
 }
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 $env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
 $debug = isset($_SERVER['APP_DEBUG']) ? $_SERVER['APP_DEBUG'] : ('prod' !== $env);
@@ -62,13 +64,18 @@ if (file_exists($maintenanceFile)) {
     $adminPath = env('ECCUBE_ADMIN_ROUTE', 'admin');
     $adminPath = '/'.\trim($adminPath, '/').'/';
     if (\strpos($pathInfo, $adminPath) !== 0) {
-        $locale = env('ECCUBE_LOCALE');
-        $templateCode = env('ECCUBE_TEMPLATE_CODE');
-        $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
+        $maintenanceContents = file_get_contents($maintenanceFile);
+        $maintenanceToken = explode(':', $maintenanceContents)[1] ?? null;
+        $tokenInCookie = $request->cookies->get(SystemService::MAINTENANCE_TOKEN_KEY);
+        if ($tokenInCookie === null || $tokenInCookie !== $maintenanceToken) {
+            $locale = env('ECCUBE_LOCALE');
+            $templateCode = env('ECCUBE_TEMPLATE_CODE');
+            $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
 
-        header('HTTP/1.1 503 Service Temporarily Unavailable');
-        require __DIR__.'/maintenance.php';
-        return;
+            header('HTTP/1.1 503 Service Temporarily Unavailable');
+            require __DIR__.'/maintenance.php';
+            return;
+        }
     }
 }
 

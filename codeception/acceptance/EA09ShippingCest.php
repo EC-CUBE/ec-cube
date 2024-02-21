@@ -69,7 +69,6 @@ class EA09ShippingCest
             ->出荷情報登録();
 
         /* 異常系 */
-        // FIXME お届け先編集が閉じてしまうため、エラーメッセージが表示されない
         $I->see('入力されていません。', ShippingEditPage::$姓_エラーメッセージ);
 
         /* 正常系 */
@@ -97,6 +96,9 @@ class EA09ShippingCest
             ->出荷日を確認();
     }
 
+    /**
+     * @group vaddy
+     */
     public function shippingお届け先追加(AcceptanceTester $I)
     {
         $I->wantTo('EA0901-UC03-T03 お届け先追加');
@@ -143,9 +145,8 @@ class EA09ShippingCest
             ->入力_番地_ビル名('address 2', 1)
             ->出荷情報登録();
 
-        $I->see('保存しました', ShippingEditPage::$登録完了メッセージ);
+        $I->waitForText('保存しました', null, ShippingEditPage::$登録完了メッセージ);
 
-        $I->wait(10);
         // 出荷済みに変更
         $ShippingRegisterPage
             ->出荷完了にする()
@@ -155,8 +156,8 @@ class EA09ShippingCest
         // 出荷済みに変更
         $ShippingRegisterPage
             ->出荷完了にする(1)
-            ->変更を確定(1);
-        // TODO ステータス変更スキップしました
+            ->変更を確定(1)
+            ->出荷日を確認(1);
     }
 
     public function shipping_出荷CSV登録(AcceptanceTester $I)
@@ -312,7 +313,7 @@ class EA09ShippingCest
 
     public function shipping_出荷CSV雛形ファイルダウンロード(AcceptanceTester $I)
     {
-        $I->wantTo('EA0093-UC04-T02 出荷CSV雛形ファイルのダウンロード');
+        $I->wantTo('EA0903-UC04-T03 出荷CSV雛形ファイルのダウンロード');
 
         ShippingCsvUploadPage::go($I)->雛形ダウンロード();
         $csv = $I->getLastDownloadFile('/^shipping\.csv$/');

@@ -14,8 +14,11 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\CustomerFavoriteProduct;
-use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductTag;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ProductRepository test cases.
@@ -30,13 +33,19 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     protected $productRepository;
 
     /**
+     * @var TagRepository
+     */
+    protected $tagRepository;
+
+    /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
 
         $tables = [
             'dtb_product_image',
@@ -64,6 +73,32 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
             $Fav->setProduct($Product)
                 ->setCustomer($Customer);
             $this->entityManager->persist($Fav);
+        }
+        $this->entityManager->flush();
+    }
+
+    /**
+     * 商品にタグをつける
+     *
+     * @param Product $Product
+     * @param array $tagIds
+     */
+    protected function setProductTags(Product $Product, array $tagIds)
+    {
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTag) {
+            $Product->removeProductTag($ProductTag);
+            $this->entityManager->remove($ProductTag);
+        }
+
+        $Tags = $this->tagRepository->findBy(['id' => $tagIds]);
+        foreach ($Tags as $Tag) {
+            $ProductTag = new ProductTag();
+            $ProductTag
+                ->setProduct($Product)
+                ->setTag($Tag);
+            $Product->addProductTag($ProductTag);
+            $this->entityManager->persist($ProductTag);
         }
         $this->entityManager->flush();
     }

@@ -34,7 +34,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'meta_tags' => '',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $options = [
@@ -258,7 +258,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidMetaTagsMaxLength()
     {
-        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_lltext_len'] + 1);
+        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_ltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

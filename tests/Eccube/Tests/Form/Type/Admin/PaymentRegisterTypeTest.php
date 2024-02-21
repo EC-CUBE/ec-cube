@@ -29,7 +29,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         'rule_max' => '10000',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
                 'csrf_protection' => false,
             ])
             ->getForm();
-        self::$container->get('request_stack')->push(new Request());
+        static::getContainer()->get('request_stack')->push(new Request());
     }
 
     public function testValidData()

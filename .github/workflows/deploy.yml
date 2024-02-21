@@ -5,10 +5,10 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     services:
       postgres:
-        image: postgres:11
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -23,18 +23,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.3'
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          php-version: '7.4'
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
@@ -46,7 +35,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
@@ -58,18 +47,20 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 14
         run: |
-          bin/console eccube:composer:require "ec-cube/recommend4"
-          bin/console eccube:composer:require "ec-cube/coupon4"
-          bin/console eccube:composer:require "ec-cube/mailmagazine4"
-          bin/console eccube:composer:require "ec-cube/salesreport4"
-          bin/console eccube:composer:require "ec-cube/relatedproduct4"
-          bin/console eccube:composer:require "ec-cube/securitychecker4"
-          bin/console eccube:composer:require "ec-cube/productreview4"
-          bin/console eccube:composer:require "ec-cube/api"
-          bin/console eccube:composer:require "ec-cube/sitekit"
-          bin/console eccube:composer:require "ec-cube/gmc"
+          bin/console eccube:composer:require "ec-cube/recommend42"
+          bin/console eccube:composer:require "ec-cube/coupon42"
+          bin/console eccube:composer:require "ec-cube/mailmagazine42"
+          bin/console eccube:composer:require "ec-cube/salesreport42"
+          bin/console eccube:composer:require "ec-cube/relatedproduct42"
+          bin/console eccube:composer:require "ec-cube/securitychecker42"
+          bin/console eccube:composer:require "ec-cube/productreview42"
+          bin/console eccube:composer:require "ec-cube/api42"
+          bin/console eccube:composer:require "ec-cube/sitekit42"
+
+      - name: revert to config platform.php
+        run: composer config platform.php 7.4.0
 
       - name: Pre Install Plugins
         env:

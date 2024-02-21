@@ -54,24 +54,24 @@ class InstallControllerTest extends AbstractWebTestCase
      */
     protected $session;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->envFile = self::$container->getParameter('kernel.project_dir').'/.env';
+        $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
         if (file_exists($this->envFile)) {
             rename($this->envFile, $this->envFileBackup);
         }
 
-        $favicon = self::$container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
+        $favicon = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
         if (file_exists($favicon)) {
             unlink($favicon);
         }
 
-        $formFactory = self::$container->get('form.factory');
-        $encoder = self::$container->get(PasswordEncoder::class);
-        $cacheUtil = self::$container->get(CacheUtil::class);
+        $formFactory = static::getContainer()->get('form.factory');
+        $encoder = static::getContainer()->get(PasswordEncoder::class);
+        $cacheUtil = static::getContainer()->get(CacheUtil::class);
 
         $this->session = new Session(new MockArraySessionStorage());
         $this->controller = new InstallController($encoder, $cacheUtil);
@@ -86,7 +86,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->request = $this->createMock(Request::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         if (file_exists($this->envFileBackup)) {
             rename($this->envFileBackup, $this->envFile);
@@ -111,8 +111,8 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->step2($this->request);
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
 
-        $this->assertFileExists(self::$container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
-        $this->assertFileExists(self::$container->getParameter('eccube_html_dir').'/user_data/assets/pdf/logo.png');
+        $this->assertFileExists(static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
+        $this->assertFileExists(static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/pdf/logo.png');
     }
 
     public function testStep3()
@@ -408,7 +408,7 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testDatabaseVersion()
     {
         $version = $this->controller->getDatabaseVersion($this->entityManager);
-        $this->assertRegExp('/\A([\d+\.]+)/', $version);
+        $this->assertMatchesRegularExpression('/\A([\d+\.]+)/', $version);
     }
 
     public function testCreateAppData()
@@ -424,7 +424,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
         $this->assertEquals(phpversion(), $appData['php_ver']);
         $this->assertEquals(php_uname(), $appData['os_type']);
-        $this->assertRegExp('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
+        $this->assertMatchesRegularExpression('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
     }
 
     public function testConvertAdminAllowHosts()
