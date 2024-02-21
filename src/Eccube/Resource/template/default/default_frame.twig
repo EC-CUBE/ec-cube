@@ -60,13 +60,39 @@ file that was distributed with this source code.
     {{ include('block.twig', {'Blocks': Layout.BodyAfter}) }}
 {% endif %}
 
-{% if isMaintenance is defined and isMaintenance %}
-    <div class="ec-maintenanceAlert">
-        <div>
-            <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-            {{ 'front.under_maintenance'|trans }}
+
+{%  if isMaintenance is defined and isMaintenance and isDebugMode %}
+    <dev class="ec-twoModeAlert">
+        <div class="ec-maintenanceAlert">
+            <div>
+                <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                {{ 'front.under_maintenance'|trans }}
+            </div>
         </div>
-    </div>
+        <div class="ec-debugModeAlert bg-danger">
+            <div>
+                <div class="ec-debugModeAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                {{ 'front.under_debug_mode'|trans }}
+            </div>
+        </div>
+    </dev>
+{%  else %}
+    {% if isMaintenance %}
+        <div class="ec-maintenanceAlert">
+            <div>
+                <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                {{ 'front.under_maintenance'|trans }}
+            </div>
+        </div>
+    {% endif %}
+    {% if isDebugMode %}
+        <div class="ec-debugModeAlert bg-danger">
+            <div>
+                <div class="ec-debugModeAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                {{ 'front.under_debug_mode'|trans }}
+            </div>
+        </div>
+    {% endif %}
 {% endif %}
 
 <div class="ec-layoutRole">

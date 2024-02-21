@@ -392,6 +392,8 @@ front.shopping.payment_method_unselected: お支払い方法を選択してく�
 front.shopping.not_available_payment_method: 選択したお支払い方法はご利用できません。
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 front.under_maintenance: メンテナンスモードが有効になっています。
+front.under_debug_mode: デバッグモードが有効になっています。
+
 
 #====================================================================================
 # 管理画面
@@ -505,7 +507,7 @@ admin.common.move_to_confirm_save_and_move: 保存して移動
 admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
 admin.common.restrict_file_upload_info: 'この機能の利用頻度が低い場合、使用しない間は無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定することで機能を無効化することが可能です。'
 admin.common.notice_maintenance_mode: '現在メンテナンスモード中です。'
-
+admin.common.notice_debug_mode: 'デバッグモードが有効になっています。'
 
 # エンティティに関連するラベル
 admin.common.id: ID
