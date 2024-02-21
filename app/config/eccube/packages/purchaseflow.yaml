@@ -97,6 +97,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@Eccube\Repository\TaxRuleRepository'
             - '@Eccube\Service\TaxRuleService'
+            - '@Eccube\Service\OrderHelper'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 100 }
             - { name: eccube.item.holder.preprocessor, flow_type: order, priority: 100 }
@@ -141,6 +142,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@Eccube\Repository\TaxRuleRepository'
             - '@Eccube\Service\TaxRuleService'
+            - '@Eccube\Service\OrderHelper'
         tags:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 40 }
 
