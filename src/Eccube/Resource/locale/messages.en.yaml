@@ -392,6 +392,7 @@ front.shopping.payment_method_unselected: Please select the payment method.
 front.shopping.not_available_payment_method: The payment method you have selected is not available.
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
 front.under_maintenance: The site is currently under maintenance.
+front.under_debug_mode: The site is currently under debug mode.
 
 #====================================================================================
 # Admin Console
@@ -505,6 +506,7 @@ admin.common.move_to_confirm_save_and_move: Save & Move
 admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
 admin.common.restrict_file_upload_info: 'If this feature is used infrequently, disabling it while not in use provides additional security. You can disable this feature by setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1.'
 admin.common.notice_maintenance_mode: 'Currently in maintenance mode.'
+admin.common.notice_debug_mode: The site is currently under debug mode.
 
 
 # Labels related to entity
