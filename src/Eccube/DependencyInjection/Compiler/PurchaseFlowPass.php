@@ -44,6 +44,9 @@ class PurchaseFlowPass implements CompilerPassInterface
             PurchaseContext::ORDER_FLOW => $container->findDefinition('eccube.purchase.flow.order')
         ];
 
+        /**
+         * purchaseflow.yamlに定義を追加した場合の処理
+         */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             foreach ($this->findAndSortTaggedServices($tag, $container) as $id) {
                 $def = $container->findDefinition($id);
@@ -68,6 +71,9 @@ class PurchaseFlowPass implements CompilerPassInterface
         AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../../src');
         $reader = new AnnotationReader();
 
+        /**
+         * アノテーションで追加対象のフローを指定した場合の処理
+         */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             $ids = $container->findTaggedServiceIds($tag);
             foreach ($ids as $id => $tags) {
@@ -86,7 +92,7 @@ class PurchaseFlowPass implements CompilerPassInterface
     /**
      * @return string[]
      */
-    public function getProcessorTags(): array
+    private function getProcessorTags(): array
     {
         return [
             self::ITEM_PREPROCESSOR_TAG => 'addItemPreprocessor',
