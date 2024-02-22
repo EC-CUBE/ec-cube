@@ -13076,6 +13076,14 @@ Styleguide 15.1.6
   background: #F99;
   margin-bottom: 20px;
 }
+.ec-alert-warning .ec-alert-warning__inner {
+  display: inline-block;
+}
+.ec-alert-warning .ec-alert-warning__inner__item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 .ec-alert-warning .ec-alert-warning__icon {
   display: inline-block;
   margin-right: 1rem;
@@ -13091,6 +13099,8 @@ Styleguide 15.1.6
   font-weight: bold;
   color: #fff;
   position: relative;
+  flex: 1;
+  word-break: break-all;
 }
 /*
 アラート(空)
