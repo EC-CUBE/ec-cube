@@ -95,6 +95,7 @@ jobs:
         run: |
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
           sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          sed -i 's!APP_DEBUG: 1!APP_DEBUG: 0!g' docker-compose.yml
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
 
       - name: setup-chromedriver
@@ -119,7 +120,7 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action_docker.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP}
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP} --html report.html
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 
       - name: Push Docker image
