@@ -77,6 +77,9 @@ class BlockType extends AbstractType
                     new Assert\Regex([
                         'pattern' => '/^[0-9a-zA-Z\/_]+$/',
                     ]),
+                    new Assert\Regex([
+                        'pattern' => '/^(?!.*\/\/).+$/',
+                    ]),
                 ],
             ])
             ->add('block_html', TextareaType::class, [

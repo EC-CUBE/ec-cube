@@ -23,7 +23,7 @@ class AA00PluginInstallerCest
 
     protected $plugins = [];
 
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         $fixtures = __DIR__.'/../_data/plugin_fixtures.php';
         if (file_exists($fixtures)) {
@@ -32,11 +32,11 @@ class AA00PluginInstallerCest
         $I->loginAsAdmin();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function plugin_プラグインインストール(\AcceptanceTester $I)
+    public function plugin_プラグインインストール(AcceptanceTester $I)
     {
         $I->wantTo('プラグインインストール');
 

@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
@@ -72,7 +71,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員処理
      *
-     * @Route("/shopping/nonmember", name="shopping_nonmember")
+     * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
      * @Template("Shopping/nonmember.twig")
      */
     public function index(Request $request)
@@ -96,7 +95,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -106,22 +105,9 @@ class NonMemberShoppingController extends AbstractShoppingController
             log_info('非会員お客様情報登録開始');
 
             $data = $form->getData();
-            $Customer = new Customer();
-            $Customer
-                ->setName01($data['name01'])
-                ->setName02($data['name02'])
-                ->setKana01($data['kana01'])
-                ->setKana02($data['kana02'])
-                ->setCompanyName($data['company_name'])
-                ->setEmail($data['email'])
-                ->setPhonenumber($data['phone_number'])
-                ->setPostalcode($data['postal_code'])
-                ->setPref($data['pref'])
-                ->setAddr01($data['addr01'])
-                ->setAddr02($data['addr02']);
 
             // 非会員用セッションを作成
-            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $Customer);
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $data);
             $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize([]));
 
             $event = new EventArgs(
@@ -130,7 +116,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE);
 
             if ($event->getResponse() !== null) {
                 return $event->getResponse();
@@ -149,7 +135,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * お客様情報の変更(非会員)
      *
-     * @Route("/shopping/customer", name="shopping_customer")
+     * @Route("/shopping/customer", name="shopping_customer", methods={"POST"})
      */
     public function customer(Request $request)
     {
@@ -198,21 +184,19 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             $this->entityManager->flush();
 
-            $Customer = new Customer();
-            $Customer
-                ->setName01($data['customer_name01'])
-                ->setName02($data['customer_name02'])
-                ->setKana01($data['customer_kana01'])
-                ->setKana02($data['customer_kana02'])
-                ->setCompanyName($data['customer_company_name'])
-                ->setPhoneNumber($data['customer_phone_number'])
-                ->setPostalCode($data['customer_postal_code'])
-                ->setPref($pref)
-                ->setAddr01($data['customer_addr01'])
-                ->setAddr02($data['customer_addr02'])
-                ->setEmail($data['customer_email']);
-
-            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $Customer);
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER, [
+                'name01' => $data['customer_name01'],
+                'name02' => $data['customer_name02'],
+                'kana01' => $data['customer_kana01'],
+                'kana02' => $data['customer_kana02'],
+                'company_name' => $data['customer_company_name'],
+                'phone_number' => $data['customer_phone_number'],
+                'postal_code' => $data['customer_postal_code'],
+                'pref' => $pref,
+                'addr01' => $data['customer_addr01'],
+                'addr02' => $data['customer_addr02'],
+                'email' => $data['customer_email'],
+            ]);
 
             $event = new EventArgs(
                 [
@@ -221,7 +205,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE);
             log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
             $message = ['status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']];
 
@@ -298,7 +282,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(['type' => 'digit', 'message' => 'form_error.numeric_only']),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_tel_len_max']]
                 ),
@@ -309,7 +293,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(['type' => 'digit', 'message' => 'form_error.numeric_only']),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_postal_code']]
                 ),
@@ -336,7 +320,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_email'],
             [
                 new Assert\NotBlank(),
-                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
             ]
         );
 

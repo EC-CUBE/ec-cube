@@ -1,0 +1,161 @@
+name: 'Prepare VAddy'
+on:
+  workflow_call:
+
+inputs:
+  vaddy-verification-code:
+    description: 'VAddy verification code'
+    required: true
+    type: string
+  vaddy-fqdn:
+    description: 'VAddy FQDN'
+    required: true
+    type: string
+  vaddy-user:
+    description: 'VAddy USER'
+    required: true
+    type: string
+  vaddy-auth-key:
+    description: 'VAddy AUTH key'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: '7.4'
+
+    - name: setup-chromedriver
+      uses: nanasess/setup-chromedriver@master
+
+    - name: Install fonts
+      shell: bash
+      run: sudo apt install fonts-noto
+
+    - name: "VAddy: install"
+      working-directory: /tmp
+      shell: bash
+      run: |
+        wget -q https://github.com/vaddy/go-vaddy/archive/master.zip
+        unzip master.zip
+        echo 'export VADDY_AUTH_KEY="${{ inputs.vaddy-auth-key }}"
+        export VADDY_FQDN="${{ inputs.vaddy-fqdn }}"
+        export VADDY_VERIFICATION_CODE="${{ inputs.vaddy-verification-code }}"
+        export VADDY_USER="${{ inputs.vaddy-user }}"
+        export VADDY_YOUR_LOCAL_IP="127.0.0.1"
+        export VADDY_YOUR_LOCAL_PORT="8080"
+        export VADDY_HTTPS_PROXY=""' > go-vaddy-master/privatenet/conf/vaddy.conf
+        mkdir -p ${HOME}/.ssh
+        echo 'Host *.vaddy.net
+            StrictHostKeyChecking no' >> ${HOME}/.ssh/config
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      shell: bash
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
+    - name: "EC-CUBE: setup"
+      shell: bash
+      env:
+        DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+        DATABASE_SERVER_VERSION: 14
+      run: |
+        composer install --no-scripts --no-dev --no-interaction --optimize-autoloader --no-plugins
+        php bin/template_jp.php
+        rm -rf app/Plugin/*
+        echo '<?php
+        namespace Eccube\Doctrine\EventSubscriber;
+        use Doctrine\Common\EventSubscriber;
+        use Doctrine\ORM\Event\LifecycleEventArgs;
+        use Doctrine\ORM\Events;
+        class CancelDeletionEventSubscriber implements EventSubscriber
+        {
+          public function getSubscribedEvents()
+          {
+            return [Events::preRemove];
+          }
+          public function preRemove(LifecycleEventArgs $event)
+          {
+            $event->getEntityManager()->detach($event->getEntity());
+          }
+        }' > src/Eccube/Doctrine/EventSubscriber/CancelDeletionEventSubscriber.php
+        sed -i.bak -e 's_$fs->remove_// $fs->remove_' src/Eccube/Controller/Admin/Content/PageController.php
+        rm -f app/config/eccube/packages/dev/web_profiler.yaml
+        sed -i -e "s/eccube_login_throttling_max_attempts: 5/eccube_login_throttling_max_attempts: 1024/" -e "s/eccube_login_throttling_interval: '30 minutes'/eccube_login_throttling_interval: '1 minutes'/" app/config/eccube/packages/eccube.yaml
+        rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+        sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+        bin/console cache:clear
+        bin/console debug:container --parameter eccube_login_throttling_max_attempts
+        bin/console debug:container --parameter eccube_login_throttling_interval
+        bin/console debug:config eccube
+        bin/console doctrine:database:create --env=dev
+        bin/console doctrine:schema:create --env=dev
+        bin/console eccube:fixtures:load --env=dev
+        chmod -R 777 html
+
+    - name: Setup Plugins
+      shell: bash
+      env:
+        APP_ENV: 'prod'
+        DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+        DATABASE_SERVER_VERSION: 14
+        PGPASSWORD: 'password'
+      run: |
+        bin/console eccube:composer:require "ec-cube/recommend42"
+        bin/console eccube:composer:require "ec-cube/coupon42"
+        bin/console eccube:composer:require "ec-cube/mailmagazine42"
+        bin/console eccube:composer:require "ec-cube/salesreport42"
+        bin/console eccube:composer:require "ec-cube/relatedproduct42"
+        bin/console eccube:composer:require "ec-cube/securitychecker42"
+        bin/console eccube:composer:require "ec-cube/productreview42"
+        bin/console eccube:composer:require "ec-cube/api42"
+        bin/console eccube:composer:require "ec-cube/sitekit42"
+        psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
+
+    - name: "EC-CUBE: package"
+      shell: bash
+      working-directory: ../
+      run: ${{ github.event.repository.name }}/package.sh
+
+    - name: "EC-CUBE: build"
+      shell: bash
+      run: docker build -t ec-cube .
+
+    - name: "Codeception: prepare"
+      shell: bash
+      run: |
+        echo "APP_ENV=codeception" > .env
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        echo ">>> Started chrome-driver"
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        echo ">>> Started xvfb"
+        composer install --no-scripts --no-interaction --optimize-autoloader
+        sudo echo "127.0.0.1 ${{ inputs.vaddy-fqdn }}" | sudo tee -a /etc/hosts
+        echo "modules:
+            config:
+                WebDriver:
+                    host: '127.0.0.1'
+                    port: 9515
+                    url: "http://${{ inputs.vaddy-fqdn }}:8080"
+                    browser: chrome
+                    capabilities:
+                        chromeOptions:
+                            args: ["--headless", "--disable-gpu"]
+                            prefs:
+                                download.default_directory: '%PWD%/codeception/_support/_downloads'
+                MailCatcher:
+                    url: '172.17.0.1'
+                    port: 1080" > codeception/_envs/local.yml

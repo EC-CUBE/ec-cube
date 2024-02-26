@@ -21,9 +21,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginUninstallCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:uninstall';
-
     use PluginCommandTrait;
+    protected static $defaultName = 'eccube:plugin:uninstall';
 
     protected function configure()
     {
@@ -43,19 +42,21 @@ class PluginUninstallCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return;
+            return 1;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not installed.");
 
-            return;
+            return 1;
         }
 
         $this->pluginService->uninstall($plugin, $uninstallForce);
         $this->clearCache($io);
 
         $io->success('Uninstalled.');
+
+        return 0;
     }
 }

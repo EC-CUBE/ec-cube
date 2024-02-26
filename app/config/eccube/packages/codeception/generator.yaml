@@ -13,6 +13,7 @@ services:
       - '@Eccube\Repository\PaymentRepository'
       - '@Eccube\Repository\PageRepository'
       - '@Eccube\Repository\Master\PrefRepository'
+      - '@Eccube\Repository\TagRepository'
       - '@Eccube\Repository\TaxRuleRepository'
       - '@eccube.purchase.flow.order'
       - '@session'

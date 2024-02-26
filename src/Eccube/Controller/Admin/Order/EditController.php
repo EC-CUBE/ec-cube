@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
@@ -44,9 +43,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -178,15 +178,12 @@ class EditController extends AbstractController
     /**
      * 受注登録/編集画面.
      *
-     * @Route("/%eccube_admin_route%/order/new", name="admin_order_new")
-     * @Route("/%eccube_admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
+     * @Route("/%eccube_admin_route%/order/new", name="admin_order_new", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit", methods={"GET", "POST"})
      * @Template("@admin/Order/edit.twig")
      */
-    public function index(Request $request, $id = null, RouterInterface $router)
+    public function index(Request $request, RouterInterface $router, $id = null)
     {
-        $TargetOrder = null;
-        $OriginOrder = null;
-
         if (null === $id) {
             // 空のエンティティを作成.
             $TargetOrder = new Order();
@@ -218,12 +215,18 @@ class EditController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
+        
+        foreach ($TargetOrder->getOrderItems() as $orderItem) {
+            if ($orderItem->getTaxDisplayType() == null) {
+                $orderItem->setTaxDisplayType($this->orderHelper->getTaxDisplayType($orderItem->getOrderItemType()));
+            }
+        }
 
         if ($form->isSubmitted() && $form['OrderItems']->isValid()) {
             $event = new EventArgs(
@@ -235,7 +238,7 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS);
 
             $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
 
@@ -306,7 +309,7 @@ class EditController extends AbstractController
                         // 会員の場合、購入回数、購入金額などを更新
                         if ($Customer = $TargetOrder->getCustomer()) {
                             $this->orderRepository->updateOrderSummary($Customer);
-                            $this->entityManager->flush($Customer);
+                            $this->entityManager->flush();
                         }
 
                         $event = new EventArgs(
@@ -318,7 +321,7 @@ class EditController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE);
 
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -364,7 +367,7 @@ class EditController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE);
 
         $searchCustomerModalForm = $builder->getForm();
 
@@ -380,7 +383,7 @@ class EditController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE);
 
         $searchProductModalForm = $builder->getForm();
 
@@ -407,16 +410,16 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html")
-     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_customer_html_page")
+     * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_customer_html_page", methods={"GET", "POST"})
      * @Template("@admin/Order/search_customer.twig")
      *
      * @param Request $request
      * @param integer $page_no
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return array
      */
-    public function searchCustomerHtml(Request $request, $page_no = null, Paginator $paginator)
+    public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer start.');
@@ -453,7 +456,7 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH);
 
             /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
             $pagination = $paginator->paginate(
@@ -490,7 +493,7 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE);
             $data = $event->getArgument('data');
 
             return [
@@ -498,6 +501,8 @@ class EditController extends AbstractController
                 'pagination' => $pagination,
             ];
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -524,7 +529,7 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE);
 
             if (is_null($Customer)) {
                 log_debug('search customer by id not found.');
@@ -556,19 +561,21 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE);
             $data = $event->getArgument('data');
 
             return $this->json($data);
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/search/product", name="admin_order_search_product")
-     * @Route("/%eccube_admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
+     * @Route("/%eccube_admin_route%/order/search/product", name="admin_order_search_product", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page", methods={"GET", "POST"})
      * @Template("@admin/Order/search_product.twig")
      */
-    public function searchProduct(Request $request, $page_no = null, Paginator $paginator)
+    public function searchProduct(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search product start.');
@@ -608,7 +615,7 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH);
 
             /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
             $pagination = $paginator->paginate(
@@ -643,7 +650,7 @@ class EditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE);
 
             return [
                 'forms' => $forms,
@@ -656,7 +663,7 @@ class EditController extends AbstractController
     /**
      * その他明細情報を取得
      *
-     * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type")
+     * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type", methods={"POST"})
      * @Template("@admin/Order/order_item_type.twig")
      *
      * @param Request $request
@@ -679,12 +686,14 @@ class EditController extends AbstractController
                 ['OrderItemType' => $Charge, 'TaxType' => $Taxation],
                 ['OrderItemType' => $DeliveryFee, 'TaxType' => $Taxation],
                 ['OrderItemType' => $Discount, 'TaxType' => $Taxation],
-                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable]
+                ['OrderItemType' => $Discount, 'TaxType' => $NonTaxable],
             ];
 
             return [
                 'OrderItemTypes' => $OrderItemTypes,
             ];
         }
+
+        throw new BadRequestHttpException();
     }
 }

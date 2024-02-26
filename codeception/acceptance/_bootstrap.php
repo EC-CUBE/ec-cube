@@ -27,11 +27,10 @@ $config = parse_ini_file(__DIR__.'/config.ini', true);
  * よってCodeceptionの設定によってコントロールされず、テスト後もデータベース内にこのデータは残る
  * データの件数によって、作成するかどうか判定される
  */
-if (file_exists($config['eccube_path'].'/vendor/autoload.php')) {
-    require_once $config['eccube_path'].'/vendor/autoload.php';
-}
+require_once __DIR__.'/../../vendor/autoload.php';
+
 if (file_exists(__DIR__.'/../../.env')) {
-    (new \Dotenv\Dotenv(__DIR__.'/../../'))->overload();
+    (\Dotenv\Dotenv::createUnsafeMutable(__DIR__.'/../../'))->load();
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();

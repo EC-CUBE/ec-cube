@@ -58,12 +58,12 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     protected $env;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->templateRepository = $this->container->get(TemplateRepository::class);
-        $this->deviceTypeRepository = $this->container->get(DeviceTypeRepository::class);
+        $this->templateRepository = $this->entityManager->getRepository(\Eccube\Entity\Template::class);
+        $this->deviceTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class);
 
         $this->dir = \tempnam(\sys_get_temp_dir(), 'TemplateControllerTest');
         $fs = new Filesystem();
@@ -80,18 +80,18 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
         $this->code = StringUtil::random(6);
 
-        $this->envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
         }
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->dir);
 
-        $templatePath = $this->container->getParameter('kernel.project_dir').'/app/template/'.$this->code;
+        $templatePath = static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$this->code;
         if ($fs->exists($templatePath)) {
             $fs->remove($templatePath);
         }
@@ -135,7 +135,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // .envが更新されている
-        self::assertRegexp('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+        self::assertMatchesRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
     }
 
     /**
@@ -207,7 +207,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
         $Template = $this->templateRepository->find($id);
         self::assertNull($Template);
-        self::assertFalse(file_exists($this->container->getParameter('kernel.project_dir').'/app/template/'.$code));
+        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code));
     }
 
     protected function scenarioUpload($uppercase = false)
@@ -252,6 +252,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
             $zip->close();
             $this->file = new UploadedFile($file, 'dummy.ZIP', 'application/zip');
         }
+
         return [
             'file' => $this->file,
         ];

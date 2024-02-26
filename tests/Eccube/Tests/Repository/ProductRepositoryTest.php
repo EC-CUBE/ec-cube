@@ -31,7 +31,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         self::assertCount(3, $Result->getProductClasses());
     }
 
-    public function testGetQueryBuilderBySearchDataForAdmin_id_2147483648()
+    public function testGetQueryBuilderBySearchDataForAdminId2147483648()
     {
         $Product = $this->createProduct(null, 1);
         $Product->setName('2147483648');

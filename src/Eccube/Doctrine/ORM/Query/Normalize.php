@@ -21,8 +21,8 @@ use Doctrine\ORM\Query\SqlWalker;
 class Normalize extends FunctionNode
 {
     protected $string;
-    const FROM = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょわいえー';
-    const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
+    public const FROM = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー';
+    public const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
 
     public function parse(Parser $parser)
     {
@@ -34,11 +34,11 @@ class Normalize extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
-        switch ($sqlWalker->getConnection()->getDriver()->getName()) {
-            case 'pdo_pgsql':
+        switch ($sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
+            case 'postgresql':
                 $sql = sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
                 break;
-            case 'pdo_mysql':
+            case 'mysql':
                 $sql = sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
                 break;
             default:

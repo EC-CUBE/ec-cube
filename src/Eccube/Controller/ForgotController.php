@@ -73,12 +73,12 @@ class ForgotController extends AbstractController
     /**
      * パスワードリマインダ.
      *
-     * @Route("/forgot", name="forgot")
+     * @Route("/forgot", name="forgot", methods={"GET", "POST"})
      * @Template("Forgot/index.twig")
      */
     public function index(Request $request)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
 
@@ -91,7 +91,7 @@ class ForgotController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -117,7 +117,7 @@ class ForgotController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE);
 
                 // 完了URLの生成
                 $reset_url = $this->generateUrl('forgot_reset', ['reset_key' => $Customer->getResetKey()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -145,12 +145,12 @@ class ForgotController extends AbstractController
     /**
      * 再設定URL送信完了画面.
      *
-     * @Route("/forgot/complete", name="forgot_complete")
+     * @Route("/forgot/complete", name="forgot_complete", methods={"GET"})
      * @Template("Forgot/complete.twig")
      */
     public function complete(Request $request)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
 
@@ -160,12 +160,12 @@ class ForgotController extends AbstractController
     /**
      * パスワード再発行実行画面.
      *
-     * @Route("/forgot/reset/{reset_key}", name="forgot_reset")
+     * @Route("/forgot/reset/{reset_key}", name="forgot_reset", methods={"GET", "POST"})
      * @Template("Forgot/reset.twig")
      */
     public function reset(Request $request, $reset_key)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
 
@@ -232,7 +232,7 @@ class ForgotController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_FORGOT_RESET_COMPLETE);
 
                 // 完了メッセージを設定
                 $this->addFlash('password_reset_complete', trans('front.forgot.reset_complete'));

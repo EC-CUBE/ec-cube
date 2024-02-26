@@ -42,7 +42,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
-    public function testLoadCsv_FlippedColumns()
+    public function testLoadCsvFlippedColumns()
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());
@@ -59,10 +59,54 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
+    public function testLoadCsvEmptyTrackingNumberCol()
+    {
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
+        $Shipping = $Order->getShippings()[0];
+        self::assertNull($Shipping->getTrackingNumber());
+        self::assertNull($Shipping->getShippingDate());
+
+        $this->loadCsv([
+            '出荷ID,お問い合わせ番号,出荷日',
+            $Shipping->getId().',,2018-01-23',
+        ]);
+
+        $this->entityManager->refresh($Shipping);
+
+        self::assertEquals('', $Shipping->getTrackingNumber());
+        self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
+    }
+
+    public function testLoadCsvNoTrackingNumberCol()
+    {
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($OrderStatus);
+        $this->entityManager->flush();
+        $Shipping = $Order->getShippings()[0];
+        self::assertNull($Shipping->getTrackingNumber());
+        self::assertNull($Shipping->getShippingDate());
+
+        $trackingNo = $Shipping->getTrackingNumber();
+
+        $this->loadCsv([
+            '出荷ID,出荷日',
+            $Shipping->getId().',2018-01-23',
+        ]);
+
+        $this->entityManager->refresh($Shipping);
+
+        self::assertEquals($trackingNo, $Shipping->getTrackingNumber());
+        self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
+    }
+
     /**
      * @dataProvider loadCsvInvalidFormatProvider
      */
-    public function testLoadCsv_InvalidFormat($csv, $errorMessage)
+    public function testLoadCsvInvalidFormat($csv, $errorMessage)
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
         self::assertNull($Shipping->getTrackingNumber());
@@ -130,7 +174,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv = new CsvImportService(new \SplFileObject($tempFile));
         $csv->setHeaderRowNumber(0);
 
-        $controller = $this->container->get(CsvImportController::class);
+        $controller = static::getContainer()->get(CsvImportController::class);
         $rc = new \ReflectionClass(CsvImportController::class);
         $method = $rc->getMethod('loadCsv');
         $method->setAccessible(true);
@@ -165,7 +209,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $Shipping3->getId().',9012,2018-03-22',
         ]));
 
-        $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, null, true);
+        $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, true);
 
         $crawler = $this->client->request(
             'POST',
@@ -176,10 +220,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
                     'import_file' => $file,
                 ],
             ],
-            ['import_file' => $file]
+            ['admin_csv_import' => ['import_file' => $file]]
         );
 
-        $this->assertRegexp(
+        $this->assertMatchesRegularExpression(
             '/CSVファイルをアップロードしました/u',
             $crawler->filter('div.alert-primary')->text()
         );

@@ -14,8 +14,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\CustomerFavoriteProduct;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * CustomerFavoriteProductRepository
@@ -99,6 +99,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->remove($CustomerFavoriteProduct);
-        $em->flush($CustomerFavoriteProduct);
+        $em->flush();
     }
 }

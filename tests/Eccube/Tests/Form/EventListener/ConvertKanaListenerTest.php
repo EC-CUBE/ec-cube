@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormEvent;
 
 class ConvertKanaListenerTest extends TestCase
 {
-    public function testConvertKana_string()
+    public function testConvertKanaString()
     {
         $data = '１２３４５';
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
@@ -31,7 +31,7 @@ class ConvertKanaListenerTest extends TestCase
         $this->assertEquals('12345', $event->getData());
     }
 
-    public function testConvertKana_array()
+    public function testConvertKanaArray()
     {
         $data = ['１２３４５'];
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
@@ -43,7 +43,7 @@ class ConvertKanaListenerTest extends TestCase
         $this->assertEquals(['12345'], $event->getData());
     }
 
-    public function testConvertKana_HiraganaToKana()
+    public function testConvertKanaHiraganaToKana()
     {
         $data = 'あいうえお';
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();

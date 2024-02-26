@@ -18,10 +18,10 @@ use Eccube\Tests\EccubeTestCase;
 
 class CartItemRepositoryTest extends EccubeTestCase
 {
-    public function test__construct()
+    public function testConstruct()
     {
         /** @var CartItemRepository $CartItemRepository */
-        $CartItemRepository = $this->container->get(CartItemRepository::class);
+        $CartItemRepository = $this->entityManager->getRepository(\Eccube\Entity\CartItem::class);
         $this->assertInstanceOf(CartItemRepository::class, $CartItemRepository);
 
         $CartItem = $CartItemRepository->find(1);

@@ -14,23 +14,26 @@
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class WithdrawControllerTest extends AbstractWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var Customer
      */
     protected $Customer;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -68,6 +71,36 @@ class WithdrawControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostComplete()
     {
+        $this->logInTo($this->Customer);
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('mypage_withdraw'),
+            [
+                'form' => ['_token' => 'dummy'],
+                'mode' => 'complete',
+            ]
+        );
+
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $this->Customer->getEmail());
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
+
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+    }
+
+    public function testIndexWithPostCompleteWithSanitize()
+    {
+        $this->Customer->setName01('<Sanitize&>');
+        $this->entityManager->flush();
+
         $this->client->enableProfiler();
         $this->logInTo($this->Customer);
 
@@ -80,18 +113,21 @@ class WithdrawControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertRegExp('/@dummy.dummy/', $this->Customer->getEmail());
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $this->Customer->getEmail());
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->getSubject();
         $this->verify();
+
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyNotContains($Message, '＜Sanitize&＞', 'HTML part は存在しない');
     }
 
     public function testComplete()

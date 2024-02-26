@@ -12,11 +12,16 @@
  */
 
 use Codeception\Util\Fixtures;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use Page\Front\CustomerAddressEditPage;
 use Page\Front\CustomerAddressListPage;
 use Page\Front\HistoryPage;
 use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
+use Page\Front\ShoppingPage;
+use Page\Front\CartPage;
+use Eccube\Repository\CustomerAddressRepository;
 
 /**
  * @group front
@@ -25,15 +30,28 @@ use Page\Front\ProductDetailPage;
  */
 class EF05MypageCest
 {
-    public function _before(\AcceptanceTester $I)
+    /** @var EntityManager */
+    private EntityManager $em;
+
+    /** @var Connection */
+    private Connection $conn;
+
+    /**
+     * @var CustomerAddressRepository
+     */
+    protected CustomerAddressRepository $customerAddressRepository;
+
+    public function _before(AcceptanceTester $I)
+    {
+        $this->em = Fixtures::get('entityManager');
+        $this->conn = $this->em->getConnection();
+    }
+
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function _after(\AcceptanceTester $I)
-    {
-    }
-
-    public function mypage_初期表示(\AcceptanceTester $I)
+    public function mypage_初期表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0501-UC01-T01 Mypage 初期表示');
         $createCustomer = Fixtures::get('createCustomer');
@@ -44,7 +62,7 @@ class EF05MypageCest
         MyPage::at($I);
     }
 
-    public function mypage_ご注文履歴_(\AcceptanceTester $I)
+    public function mypage_ご注文履歴_(AcceptanceTester $I)
     {
         $I->wantTo('EF0502-UC01-T01 Mypage ご注文履歴');
         $createCustomer = Fixtures::get('createCustomer');
@@ -63,7 +81,10 @@ class EF05MypageCest
         $I->see('詳細を見る', 'div.ec-historyRole p.ec-historyListHeader__action a');
     }
 
-    public function mypage_ご注文履歴詳細(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_ご注文履歴詳細(AcceptanceTester $I)
     {
         $I->wantTo('EF0503-UC01-T01 Mypage ご注文履歴詳細');
         $createCustomer = Fixtures::get('createCustomer');
@@ -90,9 +111,13 @@ class EF05MypageCest
         $I->see('合計', 'div.ec-orderRole__summary div.ec-totalBox .ec-totalBox__total');
     }
 
-    public function mypage_お気に入り一覧(\AcceptanceTester $I)
+    /**
+     * @group excludeCoverage
+     * @group vaddy
+     */
+    public function mypage_お気に入り一覧(AcceptanceTester $I)
     {
-        $I->wantTo('EF0508-UC01-T01 Mypage お気に入り一覧');
+        $I->wantTo('EF0503-UC01-T02 Mypage お気に入り一覧');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -107,6 +132,7 @@ class EF05MypageCest
         // お気に入り登録
         ProductDetailPage::go($I, 2)->お気に入りに追加();
 
+        $I->wantTo('EF0503-UC01-T03 Mypage お気に入り一覧');
         MyPage::go($I)->お気に入り一覧();
         $I->see('チェリーアイスサンド', 'ul.ec-favoriteRole__itemList li:nth-child(1) p.ec-favoriteRole__itemTitle');
 
@@ -115,7 +141,10 @@ class EF05MypageCest
         $I->acceptPopup();
     }
 
-    public function mypage_会員情報編集(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_会員情報編集(AcceptanceTester $I)
     {
         $I->wantTo('EF0504-UC01-T01 Mypage 会員情報編集');
         $createCustomer = Fixtures::get('createCustomer');
@@ -142,8 +171,8 @@ class EF05MypageCest
             'entry[phone_number]' => '111-111-111',
             'entry[email][first]' => $new_email,
             'entry[email][second]' => $new_email,
-            'entry[password][first]' => 'password',
-            'entry[password][second]' => 'password',
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
         ];
 
         $findPluginByCode = Fixtures::get('findPluginByCode');
@@ -166,7 +195,7 @@ class EF05MypageCest
         $I->see('新着情報', '.ec-secHeading__ja');
     }
 
-    public function mypage_お届け先編集表示(\AcceptanceTester $I)
+    public function mypage_お届け先編集表示(AcceptanceTester $I)
     {
         $I->wantTo('EF0506-UC01-T01 Mypage お届け先編集表示');
         $createCustomer = Fixtures::get('createCustomer');
@@ -179,7 +208,10 @@ class EF05MypageCest
         $I->see('お届け先一覧', 'div.ec-pageHeader h1');
     }
 
-    public function mypage_お届け先編集作成変更(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_お届け先編集作成変更(AcceptanceTester $I)
     {
         $I->wantTo('EF0506-UC01-T02 Mypage お届け先編集作成変更');
         $createCustomer = Fixtures::get('createCustomer');
@@ -236,9 +268,13 @@ class EF05MypageCest
         $I->see('大阪市南区', 'div.ec-addressList div:nth-child(1) div.ec-addressList__address');
     }
 
-    public function mypage_お届け先編集削除(\AcceptanceTester $I)
+    /**
+     * @group excludeCoverage
+     * @group vaddy
+     */
+    public function mypage_お届け先編集削除(AcceptanceTester $I)
     {
-        $I->wantTo('EF0503-UC01-T01 Mypage お届け先編集削除');
+        $I->wantTo('EF0506-UC03-T01 Mypage お届け先編集削除');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -266,10 +302,82 @@ class EF05MypageCest
         $I->wait(1);
 
         // 確認
-        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > div > div > div:nth-child(2) > p');
+        $I->see('お届け先は登録されていません。', '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div:nth-child(2) > p');
     }
 
-    public function mypage_退会手続き未実施(\AcceptanceTester $I)
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6081
+     */
+    public function mypage_お届け先上限確認(AcceptanceTester $I)
+    {
+        $I->wantTo('EF0506-UC03-T02 Mypage お届け先上限確認');
+        $createCustomer = Fixtures::get('createCustomer');
+        $config = Fixtures::get('config');
+        $max = $config['eccube_deliv_addr_max'];
+
+        $customer = $createCustomer();
+        $I->loginAsMember($customer->getEmail(), 'password');
+
+        // 19件のお届け先を登録
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = Fixtures::get('entityManager');
+        
+        $this->customerAddressRepository = $em->getRepository(\Eccube\Entity\CustomerAddress::class);
+        
+        for ($i = 0; $i < $max; $i++) {
+            $customerAddress = new \Eccube\Entity\CustomerAddress();
+            $customerAddress
+                ->setCustomer($customer)
+                ->setName01($customer->getName01())
+                ->setName02($customer->getName02())
+                ->setKana01($customer->getKana01())
+                ->setKana02($customer->getKana02())
+                ->setCompanyName($customer->getCompanyName())
+                ->setPhoneNumber($customer->getPhoneNumber())
+                ->setPostalCode($customer->getPostalCode())
+                ->setPref($customer->getPref())
+                ->setAddr01($customer->getAddr01())
+                ->setAddr02($customer->getAddr02());
+
+            $em->persist($customerAddress);
+        }
+        
+        $em->flush();
+
+        // TOPページ>マイページ>お届け先一覧で上限に達していることを確認
+        MyPage::go($I)->お届け先編集();
+
+        $I->wait(1);
+
+        $I->see(sprintf('お届け先登録の上限の%s件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。', 20), '#page_mypage_delivery > div.ec-layoutRole > div.ec-layoutRole__contents > main > div > div:nth-child(3) > div > div');
+
+        // ご注文手続き画面で上限に達していることを確認
+        ProductDetailPage::go($I, 2)
+            ->カートに入れる(1)
+            ->カートへ進む();
+
+        CartPage::go($I)
+            ->レジに進む();
+
+        ShoppingPage::at($I)->お届け先変更();
+
+        $I->wait(1);
+        
+        $I->see(sprintf('お届け先登録の上限の%s件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。', 20), 'div.ec-registerRole > div > div > div ');
+
+        // 受注に紐づくidに直接アクセスしても登録されないことを確認
+        // URLから受注に紐づくIDを抽出 /shopping/shipping/{id}
+        $redirectUrl = $I->grabFromCurrentUrl();
+        $shipping_id = preg_replace('/\/shopping\/shipping\/(\d+)/', '$1', $redirectUrl);
+
+        // URLに直接アクセス /shopping/shipping_edit/{id}
+        $I->amOnPage('/shopping/shipping_edit/'.$shipping_id);
+
+        // 404であることを確認
+        $I->seeInTitle('ページがみつかりません');
+    }
+
+    public function mypage_退会手続き未実施(AcceptanceTester $I)
     {
         $I->wantTo('EF0507-UC03-T01 Mypage 退会手続き 未実施');
         $createCustomer = Fixtures::get('createCustomer');
@@ -289,7 +397,10 @@ class EF05MypageCest
         MyPage::at($I);
     }
 
-    public function mypage_退会手続き(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function mypage_退会手続き(AcceptanceTester $I)
     {
         $I->wantTo('EF0507-UC03-T02 Mypage 退会手続き');
         $createCustomer = Fixtures::get('createCustomer');

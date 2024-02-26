@@ -18,13 +18,14 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Repository\Master\PrefRepository;
+use Eccube\Service\OrderHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,7 +38,7 @@ class ShippingMultipleItemType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     protected $session;
 
@@ -62,20 +63,26 @@ class ShippingMultipleItemType extends AbstractType
     protected $entityManager;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * ShippingMultipleItemType constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param Session $session
+     * @param SessionInterface $session
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        Session $session,
+        SessionInterface $session,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         PrefRepository $prefRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        OrderHelper $orderHelper
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->session = $session;
@@ -83,6 +90,7 @@ class ShippingMultipleItemType extends AbstractType
         $this->tokenStorage = $tokenStorage;
         $this->prefRepository = $prefRepository;
         $this->entityManager = $entityManager;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -117,7 +125,7 @@ class ShippingMultipleItemType extends AbstractType
                 } else {
                     $CustomerAddresses = [];
                     // 非会員の場合は、セッションに保持されている注文者住所とお届け先住所をマージしてリストを作成
-                    if ($NonMember = $this->session->get('eccube.front.shopping.nonmember')) {
+                    if ($NonMember = $this->orderHelper->getNonMember('eccube.front.shopping.nonmember')) {
                         $CustomerAddress = new CustomerAddress();
                         $CustomerAddress->setFromCustomer($NonMember);
 
@@ -153,7 +161,7 @@ class ShippingMultipleItemType extends AbstractType
                 $choices = $form['customer_address']->getConfig()->getOption('choices');
 
                 /* @var CustomerAddress $CustomerAddress */
-                foreach ($choices as  $address) {
+                foreach ($choices as $address) {
                     if ($address->getShippingMultipleDefaultName() === $data->getShippingMultipleDefaultName()) {
                         $form['customer_address']->setData($address);
                         break;

@@ -17,6 +17,7 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AbstractShoppingController extends AbstractController
 {
@@ -38,7 +39,7 @@ class AbstractShoppingController extends AbstractController
      * @param ItemHolderInterface $itemHolder
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
      *
-     * @return PurchaseFlowResult|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return PurchaseFlowResult|RedirectResponse|null
      */
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)
     {
@@ -66,5 +67,7 @@ class AbstractShoppingController extends AbstractController
 
             return $this->redirectToRoute('shopping');
         }
+
+        return null;
     }
 }

@@ -16,8 +16,8 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Product;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -29,7 +29,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -95,7 +95,7 @@ class MypageController extends AbstractController
     /**
      * ログイン画面.
      *
-     * @Route("/mypage/login", name="mypage_login")
+     * @Route("/mypage/login", name="mypage_login", methods={"GET", "POST"})
      * @Template("Mypage/login.twig")
      */
     public function login(Request $request, AuthenticationUtils $utils)
@@ -126,7 +126,7 @@ class MypageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -139,10 +139,10 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @Route("/mypage/", name="mypage")
+     * @Route("/mypage/", name="mypage", methods={"GET"})
      * @Template("Mypage/index.twig")
      */
-    public function index(Request $request, Paginator $paginator)
+    public function index(Request $request, PaginatorInterface $paginator)
     {
         $Customer = $this->getUser();
 
@@ -161,7 +161,7 @@ class MypageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH);
 
         $pagination = $paginator->paginate(
             $qb,
@@ -177,7 +177,7 @@ class MypageController extends AbstractController
     /**
      * 購入履歴詳細を表示する.
      *
-     * @Route("/mypage/history/{order_no}", name="mypage_history")
+     * @Route("/mypage/history/{order_no}", name="mypage_history", methods={"GET"})
      * @Template("Mypage/history.twig")
      */
     public function history(Request $request, $order_no)
@@ -197,7 +197,7 @@ class MypageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE);
 
         /** @var Order $Order */
         $Order = $event->getArgument('Order');
@@ -248,7 +248,7 @@ class MypageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE);
 
         if (!$Order) {
             log_info('対象の注文が見つかりません', [$order_no]);
@@ -298,7 +298,7 @@ class MypageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
@@ -312,10 +312,10 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を表示する.
      *
-     * @Route("/mypage/favorite", name="mypage_favorite")
+     * @Route("/mypage/favorite", name="mypage_favorite", methods={"GET"})
      * @Template("Mypage/favorite.twig")
      */
-    public function favorite(Request $request, Paginator $paginator)
+    public function favorite(Request $request, PaginatorInterface $paginator)
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
@@ -332,7 +332,7 @@ class MypageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH);
 
         $pagination = $paginator->paginate(
             $qb,
@@ -373,7 +373,7 @@ class MypageController extends AbstractController
                 'CustomerFavoriteProduct' => $CustomerFavoriteProduct,
             ], $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE);
 
         log_info('お気に入り商品削除完了', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 

@@ -19,8 +19,8 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
 use Eccube\Util\StringUtil;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class SchemaService
 {
@@ -67,7 +67,7 @@ class SchemaService
         }
 
         try {
-            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
             $drivers = $chain->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
@@ -129,7 +129,7 @@ class SchemaService
      */
     public function dropTable($targetNamespace)
     {
-        $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+        $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
         $drivers = $chain->getDrivers();
 
         $dropMetas = [];

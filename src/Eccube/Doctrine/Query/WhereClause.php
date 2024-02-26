@@ -13,8 +13,8 @@
 
 namespace Eccube\Doctrine\Query;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * WHERE句を組み立てるクラス。

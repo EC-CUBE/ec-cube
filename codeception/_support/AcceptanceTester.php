@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -66,10 +67,10 @@ class AcceptanceTester extends \Codeception\Actor
         $isLogin = $I->grabTextFrom('header.c-headerBar div.c-headerBar__container a.c-headerBar__userMenu span');
         if ($isLogin == '管理者 様') {
             $I->click('header.c-headerBar div.c-headerBar__container a.c-headerBar__userMenu');
-            $I->click('#page_admin_homepage div.popover .popover-body a:last-child');
+            $I->click('body div.popover .popover-body a:last-child');
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
-            $I->see('ログイン', '#form1 > button');
+            $I->see('ログイン', '#form1 > div > button');
         }
     }
 
@@ -78,7 +79,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         if ($dir == '') {
             $config = Fixtures::get('config');
-            $I->amOnPage('/'.$config['eccube_admin_route']);
+            $I->amOnPage('/'.$config['eccube_admin_route'].'/');
         } else {
             $I->amOnPage('/'.$dir);
         }
@@ -93,13 +94,14 @@ class AcceptanceTester extends \Codeception\Actor
             'login_pass' => $password,
         ]);
         $I->see('新着情報', '.ec-secHeading__ja');
-        $I->see('ログアウト', ['css' => 'div.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
+        $I->see('ログアウト', ['css' => 'header.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
     }
 
     public function logoutAsMember()
     {
         $I = $this;
         $I->amOnPage('/');
+        $I->waitForElement('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         $isLogin = $I->grabTextFrom('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         if ($isLogin == 'ログアウト') {
             $I->wait(1);
@@ -222,7 +224,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function dragAndDropBy($selector, $x_offset, $y_offset)
     {
-        $this->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
+        $this->executeInSelenium(function (Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
             $node = $webDriver->findElement(WebDriverBy::cssSelector($selector));
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset);
             $action->perform();

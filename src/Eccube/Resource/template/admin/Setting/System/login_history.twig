@@ -1,0 +1,194 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'system', 'login_history'] %}
+
+{% block title %}{{ 'admin.setting.system.login_history'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+
+{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+<form name="search_form" id="search_form" method="post" action="">
+    {{ form_widget(searchForm._token) }}
+    <div class="c-outsideBlock">
+        <div class="c-outsideBlock__contents">
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="mb-2">
+                        <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.login_history.multi_search_label'|trans }}">{{ 'admin.setting.system.login_history.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
+                        {{ form_widget(searchForm.multi) }}
+                        {{ form_errors(searchForm.multi) }}
+                    </div>
+                    <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold me-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
+                </div>
+            </div>
+        </div>
+        <div class="c-subContents ec-collapse collapse{{ has_errors ? ' show' }}" id="searchDetail">
+            <div class="row mb-2">
+                <div class="col">
+                    <div>
+                        <label>{{ 'admin.setting.system.login_history.user_name'|trans }}</label>
+                        {{ form_widget(searchForm.user_name) }}
+                        {{ form_errors(searchForm.user_name) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div>
+                        <label>{{ 'admin.setting.system.login_history.client_ip'|trans }}</label>
+                        {{ form_widget(searchForm.client_ip) }}
+                        {{ form_errors(searchForm.client_ip) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <div>
+                        <label>{{ 'admin.setting.system.login_history.create_date'|trans }}</label>
+                        <div class="row align-items-center">
+                            <div class="col">
+                                {{ form_widget(searchForm.create_datetime_start) }}
+                                {{ form_errors(searchForm.create_datetime_start) }}
+                            </div>
+                            <div class="col-auto text-center"><span>{{ 'admin.common.separator__range'|trans }}</span></div>
+                            <div class="col">
+                                {{ form_widget(searchForm.create_datetime_end) }}
+                                {{ form_errors(searchForm.create_datetime_end) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div>
+                        <label>{{ 'admin.setting.system.login_history.status'|trans }}</label>
+                        {{ form_widget(searchForm.Status, { 'label_attr': { 'class': 'checkbox-inline'}}) }}
+                        {{ form_errors(searchForm.Status) }}
+                    </div>
+                </div>
+            </div>
+
+            {# エンティティ拡張の自動出力 #}
+            {% for f in searchForm|filter(f => f.vars.eccube_form_options.auto_render) %}
+                <div class="row mb-2">
+                    {% if f.vars.eccube_form_options.form_theme %}
+                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                        {{ form_row(f) }}
+                    {% else %}
+                        <div class="col">
+                            <div class="mb-3">
+                                <label>{{ f.vars.label|trans }}</label>
+                                {{ form_widget(f) }}
+                                {{ form_errors(f) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="c-outsideBlock__contents mb-5">
+        <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.search'|trans }}</button>
+        {% if pagination %}
+            <span class="fw-bold ms-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
+        {% endif %}
+    </div>
+    <div class="c-outsideBlock__contents mb-5">
+        {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
+    </div>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                {% if pagination and pagination.totalItemCount %}
+                    <div class="row justify-content-between mb-2">
+                        <div class="col-6"></div>
+
+                        <div class="col-5 text-end">
+                            {#Dropdown page count#}
+                            <div class="d-inline-block me-2">
+                                <select class="form-select" onchange="location = this.value;">
+                                    {% for pageMax in pageMaxis %}
+                                        <option {% if pageMax.name == page_count %} selected {% endif %}
+                                                value="{{ path('admin_setting_system_login_history_page', {'page_no': 1, 'page_count': pageMax.name }) }}">{{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="d-inline-block">
+                                <div class="btn-group" role="group"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-body p-0">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3">{{ 'admin.common.id'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.setting.system.login_history.user_name'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3">{{ 'admin.setting.system.login_history.client_ip'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.setting.system.login_history.create_date'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.setting.system.login_history.status'|trans }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for LoginHistory in pagination %}
+                                    <tr>
+                                        <td class="align-middle ps-3">
+                                            {{ LoginHistory.id }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ LoginHistory.user_name }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ LoginHistory.client_ip }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ LoginHistory.create_date|date_format('','Y/m/d H:i:s') }}
+                                        </td>
+                                        <td class="align-middle">
+                                            <span class="badge {% if LoginHistory.Status.id == constant('Eccube\\Entity\\Master\\LoginHistoryStatus::SUCCESS') %}badge-ec-blue{% else %}badge-ec-red{% endif %}">
+                                                {{ LoginHistory.Status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row justify-content-md-center mb-4">
+                                {% if pagination.totalItemCount > 0 %}
+                                    {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_setting_system_login_history_page' } %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% elseif has_errors %}
+                    <div class="card rounded border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_invalid_condition'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card rounded border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                            <div class="text-center text-muted">{{ 'admin.common.search_try_advanced_search'|trans }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -134,7 +134,7 @@
             }
             if (classcat2 && classcat2.stock_find === false) {
                 $cartbtn.prop('disabled', true);
-                $cartbtn.text('ただいま品切れ中です');
+                $cartbtn.text(eccube_lang['front.product.out_of_stock']);
             } else {
                 $cartbtn.prop('disabled', false);
                 $cartbtn.html(this.product_cart_origin);

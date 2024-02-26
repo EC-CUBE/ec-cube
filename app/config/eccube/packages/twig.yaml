@@ -14,10 +14,11 @@ twig:
       '%eccube_theme_src_dir%/common': common
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    form_themes: ['bootstrap_4_layout.html.twig']
+    form_themes: ['bootstrap_5_layout.html.twig']
 
     #     - 'default_frame.twig'
     #     - 'Form/form_div_layout.twig'
     date:
       timezone: '%timezone%'
     base_template_class: 'Eccube\Twig\Template'
+    exception_controller: null

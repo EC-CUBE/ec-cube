@@ -13,6 +13,8 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Master\PageMax;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +24,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PageMaxType extends AbstractType
 {
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +40,7 @@ class PageMaxType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $options = $event->getForm()->getConfig()->getOptions();
             if (!$event->getData()) {
-                $data = current(array_keys($options['choice_loader']->loadChoiceList()->getValues()));
+                $data = current($options['choice_loader']->loadChoiceList()->getChoices());
                 $event->setData($data);
             }
         });
@@ -50,7 +60,7 @@ class PageMaxType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\PageMax',
+            'class' => PageMax::class,
         ]);
     }
 

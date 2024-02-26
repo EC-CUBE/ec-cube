@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer;
@@ -55,6 +56,11 @@ class ProductClassEditType extends AbstractType
     protected $baseInfoRepository;
 
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * ProductClassEditType constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -64,11 +70,13 @@ class ProductClassEditType extends AbstractType
     public function __construct(
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
         $this->baseInfoRepository = $baseInfoRepository;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -84,6 +92,11 @@ class ProductClassEditType extends AbstractType
             ])
             ->add('code', TextType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
             ])
             ->add('stock', IntegerType::class, [
                 'required' => false,

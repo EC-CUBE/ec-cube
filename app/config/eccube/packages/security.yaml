@@ -1,4 +1,5 @@
 security:
+    enable_authenticator_manager: true
     encoders:
         # Our user class and the algorithm we'll use to encode passwords
         # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
@@ -22,40 +23,45 @@ security:
             security: false
         admin:
             pattern: '^/%eccube_admin_route%/'
-            anonymous: true
             provider: member_provider
             form_login:
+                enable_csrf: true
                 check_path: admin_login
                 login_path: admin_login
-                csrf_token_generator: security.csrf.token_manager
                 default_target_path: admin_homepage
                 username_parameter: 'login_id'
                 password_parameter: 'password'
                 use_forward: false
                 success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
+            login_throttling:
+                max_attempts: '%eccube_login_throttling_max_attempts%'
+                interval: '%eccube_login_throttling_interval%'
             logout:
                 path: admin_logout
-                target: admin_login
+                success_handler: eccube.security.logout.success_handler
         customer:
             pattern: ^/
-            anonymous: true
             provider: customer_provider
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 3600
                 name: eccube_remember_me
                 remember_me_parameter: 'login_memory'
+                secure: auto
             form_login:
+                enable_csrf: true
                 check_path: mypage_login
                 login_path: mypage_login
-                csrf_token_generator: security.csrf.token_manager
                 default_target_path: homepage
                 username_parameter: 'login_email'
                 password_parameter: 'login_pass'
                 use_forward: false
                 success_handler: eccube.security.success_handler
                 failure_handler: eccube.security.failure_handler
+            login_throttling:
+                max_attempts: '%eccube_login_throttling_max_attempts%'
+                interval: '%eccube_login_throttling_interval%'
             logout:
                 path: logout
                 target: homepage

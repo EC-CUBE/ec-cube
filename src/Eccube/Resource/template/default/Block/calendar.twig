@@ -1,0 +1,90 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{#{% form_theme form 'Form/form_div_layout.twig' %}#}
+<br><br>
+<div class="ec-role">
+    <div>
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">{{ 'front.block.calendar.title__en'|trans }}</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">{{ 'front.block.calendar.title__ja'|trans }}</span>
+        </div>
+        {{ 'front.block.calendar.holiday_notice'|trans }}<br>
+        <br>
+        <div class="ec-calendar">
+            <table id="this-month-table" class="ec-calendar__month">
+                <tr>
+                    <th id="this-month-title" colspan="7" class="ec-calendar__title">{{ ThisMonthTitle }}</th>
+                </tr>
+                <tr>
+                    <th class="ec-calendar__sun">{{ 'front.block.calendar.sunday'|trans }}</th>
+                    <th class="ec-calendar__mon">{{ 'front.block.calendar.monday'|trans }}</th>
+                    <th class="ec-calendar__tue">{{ 'front.block.calendar.tuesday'|trans }}</th>
+                    <th class="ec-calendar__wed">{{ 'front.block.calendar.wednesday'|trans }}</th>
+                    <th class="ec-calendar__thu">{{ 'front.block.calendar.thursday'|trans }}</th>
+                    <th class="ec-calendar__fri">{{ 'front.block.calendar.friday'|trans }}</th>
+                    <th class="ec-calendar__sat">{{ 'front.block.calendar.saturday'|trans }}</th>
+                </tr>
+                <tr>
+                    {% for day in ThisMonthCalendar %}
+                        {% if day.today == 1 and day.holiday == 1 %}
+                            <td id="today-and-holiday" class="ec-calendar__today ec-calendar__holiday">{{ day.day }}</td>
+                        {% elseif day.today == 1 and day.holiday == 0 %}
+                            <td id="today" class="ec-calendar__today">{{ day.day }}</td>
+                        {% elseif day.today == 0 and day.holiday == 1 %}
+                            <td id="this-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
+                        {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここから #}
+                        {% elseif day.dayOfWeek == 'Sun' or day.dayOfWeek == 'Sat' %}
+                            <td id="this-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
+                        {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここまで #}
+                        {% else %}
+                            <td class="ec-calendar__day">{{ day.day }}</td>
+                        {% endif %}
+                        {% if loop.index % 7 == 0 and loop.index != ThisMonthCalendar|length %}
+                            </tr><tr>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </table>
+
+            <table id="next-month-table" class="ec-calendar__month">
+                <tr>
+                    <th id="next-month-title" colspan="7" class="ec-calendar__title">{{ NextMonthTitle }}</th>
+                </tr>
+                <tr>
+                    <th class="ec-calendar__sun">{{ 'front.block.calendar.sunday'|trans }}</th>
+                    <th class="ec-calendar__mon">{{ 'front.block.calendar.monday'|trans }}</th>
+                    <th class="ec-calendar__tue">{{ 'front.block.calendar.tuesday'|trans }}</th>
+                    <th class="ec-calendar__wed">{{ 'front.block.calendar.wednesday'|trans }}</th>
+                    <th class="ec-calendar__thu">{{ 'front.block.calendar.thursday'|trans }}</th>
+                    <th class="ec-calendar__fri">{{ 'front.block.calendar.friday'|trans }}</th>
+                    <th class="ec-calendar__sat">{{ 'front.block.calendar.saturday'|trans }}</th>
+                </tr>
+                <tr>
+                    {% for day in NextMonthCalendar %}
+                        {% if day.holiday == 1 %}
+                            <td id="next-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
+                        {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここから #}
+                        {% elseif day.dayOfWeek == 'Sun' or day.dayOfWeek == 'Sat' %}
+                            <td id="next-month-holiday-{{ day.day }}" class="ec-calendar__holiday">{{ day.day }}</td>
+                        {# 土日は定休日表示にしています。不要な場合は削除して下さい。ここまで #}
+                        {% else %}
+                            <td class="ec-calendar__day">{{ day.day }}</td>
+                        {% endif %}
+                        {% if loop.index % 7 == 0 and loop.index != NextMonthCalendar|length %}
+                            </tr><tr>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

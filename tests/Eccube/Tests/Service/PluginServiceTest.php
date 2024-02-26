@@ -16,10 +16,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerServiceInterface;
-use Eccube\Service\EntityProxyService;
 use Eccube\Service\PluginService;
-use Eccube\Service\SchemaService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -27,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class PluginServiceTest
  *
- * @group cache-clear
+ * @group plugin-service
  */
 class PluginServiceTest extends AbstractServiceTestCase
 {
@@ -43,37 +40,21 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \ReflectionException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->service = $this->container->get(PluginService::class);
-        $rc = new \ReflectionClass($this->service);
-
-        $prop = $rc->getProperty('schemaService');
-        $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->createMock(SchemaService::class));
-
-        $prop = $rc->getProperty('composerService');
-        $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->createMock(ComposerServiceInterface::class));
-
-        $prop = $rc->getProperty('entityProxyService');
-        $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->createMock(EntityProxyService::class));
-
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
+        $this->service = static::getContainer()->get(PluginService::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $dirs = [];
         $finder = new Finder();
         $iterator = $finder
-            ->in($this->container->getParameter('kernel.project_dir').'/app/Plugin')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
         foreach ($iterator as $dir) {
@@ -85,7 +66,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
 
         $files = Finder::create()
-            ->in($this->container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
@@ -119,7 +100,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         $f = new Filesystem();
 
-        return $f->remove($path);
+        $f->remove($path);
     }
 
     // 必要最小限のファイルのプラグインのインストールとアンインストールを検証
@@ -161,12 +142,10 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     /**
      * 必須ファイルがないプラグインがインストール出来ないこと
-     *
-     * @expectedException \Eccube\Exception\PluginException
-     * @exceptedExceptionMessage config.yml not found or syntax error
      */
     public function testInstallPluginEmptyError()
     {
+        $this->expectException(\Eccube\Exception\PluginException::class);
         // インストールするプラグインを作成する
         $tmpname = 'dummy'.sha1(mt_rand());
         $tmpdir = $this->createTempDir();
@@ -265,12 +244,10 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     /**
      * config.ymlに異常な項目がある場合
-     *
-     * @expectedException \Eccube\Exception\PluginException
-     * @exceptedExceptionMessage config.yml name empty
      */
     public function testnstallPluginMalformedConfigError()
     {
+        $this->expectException(\Eccube\Exception\PluginException::class);
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
@@ -413,7 +390,7 @@ EOD;
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
         $this->assertTrue($this->service->install($tmpfile));
-        $this->assertRegexp('/Installed/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Installed/', ob_get_contents());
         ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
@@ -421,18 +398,18 @@ EOD;
 
         ob_start();
         $this->service->enable($plugin);
-        $this->assertRegexp('/Enabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Enabled/', ob_get_contents());
         ob_end_clean();
         ob_start();
         $this->service->disable($plugin);
-        $this->assertRegexp('/Disabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Disabled/', ob_get_contents());
         ob_end_clean();
 
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $this->service->disable($plugin);
         $this->assertTrue($this->service->uninstall($plugin));
-        $this->assertRegexp('/DisabledUninstalled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/DisabledUninstalled/', ob_get_contents());
         ob_end_clean();
     }
 
@@ -546,6 +523,7 @@ EOD;
 
     /**
      * Test Entity and Trait
+     *
      * @group update-schema-doctrine
      * @group update-schema-doctrine-install
      */
@@ -556,21 +534,6 @@ EOD;
         if ('postgresql' !== $platform) {
             $this->markTestSkipped('does not support of '.$platform);
         }
-
-        $this->service = $this->container->get(PluginService::class);
-        $rc = new \ReflectionClass($this->service);
-
-        $prop = $rc->getProperty('schemaService');
-        $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->container->get(SchemaService::class));
-
-        $prop = $rc->getProperty('composerService');
-        $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->container->get(ComposerServiceInterface::class));
-
-        $prop = $rc->getProperty('entityProxyService');
-        $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->container->get(EntityProxyService::class));
 
         $faker = $this->getFaker();
         // インストールするプラグインを作成する
@@ -688,7 +651,7 @@ EOD;
         ob_start();
         $this->assertTrue($this->service->install($tmpfile));
 
-        $this->assertRegexp('/Installed/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Installed/', ob_get_contents());
         ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/Block.php");
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/BlockTrait.php");
@@ -697,7 +660,7 @@ EOD;
 
         ob_start();
         $this->service->enable($plugin);
-        $this->assertRegexp('/Enabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Enabled/', ob_get_contents());
         ob_end_clean();
 
         // check to Entity and Trait
@@ -710,14 +673,14 @@ EOD;
 
         ob_start();
         $this->service->disable($plugin);
-        $this->assertRegexp('/Disabled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/Disabled/', ob_get_contents());
         ob_end_clean();
 
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $this->service->disable($plugin);
         $this->assertTrue($this->service->uninstall($plugin));
-        $this->assertRegexp('/DisabledUninstalled/', ob_get_contents());
+        $this->assertMatchesRegularExpression('/DisabledUninstalled/', ob_get_contents());
         ob_end_clean();
     }
 
@@ -731,10 +694,10 @@ EOD;
 
         $this->service->removeAssets($code);
 
-        $this->assertFileNotExists($dir);
+        $this->assertFileDoesNotExist($dir);
     }
 
-    public function testReadConfig_normalizeSourceToZero()
+    public function testReadConfigNormalizeSourceToZero()
     {
         $pluginDir = $this->createTempDir();
         $composerFile = json_encode([
@@ -766,7 +729,7 @@ EOD;
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [
-                'ec-cube/plugin-installer' => '*'
+                'ec-cube/plugin-installer' => '*',
                  ],
             'extra' => [
                 'code' => $config['code'],

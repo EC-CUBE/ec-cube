@@ -129,7 +129,7 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
          *
          * @return ProductTag
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 
@@ -153,7 +153,7 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
          *
          * @return ProductTag
          */
-        public function setTag(\Eccube\Entity\Tag $tag = null)
+        public function setTag(Tag $tag = null)
         {
             $this->Tag = $tag;
 
@@ -177,7 +177,7 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
          *
          * @return ProductTag
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

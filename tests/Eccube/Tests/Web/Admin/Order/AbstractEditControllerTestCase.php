@@ -14,7 +14,9 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -34,17 +36,18 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      * 受注編集用フォーム作成.
      *
      * @param Customer $Customer
-     * @param Product $Product
+     * @param Product|null $Product $Product
+     * @param int|null $charge
      *
      * @return array
      */
-    public function createFormData(Customer $Customer, Product $Product = null)
+    public function createFormData(Customer $Customer, ?Product $Product = null, ?int $charge = null)
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
 
         $shipping = $this->createShippingFormData();
-        $orderItems = $this->createOrderItemFormData($Product);
+        $orderItems = $this->createOrderItemFormData($Product, $charge);
 
         $order = [
             '_token' => 'dummy',
@@ -119,11 +122,12 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param Product $Product
+     * @param Product|null $Product
+     * @param int|null $charge
      *
      * @return array
      */
-    public function createOrderItemFormData(Product $Product)
+    public function createOrderItemFormData(?Product $Product, ?int $charge = null)
     {
         $faker = $this->getFaker();
 
@@ -135,7 +139,16 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'price' => $ProductClasses[0]->getPrice02(),
                 'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $Product->getName(),
-                'order_item_type' => 1,
+                'order_item_type' => OrderItemType::PRODUCT,
+            ];
+        }
+        if (!is_null($charge)) {
+            $orderItems[] = [
+                'price' => $charge,
+                'quantity' => 1,
+                'product_name' => '手数料',
+                'order_item_type' => OrderItemType::CHARGE,
+                'tax_type' => TaxType::TAXATION,
             ];
         }
 

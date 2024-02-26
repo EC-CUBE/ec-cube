@@ -11,15 +11,15 @@ file that was distributed with this source code.
 <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="block sort border border-ec-gray bg-ec-lightGray p-2 mb-2">
     <div class="row justify-content-between">
         <div class="col">
-            <i class="fa fa-bars text-ec-gray mr-3"></i>
-            <span class="view_readme" data-toggle="modal"
-               data-target="#blockModal"
+            <i class="fa fa-bars text-ec-gray me-3"></i>
+            <span class="view_readme" data-bs-toggle="modal"
+               data-bs-target="#blockModal"
                data-id="{{ BlockPosition.Block.id }}"
                data-name="{{ BlockPosition.Block.name }}"
                title="{{ BlockPosition.Block.name }}"
             >{{ BlockPosition.Block.name }}</span>
         </div>
-        <div class="col-auto text-right">
+        <div class="col-auto text-end">
             <div class="d-inline-block px-3 sort{% if loop.first %} first{% endif %}">
                 <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name }}"/>
                 <input type="hidden" class="block-id" name="block_id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}"/>

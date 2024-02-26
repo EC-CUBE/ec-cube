@@ -15,12 +15,12 @@ namespace Eccube\Tests\DependencyInjection\Compiler;
 
 use Doctrine\Common\EventSubscriber;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
-use PHPUnit\Framework\TestCase;
+use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
-class AutoConfigurationTagPassTest extends TestCase
+class AutoConfigurationTagPassTest extends EccubeTestCase
 {
     public function testConfigureDoctrineEventSubscriberTag()
     {
@@ -28,6 +28,7 @@ class AutoConfigurationTagPassTest extends TestCase
         $container->register(Subscriber::class, Subscriber::class);
 
         $definition = $container->getDefinition(Subscriber::class);
+        $definition->setPublic(true);
         self::assertFalse($definition->hasTag('doctrine.event_subscriber'));
 
         $container->addCompilerPass(new AutoConfigurationTagPass());
@@ -37,22 +38,19 @@ class AutoConfigurationTagPassTest extends TestCase
         self::assertTrue($definition->hasTag('doctrine.event_subscriber'));
     }
 
-    public function testConfigureFormTypeExtensionTag()
+    public function testConfigureRateLimiterTag()
     {
         $container = new ContainerBuilder();
-        $container->register(FormTypeExtension::class, FormTypeExtension::class);
+        $container->register('limiter', RateLimiterFactory::class);
+        $child = new ChildDefinition('limiter');
+        $container->setDefinition('limiter.test', $child);
 
-        $definition = $container->getDefinition(FormTypeExtension::class);
-        self::assertFalse($definition->hasTag('form.type_extension'));
+        self::assertFalse($child->hasTag('eccube_rate_limiter'));
 
         $container->addCompilerPass(new AutoConfigurationTagPass());
         $container->compile();
 
-        $definition = $container->getDefinition(FormTypeExtension::class);
-        self::assertTrue($definition->hasTag('form.type_extension'));
-
-        $attribute = $definition->getTag('form.type_extension');
-        self::assertSame(FormType::class, $attribute[0]['extended_type']);
+        self::assertTrue($child->hasTag('eccube_rate_limiter'));
     }
 }
 
@@ -60,13 +58,5 @@ class Subscriber implements EventSubscriber
 {
     public function getSubscribedEvents()
     {
-    }
-}
-
-class FormTypeExtension extends AbstractTypeExtension
-{
-    public function getExtendedType()
-    {
-        return FormType::class;
     }
 }

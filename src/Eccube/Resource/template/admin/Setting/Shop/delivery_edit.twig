@@ -19,10 +19,6 @@ file that was distributed with this source code.
 
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             $('#set_fee_all').on('click', function() {
@@ -89,8 +85,8 @@ file that was distributed with this source code.
 
                 var prototype = $collectionHolder.data('prototype');
 
-                var newForm = prototype.replace(/__name__/g, index);
-                var newForm = newForm.replace(/__value__/g, deliveryTimeName);
+                var newForm = $(prototype.replace(/__name__/g, index));
+                newForm.find('.display-label').text(deliveryTimeName)
 
                 // 要素を追加
                 var $lastRow = $('#delivery-time-group > li:last');
@@ -199,22 +195,20 @@ file that was distributed with this source code.
                 if ($i.hasClass('fa-toggle-on')) {
                     $i.addClass('fa-toggle-off');
                     $i.removeClass('fa-toggle-on');
-                    $this.attr('data-original-title', '{{ 'admin.common.to_show'|trans }}');
+                    $this.attr('title', '{{ 'admin.common.to_show'|trans }}');
+                    $this.attr('data-bs-original-title', '{{ 'admin.common.to_show'|trans }}');
                     $this.parents('li').find('.visible').val('0');
                 } else {
                     $i.addClass('fa-toggle-on');
                     $i.removeClass('fa-toggle-off');
-                    $this.attr('data-original-title', '{{ 'admin.common.to_hide'|trans }}');
+                    $this.attr('title', '{{ 'admin.common.to_hide'|trans }}');
+                    $this.attr('data-bs-original-title', '{{ 'admin.common.to_hide'|trans }}');
                     $this.parents('li').find('.visible').val('1');
                 }
                 // ツールチップの表示を更新
-                $this.tooltip('show');
-
-
+                tooltip = bootstrap.Tooltip.getInstance($(this).get(0));
+                tooltip.show();
             });
-
-            // FIXME 明細行のツールチップが表示されないため, ここでツールチップを有効にしている.
-            $('[data-tooltip="true"]').tooltip();
         });
     </script>
 {% endblock javascript %}
@@ -229,14 +223,14 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.shop.delivery.base_info'|trans }}</span></div>
                         <div id="ex-delivery-basic" class="card-body">
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_sevice_name'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_sevice_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.service_name) }}
                                     {{ form_errors(form.service_name) }}
@@ -244,9 +238,9 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.tracking_number_url'|trans }}">
-                                        <span>{{ 'admin.setting.shop.delivery.tracking_number_url'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span>{{ 'admin.setting.shop.delivery.tracking_number_url'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                     </div>
                                 </div>
                                 <div class="col mb-2">
@@ -256,10 +250,10 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.sale_type'|trans }}">
-                                        <span>{{ 'admin.setting.shop.delivery.sale_type'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span>{{ 'admin.setting.shop.delivery.sale_type'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ms-1"></i>
                                     </div>
                                 </div>
                                 <div class="col mb-2">
@@ -268,7 +262,7 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}
-                            {% for f in form if f.vars.eccube_form_options.auto_render %}
+                            {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                 {% if f.vars.eccube_form_options.form_theme %}
                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                     {{ form_row(f) }}
@@ -285,7 +279,7 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.payment_method'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.payment_method'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                         <div id="ex-delivery-payment" class="card-body">
                             <div>
                                 {{ form_widget(form.payments, {'label_attr': {'class': 'checkbox-inline'}}) }}
@@ -298,9 +292,9 @@ file that was distributed with this source code.
                         <div id="ex-delivery-time" class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
                                 <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
-                                    data-prototype="{% filter escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
+                                    data-prototype="{% apply escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endapply %}">
                                     <li class="list-group-item">
-                                        <div class="form-row">
+                                        <div class="row">
                                             <div class="col-auto d-flex align-items-center">
                                                 <input id="add-delivery-time-value" class="form-control" type="text">
                                             </div>
@@ -318,16 +312,16 @@ file that was distributed with this source code.
                     </div>
                     <p class="mb-4">{{ 'admin.common.drag_and_drop_description'|trans }}</p>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.delivery_fee_by_pref'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'admin.setting.shop.delivery.delivery_fee_by_pref'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                         <div id="ex-delivery-fee" class="card-body p-0">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <div class="row justify-content-start">
                                         <div class="col-2">
-                                            <div class="d-inline-block align-middle" data-tooltip="true"
-                                                 data-placement="top" title="{{ 'tooltip.setting.shop.delivery.apply_to_pref'|trans }}"><span
+                                            <div class="d-inline-block align-middle" data-bs-toggle="tooltip"
+                                                 data-bs-placement="top" title="{{ 'tooltip.setting.shop.delivery.apply_to_pref'|trans }}"><span
                                                         class="card-title">{{ 'admin.setting.shop.delivery.apply_to_pref__title'|trans }}</span><i
-                                                        class="fa fa-question-circle fa-lg ml-1"></i></div>
+                                                        class="fa fa-question-circle fa-lg ms-1"></i></div>
                                         </div>
                                         <div class="col-3">
                                             {{ form_widget(form.free_all) }}
@@ -346,7 +340,7 @@ file that was distributed with this source code.
                                                 <div class="col-2">
                                                     <label>{{ child.vars.data.pref }}</label>
                                                 </div>
-                                                <div class="col pl-0">
+                                                <div class="col ps-0">
                                                     {{ form_widget(child.fee) }}
                                                     {{ form_errors(child.fee) }}
                                                 </div>
@@ -362,12 +356,12 @@ file that was distributed with this source code.
                         <div id="ex-delivery-shop" class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.setting.shop.delivery.shop_memo'|trans }}">
                                     <span class="card-title">{{ 'admin.common.shop_memo'|trans }}<i
-                                                class="fa fa-question-circle fa-lg ml-1"></i></span></div>
+                                                class="fa fa-question-circle fa-lg ms-1"></i></span></div>
                                 </div>
-                                <div class="col-4 text-right"><a data-toggle="collapse" href="#freeArea"
+                                <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#freeArea"
                                                                  aria-expanded="false" aria-controls="freeArea"><i
                                                 class="fa fa-angle-up fa-lg"></i></a></div>
                             </div>

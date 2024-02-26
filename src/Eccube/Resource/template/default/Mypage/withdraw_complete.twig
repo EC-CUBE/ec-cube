@@ -23,14 +23,17 @@ file that was distributed with this source code.
         </div>
         <div class="ec-mypageRole">
             <div class="ec-withdrawCompleteRole">
+                <div class="ec-reportHeading">
+                    <h2>{{ 'front.mypage.withdraw_complete_message__title'|trans }}</h2>
+                </div>
+                <div class="ec-off3Grid ec-text-ac">
+                    <div class="ec-off3Grid__cell">
+                        <p class="ec-reportDescription">{{ 'front.mypage.withdraw_complete_message__body'|trans|nl2br }}</p>
+                    </div>
+                </div>
                 <div class="ec-off4Grid">
                     <div class="ec-off4Grid__cell">
-                        <div class="ec-reportHeading">
-                            <h2>{{ 'front.mypage.withdraw_complete_message__title'|trans }}</h2>
-                        </div>
-                        <p class="ec-reportDescription">{{ 'front.mypage.withdraw_complete_message__body'|trans|nl2br }}</p>
-                        <p><a href="{{ url('homepage') }}"
-                              class="ec-blockBtn--cancel">{{ 'common.go_to_top'|trans }}</a></p>
+                        <a href="{{ url('homepage') }}" class="ec-blockBtn--cancel">{{ 'common.go_to_top'|trans }}</a>
                     </div>
                 </div>
             </div>

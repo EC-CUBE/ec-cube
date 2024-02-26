@@ -27,8 +27,8 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
      */
     class ProductStock extends \Eccube\Entity\AbstractEntity
     {
-        const IN_STOCK = 1;
-        const OUT_OF_STOCK = 2;
+        public const IN_STOCK = 1;
+        public const OUT_OF_STOCK = 2;
 
         /**
          * @var integer
@@ -198,7 +198,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
          *
          * @return ProductStock
          */
-        public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
+        public function setProductClass(ProductClass $productClass = null)
         {
             $this->ProductClass = $productClass;
 
@@ -222,7 +222,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
          *
          * @return ProductStock
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

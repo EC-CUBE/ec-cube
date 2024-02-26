@@ -70,12 +70,14 @@ class OrderPdfType extends AbstractType
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'required' => true,
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'data' => new \DateTime(),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\DateTime(),
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
                 ],
                 'attr' => [
                     'data-target' => '#'.$this->getBlockPrefix().'_issue_date',
@@ -83,9 +85,10 @@ class OrderPdfType extends AbstractType
                 ],
             ])
             ->add('title', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length(['max' => $config['eccube_stext_len']]),
                 ],
             ])

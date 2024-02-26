@@ -23,6 +23,7 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
     public static $商品コード = ['id' => 'admin_product_class_code'];
     public static $販売制限数 = ['id' => 'admin_product_class_sale_limit'];
     public static $お届可能日 = ['id' => 'admin_product_class_delivery_duration'];
+    public static $税率 = ['id' => 'admin_product_class_tax_rate'];
 
     /**
      * ProductRegisterPage constructor.
@@ -61,6 +62,20 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_在庫数($value)
+    {
+        $this->tester->fillField(self::$在庫数, $value);
+
+        return $this;
+    }
+
+    public function 入力_税率($value)
+    {
+        $this->tester->fillField(self::$税率, $value);
+
+        return $this;
+    }
+
     public function 入力_公開()
     {
         $this->tester->selectOption('#admin_product_Status', '公開');
@@ -71,6 +86,13 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
     public function 入力_非公開()
     {
         $this->tester->selectOption('#admin_product_Status', '非公開');
+
+        return $this;
+    }
+
+    public function 入力_廃止()
+    {
+        $this->tester->selectOption('#admin_product_Status', '廃止');
 
         return $this;
     }

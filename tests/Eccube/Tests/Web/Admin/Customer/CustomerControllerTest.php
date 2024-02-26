@@ -15,20 +15,22 @@ namespace Eccube\Tests\Web\Admin\Customer;
 
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class CustomerControllerTest
  */
 class CustomerControllerTest extends AbstractAdminWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * Setup
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         for ($i = 0; $i < 10; $i++) {
@@ -49,7 +51,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * tearDown
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -107,11 +109,11 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_customer'),
-            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => 2]]
+            ['admin_search_customer' => ['_token' => 'dummy', 'sex' => [2]]]
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -135,7 +137,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchById()
     {
-        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], ['id' => 'DESC']);
+        $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),
@@ -155,11 +157,11 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
-        $Customer = $this->container->get(CustomerRepository::class)->findOneBy([], ['id' => 'DESC']);
+        $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
         $Order = $this->createOrder($Customer);
 
         /** @var OrderStatus $OrderStatus */
-        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find($orderStatusId);
+        $OrderStatus = static::getContainer()->get(OrderStatusRepository::class)->find($orderStatusId);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
@@ -200,25 +202,52 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testResend()
     {
-        $this->client->enableProfiler();
         $Customer = $this->createCustomer();
         $this->client->request(
-            'PUT',
+            'GET',
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
 
-        $Messages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
         //test mail resend to 仮会員.
-        $this->assertContains($BaseInfo->getEmail02(), $Message->toString());
+        $this->assertStringContainsString($BaseInfo->getEmail02(), $Message->toString());
+    }
+
+    /**
+     * testResend run multiple times
+     */
+    public function testResendWithMultipleTimes()
+    {
+        $Customer = $this->createCustomer();
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
+        $MessageFistTime = $this->getMailerMessage(0);
+
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
+        $MessageSecondTime = $this->getMailerMessage(0);
+
+        //test mail resend to 仮会員. (シークレットキーが毎回変わることを確認)
+        $FirstTimeMail       = $MessageFistTime->toString();
+        $SecondTimeMail      = $MessageSecondTime->toString();
+        $secretKeyFirstTime  = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
+        $secretKeySecondTime = mb_substr($SecondTimeMail, mb_strrpos($SecondTimeMail, '/activate/') + 10, 32);
+        $this->assertNotEquals($secretKeyFirstTime, $secretKeySecondTime);
     }
 
     /**
@@ -235,7 +264,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer_page',
                 ['page_no' => 1]).'?resume=1'));
 
-        $DeletedCustomer = $this->container->get(CustomerRepository::class)->find($id);
+        $DeletedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($id);
 
         $this->assertNull($DeletedCustomer);
     }
@@ -248,7 +277,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/user-[0-9]@example.com/');
 
         $this->client->request(
-            'POST',
+            'GET',
             $this->generateUrl('admin_customer_export'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );

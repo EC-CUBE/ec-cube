@@ -120,7 +120,7 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
          *
          * @return ProductCategory
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 
@@ -144,7 +144,7 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
          *
          * @return ProductCategory
          */
-        public function setCategory(\Eccube\Entity\Category $category = null)
+        public function setCategory(Category $category = null)
         {
             $this->Category = $category;
 

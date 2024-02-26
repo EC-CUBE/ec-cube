@@ -13,8 +13,8 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Tag;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TagRepository
@@ -48,7 +48,7 @@ class TagRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($tag);
-        $em->flush($tag);
+        $em->flush();
     }
 
     /**
@@ -85,7 +85,7 @@ class TagRepository extends AbstractRepository
             ->execute();
 
         $em->remove($Tag);
-        $em->flush($Tag);
+        $em->flush();
 
         $em->commit();
     }

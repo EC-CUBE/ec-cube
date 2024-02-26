@@ -15,14 +15,14 @@ namespace Eccube\Tests\Entity;
 
 use Doctrine\ORM\Mapping\Id;
 use Eccube\Entity\AbstractEntity;
-use PHPUnit\Framework\TestCase;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * AbstractEntity test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class AbstractEntityTest extends TestCase
+class AbstractEntityTest extends EccubeTestCase
 {
     private $objEntity;
 

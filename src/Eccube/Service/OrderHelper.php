@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Detection\MobileDetect;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,6 +26,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\EventListener\SecurityListener;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
@@ -34,16 +36,12 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Util\StringUtil;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderHelper
 {
-    // FIXME 必要なメソッドのみ移植する
-    use ControllerTrait;
-
     /**
      * @var ContainerInterface
      */
@@ -52,24 +50,24 @@ class OrderHelper
     /**
      * @var string 非会員情報を保持するセッションのキー
      */
-    const SESSION_NON_MEMBER = 'eccube.front.shopping.nonmember';
+    public const SESSION_NON_MEMBER = 'eccube.front.shopping.nonmember';
 
     /**
      * @var string 非会員の住所情報を保持するセッションのキー
      */
-    const SESSION_NON_MEMBER_ADDRESSES = 'eccube.front.shopping.nonmember.customeraddress';
+    public const SESSION_NON_MEMBER_ADDRESSES = 'eccube.front.shopping.nonmember.customeraddress';
 
     /**
      * @var string 受注IDを保持するセッションのキー
      */
-    const SESSION_ORDER_ID = 'eccube.front.shopping.order.id';
+    public const SESSION_ORDER_ID = 'eccube.front.shopping.order.id';
 
     /**
      * @var string カートが分割されているかどうかのフラグ. 購入フローからのログイン時にカートが分割された場合にtrueがセットされる.
      *
      * @see SecurityListener
      */
-    const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
+    public const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
     /**
      * @var SessionInterface
@@ -131,7 +129,7 @@ class OrderHelper
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
         PrefRepository $prefRepository,
-        MobileDetector $mobileDetector,
+        MobileDetect $mobileDetector,
         SessionInterface $session
     ) {
         $this->container = $container;
@@ -246,9 +244,9 @@ class OrderHelper
     /**
      * 購入処理中の受注を取得する.
      *
-     * @param null|string $preOrderId
+     * @param string|null $preOrderId
      *
-     * @return null|Order
+     * @return Order|null
      */
     public function getPurchaseProcessingOrder($preOrderId = null)
     {
@@ -266,17 +264,35 @@ class OrderHelper
      * セッションに保持されている非会員情報を取得する.
      * 非会員購入時に入力されたお客様情報を返す.
      *
-     * @return Customer
+     * @param string $session_key
+     *
+     * @return Customer|null
      */
-    public function getNonMember()
+    public function getNonMember($session_key = self::SESSION_NON_MEMBER)
     {
-        $NonMember = $this->session->get(self::SESSION_NON_MEMBER);
-        if ($NonMember && $NonMember->getPref()) {
-            $Pref = $this->prefRepository->find($NonMember->getPref()->getId());
-            $NonMember->setPref($Pref);
+        $data = $this->session->get($session_key);
+        if (empty($data)) {
+            return null;
+        }
+        $Customer = new Customer();
+        $Customer
+            ->setName01($data['name01'])
+            ->setName02($data['name02'])
+            ->setKana01($data['kana01'])
+            ->setKana02($data['kana02'])
+            ->setCompanyName($data['company_name'])
+            ->setEmail($data['email'])
+            ->setPhonenumber($data['phone_number'])
+            ->setPostalcode($data['postal_code'])
+            ->setAddr01($data['addr01'])
+            ->setAddr02($data['addr02']);
+
+        if (!empty($data['pref'])) {
+            $Pref = $this->prefRepository->find($data['pref']);
+            $Customer->setPref($Pref);
         }
 
-        return $NonMember;
+        return $Customer;
     }
 
     /**
@@ -301,7 +317,6 @@ class OrderHelper
 
     public function removeSession()
     {
-        $this->session->remove(self::SESSION_ORDER_ID);
         $this->session->remove(self::SESSION_ORDER_ID);
         $this->session->remove(self::SESSION_NON_MEMBER);
         $this->session->remove(self::SESSION_NON_MEMBER_ADDRESSES);
@@ -465,6 +480,7 @@ class OrderHelper
         $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 利用可能な支払い方法を抽出.
+        // ここでは支払総額が決まっていないため、利用条件に合致しないものも選択対象になる場合がある
         $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);
 
         // 初期の支払い方法を設定.
@@ -487,6 +503,65 @@ class OrderHelper
             $Order->addOrderItem($OrderItem);
             $OrderItem->setOrder($Order);
             $OrderItem->setShipping($Shipping);
+        }
+    }
+
+    /**
+     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     */
+    private function isGranted($attribute, $subject = null): bool
+    {
+        return $this->container->get('security.authorization_checker')->isGranted($attribute, $subject);
+    }
+
+    /**
+     * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     */
+    private function getUser(): ?UserInterface
+    {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
+
+        if (!\is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * 税表示区分を取得する.
+     *
+     * - 商品: 税抜
+     * - 送料: 税込
+     * - 値引き: 税抜
+     * - 手数料: 税込
+     * - ポイント値引き: 税込
+     *
+     * @param $OrderItemType
+     *
+     * @return TaxDisplayType
+     */
+    public function getTaxDisplayType($OrderItemType)
+    {
+        if ($OrderItemType instanceof OrderItemType) {
+            $OrderItemType = $OrderItemType->getId();
+        }
+
+        switch ($OrderItemType) {
+            case OrderItemType::PRODUCT:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+            case OrderItemType::DELIVERY_FEE:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            case OrderItemType::DISCOUNT:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+            case OrderItemType::CHARGE:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            case OrderItemType::POINT:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+            default:
+                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         }
     }
 }

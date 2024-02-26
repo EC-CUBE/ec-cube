@@ -42,3 +42,6 @@ services:
     Eccube\Service\PurchaseFlow\Processor\AddPointProcessor:
         autowire: true
         public: true
+    Eccube\Service\Composer\ComposerApiService:
+        autowire: true
+        public: true

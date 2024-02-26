@@ -59,7 +59,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧画面
      *
-     * @Route("/%eccube_admin_route%/store/template", name="admin_store_template")
+     * @Route("/%eccube_admin_route%/store/template", name="admin_store_template", methods={"GET", "POST"})
      * @Template("@admin/Store/template.twig")
      *
      * @param Request $request
@@ -105,7 +105,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧からのダウンロード
      *
-     * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
+     * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"}, methods={"GET"})
      *
      * @param Request $request
      * @param \Eccube\Entity\Template $Template
@@ -191,8 +191,8 @@ class TemplateController extends AbstractController
 
         // テンプレートディレクトリの削除
         $templateCode = $Template->getCode();
-        $targetRealDir = $this->container->getParameter('kernel.project_dir').'/app/template/'.$templateCode;
-        $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir').'/html/template/'.$templateCode;
+        $targetRealDir = $this->getParameter('kernel.project_dir').'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $this->getParameter('kernel.project_dir').'/html/template/'.$templateCode;
 
         $fs = new Filesystem();
         $fs->remove($targetRealDir);
@@ -210,7 +210,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install")
+     * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install", methods={"GET", "POST"})
      * @Template("@admin/Store/template_add.twig")
      *
      * @param Request $request
@@ -219,6 +219,8 @@ class TemplateController extends AbstractController
      */
     public function install(Request $request)
     {
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
+
         $form = $this->formFactory
             ->createBuilder(TemplateType::class)
             ->getForm();

@@ -18,18 +18,7 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/tempusdominus-bootstrap-4.min.css', 'admin') }}">
     <style type="text/css">
-        .datepicker-days th.dow:first-child,
-        .datepicker-days td:first-child {
-            color: #f00;
-        }
-
-        .datepicker-days th.dow:last-child,
-        .datepicker-days td:last-child {
-            color: #00f;
-        }
-
         .c-container {
             min-width: inherit;
             margin-top: 0;
@@ -50,25 +39,6 @@ file that was distributed with this source code.
 {% block javascript %}
     <script type="text/javascript">
         $(function() {
-            if ($('[type="date"]').prop('type') != 'date') {
-                // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
-                $.when(
-                    $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
-                    $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
-                ).done(function() {
-                    $('input[id$=_issue_date]').datetimepicker({
-                        locale: '{{ eccube_config.locale }}',
-                        format: 'YYYY-MM-DD',
-                        useCurrent: true,
-                        buttons: {
-                            showToday: true,
-                            showClose: true
-                        }
-                    });
-                });
-            }
-
             var close = $('#windowclose');
 
             $('.btn-ec-regular').on('click', function() {
@@ -78,7 +48,6 @@ file that was distributed with this source code.
         });
 
         Ladda.bind('button[type="submit"]', {timeout: 3000});
-
     </script>
 {% endblock %}
 
@@ -90,76 +59,79 @@ file that was distributed with this source code.
                 <div class="c-primaryCol">
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <h4 class="box-title font-weight-bold">{{ 'admin.order.output_delivery_note'|trans }}</h4>
+                            <h4 class="box-title fw-bold">{{ 'admin.order.output_delivery_note'|trans }}</h4>
                         </div>
 
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_create_date'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_create_date'|trans }}</label>
                                 {{ form_widget(form.issue_date) }}
                                 {{ form_errors(form.issue_date) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.shipping_id'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.shipping_id'|trans }}</label>
                                 {{ form_widget(form.ids) }}
                                 {{ form_errors(form.ids) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_title'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_title'|trans }}</label>
+                                <span class="badge bg-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                 {{ form_widget(form.title) }}
                                 {{ form_errors(form.title) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_output_format'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_output_format'|trans }}</label>
                                 {{ form_widget(form.download_kind) }}
                                 {{ form_errors(form.download_kind) }}
                             </div>
 
-                            <div class="font-weight-bold">{{ 'admin.order.delivery_note_message'|trans }}</div>
+                            <div class="fw-bold">{{ 'admin.order.delivery_note_message'|trans }}</div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_line1'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_line1'|trans }}</label>
                                 {{ form_widget(form.message1) }}
                                 {{ form_errors(form.message1) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_line2'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_line2'|trans }}</label>
                                 {{ form_widget(form.message2) }}
                                 {{ form_errors(form.message2) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_line3'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_line3'|trans }}</label>
                                 {{ form_widget(form.message3) }}
                                 {{ form_errors(form.message3) }}
                             </div>
 
-                            <div class="font-weight-bold">{{ 'admin.order.delivery_note_memo'|trans }}</div>
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_line1'|trans }}</label>
+                            <div class="fw-bold">{{ 'admin.order.delivery_note_memo'|trans }}</div>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_line1'|trans }}</label>
                                 {{ form_widget(form.note1) }}
                                 {{ form_errors(form.note1) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_line2'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_line2'|trans }}</label>
                                 {{ form_widget(form.note2) }}
                                 {{ form_errors(form.note2) }}
                             </div>
 
-                            <div class="form-group">
-                                <label>{{ 'admin.order.delivery_note_line3'|trans }}</label>
+                            <div class="mb-3">
+                                <label class="col-form-label">{{ 'admin.order.delivery_note_line3'|trans }}</label>
                                 {{ form_widget(form.note3) }}
                                 {{ form_errors(form.note3) }}
                             </div>
 
-                            <div class="form-group text-right">
-                                {{ form_widget(form.default) }}
-                                {{ form_errors(form.default) }}
+                            <div class="mb-3 text-end">
+                                <div class="form-check form-check-inline">
+                                    {{ form_widget(form.default) }}
+                                    {{ form_errors(form.default) }}
+                                </div>
                             </div>
 
                         </div>

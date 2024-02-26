@@ -119,6 +119,8 @@ class DeleteCartsCommand extends Command
         $this->deleteCarts($dateTime);
 
         $this->io->success('Delete carts successful.');
+
+        return 0;
     }
 
     protected function deleteCarts(\DateTime $dateTime)

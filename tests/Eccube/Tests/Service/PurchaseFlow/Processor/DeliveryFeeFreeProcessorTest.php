@@ -43,12 +43,12 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
         $this->processor = new DeliveryFeeFreePreprocessor($this->baseInfoRepository);
         $this->Order = $this->createOrder($this->createCustomer());
     }

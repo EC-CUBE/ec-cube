@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 
 class PurchaseFlow
 {
@@ -346,16 +345,18 @@ class PurchaseFlow
      */
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
-        $total = $itemHolder->getItems()
-            ->reduce(function ($sum, ItemInterface $item) {
-                if ($item instanceof OrderItem) {
-                    $sum += $item->getTax() * $item->getQuantity();
-                } else {
-                    $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
-                }
-
-                return $sum;
+        if ($itemHolder instanceof Order) {
+            $total = array_reduce($itemHolder->getTaxByTaxRate(), function ($sum, $tax) {
+                return $sum + $tax;
             }, 0);
+        } else {
+            $total = $itemHolder->getItems()
+                ->reduce(function ($sum, ItemInterface $item) {
+                    $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
+
+                    return $sum;
+                }, 0);
+        }
         $itemHolder->setTax($total);
     }
 
@@ -389,9 +390,9 @@ class PurchaseFlow
             'ItemPreprocessor' => $this->itemPreprocessors->map($callback)->toArray(),
             'ItemHolderPreprocessor' => $this->itemHolderPreprocessors->map($callback)->toArray(),
             'DiscountProcessor' => $this->discountProcessors->map($callback)->toArray(),
-            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray()
+            'ItemHolderPostValidator' => $this->itemHolderPostValidators->map($callback)->toArray(),
         ];
-        $tree  = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
+        $tree = new \RecursiveTreeIterator(new \RecursiveArrayIterator($flows));
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_RIGHT, ' ');
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_LAST, '　');
         $tree->setPrefixPart(\RecursiveTreeIterator::PREFIX_MID_HAS_NEXT, '│');
@@ -405,6 +406,7 @@ class PurchaseFlow
                 $out .= $key.PHP_EOL;
             }
         }
+
         return $out;
     }
 

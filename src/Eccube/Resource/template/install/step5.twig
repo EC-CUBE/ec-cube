@@ -12,23 +12,7 @@ file that was distributed with this source code.
 
 {% set current = 5 %}
 
-{% form_theme form _self %}
-{% block form_row %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        <label>{{ label }}
-            {% if required %}<span class="required">*</span>{% endif %}
-        </label>
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
-
-{% block checkbox_row %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
+{% form_theme form 'layout.html.twig' %}
 
 {% block main %}
     <div id="main" class="step6">
@@ -45,12 +29,12 @@ file that was distributed with this source code.
                                 {{ form_widget(form._token) }}
                                 <div class="note_box">
                                     <p>{{ 'install.database_skip_notice'|trans }}</p>
-                                    {{ form_widget(form.no_update) }}
+                                    {{ form_widget(form.no_update, {'label_attr': {'class': 'checkbox-inline'}}) }}
 
                                     {% for error in app.session.flashbag.get('eccube.front.error')  %}
                                         <div class="message">
                                             <p class="errormsg bg-danger">
-                                                <span class="initialism form-error-icon badge badge-danger">ERROR</span>
+                                                <span class="initialism form-error-icon badge bg-danger">ERROR</span>
                                                 <span class="form-error-message">{{ error|trans|nl2br }}</span>
                                             </p>
                                         </div>
@@ -58,8 +42,8 @@ file that was distributed with this source code.
                                 </div>
 
                                 <ul class="btn_area">
-                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
-                                    <li><a href="{{ path('install_step4') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
+                                    <li class="d-grid gap-2"><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
+                                    <li class="d-grid gap-2"><a href="{{ path('install_step4') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
                                 </ul>
                             </form>
                         </div>

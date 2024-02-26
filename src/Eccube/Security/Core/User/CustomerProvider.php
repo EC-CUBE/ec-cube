@@ -17,7 +17,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -34,18 +34,13 @@ class CustomerProvider implements UserProviderInterface
     }
 
     /**
-     * Loads the user for the given username.
-     *
-     * This method must throw UsernameNotFoundException if the user is not
-     * found.
-     *
-     * @param string $username The username
-     *
      * @return UserInterface
      *
-     * @throws UsernameNotFoundException if the user is not found
+     * @throws UserNotFoundException
+     *
+     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): Customer
     {
         $Customer = $this->customerRepository->findOneBy([
             'email' => $username,
@@ -53,7 +48,7 @@ class CustomerProvider implements UserProviderInterface
         ]);
 
         if (null === $Customer) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
         return $Customer;

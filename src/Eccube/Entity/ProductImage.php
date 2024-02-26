@@ -174,7 +174,7 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
          *
          * @return ProductImage
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 
@@ -198,7 +198,7 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
          *
          * @return ProductImage
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

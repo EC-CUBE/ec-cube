@@ -16,7 +16,6 @@
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
         .ui-resizable-se {
             right: -3px;
@@ -26,9 +25,6 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
         ace.require('ace/ext/language_tools');
         var editor = ace.edit('editor');
@@ -83,8 +79,8 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.content.css__card_title'|trans }}</span></div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
                                 </div>
@@ -95,10 +91,10 @@
                                 <!-- コード -->
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.css_source_code'|trans }}">
-                                            <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.css_source_code'|trans }}">
+                                            <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.css) ? ' is-invalid' }}"></div>

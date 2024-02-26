@@ -20,10 +20,11 @@ use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Twig\TwigTest;
 
 class EccubeExtension extends AbstractExtension
 {
@@ -61,7 +62,6 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('active_menus', [$this, 'getActiveMenus']),
             new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
             new TwigFunction('product', [$this, 'getProduct']),
-            new TwigFunction('php_*', [$this, 'getPhpFunctions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
         ];
     }
@@ -80,6 +80,18 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('ellipsis', [$this, 'getEllipsis']),
             new TwigFilter('time_ago', [$this, 'getTimeAgo']),
             new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
+        ];
+    }
+
+    /**
+     * Returns a list of tests.
+     *
+     * @return TwigTest[]
+     */
+    public function getTests()
+    {
+        return [
+            new TwigTest('integer', function ($value) { return  is_integer($value); }),
         ];
     }
 
@@ -216,25 +228,6 @@ class EccubeExtension extends AbstractExtension
     }
 
     /**
-     * Twigでphp関数を使用できるようにする。
-     *
-     * @return mixed|null
-     */
-    public function getPhpFunctions()
-    {
-        $arg_list = func_get_args();
-        $function = array_shift($arg_list);
-
-        if (is_callable($function)) {
-            return call_user_func_array($function, $arg_list);
-        }
-
-        trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
-
-        return null;
-    }
-
-    /**
      * Get the ClassCategories as JSON.
      *
      * @param Product $Product
@@ -298,7 +291,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @param $ext
      * @param $attr
-     * @param $iconOnly アイコンのクラス名のみ返す場合はtrue
+     * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string
      */
@@ -366,7 +359,7 @@ class EccubeExtension extends AbstractExtension
         if (is_null($currency)) {
             $currency = $this->eccubeConfig->get('currency');
         }
-        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($currency);
+        $symbol = Currencies::getSymbol($currency);
 
         return $symbol;
     }

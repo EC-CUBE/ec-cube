@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Eccube\Tests\Form\Type\Admin;
-
 
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Symfony\Component\Form\FormInterface;
@@ -17,7 +26,7 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -42,6 +51,23 @@ class SearchOrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
+     *
+     * @dataProvider dataFormDateProvider
+     *
+     * @param string $formName
+     */
+    public function testOutOfRangeSearch(string $formName)
+    {
+        $formData = [
+            $formName => '0001-01-01',
+        ];
+
+        $this->form->submit($formData);
+        $this->assertFalse($this->form->isValid());
     }
 
     /**

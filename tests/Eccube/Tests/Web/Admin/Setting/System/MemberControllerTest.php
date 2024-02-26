@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Repository\MemberRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {
@@ -26,11 +26,11 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     /**
      * @{@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->memberRepository = $this->container->get(MemberRepository::class);
+        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
     }
 
     public function testRoutingAdminSettingSystemMember()
@@ -174,12 +174,13 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $formData = $this->createFormData();
-        $formData['password'] = [
-            'first' => '**********',
-            'second' => '**********',
+        $formData['plain_password'] = [
+            'first' => $this->eccubeConfig['eccube_default_password'],
+            'second' => $this->eccubeConfig['eccube_default_password'],
         ];
         $Member = $this->createMember();
-        $Member->setPassword('**********');
+        $loginId = $Member->getLoginId();
+        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
         $this->entityManager->persist($Member);
         $this->entityManager->flush();
         $mid = $Member->getId();
@@ -193,16 +194,45 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = $Member->getLoginId();
-        $this->expected = $formData['login_id'];
+        $this->actual = $Member->getName();
+        $this->expected = $formData['name'];
         $this->verify();
+
+        // login_idが変更されないことを確認
+        $this->assertSame($Member->getLoginId(), $loginId);
     }
 
     public function testMemberEditSubmitFail()
     {
         // before
         $formData = $this->createFormData();
-        $formData['login_id'] = '';
+        $formData['name'] = '';
+        $Member = $this->createMember();
+        $Member->setPassword('**********');
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
+        $mid = $Member->getId();
+
+        // main
+        $this->client->request('POST',
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
+            ['admin_member' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5420
+     */
+    public function testMemberEditSubmitFailWithPlainPasswordIsEmpty()
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['plain_password'] = [
+            'first' => '',
+            'second' => ''
+        ];
         $Member = $this->createMember();
         $Member->setPassword('**********');
         $this->entityManager->persist($Member);
@@ -342,9 +372,9 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             'name' => $faker->word,
             'department' => $faker->word,
             'login_id' => 'logintest',
-            'password' => [
-                'first' => 'password',
-                'second' => 'password',
+            'plain_password' => [
+                'first' => 'password1234',
+                'second' => 'password1234',
             ],
             'Authority' => rand(0, 1),
             'Work' => rand(0, 1),

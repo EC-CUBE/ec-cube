@@ -31,32 +31,44 @@ file that was distributed with this source code.
 <script>
 
     function refreshCaptchaImage() {
-        $('#captcha_image').attr('src', "{{ eccube_config.eccube_package_api_url }}/captcha" + '?' + new Date().getTime())
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var captcha = document.getElementById("captcha_image");
+                var url = window.URL || window.webkitURL;
+                captcha.src = url.createObjectURL(this.response);
+
+                var captcha_id = document.getElementById("captcha_id");
+                captcha_id.value = this.getResponseHeader('x-eccube-captcha-id');
+            }
+        }
+
+        xhr.open('GET', '{{ eccube_config.eccube_package_api_url }}/captcha' + '?' + new Date().getTime());
+        xhr.responseType = 'blob';
+        xhr.send();
     }
 
     $('#captcha').on('show.bs.modal', function() {
         refreshCaptchaImage();
     });
 
-    $('#generate_key').on('click', function() {
+    function tryGenerateApiKey(){
         $.ajax({
             type: 'POST',
             url: "{{ eccube_config.eccube_package_api_url }}/api_key",
             dataType: 'json',
             cache: false,
             data: {
+                "captcha_id": $('#captcha_id').val(),
                 "captcha": $('#captcha_text').val(),
                 "eccube_url": '{{ eccubeUrl }}',
                 "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}",
-                "eccube_shop_name": "{{ eccubeShopName }}"
-            },
-            xhrFields: {
-                withCredentials: true
+                "eccube_shop_name": "{{ eccubeShopName|escape('js') }}"
             }
         }).done(function(data) {
             $('#captcha').modal('hide');
             $('#admin_authentication_authentication_key').val(data.api_key);
-            $('#form').submit()
+            $('#form').submit();
         }).fail(function(res) {
             if (res.status == 400) {
                 $('#captcha_error').show();
@@ -65,6 +77,19 @@ file that was distributed with this source code.
                 alert('{{ 'admin.common.system_error'|trans }}');
             }
         });
+    }
+
+    $("#captcha_text").on("keydown", function(e) {
+        if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            tryGenerateApiKey();
+            $(this).val('');
+            return false;
+        }
+    });
+
+    $('#generate_key').on('click', function() {
+        tryGenerateApiKey();
+        $("#captcha_text").val('');
         return false;
     });
     $('#captcha-refresh').on('click', refreshCaptchaImage);
@@ -91,7 +116,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#captcha" type="button">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#captcha" type="button">
                                         {{ 'admin.store.setting.get_api_key'|trans }}
                                     </button>
                                 </div>
@@ -114,9 +139,9 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <div class="d-inline-block">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title={{'admin.store.setting.api_key_tooltip'|trans}}>
                                         <span>{{ form.authentication_key.vars.label|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg" data-tooltip="true" data-placement="top" title={{'admin.store.setting.api_key_tooltip'|trans}}></i>
+                                        <i class="fa fa-question-circle fa-lg"></i>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -156,22 +181,23 @@ file that was distributed with this source code.
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold">{{ 'admin.store.setting.get_api_key'|trans }}</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h5 class="modal-title fw-bold">{{ 'admin.store.setting.get_api_key'|trans }}</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-left">
+                    <div class="modal-body text-start">
                         <p>新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。</p>
                         <img id="captcha_image" class="mb-2" src="#">
                         <button id="captcha-refresh" type="button" class="btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                         <input type="text" id="captcha_text" value="" class="form-control" placeholder="{{ 'admin.store.setting.captcha_message'|trans }}"/>
+                        <input type="hidden" id="captcha_id" value=""/>
                         <span id="captcha_error" class="invalid-feedback" style="display: none">
                             <span class="mb-0 d-block">
-                                <span class="initialism form-error-icon badge badge-danger">{{ 'admin.store.setting.captcha_error'|trans }}</span> <span class="form-error-message">{{ 'admin.store.setting.invalid_captcha'|trans }}</span>
+                                <span class="initialism form-error-icon badge bg-danger">{{ 'admin.store.setting.captcha_error'|trans }}</span> <span class="form-error-message">{{ 'admin.store.setting.invalid_captcha'|trans }}</span>
                             </span>
                         </span>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'common.cancel'|trans }}</button>
+                        <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'common.cancel'|trans }}</button>
                         <button id="generate_key" class="btn btn-ec-conversion" type="button">{{ 'admin.store.setting.get_api_key'|trans }}</button>
                     </div>
                 </div>

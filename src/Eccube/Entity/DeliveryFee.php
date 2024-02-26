@@ -104,7 +104,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
          *
          * @return DeliveryFee
          */
-        public function setDelivery(\Eccube\Entity\Delivery $delivery = null)
+        public function setDelivery(Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -128,7 +128,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
          *
          * @return DeliveryFee
          */
-        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        public function setPref(Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 

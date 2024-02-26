@@ -42,6 +42,8 @@ form_error.same_email: Please enter the same email address.
 form_error.admin_is_not_available: Do not use "admin" as the directory name.
 form_error.member_already_exists: This ID is already registered.
 form_error.customer_already_exists:  This email address can not be used.
+form_error.password_pattern_invalid: Please use one alphanumeric character each.
+form_error.out_of_range: Invalid DateTime.
 
 #------------------------------------------------------------------------------------
 # Deplicated

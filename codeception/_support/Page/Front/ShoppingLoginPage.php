@@ -28,7 +28,7 @@ class ShoppingLoginPage extends AbstractFrontPage
 
     public function ログイン($email, $password = 'password')
     {
-        $this->tester->submitForm('div.ec-layoutRole__main form', [
+        $this->tester->submitForm('main.ec-layoutRole__main form', [
             'login_email' => $email,
             'login_pass' => 'password',
         ]);

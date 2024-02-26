@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -123,7 +122,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_setting_shop'),
             ['shop_master' => $formData]
         );
-        $BaseInfo = $this->container->get(BaseInfoRepository::class)->find(1);
+        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->find(1);
 
         $this->expected = $BaseInfo->getEmail01();
         $this->actual = $formData['email01'];
