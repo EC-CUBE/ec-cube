@@ -145,6 +145,13 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
 
         $form = $this->createChangePasswordFormData();
+        $current_password = $form['current_password'];
+        $new_password = $form['change_password']['first'];
+
+        $hasher = static::getContainer()->get('security.user_password_hasher');
+        self::assertTrue($hasher->isPasswordValid($this->Member, $current_password));
+        self::assertFalse($hasher->isPasswordValid($this->Member, $new_password));
+
         $client->request(
             'POST',
             $this->generateUrl('admin_change_password'),
@@ -153,25 +160,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_change_password')));
 
-        $Member = clone $this->Member;
-        $encoder = static::getContainer()->get('security.encoder_factory')->getEncoder($this->Member);
-        $this->expected = $encoder->encodePassword($form['change_password']['first'], $this->Member->getSalt());
-        $this->actual = $this->Member->getPassword();
-
-        // XXX 実行タイミングにより、稀にパスワード変更前のハッシュ値を参照する場合があるため、変更に成功した場合のみ assertion を実行する
-        $old_password = hash_hmac('sha256', 'password'.':'.$this->eccubeConfig['eccube_auth_magic'], $this->Member->getSalt());
-        if ($this->actual === $old_password) {
-            $this->markTestSkipped('Failed to change the password by HttpClient. Skip this test.');
-        }
-
-        $this->verify(
-            'パスワードのハッシュ値が異なります '.PHP_EOL
-            .' AUTH_MAGIC='.$this->eccubeConfig['eccube_auth_magic'].PHP_EOL
-            .' HASH_Algos='.$this->eccubeConfig['eccube_password_hash_algos'].PHP_EOL
-            .' Input Password='.$form['change_password']['first'].PHP_EOL
-            .' Expected: salt='.$Member->getSalt().', raw password='.$Member->getPassword().PHP_EOL
-            .' Actual: salt='.$this->Member->getSalt()
-        );
+        self::assertFalse($hasher->isPasswordValid($this->Member, $current_password));
+        self::assertTrue($hasher->isPasswordValid($this->Member, $new_password));
     }
 
     public function testChangePasswordWithPostInvalid()

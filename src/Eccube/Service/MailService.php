@@ -27,7 +27,6 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -75,9 +74,6 @@ class MailService
      */
     protected $twig;
 
-    /** @var ContainerInterface */
-    protected $container;
-
     /**
      * MailService constructor.
      *
@@ -88,7 +84,6 @@ class MailService
      * @param EventDispatcherInterface $eventDispatcher
      * @param \Twig\Environment $twig
      * @param EccubeConfig $eccubeConfig
-     * @param ContainerInterface $container
      */
     public function __construct(
         MailerInterface $mailer,
@@ -98,7 +93,6 @@ class MailService
         EventDispatcherInterface $eventDispatcher,
         \Twig\Environment $twig,
         EccubeConfig $eccubeConfig,
-        ContainerInterface $container
     ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
@@ -107,7 +101,6 @@ class MailService
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
-        $this->container = $container;
     }
 
     /**
@@ -867,7 +860,7 @@ class MailService
      */
     public function convertRFCViolatingEmail(string $email): Address
     {
-        if ($this->container->getParameter('eccube_rfc_email_check')) {
+        if ($this->eccubeConfig->get('eccube_rfc_email_check')) {
             return new Address($email);
         }
 

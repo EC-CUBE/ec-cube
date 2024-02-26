@@ -14,7 +14,7 @@
 namespace Plugin\MigrationSample;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class PluginManager.

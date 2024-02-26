@@ -1,0 +1,9 @@
+{
+  "name": "ec-cube/assets",
+  "version": "1.0.0",
+  "description": "アセットを含むプラグイン",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "Assets"
+  }
+}

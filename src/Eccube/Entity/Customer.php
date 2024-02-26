@@ -15,6 +15,8 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -29,7 +31,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
      * @ORM\HasLifecycleCallbacks()
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
-    class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, \Serializable
+    class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
     {
         /**
          * @var int
@@ -312,7 +314,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * {@inheritdoc}
          */
-        public function getRoles()
+        public function getRoles(): array
         {
             return ['ROLE_USER'];
         }
@@ -655,7 +657,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return string|null
          */
-        public function getPassword()
+        public function getPassword(): ?string
         {
             return $this->password;
         }
@@ -679,7 +681,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @return string|null
          */
-        public function getSalt()
+        public function getSalt(): ?string
         {
             return $this->salt;
         }
@@ -1217,6 +1219,11 @@ if (!class_exists('\Eccube\Entity\Customer')) {
                 $this->email,
                 $this->password,
                 $this->salt) = unserialize($serialized);
+        }
+
+        public function getUserIdentifier(): string
+        {
+            return $this->email;
         }
     }
 }

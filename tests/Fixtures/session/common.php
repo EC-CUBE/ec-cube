@@ -34,7 +34,10 @@ if (file_exists($parent.'/.env')) {
     (Dotenv::createUnsafeMutable($parent, '.env'))->load();
 }
 
-Request::setTrustedProxies(['127.0.0.1', '::1', 'REMOTE_ADDR'], Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+Request::setTrustedProxies(
+    ['127.0.0.1', '::1', 'REMOTE_ADDR'],
+    Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO ^ Request::HEADER_X_FORWARDED_HOST
+);
 Request::setTrustedHosts(['127.0.0.1', '::1']);
 Request::createFromGlobals();
 
@@ -97,6 +100,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
 {
     private $handler;
     private $data;
+    private $sessionId;
 
     public function __construct(SessionHandlerInterface $handler)
     {
@@ -105,14 +109,18 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     }
 
     #[\ReturnTypeWillChange]
-    public function open($path, $name)
+    public function open($path, $name): bool
     {
         echo __FUNCTION__, "\n";
 
         return parent::open($path, $name);
     }
 
-    public function validateId($sessionId)
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
+    public function validateId($sessionId): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -122,7 +130,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId)
+    #[\ReturnTypeWillChange]
+    public function read($sessionId): string
     {
         echo __FUNCTION__, "\n";
 
@@ -132,7 +141,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function updateTimestamp($sessionId, $data)
+    #[\ReturnTypeWillChange]
+    public function updateTimestamp($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -142,7 +152,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data)
+    #[\ReturnTypeWillChange]
+    public function write($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -152,28 +163,37 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId)
+    #[\ReturnTypeWillChange]
+    public function destroy($sessionId):bool
     {
         echo __FUNCTION__, "\n";
 
         return parent::destroy($sessionId);
     }
 
-    public function close()
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
+    public function close(): bool
     {
         echo __FUNCTION__, "\n";
 
         return true;
     }
 
-    public function gc($maxLifetime)
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
+    public function gc($maxLifetime): int|false
     {
         echo __FUNCTION__, "\n";
 
         return true;
     }
 
-    protected function doRead($sessionId)
+    protected function doRead($sessionId): string
     {
         if (isset($this->sessionId) && $sessionId !== $this->sessionId) {
             echo __FUNCTION__ . ": invalid sessionId\n";
@@ -186,7 +206,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return $this->data;
     }
 
-    protected function doWrite($sessionId, $data)
+    protected function doWrite($sessionId, $data): bool
     {
         echo __FUNCTION__.': ', $data, "\n";
         $this->sessionId = $sessionId;
@@ -194,7 +214,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return true;
     }
 
-    protected function doDestroy($sessionId)
+    protected function doDestroy($sessionId): bool
     {
         echo __FUNCTION__, "\n";
         $this->sessionId = $sessionId;

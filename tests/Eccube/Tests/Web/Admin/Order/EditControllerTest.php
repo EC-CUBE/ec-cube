@@ -365,7 +365,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $this->markTestIncomplete('フロントとのセッション管理の実装が完了するまでスキップ');
         // フロント側から, product_class_id = 1 をカート投入
-        $client = $this->createClient();
+        $client = $this->client;
         $client->request(
             'PUT',
             $this->generateUrl(

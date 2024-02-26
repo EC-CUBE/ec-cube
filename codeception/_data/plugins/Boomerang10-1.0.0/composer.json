@@ -1,0 +1,13 @@
+{
+    "name": "ec-cube/boomerang10",
+    "description": "ブーメラン・10",
+    "version": "1.0.0",
+    "type": "eccube-plugin",
+    "require": {
+        "ec-cube/boomerang": "~1.0.0"
+    },
+    "extra": {
+        "code": "Boomerang10",
+        "id": 102
+    }
+}

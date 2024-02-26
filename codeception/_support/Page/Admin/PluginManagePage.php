@@ -128,9 +128,10 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    public function 独自プラグイン_アップデート($pluginCode, $fileName)
+    public function 独自プラグイン_アップデート($pluginCode, $pluginDirName)
     {
-        $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], $fileName);
+        $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
+        $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], 'plugins/'.$pluginDirName.'.tgz');
         $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
         $this->tester->see('アップデートしました。', self::完了メーッセージ);
 

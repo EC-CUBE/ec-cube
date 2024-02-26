@@ -23,7 +23,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.4'
+          php-version: '8.1'
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
@@ -60,7 +60,7 @@ jobs:
           bin/console eccube:composer:require "ec-cube/sitekit42"
 
       - name: revert to config platform.php
-        run: composer config platform.php 7.4.0
+        run: composer config platform.php 8.1.0
 
       - name: Pre Install Plugins
         env:

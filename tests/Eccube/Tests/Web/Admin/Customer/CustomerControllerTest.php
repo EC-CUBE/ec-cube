@@ -274,12 +274,13 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testExport()
     {
-        $this->expectOutputRegex('/user-[0-9]@example.com/');
-
         $this->client->request(
             'GET',
             $this->generateUrl('admin_customer_export'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
     }
 }

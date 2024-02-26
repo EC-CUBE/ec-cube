@@ -22,9 +22,9 @@ use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class MemberController extends AbstractController
 {
@@ -39,23 +39,23 @@ class MemberController extends AbstractController
     protected $memberRepository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var UserPasswordHasherInterface
      */
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     /**
      * MemberController constructor.
      *
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param UserPasswordHasherInterface $passwordHasher
      * @param MemberRepository $memberRepository
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
-        EncoderFactoryInterface $encoderFactory,
+        UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
     }
@@ -107,13 +107,9 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $encoder = $this->encoderFactory->getEncoder($Member);
-            $salt = $encoder->createSalt();
             $password = $Member->getPlainPassword();
-            $password = $encoder->encodePassword($password, $salt);
-            $Member
-                ->setSalt($salt)
-                ->setPassword($password);
+            $password = $this->passwordHasher->hashPassword($Member, $password);
+            $Member->setPassword($password);
 
             $this->memberRepository->save($Member);
 
@@ -162,16 +158,9 @@ class MemberController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($Member->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
-                $salt = $Member->getSalt();
-                // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
-                if (empty($salt)) {
-                    $salt = bin2hex(openssl_random_pseudo_bytes(5));
-                    $Member->setSalt($salt);
-                }
 
                 $password = $Member->getPlainPassword();
-                $encoder = $this->encoderFactory->getEncoder($Member);
-                $password = $encoder->encodePassword($password, $salt);
+                $password = $this->passwordHasher->hashPassword($Member, $password);
                 $Member->setPassword($password);
             }
 

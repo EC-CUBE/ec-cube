@@ -23,10 +23,10 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class ChangeController extends AbstractController
 {
@@ -41,9 +41,9 @@ class ChangeController extends AbstractController
     protected $customerRepository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var UserPasswordHasherInterface
      */
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     /**
      * @var MailService
@@ -59,13 +59,13 @@ class ChangeController extends AbstractController
 
     public function __construct(
         CustomerRepository $customerRepository,
-        EncoderFactoryInterface $encoderFactory,
+        UserPasswordHasherInterface $passwordHasher,
         TokenStorageInterface $tokenStorage,
         BaseInfoRepository $baseInfoRepository,
         MailService $mailService
     ) {
         $this->customerRepository = $customerRepository;
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasher = $passwordHasher;
         $this->tokenStorage = $tokenStorage;
         $this->baseInfoRepository = $baseInfoRepository;
         $this->mailService = $mailService;
@@ -103,13 +103,8 @@ class ChangeController extends AbstractController
             log_info('会員編集開始');
 
             if ($Customer->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
-                $encoder = $this->encoderFactory->getEncoder($Customer);
-                if ($Customer->getSalt() === null) {
-                    $Customer->setSalt($encoder->createSalt());
-                }
-                $Customer->setPassword(
-                    $encoder->encodePassword($Customer->getPlainPassword(), $Customer->getSalt())
-                );
+                $password = $this->passwordHasher->hashPassword($Customer, $Customer->getPlainPassword());
+                $Customer->setPassword($password);
             }
 
             // 会員情報変更時にメールを送信

@@ -11,6 +11,7 @@
  * file that was distributed with this source code.
  */
 
+use Codeception\Scenario;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
 use Facebook\WebDriver\WebDriverBy;
@@ -37,7 +38,7 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
-    public function getScenario()
+    public function getScenario(): Scenario
     {
         return $this->scenario;
     }
@@ -229,5 +230,21 @@ class AcceptanceTester extends \Codeception\Actor
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset);
             $action->perform();
         });
+    }
+
+    public function compressPlugin($pluginDirName, $destDir)
+    {
+        $archiveName = $pluginDirName.'.tgz';
+        $tgzPath = $destDir.'/'.$archiveName;
+        if (file_exists($tgzPath)) {
+            $this->comment("deleted.");
+            unlink($tgzPath);
+        }
+        $tarPath = $destDir.'/'.$pluginDirName.'.tar';
+        $phar = new \PharData($tarPath);
+        $published = $phar->buildFromDirectory(codecept_data_dir('plugins/'.$pluginDirName));
+        $phar->compress(\Phar::GZ, '.tgz');
+        unlink($tarPath);
+        return $published;
     }
 }
