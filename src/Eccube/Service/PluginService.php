@@ -26,7 +26,7 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -300,9 +300,6 @@ class PluginService
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
     {
-        // キャッシュしたメタデータを利用しないようにキャッシュドライバを外しておく
-        $this->entityManager->getMetadataFactory()->setCacheDriver(null);
-
         $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
             $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
         }, $plugin, $config, $uninstall);
@@ -346,7 +343,6 @@ class PluginService
                         $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
-                        $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
                     }
                 }
 

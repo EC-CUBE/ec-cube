@@ -19,6 +19,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
@@ -26,19 +27,21 @@ use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\Customer;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
+use Eccube\Session\Session;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class InstallController extends AbstractController
@@ -89,18 +92,18 @@ class InstallController extends AbstractController
     ];
 
     /**
-     * @var PasswordEncoder
+     * @var UserPasswordHasherInterface
      */
-    protected $encoder;
+    protected $passwordHasher;
 
     /**
      * @var CacheUtil
      */
     protected $cacheUtil;
 
-    public function __construct(PasswordEncoder $encoder, CacheUtil $cacheUtil)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, CacheUtil $cacheUtil)
     {
-        $this->encoder = $encoder;
+        $this->passwordHasher = $passwordHasher;
         $this->cacheUtil = $cacheUtil;
     }
 
@@ -252,7 +255,7 @@ class InstallController extends AbstractController
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
-    public function step3(Request $request)
+    public function step3(Request $request, EntityManagerInterface $entityManager)
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -263,7 +266,7 @@ class InstallController extends AbstractController
         // 再インストールの場合は環境変数から復旧
         if ($this->isInstalled()) {
             // ショップ名/メールアドレス
-            $conn = $this->entityManager->getConnection();
+            $conn = $entityManager->getConnection();
             $stmt = $conn->query('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
             $row = $stmt->fetch();
             $sessionData['shop_name'] = $row['shop_name'];
@@ -507,17 +510,17 @@ class InstallController extends AbstractController
         ];
     }
 
-    protected function getSessionData(SessionInterface $session)
+    protected function getSessionData(Session $session)
     {
         return $session->get('eccube.session.install', []);
     }
 
-    protected function removeSessionData(SessionInterface $session)
+    protected function removeSessionData(Session $session)
     {
         $session->clear();
     }
 
-    protected function setSessionData(SessionInterface $session, $data = [])
+    protected function setSessionData(Session $session, $data = [])
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
@@ -823,9 +826,7 @@ class InstallController extends AbstractController
     {
         $conn->beginTransaction();
         try {
-            $salt = StringUtil::random(32);
-            $this->encoder->setAuthMagic($data['auth_magic']);
-            $password = $this->encoder->encodePassword($data['login_pass'], $salt);
+            $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
                 ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
@@ -853,7 +854,6 @@ class InstallController extends AbstractController
                 'id' => $member_id,
                 'login_id' => $data['login_id'],
                 'password' => $password,
-                'salt' => $salt,
                 'work_id' => 1,
                 'authority_id' => 0,
                 'creator_id' => 1,
@@ -882,23 +882,20 @@ class InstallController extends AbstractController
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
             $stmt->bindParam(':login_id', $data['login_id']);
             $row = $stmt->executeQuery();
-            $this->encoder->setAuthMagic($data['auth_magic']);
-            $password = $this->encoder->encodePassword($data['login_pass'], $salt);
+            $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row) {
                 // 同一の管理者IDであればパスワードのみ更新
-                $sth = $conn->prepare('UPDATE dtb_member set password = :password, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;');
+                $sth = $conn->prepare('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;');
                 $sth->execute([
                     ':password' => $password,
-                    ':salt' => $salt,
                     ':login_id' => $data['login_id'],
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, salt, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password , :salt , '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
+                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
                 $sth->execute([
                     ':login_id' => $data['login_id'],
                     ':password' => $password,
-                    ':salt' => $salt,
                 ]);
             }
             $stmt = $conn->prepare('UPDATE dtb_base_info set

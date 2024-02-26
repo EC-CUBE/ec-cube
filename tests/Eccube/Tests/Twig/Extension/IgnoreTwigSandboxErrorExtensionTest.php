@@ -64,7 +64,6 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
             ['{% set foo = "bar" %}', true],
-            ['{% spaceless %}<div> <strong>test</strong> </div>{% endspaceless %}', true],
             ['{% flush %}', true],
             ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', true],
             ['{% macro input(name, value, type = "text", size = 20) %}<input type="{{ type }}" name="{{ name }}" value="{{ value|e }}" size="{{ size }}"/>{% endmacro %}', false],

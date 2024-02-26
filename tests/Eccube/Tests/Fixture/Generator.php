@@ -55,7 +55,9 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Fixture Object Generator.
@@ -72,9 +74,9 @@ class Generator
     protected $entityManager;
 
     /**
-     * @var PasswordEncoder
+     * @var UserPasswordHasherInterface
      */
-    protected $passwordEncoder;
+    protected $passwordHasher;
 
     /**
      * @var MemberRepository
@@ -147,13 +149,18 @@ class Generator
     protected $session;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * @var PurchaseFlow
      */
     protected $orderPurchaseFlow;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        PasswordEncoder $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
         CategoryRepository $categoryRepository,
         CustomerRepository $customerRepository,
@@ -167,12 +174,12 @@ class Generator
         TagRepository $tagRepository,
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
-        SessionInterface $session,
+        RequestStack $requestStack,
         $locale = 'ja_JP'
     ) {
         $this->locale = $locale;
         $this->entityManager = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
         $this->categoryRepository = $categoryRepository;
         $this->customerRepository = $customerRepository;
@@ -186,7 +193,7 @@ class Generator
         $this->tagRepository = $tagRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -212,14 +219,12 @@ class Generator
         $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
         $Creator = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
 
-        $salt = bin2hex(openssl_random_pseudo_bytes(5));
         $password = 'password';
-        $password = $this->passwordEncoder->encodePassword($password, $salt);
+        $password = $this->passwordHasher->hashPassword($Member, $password);
 
         $Member
             ->setLoginId($loginId)
             ->setName($username)
-            ->setSalt($salt)
             ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
@@ -252,8 +257,7 @@ class Generator
         $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
         $Job = $this->entityManager->find(\Eccube\Entity\Master\Job::class, $faker->numberBetween(1, 18));
 
-        $salt = $this->passwordEncoder->createSalt();
-        $password = $this->passwordEncoder->encodePassword('password', $salt);
+        $password = $this->passwordHasher->hashPassword($Customer, 'password');
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -270,7 +274,6 @@ class Generator
             ->setSex($Sex)
             ->setJob($Job)
             ->setPassword($password)
-            ->setSalt($salt)
             ->setSecretKey($this->customerRepository->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
@@ -312,12 +315,12 @@ class Generator
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-            $customerAddresses = unserialize($this->session->get($sessionCustomerAddressKey));
+            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey));
             if (!is_array($customerAddresses)) {
                 $customerAddresses = [];
             }
             $customerAddresses[] = $CustomerAddress;
-            $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->requestStack->getSession()->set($sessionCustomerAddressKey, serialize($customerAddresses));
         } else {
             $this->entityManager->persist($CustomerAddress);
             $this->entityManager->flush();
@@ -362,10 +365,10 @@ class Generator
         $nonMember = [];
         $nonMember['customer'] = $Customer;
         $nonMember['pref'] = $Customer->getPref()->getId();
-        $this->session->set($sessionKey, $nonMember);
+        $this->requestStack->getSession()->set($sessionKey, $nonMember);
 
         $customerAddresses = [];
-        $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+        $this->requestStack->getSession()->set($sessionCustomerAddressKey, serialize($customerAddresses));
 
         return $Customer;
     }

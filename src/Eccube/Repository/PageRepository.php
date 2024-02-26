@@ -17,7 +17,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Page;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * PageRepository
@@ -55,15 +54,14 @@ class PageRepository extends AbstractRepository
      *
      * @param RegistryInterface $registry
      * @param EccubeConfig $eccubeConfig
-     * @param ContainerInterface $container
      */
-    public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig, ContainerInterface $container)
+    public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig)
     {
         parent::__construct($registry, Page::class);
         $this->eccubeConfig = $eccubeConfig;
-        $this->userDataRealDir = $container->getParameter('eccube_theme_user_data_dir');
-        $this->templateRealDir = $container->getParameter('eccube_theme_app_dir');
-        $this->templateDefaultRealDir = $container->getParameter('eccube_theme_src_dir');
+        $this->userDataRealDir = $eccubeConfig->get('eccube_theme_user_data_dir');
+        $this->templateRealDir = $eccubeConfig->get('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = $eccubeConfig->get('eccube_theme_src_dir');
     }
 
     /**

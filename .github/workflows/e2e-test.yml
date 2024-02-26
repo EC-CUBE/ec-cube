@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.4 ]
+        php: [ 8.1 ]
         db: [ pgsql ]
         group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'installer' ]
         include:
@@ -97,7 +97,10 @@ jobs:
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
-          cp codeception/_data/plugins/*-1.0.0.tgz repos
+          for d in $(ls codeception/_data/plugins | grep 1.0.0)
+          do
+            (cd codeception/_data/plugins/$d; tar zcf ../../../../repos/${d}.tgz *)
+          done
 
       - name: Start PHP Development Server
         if: ${{ matrix.group != 'restrict-fileupload' }}
@@ -130,7 +133,9 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
 
       - name: Codeception with Restrict file upload
         if: ${{ matrix.group == 'restrict-fileupload' }}
@@ -143,7 +148,9 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
-        run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
 
       - name: Upload evidence
         if: failure()

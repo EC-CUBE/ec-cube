@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class TwoFactorAuthController extends AbstractController
 {
@@ -37,11 +36,6 @@ class TwoFactorAuthController extends AbstractController
     protected $memberRepository;
 
     /**
-     * @var EncoderFactoryInterface
-     */
-    protected $encoderFactory;
-
-    /**
      * @var TwoFactorAuthService
      */
     protected $twoFactorAuthService;
@@ -53,12 +47,10 @@ class TwoFactorAuthController extends AbstractController
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
-        EncoderFactoryInterface $encoderFactory,
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage,
         TwoFactorAuthService $twoFactorAuthService
     ) {
-        $this->encoderFactory = $encoderFactory;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
         $this->twoFactorAuthService = $twoFactorAuthService;

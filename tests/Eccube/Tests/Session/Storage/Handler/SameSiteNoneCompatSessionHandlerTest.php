@@ -59,6 +59,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
 
+        if ($fixture === 'empty_destroys' && PHP_VERSION_ID >= 80200) {
+            // PHP8.2以降は日付のフォーマットが01 Jan 1970となるため
+            // https://www.php.net/manual/ja/function.setcookie.php
+            $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
+        }
+
         if ($shouldSendSameSiteNone) {
             if (PHP_VERSION_ID < 70300) {
                 // PHP7.3未満は互換用 cookie
@@ -86,6 +92,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
+
+        if ($fixture === 'empty_destroys' && PHP_VERSION_ID >= 80200) {
+            // PHP8.2以降は日付のフォーマットが01 Jan 1970となるため
+            // https://www.php.net/manual/ja/function.setcookie.php
+            $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
+        }
 
         $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.expected', $fixture), $result);
     }

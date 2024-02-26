@@ -14,6 +14,7 @@
 namespace Eccube\DependencyInjection\Compiler;
 
 use Doctrine\Common\EventSubscriber;
+use Eccube\Service\Payment\PaymentMethodInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,6 +36,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         foreach ($container->getDefinitions() as $id => $definition) {
             $this->configureDoctrineEventSubscriberTag($definition);
             $this->configureRateLimiterTag($id, $definition);
+            $this->configurePaymentMethodTag($id, $definition);
         }
     }
 
@@ -59,6 +61,14 @@ class AutoConfigurationTagPass implements CompilerPassInterface
             && $definition->getParent() === 'limiter'
             && !$definition->hasTag('eccube_rate_limiter')) {
             $definition->addTag('eccube_rate_limiter');
+        }
+    }
+
+    protected function configurePaymentMethodTag($id, Definition $definition)
+    {
+        $class = $definition->getClass();
+        if (is_subclass_of($class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
+            $definition->addTag('eccube_payment_method');
         }
     }
 }

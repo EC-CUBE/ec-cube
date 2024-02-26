@@ -14,11 +14,11 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Session\Session;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,13 +30,13 @@ class LoginType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * @var SessionInterface
+     * @var Session
      */
     protected $session;
 
     public function __construct(
         EccubeConfig $eccubeConfig,
-        SessionInterface $session
+        Session $session
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->session = $session;
