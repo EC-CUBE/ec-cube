@@ -544,7 +544,7 @@ admin.common.device_type: Type of Device
 admin.common.authority: Role
 admin.common.payment_method: Payment Method
 admin.common.charge: Charge
-admin.common.ga.tracking_id: "UA-XXXXXXXX-1"
+admin.common.ga.tracking_id: "G-XXXXXXXXXX"
 #------------------------------------------------------------------------------------
 # Home
 #------------------------------------------------------------------------------------
