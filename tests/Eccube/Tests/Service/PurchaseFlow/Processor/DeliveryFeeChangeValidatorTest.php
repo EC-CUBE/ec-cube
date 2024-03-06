@@ -37,7 +37,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
      */
     private $Order;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

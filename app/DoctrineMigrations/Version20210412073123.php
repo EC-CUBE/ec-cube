@@ -28,7 +28,7 @@ final class Version20210412073123 extends AbstractMigration
     public function up(Schema $schema): void
     {
         if ($schema->hasTable('plg_admin_record_config')) {
-            $denyHostsPlugin = $this->connection->fetchColumn('select admin_deny_hosts FROM plg_admin_record_config') ?: '';
+            $denyHostsPlugin = $this->connection->fetchOne('select admin_deny_hosts FROM plg_admin_record_config') ?: '';
             $denyHostsPlugin = array_filter(\explode("\n", StringUtil::convertLineFeed($denyHostsPlugin)), function ($str) {
                 return StringUtil::isNotBlank($str);
             });

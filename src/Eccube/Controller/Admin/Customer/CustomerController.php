@@ -35,7 +35,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -90,7 +90,7 @@ class CustomerController extends AbstractController
      * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page", methods={"GET", "POST"})
      * @Template("@admin/Customer/index.twig")
      */
-    public function index(Request $request, $page_no = null, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $session = $this->session;
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
@@ -101,7 +101,7 @@ class CustomerController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE);
 
         $searchForm = $builder->getForm();
 
@@ -163,7 +163,7 @@ class CustomerController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH);
 
         $pagination = $paginator->paginate(
             $qb,
@@ -194,6 +194,10 @@ class CustomerController extends AbstractController
         if (is_null($Customer)) {
             throw new NotFoundHttpException();
         }
+        $secretKey = $this->customerRepository->getUniqueSecretKey();
+        $Customer->setSecretKey($secretKey);
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
 
         $activateUrl = $this->generateUrl(
             'entry_activate',
@@ -211,7 +215,7 @@ class CustomerController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE);
 
         $this->addSuccess('admin.common.send_complete', 'admin');
 
@@ -259,7 +263,7 @@ class CustomerController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE);
 
         return $this->redirect($this->generateUrl('admin_customer_page',
                 ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
@@ -288,12 +292,12 @@ class CustomerController extends AbstractController
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
-            // ヘッダ行の出力.
-            $this->csvExportService->exportHeader();
-
             // 会員データ検索用のクエリビルダを取得.
             $qb = $this->csvExportService
                 ->getCustomerQueryBuilder($request);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
@@ -319,12 +323,12 @@ class CustomerController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT);
 
                     $ExportCsvRow->pushData();
                 }
 
-                //$row[] = number_format(memory_get_usage(true));
+                // $row[] = number_format(memory_get_usage(true));
                 // 出力.
                 $csvService->fputcsv($ExportCsvRow->getRow());
             });
@@ -334,8 +338,6 @@ class CustomerController extends AbstractController
         $filename = 'customer_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-
-        $response->send();
 
         log_info('会員CSVファイル名', [$filename]);
 

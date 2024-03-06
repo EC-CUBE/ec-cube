@@ -34,11 +34,11 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * 出荷メール未送信
          */
-        const SHIPPING_MAIL_UNSENT = 1;
+        public const SHIPPING_MAIL_UNSENT = 1;
         /**
          * 出荷メール送信済
          */
-        const SHIPPING_MAIL_SENT = 2;
+        public const SHIPPING_MAIL_SENT = 2;
 
         public function getShippingMultipleDefaultName()
         {

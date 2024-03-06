@@ -35,9 +35,9 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Service\PluginApiService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends AbstractController
@@ -58,9 +58,9 @@ class AdminController extends AbstractController
     protected $memberRepository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var UserPasswordHasherInterface
      */
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     /**
      * @var OrderRepository
@@ -96,7 +96,7 @@ class AdminController extends AbstractController
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param AuthenticationUtils $helper
      * @param MemberRepository $memberRepository
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param UserPasswordHasherInterface $passwordHasher
      * @param OrderRepository $orderRepository
      * @param OrderStatusRepository $orderStatusRepository
      * @param CustomerRepository $custmerRepository
@@ -107,7 +107,7 @@ class AdminController extends AbstractController
         AuthorizationCheckerInterface $authorizationChecker,
         AuthenticationUtils $helper,
         MemberRepository $memberRepository,
-        EncoderFactoryInterface $encoderFactory,
+        UserPasswordHasherInterface $passwordHasher,
         OrderRepository $orderRepository,
         OrderStatusRepository $orderStatusRepository,
         CustomerRepository $custmerRepository,
@@ -117,7 +117,7 @@ class AdminController extends AbstractController
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
         $this->memberRepository = $memberRepository;
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasher = $passwordHasher;
         $this->orderRepository = $orderRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->customerRepository = $custmerRepository;
@@ -144,7 +144,7 @@ class AdminController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -190,7 +190,7 @@ class AdminController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIM_INDEX_ORDER);
         $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
@@ -212,7 +212,7 @@ class AdminController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIM_INDEX_SALES);
         $this->excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
@@ -247,7 +247,7 @@ class AdminController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE);
 
         // 推奨プラグイン
         $recommendedPlugins = [];
@@ -291,7 +291,7 @@ class AdminController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIM_INDEX_SALES);
         $this->excludes = $event->getArgument('excludes');
 
         // 週間の売上金額
@@ -333,7 +333,7 @@ class AdminController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -342,15 +342,7 @@ class AdminController extends AbstractController
             $Member = $this->getUser();
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
-
-            $encoder = $this->encoderFactory->getEncoder($Member);
-
-            // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
-            if (empty($salt)) {
-                $salt = $encoder->createSalt();
-            }
-
-            $password = $encoder->encodePassword($password, $salt);
+            $password = $this->passwordHasher->hashPassword($Member, $password);
 
             $Member
                 ->setPassword($password)
@@ -365,7 +357,7 @@ class AdminController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE);
 
             $this->addSuccess('admin.change_password.password_changed', 'admin');
 

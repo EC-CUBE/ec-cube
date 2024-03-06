@@ -52,11 +52,11 @@ class EmptyItemsValidatorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->validator = self::$container->get(EmptyItemsValidator::class);
+        $this->validator = static::getContainer()->get(EmptyItemsValidator::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $ItemType = new OrderItemType();

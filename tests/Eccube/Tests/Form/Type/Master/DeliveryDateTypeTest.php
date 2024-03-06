@@ -25,7 +25,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     /** @var DeliveryDurationRepository */
     protected $deliveryDurationRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->deliveryDurationRepo = $this->entityManager->getRepository(\Eccube\Entity\DeliveryDuration::class);

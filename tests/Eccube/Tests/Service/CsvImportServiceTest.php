@@ -14,6 +14,8 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Service\CsvImportService;
+use Eccube\Stream\Filter\ConvertLineFeedFilter;
+use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
@@ -154,6 +156,50 @@ class CsvImportServiceTest extends AbstractServiceTestCase
             'last' => 'Last one',
         ];
         $this->assertEquals($expected, $current);
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5252
+     */
+    public function testImportWithSJIS()
+    {
+        $csv = new CsvImportService(new \SplFileObject(__DIR__ . '/../../../Fixtures/sjis.csv'));
+        $this->assertCount(4, $csv);
+
+        $expected = [
+            "商品名",
+            "10テスト機構",
+            "11テスト機構",
+            "12テスト機構",
+        ];
+        $n = 0;
+        foreach ($csv as $row) {
+            $this->assertCount(7, $row, var_export($row, true));
+            $this->assertSame($expected[$n], $row[3]);
+            $n++;
+        }
+    }
+
+    public function testApplyStreamFilter()
+    {
+        $file = new \SplFileObject(__DIR__.'/../../../Fixtures/sjis.csv');
+        $appliedFile = CsvImportService::applyStreamFilter(
+            $file,
+            SjisToUtf8EncodingFilter::class,
+            ConvertLineFeedFilter::class
+        );
+
+        $actual = '';
+        while (!$appliedFile->eof()) {
+            $actual .= $appliedFile->fgets();
+        }
+
+        $expected = "商品ID,公開ステータス(ID),販売種別(ID),商品名,販売価格,在庫数,在庫数無制限フラグ\n"
+            . ",1,1,\"10テスト機構\",2800,100,\n"
+            . ",1,1,\"11テスト機構\",2800,100,\n"
+            . ",1,1,\"12テスト機構\",2800,100,";
+
+        self::assertSame($expected, $actual);
     }
 
     protected function getReader($filename)

@@ -16,7 +16,9 @@ namespace Eccube\Tests\DependencyInjection\Compiler;
 use Doctrine\Common\EventSubscriber;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 class AutoConfigurationTagPassTest extends EccubeTestCase
 {
@@ -34,6 +36,21 @@ class AutoConfigurationTagPassTest extends EccubeTestCase
 
         $definition = $container->getDefinition(Subscriber::class);
         self::assertTrue($definition->hasTag('doctrine.event_subscriber'));
+    }
+
+    public function testConfigureRateLimiterTag()
+    {
+        $container = new ContainerBuilder();
+        $container->register('limiter', RateLimiterFactory::class);
+        $child = new ChildDefinition('limiter');
+        $container->setDefinition('limiter.test', $child);
+
+        self::assertFalse($child->hasTag('eccube_rate_limiter'));
+
+        $container->addCompilerPass(new AutoConfigurationTagPass());
+        $container->compile();
+
+        self::assertTrue($child->hasTag('eccube_rate_limiter'));
     }
 }
 

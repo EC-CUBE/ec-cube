@@ -76,15 +76,19 @@ class CartServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->cartService = self::$container->get(CartService::class);
+        $this->cartService = static::getContainer()->get(CartService::class);
+
+        $refClass = new \ReflectionClass(CartService::class);
+        $refClass->getProperty('session')->setValue($this->cartService, new SessionMock());
+
         $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
         $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
         $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
-        $this->purchaseFlow = self::$container->get('eccube.purchase.flow.cart');
+        $this->purchaseFlow = static::getContainer()->get('eccube.purchase.flow.cart');
 
         $this->SaleType1 = $this->saleTypeRepository->find(1);
         $this->SaleType2 = $this->saleTypeRepository->find(2);
@@ -284,5 +288,29 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
     {
         return $item1->getProductClassId() == $item2->getProductClassId()
             && $item1->getQuantity() == $item2->getQuantity();
+    }
+}
+
+class SessionMock {
+    private array $bag = [];
+
+    public function set($key, $value): void
+    {
+        $this->bag[$key] = $value;
+    }
+
+    public function get($key, $default = null): mixed
+    {
+        return $this->bag[$key] ?? $default;
+    }
+
+    public function has($key): bool
+    {
+        return isset($this->bag[$key]);
+    }
+
+    public function remove($key): void
+    {
+        unset($this->bag[$key]);
     }
 }

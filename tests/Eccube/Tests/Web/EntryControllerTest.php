@@ -15,20 +15,23 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
-    public function setUp()
+    use MailerAssertionsTrait;
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client->enableProfiler();
     }
 
     protected function createFormData()
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         $form = [
@@ -52,7 +55,7 @@ class EntryControllerTest extends AbstractWebTestCase
                 'first' => $email,
                 'second' => $email,
             ],
-            'password' => [
+            'plain_password' => [
                 'first' => $password,
                 'second' => $password,
             ],
@@ -154,9 +157,9 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
 
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
@@ -182,22 +185,16 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
 
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize＆＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '＜Sanitize＆＞', 'HTMLメールがサニタイズされている');
     }
 
     public function testRoutingComplete()
@@ -221,9 +218,9 @@ class EntryControllerTest extends AbstractWebTestCase
         $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -243,21 +240,15 @@ class EntryControllerTest extends AbstractWebTestCase
         $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
     }
 
     public function testActivateWithNotFound()

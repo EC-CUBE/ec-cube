@@ -25,7 +25,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
         'name' => '立方体',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -17,8 +17,8 @@ use Carbon\Carbon;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Calendar;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * CalendarRepository
@@ -40,6 +40,7 @@ class CalendarRepository extends AbstractRepository
      * @param int $id
      *
      * @return Calendar
+     *
      * @throws \Exception
      */
     public function get($id = 1)

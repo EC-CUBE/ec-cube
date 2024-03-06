@@ -1,7 +1,8 @@
 @import url('../../../../../node_modules/normalize.css/normalize.css');
+@import "mixins/variables";
+@import "../../../../../node_modules/bootstrap/scss/bootstrap";
 
 body {
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   color:#525263;
   transition: z-index 0ms 5.28455ms;
   background: #f6f6f6;

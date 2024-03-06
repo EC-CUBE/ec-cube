@@ -15,7 +15,7 @@ namespace Page\Admin;
 
 class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
 {
-    public static $完了メッセージ = '#importCsvModal > div > div > div.modal-body.text-left > p';
+    public static $完了メッセージ = '#importCsvModal > div > div > div.modal-body.text-start > p';
 
     /**
      * ProductCsvUploadPage constructor.

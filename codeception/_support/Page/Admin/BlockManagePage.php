@@ -38,13 +38,13 @@ class BlockManagePage extends AbstractAdminPageStyleGuide
     public function 編集($rowNum)
     {
         $rowNum++;
-        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) a[data-original-title=編集]");
+        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) a[data-bs-original-title=編集]");
     }
 
     public function 削除($rowNum)
     {
         $rowNum++;
-        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) [data-original-title=削除] a");
+        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) [data-bs-original-title=削除] a");
         return $this;
     }
 

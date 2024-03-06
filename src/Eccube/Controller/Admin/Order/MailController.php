@@ -24,8 +24,6 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -88,7 +86,7 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -104,7 +102,6 @@ class MailController extends AbstractController
                     if ($form->get('template')->isValid()) {
                         /** @var $data \Eccube\Entity\MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
-                        $data = $form->getData();
 
                         if ($MailTemplate) {
                             $twig = $MailTemplate->getFileName();
@@ -125,7 +122,7 @@ class MailController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE);
                         $form->get('template')->setData($MailTemplate);
                         if ($MailTemplate) {
                             $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
@@ -160,7 +157,7 @@ class MailController extends AbstractController
                         $MailHistory = new MailHistory();
                         $MailHistory
                             ->setMailSubject($message->getSubject())
-                            ->setMailBody($message->getBody())
+                            ->setMailBody($message->getTextBody())
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
 
@@ -176,7 +173,7 @@ class MailController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE);
 
                         $this->addSuccess('admin.order.mail_send_complete', 'admin');
 

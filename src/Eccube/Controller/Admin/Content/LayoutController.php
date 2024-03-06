@@ -37,7 +37,7 @@ use Twig\Environment as Twig;
 
 class LayoutController extends AbstractController
 {
-    const DUMMY_BLOCK_ID = 9999999999;
+    public const DUMMY_BLOCK_ID = 9999999999;
 
     /**
      * @var BlockRepository
@@ -152,7 +152,7 @@ class LayoutController extends AbstractController
      * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit", methods={"GET", "POST"})
      * @Template("@admin/Content/layout.twig")
      */
-    public function edit(Request $request, $id = null, $previewPageId = null, CacheUtil $cacheUtil)
+    public function edit(Request $request, CacheUtil $cacheUtil, $id = null, $previewPageId = null)
     {
         if (is_null($id)) {
             $Layout = new Layout();
@@ -279,6 +279,6 @@ class LayoutController extends AbstractController
         $form = $request->get('admin_layout');
         $this->isPreview = true;
 
-        return $this->edit($request, $id, $form['Page'], $cacheUtil);
+        return $this->edit($request, $cacheUtil, $id, $form['Page']);
     }
 }

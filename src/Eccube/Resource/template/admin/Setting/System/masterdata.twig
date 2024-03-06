@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'system', 'masterdata'] %}
-
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 {% block title %}{{ 'admin.setting.system.master_data_management'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
@@ -24,9 +24,10 @@ file that was distributed with this source code.
                     {{ form_widget(form._token) }}
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header">
-                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.master_data_management'|trans }}">
-                                <span>{{ 'admin.setting.system.master_data_management'|trans }}</span></div><i class="fa fa-question-circle fa-lg ml-1"></i>
+                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.master_data_management'|trans }}">
+                                <span>{{ 'admin.setting.system.master_data_management'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
                             </div>
+                        </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
@@ -66,7 +67,7 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for data in form2.data %}
                                         <tr id="ex-masterdata-{{ data.vars.name }}">
-                                            <td class="align-middle text-center pl-3">
+                                            <td class="align-middle text-center ps-3">
                                                 {{ form_widget(data.id) }}
                                                 {{ form_errors(data.id) }}
                                             </td>

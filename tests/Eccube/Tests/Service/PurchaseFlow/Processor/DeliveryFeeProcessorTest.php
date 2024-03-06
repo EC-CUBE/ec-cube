@@ -40,7 +40,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -51,7 +51,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 
     public function testProcess()
     {
-        $processor = self::$container->get(DeliveryFeePreprocessor::class);
+        $processor = static::getContainer()->get(DeliveryFeePreprocessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
@@ -76,9 +76,9 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $this->entityManager->persist($this->ProductClass);
         $this->entityManager->flush($this->ProductClass);
 
-        $processor = self::$container->get(DeliveryFeePreprocessor::class);
+        $processor = static::getContainer()->get(DeliveryFeePreprocessor::class);
         /** @var Order $Order */
-        $Order = self::$container->get(Generator::class)->createOrder($this->createCustomer(), [$this->ProductClass]);
+        $Order = static::getContainer()->get(Generator::class)->createOrder($this->createCustomer(), [$this->ProductClass]);
 
         $quantity = 0;
         foreach ($Order->getOrderItems() as $orderItem) {

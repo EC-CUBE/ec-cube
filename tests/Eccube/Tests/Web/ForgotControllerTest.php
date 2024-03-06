@@ -16,9 +16,13 @@ namespace Eccube\Tests\Web;
 use Eccube\Common\Constant;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class ForgotControllerTest extends AbstractWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var BaseInfoRepository
      */
@@ -29,7 +33,7 @@ class ForgotControllerTest extends AbstractWebTestCase
      */
     protected $customerRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client->enableProfiler();
@@ -67,12 +71,11 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('forgot_complete')));
 
-        $mailCollector = $this->getMailCollector(false);
-
         // メール受信確認
-        $Messages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
         $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();

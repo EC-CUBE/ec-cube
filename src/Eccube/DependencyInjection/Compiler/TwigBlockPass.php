@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class TwigBlockPass implements CompilerPassInterface
 {
-    const TWIG_BLOCK_TAG = 'eccube.twig_block';
+    public const TWIG_BLOCK_TAG = 'eccube.twig_block';
 
     public function process(ContainerBuilder $container)
     {

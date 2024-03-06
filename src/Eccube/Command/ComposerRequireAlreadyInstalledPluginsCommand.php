@@ -75,7 +75,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $Plugins = $this->pluginRepository->matching($criteria);
 
         foreach ($Plugins as $Plugin) {
-            $packageNames[] = 'ec-cube/'.$Plugin->getCode().':'.$Plugin->getVersion();
+            $packageNames[] = 'ec-cube/'.strtolower($Plugin->getCode()).':'.$Plugin->getVersion();
             $data = $this->pluginApiService->getPlugin($Plugin->getCode());
             if (isset($data['version_check']) && !$data['version_check']) {
                 $unSupportedPlugins[] = $Plugin;

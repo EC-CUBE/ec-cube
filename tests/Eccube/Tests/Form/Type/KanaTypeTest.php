@@ -76,7 +76,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         ];
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -85,7 +85,7 @@ class KanaTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->form = null;

@@ -27,9 +27,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
@@ -114,14 +118,23 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('t')
+                    ->orderBy('t.sort_no', 'DESC');
+                },
             ])
             ->add('create_date_start', DateType::class, [
                 'label' => 'admin.common.create_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_start',
@@ -133,7 +146,12 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_start',
@@ -145,8 +163,13 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_end',
@@ -158,7 +181,12 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_end',
@@ -170,8 +198,13 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
@@ -183,7 +216,12 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_start',
@@ -195,8 +233,13 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
@@ -208,7 +251,12 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range([
+                        'min'=> '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_end',
@@ -224,6 +272,29 @@ class SearchProductType extends AbstractType
                 'label' => 'admin.list.sort.type',
                 'required' => false,
             ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+
+                # 登録日
+                $create_datetime_start = $form['create_datetime_start']->getData();
+                $create_datetime_end = $form['create_datetime_end']->getData();
+
+                if (!empty($create_datetime_start) && !empty($create_datetime_end)) {
+                    if ($create_datetime_start > $create_datetime_end) {
+                        $form['create_datetime_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+
+                # 更新日
+                $update_datetime_start = $form['update_datetime_start']->getData();
+                $update_datetime_end = $form['update_datetime_end']->getData();
+
+                if (!empty($update_datetime_start) && !empty($update_datetime_end)) {
+                    if ($update_datetime_start > $update_datetime_end) {
+                        $form['update_datetime_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+            })
         ;
     }
 

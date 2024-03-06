@@ -38,18 +38,18 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * setup mail
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
-        $this->cartService = self::$container->get(CartService::class);
+        $this->cartService = static::getContainer()->get(CartService::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
     /**
      * tear down
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -105,9 +105,9 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-cartRole__error')->text();
 
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
 
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
     }
 
     /**
@@ -234,7 +234,7 @@ class CartValidationTest extends AbstractWebTestCase
         $html = $crawler->html();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->assertContains('ただいま品切れ中です', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', $html);
     }
 
     /**
@@ -291,8 +291,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $message = $crawler->filter('.ec-cartRole')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -345,9 +345,9 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-alert-warning')->text();
 
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
 
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
 
         self::assertEquals($stock, $crawler->filter('.ec-cartRow__amount')->text(), '在庫数分だけカートに入っているはず');
     }
@@ -429,10 +429,10 @@ class CartValidationTest extends AbstractWebTestCase
 
         $crawler = $client->followRedirect();
         $message = $crawler->filter('.ec-alert-warning__text')->text();
-        // FIXME $this->assertContains('商品を購入できる金額の上限を超えております。数量を調整してください。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません', $message);
+        // FIXME $this->assertStringContainsString('商品を購入できる金額の上限を超えております。数量を調整してください。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません', $message);
 
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
     }
 
     /**
@@ -507,7 +507,7 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $message = $crawler->filter('.ec-alert-warning')->text();
-        $this->assertContains('この商品は同時に購入することはできません。', $message);
+        $this->assertStringContainsString('この商品は同時に購入することはできません。', $message);
     }
 
     /**
@@ -646,8 +646,8 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $message = $crawler->filter('.ec-alert-warning')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
 
         self::assertEquals($limit, $crawler->filter('.ec-cartRow__amount')->text());
     }
@@ -678,7 +678,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
+        $this->assertStringContainsString('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -705,7 +705,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
+        $this->assertStringContainsString('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -735,7 +735,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // check message error
         $message = $crawler->filter('.ec-layoutRole__main')->text();
-        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
+        $this->assertStringContainsString('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -774,8 +774,8 @@ class CartValidationTest extends AbstractWebTestCase
         // cart or shopping???
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
     }
 
     /**
@@ -814,11 +814,11 @@ class CartValidationTest extends AbstractWebTestCase
         // cart or shopping???
         $message = $crawler->filter('.ec-layoutRole__main')->text();
 
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
 
         // check cart
-        $this->assertContains((string) $limit, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString((string) $limit, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -862,11 +862,11 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check page title
         $message = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains('ショッピングカート', $message);
+        $this->assertStringContainsString('ショッピングカート', $message);
         // check message error
         $message = $crawler->filter('#cart_box__message--1')->text();
-        $this->assertContains('配送の準備ができていない商品が含まれております。', $message);
-        $this->assertContains('恐れ入りますがお問い合わせページよりお問い合わせください。', $message);
+        $this->assertStringContainsString('配送の準備ができていない商品が含まれております。', $message);
+        $this->assertStringContainsString('恐れ入りますがお問い合わせページよりお問い合わせください。', $message);
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
     }
 
@@ -901,8 +901,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('.ec-layoutRole__main')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -939,8 +939,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -978,9 +978,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1018,9 +1018,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
-        $this->assertContains((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1060,9 +1060,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
-        $this->assertContains((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1115,7 +1115,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('この商品は同時に購入することはできません。', $message);
+        $this->assertStringContainsString('この商品は同時に購入することはできません。', $message);
     }
 
     /**
@@ -1204,8 +1204,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1239,8 +1239,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1275,9 +1275,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1312,9 +1312,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
-        $this->assertContains((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1353,9 +1353,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
-        $this->assertContains((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1408,7 +1408,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains('この商品は同時に購入することはできません。', $message);
+        $this->assertStringContainsString('この商品は同時に購入することはできません。', $message);
     }
 
     /**
@@ -1498,8 +1498,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1531,8 +1531,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1565,8 +1565,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('該当商品をカートから削除しました。', $message);
     }
 
     /**
@@ -1599,9 +1599,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
-        $this->assertContains((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1640,9 +1640,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
-        $this->assertContains((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1678,8 +1678,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1716,8 +1716,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1755,9 +1755,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('該当商品をカートから削除しました。', $message);
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
     }
 
     /**
@@ -1795,9 +1795,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
-        $this->assertContains((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $stock, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1838,9 +1838,9 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
-        $this->assertContains((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString((string) $saleLimit, $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**
@@ -1885,7 +1885,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
+        $this->assertStringContainsString('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -1932,7 +1932,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
+        $this->assertStringContainsString('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -1980,7 +1980,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
+        $this->assertStringContainsString('ご注文手続きが正常に完了しませんでした。大変お手数ですが、再度ご注文手続きをお願いします。', $message);
     }
 
     /**
@@ -2028,7 +2028,7 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('.ec-layoutRole__main')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
     }
 
     /**
@@ -2079,8 +2079,8 @@ class CartValidationTest extends AbstractWebTestCase
         // check message error
         $crawler = $this->client->followRedirect();
         $message = $crawler->filter('body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
     }
 
     /**
@@ -2120,7 +2120,7 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
+        $this->assertStringContainsString($productName, $product);
 
         // Remove product (delete flg)
         $Product->setDelFlg(Constant::ENABLED);
@@ -2137,10 +2137,10 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__message--1')->text();
-        $this->assertContains('現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。', $message);
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
         $message = $crawler->filter('#cart_box__message')->text();
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
 
         // check cart
         $arrCartItem = $this->app['eccube.service.cart']->getCart()->getCartItems();
@@ -2192,7 +2192,7 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
+        $this->assertStringContainsString($productName, $product);
 
         // change status
         $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
@@ -2205,10 +2205,10 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__message--1')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
         $message = $crawler->filter('#cart_box__message')->text();
-        $this->assertContains('現在カート内に商品はございません。', $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
 
         // check cart
         $arrCartItem = $this->app['eccube.service.cart']->getCart()->getCartItems();
@@ -2260,7 +2260,7 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
+        $this->assertStringContainsString($productName, $product);
 
         // change stock
         $stock = 0;
@@ -2274,8 +2274,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('該当商品をカートから削除しました。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('該当商品をカートから削除しました。', $message);
 
         // check cart
         $arrCartItem = $this->app['eccube.service.cart']->getCart()->getCartItems();
@@ -2327,7 +2327,7 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
+        $this->assertStringContainsString($productName, $product);
 
         // change stock
         $stock = 1;
@@ -2341,8 +2341,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
-        $this->assertContains('一度に在庫数を超える購入はできません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
 
         // check cart
         $CartItem = $this->app['eccube.service.cart']->getCart()->getCartItems()->first();
@@ -2394,7 +2394,7 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
+        $this->assertStringContainsString($productName, $product);
 
         // sale limit
         $saleLimit = 1;
@@ -2410,8 +2410,8 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
-        $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
 
         // check cart
         $CartItem = $this->app['eccube.service.cart']->getCart()->getCartItems()->first();
@@ -2474,8 +2474,8 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
-        $this->assertContains($productName2, $product);
+        $this->assertStringContainsString($productName, $product);
+        $this->assertStringContainsString($productName2, $product);
 
         // change type
         $SaleType = $this->entityManager->find(SaleType::class, 2);
@@ -2491,7 +2491,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains('この商品は同時に購入することはできません。', $message);
+        $this->assertStringContainsString('この商品は同時に購入することはできません。', $message);
     }
 
     /**
@@ -2549,8 +2549,8 @@ class CartValidationTest extends AbstractWebTestCase
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertContains($productName, $product);
-        $this->assertContains($productName2, $product);
+        $this->assertStringContainsString($productName, $product);
+        $this->assertStringContainsString($productName2, $product);
 
         // change type
         $SaleType = $this->entityManager->find(SaleType::class, 2);

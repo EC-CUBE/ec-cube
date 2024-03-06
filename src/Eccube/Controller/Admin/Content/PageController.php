@@ -78,7 +78,7 @@ class PageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE);
 
         return [
             'Pages' => $Pages,
@@ -91,8 +91,10 @@ class PageController extends AbstractController
      * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit", methods={"GET", "POST"})
      * @Template("@admin/Content/page_edit.twig")
      */
-    public function edit(Request $request, $id = null, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil)
+    public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
     {
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
+
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
         } else {
@@ -111,7 +113,7 @@ class PageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -220,7 +222,7 @@ class PageController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -254,7 +256,7 @@ class PageController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
+    public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         $this->isTokenValid();
 
@@ -286,7 +288,7 @@ class PageController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 

@@ -30,7 +30,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * @var integer
          */
-        const UNUSED_BLOCK_ID = 0;
+        public const UNUSED_BLOCK_ID = 0;
 
         /**
          * @var int

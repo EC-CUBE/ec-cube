@@ -18,8 +18,6 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
 <script>
 $(function() {
     $('#template-change').on('change', function() {
@@ -55,9 +53,9 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_destination_info'|trans }}"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i></div>
+                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_destination_info'|trans }}"><span class="card-title">{{ 'admin.order.mail_destination_info'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
                         </div>
-                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                        <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailTo" aria-expanded="false" aria-controls="mailTo"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
                 <div class="collapse show ec-cardCollapse" id="mailTo">
@@ -97,15 +95,15 @@ $(function() {
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8"><span class="card-title">{{ 'admin.order.mail_mail_info'|trans }}</span></div>
-                        <div class="col-4 text-right"><a data-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
+                        <div class="col-4 text-end"><a data-bs-toggle="collapse" href="#mailCreate" aria-expanded="false" aria-controls="mailCreate"><i class="fa fa-angle-up fa-lg"></i></a></div>
                     </div>
                 </div>
                 <div class="collapse show ec-cardCollapse" id="mailCreate">
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
-                                    <span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_template'|trans }}">
+                                    <span>{{ 'admin.order.mail_template'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                 </div>
                             </div>
                             <div class="col">
@@ -115,10 +113,10 @@ $(function() {
                         </div>
                         <div class="row mb-2">
                             <div class="col-3">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}">
-                                    <span>{{ 'admin.order.mail_subject'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.order.mail_subject'|trans }}">
+                                    <span>{{ 'admin.order.mail_subject'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                 </div>
-                                <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {{ form_widget(form.mail_subject) }}
@@ -128,7 +126,7 @@ $(function() {
                         <div class="row mb-2">
                             <div class="col-3"><span>{{ 'admin.order.mail_body'|trans }}</span></div>
                             <div class="col">
-                                <div id="detail_box__tpl_data" class="form-group tab-pane active">
+                                <div id="detail_box__tpl_data" class="mb-3 tab-pane active">
                                     {{ form_label(form.tpl_data) }}
                                     <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
                                     <div style="display: none">{{ form_widget(form.tpl_data) }}</div>

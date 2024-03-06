@@ -1,0 +1,61 @@
+security:
+  enable_authenticator_manager: true
+parameters:
+    env(ECCUBE_OAUTH2_AUTHORIZATION_SERVER_PRIVATE_KEY): '%kernel.project_dir%/app/PluginData/Api42/oauth/private.key'
+    env(ECCUBE_OAUTH2_RESOURCE_SERVER_PUBLIC_KEY): '%kernel.project_dir%/app/PluginData/Api42/oauth/public.key'
+    env(ECCUBE_OAUTH2_ENCRYPTION_KEY): '<change.me>'
+
+league_oauth2_server:
+    role_prefix: ROLE_OAUTH2_
+
+    authorization_server:
+        private_key: '%env(ECCUBE_OAUTH2_AUTHORIZATION_SERVER_PRIVATE_KEY)%'
+        private_key_passphrase: null
+        encryption_key: '%env(ECCUBE_OAUTH2_ENCRYPTION_KEY)%'
+
+      # Whether to enable the client credentials grant
+        enable_client_credentials_grant: false
+
+      # Whether to enable the password grant
+        enable_password_grant: false
+
+      # Whether to enable the refresh token grant
+        enable_refresh_token_grant: true
+
+      # Whether to enable the authorization code grant
+        enable_auth_code_grant: true
+
+      # Whether to enable the implicit grant
+        enable_implicit_grant: false
+
+    resource_server:
+        public_key: '%env(ECCUBE_OAUTH2_RESOURCE_SERVER_PUBLIC_KEY)%'
+
+    scopes:
+        available: ['read', 'write']
+        default: ['read']
+
+    persistence:
+        doctrine: null
+
+services:
+    # Register nyholm/psr7 services for autowiring with PSR-17 (HTTP factories)
+    Psr\Http\Message\RequestFactoryInterface: '@nyholm.psr7.psr17_factory'
+    Psr\Http\Message\ResponseFactoryInterface: '@nyholm.psr7.psr17_factory'
+    Psr\Http\Message\ServerRequestFactoryInterface: '@nyholm.psr7.psr17_factory'
+    Psr\Http\Message\StreamFactoryInterface: '@nyholm.psr7.psr17_factory'
+    Psr\Http\Message\UploadedFileFactoryInterface: '@nyholm.psr7.psr17_factory'
+    Psr\Http\Message\UriFactoryInterface: '@nyholm.psr7.psr17_factory'
+
+    # Register nyholm/psr7 services for autowiring with HTTPlug factories
+    Http\Message\MessageFactory: '@nyholm.psr7.httplug_factory'
+    Http\Message\RequestFactory: '@nyholm.psr7.httplug_factory'
+    Http\Message\ResponseFactory: '@nyholm.psr7.httplug_factory'
+    Http\Message\StreamFactory: '@nyholm.psr7.httplug_factory'
+    Http\Message\UriFactory: '@nyholm.psr7.httplug_factory'
+
+    nyholm.psr7.psr17_factory:
+        class: Nyholm\Psr7\Factory\Psr17Factory
+
+    nyholm.psr7.httplug_factory:
+        class: Nyholm\Psr7\Factory\HttplugFactory

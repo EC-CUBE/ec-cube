@@ -25,7 +25,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     /** @var ProductStatusRepository */
     protected $productStatusRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->productStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);

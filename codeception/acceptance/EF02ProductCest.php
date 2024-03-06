@@ -115,6 +115,8 @@ class EF02ProductCest
         $topPage->カテゴリ選択(['新入荷']);
 
         // 絞込検索条件では、検索数が多い場合、「次へ」「前へ」「ページ番号」が表示される
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('1', ['css' => 'li.ec-pager__item--active']);
         $I->see('2', ['xpath' => "//li[@class='ec-pager__item'][position()=1]"]);
         $I->see('次へ', ['xpath' => "//li[@class='ec-pager__item'][position()=2]"]);
@@ -122,15 +124,27 @@ class EF02ProductCest
         // 選択されたリンクに応じてページングされる
 
         // '2'をクリック
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(0.5);
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=1]/a"]);
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('2', ['css' => 'li.ec-pager__item--active']);
 
         // '前へ'をクリック
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(0.5);
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=1]/a"]);
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('1', ['css' => 'li.ec-pager__item--active']);
 
         // '次へ'をクリック
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(0.5);
         $I->click(['xpath' => "//li[@class='ec-pager__item'][position()=2]/a"]);
+        $I->scrollTo(['css' => 'li.ec-pager__item--active']);
+        $I->wait(1);
         $I->see('2', ['css' => 'li.ec-pager__item--active']);
     }
 
@@ -187,13 +201,13 @@ class EF02ProductCest
         $productPage->カートに入れる(4);
         $I->wait(5);
 
-        $I->assertContains('カートに追加しました。', $productPage->カートに追加());
+        $I->assertStringContainsString('カートに追加しました。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
-        $I->assertContains('4', $cartPage->商品数量(1));
+        $I->assertStringContainsString('チェリーアイスサンド', $cartPage->商品名(1));
+        $I->assertStringContainsString('4', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);
@@ -213,13 +227,13 @@ class EF02ProductCest
         $productPage->カートに入れる(6);
         $I->wait(5);
 
-        $I->assertContains('「チェリーアイスサンド」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertStringContainsString('「チェリーアイスサンド」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
-        $I->assertContains('5', $cartPage->商品数量(1));
+        $I->assertStringContainsString('チェリーアイスサンド', $cartPage->商品名(1));
+        $I->assertStringContainsString('5', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);
@@ -239,13 +253,13 @@ class EF02ProductCest
         $productPage->カートに入れる(12);
         $I->wait(5);
 
-        $I->assertContains('「チェリーアイスサンド」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertStringContainsString('「チェリーアイスサンド」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
-        $I->assertContains('5', $cartPage->商品数量(1));
+        $I->assertStringContainsString('チェリーアイスサンド', $cartPage->商品名(1));
+        $I->assertStringContainsString('5', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);
@@ -266,13 +280,13 @@ class EF02ProductCest
 
         $I->wait(5);
 
-        $I->assertContains('カートに追加しました。', $productPage->カートに追加());
+        $I->assertStringContainsString('カートに追加しました。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('彩のジェラートCUBE', $cartPage->商品名(1));
-        $I->assertContains('1', $cartPage->商品数量(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $cartPage->商品名(1));
+        $I->assertStringContainsString('1', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);
@@ -292,13 +306,13 @@ class EF02ProductCest
 
         $I->wait(5);
 
-        $I->assertContains('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertStringContainsString('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('彩のジェラートCUBE', $cartPage->商品名(1));
-        $I->assertContains('2', $cartPage->商品数量(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $cartPage->商品名(1));
+        $I->assertStringContainsString('2', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);
@@ -318,13 +332,13 @@ class EF02ProductCest
 
         $I->wait(5);
 
-        $I->assertContains('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertStringContainsString('「彩のジェラートCUBE - チョコ - 16mm × 16mm」は販売制限しております。一度に販売制限数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 入力された個数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('彩のジェラートCUBE', $cartPage->商品名(1));
-        $I->assertContains('2', $cartPage->商品数量(1));
+        $I->assertStringContainsString('彩のジェラートCUBE', $cartPage->商品名(1));
+        $I->assertStringContainsString('2', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);
@@ -341,13 +355,13 @@ class EF02ProductCest
         $productPage->カートに入れる(4);
         $I->wait(1);
 
-        $I->assertContains('「チェリーアイスサンド」の在庫が不足しております。一度に在庫数を超える購入はできません。', $productPage->カートに追加());
+        $I->assertStringContainsString('「チェリーアイスサンド」の在庫が不足しております。一度に在庫数を超える購入はできません。', $productPage->カートに追加());
 
         $cartPage = $productPage->カートへ進む();
 
         // 在庫数分が、カート画面の対象商品に追加されている。
-        $I->assertContains('チェリーアイスサンド', $cartPage->商品名(1));
-        $I->assertContains('3', $cartPage->商品数量(1));
+        $I->assertStringContainsString('チェリーアイスサンド', $cartPage->商品名(1));
+        $I->assertStringContainsString('3', $cartPage->商品数量(1));
 
         // カートを空に
         $cartPage->商品削除(1);

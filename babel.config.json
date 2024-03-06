@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+        "@babel/preset-env",
+        {
+            "targets": {
+                "node": "current",
+                "ie": 11
+            },
+            // 必要な分だけのpolyfillを自動でインポート
+            "useBuiltIns": "usage",
+            "corejs": 2
+        }
+    ]
+  ]
+}

@@ -13,6 +13,8 @@
 
 namespace Page\Admin;
 
+use Facebook\WebDriver\WebDriverKeys;
+
 class JavaScriptManagePage extends AbstractAdminPageStyleGuide
 {
     /**
@@ -32,7 +34,10 @@ class JavaScriptManagePage extends AbstractAdminPageStyleGuide
 
     public function 入力($value)
     {
-        $this->tester->fillField('.ace_text-input', $value);
+        $this->tester->click('.ace_content');
+        $this->tester->sendKeys([WebDriverKeys::CONTROL, 'a']);
+        $this->tester->sendKeys(WebDriverKeys::DELETE);
+        $this->tester->sendKeys($value);
 
         return $this;
     }

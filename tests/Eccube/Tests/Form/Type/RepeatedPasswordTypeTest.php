@@ -24,12 +24,12 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = [
         'password' => [
-            'first' => 'eccube@example.com',
-            'second' => 'eccube@example.com',
+            'first' => 'eccube1@example.com',
+            'second' => 'eccube1@example.com',
         ],
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->form = $this->formFactory
@@ -38,7 +38,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->form = null;
@@ -125,15 +125,36 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidSpace()
+    public function testInvalidSpace()
     {
-        // これも通っていいのか？
-        $password = '1234 \n\s\t78';
+        $password = "1234 \n\s\t78a";
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
         $this->form->submit($this->formData);
 
-        $this->assertTrue($this->form->isValid());
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidAlphabetOnly()
+    {
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+
+        $this->formData['password']['first'] = $password;
+        $this->formData['password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidNumericOnly()
+    {
+        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len']);
+
+        $this->formData['password']['first'] = $password;
+        $this->formData['password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
     }
 }

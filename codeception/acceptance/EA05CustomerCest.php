@@ -12,6 +12,7 @@
  */
 
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\CustomerEditPage;
 use Page\Admin\CustomerManagePage;
@@ -117,11 +118,11 @@ class EA05CustomerCest
             ->入力_番地_ビル名('ブリーゼタワー13F')
             ->入力_Eメール($email)
             ->入力_電話番号('111-111-111')
-            ->入力_パスワード('password')
-            ->入力_パスワード確認('password');
+            ->入力_パスワード('password1234')
+            ->入力_パスワード確認('password1234');
 
         $findPluginByCode = Fixtures::get('findPluginByCode');
-        $Plugin = $findPluginByCode('MailMagazine');
+        $Plugin = $findPluginByCode('MailMagazine42');
         if ($Plugin) {
             $I->amGoingTo('メルマガプラグインを発見したため、メルマガを購読します');
             $I->click('#admin_customer_mailmaga_flg_0');
@@ -192,6 +193,32 @@ class EA05CustomerCest
 
         $I->seeElement(['css' => '#admin_customer_name_name01:invalid']);
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
+    }
+
+    /**
+     * @group vaddy
+     */
+    public function customer_会員編集_注文履歴あり(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0502-UC02-T03 会員編集_注文履歴あり');
+
+        $createCustomer = Fixtures::get('createCustomer');
+        $customer = $createCustomer();
+        $createOrders = Fixtures::get('createOrders');
+        $createOrders($customer, 20, [], OrderStatus::NEW);
+
+        $CustomerListPage = CustomerManagePage::go($I)
+            ->検索($customer->getEmail());
+
+        $I->see('検索結果：1件が該当しました', CustomerManagePage::$検索結果メッセージ);
+
+        $CustomerListPage->一覧_編集(1);
+
+        $CustomerRegisterPage = CustomerEditPage::at($I)
+            ->入力_姓('testuser-2');
+
+        $CustomerRegisterPage->登録();
+        $I->see('保存しました', CustomerEditPage::$登録完了メッセージ);
     }
 
     /**
@@ -279,7 +306,7 @@ class EA05CustomerCest
         $I->wait(5);
 
         $message = $I->lastMessage();
-        $I->assertCount(2, $message['recipients'], 'Bcc で管理者にも送信するので宛先アドレスは2つ');
+        $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
 
         foreach ([$customer->getEmail(), $BaseInfo->getEmail01()] as $email) {

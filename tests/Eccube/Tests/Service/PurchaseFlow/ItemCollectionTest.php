@@ -36,13 +36,13 @@ class ItemCollectionTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses()->toArray();
         $Customer = $this->createCustomer();
-        $this->ItemHolder = self::$container->get(Generator::class)->createOrder($Customer, $ProductClasses);
+        $this->ItemHolder = static::getContainer()->get(Generator::class)->createOrder($Customer, $ProductClasses);
         $this->Items = $this->ItemHolder->getItems()->toArray();
     }
 
@@ -122,12 +122,16 @@ class ItemCollectionTest extends EccubeTestCase
     {
         shuffle($this->Items);
 
-        $this->expected = [1 => '商品', 2 => '送料', 3 => '手数料', 4 => '割引'];
+        $this->expected = [1 => '商品', 2 => '送料', 3 => '手数料'];
         $this->actual = [];
         $Items = (new ItemCollection($this->Items))->sort();
         foreach ($Items as $Item) {
             $this->actual[$Item->getOrderItemType()->getId()] = $Item->getOrderItemType()->getName();
         }
+        if (array_key_exists(6, $this->actual)) {
+            $this->expected[6] = 'ポイント';
+        }
+        $this->expected[4] = '割引';
 
         $this->verify();
     }

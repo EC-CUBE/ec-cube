@@ -58,7 +58,7 @@ class EA10PluginCest
 
     public function test_install_enable_disable_remove_local(AcceptanceTester $I)
     {
-        Horizon_Store::start($I)
+        Horizon_Local::start($I)
             ->インストール()
             ->有効化()
             ->無効化()
@@ -85,6 +85,23 @@ class EA10PluginCest
             ->有効化()
             ->無効化()
             ->削除();
+    }
+
+    /**
+     * @group restrict-fileupload
+     */
+    public function test_install_enable_disable_enable_disable_remove_local_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/install');
+        $I->see('この機能は管理者によって制限されています。');
     }
 
     public function test_install_remove_local(AcceptanceTester $I)
@@ -203,15 +220,13 @@ class EA10PluginCest
 
     public function test_install_assets_local(AcceptanceTester $I)
     {
-        $this->publishPlugin('Assets-1.0.0.tgz');
-
         $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
         $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
 
         $I->assertFileNotExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
-        $ManagePage = PluginLocalInstallPage::go($I)->アップロード('plugins/Assets-1.0.0.tgz');
+        $ManagePage = PluginLocalInstallPage::go($I)->アップロード('Assets-1.0.0');
         $I->assertFileExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
@@ -223,7 +238,7 @@ class EA10PluginCest
         $I->assertFileExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
-        $ManagePage->独自プラグイン_アップデート('Assets', 'plugins/Assets-1.0.1.tgz');
+        $ManagePage->独自プラグイン_アップデート('Assets', 'Assets-1.0.1');
         $I->assertFileExists($assetsPath);
         $I->assertFileExists($updatedPath);
 
@@ -235,7 +250,7 @@ class EA10PluginCest
     public function test_install_assets_store(AcceptanceTester $I)
     {
         // 最初のバージョンを作成
-        $this->publishPlugin('Assets-1.0.0.tgz');
+        $I->compressPlugin('Assets-1.0.0', codecept_root_dir('repos'));
 
         $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
         $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
@@ -257,7 +272,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
 
         // 新しいバージョンを作成
-        $this->publishPlugin('Assets-1.0.1.tgz');
+        $I->compressPlugin('Assets-1.0.1', codecept_root_dir('repos'));
 
         $I->reloadPage();
         $ManagePage->ストアプラグイン_アップデート('Assets')->アップデート();
@@ -391,7 +406,7 @@ class EA10PluginCest
 
     public function test_install_error(AcceptanceTester $I)
     {
-        $this->publishPlugin('InstallError.tgz');
+        $I->compressPlugin('InstallError', codecept_root_dir('repos'));
         $Horizon = Horizon_Store::start($I);
 
         PluginSearchPage::go($I)
@@ -475,11 +490,6 @@ class EA10PluginCest
             ->無効化()
             ->削除();
     }
-
-    private function publishPlugin($fileName)
-    {
-        copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
-    }
 }
 
 abstract class Abstract_Plugin
@@ -557,7 +567,7 @@ abstract class Abstract_Plugin
     public function traitExists()
     {
         foreach ($this->traits as $trait => $target) {
-            $this->I->assertContains($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
+            $this->I->assertStringContainsString($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
         }
     }
 
@@ -566,7 +576,7 @@ abstract class Abstract_Plugin
         foreach ($this->traits as $trait => $target) {
             $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php';
             if (file_exists($file)) {
-                $this->I->assertNotContains($trait, file_get_contents($file), 'Traitがないはず '.$trait);
+                $this->I->assertStringNotContainsString($trait, file_get_contents($file), 'Traitがないはず '.$trait);
             } else {
                 $this->I->assertTrue(true, 'Traitがないはず');
             }
@@ -756,8 +766,8 @@ class Store_Plugin extends Abstract_Plugin
 
     protected function publishPlugin($fileName)
     {
-        $published = copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
-        $this->I->assertTrue($published, "公開できた ${fileName}");
+        $dirname = str_replace('.tgz', '', $fileName);
+        $this->I->assertTrue(!!$this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた ${fileName}");
     }
 }
 
@@ -781,7 +791,7 @@ class Local_Plugin extends Abstract_Plugin
     public function インストール()
     {
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
-            ->アップロード('plugins/'.$this->code.'-1.0.0.tgz');
+            ->アップロード($this->code.'-1.0.0');
 
         $this->initialized = true;
 
@@ -846,7 +856,7 @@ class Local_Plugin extends Abstract_Plugin
 
     public function アップデート()
     {
-        $this->ManagePage->独自プラグイン_アップデート($this->code, 'plugins/'.$this->code.'-1.0.1.tgz');
+        $this->ManagePage->独自プラグイン_アップデート($this->code, $this->code.'-1.0.1');
 
         $this->検証();
 
@@ -941,7 +951,6 @@ class Emperor_Store extends Store_Plugin
     public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
     {
         parent::__construct($I, 'Emperor', $dependency);
-        $this->publishPlugin('Horizon-1.0.0.tgz');
         $this->tables[] = 'dtb_foo';
         $this->columns[] = 'dtb_cart.foo_id';
         $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';

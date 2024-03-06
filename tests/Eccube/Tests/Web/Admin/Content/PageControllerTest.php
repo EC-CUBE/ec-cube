@@ -76,10 +76,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $editable = false;
 
-        $templatePath = self::$container->getParameter('eccube_theme_front_dir');
+        $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
         $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(1);
 
-        $source = self::$container->get('twig')
+        $source = static::getContainer()->get('twig')
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
@@ -118,7 +118,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $faker = $this->getFaker();
 
-        $templatePath = self::$container->getParameter('eccube_theme_user_data_dir');
+        $templatePath = static::getContainer()->getParameter('eccube_theme_user_data_dir');
 
         $name = $faker->word;
         $source = $faker->realText();
@@ -155,10 +155,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
 
-        $templatePath = self::$container->getParameter('eccube_theme_front_dir');
+        $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
         $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(42); // Shoppin/index
 
-        $source = self::$container->get('twig')
+        $source = static::getContainer()->get('twig')
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
@@ -197,7 +197,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $faker = $this->getFaker();
 
-        $templatePath = self::$container->getParameter('eccube_theme_user_data_dir');
+        $templatePath = static::getContainer()->getParameter('eccube_theme_user_data_dir');
 
         $name = $faker->word;
         $source = $faker->realText();
@@ -225,7 +225,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->actual = $Page->getName();
         $this->verify('ページ新規作成');
 
-        $source = self::$container->get('twig')
+        $source = static::getContainer()->get('twig')
             ->getLoader()
             ->getSourceContext('@user_data/'.$Page->getFileName().'.twig')
             ->getCode();

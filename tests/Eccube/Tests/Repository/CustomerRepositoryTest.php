@@ -50,7 +50,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -140,7 +140,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
 class DummyCustomer implements UserInterface
 {
-    public function getRoles()
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
@@ -163,5 +163,11 @@ class DummyCustomer implements UserInterface
     public function eraseCredentials()
     {
         return;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // FIXME deprecated
+        return $this->getUsername();
     }
 }

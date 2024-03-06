@@ -18,7 +18,7 @@ module.exports = () => {
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
-    .pipe(sass)
+    .pipe(sass())
     .pipe(postcss([
       autoprefixer(),
       cssmqpacker({

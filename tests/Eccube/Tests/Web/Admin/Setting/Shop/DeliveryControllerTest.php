@@ -36,6 +36,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $Delivery = new Delivery();
         $Delivery->setConfirmUrl($faker->url);
         $Delivery->setVisible(true);
+        $Delivery->setSortNo(1);
         $this->entityManager->persist($Delivery);
         $this->entityManager->flush();
 

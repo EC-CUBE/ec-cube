@@ -156,7 +156,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('phone_number', PhoneNumberType::class, [
@@ -188,6 +188,10 @@ class OrderType extends AbstractType
                     new Assert\Regex([
                         'pattern' => "/^\d+$/u",
                         'message' => 'form_error.numeric_only',
+                    ]),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => $this->eccubeConfig['eccube_price_max']
                     ]),
                 ],
             ])

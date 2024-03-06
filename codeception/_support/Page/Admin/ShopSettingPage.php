@@ -87,6 +87,13 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_適格請求書発行事業者登録番号($value)
+    {
+        $this->tester->fillField(['id' => 'shop_master_invoice_registration_number'], $value);
+
+        return $this;
+    }
+
     public function 登録()
     {
         $this->tester->click('#point_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');

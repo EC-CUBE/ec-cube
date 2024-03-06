@@ -13,10 +13,10 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\LoginHistory;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * LoginHistoryRepository
@@ -53,7 +53,7 @@ class LoginHistoryRepository extends AbstractRepository
             ->select('lh');
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            //スペース除去
+            // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $qb
                 ->andWhere('lh.user_name LIKE :multi_key OR lh.client_ip LIKE :multi_key')

@@ -17,6 +17,7 @@ use Eccube\Service\Composer\ComposerApiService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ComposerRequireCommand extends Command
@@ -37,7 +38,8 @@ class ComposerRequireCommand extends Command
     protected function configure()
     {
         $this->addArgument('package', InputArgument::REQUIRED)
-            ->addArgument('version', InputArgument::OPTIONAL);
+            ->addArgument('version', InputArgument::OPTIONAL)
+            ->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Path of composer repository');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -46,7 +48,8 @@ class ComposerRequireCommand extends Command
         if ($input->getArgument('version')) {
             $packageName .= ':'.$input->getArgument('version');
         }
-        $this->composerService->execRequire($packageName, $output);
+
+        $this->composerService->execRequire($packageName, $output, $input->getOption('from'));
 
         return 0;
     }

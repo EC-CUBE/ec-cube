@@ -25,9 +25,13 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var OrderStatusRepository
      */
@@ -58,7 +62,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
      */
     protected $customerRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -290,12 +294,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
-        $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
-
         $this->client->request(
             'GET',
             $this->generateUrl('admin_order_export_order')
         );
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
     }
 
     /**
@@ -326,7 +331,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         /* @var $customer \Eccube\Entity\Customer */
         $customer = $this->customerRepository->findOneBy(['email' => 'user-1@example.com']);
 
-        $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
+        $this->assertStringContainsString($customer->getName01(), $crawler->filter('table#search_result')->html());
     }
 
     /**
@@ -453,13 +458,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $orderIds[] = $Order->getId();
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
-                $this->client->enableProfiler();
-
-                $this->client->request(
+                $crawler = $this->client->request(
                     'PUT',
                     $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
                     [
-                        'order_status' => $OrderStatusDelivered,
+                        'order_status' => $OrderStatusDelivered->getId(),
                         'notificationMail' => 'on',
                         Constant::TOKEN_NAME => 'dummy',
                     ],
@@ -472,14 +475,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
                 $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-                $Messages = $this->getMailCollector(false)->getMessages();
-                $this->assertEquals(1, count($Messages));
+                $this->assertEmailCount(1);
+                /** @var Email $Message */
+                $Message = $this->getMailerMessage(0);
 
-                /** @var \Swift_Message $Message */
-                $Message = $Messages[0];
-
-                $this->assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
-                $this->assertEquals([$Order->getEmail() => null], $Message->getTo());
+                $this->assertStringContainsString('商品出荷のお知らせ', $Message->getSubject());
+                $this->assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
             }
         }
 

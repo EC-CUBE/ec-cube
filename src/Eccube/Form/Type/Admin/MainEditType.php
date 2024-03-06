@@ -221,7 +221,7 @@ class MainEditType extends AbstractType
                         ->setParameter('page_id', $Page->getId());
                 }
 
-                //確認ページの編集ページ存在している場合
+                // 確認ページの編集ページ存在している場合
                 if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT_CONFIRM && $Page->getMasterPage()) {
                     $qb
                         ->andWhere('p.id <> :master_page_id')

@@ -31,11 +31,11 @@ if (!class_exists(Work::class, false)) {
         /**
          * 非稼働
          */
-        const NON_ACTIVE = 0;
+        public const NON_ACTIVE = 0;
 
         /**
          * 稼働
          */
-        const ACTIVE = 1;
+        public const ACTIVE = 1;
     }
 }

@@ -19,6 +19,7 @@ use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -72,7 +73,7 @@ class OrderStatusSettingType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
-            ->add('color', TextType::class, [
+            ->add('color', ColorType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),

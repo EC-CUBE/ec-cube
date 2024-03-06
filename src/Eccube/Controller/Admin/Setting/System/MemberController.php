@@ -22,9 +22,9 @@ use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class MemberController extends AbstractController
 {
@@ -39,24 +39,23 @@ class MemberController extends AbstractController
     protected $memberRepository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var UserPasswordHasherInterface
      */
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     /**
      * MemberController constructor.
      *
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param UserPasswordHasherInterface $passwordHasher
      * @param MemberRepository $memberRepository
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
-        EncoderFactoryInterface $encoderFactory,
+        UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage
-    )
-    {
-        $this->encoderFactory = $encoderFactory;
+    ) {
+        $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
     }
@@ -78,7 +77,7 @@ class MemberController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -102,19 +101,15 @@ class MemberController extends AbstractController
             'builder' => $builder,
             'Member' => $Member,
         ], $request);
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $encoder = $this->encoderFactory->getEncoder($Member);
-            $salt = $encoder->createSalt();
             $password = $Member->getPlainPassword();
-            $password = $encoder->encodePassword($password, $salt);
-            $Member
-                ->setSalt($salt)
-                ->setPassword($password);
+            $password = $this->passwordHasher->hashPassword($Member, $password);
+            $Member->setPassword($password);
 
             $this->memberRepository->save($Member);
 
@@ -125,7 +120,7 @@ class MemberController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -156,23 +151,16 @@ class MemberController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($Member->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
-                $salt = $Member->getSalt();
-                // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
-                if (empty($salt)) {
-                    $salt = bin2hex(openssl_random_pseudo_bytes(5));
-                    $Member->setSalt($salt);
-                }
 
                 $password = $Member->getPlainPassword();
-                $encoder = $this->encoderFactory->getEncoder($Member);
-                $password = $encoder->encodePassword($password, $salt);
+                $password = $this->passwordHasher->hashPassword($Member, $password);
                 $Member->setPassword($password);
             }
 
@@ -185,7 +173,7 @@ class MemberController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -256,7 +244,7 @@ class MemberController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 

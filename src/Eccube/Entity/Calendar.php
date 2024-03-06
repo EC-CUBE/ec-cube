@@ -30,7 +30,7 @@ if (!class_exists('\Eccube\Entity\Calendar')) {
         /**
          * @var int
          */
-        const DEFAULT_CALENDAR_ID = 1;
+        public const DEFAULT_CALENDAR_ID = 1;
 
         /**
          * is default

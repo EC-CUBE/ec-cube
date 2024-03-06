@@ -28,14 +28,14 @@ class MemberTypeTest extends AbstractTypeTestCase
         'department' => 'EC-CUBE事業部',
         'login_id' => 'takahashi',
         'plain_password' => [
-            'first' => 'password',
-            'second' => 'password',
+            'first' => 'password1234',
+            'second' => 'password1234',
         ],
         'Authority' => 1,
         'Work' => 1,
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

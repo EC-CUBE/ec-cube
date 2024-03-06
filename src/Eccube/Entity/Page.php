@@ -28,16 +28,16 @@ if (!class_exists('\Eccube\Entity\Page')) {
     class Page extends \Eccube\Entity\AbstractEntity
     {
         // 編集可能フラグ
-        const EDIT_TYPE_USER = 0;
-        const EDIT_TYPE_PREVIEW = 1;
-        const EDIT_TYPE_DEFAULT = 2;
-        const EDIT_TYPE_DEFAULT_CONFIRM = 3;
+        public const EDIT_TYPE_USER = 0;
+        public const EDIT_TYPE_PREVIEW = 1;
+        public const EDIT_TYPE_DEFAULT = 2;
+        public const EDIT_TYPE_DEFAULT_CONFIRM = 3;
 
         // 特定商取引法ページID
-        const TRADELAW_PAGE_ID = 21;
+        public const TRADELAW_PAGE_ID = 21;
 
         // ご利用規約ページID
-        const AGREEMENT_PAGE_ID = 19;
+        public const AGREEMENT_PAGE_ID = 19;
 
         public function getLayouts()
         {

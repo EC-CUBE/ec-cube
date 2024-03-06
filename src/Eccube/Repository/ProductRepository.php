@@ -14,12 +14,17 @@
 namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
+use Eccube\Entity\Category;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\Tag;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ProductRepository
@@ -40,13 +45,7 @@ class ProductRepository extends AbstractRepository
     protected $eccubeConfig;
 
     public const COLUMNS = [
-        'product_id' => 'p.id'
-        ,'name' => 'p.name'
-        ,'product_code' => 'pc.code'
-        ,'stock' => 'pc.stock'
-        ,'status' => 'p.Status'
-        ,'create_date' => 'p.create_date'
-        ,'update_date' => 'p.update_date'
+        'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'pc.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',
     ];
 
     /**
@@ -136,7 +135,13 @@ class ProductRepository extends AbstractRepository
     /**
      * get query builder.
      *
-     * @param  array $searchData
+     * @param array{
+     *         category_id?:Category,
+     *         name?:string,
+     *         pageno?:string,
+     *         disp_number?:ProductListMax,
+     *         orderby?:ProductListOrderBy
+     *     } $searchData
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -178,7 +183,7 @@ class ProductRepository extends AbstractRepository
         // 価格低い順
         $config = $this->eccubeConfig;
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['eccube_product_order_price_lower']) {
-            //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
+            // @see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->andWhere('pc.visible = true');
@@ -219,7 +224,25 @@ class ProductRepository extends AbstractRepository
     /**
      * get query builder.
      *
-     * @param  array $searchData
+     * @param array{
+     *         id?:string|int|null,
+     *         category_id?:Category,
+     *         status?:ProductStatus[],
+     *         link_status?:ProductStatus[],
+     *         stock_status?:int,
+     *         stock?:ProductStock::IN_STOCK|ProductStock::OUT_OF_STOCK,
+     *         tag_id?:Tag,
+     *         create_datetime_start?:\DateTime,
+     *         create_datetime_end?:\DateTime,
+     *         create_date_start?:\DateTime,
+     *         create_date_end?:\DateTime,
+     *         update_datetime_start?:\DateTime,
+     *         update_datetime_end?:\DateTime,
+     *         update_date_start?:\DateTime,
+     *         update_date_end?:\DateTime,
+     *         sortkey?:string,
+     *         sorttype?:string
+     *     } $searchData
      *
      * @return \Doctrine\ORM\QueryBuilder
      */

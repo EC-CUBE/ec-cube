@@ -78,7 +78,6 @@ class LoginHistoryController extends AbstractController
             }
         }
 
-        $pagination = null;
         $searchForm = $this->formFactory
             ->createBuilder(SearchLoginHistoryType::class)
             ->getForm();

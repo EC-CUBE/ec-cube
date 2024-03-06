@@ -28,7 +28,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     /**
      * setUp
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -43,7 +43,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         $form = [
@@ -54,8 +54,8 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'address' => ['pref' => '5', 'addr01' => $faker->city, 'addr02' => $faker->streetAddress],
             'phone_number' => $faker->phoneNumber,
             'email' => $email,
-            'password' => ['first' => $password, 'second' => $password],
-            'birth' => $birth->format('Y').'-'.$birth->format('n').'-'.$birth->format('j'),
+            'plain_password' => ['first' => $password, 'second' => $password],
+            'birth' => $birth->format('Y').'-'.$birth->format('m').'-'.$birth->format('d'),
             'sex' => 1,
             'job' => 1,
             'status' => 1,
@@ -91,7 +91,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = '会員一覧';
         $this->actual = $crawler->filter('#customer_form > div.c-conversionArea > div > div > div:nth-child(1) > div')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -169,7 +169,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory > div')->text();
-        $this->assertRegexp('/'.$Order->getOrderNo().'/', $orderListing);
+        $this->assertMatchesRegularExpression('/'.$Order->getOrderNo().'/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()
@@ -194,7 +194,51 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $orderListing = $crawler->filter('#orderHistory')->text();
-        $this->assertContains('この会員の購入履歴がありません', $orderListing);
+        $this->assertStringContainsString('この会員の購入履歴がありません', $orderListing);
+    }
+
+    /**
+     * testShowOrders
+     */
+    public function testShowOrders()
+    {
+        $id = $this->Customer->getId();
+
+        //add Order paid status for this customer
+        $Order = $this->createOrder($this->Customer);
+        $OrderStatus = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class)->find(OrderStatus::PAID);
+        $Order->setOrderStatus($OrderStatus);
+        $this->Customer->addOrder($Order);
+        $this->entityManager->persist($this->Customer);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_customer_edit', ['id' => $id])
+        );
+
+        // デフォルトの表示件数確認テスト
+        $this->expected = '50件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('デフォルトの表示件数確認テスト');
+
+        // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 999999]));
+        $this->expected = '50件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
+
+        // 表示件数70件テスト
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 70]));
+        $this->expected = '70件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('表示件数70件テスト');
+
+        // 表示件数はSESSIONから取得するテスト
+        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 100]));
+        $this->expected = '100件';
+        $this->actual = $crawler->filter('#orderHistory select.form-select > option:selected')->text();
+        $this->verify('表示件数はSESSIONから取得するテスト');
     }
 
     /**
@@ -212,7 +256,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $EditedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($this->Customer->getId());
 
-        $this->assertRegExp('/@dummy.dummy/', $EditedCustomer->getEmail());
+        $this->assertMatchesRegularExpression('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
 
     /**

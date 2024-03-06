@@ -25,7 +25,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
     private static $server;
     const FIXTURES_DIR = __DIR__.'/../../../../../Fixtures/session';
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $spec = [
             1 => ['file', '/dev/null', 'w'],
@@ -37,7 +37,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         sleep(1);
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$server) {
             proc_terminate(self::$server);
@@ -58,6 +58,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
+
+        if ($fixture === 'empty_destroys' && PHP_VERSION_ID >= 80200) {
+            // PHP8.2以降は日付のフォーマットが01 Jan 1970となるため
+            // https://www.php.net/manual/ja/function.setcookie.php
+            $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
+        }
 
         if ($shouldSendSameSiteNone) {
             if (PHP_VERSION_ID < 70300) {
@@ -86,6 +92,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
+
+        if ($fixture === 'empty_destroys' && PHP_VERSION_ID >= 80200) {
+            // PHP8.2以降は日付のフォーマットが01 Jan 1970となるため
+            // https://www.php.net/manual/ja/function.setcookie.php
+            $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
+        }
 
         $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.expected', $fixture), $result);
     }

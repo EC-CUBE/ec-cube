@@ -40,11 +40,11 @@ class PointDiffProcessorTest extends EccubeTestCase
     /** @var BaseInfo */
     private $BaseInfo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->processor = self::$container->get(PointDiffProcessor::class);
-        $this->pointProcessor = self::$container->get(PointProcessor::class);
+        $this->processor = static::getContainer()->get(PointDiffProcessor::class);
+        $this->pointProcessor = static::getContainer()->get(PointProcessor::class);
         $this->OrderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
@@ -108,6 +108,15 @@ class PointDiffProcessorTest extends EccubeTestCase
             [10, 20, 9, true],
             [10, 20, 10, false],
             [10, 20, 11, false],
+            [0, 0, -10, false],
+            [20, 10, -10, false],
+            [10, 10, -10, false],
+            [20, 9, -10, false],
+            [20, 11, -10, false],
+            [10, 20, -10, true],
+            [11, 20, -10, true],
+            [9, 20, -10, true],
+            [10, 20, -10, true],
         ];
     }
 

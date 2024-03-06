@@ -25,18 +25,18 @@ file that was distributed with this source code.
                         <h5 class="mb-3">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</h5>
 
                         {% if error is not empty %}
-                            <div class="text-danger mb-3 text-left small">{{ error }}</div>
+                            <div class="text-danger mb-3 text-start small">{{ error }}</div>
                         {% endif %}
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group d-flex justify-content-center">
+                                <div class="mb-3 d-flex justify-content-center">
                                     {{ form_widget(form.device_token, {'attr': {'class':'w-100','placeholder': 'admin.setting.system.two_factor_auth.device_token', 'autofocus': true}}) }}
                                 </div>
                                 {{ form_errors(form.device_token) }}
                             </div>
                             <div class="col-12">
-                            	<button type="submit" class="btn btn-primary btn-block">{{ 'admin.setting.system.two_factor_auth.auth'|trans }}</button>
+                            	<button type="submit" class="btn btn-primary w-100">{{ 'admin.setting.system.two_factor_auth.auth'|trans }}</button>
                             </div>
                         </div>
                         

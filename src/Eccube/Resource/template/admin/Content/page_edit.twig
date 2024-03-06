@@ -25,7 +25,6 @@ file that was distributed with this source code.
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
         .ui-resizable-se {
             right: -3px;
@@ -35,9 +34,6 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block javascript %}
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
         ace.require('ace/ext/language_tools');
         var editor = ace.edit('editor');
@@ -76,8 +72,8 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8"><span class="card-title">{{ 'admin.content.page__card_title'|trans }}</span></div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#pageDetail" aria-expanded="false" aria-controls="pageDetail">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
                                 </div>
@@ -89,7 +85,7 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'admin.content.page_name'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         {{ form_widget(form.name) }}
@@ -100,15 +96,15 @@ file that was distributed with this source code.
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <span>{{ 'admin.content.page_url'|trans }}</span>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
-                                        <div class="form-row">
+                                        <div class="row">
                                             {% if is_user_data_page %}
-                                                <div class="col-3 pr-0"><span class="align-middle">{{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/</span></div>
-                                                <div class="col-9 pl-0">{{ form_widget(form.url) }}</div>
+                                                <div class="col-3 pe-0"><span class="align-middle">{{ url('homepage') }}{{ eccube_config.eccube_user_data_route }}/</span></div>
+                                                <div class="col-9 ps-0">{{ form_widget(form.url) }}</div>
                                             {% else %}
-                                                <div class="col pr-0"><span class="align-middle">{{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}</span></div>
+                                                <div class="col pe-0"><span class="align-middle">{{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}</span></div>
                                                 <div>{{ form_widget(form.url, { type : 'hidden' } ) }}</div>
                                             {% endif %}
                                             {{ form_errors(form.url) }}
@@ -118,21 +114,21 @@ file that was distributed with this source code.
                                 <!-- ファイル名 -->
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_file_name'|trans }}">
-                                            <span>{{ 'admin.content.page_file_name'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.page_file_name'|trans }}">
+                                            <span>{{ 'admin.content.page_file_name'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
-                                        <div class="form-row">
+                                        <div class="row">
                                             {% if is_user_data_page %}
-                                                <div class="col-3 pr-0 align-middle"><span class="align-middle">{{ template_path }}/</span></div>
-                                                <div class="col-7 pl-0">
+                                                <div class="col-3 pe-0 align-middle"><span class="align-middle">{{ template_path }}/</span></div>
+                                                <div class="col-7 ps-0">
                                                     {{ form_widget(form.file_name) }}
                                                 </div>
-                                                <div class="col-2 pl-0">.twig</div>
+                                                <div class="col-2 ps-0">.twig</div>
                                             {% else %}
-                                                <div class="col pr-0 align-middle">
+                                                <div class="col pe-0 align-middle">
                                                     <span class="align-middle">{{ template_path }}/{{ form.file_name.vars.value }}.twig</span>
                                                     <div>{{ form_widget(form.file_name, { type : 'hidden' } ) }}</div>
                                                 </div>
@@ -144,10 +140,10 @@ file that was distributed with this source code.
                                 <!-- コード -->
                                 <div class="row mb-2">
                                     <div class="col-2">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_source_code'|trans }}">
-                                            <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.page_source_code'|trans }}">
+                                            <span>{{ 'admin.content.page_source_code'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
-                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col-10">
                                         <div id="editor" style="height: 480px" class="form-control{{ has_errors(form.tpl_data) ? ' is-invalid' }}"></div>
@@ -179,16 +175,16 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="{{ 'tooltip.content.page_layout'|trans }}">
                                             <span class="card-title">
                                                 {{ 'admin.content.page_layout__card_title'|trans }}
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#pageLayout" aria-expanded="false" aria-controls="pageLayout">
+                                    <div class="col-4 text-end">
+                                        <a data-bs-toggle="collapse" href="#pageLayout" aria-expanded="false" aria-controls="pageLayout">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
                                     </div>
@@ -220,13 +216,13 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta'|trans }}">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.page_meta'|trans }}">
                                             <span class="card-title">{{ 'admin.content.page_meta__card_title'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#pageMeta" aria-expanded="false" aria-controls="pageMeta">
+                                    <div class="col-4 text-end">
+                                        <a data-bs-toggle="collapse" href="#pageMeta" aria-expanded="false" aria-controls="pageMeta">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
                                     </div>
@@ -269,9 +265,9 @@ file that was distributed with this source code.
                                     <!-- metatag -->
                                     <div class="row">
                                         <div class="col-2">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.content.page_meta_tags'|trans }}">
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.content.page_meta_tags'|trans }}">
                                                 <span>{{ 'admin.content.page_meta_metatag'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col-10">

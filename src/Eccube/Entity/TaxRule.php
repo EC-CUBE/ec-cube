@@ -30,7 +30,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * @var integer
          */
-        const DEFAULT_TAX_RULE_ID = 1;
+        public const DEFAULT_TAX_RULE_ID = 1;
 
         /**
          * @var integer

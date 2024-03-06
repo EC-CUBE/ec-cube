@@ -25,7 +25,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
      */
     private $TagRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->TagRepo = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
@@ -119,7 +119,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains('入力されていません', $crawler->html());
+        $this->assertStringContainsString('入力されていません', $crawler->html());
     }
 
     public function testDeleteSuccess()

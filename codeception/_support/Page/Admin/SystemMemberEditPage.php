@@ -42,10 +42,10 @@ class SystemMemberEditPage extends AbstractAdminPageStyleGuide
             'name' => 'name',
             'department' => 'department',
             'login_id' => 'id',
-            'password' => 'password',
-            'password_second' => 'password',
+            'password' => 'password1234',
+            'password_second' => 'password1234',
             'authority' => 'システム管理者',
-            'work' => 1,
+            'work' => '1',
         ];
 
         $this->tester->fillField('#admin_member_name', $form['name']);

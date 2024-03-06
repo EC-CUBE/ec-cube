@@ -22,7 +22,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
      */
     protected $categoryRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->remove();

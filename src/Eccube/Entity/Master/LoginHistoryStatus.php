@@ -31,11 +31,11 @@ if (!class_exists(LoginHistoryStatus::class, false)) {
         /**
          * 失敗
          */
-        const FAILURE = 0;
+        public const FAILURE = 0;
 
         /**
          * 成功
          */
-        const SUCCESS = 1;
+        public const SUCCESS = 1;
     }
 }

@@ -23,8 +23,11 @@ Styleguide 15.2
     margin-top: 20px;
     flex-direction: row;
   }
-  .ec-inlineBtn {
+  .ec-inlineBtn  {
     font-weight: normal;
+    .mypage & {
+      font-weight: bold;
+    }
   }
   & &__detail{
     padding: 0;
@@ -270,7 +273,10 @@ Styleguide 15.2.6
     margin-bottom: 5px;
   }
   & &__selectAddress {
-    display: inline-block;
+    display: block;
+    @include media_desktop {
+      display: inline-block;
+    }
     label {
       font-size: 16px;
       font-weight: normal;
@@ -283,8 +289,11 @@ Styleguide 15.2.6
     }
   }
   & &__selectNumber {
-    display: inline-block;
-    margin-left: 30px;
+    display: block;
+    @include media_desktop {
+      display: inline-block;
+      margin-left: 30px;
+    }
     label {
       font-size: 16px;
       font-weight: normal;
@@ -296,6 +305,11 @@ Styleguide 15.2.6
     }
   }
   & &__actions {
+    @include media_desktop {
+      width: 33.3333%;
+      min-width: 250px;
+      margin: 0 auto;
+    }
     .ec-blockBtn--action {
       margin-bottom: 8px;
     }

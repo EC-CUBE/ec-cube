@@ -53,7 +53,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     /**
      * Set up function
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->faker = $this->getFaker();

@@ -35,11 +35,11 @@ class AuthorityVoterTest extends EccubeTestCase
      */
     protected $eccubeConfig;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->authorityRoleRepository = $this->entityManager->getRepository(\Eccube\Entity\AuthorityRole::class);
-        $this->eccubeConfig = self::$container->get(EccubeConfig::class);
+        $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
     }
 
     /**
@@ -51,7 +51,7 @@ class AuthorityVoterTest extends EccubeTestCase
         $request->method('getPathInfo')->willReturn($accessUrl);
 
         $requestStack = $this->createMock(RequestStack::class);
-        $requestStack->method('getMasterRequest')->willReturn($request);
+        $requestStack->method('getMainRequest')->willReturn($request);
 
         $voter = new AuthorityVoter($this->authorityRoleRepository, $requestStack, $this->eccubeConfig);
 

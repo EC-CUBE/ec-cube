@@ -143,7 +143,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      */
     public function 検索結果_複製($rowNum)
     {
-        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(2) > a");
+        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(2) > a");
 
         return $this;
     }
@@ -157,7 +157,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      */
     public function 検索結果_確認($rowNum)
     {
-        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(1) > a");
+        $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(1) > a");
 
         return $this;
     }
@@ -225,7 +225,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function 検索結果_削除()
     {
-        $this->tester->click(['css' => '#btn_bulk button[data-target="#bulkDeleteModal"]']);
+        $this->tester->click(['css' => '#btn_bulk button[data-bs-target="#bulkDeleteModal"]']);
         $this->tester->wait(1);
 
         return $this;
@@ -240,7 +240,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function Accept_複製する($rowNum)
     {
-        $modalCssSelector = "#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pr-3 > div > div:nth-child(2) div.modal";
+        $modalCssSelector = "#page_admin_product > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3 > div > div:nth-child(2) div.modal";
         $this->tester->waitForElementVisible(['css' => $modalCssSelector]);
         $this->tester->click($modalCssSelector.' div.modal-footer a.btn-ec-conversion');
 

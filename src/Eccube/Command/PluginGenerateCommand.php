@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +21,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PluginGenerateCommand extends Command
@@ -38,14 +38,14 @@ class PluginGenerateCommand extends Command
     protected $fs;
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     protected function configure()
@@ -108,7 +108,7 @@ class PluginGenerateCommand extends Command
         $this->validateCode($code);
         $this->validateVersion($version);
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->eccubeConfig->get('kernel.project_dir').'/app/Plugin/'.$code;
 
         $this->createDirectories($pluginDir);
         $this->createConfig($pluginDir, $name, $code, $version);
@@ -136,7 +136,7 @@ class PluginGenerateCommand extends Command
             throw new InvalidArgumentException('The code [a-zA-Z_] is available.');
         }
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->eccubeConfig->get('kernel.project_dir').'/app/Plugin/'.$code;
         if (file_exists($pluginDir)) {
             throw new InvalidArgumentException('Plugin directory exists.');
         }
@@ -209,7 +209,7 @@ on:
 jobs:
   deploy:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -461,9 +461,9 @@ EOL;
 
 namespace Plugin\\${code}\\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\\Repository\\AbstractRepository;
 use Plugin\\${code}\\Entity\\Config;
-use Symfony\\Bridge\\Doctrine\\RegistryInterface;
 
 /**
  * ConfigRepository
@@ -476,9 +476,9 @@ class ConfigRepository extends AbstractRepository
     /**
      * ConfigRepository constructor.
      *
-     * @param RegistryInterface \$registry
+     * @param ManagerRegistry \$registry
      */
-    public function __construct(RegistryInterface \$registry)
+    public function __construct(ManagerRegistry \$registry)
     {
         parent::__construct(\$registry, Config::class);
     }
@@ -568,7 +568,7 @@ EOL;
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>名前</span><span
-                                            class="badge badge-primary ml-1">必須</span></div>
+                                            class="badge bg-primary ml-1">必須</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}

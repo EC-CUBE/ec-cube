@@ -60,6 +60,9 @@ class DeliveryType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                ],
             ])
             ->add('confirm_url', TextType::class, [
                 'required' => false,

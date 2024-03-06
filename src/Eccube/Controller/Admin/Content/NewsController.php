@@ -56,7 +56,7 @@ class NewsController extends AbstractController
      *
      * @return array
      */
-    public function index(Request $request, $page_no = 1, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = 1)
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
 
@@ -66,7 +66,7 @@ class NewsController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE);
 
         $pagination = $paginator->paginate(
             $qb,
@@ -91,7 +91,7 @@ class NewsController extends AbstractController
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function edit(Request $request, $id = null, CacheUtil $cacheUtil)
+    public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         if ($id) {
             $News = $this->newsRepository->find($id);
@@ -113,7 +113,7 @@ class NewsController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -131,7 +131,7 @@ class NewsController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -167,7 +167,7 @@ class NewsController extends AbstractController
             $this->newsRepository->delete($News);
 
             $event = new EventArgs(['News' => $News], $request);
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 

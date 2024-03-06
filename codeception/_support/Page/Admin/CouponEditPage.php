@@ -82,8 +82,8 @@ class CouponEditPage extends AbstractAdminPageStyleGuide
         $this->tester->click(['id' => 'showSearchProductModal']);
         $this->tester->waitForElementVisible(['id' => 'searchProductModalButton']);
         $this->tester->click(['id' => 'searchProductModalButton']);
-        $this->tester->waitForElementVisible(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-right > button']);
-        $this->tester->click(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-right > button']);
+        $this->tester->waitForElementVisible(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-end > button']);
+        $this->tester->click(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-end > button']);
         return $this;
     }
 
@@ -99,8 +99,8 @@ class CouponEditPage extends AbstractAdminPageStyleGuide
         $this->tester->click(['id' => 'showSearchCategoryModal']);
         $this->tester->waitForElementVisible(['id' => 'searchCategoryModalButton']);
         $this->tester->click(['id' => 'searchCategoryModalButton']);
-        $this->tester->waitForElementVisible(['css' => '#searchCategoryModalList > div > table > tbody > tr:nth-child(1) > td.text-right > button']);
-        $this->tester->click(['css' => '#searchCategoryModalList > div > table > tbody > tr:nth-child(1) > td.text-right > button']);
+        $this->tester->waitForElementVisible(['css' => '#searchCategoryModalList > div > table > tbody > tr:nth-child(1) > td.text-end > button']);
+        $this->tester->click(['css' => '#searchCategoryModalList > div > table > tbody > tr:nth-child(1) > td.text-end > button']);
         return $this;
     }
     public function 登録する()

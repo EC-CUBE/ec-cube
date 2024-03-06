@@ -44,7 +44,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $this->assertContains('在庫切れ商品', $crawler->filter($this->target)->html());
+        $this->assertStringContainsString('在庫切れ商品', $crawler->filter($this->target)->html());
     }
 
     /**
@@ -59,7 +59,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $this->assertContains('在庫切れ商品', $crawler->filter($this->target)->html());
+        $this->assertStringContainsString('在庫切れ商品', $crawler->filter($this->target)->html());
 
         $section = trim($crawler->filter($this->target.' .card-body .d-block:nth-child(1) span.h4')->text());
         $this->expected = $showNumber = preg_replace('/\D/', '', $section);

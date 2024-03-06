@@ -55,7 +55,7 @@ class ProductTagPage extends AbstractAdminPageStyleGuide
     public function タグ編集_開始($row)
     {
         $row = $row + 2;
-        $this->tester->click(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) a[data-original-title=編集]"]);
+        $this->tester->click(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) a[data-bs-original-title=編集]"]);
         $this->tester->waitForElementVisible(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) form"]);
         return $this;
     }
@@ -78,7 +78,7 @@ class ProductTagPage extends AbstractAdminPageStyleGuide
     public function タグ削除($row)
     {
         $row = $row + 2;
-        $this->tester->click(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) a[data-target='#DeleteModal']"]);
+        $this->tester->click(['css' => ".c-primaryCol .list-group > li:nth-child({$row}) a[data-bs-target='#DeleteModal']"]);
         $this->tester->waitForElementVisible(['id' => 'DeleteModal']);
         $this->tester->wait(1);
         return $this;

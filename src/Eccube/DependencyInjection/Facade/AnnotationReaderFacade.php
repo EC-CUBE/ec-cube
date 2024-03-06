@@ -14,7 +14,6 @@
 namespace Eccube\DependencyInjection\Facade;
 
 use Doctrine\Common\Annotations\Reader;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AnnotationReaderFacade
 {

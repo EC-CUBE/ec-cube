@@ -53,7 +53,7 @@ class MasterdataType extends AbstractType
         $masterdata = [];
 
         /** @var MappingDriverChain $driverChain */
-        $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+        $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
         /** @var MappingDriver[] $drivers */
         $drivers = $driverChain->getDrivers();
 

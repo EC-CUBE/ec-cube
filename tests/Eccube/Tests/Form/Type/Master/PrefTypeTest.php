@@ -25,7 +25,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     /** @var PrefRepository */
     protected $prefRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->prefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);

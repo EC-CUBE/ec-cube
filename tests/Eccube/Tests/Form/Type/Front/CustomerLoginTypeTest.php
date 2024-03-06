@@ -27,12 +27,12 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'login_pass' => '111111111',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $request = Request::createFromGlobals();
-        self::$container->get('request_stack')->push($request);
+        static::getContainer()->get('request_stack')->push($request);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

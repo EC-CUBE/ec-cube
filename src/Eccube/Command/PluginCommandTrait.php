@@ -51,10 +51,10 @@ trait PluginCommandTrait
 
     protected function clearCache(SymfonyStyle $io)
     {
-        $command = 'cache:clear --no-warmup';
+        $command = ['bin/console', 'cache:clear', '--no-warmup'];
         try {
-            $io->text(sprintf('<info>Run %s</info>...', $command));
-            $process = new Process('bin/console '.$command);
+            $io->text(sprintf('<info>Run %s</info>...', implode(' ', $command)));
+            $process = new Process($command);
             $process->mustRun();
             $io->text($process->getOutput());
         } catch (ProcessFailedException $e) {

@@ -43,7 +43,7 @@ class ProductReviewManagePage extends AbstractAdminPageStyleGuide
 
     public function CSVダウンロード()
     {
-        $this->tester->click(['css' => '#page_product_review_admin_product_review > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-right > div:nth-child(2) > div > button:nth-child(1)']);
+        $this->tester->click(['css' => '#page_product_review_admin_product_review > div.c-container > div.c-contentsArea > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-end > div:nth-child(2) > div > button:nth-child(1)']);
         return $this;
     }
 }

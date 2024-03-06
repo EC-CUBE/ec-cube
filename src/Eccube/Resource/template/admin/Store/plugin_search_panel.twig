@@ -9,39 +9,39 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 
-<div class="col-sm-2 pr-2 pr-sm-3">
-    <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ item.id }}" data-code="{{ item.code }}">
+<div class="col-sm-2 pe-2 pe-sm-3">
+    <a href="#" data-bs-toggle="modal" data-bs-target="#searchPluginModal-{{ item.id }}" data-code="{{ item.code }}">
         <img class="w-100 img-responsive" src="{{ item.image|default(asset('noimage_plugin_list.png', 'save_image')) }}" alt="{{ item.name }}">
     </a>
 </div>
 <div class="col-sm-6 col-md-7">
     <div class="info">
         <h5>
-            <a href="{{ item.store_url }}" class="font-weight-bold" target="_blank">{{ item.name }}</a>（{{ 'admin.store.plugin_owners_search.latest'|trans }}{{ item.version }}）
+            <a href="{{ item.store_url }}" class="fw-bold" target="_blank">{{ item.name }}</a>（{{ 'admin.store.plugin_owners_search.latest'|trans }}{{ item.version }}）
         </h5>
         <h6>{{ item.short_description }}</h6>
     </div>
     <div class="row">
         <div class="col-auto col-md-5 col-lg-6">
-            <p class="plg-prices text-danger"><span class="font-weight-bold text-dark">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
+            <p class="plg-prices text-danger"><span class="fw-bold text-dark">{{ 'admin.store.plugin.price'|trans }} </span> {{ item.price|price }}<small> ({{ 'common.tax_include'|trans }})</small></p>
         </div>
         <div class="col-auto col-md-7 col-lg-2">
             {% if not item.price %}
             <dl class="text-dark">
-                <dd class="d-inline-block"><span class="pr-1 font-weight-bold">{{'admin.store.plugin_owners_search.dl'|trans}}</span> {{ item.downloads|number_format }}</dd>
+                <dd class="d-inline-block"><span class="pe-1 fw-bold">{{'admin.store.plugin_owners_search.dl'|trans}}</span> {{ item.downloads|number_format }}</dd>
             </dl>
             {% endif %}
         </div>
         <div class="col-auto col-md-7 col-lg-4">
             <dl class="text-dark">
-                <dd class="d-inline-block ml-4"><span class="pr-1 font-weight-bold">{{ 'admin.store.plugin_owners_search.support'|trans }}</span> {% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
+                <dd class="d-inline-block ms-4"><span class="pe-1 fw-bold">{{ 'admin.store.plugin_owners_search.support'|trans }}</span> {% for version in item.supported_versions %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
             </dl>
         </div>
     </div>
 </div>
-<div class="col-sm-4 col-md-3 text-right">
+<div class="col-sm-4 col-md-3 text-end">
     <form action="{{ eccube_config.eccube_owners_store_url }}/gateway/purchase/?product_id={{ item.id }}" method="post" target="_blank">
-        <a href="#" data-toggle="modal" data-target="#searchPluginModal-{{ item.id }}" class="btn btn-ec-regular">{{'admin.store.plugin_owners_search.detail'|trans}}</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#searchPluginModal-{{ item.id }}" class="btn btn-ec-regular">{{'admin.store.plugin_owners_search.detail'|trans}}</a>
         {% if item.update_status == 1 %}
             <a href="{{ url('admin_store_plugin_install_confirm', {'id': item.id}) }}" class="btn btn-primary">
                 {{ 'admin.store.plugin_owners_search.install.free'|trans }}

@@ -118,7 +118,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return array
      */
-    public function search(Request $request, $page_no = null, PaginatorInterface $paginator)
+    public function search(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('admin.store.plugin.search.not_auth', 'admin');
@@ -263,7 +263,6 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $request->get('pluginCode');
 
-        $log = null;
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode);
 
@@ -344,7 +343,6 @@ class OwnerStoreController extends AbstractController
         $pluginCode = $request->get('pluginCode');
         $version = $request->get('version');
 
-        $log = null;
         try {
             $log = $this->composerService->execRequire('ec-cube/'.$pluginCode.':'.$version);
 
@@ -425,7 +423,6 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $request->get('pluginCode');
 
-        $log = null;
         try {
             $Plugin = $this->pluginRepository->findByCode($pluginCode);
             if (!$Plugin) {

@@ -48,7 +48,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     const NAME = 'eccube:schema:update';
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $conn = $this->entityManager->getConnection();
@@ -58,17 +58,17 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             $this->markTestSkipped('does not support of '.$platform);
         }
         $files = Finder::create()
-            ->in(self::$container->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
 
         $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
-        $this->pluginService = self::$container->get(PluginService::class);
-        $this->schemaService = self::$container->get(SchemaService::class);
+        $this->pluginService = static::getContainer()->get(PluginService::class);
+        $this->schemaService = static::getContainer()->get(SchemaService::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
@@ -91,8 +91,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         );
         $display = $tester->getDisplay();
 
-        $this->assertContains('eccube:schema:update --force', $display);
-        $this->assertContains('eccube:schema:update --dump-sql', $display);
+        $this->assertStringContainsString('eccube:schema:update --force', $display);
+        $this->assertStringContainsString('eccube:schema:update --dump-sql', $display);
     }
 
     public function testHelpWithNoProxy()
@@ -108,8 +108,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         );
         $display = $tester->getDisplay();
 
-        $this->assertContains('eccube:schema:update --force', $display);
-        $this->assertContains('eccube:schema:update --dump-sql', $display);
+        $this->assertStringContainsString('eccube:schema:update --force', $display);
+        $this->assertStringContainsString('eccube:schema:update --dump-sql', $display);
     }
 
     /**
@@ -130,7 +130,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
             $display,
             '--no-proxy is do not use proxy'
@@ -170,7 +170,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -214,7 +214,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, '--no-proxy is do not use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, '--no-proxy is do not use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -252,7 +252,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -295,7 +295,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
             $display,
             '--no-proxy is do not use proxy'
@@ -340,7 +340,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ]
         );
         $display = $commandTester->getDisplay();
-        $this->assertContains('[OK] Nothing to update', $display, 'Use proxy');
+        $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -484,7 +484,7 @@ EOT
         \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::commit();
         \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::beginTransaction();
         try {
-            $process = new Process($command);
+            $process = new Process(explode(' ', $command));
             $process->mustRun();
 
             return $process->getOutput();

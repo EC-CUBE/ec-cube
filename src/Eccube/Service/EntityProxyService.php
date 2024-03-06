@@ -16,14 +16,13 @@ namespace Eccube\Service;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\EntityExtension;
+use Eccube\Common\EccubeConfig;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
-use Zend\Code\Reflection\ClassReflection;
 
 class EntityProxyService
 {
@@ -33,22 +32,22 @@ class EntityProxyService
     protected $entityManager;
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
 
     /**
      * EntityProxyService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ContainerInterface $container
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        ContainerInterface $container
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -95,7 +94,7 @@ class EntityProxyService
             foreach ($traits as $trait) {
                 $this->addTrait($entityTokens, $trait);
             }
-            $projectDir = str_replace('\\', '/', $this->container->getParameter('kernel.project_dir'));
+            $projectDir = str_replace('\\', '/', $this->eccubeConfig->get('kernel.project_dir'));
 
             // baseDir e.g. /src/Eccube/Entity and /app/Plugin/PluginCode/Entity
             $baseDir = str_replace($projectDir, '', str_replace($baseName, '', $fileName));
@@ -116,7 +115,7 @@ class EntityProxyService
 
     private function originalEntityPath(string $entityClassName): string
     {
-        $projectDir = rtrim(str_replace('\\', '/', $this->container->getParameter('kernel.project_dir')), '/');
+        $projectDir = rtrim(str_replace('\\', '/', $this->eccubeConfig->get('kernel.project_dir')), '/');
         $originalPath = null;
 
         if (preg_match('/\AEccube\\\\Entity\\\\(.+)\z/', $entityClassName, $matches)) {
@@ -134,7 +133,7 @@ class EntityProxyService
             return $originalPath;
         }
 
-        $rc = new ClassReflection($entityClassName);
+        $rc = new \ReflectionClass($entityClassName);
 
         return str_replace('\\', '/', $rc->getFileName());
     }
@@ -192,7 +191,9 @@ class EntityProxyService
             foreach ($traits as $trait) {
                 $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
                 if ($anno) {
-                    $proxies[$anno->value][] = $trait;
+                    $class = str_replace('\\\\', '\\', $anno->value);
+                    $class = ltrim($class, '\\');
+                    $proxies[$class][] = $trait;
                 }
             }
             $proxySets[] = $proxies;

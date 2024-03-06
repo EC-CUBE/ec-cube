@@ -31,37 +31,36 @@ if (!class_exists(CsvType::class, false)) {
         /**
          * @var integer
          */
-        const CSV_TYPE_PRODUCT = 1;
+        public const CSV_TYPE_PRODUCT = 1;
 
         /**
          * @var integer
          */
-        const CSV_TYPE_CUSTOMER = 2;
+        public const CSV_TYPE_CUSTOMER = 2;
 
         /**
          * @var integer
          */
-        const CSV_TYPE_ORDER = 3;
+        public const CSV_TYPE_ORDER = 3;
 
         /**
          * @var integer
          */
-        const CSV_TYPE_SHIPPING = 4;
+        public const CSV_TYPE_SHIPPING = 4;
 
         /**
          * @var integer
          */
-        const CSV_TYPE_CATEGORY = 5;
+        public const CSV_TYPE_CATEGORY = 5;
 
         /**
          * @var integer
          */
-        const CSV_TYPE_CLASS_NAME = 6;
+        public const CSV_TYPE_CLASS_NAME = 6;
 
         /**
          * @var integer
          */
-        const CSV_TYPE_CLASS_CATEGORY = 7;
-
+        public const CSV_TYPE_CLASS_CATEGORY = 7;
     }
 }

@@ -38,10 +38,10 @@ class FormUtilTest extends EccubeTestCase
         'date' => '2017-02-01',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->formFactory = self::$container->get('form.factory');
+        $this->formFactory = static::getContainer()->get('form.factory');
         $this->form = $this->formFactory
             ->createBuilder(
                 FormType::class,

@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
@@ -206,22 +207,34 @@ class ProductClassController extends AbstractController
                 'Product' => $Product,
             ]);
 
-            // デフォルト規格のみ有効にする
-            foreach ($ProductClasses as $ProductClass) {
-                $ProductClass->setVisible(false);
-            }
-            foreach ($ProductClasses as $ProductClass) {
-                if (null === $ProductClass->getClassCategory1() && null === $ProductClass->getClassCategory2()) {
-                    $ProductClass->setVisible(true);
-                    break;
+            try {
+                // デフォルト規格のみ有効にし、他は削除する
+                foreach ($ProductClasses as $ProductClass) {
+                    $ProductClass->setVisible(false);
                 }
+                foreach ($ProductClasses as $ProductClass) {
+                    if (null === $ProductClass->getClassCategory1() && null === $ProductClass->getClassCategory2()) {
+                        $ProductClass->setVisible(true);
+                        break;
+                    }
+                }
+                foreach ($ProductClasses as $ProductClass) {
+                    if (!$ProductClass->isVisible()) {
+                        $this->entityManager->remove($ProductClass);
+                    }
+                }
+
+                $this->entityManager->flush();
+
+                $this->addSuccess('admin.product.reset_complete', 'admin');
+
+                $cacheUtil->clearDoctrineCache();
+            } catch (ForeignKeyConstraintViolationException $e) {
+                log_error('商品規格の初期化失敗', [$e]);
+
+                $message = trans('admin.common.delete_error_foreign_key', ['%name%' => trans('admin.product.product_class')]);
+                $this->addError($message, 'admin');
             }
-
-            $this->entityManager->flush();
-
-            $this->addSuccess('admin.product.reset_complete', 'admin');
-
-            $cacheUtil->clearDoctrineCache();
         }
 
         if ($request->get('return_product_list')) {
@@ -335,6 +348,7 @@ class ProductClassController extends AbstractController
                         'create_date',
                         'update_date',
                         'Creator',
+                        'ProductStock',
                     ]);
                     $pc = $ExistsProductClass;
                 }

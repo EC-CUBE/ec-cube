@@ -29,34 +29,34 @@ if (!class_exists('\Eccube\Entity\Layout')) {
     {
         // 配置ID
         /** 配置ID: 未使用 */
-        const TARGET_ID_UNUSED = 0;
-        const TARGET_ID_HEAD = 1;
-        const TARGET_ID_BODY_AFTER = 2;
-        const TARGET_ID_HEADER = 3;
-        const TARGET_ID_CONTENTS_TOP = 4;
-        const TARGET_ID_SIDE_LEFT = 5;
-        const TARGET_ID_MAIN_TOP = 6;
-        const TARGET_ID_MAIN_BOTTOM = 7;
-        const TARGET_ID_SIDE_RIGHT = 8;
-        const TARGET_ID_CONTENTS_BOTTOM = 9;
-        const TARGET_ID_FOOTER = 10;
-        const TARGET_ID_DRAWER = 11;
-        const TARGET_ID_CLOSE_BODY_BEFORE = 12;
+        public const TARGET_ID_UNUSED = 0;
+        public const TARGET_ID_HEAD = 1;
+        public const TARGET_ID_BODY_AFTER = 2;
+        public const TARGET_ID_HEADER = 3;
+        public const TARGET_ID_CONTENTS_TOP = 4;
+        public const TARGET_ID_SIDE_LEFT = 5;
+        public const TARGET_ID_MAIN_TOP = 6;
+        public const TARGET_ID_MAIN_BOTTOM = 7;
+        public const TARGET_ID_SIDE_RIGHT = 8;
+        public const TARGET_ID_CONTENTS_BOTTOM = 9;
+        public const TARGET_ID_FOOTER = 10;
+        public const TARGET_ID_DRAWER = 11;
+        public const TARGET_ID_CLOSE_BODY_BEFORE = 12;
 
         /**
          * プレビュー用レイアウト
          */
-        const DEFAULT_LAYOUT_PREVIEW_PAGE = 0;
+        public const DEFAULT_LAYOUT_PREVIEW_PAGE = 0;
 
         /**
          * トップページ用レイアウト
          */
-        const DEFAULT_LAYOUT_TOP_PAGE = 1;
+        public const DEFAULT_LAYOUT_TOP_PAGE = 1;
 
         /**
          * 下層ページ用レイアウト
          */
-        const DEFAULT_LAYOUT_UNDERLAYER_PAGE = 2;
+        public const DEFAULT_LAYOUT_UNDERLAYER_PAGE = 2;
 
         /**
          * @return string

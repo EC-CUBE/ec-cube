@@ -91,12 +91,12 @@ file that was distributed with this source code.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.password, 'common.password', { 'label_attr': { 'class': 'ec-label' }}) }}
+                                {{ form_label(form.plain_password, 'common.password', { 'label_attr': { 'class': 'ec-label' }}) }}
                             </dt>
                             <dd>
                                 ********
-                                {{ form_widget(form.password.first, { type : 'hidden' }) }}
-                                {{ form_widget(form.password.second, { type : 'hidden' }) }}
+                                {{ form_widget(form.plain_password.first, { type : 'hidden' }) }}
+                                {{ form_widget(form.plain_password.second, { type : 'hidden' }) }}
                             </dd>
                         </dl>
                         <dl>
@@ -138,7 +138,8 @@ file that was distributed with this source code.
                             {% else %}
                                 <dl>
                                     <dt>
-                                        {{ form_label(f) }}
+                                        {% set label_class =  f.vars.label_attr.class is defined ? f.vars.label_attr.class : '' %}
+                                        {{ form_label(f, f.vars.label, { 'label_attr': {'class': label_class ~ ' ec-label' }}) }}
                                     </dt>
                                     <dd>
                                         <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">

@@ -18,12 +18,11 @@ use Eccube\Request\Context;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class MaintenanceListener implements EventSubscriberInterface
 {
-
     /** @var Context */
     protected $requestContext;
 
@@ -43,21 +42,22 @@ class MaintenanceListener implements EventSubscriberInterface
         ];
     }
 
-    public function onResponse(FilterResponseEvent $event)
+    public function onResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
 
         if (!$this->systemService->isMaintenanceMode()) {
             $response->headers->clearCookie(SystemService::MAINTENANCE_TOKEN_KEY);
+
             return;
         }
 
         $user = $this->requestContext->getCurrentUser();
         if ($user instanceof Entity\Member && $this->requestContext->isAdmin()) {
-            $cookie = new Cookie(
+            $cookie = (new Cookie(
                 SystemService::MAINTENANCE_TOKEN_KEY,
                 $this->systemService->getMaintenanceToken()
-            );
+            ))->withSecure(true);
             $response->headers->setCookie($cookie);
         }
     }

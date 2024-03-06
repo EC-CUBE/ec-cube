@@ -20,7 +20,7 @@ class CustomerSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

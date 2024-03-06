@@ -22,10 +22,10 @@ class StockReduceProcessorTest extends EccubeTestCase
 {
     private $processor;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->processor = self::$container->get(StockReduceProcessor::class);
+        $this->processor = static::getContainer()->get(StockReduceProcessor::class);
     }
 
     public function testPrepare()

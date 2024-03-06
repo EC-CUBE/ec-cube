@@ -15,13 +15,13 @@ namespace Eccube\Command;
 
 use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
+use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -30,9 +30,9 @@ class InstallerCommand extends Command
     protected static $defaultName = 'eccube:install';
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
 
     /**
      * @var SymfonyStyle
@@ -46,11 +46,11 @@ class InstallerCommand extends Command
 
     private $envFileUpdater;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         parent::__construct();
 
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
 
         /* env更新処理無名クラス */
         $this->envFileUpdater = new class() {
@@ -58,7 +58,8 @@ class InstallerCommand extends Command
             public $appDebug;
             public $databaseUrl;
             public $serverVersion;
-            public $mailerUrl;
+            public $databaseCharset;
+            public $mailerDsn;
             public $authMagic;
             public $adminRoute;
             public $templateCode;
@@ -74,7 +75,8 @@ class InstallerCommand extends Command
                             'APP_DEBUG' => $this->appDebug,
                             'DATABASE_URL' => $this->databaseUrl,
                             'DATABASE_SERVER_VERSION' => $this->serverVersion,
-                            'MAILER_URL' => $this->mailerUrl,
+                            'DATABASE_CHARSET' => $this->databaseCharset,
+                            'MAILER_DSN' => $this->mailerDsn,
                             'ECCUBE_AUTH_MAGIC' => $this->authMagic,
                             'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
                             'ECCUBE_TEMPLATE_CODE' => $this->templateCode,
@@ -88,7 +90,7 @@ class InstallerCommand extends Command
              */
             public function updateEnvFile()
             {
-                // $envDir = $this->container->getParameter('kernel.project_dir');
+                // $envDir = $this->eccubeConfig->get('kernel.project_dir');
                 $envFile = $this->envDir.'/.env';
                 $envDistFile = $this->envDir.'/.env.dist';
 
@@ -119,7 +121,7 @@ class InstallerCommand extends Command
             ' $ export APP_DEBUG=0',
             ' $ export DATABASE_URL=database_url',
             ' $ export DATABASE_SERVER_VERSION=server_version',
-            ' $ export MAILER_URL=mailer_url',
+            ' $ export MAILER_DSN=mailer_dsn',
             ' $ export ECCUBE_AUTH_MAGIC=auth_magic',
             ' ... and more',
             ' $ php bin/console eccube:install --no-interaction',
@@ -131,7 +133,7 @@ class InstallerCommand extends Command
         $this->envFileUpdater->trustedHosts = $this->io->ask('Trusted hosts. ex) www.example.com, localhost ...etc', $trustedHosts);
 
         // DATABASE_URL
-        $databaseUrl = $this->container->getParameter('eccube_database_url');
+        $databaseUrl = $this->eccubeConfig->get('eccube_database_url');
         if (empty($databaseUrl)) {
             $databaseUrl = 'sqlite:///var/eccube.db';
         }
@@ -141,15 +143,18 @@ class InstallerCommand extends Command
         // DATABASE_SERVER_VERSION
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
-        // MAILER_URL
-        $mailerUrl = $this->container->getParameter('eccube_mailer_url');
-        if (empty($mailerUrl)) {
-            $mailerUrl = 'null://localhost';
+        // DATABASE_CHARSET
+        $this->envFileUpdater->databaseCharset = \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
+
+        // MAILER_DSN
+        $mailerDsn = $this->eccubeConfig->get('eccube_mailer_dsn');
+        if (empty($mailerDsn)) {
+            $mailerDsn = 'null://null';
         }
-        $this->envFileUpdater->mailerUrl = $this->io->ask('Mailer Url', $mailerUrl);
+        $this->envFileUpdater->mailerDsn = $this->io->ask('Mailer Dsn', $mailerDsn);
 
         // ECCUBE_AUTH_MAGIC
-        $authMagic = $this->container->getParameter('eccube_auth_magic');
+        $authMagic = $this->eccubeConfig->get('eccube_auth_magic');
         if (empty($authMagic) || $authMagic === '<change.me>') {
             $authMagic = StringUtil::random();
         }
@@ -168,21 +173,21 @@ class InstallerCommand extends Command
         $this->envFileUpdater->appDebug = env('APP_DEBUG', '0');
 
         // ECCUBE_ADMIN_ROUTE
-        $adminRoute = $this->container->getParameter('eccube_admin_route');
+        $adminRoute = $this->eccubeConfig->get('eccube_admin_route');
         if (empty($adminRoute)) {
             $adminRoute = 'admin';
         }
         $this->envFileUpdater->adminRoute = $adminRoute;
 
         // ECCUBE_TEMPLATE_CODE
-        $templateCode = $this->container->getParameter('eccube_theme_code');
+        $templateCode = $this->eccubeConfig->get('eccube_theme_code');
         if (empty($templateCode)) {
             $templateCode = 'default';
         }
         $this->envFileUpdater->templateCode = $templateCode;
 
         // ECCUBE_LOCALE
-        $locale = $this->container->getParameter('locale');
+        $locale = $this->eccubeConfig->get('locale');
         if (empty($locale)) {
             $locale = 'ja';
         }
@@ -200,7 +205,7 @@ class InstallerCommand extends Command
         }
 
         // envファイルへの更新反映処理
-        $this->envFileUpdater->envDir = $this->container->getParameter('kernel.project_dir');
+        $this->envFileUpdater->envDir = $this->eccubeConfig->get('kernel.project_dir');
         $this->envFileUpdater->updateEnvFile();
     }
 
@@ -214,38 +219,42 @@ class InstallerCommand extends Command
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
         if ($input->isInteractive()) {
-            $envDir = $this->container->getParameter('kernel.project_dir');
+            $envDir = $this->eccubeConfig->get('kernel.project_dir');
             if (file_exists($envDir.'/.env')) {
-                (new Dotenv($envDir))->overload();
+                (Dotenv::createUnsafeMutable($envDir))->load();
             }
         }
 
-        // 対話モード実行時, container->getParameter('eccube_database_url')では
+        // 対話モード実行時, eccubeConfig->get('eccube_database_url')では
         // 更新後の値が取得できないため, getenv()を使用する.
         $databaseUrl = getenv('DATABASE_URL');
         $databaseName = $this->getDatabaseName($databaseUrl);
-        $ifNotExists = $databaseName === 'sqlite' ? '' : ' --if-not-exists';
+
+        $databaseCreate = ['doctrine:database:create'];
+        if ($databaseName !== 'sqlite') {
+            $databaseCreate[] = '--if-not-exists';
+        }
 
         // データベース作成, スキーマ作成, 初期データの投入を行う.
         $commands = [
-            'doctrine:database:create'.$ifNotExists,
-            'doctrine:schema:drop --force',
-            'doctrine:schema:create',
-            'eccube:fixtures:load',
-            'cache:clear --no-warmup',
+            $databaseCreate,
+            ['doctrine:schema:drop', '--force'],
+            ['doctrine:schema:create'],
+            ['eccube:fixtures:load'],
+            ['cache:clear', '--no-warmup'],
         ];
 
         // コンテナを再ロードするため別プロセスで実行する.
         foreach ($commands as $command) {
             try {
-                $this->io->text(sprintf('<info>Run %s</info>...', $command));
-                $process = new Process('bin/console '.$command);
+                $this->io->text(sprintf('<info>Run %s</info>...', implode(' ', $command)));
+                $process = new Process(array_merge(['bin/console'], $command));
                 $process->mustRun();
                 $this->io->text($process->getOutput());
             } catch (ProcessFailedException $e) {
                 $this->io->error($e->getMessage());
 
-                return;
+                return 1;
             }
         }
 
@@ -291,7 +300,7 @@ class InstallerCommand extends Command
                 $sql = 'SHOW server_version';
         }
         $stmt = $conn->executeQuery($sql);
-        $version = $stmt->fetchColumn();
+        $version = $stmt->fetchOne();
 
         if ($platform === 'postgresql') {
             preg_match('/\A([\d+\.]+)/', $version, $matches);

@@ -30,7 +30,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         ],
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

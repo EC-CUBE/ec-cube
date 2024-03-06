@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PaymentMethodPass implements CompilerPassInterface
 {
-    const PAYMENT_METHOD_TAG = 'eccube.payment.method';
+    public const PAYMENT_METHOD_TAG = 'eccube.payment.method';
 
     public function process(ContainerBuilder $container)
     {

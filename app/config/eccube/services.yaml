@@ -29,10 +29,6 @@ services:
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
 
-    event_dispatcher:
-        class: Eccube\Event\EventDispatcherWrapper
-        public: true
-
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     Eccube\:
@@ -63,6 +59,9 @@ services:
 
     Eccube\Service\Composer\ComposerServiceInterface:
         factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
+        arguments:
+            $container: !service_locator
+                Eccube\Service\Composer\ComposerApiService: '@Eccube\Service\Composer\ComposerApiService'
 
     Eccube\Service\Composer\ComposerApiService:
         lazy: true
@@ -73,6 +72,15 @@ services:
         public: true
 
     Eccube\Service\PluginService:
+        arguments:
+            $container: !service_locator
+                doctrine: '@doctrine'
+                Doctrine\Common\Persistence\ManagerRegistry: '@doctrine'
+                Doctrine\Persistence\ManagerRegistry: '@doctrine'
+                doctrine.orm.default_entity_manager: '@doctrine.orm.default_entity_manager'
+                doctrine.orm.entity_manager: '@doctrine.orm.default_entity_manager'
+                Doctrine\ORM\EntityManagerInterface: '@doctrine.orm.default_entity_manager'
+                Eccube\Common\EccubeConfig: '@Eccube\Common\EccubeConfig'
         lazy: true
         public: true
 
@@ -100,7 +108,7 @@ services:
         tags: ['controller.service_arguments']
 
     twig.extension.stringloader:
-        class: Twig_Extension_StringLoader
+        class: Twig\Extension\StringLoaderExtension
         tags: ['twig.extension']
 
     eccube.collector.core:
@@ -117,9 +125,7 @@ services:
     eccube.security.logout.success_handler:
         class: Eccube\Security\Http\Authentication\EccubeLogoutSuccessHandler
         arguments:
-          - '@security.http_utils'
           - '@Eccube\Request\Context'
-          - 'admin_login'
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly
@@ -169,7 +175,7 @@ services:
 
     Monolog\Processor\IntrospectionProcessor:
         arguments:
-            - '!php/const:Monolog\Logger::DEBUG'
+            - 100               # Logger::DEBUG = 100
             - ['Eccube\\Log', 'Psr\\Log']
         tags:
             - { name: monolog.processor }
@@ -206,7 +212,7 @@ services:
     Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
         public: true
 
-    SunCat\MobileDetectBundle\DeviceDetector\MobileDetector:
+    Detection\MobileDetect:
         tags:
           - { name: mobile_detect.mobile_detector.default }
           - { name: mobile_detect.mobile_detector }
@@ -217,3 +223,21 @@ services:
             - '@Eccube\Request\Context'
         tags:
             - { name: form.type_extension, priority: -99, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
+
+    Eccube\EventListener\RateLimiterListener:
+        arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
+
+    Eccube\Security\PasswordHasher\PasswordHasher:
+        arguments:
+            - '%eccube_auth_magic%'
+            - '%eccube_auth_type%'
+            - '%eccube_password_hash_algos%'
+
+    Eccube\Controller\ShoppingController:
+        arguments:
+            $serviceContainer: !tagged_locator { tag: 'eccube_payment_method' }
+        tags: [ 'controller.service_arguments' ]
+
+    Eccube\Util\CacheUtil:
+        arguments:
+            $container: !tagged_locator { tag: 'cache.pool.clearer' }

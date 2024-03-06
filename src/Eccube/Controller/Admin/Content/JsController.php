@@ -30,6 +30,8 @@ class JsController extends AbstractController
      */
     public function index(Request $request)
     {
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
+
         $builder = $this->formFactory
             ->createBuilder(FormType::class)
             ->add('js', TextareaType::class, [
