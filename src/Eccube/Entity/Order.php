@@ -164,7 +164,7 @@ if (!class_exists(Order::class)) {
             $taxFreeDiscount = $this->getTaxFreeDiscount();
 
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
-                if (is_null($roundingTypes[$rate])) {
+                if (!array_key_exists($rate, $roundingTypes) || null === $roundingTypes[$rate]) {
                     continue;
                 }
 
@@ -254,7 +254,7 @@ if (!class_exists(Order::class)) {
         /**
          * 税率ごとの丸め規則を取得する.
          *
-         * @return array<string, RoundingType>
+         * @return array<string, RoundingType|null>
          */
         public function getRoundingTypeByTaxRate()
         {
