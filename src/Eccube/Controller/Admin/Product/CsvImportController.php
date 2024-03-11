@@ -733,7 +733,7 @@ class CsvImportController extends AbstractCsvImportController
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-                        /** @var $Category Category */
+                        /** @var Category $Category */
                         $Category = new Category();
                         if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
                             if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
@@ -790,7 +790,7 @@ class CsvImportController extends AbstractCsvImportController
                                 return $this->renderWithError($form, $headers);
                             }
 
-                            /** @var $ParentCategory Category */
+                            /** @var Category $ParentCategory */
                             $ParentCategory = $this->categoryRepository->find($row[$headerByKey['parent_category_id']]);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');

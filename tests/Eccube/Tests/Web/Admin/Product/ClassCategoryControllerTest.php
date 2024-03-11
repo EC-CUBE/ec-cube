@@ -201,7 +201,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
      */
     public function testClassCategorySortByRank()
     {
-        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        /** @var \Eccube\Entity\ClassCategory $ClassCategory */
         //set チョコ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $testData[$ClassCategory->getId()] = 1;

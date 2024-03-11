@@ -761,7 +761,7 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping');
         }
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
+        /** @var \Symfony\Component\Form\FormInterface $form */
         $builder = $this->formFactory->createNamedBuilder('', CustomerLoginType::class);
 
         if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {

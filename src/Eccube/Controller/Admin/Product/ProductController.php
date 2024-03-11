@@ -295,7 +295,7 @@ class ProductController extends AbstractController
         }
 
         $data = [];
-        /** @var $Product ProductRepository */
+        /** @var ProductRepository $Product */
         if (!$Product) {
             throw new NotFoundHttpException();
         }
@@ -504,7 +504,7 @@ class ProductController extends AbstractController
         $categories = [];
         $ProductCategories = $Product->getProductCategories();
         foreach ($ProductCategories as $ProductCategory) {
-            /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+            /** @var \Eccube\Entity\ProductCategory $ProductCategory*/
             $categories[] = $ProductCategory->getCategory();
         }
         $form['Category']->setData($categories);
@@ -557,7 +557,7 @@ class ProductController extends AbstractController
 
                 // カテゴリの登録
                 // 一度クリア
-                /* @var $Product \Eccube\Entity\Product */
+                /** @var \Eccube\Entity\Product $Product */
                 foreach ($Product->getProductCategories() as $ProductCategory) {
                     $Product->removeProductCategory($ProductCategory);
                     $this->entityManager->remove($ProductCategory);
@@ -574,7 +574,7 @@ class ProductController extends AbstractController
                             $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
-                            /* @var $Product \Eccube\Entity\Product */
+                            /** @var \Eccube\Entity\Product $Product */
                             $Product->addProductCategory($ProductCategory);
                             $categoriesIdList[$ParentCategory->getId()] = true;
                         }
@@ -583,7 +583,7 @@ class ProductController extends AbstractController
                         $ProductCategory = $this->createProductCategory($Product, $Category, $count);
                         $this->entityManager->persist($ProductCategory);
                         $count++;
-                        /* @var $Product \Eccube\Entity\Product */
+                        /** @var \Eccube\Entity\Product $Product */
                         $Product->addProductCategory($ProductCategory);
                         $categoriesIdList[$Category->getId()] = true;
                     }
@@ -759,7 +759,7 @@ class ProductController extends AbstractController
         $success = false;
 
         if (!is_null($id)) {
-            /* @var $Product \Eccube\Entity\Product */
+            /** @var \Eccube\Entity\Product $Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
                 if ($request->isXmlHttpRequest()) {
@@ -1002,10 +1002,10 @@ class ProductController extends AbstractController
             $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $Product \Eccube\Entity\Product */
+                /** @var \Eccube\Entity\Product $Product */
                 $Product = $entity;
 
-                /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
+                /** @var \Eccube\Entity\ProductClass[] $ProductClasses */
                 $ProductClasses = $Product->getProductClasses();
 
                 foreach ($ProductClasses as $ProductClass) {

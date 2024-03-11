@@ -177,9 +177,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             // expected categories is
             $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
             $actualIds = [];
-            /* @var $Product \Eccube\Entity\Product */
+            /** @var \Eccube\Entity\Product $Product */
             foreach ($Product->getProductCategories() as $ProductCategory) {
-                /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+                /** @var \Eccube\Entity\ProductCategory $ProductCategory */
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
                 $this->actual = $ProductCategory->getCategoryId();
@@ -352,7 +352,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             // expected categories is
             $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
             $actualIds = [];
-            /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+            /** @var \Eccube\Entity\ProductCategory $ProductCategory */
             foreach ($Product->getProductCategories() as $ProductCategory) {
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
@@ -568,7 +568,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = __DIR__.'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
-        /** @var $faker \Faker\Generator */
+        /** @var \Faker\Generator $faker */
         $faker = $this->getFaker();
         $categoryName = 'CategoryNameTest';
         $csv = [
@@ -642,9 +642,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             // expected categories is
             $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
             $actualIds = [];
-            /* @var $Product \Eccube\Entity\Product */
+            /** @var \Eccube\Entity\Product $Product */
             foreach ($Product->getProductCategories() as $ProductCategory) {
-                /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+                /** @var \Eccube\Entity\ProductCategory $ProductCategory */
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
                 $this->actual = $ProductCategory->getCategoryId();
@@ -666,7 +666,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $Products = $this->productRepo->findAll();
         $this->expected = count($Products) + 1;
-        /** @var $faker Generator */
+        /** @var Generator $faker */
         $faker = $this->getFaker();
         // 1 product case stock_unlimited = true
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
@@ -727,7 +727,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
     {
-        /** @var $faker Generator */
+        /** @var Generator $faker */
         $faker = $this->getFaker();
         // 1 product
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];

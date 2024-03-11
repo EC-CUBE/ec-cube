@@ -314,7 +314,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'email' => 'user-1',
         ];
-        /* @var $crawler Crawler */
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_order'),
@@ -328,7 +328,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
-        /* @var $customer \Eccube\Entity\Customer */
+        /** @var \Eccube\Entity\Customer $customer */
         $customer = $this->customerRepository->findOneBy(['email' => 'user-1@example.com']);
 
         $this->assertStringContainsString($customer->getName01(), $crawler->filter('table#search_result')->html());

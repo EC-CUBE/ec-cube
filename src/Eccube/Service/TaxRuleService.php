@@ -54,7 +54,7 @@ class TaxRuleService
          * 商品別税率が有効で商品別税率が設定されていない場合は基本税率
          * 商品別税率が無効の場合は基本税率
          */
-        /* @var $TaxRule \Eccube\Entity\TaxRule */
+        /** @var \Eccube\Entity\TaxRule $TaxRule */
         if ($this->BaseInfo->isOptionProductTaxRule() && $productClass) {
             if ($productClass instanceof ProductClass) {
                 $TaxRule = $productClass->getTaxRule() ?: $this->taxRuleRepository->getByRule(null, null, $pref, $country);

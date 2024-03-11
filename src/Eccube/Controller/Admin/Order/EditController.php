@@ -221,7 +221,7 @@ class EditController extends AbstractController
 
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
-        
+
         foreach ($TargetOrder->getOrderItems() as $orderItem) {
             if ($orderItem->getTaxDisplayType() == null) {
                 $orderItem->setTaxDisplayType($this->orderHelper->getTaxDisplayType($orderItem->getOrderItemType()));
@@ -466,7 +466,7 @@ class EditController extends AbstractController
                 ['wrap-queries' => true]
             );
 
-            /** @var $Customers \Eccube\Entity\Customer[] */
+            /** @var \Eccube\Entity\Customer[] $Customers */
             $Customers = $pagination->getItems();
 
             if (empty($Customers)) {
@@ -519,7 +519,7 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');
 
-            /** @var $Customer \Eccube\Entity\Customer */
+            /** @var \Eccube\Entity\Customer $Customer */
             $Customer = $this->customerRepository
                 ->find($request->get('id'));
 
@@ -625,7 +625,7 @@ class EditController extends AbstractController
                 ['wrap-queries' => true]
             );
 
-            /** @var $Products \Eccube\Entity\Product[] */
+            /** @var \Eccube\Entity\Product[] $Products */
             $Products = $pagination->getItems();
 
             if (empty($Products)) {
@@ -634,7 +634,7 @@ class EditController extends AbstractController
 
             $forms = [];
             foreach ($Products as $Product) {
-                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+                /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
                     'product' => $Product,
                 ]);

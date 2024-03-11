@@ -163,7 +163,7 @@ class TagController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $tagId => $sortNo) {
-                /* @var $Tag \Eccube\Entity\Tag */
+                /** @var \Eccube\Entity\Tag $Tag */
                 $Tag = $this->tagRepository
                     ->find($tagId);
                 $Tag->setSortNo($sortNo);

@@ -68,7 +68,7 @@ class AddCartType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /* @var $Product \Eccube\Entity\Product */
+        /** @var \Eccube\Entity\Product $Product */
         $Product = $options['product'];
         $this->Product = $Product;
         $ProductClasses = $Product->getProductClasses();

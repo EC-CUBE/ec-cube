@@ -124,7 +124,7 @@ class ProductController extends AbstractController
         }
 
         // searchForm
-        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
         $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
 
         if ($request->getMethod() === 'GET') {
@@ -139,7 +139,7 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE);
 
-        /* @var $searchForm \Symfony\Component\Form\FormInterface */
+        /** @var \Symfony\Component\Form\FormInterface $searchForm */
         $searchForm = $builder->getForm();
 
         $searchForm->handleRequest($request);
@@ -177,7 +177,7 @@ class ProductController extends AbstractController
         // addCart form
         $forms = [];
         foreach ($pagination as $Product) {
-            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+            /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
             $builder = $this->formFactory->createNamedBuilder(
                 '',
                 AddCartType::class,
@@ -336,7 +336,7 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_CART_ADD_INITIALIZE);
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
+        /** @var \Symfony\Component\Form\FormInterface $form */
         $form = $builder->getForm();
         $form->handleRequest($request);
 

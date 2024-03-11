@@ -106,7 +106,7 @@ class MypageController extends AbstractController
             return $this->redirectToRoute('mypage');
         }
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
+        /** @var \Symfony\Component\Form\FormInterface $form */
         $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 
@@ -233,7 +233,7 @@ class MypageController extends AbstractController
 
         $Customer = $this->getUser();
 
-        /* @var $Order \Eccube\Entity\Order */
+        /** @var \Eccube\Entity\Order $Order */
         $Order = $this->orderRepository->findOneBy(
             [
                 'order_no' => $order_no,

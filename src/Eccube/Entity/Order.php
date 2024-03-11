@@ -271,7 +271,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         {
             $saleTypes = [];
             foreach ($this->getOrderItems() as $OrderItem) {
-                /* @var $ProductClass \Eccube\Entity\ProductClass */
+                /** @var \Eccube\Entity\ProductClass $ProductClass */
                 $ProductClass = $OrderItem->getProductClass();
                 if ($ProductClass) {
                     $saleTypes[] = $ProductClass->getSaleType();

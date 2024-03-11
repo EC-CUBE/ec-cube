@@ -423,7 +423,7 @@ class MailService
     {
         log_info('仮会員登録再送メール送信開始');
 
-        /* @var $MailTemplate \Eccube\Entity\MailTemplate */
+        /** @var \Eccube\Entity\MailTemplate $MailTemplate */
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
