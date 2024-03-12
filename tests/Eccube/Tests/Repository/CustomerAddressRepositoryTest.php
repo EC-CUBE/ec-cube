@@ -31,11 +31,11 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
      */
     protected $customerAddressRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->customerAddressRepository = $this->container->get(CustomerAddressRepository::class);
+        $this->customerAddressRepository = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class);
     }
 
     public function testDelete()

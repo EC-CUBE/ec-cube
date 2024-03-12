@@ -28,16 +28,16 @@ if (!class_exists('\Eccube\Entity\Page')) {
     class Page extends \Eccube\Entity\AbstractEntity
     {
         // 編集可能フラグ
-        const EDIT_TYPE_USER = 0;
-        const EDIT_TYPE_PREVIEW = 1;
-        const EDIT_TYPE_DEFAULT = 2;
-        const EDIT_TYPE_DEFAULT_CONFIRM = 3;
+        public const EDIT_TYPE_USER = 0;
+        public const EDIT_TYPE_PREVIEW = 1;
+        public const EDIT_TYPE_DEFAULT = 2;
+        public const EDIT_TYPE_DEFAULT_CONFIRM = 3;
 
         // 特定商取引法ページID
-        const TRADELAW_PAGE_ID = 21;
+        public const TRADELAW_PAGE_ID = 21;
 
         // ご利用規約ページID
-        const AGREEMENT_PAGE_ID = 19;
+        public const AGREEMENT_PAGE_ID = 19;
 
         public function getLayouts()
         {
@@ -463,7 +463,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
          *
          * @return Page
          */
-        public function addPageLayout(\Eccube\Entity\PageLayout $PageLayout)
+        public function addPageLayout(PageLayout $PageLayout)
         {
             $this->PageLayouts[] = $PageLayout;
 
@@ -475,7 +475,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
          *
          * @param \Eccube\Entity\PageLayout $PageLayout
          */
-        public function removePageLayout(\Eccube\Entity\PageLayout $PageLayout)
+        public function removePageLayout(PageLayout $PageLayout)
         {
             $this->PageLayouts->removeElement($PageLayout);
         }
@@ -487,7 +487,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
          *
          * @return Page
          */
-        public function setMasterPage(\Eccube\Entity\Page $page = null)
+        public function setMasterPage(Page $page = null)
         {
             $this->MasterPage = $page;
 
@@ -507,7 +507,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * @param $layoutId
          *
-         * @return null|int
+         * @return int|null
          */
         public function getSortNo($layoutId)
         {

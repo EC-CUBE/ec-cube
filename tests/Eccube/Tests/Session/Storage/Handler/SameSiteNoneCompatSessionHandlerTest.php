@@ -1,11 +1,23 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\Component\HttpFoundation\Tests\Session\Storage\Handler;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * @requires PHP 7.0
+ *
  * @see https://github.com/symfony/symfony/blob/3.4/src/Symfony/Component/HttpFoundation/Tests/Session/Storage/Handler/AbstractSessionHandlerTest.php
  */
 class SameSiteNoneCompatSessionHandlerTest extends TestCase
@@ -13,7 +25,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
     private static $server;
     const FIXTURES_DIR = __DIR__.'/../../../../../Fixtures/session';
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $spec = [
             1 => ['file', '/dev/null', 'w'],
@@ -25,7 +37,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         sleep(1);
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$server) {
             proc_terminate(self::$server);
@@ -41,11 +53,17 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         $context = [
             'http' => [
                 'header' => "Cookie: sid=123abc\r\nX-Forwarded-proto: https",
-                'user_agent' => $user_agent
-            ]
+                'user_agent' => $user_agent,
+            ],
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
+
+        if ($fixture === 'empty_destroys' && PHP_VERSION_ID >= 80200) {
+            // PHP8.2以降は日付のフォーマットが01 Jan 1970となるため
+            // https://www.php.net/manual/ja/function.setcookie.php
+            $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
+        }
 
         if ($shouldSendSameSiteNone) {
             if (PHP_VERSION_ID < 70300) {
@@ -61,6 +79,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
 
     /**
      * Secure 属性が付与されない場合は, SameSite 属性も付与されない(ブラウザのデフォルト値)
+     *
      * @dataProvider provideSession
      */
     public function testNonSecureSession($fixture, $user_agent, $shouldSendSameSiteNone)
@@ -68,11 +87,17 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         $context = [
             'http' => [
                 'header' => "Cookie: sid=123abc\r\n",
-                'user_agent' => $user_agent
-            ]
+                'user_agent' => $user_agent,
+            ],
         ];
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
+
+        if ($fixture === 'empty_destroys' && PHP_VERSION_ID >= 80200) {
+            // PHP8.2以降は日付のフォーマットが01 Jan 1970となるため
+            // https://www.php.net/manual/ja/function.setcookie.php
+            $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
+        }
 
         $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.expected', $fixture), $result);
     }
@@ -96,7 +121,9 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
 
         foreach (glob(self::FIXTURES_DIR.'/*.php') as $file) {
             $name = pathinfo($file, PATHINFO_FILENAME);
-            if ($name == 'common') continue;
+            if ($name == 'common') {
+                continue;
+            }
             if ($name == 'storage') {
                 // TODO Mock が動作しないためスキップ
                 continue;

@@ -91,8 +91,7 @@ parameters:
                             url: admin_setting_shop
                         shop_tradelaw:
                             name: admin.setting.shop.tradelaw_setting
-                            url: admin_content_page_edit
-                            param: { id: !php/const Eccube\Entity\Page::TRADELAW_PAGE_ID, return: tradelaw }
+                            url: admin_setting_shop_tradelaw
                         shop_agreement:
                             name: admin.setting.shop.agreement_setting
                             url: admin_content_page_edit
@@ -115,6 +114,9 @@ parameters:
                         shop_order_status:
                             name: admin.setting.shop.order_status_setting
                             url: admin_setting_shop_order_status
+                        shop_calendar:
+                            name: admin.setting.shop.calendar_setting
+                            url: admin_setting_shop_calendar
                 system:
                     name: admin.setting.system
                     children:

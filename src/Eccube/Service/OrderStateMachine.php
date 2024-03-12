@@ -22,6 +22,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
 {
@@ -44,7 +45,7 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     private $stockReduceProcessor;
 
-    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
+    public function __construct(WorkflowInterface $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
     {
         $this->machine = $_orderStateMachine;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -271,5 +272,24 @@ class OrderStateMachineContext
     public function getOrder()
     {
         return $this->Order;
+    }
+
+    // order_state_machine.php の marking_store => property は、デフォルト値である marking を使用するよう強く推奨されている.
+    // EC-CUBE4.1 までは status を指定していたが、 Symfony5 よりエラーになるためエイリアスを作成して対応する.
+
+    /**
+     * Alias of getStatus()
+     */
+    public function getMarking(): string
+    {
+        return $this->getStatus();
+    }
+
+    /**
+     * Alias of setStatus()
+     */
+    public function setMarking(string $status): void
+    {
+        $this->setStatus($status);
     }
 }

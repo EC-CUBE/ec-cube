@@ -26,6 +26,9 @@ use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
+use Eccube\DependencyInjection\Facade\LoggerFacade;
+use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -38,7 +41,6 @@ use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
-use Eccube\Validator\EmailValidator\NoRFCEmailValidator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -47,25 +49,38 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    public const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    public function getCacheDir()
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+
+        $this->loadEntityProxies();
+    }
+
+    public function getCacheDir(): string
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return $this->getProjectDir().'/var/log';
     }
 
-    public function registerBundles()
+    public function getConfigDir(): string
+    {
+        return $this->getProjectDir().'/app/config/eccube';
+    }
+
+    public function registerBundles(): iterable
     {
         $contents = require $this->getProjectDir().'/app/config/eccube/bundles.php';
         foreach ($contents as $class => $envs) {
@@ -105,7 +120,7 @@ class Kernel extends BaseKernel
     public function boot()
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
-        $this->loadEntityProxies();
+        // $this->loadEntityProxies();
 
         parent::boot();
 
@@ -115,23 +130,24 @@ class Kernel extends BaseKernel
         $timezone = $container->getParameter('timezone');
         UTCDateTimeType::setTimeZone($timezone);
         UTCDateTimeTzType::setTimeZone($timezone);
+
         date_default_timezone_set($timezone);
 
-        // RFC違反のメールを送信できるよう独自のValidationを設定
-        if (!$container->getParameter('eccube_rfc_email_check')) {
-            // RFC違反のメールを許容する
-            \Swift_DependencyContainer::getInstance()
-                ->register('email.validator')
-                ->asSharedInstanceOf(NoRFCEmailValidator::class);
+        $Logger = $container->get('eccube.logger');
+        if ($Logger !== null && $Logger instanceof \Eccube\Log\Logger) {
+            LoggerFacade::init($container, $Logger);
+        }
+        $Translator = $container->get('translator');
+        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
+            TranslatorFacade::init($Translator);
         }
 
-        // Activate to $app
-        $app = Application::getInstance(['debug' => $this->isDebug()]);
-        $app->setParentContainer($container);
-        $app->initialize();
-        $app->boot();
-
-        $container->set('app', $app);
+        /** @var AnnotationReaderFacade $AnnotationReaderFacade */
+        $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
+        $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
+        if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
+            AnnotationReaderFacade::init($AnnotationReader);
+        }
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -155,30 +171,29 @@ class Kernel extends BaseKernel
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RoutingConfigurator $routes)
     {
         $container = $this->getContainer();
 
         $scheme = ['https', 'http'];
         $forceSSL = $container->getParameter('eccube_force_ssl');
         if ($forceSSL) {
-            $scheme = 'https';
+            $scheme = ['https'];
         }
-        $routes->setSchemes($scheme);
 
         $confDir = $this->getProjectDir().'/app/config/eccube';
         if (is_dir($confDir.'/routes/')) {
-            $builder = $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
-            $builder->setSchemes($scheme);
+            $builder = $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS);
+            $builder->schemes($scheme);
         }
         if (is_dir($confDir.'/routes/'.$this->environment)) {
-            $builder = $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
-            $builder->setSchemes($scheme);
+            $builder = $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS);
+            $builder->schemes($scheme);
         }
-        $builder = $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
-        $builder->setSchemes($scheme);
-        $builder = $routes->import($confDir.'/routes_'.$this->environment.self::CONFIG_EXTS, '/', 'glob');
-        $builder->setSchemes($scheme);
+        $builder = $routes->import($confDir.'/routes'.self::CONFIG_EXTS);
+        $builder->schemes($scheme);
+        $builder = $routes->import($confDir.'/routes_'.$this->environment.self::CONFIG_EXTS);
+        $builder->schemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
         $plugins = $container->getParameter('eccube.plugins.enabled');
@@ -186,12 +201,12 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
-                $builder = $routes->import($dir, '/', 'annotation');
-                $builder->setSchemes($scheme);
+                $builder = $routes->import($dir,'annotation');
+                $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
-                $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS, '/', 'glob');
-                $builder->setSchemes($scheme);
+                $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS);
+                $builder->schemes($scheme);
             }
         }
     }
@@ -215,10 +230,6 @@ class Kernel extends BaseKernel
 
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
-
-        $container->register('app', Application::class)
-            ->setSynthetic(true)
-            ->setPublic(true);
 
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)

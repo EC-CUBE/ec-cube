@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
-use Eccube\Repository\ProductClassRepository;
 use Eccube\Util\StringUtil;
 
 /**
@@ -27,12 +26,12 @@ use Eccube\Util\StringUtil;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -64,7 +63,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
-    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
+    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 2)
     {
         if ($Customer) {
             $this->loginTo($Customer);
@@ -82,7 +81,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             [Constant::TOKEN_NAME => '_dummy']
         );
 
-        $ProductClass = $this->container->get(ProductClassRepository::class)->find($product_class_id);
+        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find($product_class_id);
         if ($Customer) {
             $this->loginTo($Customer);
             $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();

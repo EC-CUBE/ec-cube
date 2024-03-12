@@ -22,10 +22,10 @@ class StockReduceProcessorTest extends EccubeTestCase
 {
     private $processor;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->processor = $this->container->get(StockReduceProcessor::class);
+        $this->processor = static::getContainer()->get(StockReduceProcessor::class);
     }
 
     public function testPrepare()
@@ -89,7 +89,7 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 数量3の受注
         $Customer = $this->createCustomer();
-        $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass,$ProductClass]);
+        $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass, $ProductClass]);
         $OrderItem = $Order->getProductOrderItems()[0];
         $OrderItem->setQuantity(3);
         // 数量7の受注

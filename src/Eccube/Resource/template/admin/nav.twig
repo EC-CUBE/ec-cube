@@ -21,7 +21,7 @@ file that was distributed with this source code.
             <li class="c-mainNavArea__navItem">
                 {% if level1.children is defined and level1.children|length > 0 %}
                     <a class="c-mainNavArea__navItemTitle{{ active_menus(menus)[0] != key1 ? ' collapsed' }}"
-                       data-toggle="collapse" href="#nav-{{ key1 }}"
+                       data-bs-toggle="collapse" href="#nav-{{ key1 }}"
                        aria-expanded="{{ active_menus(menus)[0] == key1 ? 'true' : 'false' }}"
                        aria-controls="nav-{{ key1 }}">
                         <i class="fa {{ level1.icon }} fa-fw" aria-hidden="true"></i>
@@ -32,7 +32,7 @@ file that was distributed with this source code.
                             <li>
                                 {% if level2.children is defined and level2.children|length > 0 %}
                                     <a class="c-mainNavArea__navItemSubTitle{{ active_menus(menus)[1] != key2 ? ' collapsed' }}"
-                                       data-toggle="collapse" href="#nav-{{ key2 }}"
+                                       data-bs-toggle="collapse" href="#nav-{{ key2 }}"
                                        aria-expanded="{{ active_menus(menus)[1] != key2 ? 'true' : 'false' }}"
                                        aria-controls="nav-{{ key2 }}">
                                         <span>{{ level2.name|trans }}</span>
@@ -64,7 +64,7 @@ file that was distributed with this source code.
         {% endfor %}
         <!-- 情報 -->
         <li class="c-mainNavArea__navItem">
-            <a class="c-mainNavArea__navItemTitle collapsed" data-toggle="collapse" href="#others" aria-expanded="false"
+            <a class="c-mainNavArea__navItemTitle collapsed" data-bs-toggle="collapse" href="#others" aria-expanded="false"
                aria-controls="others">
                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                 <span>{{ 'admin.info'|trans }}</span>
@@ -83,6 +83,11 @@ file that was distributed with this source code.
                 <li>
                     <a href="{{ eccube_config.eccube_document_url }}" target="_blank">
                         <span>{{ 'admin.info.document'|trans }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ eccube_config.eccube_manual_url }}" target="_blank">
+                        <span>{{ 'admin.info.manual'|trans }}</span>
                     </a>
                 </li>
             </ul>

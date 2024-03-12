@@ -65,7 +65,7 @@ server {
     location ~ /\. {
             deny all;
     }
-    location ~^/(var|test|vendor|app|src)  {
+    location ~^/(var|test|vendor|app|src|bin)  {
             deny all;
     }
 }

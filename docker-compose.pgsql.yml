@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  pg-database:
+    driver: local
+
+services:
+  ec-cube:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgres://dbuser:secret@postgres/eccubedb"
+      DATABASE_SERVER_VERSION: 14
+      DATABASE_CHARSET: 'utf8'
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 15432:5432
+    volumes:
+      - pg-database:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: pg_isready -U dbuser
+      interval: 3s
+      timeout: 3s
+      retries: 3

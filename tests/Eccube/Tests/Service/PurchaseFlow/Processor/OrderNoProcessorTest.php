@@ -15,7 +15,6 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Order;
-use Eccube\Repository\OrderRepository;
 use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -43,11 +42,11 @@ class OrderNoProcessorTest extends EccubeTestCase
         $config = $this->createMock(EccubeConfig::class);
         $config->method('offsetGet')->willReturn($orderNoFormat);
         $config->method('get')->willReturn('Asia/Tokyo');
-        $processor = new OrderNoProcessor($config, $this->container->get(OrderRepository::class));
+        $processor = new OrderNoProcessor($config, $this->entityManager->getRepository(\Eccube\Entity\Order::class));
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertRegExp($expected, (string) $Order->getOrderNo());
+        self::assertMatchesRegularExpression($expected, (string) $Order->getOrderNo());
     }
 
     public function processDataProvider()
@@ -70,6 +69,7 @@ class OrderNoProcessorTest extends EccubeTestCase
             ['{random_alnum}', '/^123$/'],
             ['{random_alnum,1}', '/^[[:alnum:]]{1}$/'],
             ['{random_alnum,10}', '/^[[:alnum:]]{10}$/'],
+            ['{random_alpha,10}', '/^[[:alpha:]]{10}$/'],
             ['order_no', '/order_no/'],
             ['{hoge}', '/123/'],
             ['ORDER_{yy}_{mm}_{dd}_{id,5}_{random,5}_{random_alnum,10}',

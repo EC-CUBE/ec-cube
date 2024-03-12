@@ -33,18 +33,18 @@ if (!class_exists(RoundingType::class, false)) {
          *
          * @var integer
          */
-        const ROUND = 1;
+        public const ROUND = 1;
         /**
          * 切り捨て.
          *
          * @var integer
          */
-        const FLOOR = 2;
+        public const FLOOR = 2;
         /**
          * 切り上げ.
          *
          * @var integer
          */
-        const CEIL = 3;
+        public const CEIL = 3;
     }
 }

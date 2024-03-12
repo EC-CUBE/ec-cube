@@ -69,13 +69,13 @@ file that was distributed with this source code.
                     <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
                 </div>
                 <div class="ec-orderAccount__account">
-                    <p class="ec-halfInput">{{ 'common.name.prefix'|trans }}{{ Order.name01 }} {{ Order.name02 }}</span>{{ 'common.name.suffix'|trans }}</p>
-                    <p class="ec-halfInput">{{ Order.kana01 }}</span> {{ Order.kana02 }}</p>
-                    <p class="ec-input">{{ Order.companyName }}</span></p>
+                    <p class="ec-halfInput">{{ 'common.name.prefix'|trans }}{{ Order.name01 }} {{ Order.name02 }}{{ 'common.name.suffix'|trans }}</p>
+                    <p class="ec-halfInput">{{ Order.kana01 }} {{ Order.kana02 }}</p>
+                    <p class="ec-input">{{ Order.companyName }}</p>
                     <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}{{ Order.postal_code }}</p>
                     <p class="ec-input">{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</p>
-                    <p class="ec-telInput">{{ Order.phone_number }}</span></p>
-                    <p class="ec-input">{{ Order.email }}</span></p>
+                    <p class="ec-telInput">{{ Order.phone_number }}</p>
+                    <p class="ec-input">{{ Order.email }}</p>
                 </div>
             </div>
             <div class="ec-orderDelivery">
@@ -117,7 +117,7 @@ file that was distributed with this source code.
                             <div class="ec-select">
                                 <label>{{ 'front.shopping.delivery_provider'|trans }}</label>
                                 {% set delivery_fee = 0 %}
-                                {% for item in shipping.order_items if item.isDeliveryFee %}
+                                {% for item in shipping.order_items|filter(item => item.isDeliveryFee) %}
                                     {% set delivery_fee = item.total_price %}
                                 {% endfor %}
                                 {{ Order.Shippings[idx].Delivery }}({{ delivery_fee|price }})
@@ -140,7 +140,7 @@ file that was distributed with this source code.
                 </div>
                 <div class="ec-blockRadio">
                     {% set charge = 0 %}
-                    {% for item in Order.order_items if item.isCharge %}
+                    {% for item in Order.order_items|filter(item => item.isCharge) %}
                         {% set charge = item.total_price %}
                     {% endfor %}
                     {{ Order.Payment }}({{ charge|price }})
@@ -164,6 +164,16 @@ file that was distributed with this source code.
                     {{ Order.message|nl2br }}
                 </div>
             </div>
+            {% for activeTradeLaw in activeTradeLaws|filter(t => t.name and t.description) %}
+                <div class="ec-orderConfirm">
+                    <div class="ec-rectHeading">
+                        <h2>{{ activeTradeLaw.name }}</h2>
+                    </div>
+                    <div class="ec-input">
+                        {{ activeTradeLaw.description|raw }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="ec-orderRole__summary">
             <div class="ec-totalBox">
@@ -186,20 +196,19 @@ file that was distributed with this source code.
                 </dl>
                 {% endif %}
                 <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
-                {% for rate, total in Order.taxable_total_by_tax_rate %}
-                    <dl class="ec-totalBox__taxRate">
-                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
-                        <dd>{{ total|price }}</dd>
-                    </dl>
-                {% endfor %}
                 {% for item in Order.tax_free_discount_items %}
-                    {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
                     <dl class="ec-totalBox__spec">
                         <dt>{{ item.product_name }}</dt>
                         <dd>{{ item.total_price|price }}</dd>
                     </dl>
                 {% endfor %}
                 <div class="ec-totalBox__paymentTotal">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                {% for rate, total in Order.total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }} ({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</dd>
+                    </dl>
+                {% endfor %}
                 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                 <div class="ec-totalBox__pointBlock">
                     <dl class="ec-totalBox__spec">

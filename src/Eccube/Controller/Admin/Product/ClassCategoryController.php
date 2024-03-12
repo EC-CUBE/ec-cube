@@ -62,8 +62,8 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category")
-     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit")
+     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/class_category.twig")
      */
     public function index(Request $request, $class_name_id, $id = null)
@@ -93,7 +93,7 @@ class ClassCategoryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE);
 
         $ClassCategories = $this->classCategoryRepository->getList($ClassName);
 
@@ -107,7 +107,7 @@ class ClassCategoryController extends AbstractController
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 log_info('規格分類登録開始', [$id]);
 
                 $this->classCategoryRepository->save($TargetClassCategory);
@@ -122,7 +122,7 @@ class ClassCategoryController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -185,7 +185,7 @@ class ClassCategoryController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -232,7 +232,7 @@ class ClassCategoryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE);
 
         if ($TargetClassCategory->isVisible()) {
             $this->addSuccess(trans('admin.common.to_show_complete', ['%name%' => $TargetClassCategory->getName()]), 'admin');

@@ -42,8 +42,8 @@ class CustomerDeliveryEditController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/%eccube_admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"})
-     * @Route("/%eccube_admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
+     * @Route("/%eccube_admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"}, methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"}, methods={"GET", "POST"})
      * @Template("@admin/Customer/delivery_edit.twig")
      */
     public function edit(Request $request, Customer $Customer, $did = null)
@@ -82,7 +82,7 @@ class CustomerDeliveryEditController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -103,7 +103,7 @@ class CustomerDeliveryEditController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -159,7 +159,7 @@ class CustomerDeliveryEditController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE);
 
         return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
     }

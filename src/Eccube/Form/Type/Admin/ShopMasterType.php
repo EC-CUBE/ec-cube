@@ -16,10 +16,10 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
-use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\PhoneNumberType;
-use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Type\PriceType;
+use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -106,35 +106,35 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('email02', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('email03', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('email04', EmailType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('good_traded', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
                 ],
             ])
@@ -142,7 +142,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
                 ],
             ])
@@ -167,10 +167,21 @@ class ShopMasterType extends AbstractType
             ->add('option_mypage_order_status_display', ToggleSwitchType::class)
             // 自動ログイン
             ->add('option_remember_me', ToggleSwitchType::class)
+            // 会員の重要操作時にメールを通知する
+            ->add('option_mail_notifier', ToggleSwitchType::class)
             // お気に入り商品設定
             ->add('option_favorite_product', ToggleSwitchType::class)
             // 在庫切れ商品を非表示にする
             ->add('option_nostock_hidden', ToggleSwitchType::class)
+            // 適格請求書発行事業者登録番号
+            ->add('invoice_registration_number', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
             // 個別税率設定
             ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定

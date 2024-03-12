@@ -14,7 +14,6 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\TaxRule;
-use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
@@ -25,7 +24,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function createTaxRule()
     {
         $faker = $this->getFaker();
-        $TargetTaxRule = $this->container->get(TaxRuleRepository::class)->newTaxRule();
+        $TargetTaxRule = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->newTaxRule();
         $TargetTaxRule->setTaxRate($faker->randomNumber(2));
         $now = new \DateTime();
         $TargetTaxRule->setApplyDate($now);
@@ -67,19 +66,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => [
-                'date' => [
-                    'year' => $now->format('Y'),
-                    'month' => $now->format('n'),
-                    'day' => $now->format('j'),
-                ],
-                'time' => [
-                    'hour' => $now->format('G'),
-                    // Symfony specification of without leading zero
-                    // https://symfony.com/doc/3.4/reference/forms/types/datetime.html#minutes
-                    'minute' => (int) $now->format('i'),
-                ],
-            ],
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T'.$now->format('H').':'.$now->format('i')
         ];
 
         $this->client->request(
@@ -113,7 +100,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-        $this->assertNull($this->container->get(TaxRuleRepository::class)->find($taxRuleId));
+        $this->assertNull($this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->find($taxRuleId));
     }
 
     public function testTaxDeleteFail()
@@ -136,17 +123,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'tax_rate' => 10,
             'rounding_type' => rand(1, 3),
-            'apply_date' => [
-                'date' => [
-                    'year' => $now->format('Y'),
-                    'month' => $now->format('n'),
-                    'day' => $now->format('j'),
-                ],
-                'time' => [
-                    'hour' => 23,
-                    'minute' => 1,
-                ],
-            ],
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T23:01'
         ];
 
         $this->client->request(

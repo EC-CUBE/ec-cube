@@ -14,14 +14,16 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\Sex;
 use Eccube\Util\StringUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * CustomerRepository
@@ -51,10 +53,9 @@ class CustomerRepository extends AbstractRepository
      */
     protected $eccubeConfig;
 
-    /**
-     * @var EncoderFactoryInterface
-     */
-    protected $encoderFactory;
+    public const COLUMNS = [
+        'customer_id' => 'c.id', 'name' => 'c.name01',
+    ];
 
     /**
      * CustomerRepository constructor.
@@ -63,7 +64,6 @@ class CustomerRepository extends AbstractRepository
      * @param Queries $queries
      * @param EntityManagerInterface $entityManager
      * @param OrderRepository $orderRepository
-     * @param EncoderFactoryInterface $encoderFactory
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
@@ -71,7 +71,6 @@ class CustomerRepository extends AbstractRepository
         Queries $queries,
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
-        EncoderFactoryInterface $encoderFactory,
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Customer::class);
@@ -79,7 +78,6 @@ class CustomerRepository extends AbstractRepository
         $this->queries = $queries;
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
-        $this->encoderFactory = $encoderFactory;
         $this->eccubeConfig = $eccubeConfig;
     }
 
@@ -90,25 +88,59 @@ class CustomerRepository extends AbstractRepository
 
         $Customer = new \Eccube\Entity\Customer();
         $Customer
-            ->setStatus($CustomerStatus);
+            ->setStatus($CustomerStatus)
+            ->setSecretKey($this->getUniqueSecretKey())
+            ->setPoint(0);
 
         return $Customer;
     }
 
+    /**
+     * @param array{
+     *         multi?:string,
+     *         pref?:Pref,
+     *         sex?:Sex[],
+     *         birth_month?:string|int,
+     *         birth_start?:\DateTime,
+     *         birth_end?:\DateTime,
+     *         phone_number?:string,
+     *         buy_total_start?:string|int,
+     *         buy_total_end?:string|int,
+     *         buy_times_start?:string|int,
+     *         buy_times_end?:string|int,
+     *         create_datetime_start?:\DateTime,
+     *         create_datetime_end?:\DateTime,
+     *         create_date_start?:\DateTime,
+     *         create_date_end?:\DateTime,
+     *         update_datetime_start?:\DateTime,
+     *         update_datetime_end?:\DateTime,
+     *         update_date_start?:\DateTime,
+     *         update_date_end?:\DateTime,
+     *         last_buy_datetime_start?:\DateTime,
+     *         last_buy_datetime_end?:\DateTime,
+     *         last_buy_start?:\DateTime,
+     *         last_buy_end?:\DateTime,
+     *         customer_status?:CustomerStatus[],
+     *         buy_product_name?:string,
+     *         sortkey?:string,
+     *         sorttype?:string
+     *     } $searchData
+     * @return QueryBuilder
+     */
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c');
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            //スペース除去
+            // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
             $qb
-                ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
+                ->andWhere("c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(COALESCE(c.kana01, ''), COALESCE(c.kana02, '')) LIKE :kana OR c.email LIKE :email")
                 ->setParameter('customer_id', $id)
                 ->setParameter('name', '%'.$clean_key_multi.'%')
                 ->setParameter('kana', '%'.$clean_key_multi.'%')
@@ -156,7 +188,7 @@ class CustomerRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/ ', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
             $qb
                 ->andWhere('c.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');
@@ -280,7 +312,15 @@ class CustomerRepository extends AbstractRepository
         }
 
         // Order By
-        $qb->addOrderBy('c.update_date', 'DESC');
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            $qb->addOrderBy('c.update_date', 'DESC');
+            $qb->addOrderBy('c.id', 'DESC');
+        } else {
+            $qb->orderBy('c.update_date', 'DESC');
+            $qb->addOrderBy('c.id', 'DESC');
+        }
 
         return $this->queries->customize(QueryKey::CUSTOMER_SEARCH, $qb, $searchData);
     }
@@ -320,7 +360,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $secretKey
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getProvisionalCustomerBySecretKey($secretKey)
     {
@@ -335,7 +375,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByEmail($email)
     {
@@ -351,7 +391,7 @@ class CustomerRepository extends AbstractRepository
      * @param $resetKey
      * @param $email
      *
-     * @return null|Customer 見つからない場合はnullを返す.
+     * @return Customer|null 見つからない場合はnullを返す.
      */
     public function getRegularCustomerByResetKey($resetKey, $email = null)
     {

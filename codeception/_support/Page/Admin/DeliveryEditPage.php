@@ -52,6 +52,14 @@ class DeliveryEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 入力_お届け時間($value)
+    {
+        $this->tester->fillField(['id' => 'add-delivery-time-value'], $value);
+        $this->tester->click('#add-delivery-time-button');
+
+        return $this;
+    }
+
     public function 入力_全国一律送料($value)
     {
         $this->tester->fillField(['id' => 'delivery_free_all'], $value);

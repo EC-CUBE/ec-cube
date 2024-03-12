@@ -17,6 +17,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ProductRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,15 +30,21 @@ class ProductControllerTest extends AbstractWebTestCase
     private $baseInfoRepository;
 
     /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @var ClassCategoryRepository
      */
     private $classCategoryRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
     }
 
     public function testRoutingList()
@@ -75,7 +82,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $message = 'ご指定のカテゴリは存在しません';
         $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => 'XXX']));
-        $this->assertContains($message, $crawler->html());
+        $this->assertStringContainsString($message, $crawler->html());
     }
 
     /**
@@ -86,7 +93,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client = $this->client;
         $message = '商品が見つかりました';
         $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => '6']));
-        $this->assertContains($message, $crawler->html());
+        $this->assertStringContainsString($message, $crawler->html());
     }
 
     /**
@@ -151,8 +158,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 1: render check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('ただいま品切れ中です', $html);
-        $this->assertContains('お気に入りに追加', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', $html);
+        $this->assertStringContainsString('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
 
@@ -161,8 +168,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 2: after add favorite check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('ただいま品切れ中です', $html);
-        $this->assertContains('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', $html);
     }
 
     /**
@@ -189,8 +196,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 3: render check when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('カートに入れる', $html);
-        $this->assertContains('お気に入りに追加', $html);
+        $this->assertStringContainsString('カートに入れる', $html);
+        $this->assertStringContainsString('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
 
@@ -199,10 +206,9 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 4: after add favorite when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('カートに入れる', $html);
-        $this->assertContains('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('カートに入れる', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', $html);
     }
-
 
     /**
      * 商品詳細 → ログイン画面 → お気に入り追加 → 商品詳細(お気に入り登録済み)
@@ -248,6 +254,122 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertContains('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', $html);
+    }
+
+    /**
+     * 商品詳細ページの構造化データ
+     */
+    public function testProductStructureData()
+    {
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => 2]));
+        $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
+        $this->assertEquals('Product', $json->{'@type'});
+        $this->assertEquals('チェリーアイスサンド', $json->name);
+        $this->assertEquals(3080, $json->offers->price);
+        $this->assertEquals('InStock', $json->offers->availability);
+
+        // 在庫なし商品のテスト
+        $Product = $this->createProduct('Product no stock', 1);
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStockUnlimited(false);
+        $ProductClass->setStock(0);
+        $ProductStock = $ProductClass->getProductStock();
+        $ProductStock->setStock(0);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
+        $this->assertEquals('Product no stock', $json->name);
+        $this->assertEquals('OutOfStock', $json->offers->availability);
+    }
+
+    /**
+     * 一覧ページ metaタグのテスト
+     */
+    public function testMetaTagsInListPage()
+    {
+        // カテゴリ指定なし
+        $url = $this->generateUrl('product_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $crawler = $this->client->request('GET', $url);
+        $this->assertEquals('article', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+        $this->assertCount(0, $crawler->filter('meta[name="robots"]'));
+
+        // カテゴリ指定あり
+        $url = $this->generateUrl('product_list', ['category_id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
+        $crawler = $this->client->request('GET', $url);
+        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+
+        // 検索 0件 → noindex 確認
+        $url = $this->generateUrl('product_list', ['category_id' => 1, 'name' => 'notfoundquery'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $crawler = $this->client->request('GET', $url);
+        $this->assertStringContainsString('お探しの商品は見つかりませんでした', $crawler->html());
+        $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
+    }
+
+    /**
+     * 詳細ページ metaタグのテスト
+     */
+    public function testMetaTagsInDetailPage()
+    {
+        $product = $this->productRepository->find(2);
+        /** @var Product $product */
+        $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
+        $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
+
+        // 商品に description_list と description_detail を設定
+        //  → meta descriotion には description_listが設定される
+        $product->setDescriptionList($description_list);
+        $product->setDescriptionDetail($description_detail);
+        $this->entityManager->flush();
+        $expected_desc = mb_substr($description_list, 0, 120, 'utf-8');
+
+        $url = $this->generateUrl('product_detail', ['id' => 2], UrlGeneratorInterface::ABSOLUTE_URL);
+        $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL).'html/upload/save_image/'.$product->getMainListImage()->getFileName();
+
+        $crawler = $this->client->request('GET', $url);
+
+        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+        $this->assertEquals('og:product', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+        $this->assertEquals($imgPath, $crawler->filter('meta[property="og:image"]')->attr('content'));
+        $this->assertCount(0, $crawler->filter('meta[name="robots"]'));
+
+        // 商品の description_list を削除
+        //   → meta description には description_detail が設定される
+        $product->setDescriptionList(null);
+        $this->entityManager->flush();
+        $expected_desc = mb_substr($description_detail, 0, 120, 'utf-8');
+
+        $crawler = $this->client->request('GET', $url);
+
+        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+    }
+
+    /**
+     * 詳細ページ 在庫なし時の metaタグのテスト
+     */
+    public function testMetaTagsInOutOfStockDetailPage()
+    {
+        $Product = $this->createProduct('Product out of stock', 1);
+        $id = $Product->getId();
+        $productUrl = $this->generateUrl('product_detail', ['id' => $id], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // 在庫切れ商品
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStockUnlimited(false);
+        $ProductClass->setStock(0);
+        $ProductStock = $ProductClass->getProductStock();
+        $ProductStock->setStock(0);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', $productUrl);
+
+        $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
 }

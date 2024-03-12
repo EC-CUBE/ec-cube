@@ -14,15 +14,17 @@
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
-use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
+use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @group cache-clear-install
@@ -54,39 +56,43 @@ class InstallControllerTest extends AbstractWebTestCase
      */
     protected $session;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->envFile = $this->container->getParameter('kernel.project_dir').'/.env';
+        $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
         if (file_exists($this->envFile)) {
             rename($this->envFile, $this->envFileBackup);
         }
 
-        $favicon = $this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
+        $favicon = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
         if (file_exists($favicon)) {
             unlink($favicon);
         }
 
-        $formFactory = $this->container->get('form.factory');
-        $encoder = $this->container->get(PasswordEncoder::class);
-        $cacheUtil = $this->container->get(CacheUtil::class);
+        $formFactory = static::getContainer()->get('form.factory');
+        $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
+        $cacheUtil = static::getContainer()->get(CacheUtil::class);
 
-        $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($encoder, $cacheUtil);
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+        $this->session = new \Eccube\Session\Session($requestStack);
+        $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
         $this->controller->setSession($this->session);
 
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
-        $propContainer->setValue($this->controller, $this->container);
+        $propContainer->setValue($this->controller, self::getContainer());
 
         $this->request = $this->createMock(Request::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         if (file_exists($this->envFileBackup)) {
             rename($this->envFileBackup, $this->envFile);
@@ -111,13 +117,14 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->step2($this->request);
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
 
-        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
-        $this->assertFileExists($this->container->getParameter('eccube_html_dir').'/user_data/assets/pdf/logo.png');
+        $this->assertFileExists(static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
+        $this->assertFileExists(static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/pdf/logo.png');
     }
 
     public function testStep3()
     {
-        $this->actual = $this->controller->step3($this->request);
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $this->actual = $this->controller->step3($this->request, $entityManager);
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
         $this->assertInstanceOf(Request::class, $this->actual['request']);
@@ -408,7 +415,7 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testDatabaseVersion()
     {
         $version = $this->controller->getDatabaseVersion($this->entityManager);
-        $this->assertRegExp('/\A([\d+\.]+)/', $version);
+        $this->assertMatchesRegularExpression('/\A([\d+\.]+)/', $version);
     }
 
     public function testCreateAppData()
@@ -424,7 +431,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
         $this->assertEquals(phpversion(), $appData['php_ver']);
         $this->assertEquals(php_uname(), $appData['os_type']);
-        $this->assertRegExp('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
+        $this->assertMatchesRegularExpression('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
     }
 
     public function testConvertAdminAllowHosts()

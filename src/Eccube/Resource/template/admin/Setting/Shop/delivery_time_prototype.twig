@@ -17,39 +17,39 @@ file that was distributed with this source code.
         <div class="col d-flex align-items-center">
             <a class="display-label">{% if DeliveryTime is empty %}__value__{% else %}{{ DeliveryTime }}{% endif %}</a>
         </div>
-        <div class="col-auto text-right">
-            <a class="btn btn-ec-actionIcon mr-2 action-up" href="" data-tooltip="true"
-               data-placement="top" title="{{ 'admin.common.up'|trans }}">
+        <div class="col-auto text-end">
+            <a class="btn btn-ec-actionIcon me-2 action-up" href="" data-bs-toggle="tooltip"
+               data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                 <i class="fa fa-arrow-up fa-lg text-secondary"></i>
             </a>
-            <a class="btn btn-ec-actionIcon mr-2 action-down" href="" data-tooltip="true"
-               data-placement="top" title="{{ 'admin.common.down'|trans }}">
+            <a class="btn btn-ec-actionIcon me-2 action-down" href="" data-bs-toggle="tooltip"
+               data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                 <i class="fa fa-arrow-down fa-lg text-secondary"></i>
             </a>
-            <a class="btn btn-ec-actionIcon mr-2 action-edit" href="" data-tooltip="true"
-               data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+            <a class="btn btn-ec-actionIcon me-2 action-edit" href="" data-bs-toggle="tooltip"
+               data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                 <i class="fa fa-pencil fa-lg text-secondary"></i>
             </a>
             {% if DeliveryTime is empty %}
-                <a class="btn btn-ec-actionIcon mr-2 action-visible" href="" data-tooltip="true"
-                   data-placement="top" title="{{ 'admin.common.to_hide'|trans }}">
+                <a class="btn btn-ec-actionIcon me-2 action-visible" href="" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="{{ 'admin.common.to_hide'|trans }}">
                     <i class="fa fa-toggle-on fa-lg text-secondary" aria-hidden="true"></i>
                 </a>
             {% else %}
-                <a class="btn btn-ec-actionIcon mr-2 action-visible" href="" data-tooltip="true"
-                   data-placement="top" title="{{ DeliveryTime.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}">
+                <a class="btn btn-ec-actionIcon me-2 action-visible" href="" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="{{ DeliveryTime.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}">
                     <i class="fa fa-toggle-{{ DeliveryTime.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                 </a>
             {% endif %}
-            <a class="btn btn-ec-actionIcon mr-2 remove-delivery-time-item" href="" data-tooltip="true"
-               data-placement="top" title="{{ 'admin.common.delete'|trans }}">
+            <a class="btn btn-ec-actionIcon me-2 remove-delivery-time-item" href="" data-bs-toggle="tooltip"
+               data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
                 <i class="fa fa-close fa-lg text-secondary"></i>
             </a>
         </div>
     </div>
     <div class="row justify-content-around mode-edit d-none">
         <div class="col d-flex align-items-center">
-            <div class="form-row">
+            <div class="row">
                 <div class="col-auto d-flex align-items-center">
                     {{ form_widget(form.delivery_time, {'attr': {'data-origin-value': form.vars.value }}) }}
                 </div>
@@ -57,7 +57,7 @@ file that was distributed with this source code.
                     <button class="btn btn-ec-conversion action-edit-submit" type="submit">{{ 'admin.common.decision'|trans }}</button>
                 </div>
                 <div class="col-auto d-flex align-items-center">
-                    <button class="btn btn-ec-sub action-edit-cancel" type="submit">{{ 'admin.common.cancel'|trans }}</button>
+                    <button type="button" class="btn btn-ec-sub action-edit-cancel" >{{ 'admin.common.cancel'|trans }}</button>
                 </div>
                 {{ form_errors(form.delivery_time) }}
                 {{ form_widget(form.sort_no, {'attr': {'class': "sort-no" }}) }}

@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Plugin\MigrationSample\DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -10,7 +21,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20181101012712 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $Table = $schema->getTable('dtb_base_info');
         if ($Table->hasColumn('migration_sample')) {
@@ -19,7 +30,7 @@ final class Version20181101012712 extends AbstractMigration
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $Table = $schema->getTable('dtb_base_info');
         if ($Table->hasColumn('migration_sample')) {

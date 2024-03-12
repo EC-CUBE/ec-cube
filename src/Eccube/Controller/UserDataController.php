@@ -49,7 +49,7 @@ class UserDataController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
+     * @Route("/%eccube_user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"}, methods={"GET"})
      */
     public function index(Request $request, $route)
     {
@@ -73,7 +73,7 @@ class UserDataController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE);
 
         return $this->render($file);
     }

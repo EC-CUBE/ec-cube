@@ -36,7 +36,7 @@ class EA10PluginCest
     /** @var EccubeConfig */
     private $config;
 
-    public function _before(\AcceptanceTester $I)
+    public function _before(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
 
@@ -47,7 +47,7 @@ class EA10PluginCest
         FileSystem::doEmptyDir('repos');
     }
 
-    public function test_install_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -56,16 +56,16 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_remove_local(AcceptanceTester $I)
     {
-        Horizon_Store::start($I)
+        Horizon_Local::start($I)
             ->インストール()
             ->有効化()
             ->無効化()
             ->削除();
     }
 
-    public function test_install_enable_disable_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -76,7 +76,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -87,21 +87,38 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_remove_local(\AcceptanceTester $I)
+    /**
+     * @group restrict-fileupload
+     */
+    public function test_install_enable_disable_enable_disable_remove_local_ファイルアップロード制限(AcceptanceTester $I)
+    {
+        $I->expect('環境変数 ECCUBE_RESTRICT_FILE_UPLOAD=1 の場合のテストをします');
+
+        $config = Fixtures::get('config');
+
+        if ($config['eccube_restrict_file_upload'] === '0') {
+            $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
+        }
+
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/install');
+        $I->see('この機能は管理者によって制限されています。');
+    }
+
+    public function test_install_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
             ->削除();
     }
 
-    public function test_install_remove_store(\AcceptanceTester $I)
+    public function test_install_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
             ->削除();
     }
 
-    public function test_install_update_remove_store(\AcceptanceTester $I)
+    public function test_install_update_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -109,7 +126,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_update_remove_local(\AcceptanceTester $I)
+    public function test_install_update_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -117,7 +134,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_update_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_disable_update_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -129,7 +146,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_disable_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_disable_update_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -141,7 +158,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_update_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_enable_update_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -150,7 +167,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_update_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_enable_update_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -160,7 +177,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_update_enable_disable_remove_local(\AcceptanceTester $I)
+    public function test_install_update_enable_disable_remove_local(AcceptanceTester $I)
     {
         Horizon_Local::start($I)
             ->インストール()
@@ -170,7 +187,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_install_update_enable_disable_remove_store(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -180,7 +197,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_install_enable_enable(\AcceptanceTester $I)
+    public function test_install_enable_enable(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -190,7 +207,7 @@ class EA10PluginCest
             ->既に有効なものを有効化();
     }
 
-    public function test_install_disable_disable(\AcceptanceTester $I)
+    public function test_install_disable_disable(AcceptanceTester $I)
     {
         Horizon_Store::start($I)
             ->インストール()
@@ -201,17 +218,15 @@ class EA10PluginCest
             ->既に無効なものを無効化();
     }
 
-    public function test_install_assets_local(\AcceptanceTester $I)
+    public function test_install_assets_local(AcceptanceTester $I)
     {
-        $this->publishPlugin('Assets-1.0.0.tgz');
-
         $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
         $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
 
         $I->assertFileNotExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
-        $ManagePage = PluginLocalInstallPage::go($I)->アップロード('plugins/Assets-1.0.0.tgz');
+        $ManagePage = PluginLocalInstallPage::go($I)->アップロード('Assets-1.0.0');
         $I->assertFileExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
@@ -223,7 +238,7 @@ class EA10PluginCest
         $I->assertFileExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
-        $ManagePage->独自プラグイン_アップデート('Assets', 'plugins/Assets-1.0.1.tgz');
+        $ManagePage->独自プラグイン_アップデート('Assets', 'Assets-1.0.1');
         $I->assertFileExists($assetsPath);
         $I->assertFileExists($updatedPath);
 
@@ -232,10 +247,10 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
-    public function test_install_assets_store(\AcceptanceTester $I)
+    public function test_install_assets_store(AcceptanceTester $I)
     {
         // 最初のバージョンを作成
-        $this->publishPlugin('Assets-1.0.0.tgz');
+        $I->compressPlugin('Assets-1.0.0', codecept_root_dir('repos'));
 
         $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
         $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
@@ -257,7 +272,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
 
         // 新しいバージョンを作成
-        $this->publishPlugin('Assets-1.0.1.tgz');
+        $I->compressPlugin('Assets-1.0.1', codecept_root_dir('repos'));
 
         $I->reloadPage();
         $ManagePage->ストアプラグイン_アップデート('Assets')->アップデート();
@@ -269,7 +284,7 @@ class EA10PluginCest
         $I->assertFileNotExists($updatedPath);
     }
 
-    public function test_extend_same_table_store(\AcceptanceTester $I)
+    public function test_extend_same_table_store(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Boomerang = Boomerang_Store::start($I);
@@ -281,7 +296,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_extend_same_table_disabled_remove_store(\AcceptanceTester $I)
+    public function test_extend_same_table_disabled_remove_store(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Boomerang = Boomerang_Store::start($I);
@@ -293,7 +308,7 @@ class EA10PluginCest
         $Boomerang->検証()->削除();
     }
 
-    public function test_extend_same_table_local(\AcceptanceTester $I)
+    public function test_extend_same_table_local(AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
         $Boomerang = Boomerang_Local::start($I);
@@ -305,7 +320,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_extend_same_table_disabled_remove_local(\AcceptanceTester $I)
+    public function test_extend_same_table_disabled_remove_local(AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
         $Boomerang = Boomerang_Local::start($I);
@@ -317,7 +332,7 @@ class EA10PluginCest
         $Boomerang->検証()->削除();
     }
 
-    public function test_extend_same_table_crossed_store(\AcceptanceTester $I)
+    public function test_extend_same_table_crossed_store(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Boomerang = Boomerang_Store::start($I);
@@ -329,7 +344,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_extend_same_table_crossed_local(\AcceptanceTester $I)
+    public function test_extend_same_table_crossed_local(AcceptanceTester $I)
     {
         $Horizon = Horizon_Local::start($I);
         $Boomerang = Boomerang_Local::start($I);
@@ -341,7 +356,7 @@ class EA10PluginCest
         $Boomerang->検証()->無効化()->削除();
     }
 
-    public function test_dependency_each_install_plugin(\AcceptanceTester $I)
+    public function test_dependency_each_install_plugin(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I);
@@ -350,7 +365,7 @@ class EA10PluginCest
         $Emperor->インストール()->有効化();
     }
 
-    public function test_dependency_plugin_install(\AcceptanceTester $I)
+    public function test_dependency_plugin_install(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I, $Horizon);
@@ -371,7 +386,7 @@ class EA10PluginCest
         $Horizon->削除();
     }
 
-    public function test_dependency_plugin_update(\AcceptanceTester $I)
+    public function test_dependency_plugin_update(AcceptanceTester $I)
     {
         $Horizon = Horizon_Store::start($I);
         $Emperor = Emperor_Store::start($I, $Horizon);
@@ -389,9 +404,9 @@ class EA10PluginCest
         $Horizon->検証();
     }
 
-    public function test_install_error(\AcceptanceTester $I)
+    public function test_install_error(AcceptanceTester $I)
     {
-        $this->publishPlugin('InstallError.tgz');
+        $I->compressPlugin('InstallError', codecept_root_dir('repos'));
         $Horizon = Horizon_Store::start($I);
 
         PluginSearchPage::go($I)
@@ -405,7 +420,7 @@ class EA10PluginCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4527
      */
-    public function test_template_overwrite(\AcceptanceTester $I)
+    public function test_template_overwrite(AcceptanceTester $I)
     {
         $plugin = new Local_Plugin($I, 'Template');
         $plugin->インストール();
@@ -439,7 +454,7 @@ class EA10PluginCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4638
      */
-    public function test_enhance_plugin_entity(\AcceptanceTester $I)
+    public function test_enhance_plugin_entity(AcceptanceTester $I)
     {
         $Boomerang = Boomerang_Store::start($I)
             ->インストール()
@@ -456,7 +471,7 @@ class EA10PluginCest
         $I->see('[1]');
     }
 
-    public function test_bundle_install_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_bundle_install_enable_disable_remove_store(AcceptanceTester $I)
     {
         $Bundle = Bundle_Store::start($I);
         $Bundle->インストール()
@@ -465,7 +480,7 @@ class EA10PluginCest
             ->削除();
     }
 
-    public function test_bundle_install_update_enable_disable_remove_store(\AcceptanceTester $I)
+    public function test_bundle_install_update_enable_disable_remove_store(AcceptanceTester $I)
     {
         $Bundle = Bundle_Store::start($I);
         $Bundle->インストール()
@@ -474,11 +489,6 @@ class EA10PluginCest
             ->有効化()
             ->無効化()
             ->削除();
-    }
-
-    private function publishPlugin($fileName)
-    {
-        copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
     }
 }
 
@@ -511,7 +521,7 @@ abstract class Abstract_Plugin
 
     protected $traits = [];
 
-    public function __construct(\AcceptanceTester $I)
+    public function __construct(AcceptanceTester $I)
     {
         $this->I = $I;
         $this->em = Fixtures::get('entityManager');
@@ -557,7 +567,7 @@ abstract class Abstract_Plugin
     public function traitExists()
     {
         foreach ($this->traits as $trait => $target) {
-            $this->I->assertContains($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
+            $this->I->assertStringContainsString($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
         }
     }
 
@@ -566,7 +576,7 @@ abstract class Abstract_Plugin
         foreach ($this->traits as $trait => $target) {
             $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php';
             if (file_exists($file)) {
-                $this->I->assertNotContains($trait, file_get_contents($file), 'Traitがないはず '.$trait);
+                $this->I->assertStringNotContainsString($trait, file_get_contents($file), 'Traitがないはず '.$trait);
             } else {
                 $this->I->assertTrue(true, 'Traitがないはず');
             }
@@ -756,8 +766,8 @@ class Store_Plugin extends Abstract_Plugin
 
     protected function publishPlugin($fileName)
     {
-        $published = copy(codecept_data_dir().'/'.'plugins/'.$fileName, codecept_root_dir().'/repos/'.$fileName);
-        $this->I->assertTrue($published, "公開できた ${fileName}");
+        $dirname = str_replace('.tgz', '', $fileName);
+        $this->I->assertTrue(!!$this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた ${fileName}");
     }
 }
 
@@ -781,7 +791,7 @@ class Local_Plugin extends Abstract_Plugin
     public function インストール()
     {
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
-            ->アップロード('plugins/'.$this->code.'-1.0.0.tgz');
+            ->アップロード($this->code.'-1.0.0');
 
         $this->initialized = true;
 
@@ -846,7 +856,7 @@ class Local_Plugin extends Abstract_Plugin
 
     public function アップデート()
     {
-        $this->ManagePage->独自プラグイン_アップデート($this->code, 'plugins/'.$this->code.'-1.0.1.tgz');
+        $this->ManagePage->独自プラグイン_アップデート($this->code, $this->code.'-1.0.1');
 
         $this->検証();
 
@@ -873,6 +883,7 @@ class Horizon_Local extends Local_Plugin
     {
         // アップデートで新たしいカラムが追加される
         $this->columns[] = 'dtb_dash.new_column';
+
         return parent::アップデート();
     }
 
@@ -897,6 +908,7 @@ class Horizon_Store extends Store_Plugin
     {
         // アップデートで新たしいカラムが追加される
         $this->columns[] = 'dtb_dash.new_column';
+
         return parent::アップデート();
     }
 
@@ -939,7 +951,6 @@ class Emperor_Store extends Store_Plugin
     public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
     {
         parent::__construct($I, 'Emperor', $dependency);
-        $this->publishPlugin('Horizon-1.0.0.tgz');
         $this->tables[] = 'dtb_foo';
         $this->columns[] = 'dtb_cart.foo_id';
         $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
@@ -998,6 +1009,7 @@ class Boomerang_Store extends Store_Plugin
     {
         $this->I->amOnPage('/boomerang/new');
         $this->I->seeCurrentUrlMatches('/^\/boomerang$/');
+
         return $this;
     }
 }
@@ -1056,6 +1068,7 @@ class Bundle_Store extends Store_Plugin
 
         return $this;
     }
+
     public static function start(AcceptanceTester $I)
     {
         return new self($I);

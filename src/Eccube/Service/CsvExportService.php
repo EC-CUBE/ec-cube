@@ -346,6 +346,10 @@ class CsvExportService
         } elseif ($data instanceof \DateTime) {
             // datetimeの場合は文字列に変換する.
             return $data->format($this->eccubeConfig['eccube_csv_export_date_format']);
+
+        } elseif (is_bool($data)) {
+            // booleanの場合は文字列に変換する.
+            return $data ? '1' : '0';
         } else {
             // スカラ値の場合はそのまま.
             return $data;

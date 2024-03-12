@@ -13,19 +13,21 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }
@@ -56,21 +58,46 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      */
     public function loginTo(UserInterface $User)
     {
-        $firewall = 'admin';
-        $role = ['ROLE_ADMIN'];
-        if ($User instanceof \Eccube\Entity\Customer) {
-            $firewall = 'customer';
-            $role = ['ROLE_USER'];
-        }
-        $token = new UsernamePasswordToken($User, null, $firewall, $role);
-
-        $session = $this->container->get('session');
-
-        $session->set('_security_'.$firewall, serialize($token));
-        $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
+        $firewallContext = $User instanceof Customer ? 'customer' : 'admin';
+        $this->client->loginUser($User, $firewallContext);
 
         return $this->client;
+    }
+
+    /**
+     * https://github.com/symfony/symfony/discussions/46961
+     *
+     * @param KernelBrowser $client
+     * @return Session
+     */
+    public function createSession(KernelBrowser $client): Session
+    {
+        $cookie = $client->getCookieJar()->get('MOCKSESSID');
+
+        // create a new session object
+        $container = static::getContainer();
+        $session = $container->get('session.factory')->createSession();
+
+        if ($cookie) {
+            // get the session id from the session cookie if it exists
+            $session->setId($cookie->getValue());
+            $session->start();
+            $session->save();
+        } else {
+            // or create a new session id and a session cookie
+            $session->start();
+            $session->save();
+
+            $sessionCookie = new Cookie(
+                $session->getName(),
+                $session->getId(),
+                null,
+                null,
+                'localhost',
+            );
+            $client->getCookieJar()->set($sessionCookie);
+        }
+
+        return $session;
     }
 }

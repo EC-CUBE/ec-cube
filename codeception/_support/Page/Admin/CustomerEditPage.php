@@ -111,14 +111,14 @@ class CustomerEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_パスワード($value)
     {
-        $this->tester->fillField(['id' => 'admin_customer_password_first'], $value);
+        $this->tester->fillField(['id' => 'admin_customer_plain_password_first'], $value);
 
         return $this;
     }
 
     public function 入力_パスワード確認($value)
     {
-        $this->tester->fillField(['id' => 'admin_customer_password_second'], $value);
+        $this->tester->fillField(['id' => 'admin_customer_plain_password_second'], $value);
 
         return $this;
     }

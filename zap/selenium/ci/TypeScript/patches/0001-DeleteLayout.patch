@@ -1,0 +1,29 @@
+From b9bab1c9f2574dee0c6d22f75878d1fab785bf8a Mon Sep 17 00:00:00 2001
+From: "h.matsuo" <hiroshi_matsuo@ec-cube.co.jp>
+Date: Thu, 24 Feb 2022 16:50:51 +0900
+Subject: [PATCH] =?UTF-8?q?=E3=83=AC=E3=82=A4=E3=82=A2=E3=82=A6=E3=83=88?=
+ =?UTF-8?q?=E3=82=92=E5=89=8A=E9=99=A4=E3=81=97=E3=81=AA=E3=81=84?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/Eccube/Controller/Admin/Content/LayoutController.php | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/src/Eccube/Controller/Admin/Content/LayoutController.php b/src/Eccube/Controller/Admin/Content/LayoutController.php
+index 1ffc95f8c6..e13e0ea122 100644
+--- a/src/Eccube/Controller/Admin/Content/LayoutController.php
++++ b/src/Eccube/Controller/Admin/Content/LayoutController.php
+@@ -136,9 +136,6 @@ class LayoutController extends AbstractController
+             return $this->redirectToRoute('admin_content_layout');
+         }
+
+-        $this->entityManager->remove($Layout);
+-        $this->entityManager->flush();
+-
+         $this->addSuccess('admin.common.delete_complete', 'admin');
+
+         // キャッシュの削除
+--
+2.35.1

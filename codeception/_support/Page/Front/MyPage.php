@@ -29,7 +29,7 @@ class MyPage extends AbstractFrontPage
     public static function go($I)
     {
         $page = new self($I);
-        $page->goPage('/mypage');
+        $page->goPage('/mypage/');
 
         return $page;
     }

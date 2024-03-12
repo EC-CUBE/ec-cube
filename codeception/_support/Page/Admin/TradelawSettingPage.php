@@ -15,127 +15,62 @@ namespace Page\Admin;
 
 class TradelawSettingPage extends AbstractAdminPage
 {
-    public static $登録完了メッセージ = '#main .container-fluid div:nth-child(1) .alert-success';
+    public static $登録完了メッセージ = '#page_admin_setting_shop_tradelaw > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    public static $販売業者 = 0;
+    public static $代表責任者 = 1;
+    public static $所在地 = 2;
+    public static $電話番号 = 3;
+    public static $メールアドレス = 4;
+    public static $URL = 5;
+    public static $商品代金以外の必要料金 = 6;
+    public static $引き渡し時期 = 7;
+    public static $返品交換について = 8;
+    public static $その他01 = 9;
+    public static $その他02 = 10;
+    public static $その他03 = 11;
+    public static $その他04 = 12;
+    public static $その他05 = 13;
+    public static $その他06 = 14;
 
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);
     }
 
-    public static function go($I)
+    public static function go($I): self
     {
         $page = new self($I);
 
-        return $page->goPage('/setting/shop/tradelaw', 'ショップ設定特定商取引法');
+        return $page->goPage('/setting/shop/tradelaw', '特定商取引法設定店舗設定');
     }
 
-    public function 入力_販売業者($value)
+    public static function at($I): self
     {
-        $this->tester->fillField(['id' => 'tradelaw_company'], $value);
+        $page = new self($I);
+        $page->tester->see('特定商取引法設定', '.c-pageTitle');
+
+        return $page;
+    }
+
+    public function 入力(int $index, string $name, string$description): self
+    {
+        $this->tester->fillField(['id' => 'form_TradeLaws_'.$index.'_name'], $name);
+        $this->tester->fillField(['id' => 'form_TradeLaws_'.$index.'_description'], $description);
 
         return $this;
     }
 
-    public function 入力_運営責任者($value)
+    public function 注文画面に表示(int $index): self
     {
-        $this->tester->fillField(['id' => 'tradelaw_manager'], $value);
+        $this->tester->click('label[for=form_TradeLaws_'.$index.'_displayOrderScreen]');
 
         return $this;
     }
 
-    public function 入力_郵便番号($value)
+    public function 登録(): self
     {
-        $this->tester->fillField(['id' => 'tradelaw_postal_code'], $value);
+        $this->tester->click('div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
         return $this;
-    }
-
-    public function 入力_都道府県($value)
-    {
-        $this->tester->selectOption(['id' => 'tradelaw_address_pref'], $value);
-
-        return $this;
-    }
-
-    public function 入力_市区町村名($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_address_addr01'], $value);
-
-        return $this;
-    }
-
-    public function 入力_番地_ビル名($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_address_addr02'], $value);
-
-        return $this;
-    }
-
-    public function 入力_電話番号($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_phone_number'], $value);
-
-        return $this;
-    }
-
-    public function 入力_Eメール($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_email'], $value);
-
-        return $this;
-    }
-
-    public function 入力_URL($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_url'], $value);
-
-        return $this;
-    }
-
-    public function 入力_商品代金以外の必要料金($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_term01'], $value);
-
-        return $this;
-    }
-
-    public function 入力_注文方法($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_term02'], $value);
-
-        return $this;
-    }
-
-    public function 入力_支払方法($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_term03'], $value);
-
-        return $this;
-    }
-
-    public function 入力_支払期限($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_term04'], $value);
-
-        return $this;
-    }
-
-    public function 入力_引き渡し時期($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_term05'], $value);
-
-        return $this;
-    }
-
-    public function 入力_返品交換について($value)
-    {
-        $this->tester->fillField(['id' => 'tradelaw_term06'], $value);
-
-        return $this;
-    }
-
-    public function 登録()
-    {
-        $this->tester->click('#tradelaw_form #aside_column button');
     }
 }

@@ -57,12 +57,12 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/category", name="admin_product_category")
-     * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
-     * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
+     * @Route("/%eccube_admin_route%/product/category", name="admin_product_category", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/category.twig")
      */
-    public function index(Request $request, $parent_id = null, $id = null, CacheUtil $cacheUtil)
+    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
     {
         if ($parent_id) {
             /** @var Category $Parent */
@@ -105,7 +105,7 @@ class CategoryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -117,7 +117,7 @@ class CategoryController extends AbstractController
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 if ($this->eccubeConfig['eccube_category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException();
                 }
@@ -138,7 +138,7 @@ class CategoryController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -169,7 +169,7 @@ class CategoryController extends AbstractController
                         $request
                     );
 
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE);
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -185,8 +185,10 @@ class CategoryController extends AbstractController
         }
 
         $formViews = [];
+        $formErrors = [];
         foreach ($forms as $key => $value) {
             $formViews[$key] = $value->createView();
+            $formErrors[$key]['count'] = $value->getErrors(true)->count();
         }
 
         $Ids = [];
@@ -205,6 +207,7 @@ class CategoryController extends AbstractController
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
             'forms' => $formViews,
+            'error_forms' => $formErrors,
         ];
     }
 
@@ -234,7 +237,7 @@ class CategoryController extends AbstractController
                     'TargetCategory' => $TargetCategory,
                 ], $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -284,7 +287,7 @@ class CategoryController extends AbstractController
     /**
      * カテゴリCSVの出力.
      *
-     * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export")
+     * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export", methods={"GET"})
      *
      * @param Request $request
      *
@@ -333,12 +336,12 @@ class CategoryController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT);
 
                     $ExportCsvRow->pushData();
                 }
 
-                //$row[] = number_format(memory_get_usage(true));
+                // $row[] = number_format(memory_get_usage(true));
                 // 出力.
                 $csvService->fputcsv($ExportCsvRow->getRow());
             });
@@ -348,7 +351,6 @@ class CategoryController extends AbstractController
         $filename = 'category_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         log_info('カテゴリCSV出力ファイル名', [$filename]);
 

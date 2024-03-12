@@ -13,17 +13,17 @@
 
 namespace Eccube\Tests\Entity;
 
-use Eccube\Repository\DeliveryDurationRepository;
+use Eccube\Entity\DeliveryDuration;
 use Eccube\Tests\EccubeTestCase;
 
 class DeliveryDurationTest extends EccubeTestCase
 {
     private $deliveryDurationRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->deliveryDurationRepository = $this->container->get(DeliveryDurationRepository::class);
+        $this->deliveryDurationRepository = $this->entityManager->getRepository(DeliveryDuration::class);
     }
 
     /**

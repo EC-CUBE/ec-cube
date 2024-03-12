@@ -1,0 +1,87 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_tradelaw'] %}
+
+{% block title %}{{ 'admin.setting.shop.tradelaw_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+    {{ form_start(form) }}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header">
+                        <div class="d-inline-block">
+                            <span>{{ 'admin.setting.shop.tradelaw_setting'|trans }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table tabel-sm">
+                            <thead>
+                            <tr>
+                                <th class="align-middle text-center" width="600">
+                                    <span>{{ 'admin.setting.shop.trade_law.header.name'|trans }}</span></th>
+                                <th class="align-middle text-center">
+                                    <span>{{ 'admin.setting.shop.trade_law.header.description'|trans }}</span></th>
+                                <th class="align-middle text-center" width="300">
+                                    <span>{{ 'admin.setting.shop.trade_law.header.confirm_page_show'|trans }}</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for TradeLaw in form.TradeLaws %}
+                                <tr id="tradeLawRow_{{ loop.index }}">
+                                    <td class="align-middle" width="600">
+                                        {{ form_widget(TradeLaw.name) }}
+                                        {{ form_errors(TradeLaw.name) }}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{ form_widget(TradeLaw.description) }}
+                                        {{ form_errors(TradeLaw.description) }}
+                                    </td>
+                                    <td class="align-middle text-center" width="300">
+                                        {{ form_widget(TradeLaw.displayOrderScreen) }}
+                                        {{ form_errors(TradeLaw.displayOrderScreen) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="c-conversionArea">
+                    <div class="c-conversionArea__container">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col-6">
+                                <div class="c-conversionArea__leftBlockItem">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                                    <div class="col-auto">
+                                        <button class="btn btn-ec-conversion px-5"
+                                                type="submit">{{ 'admin.common.save'|trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

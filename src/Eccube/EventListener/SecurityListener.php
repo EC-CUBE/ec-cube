@@ -17,14 +17,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
 use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\OrderHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 class SecurityListener implements EventSubscriberInterface
@@ -78,7 +79,7 @@ class SecurityListener implements EventSubscriberInterface
     /**
      * @param AuthenticationFailureEvent $event
      */
-    public function onAuthenticationFailure(AuthenticationFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
@@ -106,7 +107,7 @@ class SecurityListener implements EventSubscriberInterface
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
-            AuthenticationEvents::AUTHENTICATION_FAILURE => 'onAuthenticationFailure',
+            LoginFailureEvent::class => 'onAuthenticationFailure',
         ];
     }
 }

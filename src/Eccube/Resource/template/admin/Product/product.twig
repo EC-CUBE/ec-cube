@@ -17,48 +17,13 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <style>
-        #thumb div {
-            float: left;
-            margin: 4px
-        }
-
-        .ui-state-highlight {
-            height: 70px;
-            width: 70px;
-            border: dashed 1px #ccc;
-            background: #fff;
-        }
-    </style>
-{% endblock stylesheet %}
-
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/fileupload/vendor/jquery.ui.widget.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.iframe-transport.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-process.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
-    <script>var bootstrapTooltip = $.fn.tooltip.noConflict();</script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        $.fn.tooltip = bootstrapTooltip;
         $(document).on('drop dragover', function(e) {
             e.preventDefault();
         });
+
         $(function() {
-            // Todo: fix drag&drop style
-            $("#thumb").sortable({
-                cursor: 'move',
-                opacity: 0.7,
-                placeholder: 'ui-state-highlight',
-                update: function(event, ui) {
-                    updateSortNo();
-                }
-            });
             {% if has_class == false %}
             if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
                 $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
@@ -73,112 +38,146 @@ file that was distributed with this source code.
                 }
             });
             {% endif %}
-            var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
-                '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
-                '</div>';
-            var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
-            var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
-            {% for image in form.images %}
-            var $img = $(proto_img.replace(/__path__/g, '{{ asset(image.vars.value, 'save_image') }}'));
-            var $widget = $('{{ form_widget(image) }}');
-            $widget.val('{{ image.vars.value }}');
-            $("#thumb").append($img.append($widget));
-            {% endfor %}
-            {% for add_image in form.add_images %}
-            var $img = $(proto_img.replace(/__path__/g, '{{ asset(add_image.vars.value, 'temp_image') }}'));
-            var $widget = $('{{ form_widget(add_image) }}');
-            $widget.val('{{ add_image.vars.value }}');
-            $("#thumb").append($img.append($widget));
-            {% endfor %}
-            {% for delete_image in form.delete_images %}
-            $("#thumb").append('{{ form_widget(delete_image) }}');
-            {% endfor %}
-            var hideThumbnail = function() {
-                if ($("#thumb div").length > 0) {
-                    $("#icon_no_image").css("display", "none");
-                    $('#message').html("{{ 'admin.common.drag_and_drop_description'|trans }}");
-                } else {
-                    $("#icon_no_image").css("display", "");
-                    $('#message').empty();
-                }
-            };
-            // Todo: fix update sort by drag&drop
-            var updateSortNo = function() {
-                $("#thumb div").each(function(index) {
-                    $(this).find(".sort_no_images").remove();
-                    filename = $(this).find("input[type='hidden']").val();
-                    $sortNo = $('<input type="hidden" class="sort_no_images" name="sort_no_images[]" />');
-                    $sortNo.val(filename + '//' + parseInt(index + 1));
-                    $(this).append($sortNo);
-                });
-            };
-            hideThumbnail();
-            updateSortNo();
-            // Delete of images
-            var count_del = 0;
-            $("#thumb").on("click", '.delete-image', function() {
-                var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
-                var thumbnail = $(this).parents('div.c-form__fileUploadThumbnail');
-                var src = $(thumbnail).find('input').val();
-                $new_delete_image.val(src);
-                $("#thumb").append($new_delete_image);
-                $(thumbnail).remove();
-                hideThumbnail();
-                updateSortNo();
-                count_del++;
-            });
-            var count_add = {{ form.add_images|length|default(0) }};
-            $('#{{ form.product_image.vars.id }}').fileupload({
-                url: "{{ url('admin_product_image_add') }}",
-                type: "post",
-                sequentialUploads: true,
-                dataType: 'json',
-                dropZone: $('#upload-zone'),
-                done: function(e, data) {
-                    $('.progress').hide();
-                    $.each(data.result.files, function(index, file) {
-                        var path = '{{ asset('', 'temp_image') }}' + file;
-                        var $img = $(proto_img.replace(/__path__/g, path));
-                        var $new_img = $(proto_add.replace(/__name__/g, count_add));
-                        $new_img.val(file);
-                        $child = $img.append($new_img);
-                        $('#thumb').append($child);
-                        count_add++;
-                    });
-                    hideThumbnail();
-                    updateSortNo();
-                },
-                fail: function(e, data) {
-                    alert("{{ 'admin.common.upload_error'|trans }}");
-                },
-                always: function(e, data) {
-                    $('.progress').hide();
-                    $('.progress .progress-bar').width('0%');
-                },
-                start: function(e, data) {
-                    $('.progress').show();
-                },
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 10000000,
-                maxNumberOfFiles: 10,
-                progressall: function(e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('.progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                },
-                processalways: function(e, data) {
-                    if (data.files.error) {
-                        alert("{{ 'admin.common.upload_error'|trans }}");
+
+            // ファイルアップロード
+            // see https://pqina.nl/filepond/
+            var inputFileElement = document.querySelector('input[type=file]');
+            {% if eccube_config.locale == 'ja' or eccube_config.locale == 'en' %}
+            FilePond.setOptions(FilePondLocale_{{ eccube_config.locale }});
+            {% endif %}
+            FilePond.setOptions({
+                server: {
+                    process: {
+                        url: '{{ path('admin_product_image_process') }}',
+                        headers: {
+                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    },
+                    load: {
+                        url: '{{ path('admin_product_image_load') }}?source=',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    },
+                    revert: {
+                        url: '{{ path('admin_product_image_revert') }}',
+                        headers: {
+                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
                     }
                 }
             });
-            // 画像アップロード
-            $('#file_upload').on('click', function() {
-                $('#{{ form.product_image.vars.id }}').click();
+            var pond = FilePond.create(inputFileElement, {
+                allowFileTypeValidation: true,
+                acceptedFileTypes: [
+                    'image/gif',
+                    'image/png',
+                    'image/jpeg'
+                ],
+                allowFileSizeValidation: true,
+                maxFileSize: 10000000,
+                maxFiles: 10,
+                allowBrowse: true,
+                allowDrop: true,
+                allowReorder: true,
+                labelIdle: '<i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true" style="font-size: 40px"></i>{{ 'admin.common.drag_and_drop_image_description'|trans }}<span class="filepond--label-action">{{ 'admin.common.file_select'|trans }}</span>',
+                styleItemPanelAspectRatio: 0.5625,
+                // 保存されている画像のロード
+                files: [
+                    {% for image in form.images %}
+                    {
+                        source: '{{ image.vars.value }}',
+                        options: {
+                            type: 'local'
+                        }
+                    },
+                    {% endfor %}
+                    // 追加してすぐの画像のロード. バリデーションエラーの場合など.
+                    {% for add_image in form.add_images %}
+                    {
+                        source: '{{ add_image.vars.value }}',
+                        options: {
+                            type: 'local'
+                        }
+                    },
+                    {% endfor %}
+                ]
+            });
+            // 画像が追加されたら add_images にファイル名を追加する
+            var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
+            pond.on('processfile', function(error, file) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    $('#upload-zone').append(
+                        $(proto_add.replace(/__name__/g, file.id))
+                            .val(file.serverId)
+                            .addClass('add_images')
+                    );
+                }
+            });
+            // 画像が削除されたら delete_images にファイル名を追加する
+            var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
+            pond.on('removefile', function(error, file) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    // file.serverId にはアップロードしたファイル名が格納される.
+                    if (file.serverId) {
+                        $('#upload-zone').append(
+                            $(proto_del.replace(/__name__/g, file.id))
+                                .val(file.serverId)
+                                .addClass('del_images')
+                        );
+                    }
+                    // 追加してすぐ削除した画像があれば削除する
+                    $('#upload-zone').find('#admin_product_add_images_' + file.id).remove(); // 追加してすぐ削除した画像
+                    $('#upload-zone').find('.add_images[value="' + file.filename + '"]').remove(); // 追加後, バリデーションエラーが発生した後に削除した画像
+                }
+            });
+            pond.on('initfile', function() {
+                $('#product_image_error').hide();
+            });
+            pond.on('error', function(error, file) {
+                var message = '{{ 'admin.common.upload_error'|trans }}';
+                if (error.main !== undefined) {
+                    message = `${error.main}: ${error.sub}`;
+                }
+                $('#product_image_error')
+                    .show()
+                    .find('.form-error-message').text(message);
+
+                // エラーメッセージが表示されてからプレビューエリアのエラーメッセージを非表示にする
+                setTimeout(function() {
+                    $('.filepond--file-status').hide();
+                }, 300);
             });
 
+            // バリデーションエラーが出た場合に画像を保持するための hidden を追加しておく
+            var proto_image = '{{ form_widget(form.images.vars.prototype) }}';
+            {% for image in form.images %}
+                $('#upload-zone').append(
+                    $(proto_image.replace(/__name__/g, '{{ loop.index0 }}'))
+                        .val('{{ image.vars.value }}')
+                        .addClass('images')
+                );
+            {% endfor %}
+            {% for add_image in form.add_images %}
+                $('#upload-zone').append(
+                    $('{{ form_widget(add_image) }}')
+                        .val('{{ add_image.vars.value }}')
+                        .addClass('add_images')
+                );
+            {% endfor %}
+            {% for delete_image in form.delete_images %}
+                $('#upload-zone').append(
+                    $('{{ form_widget(delete_image) }}').addClass('del_images')
+                );
+            {% endfor %}
+
+            // タグ管理
             var mainTags = $('#allTags');
             var adminProductTag = $('#admin_product_Tag');
             $('input', adminProductTag).each(function() {
@@ -236,8 +235,8 @@ file that was distributed with this source code.
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ 'admin.common.move_to_confirm_title'|trans }}</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+
                     </button>
                 </div>
                 <div class="modal-body">
@@ -270,8 +269,8 @@ file that was distributed with this source code.
                                     </span>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#basicConfig" aria-expanded="false"
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#basicConfig" aria-expanded="false"
                                        aria-controls="basicConfig">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -283,9 +282,9 @@ file that was distributed with this source code.
                                 {% if Product.id %}
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.product_id'|trans }}">
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.product_id'|trans }}">
                                                 <span>{{ 'admin.product.product_id'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -297,7 +296,7 @@ file that was distributed with this source code.
                                     <div class="col-3">
                                         <div class="d-inline-block">
                                             <span>{{ 'admin.product.name'|trans }}</span>
-                                            <span class="badge badge-primary ml-1">
+                                            <span class="badge bg-primary ms-1">
                                                 {{ 'admin.common.required'|trans }}
                                             </span>
                                         </div>
@@ -310,62 +309,58 @@ file that was distributed with this source code.
                                 {% if has_class == false %}
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.sale_type'|trans }}">
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.sale_type'|trans }}">
                                                 <span>{{ 'admin.product.sale_type'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
-                                                <span class="badge badge-primary ml-1">
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
+                                                <span class="badge bg-primary ms-1">
                                                     {{ 'admin.common.required'|trans }}
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
                                             {{ form_widget(form.class.sale_type) }}
+                                            {{ form_errors(form.class.sale_type) }}
                                         </div>
                                     </div>
                                 {% endif %}
                                 <div class="row">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.product.image'|trans }}">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.product.image'|trans }}">
                                             <span>{{ 'admin.product.image'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             <br>{{ 'admin.product.image_size'|trans }}
                                         </div>
                                     </div>
                                     <div class="col mb-2">
-                                        <div class="progress" style="display: none;">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div id="thumb" class="c-form__fileUploadThumbnails clearfix"></div>
                                         <p id="message"></p>
-                                        <div id="upload-zone" class="media py-5 border-ec-dashed mb-2 rounded">
-                                            <div class="media-body">
-                                                <i class="fa fa-cloud-upload fa-3x text-ec-lightGray mx-3 align-middle" aria-hidden="true"></i>
-                                                {{ 'admin.common.drag_and_drop_image_description'|trans }}
-                                                {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
-                                                {{ form_errors(form.product_image) }}
-                                                <a class="btn btn-ec-regular mr-2" onclick="$('#admin_product_product_image').click()">
-                                                    {{ 'admin.common.file_select'|trans }}
-                                                </a>
-                                            </div><!-- /.media-body -->
-                                        </div><!-- /.media -->
+                                        <div id="upload-zone" class="rounded">
+                                            {{ form_widget(form.product_image, { attr : { style : 'display:none;' } }) }}
+                                            {{ form_errors(form.product_image) }}
+                                        </div><!-- /#upload-zone -->
+                                        <span class="invalid-feedback" id="product_image_error" style="display: none">
+                                            <span class="d-block">
+                                                <span class="form-error-icon badge bg-danger text-uppercase">{{ 'Error'|trans({}, 'validators') }}</span>
+                                                <span class="form-error-message"></span>
+                                            </span>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="{{ 'tooltip.product.description_detail'|trans }}">
                                             <span>{{ 'admin.product.description_detail'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
                                     </div>
                                     <div class="col">
                                         {{ form_widget(form.description_detail, { attr : { rows : "8"} }) }}
                                         {{ form_errors(form.description_detail) }}
-                                        <div class="d-inline-block mb-2" data-toggle="collapse" href="#addComment"
+                                        <div class="d-inline-block mb-2" data-bs-toggle="collapse" href="#addComment"
                                              role="button" aria-expanded="false" aria-controls="addComment">
                                             <a>
-                                                <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
-                                                <span class="font-weight-bold text-ec-black">
+                                                <i class="fa fa-plus-square-o fw-bold me-1"></i>
+                                                <span class="fw-bold text-ec-black">
                                                     {{ 'admin.product.description_list__add'|trans }}
                                                 </span>
                                             </a>
@@ -375,10 +370,10 @@ file that was distributed with this source code.
                                 <div class="collapse ec-collapse" id="addComment">
                                     <div class="row bg-ec-formGray pt-3 mb-2">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.description_list'|trans }}">
                                                 <span>{{ 'admin.product.description_list'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-4">
@@ -394,7 +389,7 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block">
                                                 <span>{{ 'admin.product.sale_price'|trans }}</span>
-                                                <span class="badge badge-primary ml-1">
+                                                <span class="badge bg-primary ms-1">
                                                     {{ 'admin.common.required'|trans }}
                                                 </span>
                                             </div>
@@ -408,10 +403,10 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.normal_price'|trans }}">
                                                 <span>{{ 'admin.product.normal_price'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -425,7 +420,7 @@ file that was distributed with this source code.
                                         <div class="col-3">
                                             <div class="d-inline-block">
                                                 <span>{{ 'admin.product.stock'|trans }}</span>
-                                                <span class="badge badge-primary ml-1">
+                                                <span class="badge bg-primary ms-1">
                                                     {{ 'admin.common.required'|trans }}
                                                 </span>
                                             </div>
@@ -447,16 +442,17 @@ file that was distributed with this source code.
                                                 {#</label>#}
                                                 {#</div>#}
                                                 {{ form_widget(form.class.stock_unlimited) }}
+                                                {{ form_errors(form.class.stock_unlimited) }}
                                             </div>
                                         </div>
                                     </div>
                                 {% endif %}
                                 <div class="row">
                                     <div class="col-3">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="{{ 'tooltip.product.search_word'|trans }}">
                                             <span>{{ 'admin.product.search_word'|trans }}</span>
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </div>
                                     </div>
                                     <div class="col mb-2">
@@ -470,10 +466,10 @@ file that was distributed with this source code.
                                 {% if has_class == false %}
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.product_code'|trans }}">
                                                 <span>{{ 'admin.product.product_code'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -485,10 +481,10 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.sale_limit'|trans }}">
                                                 <span>{{ 'admin.product.sale_limit'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -500,10 +496,10 @@ file that was distributed with this source code.
                                     </div>
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                            <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                                  title="{{ 'tooltip.product.delivery_duration'|trans }}">
                                                 <span>{{ 'admin.product.delivery_duration'|trans }}</span>
-                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                                <i class="fa fa-question-circle fa-lg ms-1"></i>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -547,7 +543,7 @@ file that was distributed with this source code.
                                 {% endif %}
 
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                     {% if f.vars.eccube_form_options.form_theme %}
                                         {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
@@ -567,7 +563,7 @@ file that was distributed with this source code.
                                 {% endfor %}
 
                                 {% if has_class == false %}
-                                    {% for f in form.class if f.vars.eccube_form_options.auto_render %}
+                                    {% for f in form.class|filter(f => f.vars.eccube_form_options.auto_render) %}
                                         {% if f.vars.eccube_form_options.form_theme %}
                                             {% form_theme f f.vars.eccube_form_options.form_theme %}
                                             {{ form_row(f) }}
@@ -595,16 +591,16 @@ file that was distributed with this source code.
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-8">
-                                        <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="{{ 'tooltip.product.product_class'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.product.product_class__card_title'|trans }}
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </span>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
-                                        <a data-toggle="collapse" href="#standardConfig" aria-expanded="false"
+                                    <div class="col-4 text-end">
+                                        <a data-bs-toggle="collapse" href="#standardConfig" aria-expanded="false"
                                            aria-controls="standardConfig">
                                             <i class="fa fa-angle-up fa-lg"></i>
                                         </a>
@@ -616,21 +612,21 @@ file that was distributed with this source code.
                                     {% if has_class == true %}
                                         <table class="table table-striped">
                                             <thead class="table-active">
-                                            <th class="pl-3 pt-2 pb-2">{{ 'admin.product.class_category1__short'|trans }}</th>
+                                            <th class="ps-3 pt-2 pb-2">{{ 'admin.product.class_category1__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.class_category2__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.stock'|trans }}</th>
-                                            <th class="pr-3 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
+                                            <th class="pe-3 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
                                             </thead>
                                             <tbody>
                                             {% for Class in Product.ProductClasses %}
                                                 {% if Class.visible == 1 %}
                                                     <tr>
-                                                        <td class="pl-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
+                                                        <td class="ps-3">{% if Class.hasClassCategory1 %}{{ Class.ClassCategory1.name }}{% endif %}</td>
                                                         <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
                                                         <td>{{ Class.code }}</td>
                                                         <td>{% if Class.stock_unlimited %}{{ 'admin.product.stock_unlimited__short'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
-                                                        <td class="pr-3">{{ Class.price02|price }}</td>
+                                                        <td class="pe-3">{{ Class.price02|price }}</td>
                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
@@ -652,14 +648,14 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.product.free_area'|trans }}">
                                         <span class="card-title">{{ 'admin.product.free_area__card_title'|trans }}</span>
-                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <i class="fa fa-question-circle fa-lg ms-1"></i>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#freeArea" aria-expanded="false"
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#freeArea" aria-expanded="false"
                                        aria-controls="freeArea">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -692,7 +688,7 @@ file that was distributed with this source code.
                             <div class="collapse show ec-cardCollapse" id="preview">
                                 <div class="card-body">
                                     <div class="d-block text-center">
-                                        <a class="btn btn-block btn-ec-regular"
+                                        <a class="btn w-100 btn-ec-regular"
                                            target="_blank"
                                            href="{{ url('product_detail', {id:id}) }}"
                                            title="{{ 'admin.product.preview'|trans }}">{{ 'admin.product.preview'|trans }}</a>
@@ -709,8 +705,8 @@ file that was distributed with this source code.
                                         <span class="card-title">{{ 'admin.product.category__product_card_title'|trans }}</span>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#category" aria-expanded="false"
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#category" aria-expanded="false"
                                        aria-controls="category">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -720,11 +716,11 @@ file that was distributed with this source code.
                         <div class="collapse show ec-cardCollapse" id="category">
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <div class="form-row">
+                                    <div class="row">
                                         <div class="col">
                                             <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">
+                                                <div class="input-group-text">
+                                                    <span id="basic-addon1">
                                                             <i class="fa fa-search"></i>
                                                     </span>
                                                 </div>
@@ -759,7 +755,7 @@ file that was distributed with this source code.
                                     {{ form_errors(form.Category) }}
                                 </div>
                                 <div class="d-block text-center">
-                                    <a class="btn btn-block btn-ec-regular"
+                                    <a class="btn w-100 btn-ec-regular"
                                        data-action="confirm"
                                        href="{{ path('admin_product_category') }}"
                                        title="{{ 'admin.common.move_to_confirm_message'|trans({
@@ -778,8 +774,8 @@ file that was distributed with this source code.
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#tag" aria-expanded="false" aria-controls="tag">
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#tag" aria-expanded="false" aria-controls="tag">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
                                 </div>
@@ -790,17 +786,17 @@ file that was distributed with this source code.
                             <div class="card-body">
                                 {% if(Tags|length > 0) %}
                                     {% for Tag in Tags %}
-                                        <div class="d-inline-block mb-2 mr-2">
+                                        <div class="d-inline-block mb-2 me-2">
                                             <button class="btn btn-outline-primary" type="button">{{ Tag.name }}</button>
                                         </div>
                                     {% endfor %}
                                 {% endif %}
 
-                                <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
+                                <div class="d-block mb-3" data-bs-toggle="collapse" href="#allTags" role="button"
                                      aria-expanded="false" aria-controls="allTags">
                                     <a>
-                                        <i class="fa fa-plus-square-o font-weight-bold mr-1"></i>
-                                        <span class="font-weight-bold">{{ 'admin.product.save_tag'|trans }}</span>
+                                        <i class="fa fa-plus-square-o fw-bold me-1"></i>
+                                        <span class="fw-bold">{{ 'admin.product.save_tag'|trans }}</span>
                                     </a>
                                 </div>
                                 <div class="collapse p-3 bg-ec-lightGray mb-3 ec-collapse" id="allTags">
@@ -809,20 +805,20 @@ file that was distributed with this source code.
                                     </div>
                                     {% if(TagsList|length > 0) %}
                                         {% for Tag in TagsList %}
-                                            <div class="d-inline-block mb-2 mr-2">
+                                            <div class="d-inline-block mb-2 me-2">
                                                 <button class="btn btn-outline-secondary" type="button"
                                                         data-tag-id="{{ Tag.id }}">{{ Tag.name }}</button>
                                             </div>
                                         {% endfor %}
                                     {% endif %}
 
-                                    <div class="d-block mb-3" data-toggle="collapse" href="#allTags" role="button"
+                                    <div class="d-block mb-3" data-bs-toggle="collapse" href="#allTags" role="button"
                                          aria-expanded="false" aria-controls="allTags"></div>
                                 </div>
 
                                 <div class="d-block text-center">
                                     <a href="{{ path('admin_product_tag') }}"
-                                       class="btn btn-block btn-ec-regular"
+                                       class="btn w-100 btn-ec-regular"
                                        data-action="confirm"
                                        title="{{ 'admin.common.move_to_confirm_message'|trans({
                                            '%name%' : 'admin.product.tag_management'|trans }) }}">{{ 'admin.product.move_to_tag'|trans }}</a>
@@ -836,8 +832,8 @@ file that was distributed with this source code.
                                 <div class="col-8">
                                     <span class="card-title">{{ 'admin.product.create_date__card_title'|trans }}</span>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#update" aria-expanded="false"
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#update" aria-expanded="false"
                                        aria-controls="update">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>
@@ -848,7 +844,7 @@ file that was distributed with this source code.
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <i class="fa fa-flag mr-1"></i>
+                                        <i class="fa fa-flag me-1"></i>
                                         <span>{{ 'admin.common.create_date'|trans }}</span>
                                     </div>
                                     <div class="col">
@@ -857,7 +853,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <i class="fa fa-refresh mr-1"></i>
+                                        <i class="fa fa-refresh me-1"></i>
                                         <span>{{ 'admin.common.update_date'|trans }}</span>
                                     </div>
                                     <div class="col">
@@ -866,7 +862,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <i class="fa fa-user mr-1"></i>
+                                        <i class="fa fa-user me-1"></i>
                                         <span>{{ 'admin.common.last_updater'|trans }}</span>
                                     </div>
                                     <div class="col">
@@ -880,16 +876,16 @@ file that was distributed with this source code.
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
                                          title="{{ 'tooltip.product.shop_memo'|trans }}">
                                         <span class="card-title">
                                             {{ 'admin.common.shop_memo'|trans }}
-                                            <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <a data-toggle="collapse" href="#shopMemo" aria-expanded="false"
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#shopMemo" aria-expanded="false"
                                        aria-controls="shopMemo">
                                         <i class="fa fa-angle-up fa-lg"></i>
                                     </a>

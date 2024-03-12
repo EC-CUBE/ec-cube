@@ -24,8 +24,6 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -71,7 +69,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
+     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail", methods={"GET", "POST"})
      * @Template("@admin/Order/mail.twig")
      */
     public function index(Request $request, Order $Order)
@@ -88,7 +86,7 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -104,7 +102,6 @@ class MailController extends AbstractController
                     if ($form->get('template')->isValid()) {
                         /** @var $data \Eccube\Entity\MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
-                        $data = $form->getData();
 
                         if ($MailTemplate) {
                             $twig = $MailTemplate->getFileName();
@@ -125,7 +122,7 @@ class MailController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE);
                         $form->get('template')->setData($MailTemplate);
                         if ($MailTemplate) {
                             $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
@@ -134,7 +131,7 @@ class MailController extends AbstractController
                     }
                     break;
                 case 'confirm':
-                    if ($form->isValid()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
                         $builder->setAttribute('freeze', true);
                         $builder->setAttribute('freeze_display_text', false);
                         $form = $builder->getForm();
@@ -148,7 +145,7 @@ class MailController extends AbstractController
                     }
                     break;
                 case 'complete':
-                    if ($form->isValid()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
                         $data = $form->getData();
                         $data['tpl_data'] = $form->get('tpl_data')->getData();
 
@@ -160,12 +157,12 @@ class MailController extends AbstractController
                         $MailHistory = new MailHistory();
                         $MailHistory
                             ->setMailSubject($message->getSubject())
-                            ->setMailBody($message->getBody())
+                            ->setMailBody($message->getTextBody())
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
 
                         $this->entityManager->persist($MailHistory);
-                        $this->entityManager->flush($MailHistory);
+                        $this->entityManager->flush();
 
                         $event = new EventArgs(
                             [
@@ -176,7 +173,7 @@ class MailController extends AbstractController
                             ],
                             $request
                         );
-                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
+                        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE);
 
                         $this->addSuccess('admin.order.mail_send_complete', 'admin');
 
@@ -192,38 +189,6 @@ class MailController extends AbstractController
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories,
-        ];
-    }
-
-    /**
-     * @Route("/%eccube_admin_route%/order/mail/view", name="admin_order_mail_view")
-     * @Template("@admin/Order/mail_view.twig")
-     */
-    public function view(Request $request)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
-        }
-
-        $id = $request->get('id');
-        $MailHistory = $this->mailHistoryRepository->find($id);
-
-        if (null === $MailHistory) {
-            throw new NotFoundHttpException();
-        }
-
-        $event = new EventArgs(
-            [
-                'MailHistory' => $MailHistory,
-            ],
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE, $event);
-
-        return [
-            'mail_subject' => $MailHistory->getMailSubject(),
-            'body' => $MailHistory->getMailBody(),
-            'html_body' => $MailHistory->getMailHtmlBody(),
         ];
     }
 

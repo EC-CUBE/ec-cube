@@ -131,4 +131,11 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function 端末種別($text)
+    {
+        $this->tester->selectOption(['css' => '#admin_layout_DeviceType'], ['text' => $text]);
+
+        return $this;
+    }
 }

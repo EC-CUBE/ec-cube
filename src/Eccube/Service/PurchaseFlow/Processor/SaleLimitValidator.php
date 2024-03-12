@@ -15,8 +15,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 販売制限数チェック.

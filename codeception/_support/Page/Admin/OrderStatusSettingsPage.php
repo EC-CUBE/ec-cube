@@ -16,6 +16,8 @@ namespace Page\Admin;
 class OrderStatusSettingsPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = '#page_admin_setting_shop_order_status > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
+    public static $名称_マイページ = '#form_OrderStatuses_0_customer_order_status_name';
+    public static $名称_管理 = '#form_OrderStatuses_0_name';
 
     /**
      * CsvSettingsPage constructor.

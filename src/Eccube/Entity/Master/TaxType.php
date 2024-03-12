@@ -39,7 +39,7 @@ if (!class_exists(TaxType::class, false)) {
          *
          * @var integer
          */
-        const TAXATION = 1;
+        public const TAXATION = 1;
 
         /**
          * 不課税.
@@ -50,7 +50,7 @@ if (!class_exists(TaxType::class, false)) {
          *
          * @var integer
          */
-        const NON_TAXABLE = 2;
+        public const NON_TAXABLE = 2;
 
         /**
          * 非課税.
@@ -61,6 +61,6 @@ if (!class_exists(TaxType::class, false)) {
          *
          * @var integer
          */
-        const TAX_EXEMPT = 3;
+        public const TAX_EXEMPT = 3;
     }
 }

@@ -23,7 +23,7 @@ class ChangeControllerTest extends AbstractWebTestCase
      */
     protected $Customer;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -33,7 +33,7 @@ class ChangeControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         $form = [
@@ -57,7 +57,7 @@ class ChangeControllerTest extends AbstractWebTestCase
                 'first' => $email,
                 'second' => $email,
             ],
-            'password' => [
+            'plain_password' => [
                 'first' => $password,
                 'second' => $password,
             ],
@@ -108,7 +108,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $form['password'] = [
+        $form['plain_password'] = [
             'first' => $this->eccubeConfig['eccube_default_password'],
             'second' => $this->eccubeConfig['eccube_default_password'],
         ];

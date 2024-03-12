@@ -14,12 +14,12 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\Type\Master\MailTemplateType;
+use Eccube\Form\Validator\TwigLint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Form\Validator\TwigLint;
 
 class MailType extends AbstractType
 {

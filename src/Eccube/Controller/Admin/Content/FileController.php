@@ -24,18 +24,20 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FileController extends AbstractController
 {
-    const SJIS = 'sjis-win';
-    const UTF = 'UTF-8';
+    public const SJIS = 'sjis-win';
+    public const UTF = 'UTF-8';
     private $errors = [];
-    private $encode = '';
+    private $encode;
 
     /**
      * FileController constructor.
@@ -49,16 +51,18 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file")
+     * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file", methods={"GET", "POST"})
      * @Template("@admin/Content/file.twig")
      */
     public function index(Request $request)
     {
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
+
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
                 'multiple' => true,
                 'attr' => [
-                    'multiple' => 'multiple'
+                    'multiple' => 'multiple',
                 ],
             ])
             ->add('create_file', TextType::class)
@@ -115,7 +119,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/file_view", name="admin_content_file_view")
+     * @Route("/%eccube_admin_route%/content/file_view", name="admin_content_file_view", methods={"GET"})
      */
     public function view(Request $request)
     {
@@ -140,7 +144,7 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'multiple' => true,
                 'attr' => [
-                    'multiple' => 'multiple'
+                    'multiple' => 'multiple',
                 ],
             ])
             ->add('create_file', TextType::class, [
@@ -180,13 +184,20 @@ class FileController extends AbstractController
                 : $topDir;
             $newFilePath = $nowDir.'/'.$filename;
             if (file_exists($newFilePath)) {
-                throw new IOException(trans('admin.content.file.dir_exists', [ '%file_name%' => $filename, ]));
+                throw new IOException(trans('admin.content.file.dir_exists', ['%file_name%' => $filename]));
             }
-            $fs->mkdir($newFilePath);
-
-            $this->addSuccess('admin.common.create_complete', 'admin');
         } catch (IOException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
+            return;
+        }
+        try {
+            $fs->mkdir($newFilePath);
+            $this->addSuccess('admin.common.create_complete', 'admin');
+        } catch (IOException $e) {
+            log_error($e->getMessage());
+            $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
+                '%file_name%' => $filename,
+            ])];
         }
     }
 
@@ -198,7 +209,7 @@ class FileController extends AbstractController
         $this->isTokenValid();
 
         $selectFile = $request->get('select_file');
-        if (is_null($selectFile) || $selectFile == '/') {
+        if ($selectFile === '' || $selectFile === null || $selectFile == '/') {
             return $this->redirectToRoute('admin_content_file');
         }
 
@@ -213,11 +224,11 @@ class FileController extends AbstractController
         }
 
         // 削除実行時のカレントディレクトリを表示させる
-        return $this->redirectToRoute('admin_content_file', array('tree_select_file' => dirname($selectFile)));
+        return $this->redirectToRoute('admin_content_file', ['tree_select_file' => dirname($selectFile)]);
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/file_download", name="admin_content_file_download")
+     * @Route("/%eccube_admin_route%/content/file_download", name="admin_content_file_download", methods={"GET"})
      */
     public function download(Request $request)
     {
@@ -278,28 +289,53 @@ class FileController extends AbstractController
 
         if (!$this->checkDir($nowDir, $topDir)) {
             $this->errors[] = ['message' => 'file.text.error.invalid_upload_folder'];
+
             return;
         }
 
         $uploadCount = count($data['file']);
         $successCount = 0;
 
+        /** @var UploadedFile $file */
         foreach ($data['file'] as $file) {
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
+                // フォルダの存在チェック
+                if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
+                }
+                // 英数字, 半角スペース, _-.() のみ許可
+                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', $filename)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
+                }
+                // dotファイルはアップロード不可
+                if (strpos($filename, '.') === 0) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
+                }
+                // 許可した拡張子以外アップロード不可
+                if (!in_array(strtolower($file->getClientOriginalExtension()), $this->eccubeConfig['eccube_file_uploadable_extensions'], true)) {
+                    throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.extension_error'));
+                }
+            } catch (UnsupportedMediaTypeHttpException $e) {
+                if (!in_array($e->getMessage(), array_column($this->errors, 'message'))) {
+                    $this->errors[] = ['message' => $e->getMessage()];
+                }
+                continue;
+            }
+            try {
                 $file->move($nowDir, $filename);
-                $successCount ++;
+                $successCount++;
             } catch (FileException $e) {
+                log_error($e->getMessage());
                 $this->errors[] = ['message' => trans('admin.content.file.upload_error', [
                     '%file_name%' => $filename,
-                    '%error%' => $e->getMessage()
                 ])];
             }
         }
         if ($successCount > 0) {
             $this->addSuccess(trans('admin.content.file.upload_complete', [
                 '%success%' => $successCount,
-                '%count%' => $uploadCount
+                '%count%' => $uploadCount,
             ]), 'admin');
         }
     }
@@ -452,6 +488,9 @@ class FileController extends AbstractController
      */
     protected function checkDir($targetDir, $topDir)
     {
+        if (strpos($targetDir, '..') !== false) {
+            return false;
+        }
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 

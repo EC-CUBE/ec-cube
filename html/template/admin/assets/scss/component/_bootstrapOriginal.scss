@@ -25,7 +25,7 @@ $table-active-bg: #f2f2f2;
 //breadcrumb
 $breadcrumb-bg: #eff0f4;
 
-@import "../../../../../node_modules/bootstrap/scss/bootstrap";
+@import "../../../../../../node_modules/bootstrap/scss/bootstrap";
 
 /*
 Bootstrap
@@ -106,39 +106,36 @@ Markup:
 Styleguide 12.2
 */
 .btn-ec-conversion{
-  @include button-variant(#437EC4, transparent, #2963AB, transparent, #2963AB, transparent );
+  @include button-variant(#437EC4, transparent, #FFF, #2963AB, transparent, #FFF, #2963AB, transparent );
+  &:disabled {
+    color: #fff;
+  }
   cursor:pointer;
 }
 
 .btn-ec-delete{
-  @include button-variant(#C04949, transparent, #A62E2E, transparent, #A62E2E, transparent );
+  @include button-variant(#C04949, transparent, #FFF, #A62E2E, transparent, #FFF, #A62E2E, transparent );
   cursor:pointer;
 }
 
 .btn-ec-regular{
-  @include button-variant(#FFFFFF, #595959, #F2F2F2, #262626, #F2F2F2, #262626 );
-  color: #595959;
+  @include button-variant(#FFFFFF, #595959, #595959, #F2F2F2, #262626, #262626, #F2F2F2, #262626 );
   cursor:pointer;
-}
-
-.btn-ec-regular:hover {
-  color: #262626;
 }
 
 .btn-ec-sub{
-  @include button-variant(#F5F6F8, transparent, #D6D9E0, transparent, #D6D9E0, transparent );
-  color: #262626;
+  @include button-variant(#F5F6F8, transparent, #262626, #D6D9E0, transparent, #262626, #D6D9E0, transparent );
   cursor:pointer;
 }
 
-.btn-ec-sub:hover {
-  color: #262626;
-}
-
-.btn-ec-actionIcon{
+.btn-ec-actionIcon {
   @include button-variant(transparent, transparent, #EFF0F4, transparent, #EFF0F4, transparent );
   padding: 6px 12px;
   cursor:pointer;
+}
+
+a:not([href]):not([tabindex]).btn-ec-actionIcon {
+  color: inherit;
 }
 
 .btn-ec-actionIcon:hover {
@@ -171,6 +168,8 @@ Styleguide 12.3
 
 .btn-ec-tab:hover {
   color: #262626;
+  background-color: #f2f2f2;
+  border-color: #262626;
 }
 
 .btn-ec-tab.active{
@@ -178,6 +177,22 @@ Styleguide 12.3
   color: #fff !important;
   box-shadow: none !important;
 }
+
+/*
+ボタン
+テキストカラーを変更しています。
+btn-primary
+$active-color,$hover-color,$color,$disabled-color
+*/
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #fff!important;
+}
+
 
 /*
 バッジ
@@ -201,7 +216,6 @@ Markup:
 Styleguide 12.4
 */
 .badge-ec-blue{
-  @include badge-variant(#fff);
   display: inline-block;
   border: 1px solid #437EC4;
   color: #437EC4;
@@ -210,7 +224,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-green{
-  @include badge-variant(#fff);
   display: inline-block;
   border: 1px solid #25B877;
   color: #25B877;
@@ -219,7 +232,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-red{
-  @include badge-variant(#fff);
   display: inline-block;
   border: 1px solid #C04949;
   color: #C04949;
@@ -228,7 +240,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-yellow{
-  @include badge-variant(#fff);
   display: inline-block;
   border: 1px solid #EEB128;
   color: #EEB128;
@@ -237,7 +248,6 @@ Styleguide 12.4
   font-weight: normal;
 }
 .badge-ec-glay{
-  @include badge-variant(#fff);
   display: inline-block;
   border: 1px solid #A3A3A3;
   color: #A3A3A3;
@@ -298,3 +308,75 @@ Styleguide 12.7
 */
 .text-ec-gray { color: #999 !important; }
 .text-ec-lightGray { color: #ccc !important; }
+
+/*
+一覧ソートボタン
+
+一覧ページでのソートボタン用のクラスを定義しています
+ */
+.js-listSort {
+  color: $black40;
+
+  &:hover {
+    color: $black40;
+  }
+
+  &.listSort-current {
+    color: $black85;
+  }
+
+  .fa {
+    display:inline-block;
+    width: 1em;
+    margin-left: 3px;
+  }
+
+  &:hover {
+    .fa-arrow-up:before {
+      content: "\f0aa"; // fa-arrow-circle-up
+    }
+
+    .fa-arrow-down:before {
+      content: "\f0ab"; // fa-arrow-circle-down
+    }
+  }
+}
+
+/*
+画像アップロードパネル
+
+画像アップロード用のクラスを定義しています
+*/
+.filepond--item {
+    width: 170px;
+}
+.filepond--panel-root {
+    background-color: #fff;
+    border: dashed 1px #ccc;
+}
+
+/*
+オーナーズストア > プラグインを探す
+オーナーズストアのモーダル画面
+*/
+.modal-content{
+    img{
+      max-width: 100%;
+    }
+}
+
+/*
+オーナーズストア > 独自プラグインのアップロード
+*/
+#plugin_local_install_plugin_archive{
+  vertical-align: middle;
+}
+/*
+プロダクト > カテゴリー
+カテゴリの余白
+*/
+.list-unstyled{
+  li{
+    margin-bottom: .5em;
+  }
+}

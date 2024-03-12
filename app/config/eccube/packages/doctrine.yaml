@@ -5,15 +5,18 @@ parameters:
     # You should not need to change this value.
     env(DATABASE_URL): ''
     env(DATABASE_SERVER_VERSION): ~
+    env(DATABASE_CHARSET): 'utf8'
+
 doctrine:
     dbal:
         driver: 'pdo_sqlite'
         server_version: "%env(DATABASE_SERVER_VERSION)%"
-        charset: utf8
+        charset: '%env(DATABASE_CHARSET)%'
 
         # for mysql only
         default_table_options:
-          collate: 'utf8_general_ci'
+            charset: 'utf8mb4'
+            collation: 'utf8mb4_bin'
 
         # With Symfony 3.3, remove the `resolve:` prefix
         url: '%env(DATABASE_URL)%'
@@ -22,9 +25,10 @@ doctrine:
         types:
             datetime: 'Eccube\Doctrine\DBAL\Types\UTCDateTimeType'
             datetimetz: 'Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType'
+        default_connection: 'default'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         dql:
             string_functions:

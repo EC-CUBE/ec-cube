@@ -1,7 +1,8 @@
 @import url('../../../../../node_modules/normalize.css/normalize.css');
+@import "mixins/variables";
+@import "../../../../../node_modules/bootstrap/scss/bootstrap";
 
 body {
-  font-family: Roboto, "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Arial, "メイリオ", Meiryo, sans-serif;
   color:#525263;
   transition: z-index 0ms 5.28455ms;
   background: #f6f6f6;
@@ -50,6 +51,7 @@ p {
 @import "project/12.6.newItem";
 @import "project/12.7.category";
 @import "project/12.8.news";
+@import "project/12.9.calendar";
 @import "project/13.1.searchnav";
 @import "project/13.2.shelf";
 @import "project/13.3.pager";

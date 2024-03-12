@@ -24,13 +24,13 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class PurchaseFlowPass implements CompilerPassInterface
 {
-    const ITEM_PREPROCESSOR_TAG = 'eccube.item.preprocessor';
-    const ITEM_VALIDATOR_TAG = 'eccube.item.validator';
-    const ITEM_HOLDER_PREPROCESSOR_TAG = 'eccube.item.holder.preprocessor';
-    const ITEM_HOLDER_VALIDATOR_TAG = 'eccube.item.holder.validator';
-    const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
-    const DISCOUNT_PROCESSOR_TAG = 'eccube.discount.processor';
-    const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
+    public const ITEM_PREPROCESSOR_TAG = 'eccube.item.preprocessor';
+    public const ITEM_VALIDATOR_TAG = 'eccube.item.validator';
+    public const ITEM_HOLDER_PREPROCESSOR_TAG = 'eccube.item.holder.preprocessor';
+    public const ITEM_HOLDER_VALIDATOR_TAG = 'eccube.item.holder.validator';
+    public const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
+    public const DISCOUNT_PROCESSOR_TAG = 'eccube.discount.processor';
+    public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
     public function process(ContainerBuilder $container)
     {
@@ -50,7 +50,8 @@ class PurchaseFlowPass implements CompilerPassInterface
             self::PURCHASE_PROCESSOR_TAG => 'addPurchaseProcessor',
         ];
 
-        AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../../src');
+        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
+        //AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../../src');
         $reader = new AnnotationReader();
 
         foreach ($processorTags as $tag => $methodName) {
@@ -61,6 +62,7 @@ class PurchaseFlowPass implements CompilerPassInterface
                     $anno = $reader->getClassAnnotation(new \ReflectionClass($def->getClass()), $annotationName);
                     if ($anno) {
                         $purchaseFlowDef->addMethodCall($methodName, [new Reference($id)]);
+                        $purchaseFlowDef->setPublic(true);
                     }
                 }
             }

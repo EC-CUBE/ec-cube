@@ -67,12 +67,15 @@ class ContactType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('contents', TextareaType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_lltext_len'],
+                    ])
                 ],
             ]);
     }

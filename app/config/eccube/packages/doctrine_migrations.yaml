@@ -1,4 +1,6 @@
 doctrine_migrations:
-    dir_name: "%kernel.project_dir%/app/DoctrineMigrations"
-    namespace: DoctrineMigrations
-    organize_migrations: false
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        'DoctrineMigrations': '%kernel.project_dir%/app/DoctrineMigrations'
+    enable_profiler: '%kernel.debug%'

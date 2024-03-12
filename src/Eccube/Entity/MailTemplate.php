@@ -226,7 +226,7 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
          *
          * @return MailTemplate
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

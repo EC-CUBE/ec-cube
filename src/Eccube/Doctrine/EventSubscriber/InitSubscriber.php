@@ -33,7 +33,7 @@ class InitSubscriber implements EventSubscriber
     public function postConnect(ConnectionEventArgs $args)
     {
         $db = $args->getConnection();
-        $platform = $args->getDatabasePlatform()->getName();
+        $platform = $args->getConnection()->getDatabasePlatform()->getName();
 
         if ($platform === 'mysql') {
             $db->executeQuery("SET SESSION time_zone = '+00:00'");

@@ -1,0 +1,6 @@
+modules:
+    config:
+        WebDriver:
+            url: '%BASE_URL%'
+            http_proxy: '%VADDY_PROXY%'
+            http_proxy_port: '%VADDY_PROXY_PORT%'

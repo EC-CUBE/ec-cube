@@ -32,15 +32,15 @@ final class Version20210319122142 extends AbstractMigration
             LoginHistoryStatus::SUCCESS => $lang === 'en' ? 'Success' : '成功',
         ];
 
-        $sortNo = $this->connection->fetchColumn('SELECT MAX(sort_no) + 1 FROM mtb_login_history_status');
+        $sortNo = $this->connection->fetchOne('SELECT MAX(sort_no) + 1 FROM mtb_login_history_status');
         if (is_null($sortNo)) {
             $sortNo = 0;
         }
 
         foreach ($statuses as $id => $name) {
-            $statusExists = $this->connection->fetchColumn(
+            $statusExists = $this->connection->fetchOne(
                 'SELECT COUNT(*) FROM mtb_login_history_status WHERE id = :id',
-                [':id' => $id]
+                ['id' => $id]
             );
 
             if ($statusExists == 0) {

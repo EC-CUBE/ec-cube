@@ -13,8 +13,8 @@
 
 namespace Plugin\EntityForm\Entity;
 
-use Eccube\Annotation\EntityExtension;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Annotation\EntityExtension;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

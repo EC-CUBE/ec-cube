@@ -199,6 +199,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $option_product_delivery_fee = false;
 
         /**
+         * @var string|null
+         *
+         * @ORM\Column(name="invoice_registration_number", type="string", length=255, nullable=true)
+         */
+        private $invoice_registration_number;
+
+        /**
          * @var boolean
          *
          * @ORM\Column(name="option_product_tax_rule", type="boolean", options={"default":false})
@@ -220,6 +227,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $option_remember_me = true;
 
         /**
+         * @var boolean
+         *
+         * @ORM\Column(name="option_mail_notifier", type="boolean", options={"default":false})
+         */
+        private $option_mail_notifier = false;
+
+        /**
          * @var string|null
          *
          * @ORM\Column(name="authentication_key", type="string", length=255, nullable=true)
@@ -228,6 +242,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
 
         /**
          * @var string|null
+         *
          * @deprecated 使用していないため、削除予定
          *
          * @ORM\Column(name="php_path", type="string", length=255, nullable=true)
@@ -840,6 +855,30 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
+         * Set invoiceRegistrationNumber.
+         *
+         * @param string $invoiceRegistrationNumber
+         *
+         * @return BaseInfo
+         */
+        public function setInvoiceRegistrationNumber($invoiceRegistrationNumber)
+        {
+            $this->invoice_registration_number = $invoiceRegistrationNumber;
+
+            return $this;
+        }
+
+        /**
+         * Get invoiceRegistrationNumber.
+         *
+         * @return string|null
+         */
+        public function getInvoiceRegistrationNumber()
+        {
+            return $this->invoice_registration_number;
+        }
+
+        /**
          * Set optionProductTaxRule.
          *
          * @param boolean $optionProductTaxRule
@@ -912,6 +951,31 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
+         * Set optionMailNotifier.
+         *
+         * @param boolean $optionRememberMe
+         *
+         * @return BaseInfo
+         */
+        public function setOptionMailNotifier($optionRememberMe)
+        {
+            $this->option_mail_notifier = $optionRememberMe;
+
+            return $this;
+        }
+
+        /**
+         * Get optionRememberMe.
+         *
+         * @return boolean
+         */
+        public function isOptionMailNotifier()
+        {
+            return $this->option_mail_notifier;
+        }
+
+
+        /**
          * Set authenticationKey.
          *
          * @param string|null $authenticationKey
@@ -942,7 +1006,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
          *
          * @return BaseInfo
          */
-        public function setCountry(\Eccube\Entity\Master\Country $country = null)
+        public function setCountry(Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -966,7 +1030,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
          *
          * @return BaseInfo
          */
-        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        public function setPref(Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -1056,7 +1120,8 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
-         * @return null|string
+         * @return string|null
+         *
          * @deprecated 使用していないため、削除予定
          */
         public function getPhpPath()
@@ -1065,7 +1130,8 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
-         * @param null|string $php_path
+         * @param string|null $php_path
+         *
          * @deprecated 使用していないため、削除予定
          *
          * @return $this

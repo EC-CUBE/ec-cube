@@ -38,7 +38,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag")
+     * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag", methods={"GET", "POST"})
      * @Template("@admin/Product/tag.twig")
      *
      * @param Request $request
@@ -64,7 +64,7 @@ class TagController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -140,7 +140,7 @@ class TagController extends AbstractController
                     'Tag' => $Tag,
                 ], $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_TAG_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -185,6 +185,6 @@ class TagController extends AbstractController
             $request
         );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_TAG_INDEX_COMPLETE);
     }
 }
