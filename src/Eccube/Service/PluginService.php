@@ -155,13 +155,14 @@ class PluginService
      *
      * @param string $path   path to tar.gz/zip plugin file
      * @param int    $source
+     * @param bool   $notExists
      *
      * @return boolean
      *
      * @throws PluginException
      * @throws \Exception
      */
-    public function install($path, $source = 0)
+    public function install($path, $source = 0, $notExists = false)
     {
         $pluginBaseDir = null;
         $tmp = null;
@@ -194,6 +195,11 @@ class PluginService
             $this->postInstall($config, $source);
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp, $pluginBaseDir]);
+            if ($e->getMessage() === 'plugin already installed.' && $notExists) {
+
+                return true;
+            }
+
             throw $e;
         } catch (\Exception $e) {
             // インストーラがどんなExceptionを上げるかわからないので
@@ -206,10 +212,11 @@ class PluginService
 
     /**
      * @param $code string sプラグインコード
+     * @param bool $notExists
      *
      * @throws PluginException
      */
-    public function installWithCode($code)
+    public function installWithCode($code, $notExists = false)
     {
         $this->pluginContext->setCode($code);
         $this->pluginContext->setInstall();
@@ -235,9 +242,18 @@ class PluginService
             }
         }
 
-        $this->checkSamePlugin($config['code']);
-        $this->copyAssets($config['code']);
-        $this->postInstall($config, $config['source']);
+        try {
+            $this->checkSamePlugin($config['code']);
+            $this->copyAssets($config['code']);
+            $this->postInstall($config, $config['source']);
+        } catch (PluginException $e) {
+            if ($e->getMessage() === 'plugin already installed.' && $notExists) {
+
+                return true;
+            }
+
+            throw $e;
+        }
     }
 
     // インストール事前処理
