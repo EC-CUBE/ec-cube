@@ -173,3 +173,4 @@ parameters:
       - pdf
     eccube_login_throttling_max_attempts: 5
     eccube_login_throttling_interval: '30 minutes'
+    eccube_max_number_new_items_get: 5

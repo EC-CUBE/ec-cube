@@ -20,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class NewItemController extends AbstractController
+class AutoNewItemController extends AbstractController
 {
     /**
      * @var ProductRepository
@@ -41,8 +41,8 @@ class NewItemController extends AbstractController
     }
 
     /**
-     * @Route("/block/new_item", name="block_new_item")
-     * @Template("Block/new_item.twig")
+     * @Route("/block/auto_new_item", name="block_auto_new_item")
+     * @Template("Block/auto_new_item.twig")
      *
      * @param Request $request
      * @return array
@@ -52,7 +52,7 @@ class NewItemController extends AbstractController
         $qb = $this->productRepository->getQueryBuilderBySearchData([
             'orderby' => $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']),
         ])
-        ->setMaxResults(5);
+            ->setMaxResults($this->eccubeConfig['eccube_max_number_new_items_get']);
 
         return [
             'Products' => $qb->getQuery()->getResult(),

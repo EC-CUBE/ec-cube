@@ -24,4 +24,14 @@ class NewItemTest extends AbstractWebTestCase
         $node = $crawler->filter('.ec-newItemRole__listItemTitle');
         $this->assertTrue(count($node) > 0);
     }
+
+    public function testAutoNewItemBlock()
+    {
+        $this->markTestSkipped('This element is not displayed by default.');
+
+        // 自動取得の新着商品が表示されている
+        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $node = $crawler->filter('.__getAutoNewItemBlock');
+        $this->assertTrue(count($node) > 0);
+    }
 }
