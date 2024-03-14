@@ -22,6 +22,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class PurchaseFlowPass implements CompilerPassInterface
@@ -41,7 +42,7 @@ class PurchaseFlowPass implements CompilerPassInterface
         $flowTypes = [
             PurchaseContext::CART_FLOW => $container->findDefinition('eccube.purchase.flow.cart'),
             PurchaseContext::SHOPPING_FLOW => $container->findDefinition('eccube.purchase.flow.shopping'),
-            PurchaseContext::ORDER_FLOW => $container->findDefinition('eccube.purchase.flow.order')
+            PurchaseContext::ORDER_FLOW => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
         /**
@@ -68,7 +69,7 @@ class PurchaseFlowPass implements CompilerPassInterface
             OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
-        AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../../src');
+        AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__ . '/../../../../src');
         $reader = new AnnotationReader();
 
         /**

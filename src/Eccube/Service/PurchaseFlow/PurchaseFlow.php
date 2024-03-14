@@ -121,6 +121,7 @@ class PurchaseFlow
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
+                var_dump(get_class($itemValidator));
                 $result = $itemValidator->execute($item, $context);
                 $flowResult->addProcessResult($result);
             }
@@ -227,37 +228,51 @@ class PurchaseFlow
 
     public function addPurchaseProcessor(PurchaseProcessor $processor)
     {
-        $this->purchaseProcessors[] = $processor;
+        if (false === $this->purchaseProcessors->contains($processor)) {
+            $this->purchaseProcessors[] = $processor;
+        }
     }
 
     public function addItemHolderPreprocessor(ItemHolderPreprocessor $holderPreprocessor)
     {
-        $this->itemHolderPreprocessors[] = $holderPreprocessor;
+        if (false === $this->itemHolderPreprocessors->contains($holderPreprocessor)) {
+            $this->itemHolderPreprocessors[] = $holderPreprocessor;
+        }
     }
 
     public function addItemPreprocessor(ItemPreprocessor $itemPreprocessor)
     {
-        $this->itemPreprocessors[] = $itemPreprocessor;
+        if (false === $this->itemPreprocessors->contains($itemPreprocessor)) {
+            $this->itemPreprocessors[] = $itemPreprocessor;
+        }
     }
 
     public function addItemValidator(ItemValidator $itemValidator)
     {
-        $this->itemValidators[] = $itemValidator;
+        if (false === $this->itemValidators->contains($itemValidator)) {
+            $this->itemValidators[] = $itemValidator;
+        }
     }
 
     public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator)
     {
-        $this->itemHolderValidators[] = $itemHolderValidator;
+        if (false === $this->itemHolderValidators->contains($itemHolderValidator)) {
+            $this->itemHolderValidators[] = $itemHolderValidator;
+        }
     }
 
     public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderValidator)
     {
-        $this->itemHolderPostValidators[] = $itemHolderValidator;
+        if (false === $this->itemHolderPostValidators->contains($itemHolderValidator)) {
+            $this->itemHolderPostValidators[] = $itemHolderValidator;
+        }
     }
 
     public function addDiscountProcessor(DiscountProcessor $discountProcessor)
     {
-        $this->discountProcessors[] = $discountProcessor;
+        if (false === $this->discountProcessors->contains($discountProcessor)) {
+            $this->discountProcessors[] = $discountProcessor;
+        }
     }
 
     /**
@@ -384,7 +399,7 @@ class PurchaseFlow
             return get_class($processor);
         };
         $flows = [
-            0 => $this->flowType.' flow',
+            0 => $this->flowType . ' flow',
             'ItemValidator' => $this->itemValidators->map($callback)->toArray(),
             'ItemHolderValidator' => $this->itemHolderValidators->map($callback)->toArray(),
             'ItemPreprocessor' => $this->itemPreprocessors->map($callback)->toArray(),
@@ -401,9 +416,9 @@ class PurchaseFlow
         $out = '';
         foreach ($tree as $key => $value) {
             if (is_numeric($key)) {
-                $out .= $value.PHP_EOL;
+                $out .= $value . PHP_EOL;
             } else {
-                $out .= $key.PHP_EOL;
+                $out .= $key . PHP_EOL;
             }
         }
 
