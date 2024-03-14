@@ -14,6 +14,7 @@
 namespace Eccube\DependencyInjection\Compiler;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Annotation\CartFlow;
 use Eccube\Annotation\OrderFlow;
 use Eccube\Annotation\ShoppingFlow;
@@ -67,6 +68,7 @@ class PurchaseFlowPass implements CompilerPassInterface
             OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
+        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
         //AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__ . '/../../../../src');
         $reader = new AnnotationReader();
 
