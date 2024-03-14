@@ -69,7 +69,8 @@ class PurchaseFlowPass implements CompilerPassInterface
             OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
-        AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__ . '/../../../../src');
+        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
+        //AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../../src');
         $reader = new AnnotationReader();
 
         /**
