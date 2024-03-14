@@ -121,7 +121,6 @@ class PurchaseFlow
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
-                var_dump(get_class($itemValidator));
                 $result = $itemValidator->execute($item, $context);
                 $flowResult->addProcessResult($result);
             }
