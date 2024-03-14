@@ -34,12 +34,13 @@ use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Psr\Container\ContainerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -668,6 +669,14 @@ class ShoppingController extends AbstractShoppingController
 
         $CustomerAddress = new CustomerAddress();
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+
+            $Customer = $this->getUser();
+            $addressCurrNum = count($Customer->getCustomerAddresses());
+            $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
+            if ($addressCurrNum >= $addressMax) {
+                throw new NotFoundHttpException();
+            }
+
             // ログイン時は会員と紐付け
             $CustomerAddress->setCustomer($this->getUser());
         } else {

@@ -217,7 +217,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->verify();
 
         // フロント側から, product_class_id = 1 をカート投入
-        $client = $this->createClient();
+        $client = $this->client;
         $crawler = $client->request('POST', '/cart/add', ['product_class_id' => 1]);
         $this->app['eccube.service.cart']->lock();
 

@@ -23,7 +23,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.4'
+          php-version: '8.1'
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
@@ -49,18 +49,18 @@ jobs:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 14
         run: |
-          bin/console eccube:composer:require "ec-cube/recommend42"
-          bin/console eccube:composer:require "ec-cube/coupon42"
-          bin/console eccube:composer:require "ec-cube/mailmagazine42"
-          bin/console eccube:composer:require "ec-cube/salesreport42"
-          bin/console eccube:composer:require "ec-cube/relatedproduct42"
-          bin/console eccube:composer:require "ec-cube/securitychecker42"
-          bin/console eccube:composer:require "ec-cube/productreview42"
-          bin/console eccube:composer:require "ec-cube/api42"
-          bin/console eccube:composer:require "ec-cube/sitekit42"
+          # bin/console eccube:composer:require "ec-cube/recommend42"
+          # bin/console eccube:composer:require "ec-cube/coupon42"
+          # bin/console eccube:composer:require "ec-cube/mailmagazine42"
+          # bin/console eccube:composer:require "ec-cube/salesreport42"
+          # bin/console eccube:composer:require "ec-cube/relatedproduct42"
+          # bin/console eccube:composer:require "ec-cube/securitychecker42"
+          # bin/console eccube:composer:require "ec-cube/productreview42"
+          # bin/console eccube:composer:require "ec-cube/api42"
+          # bin/console eccube:composer:require "ec-cube/sitekit42"
 
       - name: revert to config platform.php
-        run: composer config platform.php 7.4.0
+        run: composer config platform.php 8.1.0
 
       - name: Pre Install Plugins
         env:

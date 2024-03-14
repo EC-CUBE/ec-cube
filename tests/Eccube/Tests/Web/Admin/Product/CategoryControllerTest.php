@@ -301,13 +301,14 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testExport()
     {
-        // 2-0 という文字列が含まれる CSV が出力されるか
-        $this->expectOutputRegex('/2-0/');
-
         $this->client->request('GET',
             $this->generateUrl('admin_product_category_export')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // 2-0 という文字列が含まれる CSV が出力されるか
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/2-0/', $content);
     }
 
     private function newTestCategory($TestCreator, $TestParentCategory = null)

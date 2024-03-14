@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +21,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PluginGenerateCommand extends Command
@@ -38,14 +38,14 @@ class PluginGenerateCommand extends Command
     protected $fs;
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     protected function configure()
@@ -108,7 +108,7 @@ class PluginGenerateCommand extends Command
         $this->validateCode($code);
         $this->validateVersion($version);
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->eccubeConfig->get('kernel.project_dir').'/app/Plugin/'.$code;
 
         $this->createDirectories($pluginDir);
         $this->createConfig($pluginDir, $name, $code, $version);
@@ -136,7 +136,7 @@ class PluginGenerateCommand extends Command
             throw new InvalidArgumentException('The code [a-zA-Z_] is available.');
         }
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->eccubeConfig->get('kernel.project_dir').'/app/Plugin/'.$code;
         if (file_exists($pluginDir)) {
             throw new InvalidArgumentException('Plugin directory exists.');
         }

@@ -14,7 +14,6 @@
 namespace Eccube\DependencyInjection\Compiler;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Annotation\CartFlow;
 use Eccube\Annotation\OrderFlow;
 use Eccube\Annotation\ShoppingFlow;
@@ -22,7 +21,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class PurchaseFlowPass implements CompilerPassInterface

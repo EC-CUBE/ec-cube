@@ -16,7 +16,7 @@ namespace Eccube\Security\Core\Encoder;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
-class PasswordEncoder implements PasswordEncoderInterface
+class PasswordEncoder
 {
     /**
      * @var string

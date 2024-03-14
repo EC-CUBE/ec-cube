@@ -134,6 +134,13 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
         // 同じプラグインの二重インストールが蹴られるか
 
+        // --if-not-exists オプションの検証
+        try {
+            $this->service->install($tmpfile, 0, true);
+        } catch (\Eccube\Exception\PluginException $e) {
+            $this->fail('--if-not-exists オプションを指定した場合は例外が発生しない: '.$e->getMessage());
+        }
+
         // アンインストールできるか
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['code' => $tmpname]));
         $this->assertEquals(Constant::DISABLED, $plugin->isEnabled());
@@ -286,7 +293,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -353,7 +360,7 @@ EOD;
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -556,7 +563,7 @@ EOD;
 namespace Plugin\@@@@ ;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {

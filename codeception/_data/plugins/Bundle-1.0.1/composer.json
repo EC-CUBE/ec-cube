@@ -1,0 +1,18 @@
+{
+  "name": "ec-cube/bundle",
+  "version": "1.0.1",
+  "description": "Symfony Bundle tester",
+  "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "^2.0",
+    "league/oauth2-server-bundle": "^0.5",
+    "nyholm/psr7": "^1.2",
+    "php-http/message-factory": "*",
+    "webonyx/graphql-php": "^14.0"
+  },
+  "extra": {
+    "code": "Bundle",
+    "id": 101,
+    "entity-namespaces": ["League\\Bundle\\OAuth2ServerBundle\\Model"]
+  }
+}
