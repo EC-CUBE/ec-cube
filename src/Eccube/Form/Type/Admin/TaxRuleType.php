@@ -77,6 +77,7 @@ class TaxRuleType extends AbstractType
             $qb
                 ->select('count(t.id)')
                 ->where('t.apply_date = :apply_date')
+                ->andWhere('t.ProductClass IS NULL')
                 ->setParameter('apply_date', $TaxRule->getApplyDate());
 
             if ($TaxRule->getId()) {
