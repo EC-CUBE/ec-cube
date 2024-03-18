@@ -17,6 +17,33 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class NewItemTest extends AbstractWebTestCase
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // レイアウト管理に自動取得の新着商品を追加
+        $sql = "
+            insert into dtb_block_position (
+                section,
+                block_id,
+                layout_id,
+                block_row,
+                discriminator_type)
+            values(
+                7,
+                18,
+                1,
+                3,
+                'blockposition'
+            );";
+
+        $this->entityManager->getConnection()->exec($sql);
+    }
     public function testNewItemBlock()
     {
         // 新着商品が表示されている
@@ -27,8 +54,6 @@ class NewItemTest extends AbstractWebTestCase
 
     public function testAutoNewItemBlock()
     {
-        $this->markTestSkipped('This element is not displayed by default.');
-
         // 自動取得の新着商品が表示されている
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
         $node = $crawler->filter('.__getAutoNewItemBlock');
