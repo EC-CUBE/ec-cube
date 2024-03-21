@@ -23,6 +23,7 @@ jobs:
           - 'test/admin/customer_edit.test.ts'
           - 'test/admin/product_class_name.test.ts'
           - 'test/admin/order_mail.test.ts'
+          - 'test/admin/setting_shop_payment.test.ts'
           - 'test/admin/product.test.ts'
           - 'test/admin/product_csv_template.test.ts'
           - 'test/admin/content_block.test.ts'
