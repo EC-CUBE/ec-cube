@@ -55,6 +55,7 @@ use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -415,11 +416,11 @@ class Generator
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
             if ($with_image) {
-                $width = $faker->numberBetween(480, 640);
-                $height = $faker->numberBetween(480, 640);
-                $image = $faker->uuid.'.jpg';
-                $src = file_get_contents('https://placekitten.com/'.$width.'/'.$height);
-                file_put_contents(__DIR__.'/../../../../html/upload/save_image/'.$image, $src);
+                $image = $faker->uuid.'.png';
+                $src = __DIR__.'/../../../../html/upload/save_image/no_image_product.png';
+                $dist = __DIR__.'/../../../../html/upload/save_image/'.$image;
+                $fs = new Filesystem();
+                $fs->copy($src, $dist);
             } else {
                 $image = $faker->word.'.jpg';
             }
