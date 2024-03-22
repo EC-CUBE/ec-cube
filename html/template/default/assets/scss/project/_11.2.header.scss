@@ -857,3 +857,35 @@ Styleguide 11.2.7
     margin-top: 50px;
   }
 }
+
+/* devモードの追加 */
+.ec-debugModeAlert {
+  background: red;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: white;
+  z-index: 9999;
+  display: flex;
+  font-weight: bold;
+  & > * {
+  margin: auto;
+  }
+  & &__icon {
+  display: inline-block;
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  fill: #fff;
+  vertical-align: top;
+  }
+  & +* {
+    margin-top: 50px;
+  }
+}
+
+.ec-twoModeAlert + * {
+  margin-top: 100px;
+}

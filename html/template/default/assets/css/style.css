@@ -11363,7 +11363,6 @@ Styleguide 11.2.7
 .ec-maintenanceAlert + * {
   margin-top: 50px;
 }
-
 /* devモードの追加 */
 .ec-debugModeAlert {
   background: red;
@@ -11394,7 +11393,6 @@ Styleguide 11.2.7
 .ec-twoModeAlert + * {
   margin-top: 100px;
 }
-
 /**
 メディアクエリ
 SP フォーストで記述する。
