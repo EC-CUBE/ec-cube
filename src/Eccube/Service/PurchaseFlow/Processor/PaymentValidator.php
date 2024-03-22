@@ -20,13 +20,13 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.
  */
-class PaymentValidator extends ItemHolderValidator
+class PaymentValidator extends ItemHolderPostValidator
 {
     /**
      * @var DeliveryRepository

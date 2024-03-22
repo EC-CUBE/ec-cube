@@ -44,6 +44,36 @@ services:
     Eccube\Service\PurchaseFlow\Processor\AddPointProcessor:
         autowire: true
         public: true
+    Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\ClassCategoryValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator:
+        autowire: true
+        public: true
+    Eccube\Service\PurchaseFlow\Processor\PointRateProcessor:
+        autowire: true
+        public: true
     Eccube\Service\Composer\ComposerApiService:
         autowire: true
         public: true
