@@ -120,6 +120,7 @@ front.block.eyecatch.view_list: See all
 front.block.new_item.title__en: NEW ITEMS
 front.block.new_item.title__ja: New Items
 front.block.new_item.more: More
+# Deprecated https://github.com/EC-CUBE/ec-cube/pull/4920
 front.block.new_item.item_1_name: "Colorful Gelato: 'CUBE'"
 front.block.new_item.item_1_price: $1,200 (tax incl.)
 front.block.new_item.item_2_name: Cherry Ice Cream Sandwiches
