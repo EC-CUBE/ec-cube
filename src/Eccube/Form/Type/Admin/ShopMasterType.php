@@ -212,6 +212,14 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('ga_id', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
         ;
 
         $builder->add(

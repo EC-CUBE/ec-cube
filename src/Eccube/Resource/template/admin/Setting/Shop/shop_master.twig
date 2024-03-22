@@ -347,6 +347,23 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.ga'|trans }}</span></div>
+                        <div id="ex-shop-ga" class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.ga.tracking_id'|trans }}">
+                                        <span>{{ 'admin.setting.shop.shop.ga.tracking_id'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.ga_id, { attr : { placeholder : 'admin.common.ga.tracking_id' }} ) }}
+                                    {{ form_errors(form.ga_id) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
