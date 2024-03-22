@@ -22,6 +22,12 @@ parameters:
                 product_csv_import:
                     name: admin.product.product_csv_upload
                     url: admin_product_csv_import
+                class_name_csv_import:
+                    name: admin.product.class_name_csv_upload
+                    url: admin_product_class_name_csv_import
+                class_category_csv_import:
+                    name: admin.product.class_category_csv_upload
+                    url: admin_product_class_category_csv_import
                 category_csv_import:
                     name: admin.product.category_csv_upload
                     url: admin_product_category_csv_import

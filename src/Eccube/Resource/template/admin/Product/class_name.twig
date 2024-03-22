@@ -130,6 +130,24 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block main %}
+    <div class="c-outsideBlock">
+        <div class="c-outsideBlock__contents mb-2">
+            <div class="row">
+                <div class="col-12 text-right">
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-ec-regular" href="{{ url('admin_product_class_name_export') }}">
+                            <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                            <span>{{ 'admin.common.csv_download'|trans }}</span>
+                        </a>
+                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CLASS_NAME') }) }}">
+                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                            <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">

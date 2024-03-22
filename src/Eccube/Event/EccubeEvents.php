@@ -214,6 +214,9 @@ final class EccubeEvents
     // delete
     public const ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE = 'admin.product.class.category.delete.complete';
 
+    // export
+    const ADMIN_PRODUCT_CLASS_CATEGORY_CSV_EXPORT = 'admin.product.class.category.csv.export';
+
     /**
      * Admin/Product/ClassNameController
      */
@@ -223,6 +226,9 @@ final class EccubeEvents
 
     // delete
     public const ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE = 'admin.product.class.name.delete.complete';
+
+    // export
+    const ADMIN_PRODUCT_CLASS_NAME_CSV_EXPORT = 'admin.product.class.name.csv.export';
 
     /**
      * Admin/Product/CsvImportController
