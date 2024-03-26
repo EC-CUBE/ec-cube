@@ -31,9 +31,9 @@ class OwnersPluginListPage extends AbstractAdminNewPage
 
         return $page->goPage('/store/plugin', 'インストールプラグイン一覧');
     }
-    public function install($name)
+    public function install($code)
     {
-        $this->tester->click(['xpath' => '//span[contains(text(),"'.$name.'")]/ancestor::tr/td/a[contains(text(),"インストール")]']);
+        $this->tester->click(['xpath' => '//span[contains(text(),"'.$code.'")]/ancestor::tr/td/a[contains(text(),"インストール")]']);
         $this->tester->waitForText('以下のプラグインをインストールします');
         $this->tester->click('インストール');
         $this->tester->waitForElement('#installModal');
@@ -46,23 +46,23 @@ class OwnersPluginListPage extends AbstractAdminNewPage
         return $this;
     }
 
-    public function enable($name)
+    public function enable($code)
     {
-        $this->tester->click(['xpath' => '//span[contains(text(),"'.$name.'")]/ancestor::tr/td/div/div/a[span/i]']);
-        $this->tester->waitForText('「'.$name.'」を有効にしました。', 20);
+        $this->tester->click(['xpath' => '//p[contains(text(),"'.$code.'")]/ancestor::tr/td/div/div/a//i[@data-bs-original-title="有効化"]']);
+        $this->tester->waitForText('「'.$code.'」を有効にしました。', 20);
         return $this;
     }
 
-    public function disable($name)
+    public function disable($code)
     {
-        $this->tester->click(['xpath' => '//span[contains(text(),"'.$name.'")]/ancestor::tr/td/div/div/a[span/i]']);
-        $this->tester->waitForText('「'.$name.'」を無効にしました。', 20);
+        $this->tester->click(['xpath' => '//p[contains(text(),"'.$code.'")]/ancestor::tr/td/div/div/a//i[@data-bs-original-title="無効化"]']);
+        $this->tester->waitForText('「'.$code.'」を無効にしました。', 20);
         return $this;
     }
 
-    public function uninstall($name)
+    public function uninstall($code)
     {
-        $this->tester->click(['xpath' => '//span[contains(text(),"'.$name.'")]/ancestor::tr/td/div/div/a[i]']);
+        $this->tester->click(['xpath' => '//p[contains(text(),"'.$code.'")]/ancestor::tr/td/div/div/a//i[@data-bs-original-title="削除"]']);
         $this->tester->waitForText('このプラグインを削除してもよろしいですか？', 20, "#officialPluginDeleteModal");
 
         $this->tester->click("削除","#officialPluginDeleteModal");
