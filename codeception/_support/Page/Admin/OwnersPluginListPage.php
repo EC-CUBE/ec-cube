@@ -27,7 +27,6 @@ class OwnersPluginListPage extends AbstractAdminNewPage
 
     public static function go($I)
     {
-        echo 'go go go';
         $page = new self($I);
 
         return $page->goPage('/store/plugin', 'インストールプラグイン一覧');
