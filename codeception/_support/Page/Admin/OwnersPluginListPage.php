@@ -33,7 +33,7 @@ class OwnersPluginListPage extends AbstractAdminNewPage
     }
     public function install($code)
     {
-        $this->tester->click(['xpath' => '//span[contains(text(),"'.$code.'")]/ancestor::tr/td/a[contains(text(),"インストール")]']);
+        $this->tester->click(['xpath' => '//p[contains(text(),"'.$code.'")]/ancestor::tr/td/a[contains(text(),"インストール")]']);
         $this->tester->waitForText('以下のプラグインをインストールします');
         $this->tester->click('インストール');
         $this->tester->waitForElement('#installModal');
