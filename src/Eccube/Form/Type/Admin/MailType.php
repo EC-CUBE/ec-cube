@@ -30,11 +30,8 @@ class MailType extends AbstractType
     {
         $builder
             ->add('template', MailTemplateType::class, [
-                'required' => true,
+                'required' => false,
                 'mapped' => false,
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
             ])
             ->add('mail_subject', TextType::class, [
                 'required' => true,
@@ -56,6 +53,18 @@ class MailType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new TwigLint(),
+                ],
+            ])
+            ->add('name', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('file_name', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
                 ],
             ])
         ;
