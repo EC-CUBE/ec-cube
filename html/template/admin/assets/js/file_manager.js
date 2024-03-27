@@ -332,14 +332,13 @@
             eccube.fileManager.openFolder(path);
             return e.preventDefault();
         });
-        a.appendTo(label);
 
         label.attr('data-toggle', 'collapse');
         label.attr('href', '#' + path.replace('/', '_'));
         label.attr('aria-expanded', false);
         label.attr('aria-control', '');
         label.appendTo(li);
-
+        a.appendTo(li);
         if (currentPath.indexOf(path) !== 0) {
             label.addClass('collapsed')
         }

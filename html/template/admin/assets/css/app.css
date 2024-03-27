@@ -816,6 +816,47 @@ include /assets/tmpl/components/directory.pug
 
 Styleguide 7.0
 */
+.c-directoryTree li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  margin-bottom: 0;
+}
+.c-directoryTree li > a, .c-directoryTree li span {
+  flex: 1;
+  word-break: break-all;
+}
+.c-directoryTree ul {
+  width: 100%;
+}
+.c-directoryTree > ul {
+  margin-bottom: 0.5em;
+}
+.c-directoryTree ul > li > ul li > label {
+  margin-left: 10px;
+  position: relative;
+}
+.c-directoryTree ul > li > ul li:not(:last-of-type) > label::before {
+  margin-left: 2px;
+  margin-right: 0.5em;
+  content: "├";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+.c-directoryTree ul > li > ul li:last-of-type > label::before {
+  margin-right: 0.6em;
+  content: "└";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+.c-directoryTree ul > li ul > li ul li > label {
+  margin-left: 20px;
+}
+.c-directoryTree ul > li ul > li ul > li ul li > label {
+  margin-left: 30px;
+}
 .c-directoryTree label::before {
   content: "\f146";
   display: inline-block;
@@ -839,29 +880,6 @@ Styleguide 7.0
   font-family: "Font Awesome 5 Free";
   font-size: 16px;
   font-weight: 400;
-}
-.c-directoryTree ul > li > ul li > label {
-  margin-left: 10px;
-  position: relative;
-}
-.c-directoryTree ul > li > ul li > label span {
-  display: inline-block;
-  margin-left: 16px;
-}
-.c-directoryTree ul > li > ul li:not(:last-of-type) > label::before {
-  margin-left: 2px;
-  margin-right: 0.5em;
-  content: "├";
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-}
-.c-directoryTree ul > li > ul li:last-of-type > label::before {
-  margin-right: 0.6em;
-  content: "└";
-  display: inline-block;
-  width: 1em;
-  height: 1em;
 }
 .c-directoryTree ul > li > ul label::after {
   content: "\f146";
@@ -893,11 +911,26 @@ Styleguide 7.0
   position: absolute;
   left: 20px;
 }
-.c-directoryTree ul > li ul > li ul li > label {
-  margin-left: 20px;
+.c-directoryTree ul > li > ul li:not(:last-of-type) > label:before, .c-directoryTree ul > li > ul li:last-of-type > label:before {
+  margin-right: 1.6em;
 }
-.c-directoryTree ul > li ul > li ul > li ul li > label {
-  margin-left: 30px;
+.c-directoryTree label::before {
+  content: "\f146";
+}
+.c-directoryTree label[data-toggle=collapse]::before {
+  content: "\f146";
+}
+.c-directoryTree label.collapsed::before {
+  content: "\f0fe";
+}
+.c-directoryTree ul > li > ul label::after {
+  content: "\f146";
+}
+.c-directoryTree ul > li > ul label[data-toggle=collapse]::after {
+  content: "\f146";
+}
+.c-directoryTree ul > li > ul label.collapsed::after {
+  content: "\f0fe";
 }
 /*
 ディレクトリツリー（カテゴリ登録）
@@ -920,8 +953,25 @@ Styleguide 7.1
   max-height: 300px;
   overflow: scroll;
 }
+.c-directoryTree--register li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  margin-bottom: 0;
+}
+.c-directoryTree--register li > a, .c-directoryTree--register li span {
+  flex: 1;
+  word-break: break-all;
+}
+.c-directoryTree--register ul {
+  width: 100%;
+}
+.c-directoryTree--register > ul {
+  margin-bottom: 0.5em;
+}
 .c-directoryTree--register ul > li > ul li > label {
   margin-left: 10px;
+  position: relative;
 }
 .c-directoryTree--register ul > li > ul li:not(:last-of-type) > label::before {
   margin-left: 2px;
@@ -944,6 +994,14 @@ Styleguide 7.1
 .c-directoryTree--register ul > li ul > li ul > li ul li > label {
   margin-left: 30px;
 }
+.c-directoryTree--register input {
+  display: block;
+  margin-right: 10px;
+}
+.c-directoryTree--register label {
+  flex: 1;
+  word-break: break-all;
+}
 /*
 ディレクトリツリー（フォルダー）
 
@@ -956,37 +1014,25 @@ include /assets/tmpl/components/directory.pug
 
 Styleguide 7.2
 */
-.c-directoryTree--folder label::before {
-  content: "\f07b";
-  display: inline-block;
-  margin-right: 0.5em;
-  font-family: "Font Awesome 5 Free";
-  font-size: 16px;
-  font-weight: 400;
+.c-directoryTree--folder li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  margin-bottom: 0;
 }
-.c-directoryTree--folder label[data-toggle=collapse]::before {
-  content: "\f07c";
-  display: inline-block;
-  margin-right: 0.5em;
-  font-family: "Font Awesome 5 Free";
-  font-size: 16px;
-  font-weight: 400;
+.c-directoryTree--folder li > a, .c-directoryTree--folder li span {
+  flex: 1;
+  word-break: break-all;
 }
-.c-directoryTree--folder label.collapsed::before {
-  content: "\f07b";
-  display: inline-block;
-  margin-right: 0.5em;
-  font-family: "Font Awesome 5 Free";
-  font-size: 16px;
-  font-weight: 400;
+.c-directoryTree--folder ul {
+  width: 100%;
+}
+.c-directoryTree--folder > ul {
+  margin-bottom: 0.5em;
 }
 .c-directoryTree--folder ul > li > ul li > label {
   margin-left: 10px;
   position: relative;
-}
-.c-directoryTree--folder ul > li > ul li > label span, .c-directoryTree--folder ul > li > ul li > label a {
-  display: inline-block;
-  margin-left: 1.5rem;
 }
 .c-directoryTree--folder ul > li > ul li:not(:last-of-type) > label::before {
   margin-left: 2px;
@@ -1003,8 +1049,38 @@ Styleguide 7.2
   width: 1em;
   height: 1em;
 }
+.c-directoryTree--folder ul > li ul > li ul li > label {
+  margin-left: 20px;
+}
+.c-directoryTree--folder ul > li ul > li ul > li ul li > label {
+  margin-left: 30px;
+}
+.c-directoryTree--folder label::before {
+  content: "\f146";
+  display: inline-block;
+  margin-right: 0.5em;
+  font-family: "Font Awesome 5 Free";
+  font-size: 16px;
+  font-weight: 400;
+}
+.c-directoryTree--folder label[data-toggle=collapse]::before {
+  content: "\f146";
+  display: inline-block;
+  margin-right: 0.5em;
+  font-family: "Font Awesome 5 Free";
+  font-size: 16px;
+  font-weight: 400;
+}
+.c-directoryTree--folder label.collapsed::before {
+  content: "\f0fe";
+  display: inline-block;
+  margin-right: 0.5em;
+  font-family: "Font Awesome 5 Free";
+  font-size: 16px;
+  font-weight: 400;
+}
 .c-directoryTree--folder ul > li > ul label::after {
-  content: "\f07b";
+  content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
   font-family: "Font Awesome 5 Free";
@@ -1014,7 +1090,7 @@ Styleguide 7.2
   left: 20px;
 }
 .c-directoryTree--folder ul > li > ul label[data-toggle=collapse]::after {
-  content: "\f07c";
+  content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
   font-family: "Font Awesome 5 Free";
@@ -1024,7 +1100,7 @@ Styleguide 7.2
   left: 20px;
 }
 .c-directoryTree--folder ul > li > ul label.collapsed::after {
-  content: "\f07b";
+  content: "\f0fe";
   display: inline-block;
   margin-right: 0.5em;
   font-family: "Font Awesome 5 Free";
@@ -1033,11 +1109,26 @@ Styleguide 7.2
   position: absolute;
   left: 20px;
 }
-.c-directoryTree--folder ul > li ul > li ul li > label {
-  margin-left: 20px;
+.c-directoryTree--folder ul > li > ul li:not(:last-of-type) > label:before, .c-directoryTree--folder ul > li > ul li:last-of-type > label:before {
+  margin-right: 1.6em;
 }
-.c-directoryTree--folder ul > li ul > li ul > li ul li > label {
-  margin-left: 30px;
+.c-directoryTree--folder label::before {
+  content: "\f07b";
+}
+.c-directoryTree--folder label[data-toggle=collapse]::before {
+  content: "\f07c";
+}
+.c-directoryTree--folder label.collapsed::before {
+  content: "\f07b";
+}
+.c-directoryTree--folder ul > li > ul label::after {
+  content: "\f07b";
+}
+.c-directoryTree--folder ul > li > ul label[data-toggle=collapse]::after {
+  content: "\f07c";
+}
+.c-directoryTree--folder ul > li > ul label.collapsed::after {
+  content: "\f07b";
 }
 /*
 トグルスイッチ

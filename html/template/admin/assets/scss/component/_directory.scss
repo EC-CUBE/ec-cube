@@ -1,17 +1,62 @@
 @import "../library/_variable";
 @import "../mixin/_media";
-/*
-ディレクトリツリー
 
-ディレクトリ構造をツリー形式で表示します。
+@mixin directoryTree{
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    margin-bottom: 0;
+    > a, span {
+      flex: 1;
+      word-break: break-all;
+    }
+  }
+  ul {
+    width: 100%;
+  }
+  > ul {
+    margin-bottom: 0.5em;
+  }
+  //2層目以降
+  ul >li > ul {
+    li > label {
+      margin-left: 10px;
+      position: relative;
+    }
+    li:not(:last-of-type) > label::before {
+      margin-left: 2px;
+      margin-right: .5em;
+      content: "├";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+    li:last-of-type > label::before  {
+      margin-right: .6em;
+      content: "└";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+  }
 
-Markup:
-include /assets/tmpl/components/directory.pug
-+c-directoryTree
+  //3層目
+  ul >li ul >li ul  {
+    li > label {
+      margin-left: 20px;
+    }
+  }
+  //4層目
+  ul >li ul >li ul > li ul  {
+    li > label {
+      margin-left: 30px;
+    }
+  }
+}
 
-Styleguide 7.0
-*/
-.c-directoryTree {
+
+@mixin directoryLabelIcon{
   //1層目
   label {
     &::before {
@@ -46,31 +91,6 @@ Styleguide 7.0
   }
   //2層目以降
   ul >li > ul {
-    li > label {
-      margin-left: 10px;
-      position: relative;
-      span {
-        display: inline-block;
-        margin-left: 16px;
-      }
-
-    }
-    li:not(:last-of-type) > label::before {
-      margin-left: 2px;
-      margin-right: .5em;
-      content: "├";
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-    }
-
-    li:last-of-type > label::before  {
-      margin-right: .6em;
-      content: "└";
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-    }
     label {
       &::after {
         content: "\f146";
@@ -107,17 +127,62 @@ Styleguide 7.0
         left: 20px;
       }
     }
-  }
-  //3層目
-  ul >li ul >li ul  {
-    li > label {
-      margin-left: 20px;
+    li {
+      &:not(:last-of-type), &:last-of-type {
+        > label:before {
+          margin-right: 1.6em;
+        }
+      }
     }
   }
-  //4層目
-  ul >li ul >li ul > li ul  {
-    li > label {
-      margin-left: 30px;
+
+}
+/*
+ディレクトリツリー
+
+ディレクトリ構造をツリー形式で表示します。
+
+Markup:
+include /assets/tmpl/components/directory.pug
++c-directoryTree
+
+Styleguide 7.0
+*/
+.c-directoryTree {
+  @include directoryTree();
+  @include directoryLabelIcon();
+  //1層目
+  label {
+    &::before {
+      content: "\f146";
+    }
+  }
+  label[data-toggle="collapse"] {
+    &::before {
+      content: "\f146";
+    }
+  }
+  label.collapsed {
+    &::before {
+      content: "\f0fe";
+    }
+  }
+  //2層目以降
+  ul >li > ul {
+    label {
+      &::after {
+        content: "\f146";
+      }
+    }
+    label[data-toggle="collapse"] {
+      &::after {
+        content: "\f146";
+      }
+    }
+    label.collapsed {
+      &::after {
+        content: "\f0fe";
+      }
     }
   }
 }
@@ -141,42 +206,16 @@ include /assets/tmpl/components/directory.pug
 Styleguide 7.1
 */
 .c-directoryTree--register {
+  @include directoryTree();
   max-height: 300px;
   overflow: scroll;
-
-  //2層目以降
-  ul >li > ul {
-    li > label {
-      margin-left: 10px;
-    }
-    li:not(:last-of-type) > label::before {
-      margin-left: 2px;
-      margin-right: .5em;
-      content: "├";
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-    }
-
-    li:last-of-type > label::before  {
-      margin-right: .6em;
-      content: "└";
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-    }
+  input {
+    display: block;
+    margin-right: 10px;
   }
-  //3層目
-  ul >li ul >li ul  {
-    li > label {
-      margin-left: 20px;
-    }
-  }
-  //4層目
-  ul >li ul >li ul > li ul  {
-    li > label {
-      margin-left: 30px;
-    }
+  label {
+    flex: 1;
+    word-break: break-all;
   }
 }
 
@@ -194,110 +233,41 @@ Styleguide 7.2
 */
 
 .c-directoryTree--folder {
+  @include directoryTree();
+  @include directoryLabelIcon();
   //1層目
   label {
     &::before {
       content: "\f07b";
-      display: inline-block;
-      margin-right: .5em;
-      font-family: 'Font Awesome 5 Free';
-      font-size: 16px;
-      font-weight: 400;
     }
   }
   label[data-toggle="collapse"] {
     &::before {
       content: "\f07c";
-      display: inline-block;
-      margin-right: .5em;
-      font-family: 'Font Awesome 5 Free';
-      font-size: 16px;
-      font-weight: 400;
     }
   }
   label.collapsed {
     &::before {
       content: "\f07b";
-      display: inline-block;
-      margin-right: .5em;
-      font-family: 'Font Awesome 5 Free';
-      font-size: 16px;
-      font-weight: 400;
     }
   }
+
   //2層目以降
   ul >li > ul {
-    li > label {
-      margin-left: 10px;
-      position: relative;
-      span,a {
-        display: inline-block;
-        margin-left: 1.5rem;
-      }
-    }
-    li:not(:last-of-type) > label::before {
-      margin-left: 2px;
-      margin-right: .5em;
-      content: "├";
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-    }
-
-    li:last-of-type > label::before  {
-      margin-right: .6em;
-      content: "└";
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-    }
     label {
       &::after {
         content: "\f07b";
-        display: inline-block;
-        margin-right: .5em;
-        font-family: 'Font Awesome 5 Free';
-        font-size: 16px;
-        font-weight: 400;
-        position: absolute;
-        left: 20px;
       }
     }
     label[data-toggle="collapse"] {
       &::after {
         content: "\f07c";
-        display: inline-block;
-        margin-right: .5em;
-        font-family: 'Font Awesome 5 Free';
-        font-size: 16px;
-        font-weight: 400;
-        position: absolute;
-        left: 20px;
       }
     }
     label.collapsed {
       &::after {
         content: "\f07b";
-        display: inline-block;
-        margin-right: .5em;
-        font-family: 'Font Awesome 5 Free';
-        font-size: 16px;
-        font-weight: 400;
-        position: absolute;
-        left: 20px;
       }
-    }
-  }
-  //3層目
-  ul >li ul >li ul  {
-    li > label {
-      margin-left: 20px;
-    }
-  }
-  //4層目
-  ul >li ul >li ul > li ul  {
-    li > label {
-      margin-left: 30px;
     }
   }
 }
