@@ -131,10 +131,10 @@ class EntryController extends AbstractController
             return $this->redirectToRoute('mypage');
         }
 
-        /** @var $Customer \Eccube\Entity\Customer */
+        /** @var \Eccube\Entity\Customer $Customer */
         $Customer = $this->customerRepository->newCustomer();
 
-        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
@@ -146,7 +146,7 @@ class EntryController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE);
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
+        /** @var \Symfony\Component\Form\FormInterface $form */
         $form = $builder->getForm();
 
         $form->handleRequest($request);

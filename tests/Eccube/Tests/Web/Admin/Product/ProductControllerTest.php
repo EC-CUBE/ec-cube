@@ -528,7 +528,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
-        /** @var $ProductClass ProductClass */
+        /** @var ProductClass $ProductClass */
         $ProductClass = $testProduct->getProductClasses()->first();
         $ProductClass->setStock(0);
         $ProductClass->getProductStock()->setStock(0);
@@ -538,7 +538,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $searchForm['id'] = 'Product with stock';
 
-        /* @var $crawler Crawler*/
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_product'),
@@ -579,7 +579,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
-        /* @var $crawler Crawler*/
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_product'),
@@ -620,7 +620,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
-        /* @var $crawler Crawler*/
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_product'),
@@ -663,7 +663,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
-        /* @var $crawler Crawler*/
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_product'),
@@ -713,7 +713,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product name';
 
-        /* @var $crawler Crawler*/
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_product'),

@@ -386,10 +386,10 @@ class OrderHelper
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
         return array_map(function ($item) use ($ProductItemType) {
-            /* @var $item CartItem */
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            /** @var CartItem $item */
+            /** @var \Eccube\Entity\ProductClass $ProductClass */
             $ProductClass = $item->getProductClass();
-            /* @var $Product \Eccube\Entity\Product */
+            /** @var \Eccube\Entity\Product $Product */
             $Product = $ProductClass->getProduct();
 
             $OrderItem = new OrderItem();

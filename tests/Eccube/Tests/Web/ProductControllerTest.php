@@ -101,7 +101,7 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductClassSortByRank()
     {
-        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        /** @var \Eccube\Entity\ClassCategory $ClassCategory */
         //set チョコ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $ClassCategory->setSortNo(3);
@@ -138,7 +138,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionFavoriteProduct(true);
         $Product = $this->createProduct('Product no stock', 1);
-        /** @var $ProductClass ProductClass */
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock(0);
@@ -149,9 +149,9 @@ class ProductControllerTest extends AbstractWebTestCase
         $user = $this->createCustomer();
         $this->loginTo($user);
 
-        /** @var $client Client */
+        /** @var Client $client */
         $client = $this->client;
-        /** @var $crawler Crawler */
+        /** @var Crawler $crawler */
         $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -187,9 +187,9 @@ class ProductControllerTest extends AbstractWebTestCase
         $user = $this->createCustomer();
         $this->loginTo($user);
 
-        /** @var $client Client */
+        /** @var Client $client */
         $client = $this->client;
-        /** @var $crawler Crawler */
+        /** @var Crawler $crawler */
         $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -223,10 +223,10 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $user = $this->createCustomer();
 
-        /** @var $client Client */
+        /** @var Client $client */
         $client = $this->client;
 
-        /** @var $crawler Crawler */
+        /** @var Crawler $crawler */
         $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());

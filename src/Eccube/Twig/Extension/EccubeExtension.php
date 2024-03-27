@@ -250,7 +250,7 @@ class EccubeExtension extends AbstractExtension
             if (!$ProductClass->isVisible()) {
                 continue;
             }
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            /** @var \Eccube\Entity\ProductClass $ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
             if ($ClassCategory2 && !$ClassCategory2->isVisible()) {

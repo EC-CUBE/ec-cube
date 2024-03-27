@@ -614,7 +614,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      */
     public function testProductClassSortByRank()
     {
-        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        /** @var \Eccube\Entity\ClassCategory $ClassCategory */
         //set チョコ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $ClassCategory->setSortNo(3);

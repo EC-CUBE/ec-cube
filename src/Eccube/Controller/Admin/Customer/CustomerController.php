@@ -304,7 +304,7 @@ class CustomerController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $Customer \Eccube\Entity\Customer */
+                /** @var \Eccube\Entity\Customer $Customer */
                 $Customer = $entity;
 
                 $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();

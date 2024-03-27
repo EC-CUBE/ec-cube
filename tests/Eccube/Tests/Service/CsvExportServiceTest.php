@@ -106,7 +106,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->csvExportService->exportData(function ($entity, $csvService) {
             $Csvs = $csvService->getCsvs();
 
-            /** @var $Order \Eccube\Entity\Order */
+            /** @var \Eccube\Entity\Order $Order */
             $Order = $entity;
             $row = [];
             // CSV出力項目と合致するデータを取得.

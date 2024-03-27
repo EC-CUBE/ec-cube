@@ -543,7 +543,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $client = $this->client;
         $this->scenarioCartIn($Customer);
 
-        /** @var $crawler Crawler */
+        /** @var Crawler $crawler */
         $crawler = $this->scenarioConfirm($Customer);
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();

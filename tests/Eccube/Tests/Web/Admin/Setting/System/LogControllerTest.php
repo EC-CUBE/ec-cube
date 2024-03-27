@@ -97,7 +97,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData['line_max'] = $value;
 
-        /** @var $crawler Crawler */
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_log'),
@@ -133,7 +133,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
     private function createTestFile($number)
     {
-        /** @var $faker Generator */
+        /** @var Generator $faker */
         $faker = $this->getFaker();
 
         if (!file_exists($this->logTest)) {

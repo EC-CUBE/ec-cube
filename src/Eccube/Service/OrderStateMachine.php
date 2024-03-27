@@ -217,7 +217,7 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function onCompleted(Event $event)
     {
-        /** @var $context OrderStateMachineContext */
+        /** @var OrderStateMachineContext $context */
         $context = $event->getSubject();
         $Order = $context->getOrder();
         $CompletedOrderStatus = $this->orderStatusRepository->find($context->getStatus());

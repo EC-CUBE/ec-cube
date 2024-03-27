@@ -108,7 +108,7 @@ class TaxRuleController extends AbstractController
         $errors = [];
         /** @var TaxRule $TaxRule */
         foreach ($TaxRules as $TaxRule) {
-            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+            /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
             $builder = $this->formFactory->createBuilder(TaxRuleType::class, $TaxRule);
             if ($TaxRule->isDefaultTaxRule()) {
                 $builder->remove('apply_date');
