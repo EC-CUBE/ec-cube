@@ -187,5 +187,8 @@ file that was distributed with this source code.
     {{ include('snippet.twig', { snippets: plugin_snippets }) }}
 {% endif %}
     <script src="{{ asset('assets/js/customize.js', 'user_data') }}"></script>
+<script type="application/ld+json">
+{{ include('Schema/website.twig') }}
+</script>
 </body>
 </html>

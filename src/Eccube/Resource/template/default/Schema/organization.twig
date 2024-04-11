@@ -1,0 +1,44 @@
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": "{{url('homepage')}}",
+    "logo": {
+        "@type": "ImageObject",
+        "contentUrl": "{{ asset('assets/img/common/favicon.ico', 'user_data') }}"
+    },
+    "name": "{{BaseInfo.shop_name}}",
+    "alternateName": "{{BaseInfo.shop_name_eng}}",
+    "legalName": "{{BaseInfo.company_name}}",
+    "description": "{{BaseInfo.message}}",
+    "email": "{{BaseInfo.email01}}",
+    "telephone": "+81-{{BaseInfo.phone_number}}",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{BaseInfo.addr02}}",
+        "addressLocality": "{{BaseInfo.addr01}}",
+        "addressCountry": "JP",
+        "addressRegion": "{{BaseInfo.Pref.name}}",
+        "postalCode": "{{BaseInfo.postal_code}}"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+81-{{BaseInfo.phone_number}}",
+        "email": "{{BaseInfo.email02}}",
+        "url": "{{url('contact')}}"
+    }
+    {% if BaseInfo.invoice_registration_number is not null %}
+    ,"iso6523Code": "0221:{{BaseInfo.invoice_registration_number}}"
+    {% endif %}
+{#
+    ,"image": "{{ asset('assets/img/common/site_image.png', 'user_data') }}",
+    "sameAs": [
+        "https://twitter.com/EC_CUBE",
+        "https://www.ec-cube.net/"
+    ],
+    "numberOfEmployees": {
+        "@type": "QuantitativeValue",
+        "value": 2056
+    },
+    "foundingDate": "1970-01-01"
+#}
+}
