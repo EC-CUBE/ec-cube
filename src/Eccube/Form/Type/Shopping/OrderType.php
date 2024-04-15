@@ -173,8 +173,10 @@ class OrderType extends AbstractType
             }
             $Payment = !is_null($Payment) && in_array($Payment, $Payments, true) ?
                 $Payment : (current($Payments) ?: null);
-            $data['Payment'] = (string)$Payment->getId();
-            $event->setData($data);
+            if ( !is_null($Payment)) {
+                $data['Payment'] = (string)$Payment->getId();
+                $event->setData($data);
+            }
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments);
