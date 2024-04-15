@@ -165,6 +165,17 @@ class OrderType extends AbstractType
             $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
             $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
 
+            // フォームから送信された支払方法が選択肢に存在するかどうか
+            // 選択肢に存在しなければ、選択肢の中で最初の支払方法を選択状態にする
+            $Payment = null;
+            if ($data['Payment']) {
+                $Payment = $this->paymentRepository->find($data['Payment']);
+            }
+            $Payment = !is_null($Payment) && in_array($Payment, $Payments, true) ?
+                $Payment : (current($Payments) ?: null);
+            $data['Payment'] = (string)$Payment->getId();
+            $event->setData($data);
+
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments);
         });

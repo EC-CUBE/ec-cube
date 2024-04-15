@@ -1861,6 +1861,7 @@ purchase_flow.tax_rate_update: Tax Rate has been updated. Please confirm the tot
 purchase_flow.over_customer_point: You are not able to use points more than your current points.
 purchase_flow.over_payment_total: The points are more than the total amount.
 purchase_flow.over_stock: "%name% does not have enough stock."
+purchase_flow.payment_method_changed: "Payment method has been changed to %name% due to change in delivery method."
 
 #------------------------------------------------------------------------------------
 # Command
