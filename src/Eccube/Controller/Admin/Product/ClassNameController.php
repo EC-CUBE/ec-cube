@@ -249,7 +249,7 @@ class ClassNameController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_CSV_EXPORT, $event);
+//                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_CSV_EXPORT, $event);
 
                     $ExportCsvRow->pushData();
                 }
@@ -263,7 +263,6 @@ class ClassNameController extends AbstractController
         $filename = 'class_name_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         log_info('規格CSV出力ファイル名', [$filename]);
 
