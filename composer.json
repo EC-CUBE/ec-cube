@@ -116,7 +116,7 @@
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "^1.7",
         "symfony/browser-kit": "^6.4",
-        "symfony/phpunit-bridge": "^6.4"
+        "symfony/phpunit-bridge": "^7.0"
     },
     "autoload": {
         "files": [
