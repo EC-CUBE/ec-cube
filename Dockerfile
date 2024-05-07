@@ -64,6 +64,9 @@ COPY dockerbuild/docker-php-entrypoint /usr/local/bin/
 RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer
+# To avoid the following error:
+#   PHP Fatal error:  Declaration of Symfony\Flex\Command\RemoveCommand::execute(Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output) must be compatible with Composer\Command\RemoveCommand::execute(Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output): int in /var/www/html/vendor/symfony/flex/src/Command/RemoveCommand.php on line 30
+RUN composer self-update 2.6.6
 
 RUN composer config -g repos.packagist composer https://packagist.jp
 
