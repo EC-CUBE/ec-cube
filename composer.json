@@ -43,7 +43,7 @@
         "knplabs/knp-paginator-bundle": "^5.8",
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^2.5",
-        "nesbot/carbon": "^2",
+        "nesbot/carbon": "^3",
         "psr/cache": "^3.0",
         "psr/container": "^1.0",
         "psr/http-message": "^1.0",
