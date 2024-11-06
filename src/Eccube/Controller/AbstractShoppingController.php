@@ -18,6 +18,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractShoppingController extends AbstractController
 {
@@ -28,8 +29,8 @@ class AbstractShoppingController extends AbstractController
 
     /**
      * @param PurchaseFlow $shoppingPurchaseFlow
-     * @required
      */
+    #[Required]
     public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow)
     {
         $this->purchaseFlow = $shoppingPurchaseFlow;

@@ -106,7 +106,7 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
 
     public function クリックして選択タグ($num)
     {
-        $this->tester->click(['css' => "#allTags > div:nth-child(${num}) button"]);
+        $this->tester->click(['css' => "#allTags > div:nth-child({$num}) button"]);
 
         return $this;
     }

@@ -252,7 +252,7 @@ jobs:
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code};
+namespace Plugin\\{$code};
 
 use Eccube\\Common\\EccubeTwigBlock;
 
@@ -279,7 +279,7 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code};
+namespace Plugin\\{$code};
 
 use Eccube\\Common\\EccubeNav;
 
@@ -306,7 +306,7 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code};
+namespace Plugin\\{$code};
 
 use Symfony\\Component\\EventDispatcher\\EventSubscriberInterface;
 
@@ -335,11 +335,11 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Controller\\Admin;
+namespace Plugin\\{$code}\\Controller\\Admin;
 
 use Eccube\\Controller\\AbstractController;
-use Plugin\\${code}\\Form\\Type\\Admin\\ConfigType;
-use Plugin\\${code}\\Repository\\ConfigRepository;
+use Plugin\\{$code}\\Form\\Type\\Admin\\ConfigType;
+use Plugin\\{$code}\\Repository\\ConfigRepository;
 use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Template;
 use Symfony\\Component\\HttpFoundation\\Request;
 use Symfony\\Component\\Routing\\Annotation\\Route;
@@ -362,8 +362,8 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/${snakecased}/config", name="${snakecased}_admin_config")
-     * @Template("@${code}/admin/config.twig")
+     * @Route("/%eccube_admin_route%/{$snakecased}/config", name="{$snakecased}_admin_config")
+     * @Template("@{$code}/admin/config.twig")
      */
     public function index(Request \$request)
     {
@@ -377,7 +377,7 @@ class ConfigController extends AbstractController
             \$this->entityManager->flush();
             \$this->addSuccess('登録しました。', 'admin');
 
-            return \$this->redirectToRoute('${snakecased}_admin_config');
+            return \$this->redirectToRoute('{$snakecased}_admin_config');
         }
 
         return [
@@ -393,16 +393,16 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Entity;
+namespace Plugin\\{$code}\\Entity;
 
 use Doctrine\\ORM\\Mapping as ORM;
 
-if (!class_exists('\\Plugin\\${code}\\Entity\\Config', false)) {
+if (!class_exists('\\Plugin\\{$code}\\Entity\\Config', false)) {
     /**
      * Config
      *
-     * @ORM\Table(name="plg_${snakecased}_config")
-     * @ORM\Entity(repositoryClass="Plugin\\${code}\\Repository\\ConfigRepository")
+     * @ORM\Table(name="plg_{$snakecased}_config")
+     * @ORM\Entity(repositoryClass="Plugin\\{$code}\\Repository\\ConfigRepository")
      */
     class Config
     {
@@ -459,11 +459,11 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Repository;
+namespace Plugin\\{$code}\\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\\Repository\\AbstractRepository;
-use Plugin\\${code}\\Entity\\Config;
+use Plugin\\{$code}\\Entity\\Config;
 
 /**
  * ConfigRepository
@@ -509,9 +509,9 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Form\\Type\\Admin;
+namespace Plugin\\{$code}\\Form\\Type\\Admin;
 
-use Plugin\\${code}\\Entity\\Config;
+use Plugin\\{$code}\\Entity\\Config;
 use Symfony\\Component\\Form\\AbstractType;
 use Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType;
 use Symfony\\Component\\Form\\FormBuilderInterface;
@@ -554,7 +554,7 @@ EOL;
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}${code}{% endblock %}
+{% block title %}{$code}{% endblock %}
 {% block sub_title %}プラグイン一覧{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}

@@ -444,18 +444,18 @@ class PluginService
         }
 
         if (!is_array($meta)) {
-            throw new PluginException('config.yml not found or syntax error');
+            throw new PluginException('composer.json not found or syntax error');
         }
         if (!isset($meta['code']) || !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException('config.yml code empty or invalid_character(\W)');
+            throw new PluginException('composer.json code empty or invalid_character(\W)');
         }
         if (!isset($meta['name'])) {
-            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException('config.yml name empty');
+            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなし
+            throw new PluginException('composer.json name empty');
         }
         if (!isset($meta['version'])) {
-            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException('config.yml version invalid_character(\W) ');
+            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなし
+            throw new PluginException('composer.json version invalid_character(\W) ');
         }
     }
 
@@ -470,20 +470,20 @@ class PluginService
     {
         $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
         if (file_exists($composerJsonPath) === false) {
-            throw new PluginException("${composerJsonPath} not found.");
+            throw new PluginException("{$composerJsonPath} not found.");
         }
 
         $json = json_decode(file_get_contents($composerJsonPath), true);
         if ($json === null) {
-            throw new PluginException("Invalid json format. [${composerJsonPath}]");
+            throw new PluginException("Invalid json format. [{$composerJsonPath}]");
         }
 
         if (!isset($json['version'])) {
-            throw new PluginException("`version` is not defined in ${composerJsonPath}");
+            throw new PluginException("`version` is not defined in {$composerJsonPath}");
         }
 
         if (!isset($json['extra']['code'])) {
-            throw new PluginException("`extra.code` is not defined in ${composerJsonPath}");
+            throw new PluginException("`extra.code` is not defined in {$composerJsonPath}");
         }
 
         return [
@@ -678,7 +678,7 @@ class PluginService
         }
 
         $enabledPluginEntityDirs = array_map(function ($code) {
-            return $this->projectRoot."/app/Plugin/${code}/Entity";
+            return $this->projectRoot."/app/Plugin/{$code}/Entity";
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(

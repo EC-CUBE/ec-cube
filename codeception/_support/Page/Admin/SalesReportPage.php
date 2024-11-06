@@ -69,9 +69,9 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
 
     public function 期間で集計($start, $end)
     {
-        $this->tester->executeJS("$('#sales_report_term_start').val('${start}')");
+        $this->tester->executeJS("$('#sales_report_term_start').val('{$start}')");
         $this->tester->wait(1);
-        $this->tester->executeJS("$('#sales_report_term_end').val('${end}')");
+        $this->tester->executeJS("$('#sales_report_term_end').val('{$end}')");
         $this->tester->wait(1);
         $this->tester->click(['id' => 'btn-term']);
         return $this;

@@ -46,19 +46,19 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 一覧_編集($rowNum)
     {
-        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) a[data-bs-original-title=編集]");
+        $this->tester->click(".c-contentsArea .list-group > li:nth-child({$rowNum}) a[data-bs-original-title=編集]");
 
         return $this;
     }
 
     public function 一覧_タイトル($rowNum)
     {
-        return $this->tester->grabTextFrom(['css' => ".c-contentsArea .list-group li:nth-child(${rowNum}) a:nth-of-type(1)"]);
+        return $this->tester->grabTextFrom(['css' => ".c-contentsArea .list-group li:nth-child({$rowNum}) a:nth-of-type(1)"]);
     }
 
     public function 一覧_下へ($rowNum)
     {
-        $this->tester->click(" ul .list-group li:nth-child(${rowNum})
+        $this->tester->click(" ul .list-group li:nth-child({$rowNum})
      div > div :nth-child(4) > a");
 
         return $this;
@@ -66,7 +66,7 @@ class NewsManagePage extends AbstractAdminPage
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click(".c-contentsArea .list-group > li:nth-child(${rowNum}) [data-bs-original-title=削除] a");
+        $this->tester->click(".c-contentsArea .list-group > li:nth-child({$rowNum}) [data-bs-original-title=削除] a");
 
         return $this;
     }

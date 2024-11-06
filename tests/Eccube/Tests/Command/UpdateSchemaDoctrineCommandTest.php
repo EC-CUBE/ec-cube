@@ -421,7 +421,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $tar->addFromString('Entity/HogeTrait.php', <<< EOT
 <?php
 
-namespace Plugin\\${tmpname}\\Entity;
+namespace Plugin\\{$tmpname}\\Entity;
 
 use Eccube\Annotation\EntityExtension;
 use Doctrine\ORM\Mapping as ORM;

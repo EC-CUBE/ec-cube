@@ -36,15 +36,15 @@ class RecommendManagePage extends AbstractAdminPageStyleGuide
 
     public function 編集($i)
     {
-        $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][${i}]//a[1]"]);
+        $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//a[1]"]);
         return $this;
     }
 
     public function 削除($i)
     {
-        $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][${i}]//a[2]"]);
-        $this->tester->waitForElementVisible(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][${i}]//div[contains(@class, 'modal')]//a"]);
-        $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][${i}]//div[contains(@class, 'modal')]//a"]);
+        $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//a[2]"]);
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//div[contains(@class, 'modal')]//a"]);
+        $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//div[contains(@class, 'modal')]//a"]);
         return $this;
     }
 }

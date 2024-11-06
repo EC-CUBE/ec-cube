@@ -48,14 +48,14 @@ class ProductDetailPage extends AbstractFrontPage
 
     public function サムネイル切替($num)
     {
-        $this->tester->click("div:nth-child(1) > div > div.item_nav > div:nth-child(${num})");
+        $this->tester->click("div:nth-child(1) > div > div.item_nav > div:nth-child({$num})");
 
         return $this;
     }
 
     public function サムネイル画像URL($num)
     {
-        return $this->tester->grabAttributeFrom("div:nth-child(1) > div > div.item_nav > div:nth-child(${num}) > img", 'src');
+        return $this->tester->grabAttributeFrom("div:nth-child(1) > div > div.item_nav > div:nth-child({$num}) > img", 'src');
     }
 
     public function 規格選択($array)
@@ -81,7 +81,7 @@ class ProductDetailPage extends AbstractFrontPage
             $this->tester->selectOption(['id' => 'classcategory_id1'], $category1);
             if (!is_null($category2)) {
                 $category2_id = current(array_keys($category2));
-                $this->tester->waitForElement(['xpath' => "//*[@id='classcategory_id2']/option[@value='${category2_id}']"]);
+                $this->tester->waitForElement(['xpath' => "//*[@id='classcategory_id2']/option[@value='{$category2_id}']"]);
                 $this->tester->selectOption(['id' => 'classcategory_id2'], $category2);
             }
         }

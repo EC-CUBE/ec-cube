@@ -550,7 +550,7 @@ abstract class Abstract_Plugin
     {
         foreach ($this->columns as $column) {
             list($tableName, $columnName) = explode('.', $column);
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
             $this->I->assertTrue($exists, 'カラムがあるはず '.$column);
         }
     }
@@ -559,7 +559,7 @@ abstract class Abstract_Plugin
     {
         foreach ($this->columns as $column) {
             list($tableName, $columnName) = explode('.', $column);
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '${tableName}' AND column_name = '${columnName}';")->fetch()['count'] == 1;
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
             $this->I->assertFalse($exists, 'カラムがないはず '.$column);
         }
     }
@@ -767,7 +767,7 @@ class Store_Plugin extends Abstract_Plugin
     protected function publishPlugin($fileName)
     {
         $dirname = str_replace('.tgz', '', $fileName);
-        $this->I->assertTrue(!!$this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた ${fileName}");
+        $this->I->assertTrue(!!$this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた {$fileName}");
     }
 }
 

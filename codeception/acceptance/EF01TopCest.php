@@ -35,7 +35,7 @@ class EF01TopCest
         // キャッシュを削除して表示できるようにする
         $fs = new Symfony\Component\Filesystem\Filesystem();
         foreach (['prod', 'codeception'] as $env) {
-            $cacheDir = __DIR__."/../../var/cache/${env}/pools";
+            $cacheDir = __DIR__."/../../var/cache/{$env}/pools";
             if ($fs->exists($cacheDir)) {
                 $fs->remove($cacheDir);
             }

@@ -29,15 +29,15 @@ class ProductReviewManagePage extends AbstractAdminPageStyleGuide
 
     public function 編集($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[${i}]/td[8]/div[1]/a[1]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[{$i}]/td[8]/div[1]/a[1]"]);
         return $this;
     }
 
     public function 削除($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[${i}]/td[8]/div[1]/a[2]"]);
-        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[${i}]//div[contains(@class, 'modal')]//a[contains(@class, 'btn-ec-delete')]"]);
-        $this->tester->click(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[${i}]//div[contains(@class, 'modal')]//a[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[{$i}]/td[8]/div[1]/a[2]"]);
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[{$i}]//div[contains(@class, 'modal')]//a[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_product_review_admin_product_review\"]/div[1]/div[3]/div[3]/div/div/div[2]/div[1]/table/tbody/tr[{$i}]//div[contains(@class, 'modal')]//a[contains(@class, 'btn-ec-delete')]"]);
         return $this;
     }
 

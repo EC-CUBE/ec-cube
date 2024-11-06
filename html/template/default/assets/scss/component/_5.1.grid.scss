@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "../mixins/clearfix";
 @import "../mixins/media";
 
@@ -14,7 +15,7 @@
   min-height: 1px;
 
   @media (min-width: $desktop) {
-    width: percentage(($columns/ 12));
+    width: percentage(math.div($columns, 12));
   }
   @include media_desktop{
   }
@@ -169,7 +170,7 @@ Styleguide 5.1.5
     margin: 0;
     @include media_desktop {
       @include makeSmColumn(10);
-      margin-left: percentage((1 / 12));
+      margin-left: percentage(math.div(1, 12));
     }
   }
 }
@@ -193,7 +194,7 @@ Styleguide 5.1.6
     margin: 0;
     @include media_desktop {
       @include makeSmColumn(8);
-      margin-left: percentage((2 / 12));
+      margin-left: percentage(math.div(2, 12));
     }
   }
 }
@@ -215,7 +216,7 @@ Styleguide 5.1.7
     margin: 0;
     @include media_desktop {
       @include makeSmColumn(6);
-      margin-left: percentage((3 / 12));
+      margin-left: percentage(math.div(3, 12));
     }
   }
 }
@@ -238,7 +239,7 @@ Styleguide 5.1.8
     margin: 0;
     @include media_desktop {
       @include makeSmColumn(4);
-      margin-left: percentage((4 / 12));
+      margin-left: percentage(math.div(4, 12));
     }
   }
 }

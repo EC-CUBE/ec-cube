@@ -29,9 +29,9 @@ class ApiOauthPage extends AbstractAdminPageStyleGuide
 
     public function 削除($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_admin_api_oauth\"]/div[1]//table/tbody/tr[${i}]/td[6]/div/div/div[1]/a"]);
-        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"page_admin_api_oauth\"]/div[1]//table/tbody/tr[${i}]/td[6]//a[contains(@class, 'btn-ec-delete')]"]);
-        $this->tester->click(['xpath' => "//*[@id=\"page_admin_api_oauth\"]/div[1]//table/tbody/tr[${i}]/td[6]//a[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_admin_api_oauth\"]/div[1]//table/tbody/tr[{$i}]/td[6]/div/div/div[1]/a"]);
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"page_admin_api_oauth\"]/div[1]//table/tbody/tr[{$i}]/td[6]//a[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_admin_api_oauth\"]/div[1]//table/tbody/tr[{$i}]/td[6]//a[contains(@class, 'btn-ec-delete')]"]);
         return $this;
     }
 

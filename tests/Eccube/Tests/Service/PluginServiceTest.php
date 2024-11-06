@@ -79,9 +79,9 @@ class PluginServiceTest extends AbstractServiceTestCase
     /*
        正しいプラグインの条件
        * tar/zipアーカイブである
-       * 展開した直下のディレクトリにconfig.ymlがあり、正しいymlファイルである
-       * config.ymlの必須要素が規定の文字数、文字種で定義されている
-       * event.ymlが存在する場合、正しいymlである
+       * 展開した直下のディレクトリにcomposer.jsonがあり、正しいファイルである
+       * composer.jsonの必須要素が規定の文字数、文字種で定義されている
+       * event.ymlが存在する場合、正しいである
 
      */
 
@@ -164,7 +164,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->service->install($tmpfile);
     }
 
-    // config.ymlのフォーマット確認
+    // composer.jsonのフォーマット確認
     public function testConfigYmlFormat()
     {
         $tmpname = 'dummy'.mt_rand();
@@ -250,7 +250,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     }
 
     /**
-     * config.ymlに異常な項目がある場合
+     * composer.jsonに異常な項目がある場合
      */
     public function testnstallPluginMalformedConfigError()
     {
@@ -264,7 +264,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config = [];
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
 
         // インストールできないはず
         $this->assertNull($this->service->install($tmpfile));
@@ -435,7 +435,7 @@ EOD;
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
         $jsonPHP = $this->createComposerJsonFile($config);
         $text = json_encode($jsonPHP);
         $tar->addFromString('composer.json', $text);
@@ -471,7 +471,7 @@ EOD;
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
         $jsonPHP = $this->createComposerJsonFile($config);
         $text = json_encode($jsonPHP);
         $tar->addFromString('composer.json', $text);
@@ -506,7 +506,7 @@ EOD;
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
         $jsonPHP = $this->createComposerJsonFile($config);
         $text = json_encode($jsonPHP);
         $tar->addFromString('composer.json', $text);

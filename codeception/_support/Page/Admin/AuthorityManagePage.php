@@ -45,8 +45,8 @@ class AuthorityManagePage extends AbstractAdminPageStyleGuide
 
     public function 入力($rowNum, $role, $url)
     {
-        $this->tester->selectOption(['css' => "form #table-authority tbody tr:nth-child(${rowNum}) td:nth-child(1) select"], $role);
-        $this->tester->fillField(['css' => "form #table-authority tbody tr:nth-child(${rowNum}) td:nth-child(2) input"], $url);
+        $this->tester->selectOption(['css' => "form #table-authority tbody tr:nth-child({$rowNum}) td:nth-child(1) select"], $role);
+        $this->tester->fillField(['css' => "form #table-authority tbody tr:nth-child({$rowNum}) td:nth-child(2) input"], $url);
 
         return $this;
     }

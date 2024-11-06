@@ -6,6 +6,8 @@ updates:
       interval: "weekly"
     allow:
       - dependency-type: "all"
+    ignore:
+      - dependency-name: "twig/twig"
 
   # GitHub アクションの依存関係を維持する
   - package-ecosystem: "github-actions"

@@ -50,19 +50,32 @@ class PurchaseFlowPass implements CompilerPassInterface
          */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             /** @var Reference $id */
+            $allMethod = [];
+            $i = 0;
+            // findAndSortTaggedServicesでは、flow_typeごとのソートができないため
+            // その並びをもとに配列に入れ直す
             foreach ($this->findAndSortTaggedServices($tag, $container) as $id) {
                 $def = $container->findDefinition($id);
                 foreach ($def->getTag($tag) as $attributes) {
                     if (isset($attributes['flow_type'])) {
-                        /**
-                         * @var string $flowType
-                         * @var Definition $purchaseFlowDef
-                         */
-                        foreach ($flowTypes as $flowType => $purchaseFlowDef) {
-                            if ($flowType === $attributes['flow_type']) {
-                                $purchaseFlowDef->addMethodCall($methodName, [$id]);
-                            }
-                        }
+                        $attributes['id'] = $id;
+                        $attributes['index'] = ++$i;
+                        $attributes['priority'] = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                        $allMethod[$attributes['flow_type']][] = $attributes;
+                    }
+                }
+            }
+            /**
+             * @var string $flowType
+             * @var Definition $purchaseFlowDef
+             */
+            foreach ($allMethod as $flowType => $flowMethod) {
+                $purchaseFlowDef = isset($flowTypes[$flowType]) ? $flowTypes[$flowType] : null; ;
+                if (!is_null($purchaseFlowDef) && count($flowMethod) > 0) {
+                    // flow_typeごとにソートをしてセットする
+                    uasort($flowMethod, static fn ($a, $b) => $b['priority'] <=> $a['priority'] ? : $a['index'] <=> $b['index']);
+                    foreach ($flowMethod as $attributes) {
+                        $purchaseFlowDef->addMethodCall($methodName, [$attributes['id']]);
                     }
                 }
             }

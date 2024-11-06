@@ -1250,7 +1250,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // shipping number on the screen
         $lastShipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery div.ec-orderDelivery__title')->last()->text();
-        $this->assertStringContainsString("(${addressNumber})", $lastShipping);
+        $this->assertStringContainsString("({$addressNumber})", $lastShipping);
     }
 
     /**
@@ -1278,7 +1278,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         for ($i = 0; $i < $maxAddress; $i++) {
-            $formData['address']['addr02'] = "addr02_${i}";
+            $formData['address']['addr02'] = "addr02_{$i}";
             $crawler = $this->client->request(
                 'POST',
                 $this->generateUrl('shopping_shipping_multiple_edit'),

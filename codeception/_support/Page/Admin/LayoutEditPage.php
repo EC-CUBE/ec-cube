@@ -43,15 +43,15 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
 
     public function ブロックを移動($blockName, $dest, $timeout = 10)
     {
-        $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]"], $timeout);
-        $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]"], $dest);
+        $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='{$blockName}']]]]"], $timeout);
+        $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='{$blockName}']]]]"], $dest);
 
         return $this;
     }
 
     public function コンテキストメニューを開く($blockName)
     {
-        $this->tester->click(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]/div/div[2]"]);
+        $this->tester->click(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='{$blockName}']]]]/div/div[2]"]);
 
         return $this;
     }

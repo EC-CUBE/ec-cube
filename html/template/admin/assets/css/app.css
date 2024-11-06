@@ -819,7 +819,7 @@ Styleguide 7.0
 .c-directoryTree li {
   display: flex;
   flex-wrap: wrap;
-  align-items: start;
+  align-items: flex-start;
   margin-top: 5px;
   margin-bottom: 0;
 }
@@ -896,7 +896,7 @@ Styleguide 7.1
 .c-directoryTree--register li {
   display: flex;
   flex-wrap: wrap;
-  align-items: start;
+  align-items: flex-start;
   margin-top: 5px;
   margin-bottom: 0;
 }
@@ -951,7 +951,7 @@ Styleguide 7.2
 .c-directoryTree--folder li {
   display: flex;
   flex-wrap: wrap;
-  align-items: start;
+  align-items: flex-start;
   margin-top: 5px;
   margin-bottom: 0;
 }

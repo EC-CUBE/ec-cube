@@ -30,8 +30,8 @@ class ProductListPage extends AbstractFrontPage
 
     public function 表示件数設定($num)
     {
-        $this->tester->selectOption(['css' => "select[name = 'disp_number']"], "${num}件");
-        $this->tester->waitForElement(['css' => "select[name='disp_number'] > option[value='${num}'][selected]"]);
+        $this->tester->selectOption(['css' => "select[name = 'disp_number']"], "{$num}件");
+        $this->tester->waitForElement(['css' => "select[name='disp_number'] > option[value='{$num}'][selected]"]);
 
         return $this;
     }
@@ -39,7 +39,7 @@ class ProductListPage extends AbstractFrontPage
     public function 表示順設定($sort)
     {
         $this->tester->selectOption(['css' => "select[name = 'orderby']"], $sort);
-        $this->tester->waitForElement(['xpath' => "//select[@name='orderby']/option[text()='${sort}']"]);
+        $this->tester->waitForElement(['xpath' => "//select[@name='orderby']/option[text()='{$sort}']"]);
 
         return $this;
     }
@@ -53,13 +53,13 @@ class ProductListPage extends AbstractFrontPage
 
     public function カートに入れる($index, $num = 1, $category1 = null, $category2 = null)
     {
-        $this->tester->fillField(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child(${index}) form input[name='quantity']"], $num);
+        $this->tester->fillField(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child({$index}) form input[name='quantity']"], $num);
         if (!is_null($category1)) {
-            $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child(${index}) form select[name='classcategory_id1']"], $category1);
+            $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child({$index}) form select[name='classcategory_id1']"], $category1);
             if (!is_null($category2)) {
                 $category2_id = current(array_keys($category2));
-                $this->tester->waitForElement(['xpath' => "//ul[@class='ec-shelfGrid']/li[@class='ec-shelfGrid__item'][${index}]//select[@name='classcategory_id2']/option[@value='${category2_id}']"]);
-                $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child(${index}) form select[name='classcategory_id2']"], $category2);
+                $this->tester->waitForElement(['xpath' => "//ul[@class='ec-shelfGrid']/li[@class='ec-shelfGrid__item'][{$index}]//select[@name='classcategory_id2']/option[@value='{$category2_id}']"]);
+                $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child({$index}) form select[name='classcategory_id2']"], $category2);
             }
         }
         $this->tester->click(['class' => 'add-cart']);

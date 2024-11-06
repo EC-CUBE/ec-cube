@@ -167,7 +167,7 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public function 商品検索結果_選択($rowNum)
     {
         $rowNum = $rowNum * 2;
-        $this->tester->click(['css' => "#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.text-end > button"]);
+        $this->tester->click(['css' => "#searchProductModalList > table > tbody > tr:nth-child({$rowNum}) > td.text-end > button"]);
         $this->tester->waitForElementNotVisible(['id' => 'searchProductModalList']);
 
         return $this;

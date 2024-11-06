@@ -1,4 +1,4 @@
-# EC-CUBE 4.2
+# EC-CUBE 4.3
 
 [![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.2)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
 [![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.2)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)

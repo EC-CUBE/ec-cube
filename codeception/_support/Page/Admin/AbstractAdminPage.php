@@ -36,7 +36,7 @@ abstract class AbstractAdminPage extends AbstractPage
             return $this->atPage($pageTitle);
         } else {
             $this->tester->wait(5);
-            $this->tester->waitForJS("return location.pathname + location.search == '${adminUrl}'");
+            $this->tester->waitForJS("return location.pathname + location.search == '{$adminUrl}'");
         }
 
         return $this;

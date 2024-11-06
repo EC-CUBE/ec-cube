@@ -37,7 +37,7 @@
         "doctrine/persistence": "^3.1",
         "ec-cube/plugin-installer": "^2.0",
         "egulias/email-validator": "^4.0",
-        "exercise/htmlpurifier-bundle": "^4.1",
+        "exercise/htmlpurifier-bundle": "^5.0",
         "friendsofphp/php-cs-fixer": "^3.8",
         "guzzlehttp/guzzle": "^7.4.5",
         "knplabs/knp-paginator-bundle": "^5.8",
@@ -99,9 +99,9 @@
         "symfony/workflow": "^6.4",
         "symfony/yaml": "^6.4",
         "tecnickcom/tcpdf": "^6.2",
-        "twig/extra-bundle": "^3.3",
+        "twig/extra-bundle": "3.8.0",
         "twig/intl-extra": "^3.3",
-        "twig/twig": "^3.8",
+        "twig/twig": "3.8.0",
         "vlucas/phpdotenv": "v5.6.0"
     },
     "require-dev": {

@@ -56,7 +56,7 @@ class MyPage extends AbstractFrontPage
     public function 注文履歴詳細($num)
     {
         $num += 2;
-        $this->tester->click(".ec-layoutRole__main div:nth-child(${num}) p.ec-historyListHeader__action a");
+        $this->tester->click(".ec-layoutRole__main div:nth-child({$num}) p.ec-historyListHeader__action a");
     }
 
     public function お気に入り一覧()

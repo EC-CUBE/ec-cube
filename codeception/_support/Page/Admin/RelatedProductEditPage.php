@@ -17,7 +17,7 @@ class RelatedProductEditPage extends ProductEditPage
     public static function goEdit($I, $id)
     {
         $page = new self($I);
-        return $page->goPage("/product/product/${id}/edit", '商品登録商品管理');
+        return $page->goPage("/product/product/{$id}/edit", '商品登録商品管理');
     }
 
     public function 選択_関連商品1()

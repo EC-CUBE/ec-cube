@@ -42,7 +42,7 @@ class PluginUpdateCommand extends Command
         $Plugin = $this->pluginRepository->findByCode($code);
 
         if (!$Plugin) {
-            $io->error("No such plugin `${code}`.");
+            $io->error("No such plugin `{$code}`.");
 
             return 1;
         }

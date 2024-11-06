@@ -509,7 +509,7 @@ class EA03ProductCest
 
         $createProduct = Fixtures::get('createProduct');
         foreach (range(1, 5) as $i) {
-            $createProduct("一括削除用_${i}");
+            $createProduct("一括削除用_{$i}");
         }
         $ProductManagePage = ProductManagePage::go($I)
             ->検索('一括削除用')
@@ -534,35 +534,35 @@ class EA03ProductCest
         $timestamp = time();
         // 受注に紐付いていない商品と紐付いている商品を作成
         foreach (range(1, 5) as $i) {
-            $createProduct("一括削除用_${timestamp}_受注なし_${i}");
+            $createProduct("一括削除用_{$timestamp}_受注なし_{$i}");
         }
         $Customer = (Fixtures::get('createCustomer'))();
         foreach (range(1, 5) as $i) {
-            $Product = $createProduct("一括削除用_${timestamp}_受注あり_${i}");
+            $Product = $createProduct("一括削除用_{$timestamp}_受注あり_{$i}");
             $createOrders($Customer, 1, $Product->getProductClasses()->toArray());
         }
 
         $ProductManagePage = ProductManagePage::go($I)
-            ->検索("一括削除用_${timestamp}")
+            ->検索("一括削除用_{$timestamp}")
             ->すべて選択();
 
         $I->see('検索結果：10件が該当しました', ProductManagePage::$検索結果_メッセージ);
-        $I->see("一括削除用_${timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
-        $I->see("一括削除用_${timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
+        $I->see("一括削除用_{$timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
+        $I->see("一括削除用_{$timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
 
         $ProductManagePage->完全に削除();
 
-        $I->see("一括削除用_${timestamp}_受注あり_1", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_2", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_3", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_4", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_5", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_1", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_2", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_3", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_4", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_5", ProductManagePage::$一括削除エラー);
 
         $ProductManagePage->一括削除完了();
 
         $I->see('検索結果：5件が該当しました', ProductManagePage::$検索結果_メッセージ);
-        $I->see("一括削除用_${timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
-        $I->dontSee("一括削除用_${timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
+        $I->see("一括削除用_{$timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
+        $I->dontSee("一括削除用_{$timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
     }
 
     public function product_規格登録_(AcceptanceTester $I)

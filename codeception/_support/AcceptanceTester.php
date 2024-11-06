@@ -218,7 +218,7 @@ class AcceptanceTester extends \Codeception\Actor
         $result = array_filter($arrayOfSelector, function ($element) use ($self) {
             $id = $element['id'];
 
-            return $self->executeJS("return document.getElementById('${id}') != null;");
+            return $self->executeJS("return document.getElementById('{$id}') != null;");
         });
         $this->assertTrue(empty($result));
     }

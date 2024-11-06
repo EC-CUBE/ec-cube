@@ -148,7 +148,7 @@ class SitemapController extends AbstractController
         /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
             $productQueryBuilder,
-            $request->get('page'),
+            $request->get('page') ? : 1,
             $this->eccubeConfig['eccube_sitemap_products_per_page']
         );
         $paginationData = $pagination->getPaginationData();

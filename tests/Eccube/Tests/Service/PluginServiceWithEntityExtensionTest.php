@@ -129,7 +129,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // Traitは有効
         self::assertContainsTrait(
             static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
-            "Plugin\\${configA['code']}\\Entity\\HogeTrait");
+            "Plugin\\{$configA['code']}\\Entity\\HogeTrait");
     }
 
     /**
@@ -154,7 +154,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // Traitは無効
         self::assertNotContainsTrait(
             static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
-            "Plugin\\${configA['code']}\\Entity\\HogeTrait");
+            "Plugin\\{$configA['code']}\\Entity\\HogeTrait");
     }
 
     /**
@@ -185,7 +185,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // Traitは無効
         self::assertNotContainsTrait(
             static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
-            "Plugin\\${configA['code']}\\Entity\\HogeTrait");
+            "Plugin\\{$configA['code']}\\Entity\\HogeTrait");
     }
 
     /**
@@ -213,7 +213,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         // Traitは無効
         self::assertNotContainsTrait(
             static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
-            "Plugin\\${configA['code']}\\Entity\\HogeTrait");
+            "Plugin\\{$configA['code']}\\Entity\\HogeTrait");
     }
 
     /**
@@ -242,12 +242,12 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->enable($pluginEnabled);
 
         self::assertNotContainsTrait(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
-            "Plugin\\${configDisabled['code']}\\Entity\\HogeTrait",
+            "Plugin\\{$configDisabled['code']}\\Entity\\HogeTrait",
             '無効状態プラグインのTraitは利用されないはず');
 
         // 無効化状態のTraitは利用されないはず
         self::assertContainsTrait(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
-            "Plugin\\${configEnabled['code']}\\Entity\\HogeTrait",
+            "Plugin\\{$configEnabled['code']}\\Entity\\HogeTrait",
             '有効状態のプラグインは利用されるはず');
     }
 
@@ -308,7 +308,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $tar->addFromString('Entity/HogeTrait.php', <<< EOT
 <?php
 
-namespace Plugin\\${tmpname}\\Entity;
+namespace Plugin\\{$tmpname}\\Entity;
 
 use Eccube\Annotation\EntityExtension;
 

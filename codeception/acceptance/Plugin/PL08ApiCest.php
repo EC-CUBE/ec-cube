@@ -40,10 +40,10 @@ class PL08ApiCest
             ->入力_クライアントID('testclient')
             ->入力_クライアントシークレット('testsecret')
             ->入力_スコープread()
-            ->入力_リダイレクトURI("${baseUrl}/callback")
+            ->入力_リダイレクトURI("{$baseUrl}/callback")
             ->登録();
 
-        $I->amOnPage("/admin/authorize?response_type=code&client_id=testclient&redirect_uri=${baseUrl}/callback&scope=read&state=test");
+        $I->amOnPage("/admin/authorize?response_type=code&client_id=testclient&redirect_uri={$baseUrl}/callback&scope=read&state=test");
         $I->click(['id' => 'oauth_authorization_approve']);
 
         $redirectUrl = $I->grabFromCurrentUrl();
@@ -59,17 +59,17 @@ class PL08ApiCest
                     'grant_type=authorization_code' +
                     '&client_id=testclient' +
                     '&client_secret=testsecret' +
-                    '&redirect_uri=${baseUrl}/callback' +
-                    '&code=${code}'
+                    '&redirect_uri={$baseUrl}/callback' +
+                    '&code={$code}'
             });
             return await res.json();
         ");
 
         $url = '/api?query={ product(id: 1) { id, name } }';
         $data = $I->executeJS("
-            res = await fetch('${url}', {
+            res = await fetch('{$url}', {
                 headers: {
-                    'Authorization': 'Bearer ${tokens['access_token']}'
+                    'Authorization': 'Bearer {$tokens['access_token']}'
                 }
             });
             return await res.json();

@@ -329,7 +329,7 @@ class StringUtil
                     $env = self::convertLineFeed($env, "\r\n");
                 }
             } else {
-                $env .= PHP_EOL."${key}=${value}";
+                $env .= PHP_EOL."{$key}={$value}";
             }
         }
 

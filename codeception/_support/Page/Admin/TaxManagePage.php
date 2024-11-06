@@ -59,25 +59,25 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_編集($rowNum)
     {
-        $this->tester->click("table tbody tr:nth-child(${rowNum}) .edit-button");
+        $this->tester->click("table tbody tr:nth-child({$rowNum}) .edit-button");
 
         return $this;
     }
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.d-inline-block.me-3 > a");
+        $this->tester->click("table tbody tr:nth-child({$rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.d-inline-block.me-3 > a");
 
         // accept modal
-        $this->tester->waitForElementVisible("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.modal");
-        $this->tester->click("table tbody tr:nth-child(${rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.modal.fade.show > div > div > div.modal-footer > a");
+        $this->tester->waitForElementVisible("table tbody tr:nth-child({$rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.modal");
+        $this->tester->click("table tbody tr:nth-child({$rowNum}) > td.align-middle.action > div > div > div:nth-child(2) > div.modal.fade.show > div > div > div.modal-footer > a");
 
         return $this;
     }
 
     public function 一覧_税率($rowNum)
     {
-        return "table > tbody > tr:nth-child(${rowNum}) > td.align-middle.text-end .list";
+        return "table > tbody > tr:nth-child({$rowNum}) > td.align-middle.text-end .list";
     }
 
     public function 共通税率設定_登録()

@@ -62,7 +62,7 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
         $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;

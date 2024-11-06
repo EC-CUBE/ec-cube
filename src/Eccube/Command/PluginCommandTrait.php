@@ -18,6 +18,7 @@ use Eccube\Service\PluginService;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait PluginCommandTrait
 {
@@ -33,8 +34,8 @@ trait PluginCommandTrait
 
     /**
      * @param PluginService $pluginService
-     * @required
      */
+    #[Required]
     public function setPluginService(PluginService $pluginService)
     {
         $this->pluginService = $pluginService;
@@ -42,8 +43,8 @@ trait PluginCommandTrait
 
     /**
      * @param PluginRepository $pluginRepository
-     * @required
      */
+    #[Required]
     public function setPluginRepository(PluginRepository $pluginRepository)
     {
         $this->pluginRepository = $pluginRepository;

@@ -36,21 +36,21 @@ class MailMagazineTemplatePage extends AbstractAdminPageStyleGuide
 
     public function 編集($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[${i}]/td[3]/a"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[{$i}]/td[3]/a"]);
         return $this;
     }
 
     public function 削除($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[${i}]/td[4]/a"]);
-        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[${i}]/td[4]//button[contains(@class, 'btn-ec-delete')]"]);
-        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[${i}]/td[4]//button[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[{$i}]/td[4]/a"]);
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[{$i}]/td[4]//button[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[{$i}]/td[4]//button[contains(@class, 'btn-ec-delete')]"]);
         return $this;
     }
 
     public function プレビュー($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[${i}]/td[5]/a"]);
+        $this->tester->click(['xpath' => "//*[@id=\"page_plugin_mail_magazine_template\"]/div//table/tbody/tr[{$i}]/td[5]/a"]);
         return $this;
     }
 }

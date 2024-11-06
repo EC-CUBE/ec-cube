@@ -23,26 +23,26 @@ class MailMagazineHistoryPage extends AbstractAdminPageStyleGuide
 
     public function プレビュー($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[${i}]/td[8]/div/div[1]/a"]);
+        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[1]/a"]);
         return $this;
     }
 
     public function 配信条件($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[${i}]/td[8]/div/div[2]/a"]);
+        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[2]/a"]);
         return $this;
     }
 
     public function 配信結果($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[${i}]/td[8]/div/div[3]/a"]);
+        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[3]/a"]);
     }
 
     public function 削除($i)
     {
-        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[${i}]/td[8]/div/div[4]/a"]);
-        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[${i}]/td[8]/div/div[4]//button[contains(@class, 'btn-ec-delete')]"]);
-        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[${i}]/td[8]/div/div[4]//button[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[4]/a"]);
+        $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[4]//button[contains(@class, 'btn-ec-delete')]"]);
+        $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[4]//button[contains(@class, 'btn-ec-delete')]"]);
         return $this;
     }
 }

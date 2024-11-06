@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
@@ -65,8 +66,8 @@ class AbstractController extends Controller
 
     /**
      * @param EccubeConfig $eccubeConfig
-     * @required
      */
+    #[Required]
     public function setEccubeConfig(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
@@ -74,8 +75,8 @@ class AbstractController extends Controller
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @required
      */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -83,8 +84,8 @@ class AbstractController extends Controller
 
     /**
      * @param TranslatorInterface $translator
-     * @required
      */
+    #[Required]
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -92,8 +93,8 @@ class AbstractController extends Controller
 
     /**
      * @param Session $session
-     * @required
      */
+    #[Required]
     public function setSession(Session $session)
     {
         $this->session = $session;
@@ -101,8 +102,8 @@ class AbstractController extends Controller
 
     /**
      * @param FormFactoryInterface $formFactory
-     * @required
      */
+    #[Required]
     public function setFormFactory(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
@@ -110,8 +111,8 @@ class AbstractController extends Controller
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @required
      */
+    #[Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -120,8 +121,8 @@ class AbstractController extends Controller
     /**
      * @param RouterInterface $router
      * @return void
-     * @required
      */
+    #[Required]
     public function setRouter(RouterInterface $router)
     {
         $this->router = $router;

@@ -46,7 +46,7 @@ class DeliveryEditPage extends AbstractAdminPageStyleGuide
     public function 入力_支払方法選択($array)
     {
         foreach ($array as $id) {
-            $this->tester->checkOption(['id' => "delivery_payments_${id}"]);
+            $this->tester->checkOption(['id' => "delivery_payments_{$id}"]);
         }
 
         return $this;

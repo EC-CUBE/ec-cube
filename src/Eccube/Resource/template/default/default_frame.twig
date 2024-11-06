@@ -61,7 +61,7 @@ file that was distributed with this source code.
 {% endif %}
 
 
-{%  if isMaintenance is defined and isMaintenance and isDebugMode %}
+{%  if (isMaintenance is defined and isMaintenance) and (isDebugMode is defined and isDebugMode) %}
     <dev class="ec-twoModeAlert">
         <div class="ec-maintenanceAlert">
             <div>
@@ -77,7 +77,7 @@ file that was distributed with this source code.
         </div>
     </dev>
 {%  else %}
-    {% if isMaintenance %}
+    {% if (isMaintenance is defined and isMaintenance) %}
         <div class="ec-maintenanceAlert">
             <div>
                 <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
@@ -85,7 +85,7 @@ file that was distributed with this source code.
             </div>
         </div>
     {% endif %}
-    {% if isDebugMode %}
+    {% if (isDebugMode is defined and isDebugMode) %}
         <div class="ec-debugModeAlert bg-danger">
             <div>
                 <div class="ec-debugModeAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>

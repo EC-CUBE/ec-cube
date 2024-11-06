@@ -110,6 +110,16 @@ class Kernel extends BaseKernel
                 }
             }
         }
+
+        $customizeBundles = $this->getProjectDir().'/app/Customize/Resource/config/bundles.php';
+        if (file_exists($customizeBundles)) {
+            $contents = require $customizeBundles;
+            foreach ($contents as $class => $envs) {
+                if (isset($envs['all']) || isset($envs[$this->environment])) {
+                    yield new $class();
+                }
+            }
+        }
     }
 
     /**

@@ -164,7 +164,7 @@ class ProductController extends AbstractController
         /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
             $query,
-            !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
+            !empty($searchData['pageno']) && preg_match('/^\d+$/', $searchData['pageno']) ? $searchData['pageno'] : 1,
             !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
         );
 
