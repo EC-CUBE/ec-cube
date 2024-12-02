@@ -73,7 +73,7 @@
     "normalize.css": "^5.0.0",
     "postcss-import": "^12.0.1",
     "process": "^0.11.10",
-    "sass": "^1.77.2",
+    "sass": "^1.81.0",
     "sort-css-media-queries": "^1.4.3",
     "webpack": "^5.96.1",
     "webpack-cli": "^4.9.2",
