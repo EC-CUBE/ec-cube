@@ -40,7 +40,7 @@
         "exercise/htmlpurifier-bundle": "^5.0",
         "friendsofphp/php-cs-fixer": "^3.8",
         "guzzlehttp/guzzle": "^7.4.5",
-        "knplabs/knp-paginator-bundle": "^5.8",
+        "knplabs/knp-paginator-bundle": "^6.7",
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^2.5",
         "nesbot/carbon": "^3",
