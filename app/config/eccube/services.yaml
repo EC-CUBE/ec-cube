@@ -241,3 +241,6 @@ services:
     Eccube\Util\CacheUtil:
         arguments:
             $container: !tagged_locator { tag: 'cache.pool.clearer' }
+
+    Eccube\TestsHelper\Controller\Admin\TestApiController:
+        tags: [ 'controller.service_arguments' ]

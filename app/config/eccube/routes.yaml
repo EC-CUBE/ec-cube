@@ -5,6 +5,10 @@ customize_controllers:
     resource: ../../../app/Customize/Controller
     type: annotation
 
+# テスト時はこれを有効にする
+test_api_routes:
+    resource: ./test_api.yaml
+
 #    prefix: /{_locale}
     # prefix: /
     # requirements:

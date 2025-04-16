@@ -128,7 +128,8 @@
             "Eccube\\Entity\\": "app/proxy/entity",
             "Customize\\": "app/Customize",
             "Eccube\\": "src/Eccube",
-            "Plugin\\": "app/Plugin"
+            "Plugin\\": "app/Plugin",
+            "Eccube\\TestsHelper\\": "tests-helper/"
         },
         "exclude-from-classmap": [
             "**/Test/**",

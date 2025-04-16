@@ -1,0 +1,5 @@
+# app/config/eccube/test_api.yaml
+test_api:
+    resource: ../../../tests-helper/Controller/Admin
+    type: annotation
+    prefix: /admin/api/test
