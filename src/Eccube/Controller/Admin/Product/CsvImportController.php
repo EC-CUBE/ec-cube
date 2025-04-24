@@ -735,6 +735,7 @@ class CsvImportController extends AbstractCsvImportController
                     foreach ($data as $row) {
                         /** @var $Category Category */
                         $Category = new Category();
+                        var_dump($headerByKey['id']);
                         if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
                             if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
@@ -785,7 +786,7 @@ class CsvImportController extends AbstractCsvImportController
                         $ParentCategory = null;
                         if (isset($row[$headerByKey['parent_category_id']]) && StringUtil::isNotBlank($row[$headerByKey['parent_category_id']])) {
                             if (!preg_match('/^\d+$/', $row[$headerByKey['parent_category_id']])) {
-                                $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
+                                $this->addErrors(($data->key() + 1).'行目の親カテゴリIDは数字で入力してください。');
 
                                 return $this->renderWithError($form, $headers);
                             }

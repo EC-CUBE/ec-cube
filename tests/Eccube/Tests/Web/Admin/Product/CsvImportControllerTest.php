@@ -467,7 +467,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = __DIR__.'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath);
         $csv = [
-            ['カテゴリID', 'カテゴリ名', '親カテゴリID', 'カテゴリ削除フラグ'],
+            ['カテゴリID', 'カテゴリ名', '親カテゴリID3', 'カテゴリ削除フラグ'],
             ['', '新カテゴリ', '', ''],
         ];
         $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
