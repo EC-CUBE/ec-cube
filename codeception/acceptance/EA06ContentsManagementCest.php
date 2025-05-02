@@ -86,6 +86,7 @@ class EA06ContentsManagementCest
     /**
      * @env firefox
      * @env chrome
+     *
      * @group vaddy
      */
     public function contentsmanagement_ファイル管理(AcceptanceTester $I)
@@ -126,6 +127,7 @@ class EA06ContentsManagementCest
             FileManagePage::go($I)
                 ->一覧_削除(1)
                 ->一覧_削除_accept(1);
+            $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
             $I->dontSee('upload.txt', $FileManagePage->ファイル名(1));
 
             $FileManagePage = FileManagePage::go($I)
@@ -144,6 +146,7 @@ class EA06ContentsManagementCest
             FileManagePage::go($I)
                 ->一覧_削除(1)
                 ->一覧_削除_accept(1);
+            $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
             $I->dontSee('folder1', $FileManagePage->ファイル名(1));
         } finally {
             $fs->mirror($backupDir, $user_data);
@@ -222,6 +225,7 @@ class EA06ContentsManagementCest
             ->登録();
 
         $I->waitForText('保存しました', 10, LayoutEditPage::$登録完了メッセージ);
+
         $I->amOnPage('/user_data/'.$page);
         $I->waitForText('新着情報', 10, '.ec-newsRole');
 
@@ -259,6 +263,7 @@ class EA06ContentsManagementCest
         /* 削除 */
         PageManagePage::go($I)->削除($page);
         $I->waitForText('削除しました', 10, PageEditPage::$登録完了メッセージ);
+
         $I->amOnPage('/user_data/'.$page);
         $I->seeInTitle('ページがみつかりません');
     }
@@ -282,7 +287,6 @@ class EA06ContentsManagementCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/content/page/1/edit');
         $I->waitForText('この機能は管理者によって制限されています。');
     }
-
 
     public function contentsmanagement_レイアウト管理(AcceptanceTester $I)
     {
@@ -433,7 +437,6 @@ class EA06ContentsManagementCest
         $I->waitForText('この機能は管理者によって制限されています。');
     }
 
-
     public function contentsmanagement_CSS管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0606-UC01-T01_CSS管理');
@@ -443,6 +446,7 @@ class EA06ContentsManagementCest
         )->登録();
         $I->amOnPage('/');
         $I->reloadPage();
+        $I->wait(3); // XXX 確実にリロードするのを待つ
         $I->dontSee('お気に入り', '.ec-headerNaviRole');
 
         CssManagePage::go($I)
@@ -450,7 +454,8 @@ class EA06ContentsManagementCest
             ->登録();
         $I->amOnPage('/');
         $I->reloadPage();
-        $I->waitForText('お気に入り', 10, '.ec-headerNaviRole');
+        $I->wait(3); // XXX 確実にリロードするのを待つ
+        $I->see('お気に入り', '.ec-headerNaviRole');
     }
 
     /**
@@ -481,11 +486,13 @@ class EA06ContentsManagementCest
         )->登録();
         $I->amOnPage('/');
         $I->reloadPage();
-        $I->waitForText($test_text, 10, '.ec-headerNaviRole');
+        $I->wait(3); // XXX 確実にリロードするのを待つ
+        $I->see($test_text, '.ec-headerNaviRole');
 
         JavaScriptManagePage::go($I)->入力('/* */')->登録();
         $I->amOnPage('/');
         $I->reloadPage();
+        $I->wait(3); // XXX 確実にリロードするのを待つ
         $I->dontSee($test_text, '.ec-headerNaviRole');
     }
 
@@ -506,7 +513,6 @@ class EA06ContentsManagementCest
         $I->waitForText('この機能は管理者によって制限されています。');
     }
 
-
     public function contentsmanagement_メンテナンス管理(AcceptanceTester $I)
     {
         $I->wantTo('EA0607-UC08-T01_メンテナンス管理');
@@ -518,7 +524,7 @@ class EA06ContentsManagementCest
 
         $I->expect('トップページを確認します');
         $I->amOnPage('/');
-        $I->waitForText('メンテナンスモードが有効になっています。',  10,'#page_homepage > div.ec-maintenanceAlert > div');
+        $I->waitForText('メンテナンスモードが有効になっています。', 10, '#page_homepage > div.ec-maintenanceAlert > div');
         $I->waitForText('全ての商品', 10, TopPage::$検索_カテゴリ選択);
 
         $I->expect('ログアウトします');

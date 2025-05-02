@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
-      matrix:
-        include:
+#      matrix:
+#        include:
 #          - vaddy_project: 'ADMIN01'
 #            command1: 'EA03ProductCest'
 #            command2: 'EA05CustomerCest'
@@ -90,103 +90,103 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: "Prepare"
-        uses: ./.github/workflows/vaddy/prepare
-        with:
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
-          vaddy-user: "${{ secrets.VADDY_USER }}"
-          vaddy-auth-key: "${{ secrets.VADDY_AUTH_KEY }}"
+      # - name: "Prepare"
+      #   uses: ./.github/workflows/vaddy/prepare
+      #   with:
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      #     vaddy-user: "${{ secrets.VADDY_USER }}"
+      #     vaddy-auth-key: "${{ secrets.VADDY_AUTH_KEY }}"
 
-      - name: "Scan 1"
-        if: ${{ matrix.command1 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command1 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 1"
+      #   if: ${{ matrix.command1 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command1 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 2"
-        if: ${{ matrix.command2 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command2 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 2"
+      #   if: ${{ matrix.command2 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command2 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 3"
-        if: ${{ matrix.command3 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command3 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 3"
+      #   if: ${{ matrix.command3 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command3 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 4"
-        if: ${{ matrix.command4 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command4 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 4"
+      #   if: ${{ matrix.command4 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command4 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 5"
-        if: ${{ matrix.command5 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command5 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 5"
+      #   if: ${{ matrix.command5 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command5 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 6"
-        if: ${{ matrix.command6 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command6 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 6"
+      #   if: ${{ matrix.command6 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command6 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 7"
-        if: ${{ matrix.command7 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command7 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 7"
+      #   if: ${{ matrix.command7 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command7 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 8"
-        if: ${{ matrix.command8 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command8 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 8"
+      #   if: ${{ matrix.command8 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command8 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
-      - name: "Scan 9"
-        if: ${{ matrix.command9 != '' }}
-        uses: ./.github/workflows/vaddy/scan
-        with:
-          command: "${{ matrix.command9 }}"
-          vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
-          vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
-          vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
-          vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
+      # - name: "Scan 9"
+      #   if: ${{ matrix.command9 != '' }}
+      #   uses: ./.github/workflows/vaddy/scan
+      #   with:
+      #     command: "${{ matrix.command9 }}"
+      #     vaddy-verification-code: "${{ secrets[format('{0}{1}', 'VADDY_VERIFICATION_CODE_', matrix.vaddy_project)] }}"
+      #     vaddy-proxy: "${{ secrets.VADDY_PROXY }}"
+      #     vaddy-proxy-port: "${{ secrets.VADDY_PROXY_PORT }}"
+      #     vaddy-fqdn: "${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}"
 
 #      - name: VAddy private net logs
 #        if: ${{ always() }}

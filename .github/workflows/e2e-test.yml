@@ -21,7 +21,7 @@ jobs:
       matrix:
         php: [ 8.3 ]
         db: [ pgsql ]
-        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'installer' ]
+        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'change-display-order', 'installer' ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -35,6 +35,8 @@ jobs:
           - group: 'front'
             app_env: 'codeception'
           - group: 'restrict-fileupload'
+            app_env: 'codeception'
+          - group: 'change-display-order'
             app_env: 'codeception'
           - group: 'installer'
             app_env: 'install'
@@ -107,17 +109,7 @@ jobs:
             (cd codeception/_data/plugins/$d; tar zcf ../../../../repos/${d}.tgz *)
           done
 
-      - name: Start PHP Development Server
-        if: ${{ matrix.group != 'restrict-fileupload' }}
-        env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 codeception/router.php &
-
-      - name: Start PHP Development Server
+      - name: Start PHP Development Server restrict-fileupload
         if: ${{ matrix.group == 'restrict-fileupload' }}
         env:
           APP_ENV: 'codeception'
@@ -128,8 +120,21 @@ jobs:
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
-      - name: Codeception
+      - name: Start PHP Development Server
         if: ${{ matrix.group != 'restrict-fileupload' }}
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_RESTRICT_FILE_UPLOAD: '0'
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
+      - name: Codeception
+        if: |
+           matrix.group != 'restrict-fileupload' &&
+           matrix.group != 'change-display-order'
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -140,10 +145,12 @@ jobs:
           SYMFONY_DEPRECATIONS_HELPER: weak
         run: |
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
 
-      - name: Codeception with Restrict file upload
-        if: ${{ matrix.group == 'restrict-fileupload' }}
+      - name: Codeception with ${{ matrix.group }}
+        if: |
+          matrix.group == 'restrict-fileupload' ||
+          matrix.group == 'change-display-order'
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}

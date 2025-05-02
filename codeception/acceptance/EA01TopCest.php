@@ -24,7 +24,7 @@ use Page\Admin\TopPage;
  */
 class EA01TopCest
 {
-    const ページタイトル = '.c-pageTitle h2.c-pageTitle__title';
+    public const ページタイトル = '.c-pageTitle h2.c-pageTitle__title';
 
     public function _before(AcceptanceTester $I)
     {
@@ -56,9 +56,9 @@ class EA01TopCest
         // TOP画面に表示される新規受付数が、実際の新規受付数と一致することを確認
         $findOrders = Fixtures::get('findOrders');
         $NewOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() == \Eccube\Entity\Master\OrderStatus::NEW;
+            return $Order->getOrderStatus()->getId() == Eccube\Entity\Master\OrderStatus::NEW;
         });
-        $I->see((string)count($NewOrders), TopPage::$受付状況_新規受付数);
+        $I->see((string) count($NewOrders), TopPage::$受付状況_新規受付数);
 
         // 新規受付をクリックすると「受注管理＞新規受付」のページに遷移することを確認
         $I->click(TopPage::$受付状況_新規受付);
@@ -91,7 +91,8 @@ class EA01TopCest
         $I->click(['css' => $selector]);
         $I->switchToNewWindow();
         $I->assertNotEquals($url, $I->executeJS('return location.href'), $url.' から遷移していません。');
-        $I->switchToWindow();
+        // XXX switchToNewWindow() で新しいタブが開くので元のタブへ戻る
+        $I->switchToPreviousTab();
 
         // ショップ情報の在庫切れ商品をクリックすると商品管理ページに遷移することを確認
         $I->click(TopPage::$ショップ状況_在庫切れ商品);

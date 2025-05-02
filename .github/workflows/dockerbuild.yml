@@ -120,7 +120,7 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action_docker.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP} --html report.html
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 
       - name: Push Docker image

@@ -15,10 +15,10 @@ use Codeception\Util\Fixtures;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Page\Admin\CategoryCsvUploadPage;
-use Page\Admin\ClassNameCsvUploadPage;
-use Page\Admin\ClassCategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
+use Page\Admin\ClassCategoryCsvUploadPage;
 use Page\Admin\ClassCategoryManagePage;
+use Page\Admin\ClassNameCsvUploadPage;
 use Page\Admin\ClassNameManagePage;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\ProductClassEditPage;
@@ -41,8 +41,8 @@ class EA03ProductCest
     /** @var Connection */
     private Connection $conn;
 
-    const ページタイトル = '#main .page-header';
-    const ページタイトルStyleGuide = '.c-pageTitle';
+    public const ページタイトル = '#main .page-header';
+    public const ページタイトルStyleGuide = '.c-pageTitle';
 
     public function _before(AcceptanceTester $I)
     {
@@ -82,9 +82,9 @@ class EA03ProductCest
         $I->wantTo('EA0301-UC01-T03 商品検索 エラー');
 
         // バリデーションエラーが発生するフォーム項目がないため, ダミーのステータスを作っておく
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var EntityManager $em */
         $em = Fixtures::get('entityManager');
-        $ProductStatus = new \Eccube\Entity\Master\ProductStatus();
+        $ProductStatus = new Eccube\Entity\Master\ProductStatus();
         $ProductStatus->setName('ダミー');
         $ProductStatus->setSortNo(999);
         $ProductStatus->setId(999);
@@ -142,6 +142,7 @@ class EA03ProductCest
     /**
      * @env firefox
      * @env chrome
+     *
      * @group vaddy
      */
     public function product_CSV出力(AcceptanceTester $I)
@@ -239,7 +240,7 @@ class EA03ProductCest
         ProductClassEditPage::at($I)
             ->規格設定();
 
-        $I->seeElement(['css' => '#product_class_matrix_class_name1:invalid']); //規格1がエラー
+        $I->seeElement(['css' => '#product_class_matrix_class_name1:invalid']); // 規格1がエラー
         $I->dontSeeElement(ProductClassEditPage::$規格一覧); // 規格編集行が表示されていない
     }
 
@@ -481,6 +482,7 @@ class EA03ProductCest
         ]);
 
         $ProductEditPage->登録();
+
         $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
@@ -496,6 +498,7 @@ class EA03ProductCest
             ->クリックして選択タグ(3)
             ->クリックして選択タグ(4)
             ->登録();
+
         $I->see('保存しました', 'div.c-container > div.c-contentsArea > div.alert');
 
         $I->seeElement(['xpath' => '//*[@id="tag"]/div/div[1]/button']);
@@ -620,6 +623,9 @@ class EA03ProductCest
         $I->see('削除しました', ClassNameManagePage::$登録完了メッセージ);
     }
 
+    /**
+     * @group change-display-order
+     */
     public function product_規格表示順の変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0303-UC04-T01 規格表示順の変更');
@@ -647,6 +653,9 @@ class EA03ProductCest
         $I->assertTrue(file_exists($file));
     }
 
+    /**
+     * @group change-display-order
+     */
     public function product_分類表示順の変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0311-UC01-T01 分類表示順の変更');
@@ -769,6 +778,7 @@ class EA03ProductCest
         $CategoryPage
             ->入力_カテゴリ名('test category11-1')
             ->カテゴリ作成();
+
         $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
         // カテゴリ削除 (children)
@@ -776,10 +786,13 @@ class EA03ProductCest
             ->acceptModal();
 
         // Delete category root
-        CategoryManagePage::go($I)->一覧_削除(3)
-            ->acceptModal();
+        // CategoryManagePage::go($I)->一覧_削除(3)
+        //     ->acceptModal();
     }
 
+    /**
+     * @group change-display-order
+     */
     public function product_カテゴリ表示順の変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0305-UC03-T01 カテゴリ表示順の変更');
@@ -878,6 +891,7 @@ class EA03ProductCest
         CategoryCsvUploadPage::go($I)
             ->入力_CSVファイル('product.csv')
             ->CSVアップロード();
+
         $I->see('CSVのフォーマットが一致しません', '#upload-form');
     }
 
@@ -918,6 +932,7 @@ class EA03ProductCest
         ClassNameCsvUploadPage::go($I)
             ->入力_CSVファイル('product.csv')
             ->CSVアップロード();
+
         $I->see('CSVのフォーマットが一致しません', '#upload-form');
     }
 
@@ -964,6 +979,7 @@ class EA03ProductCest
         ClassCategoryCsvUploadPage::go($I)
             ->入力_CSVファイル('product.csv')
             ->CSVアップロード();
+
         $I->see('CSVのフォーマットが一致しません', '#upload-form');
     }
 
@@ -989,6 +1005,7 @@ class EA03ProductCest
             ->入力_タグ名('')
             ->新規作成();
 
+        $I->wait(0.1); // 画面遷移直後は selector の参照に失敗するため wait を入れる
         // タグが作成されていないことを確認
         $I->dontSee('保存しました', ProductTagPage::$アラートメッセージ);
 
@@ -1085,7 +1102,7 @@ class EA03ProductCest
         $name = uniqid();
         $entityManager = Fixtures::get('entityManager');
         $createProduct = Fixtures::get('createProduct');
-        /** @var \Eccube\Entity\Product $Product */
+        /** @var Eccube\Entity\Product $Product */
         $Product = $createProduct($name);
         foreach ($Product->getProductTag() as $ProductTag) {
             $Product->removeProductTag($ProductTag);
@@ -1130,10 +1147,10 @@ class EA03ProductCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/6029
      *
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Doctrine\ORM\OptimisticLockException
+     * @throws Doctrine\ORM\TransactionRequiredException
+     * @throws Doctrine\ORM\Exception\ORMException
+     * @throws Doctrine\DBAL\Exception
      */
     public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
     {

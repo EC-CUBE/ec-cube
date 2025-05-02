@@ -478,7 +478,7 @@ class EA08SysteminfoCest
 
         $I->fillField(['id' => 'admin_system_log_line_max'], '10');
         $I->click(['css' => '#form1 button']);
-
+        $I->wait(1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->waitForElement(['css' => '.c-contentsArea textarea']);
         $logs = $I->grabTextFrom(['css' => '.c-contentsArea textarea']);
         $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), 'ログ件数を確認');
@@ -628,10 +628,9 @@ class EA08SysteminfoCest
         ->登録();
         TopPage::go($I)->at('アクセスできません。');
 
-        //後片付け（後続処理がエラーにならないため）
+        // 後片付け（後続処理がエラーにならないため）
         SystemSecurityPage::go($I)->入力_front許可リスト('')
         ->登録();
-
     }
 
     public function systeminfo_セキュリティ管理フロントIP制限_拒否リスト(AcceptanceTester $I)
@@ -648,7 +647,7 @@ class EA08SysteminfoCest
         ->登録();
         TopPage::go($I)->at('彩のジェラート"CUBE"をご堪能ください');
 
-        //後片付け（後続処理がエラーにならないため）
+        // 後片付け（後続処理がエラーにならないため）
         SystemSecurityPage::go($I)->入力_front拒否リスト('')
         ->登録();
     }
@@ -677,5 +676,4 @@ class EA08SysteminfoCest
         $I->amOnPage('/'.$config['eccube_admin_route']);
         $I->see('アクセスできません。', '//*[@id="error-page"]//h3');
     }
-
 }

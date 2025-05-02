@@ -34,7 +34,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
  *
  * @SuppressWarnings(PHPMD)
  */
-class AcceptanceTester extends \Codeception\Actor
+class AcceptanceTester extends Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
@@ -237,14 +237,60 @@ class AcceptanceTester extends \Codeception\Actor
         $archiveName = $pluginDirName.'.tgz';
         $tgzPath = $destDir.'/'.$archiveName;
         if (file_exists($tgzPath)) {
-            $this->comment("deleted.");
+            $this->comment('deleted.');
             unlink($tgzPath);
         }
         $tarPath = $destDir.'/'.$pluginDirName.'.tar';
-        $phar = new \PharData($tarPath);
+        $phar = new PharData($tarPath);
         $published = $phar->buildFromDirectory(codecept_data_dir('plugins/'.$pluginDirName));
-        $phar->compress(\Phar::GZ, '.tgz');
+        $phar->compress(Phar::GZ, '.tgz');
         unlink($tarPath);
+
         return $published;
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::see()
+     */
+    public function see($text, $selector = null): void
+    {
+        $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
+        $this->getScenario()->runStep(new Codeception\Step\Assertion('see', func_get_args()));
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::seeInField()
+     */
+    public function seeInField($field, $value): void
+    {
+        $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
+        $this->getScenario()->runStep(new Codeception\Step\Assertion('seeInField', func_get_args()));
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::waitForText()
+     */
+    public function waitForText(string $text, int $timeout = 10, $selector = null): void
+    {
+        $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
+        $this->getScenario()->runStep(new Codeception\Step\Action('waitForText', func_get_args()));
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::amOnPage()
+     */
+    public function amOnPage($page): void
+    {
+        $this->wait(1); // XXX WebDriver::amOnPage() の前に wait を入れないと画面遷移しない場合がある
+        $this->getScenario()->runStep(new Codeception\Step\Condition('amOnPage', func_get_args()));
+        $this->wait(1); // XXX 画面遷移直後は selector の参照に失敗する場合があるため wait を入れる
     }
 }

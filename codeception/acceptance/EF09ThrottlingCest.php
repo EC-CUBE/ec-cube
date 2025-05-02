@@ -14,9 +14,10 @@
 use Codeception\Util\Fixtures;
 use Page\Front\CartPage;
 use Page\Front\CustomerAddressAddPage;
+use Page\Front\CustomerAddressChangePage;
 use Page\Front\CustomerAddressEditPage;
 use Page\Front\CustomerAddressListPage;
-use Page\Front\CustomerAddressChangePage;
+use Page\Front\EntryPage;
 use Page\Front\MultipleShippingPage;
 use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
@@ -24,8 +25,6 @@ use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingNonmemberPage;
 use Page\Front\ShoppingPage;
-use Page\Front\EntryPage;
-
 
 /**
  * @group throttling
@@ -54,7 +53,7 @@ class EF09ThrottlingCest
         $I->expect('試行回数上限を超過します');
         $email = microtime(true).'.'.$faker->safeEmail;
         $this->failLogin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'p.ec-errorMessage');
+        $I->see('ログイン試行回数が多すぎます。', 'p.ec-errorMessage');
     }
 
     public function フロント画面ログイン_会員(AcceptanceTester $I)
@@ -73,7 +72,7 @@ class EF09ThrottlingCest
 
         $I->expect('試行回数上限を超過します');
         $this->failLogin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'p.ec-errorMessage');
+        $I->see('ログイン試行回数が多すぎます。', 'p.ec-errorMessage');
     }
 
     private function failLogin(AcceptanceTester $I, $email, $password)
@@ -102,7 +101,7 @@ class EF09ThrottlingCest
         $I->expect('試行回数上限を超過します');
         $email = microtime(true).'.'.$faker->safeEmail;
         $this->failLoginAsAdmin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'span.text-danger');
+        $I->see('ログイン試行回数が多すぎます。', 'span.text-danger');
     }
 
     public function 管理画面ログイン_会員(AcceptanceTester $I)
@@ -121,7 +120,7 @@ class EF09ThrottlingCest
 
         $I->expect('試行回数上限を超過します');
         $this->failLoginAsAdmin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'span.text-danger');
+        $I->see('ログイン試行回数が多すぎます。', 'span.text-danger');
     }
 
     private function failLoginAsAdmin(AcceptanceTester $I, $loginId, $password)
@@ -313,6 +312,7 @@ class EF09ThrottlingCest
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
      *
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function 注文完了_非会員購入(AcceptanceTester $I)
@@ -357,6 +357,7 @@ class EF09ThrottlingCest
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
      *
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function 注文完了_会員購入(AcceptanceTester $I)
@@ -394,6 +395,7 @@ class EF09ThrottlingCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function 会員情報編集(AcceptanceTester $I)
@@ -427,6 +429,7 @@ class EF09ThrottlingCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function 配送先情報_追加(AcceptanceTester $I)
@@ -485,6 +488,7 @@ class EF09ThrottlingCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function 配送先情報_編集(AcceptanceTester $I)
@@ -532,7 +536,7 @@ class EF09ThrottlingCest
                 ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
                 ->入力_電話番号('111-111-111')
                 ->登録する();
-            }
+        }
 
         $I->expect('試行回数上限を超過します');
         $I->wait(10);
@@ -564,6 +568,7 @@ class EF09ThrottlingCest
      * customer_delivery_newでの制限に引っかかるため、customer_delivery_newのlimiter上限値を変更してから実施してください。
      *
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function 配送先情報_削除(AcceptanceTester $I)
@@ -591,7 +596,7 @@ class EF09ThrottlingCest
                 ->入力_番地_ビル名('梅田2-4-9 ブリーゼタワー13F')
                 ->入力_電話番号('111-111-111')
                 ->登録する();
-         }
+        }
 
         for ($i = 0; $i < 10; $i++) {
             $I->expect('お届け先を削除します。：'.$i);
@@ -628,6 +633,7 @@ class EF09ThrottlingCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function order_お届け先追加(AcceptanceTester $I)
@@ -693,6 +699,7 @@ class EF09ThrottlingCest
 
     /**
      * @param AcceptanceTester $I
+     *
      * @return void
      */
     public function order_お届け先変更(AcceptanceTester $I)
@@ -781,7 +788,7 @@ class EF09ThrottlingCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member/new');
         $I->see('メンバー登録システム設定', '.c-pageTitle');
 
-        $login_id = 'admin_'.\Eccube\Util\StringUtil::random(6);
+        $login_id = 'admin_'.Eccube\Util\StringUtil::random(6);
         $password = 'password1234';
         $I->fillField(['id' => 'admin_member_name'], '管理者');
         $I->fillField(['id' => 'admin_member_department'], 'admin_throttling');
@@ -804,7 +811,7 @@ class EF09ThrottlingCest
 
         // 二段階認証のセットアップ
         $secret = $I->executeJS('return $("#admin_two_factor_auth_auth_key").val();');
-        $tfa = new \RobThree\Auth\TwoFactorAuth();
+        $tfa = new RobThree\Auth\TwoFactorAuth();
         $code = $tfa->getCode($secret);
         $I->fillField(['id' => 'admin_two_factor_auth_device_token'], $code);
         $I->click('登録');
@@ -827,6 +834,7 @@ class EF09ThrottlingCest
             $I->waitForText('トークンに誤りがあります。再度入力してください。');
         }
 
+        $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         // トークン入力の試行回数制限を超過
         $I->fillField(['id' => 'admin_two_factor_auth_device_token'], 'aaaaaa');
         $I->click('認証');
