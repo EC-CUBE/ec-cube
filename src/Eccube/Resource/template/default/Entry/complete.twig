@@ -19,16 +19,18 @@ file that was distributed with this source code.
         </div>
     </div>
     <div class="ec-registerCompleteRole">
+        <div class="ec-reportHeading">
+            <h2>{{ 'front.entry.complete_message__title'|trans }}</h2>
+        </div>
         <div class="ec-off3Grid ec-text-ac">
             <div class="ec-off3Grid__cell">
-                <div class="ec-reportHeading">
-                    <h2>{{ 'front.entry.complete_message__title'|trans }}</h2>
-                </div>
+
                 <p class="ec-reportDescription">{{ 'front.entry.complete_message__temporary'|trans|nl2br }}</p>
-                <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a></div>
-                </div>
+
             </div>
+        </div>
+        <div class="ec-off4Grid">
+            <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a></div>
         </div>
     </div>
 {% endblock %}

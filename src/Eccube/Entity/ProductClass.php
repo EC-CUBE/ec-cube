@@ -88,7 +88,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set price02 IncTax
          *
-         *
          * @return ProductClass
          */
         public function setPrice02IncTax($price02_inc_tax)
@@ -615,7 +614,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setProductStock(\Eccube\Entity\ProductStock $productStock = null)
+        public function setProductStock(ProductStock $productStock = null)
         {
             $this->ProductStock = $productStock;
 
@@ -639,7 +638,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setTaxRule(\Eccube\Entity\TaxRule $taxRule = null)
+        public function setTaxRule(TaxRule $taxRule = null)
         {
             $this->TaxRule = $taxRule;
 
@@ -663,7 +662,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 
@@ -687,7 +686,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setSaleType(\Eccube\Entity\Master\SaleType $saleType = null)
+        public function setSaleType(Master\SaleType $saleType = null)
         {
             $this->SaleType = $saleType;
 
@@ -711,7 +710,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setClassCategory1(\Eccube\Entity\ClassCategory $classCategory1 = null)
+        public function setClassCategory1(ClassCategory $classCategory1 = null)
         {
             $this->ClassCategory1 = $classCategory1;
 
@@ -735,7 +734,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setClassCategory2(\Eccube\Entity\ClassCategory $classCategory2 = null)
+        public function setClassCategory2(ClassCategory $classCategory2 = null)
         {
             $this->ClassCategory2 = $classCategory2;
 
@@ -759,7 +758,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setDeliveryDuration(\Eccube\Entity\DeliveryDuration $deliveryDuration = null)
+        public function setDeliveryDuration(DeliveryDuration $deliveryDuration = null)
         {
             $this->DeliveryDuration = $deliveryDuration;
 
@@ -783,7 +782,7 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
          *
          * @return ProductClass
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

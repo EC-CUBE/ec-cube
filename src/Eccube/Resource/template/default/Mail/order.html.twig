@@ -66,15 +66,15 @@ file that was distributed with this source code.
                             {% endif %}
                             <hr style="border-top: 1px dotted #8c8b8b;">
                             合　計：{{ Order.taxable_total|price }}<br/>
-                            {% for rate, total in Order.taxable_total_by_tax_rate %}
-                                ({{ rate }} %対象：{{ total|price }})<br/>
-                            {% endfor %}
                             {% for item in Order.tax_free_discount_items %}
                                 <hr style="border-top: 1px dotted #8c8b8b;">
                                 {{ item.product_name }}：{{ item.total_price|price }}<br/>
                             {% endfor %}
                             <hr style="border-top: 1px dotted #8c8b8b;">
                             お支払い合計：{{ Order.payment_total|price }}
+                            {% for rate, total in Order.total_by_tax_rate %}
+                                ({{ rate }} %対象：{{ total|price }} 内消費税： {{ Order.tax_by_tax_rate[rate]|price }})<br/>
+                            {% endfor %}
                             <br/>
                             <hr style="border-top: 3px double #8c8b8b;">
                             ご注文者情報<br/>

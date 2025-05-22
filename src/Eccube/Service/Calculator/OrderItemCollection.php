@@ -13,8 +13,8 @@
 
 namespace Eccube\Service\Calculator;
 
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 
 class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection

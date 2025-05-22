@@ -16,6 +16,8 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\MappingException as ORMMappingException;
+use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -24,9 +26,9 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PluginService
 {
@@ -60,17 +62,17 @@ class PluginService
      */
     protected $composerService;
 
-    const VENDOR_NAME = 'ec-cube';
+    public const VENDOR_NAME = 'ec-cube';
 
     /**
      * Plugin type/library of ec-cube
      */
-    const ECCUBE_LIBRARY = 1;
+    public const ECCUBE_LIBRARY = 1;
 
     /**
      * Plugin type/library of other (except ec-cube)
      */
-    const OTHER_LIBRARY = 2;
+    public const OTHER_LIBRARY = 2;
 
     /**
      * @var string %kernel.project_dir%
@@ -153,13 +155,14 @@ class PluginService
      *
      * @param string $path   path to tar.gz/zip plugin file
      * @param int    $source
+     * @param bool   $notExists
      *
      * @return boolean
      *
      * @throws PluginException
      * @throws \Exception
      */
-    public function install($path, $source = 0)
+    public function install($path, $source = 0, $notExists = false)
     {
         $pluginBaseDir = null;
         $tmp = null;
@@ -192,6 +195,11 @@ class PluginService
             $this->postInstall($config, $source);
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp, $pluginBaseDir]);
+            if ($e->getMessage() === 'plugin already installed.' && $notExists) {
+
+                return true;
+            }
+
             throw $e;
         } catch (\Exception $e) {
             // インストーラがどんなExceptionを上げるかわからないので
@@ -204,10 +212,11 @@ class PluginService
 
     /**
      * @param $code string sプラグインコード
+     * @param bool $notExists
      *
      * @throws PluginException
      */
-    public function installWithCode($code)
+    public function installWithCode($code, $notExists = false)
     {
         $this->pluginContext->setCode($code);
         $this->pluginContext->setInstall();
@@ -220,9 +229,9 @@ class PluginService
             // 依存プラグインが有効になっていない場合はエラー
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
-                $code = preg_replace('/^ec-cube\//', '', $req['name']);
+                $code = preg_replace('/^ec-cube\//i', '', $req['name']);
                 /** @var Plugin $DependPlugin */
-                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $code]);
+                $DependPlugin = $this->pluginRepository->findByCode($code);
 
                 return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
             });
@@ -233,9 +242,18 @@ class PluginService
             }
         }
 
-        $this->checkSamePlugin($config['code']);
-        $this->copyAssets($config['code']);
-        $this->postInstall($config, $config['source']);
+        try {
+            $this->checkSamePlugin($config['code']);
+            $this->copyAssets($config['code']);
+            $this->postInstall($config, $config['source']);
+        } catch (PluginException $e) {
+            if ($e->getMessage() === 'plugin already installed.' && $notExists) {
+
+                return true;
+            }
+
+            throw $e;
+        }
     }
 
     // インストール事前処理
@@ -250,9 +268,7 @@ class PluginService
     public function postInstall($config, $source)
     {
         // dbにプラグイン登録
-
         $this->entityManager->getConnection()->beginTransaction();
-
         try {
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
@@ -276,10 +292,16 @@ class PluginService
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
 
-            $this->entityManager->flush();
-            $this->entityManager->getConnection()->commit();
+            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+                $this->entityManager->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $this->entityManager->getConnection()->rollback();
+            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($this->entityManager->getConnection()->isRollbackOnly()) {
+                    $this->entityManager->getConnection()->rollback();
+                }
+            }
+
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -294,9 +316,6 @@ class PluginService
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
     {
-        // キャッシュしたメタデータを利用しないようにキャッシュドライバを外しておく
-        $this->entityManager->getMetadataFactory()->setCacheDriver(null);
-
         $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
             $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
         }, $plugin, $config, $uninstall);
@@ -336,11 +355,10 @@ class PluginService
                     $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
-                        $chain = $ormConfig->getMetadataDriverImpl();
+                        $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
                         $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
-                        $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
                     }
                 }
 
@@ -426,18 +444,18 @@ class PluginService
         }
 
         if (!is_array($meta)) {
-            throw new PluginException('config.yml not found or syntax error');
+            throw new PluginException('composer.json not found or syntax error');
         }
         if (!isset($meta['code']) || !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException('config.yml code empty or invalid_character(\W)');
+            throw new PluginException('composer.json code empty or invalid_character(\W)');
         }
         if (!isset($meta['name'])) {
-            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException('config.yml name empty');
+            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなし
+            throw new PluginException('composer.json name empty');
         }
         if (!isset($meta['version'])) {
-            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException('config.yml version invalid_character(\W) ');
+            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなし
+            throw new PluginException('composer.json version invalid_character(\W) ');
         }
     }
 
@@ -452,20 +470,20 @@ class PluginService
     {
         $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
         if (file_exists($composerJsonPath) === false) {
-            throw new PluginException("${composerJsonPath} not found.");
+            throw new PluginException("{$composerJsonPath} not found.");
         }
 
         $json = json_decode(file_get_contents($composerJsonPath), true);
         if ($json === null) {
-            throw new PluginException("Invalid json format. [${composerJsonPath}]");
+            throw new PluginException("Invalid json format. [{$composerJsonPath}]");
         }
 
         if (!isset($json['version'])) {
-            throw new PluginException("`version` is not defined in ${composerJsonPath}");
+            throw new PluginException("`version` is not defined in {$composerJsonPath}");
         }
 
         if (!isset($json['extra']['code'])) {
-            throw new PluginException("`extra.code` is not defined in ${composerJsonPath}");
+            throw new PluginException("`extra.code` is not defined in {$composerJsonPath}");
         }
 
         return [
@@ -540,7 +558,7 @@ class PluginService
                 ->setCode($meta['code']);
 
             $this->entityManager->persist($p);
-            $this->entityManager->flush($p);
+            $this->entityManager->flush();
 
             $this->pluginApiService->pluginInstalled($p);
         } catch (\Exception $e) {
@@ -589,18 +607,22 @@ class PluginService
         }
         $this->unregisterPlugin($plugin);
 
-        // スキーマを更新する
-        $this->generateProxyAndUpdateSchema($plugin, $config, true);
+        try {
+            // スキーマを更新する
+            $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
-        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
-        $this->schemaService->dropTable($namespace);
+            // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+            $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+            $this->schemaService->dropTable($namespace);
+        } catch (PersistenceMappingException $e) {
+        } catch (ORMMappingException $e) {
+            // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
+        }
 
         if ($force) {
             $this->deleteFile($pluginDir);
             $this->removeAssets($plugin->getCode());
         }
-
         $this->pluginApiService->pluginUninstalled($plugin);
 
         return true;
@@ -656,7 +678,7 @@ class PluginService
         }
 
         $enabledPluginEntityDirs = array_map(function ($code) {
-            return $this->projectRoot."/app/Plugin/${code}/Entity";
+            return $this->projectRoot."/app/Plugin/{$code}/Entity";
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
@@ -711,13 +733,12 @@ class PluginService
      */
     public function update(Plugin $plugin, $path)
     {
-        $pluginBaseDir = null;
         $tmp = null;
         try {
             $this->cacheUtil->clearCache();
             $tmp = $this->createTempDir();
 
-            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            $this->unpackPluginArchive($path, $tmp); // 一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readConfig($tmp);
@@ -769,9 +790,15 @@ class PluginService
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            $em->getConnection()->commit();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                $em->getConnection()->commit();
+            }
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
+                if ($em->getConnection()->isRollbackOnly()) {
+                    $em->getConnection()->rollback();
+                }
+            }
             throw $e;
         }
     }
@@ -793,7 +820,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.$pluginCode, $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -845,7 +872,8 @@ class PluginService
                 if (!isset($json['require'])) {
                     continue;
                 }
-                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require']) // 前方互換用
+                    || array_key_exists(self::VENDOR_NAME.'/'.strtolower($pluginCode), $json['require'])) {
                     $dependents[] = $plugin->getCode();
                 }
             }
@@ -967,26 +995,11 @@ class PluginService
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array
-        $index = array_search($pluginCode, array_column($plugins, 'product_code'));
-
-        return $index;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return bool
-     */
-    private function isEnable($code)
-    {
-        $Plugin = $this->pluginRepository->findOneBy([
-            'enabled' => Constant::ENABLED,
-            'code' => $code,
-        ]);
-        if ($Plugin) {
-            return true;
+        $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
+        if (false === $index) {
+            $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
         }
 
-        return false;
+        return $index;
     }
 }

@@ -13,15 +13,15 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\MailTemplateType;
+use Eccube\Form\Validator\TwigLint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Form\Validator\TwigLint;
-use Doctrine\ORM\EntityRepository;
 
 class OrderMailType extends AbstractType
 {
@@ -52,8 +52,6 @@ class OrderMailType extends AbstractType
                 'mapped' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('mt')
-                        ->andWhere('mt.id = :id')
-                        ->setParameter('id', $this->eccubeConfig['eccube_order_mail_template_id'])
                         ->orderBy('mt.id', 'ASC');
                 },
             ])

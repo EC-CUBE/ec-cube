@@ -15,13 +15,16 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassNameType;
 use Eccube\Repository\ClassNameRepository;
+use Eccube\Service\CsvExportService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,18 +37,27 @@ class ClassNameController extends AbstractController
     protected $classNameRepository;
 
     /**
+     * @var CsvExportService
+     */
+    protected $csvExportService;
+
+    /**
      * ClassNameController constructor.
      *
      * @param ClassNameRepository $classNameRepository
+     * @param CsvExportService $csvExportService
      */
-    public function __construct(ClassNameRepository $classNameRepository)
-    {
+    public function __construct(
+        ClassNameRepository $classNameRepository,
+        CsvExportService $csvExportService
+    ) {
         $this->classNameRepository = $classNameRepository;
+        $this->csvExportService = $csvExportService;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name")
-     * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
+     * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit", methods={"GET", "POST"})
      * @Template("@admin/Product/class_name.twig")
      */
     public function index(Request $request, $id = null)
@@ -69,7 +81,7 @@ class ClassNameController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE);
 
         $ClassNames = $this->classNameRepository->getList();
 
@@ -100,7 +112,7 @@ class ClassNameController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -147,7 +159,7 @@ class ClassNameController extends AbstractController
             $this->classNameRepository->delete($ClassName);
 
             $event = new EventArgs(['ClassName' => $ClassName], $request);
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -167,7 +179,7 @@ class ClassNameController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -183,5 +195,77 @@ class ClassNameController extends AbstractController
 
             return new Response();
         }
+    }
+
+    /**
+     * 規格CSVの出力.
+     *
+     * @Route("/%eccube_admin_route%/product/class_name/export", name="admin_product_class_name_export", methods={"GET"})
+     *
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
+    public function export(Request $request)
+    {
+        // タイムアウトを無効にする.
+        set_time_limit(0);
+
+        // sql loggerを無効にする.
+        $em = $this->entityManager;
+        $em->getConfiguration()->setSQLLogger(null);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($request) {
+            // CSV種別を元に初期化.
+            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CLASS_NAME);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
+
+            $qb = $this->classNameRepository
+                ->createQueryBuilder('cn')
+                ->orderBy('cn.sort_no', 'DESC');
+
+            // データ行の出力.
+            $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+                $Csvs = $csvService->getCsvs();
+
+                /** @var $ClassName \Eccube\Entity\ClassName */
+                $ClassName = $entity;
+
+                // CSV出力項目と合致するデータを取得.
+                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                foreach ($Csvs as $Csv) {
+                    $ExportCsvRow->setData($csvService->getData($Csv, $ClassName));
+
+                    $event = new EventArgs(
+                        [
+                            'csvService' => $csvService,
+                            'Csv' => $Csv,
+                            'ClassName' => $ClassName,
+                            'ExportCsvRow' => $ExportCsvRow,
+                        ],
+                        $request
+                    );
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_CSV_EXPORT);
+
+                    $ExportCsvRow->pushData();
+                }
+                //$row[] = number_format(memory_get_usage(true));
+                // 出力.
+                $csvService->fputcsv($ExportCsvRow->getRow());
+            });
+        });
+
+        $now = new \DateTime();
+        $filename = 'class_name_'.$now->format('YmdHis').'.csv';
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        log_info('規格CSV出力ファイル名', [$filename]);
+
+        return $response;
     }
 }

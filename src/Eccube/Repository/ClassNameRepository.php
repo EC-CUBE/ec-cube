@@ -15,8 +15,8 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\ClassName;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ClassNameRepository
@@ -68,7 +68,7 @@ class ClassNameRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($ClassName);
-        $em->flush([$ClassName]);
+        $em->flush();
     }
 
     /**
@@ -92,6 +92,6 @@ class ClassNameRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->remove($ClassName);
-        $em->flush($ClassName);
+        $em->flush();
     }
 }

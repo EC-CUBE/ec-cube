@@ -56,7 +56,8 @@ class CsvController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/csv/{id}",
      *     requirements={"id" = "\d+"},
      *     defaults={"id" = CsvType::CSV_TYPE_ORDER},
-     *     name="admin_setting_shop_csv"
+     *     name="admin_setting_shop_csv",
+     *     methods={"GET", "POST"}
      * )
      * @Template("@admin/Setting/Shop/csv.twig")
      */
@@ -121,7 +122,7 @@ class CsvController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -160,7 +161,7 @@ class CsvController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 

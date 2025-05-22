@@ -1,0 +1,117 @@
+env:
+
+  contexts :
+
+    - name: admin
+      urls:
+        - 'https://ec-cube/admin'
+      includePaths:
+        - '\Qhttps://ec-cube/admin\E.*'
+      excludePaths:
+      authentication:
+        method: 'form'
+        parameters:
+          loginPageUrl: https://ec-cube/admin/login
+          loginRequestUrl: https://ec-cube/admin/login
+          loginRequestBody: _csrf_token=xxx&login_id={%username%}&password={%password%}
+        verification:
+          method: 'poll'
+          loggedOutRegex: '\Q<button type="submit" class="btn btn-primary btn-lg btn-block">ログイン</button>\E'
+          pollFrequency: 1000
+          pollUnits: 'requests'
+          pollUrl: 'https://ec-cube/admin/login'
+      users:
+      - name: admin
+        credentials:
+          username: admin
+          password: password
+
+    - name: default
+      urls:
+        - https://ec-cube
+        - http://mailcatcher:1080
+
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+
+jobs:
+
+  - type: script
+    parameters:
+      action: add
+      type: standalone
+      name: configure_tech
+      file: /zap/wrk/scripts/configure_tech.js
+
+  - type: script
+    parameters:
+      action: run
+      type: standalone
+      name: configure_tech
+
+${ZA_FORCE_ADMIN_CONFIG}
+${ZA_BEFORE_SCRIPT_CONFIG}
+
+  - type: script
+    parameters:
+      action: add
+      type: sequence
+      name: target
+      file: /zap/wrk/scripts/${ZA_TARGET}.zst
+
+  - type: script
+    parameters:
+      action: run
+      type: sequence
+      name: target
+
+  - type: sequence
+    parameters:
+      action: activeScan
+      name: target
+      user: ${ZA_USER}
+      context: ${ZA_CONTEXT}
+      threadPerHost: ${ZA_THREAD_PER_HOST}
+
+  - type: passiveScan-wait
+
+  - type: report
+    parameters:
+      reportDir: /tmp/report
+      reportFile: ZAP-Report-${ZA_TARGET}
+      reportTitle: ${ZA_TARGET}
+
+  - type: script
+    parameters:
+      action: add
+      type: standalone
+      name: dump_alerts
+      file: /zap/wrk/scripts/dump_alerts.js
+
+  - type: script
+    parameters:
+      action: run
+      type: standalone
+      name: dump_alerts
+
+  - type: script
+    parameters:
+      action: add
+      type: standalone
+      name: assert_no_high_risks
+      file: /zap/wrk/scripts/assert_no_high_risks.js
+
+  - type: script
+    parameters:
+      action: run
+      type: standalone
+      name: assert_no_high_risks
+    tests:
+      - name: 'High risk alert count'
+        type: stats
+        statistic: stats.scan.high.alerts
+        operator: '=='
+        value: 0
+        onFail: 'error'

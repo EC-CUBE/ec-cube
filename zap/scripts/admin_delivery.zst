@@ -1,0 +1,259 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_delivery",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "https://ec-cube/admin/setting/shop/delivery/new",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659715222,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "delivery__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop/delivery/new",
+      "data": "delivery%5B_token%5D={{csrf1}}&delivery%5Bname%5D=delivery&delivery%5Bservice_name%5D=delivery&delivery%5Bconfirm_url%5D=&delivery%5Bsale_type%5D=1&delivery%5Bpayments%5D%5B%5D=1&delivery%5Bfree_all%5D=100&delivery%5Bdelivery_fees%5D%5B47%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B48%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B49%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B50%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B51%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B52%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B53%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B54%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B55%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B56%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B57%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B58%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B59%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B60%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B61%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B62%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B63%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B64%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B65%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B66%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B67%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B68%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B69%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B70%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B71%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B72%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B73%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B74%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B75%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B76%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B77%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B78%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B79%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B80%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B81%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B82%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B83%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B84%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B85%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B86%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B87%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B88%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B89%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B90%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B91%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B92%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B93%5D%5Bfee%5D=100&delivery%5Bdescription%5D=&delivery%5Bvisible%5D=1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2595\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659748017,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "Location: /admin/setting/shop/delivery/",
+      "postfix": "/edit",
+      "location": "HEAD",
+      "variableName": "delivery-id",
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/setting/shop/delivery/{{delivery-id}}/edit",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659748098,
+      "cookies": [],
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "delivery__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf2",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/setting/shop/delivery/{{delivery-id}}/edit",
+      "data": "delivery%5B_token%5D={{csrf2}}&delivery%5Bname%5D=delivery&delivery%5Bservice_name%5D=delivery&delivery%5Bconfirm_url%5D=&delivery%5Bsale_type%5D=1&delivery%5Bpayments%5D%5B%5D=1&delivery%5Bfree_all%5D=&delivery%5Bdelivery_fees%5D%5B47%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B48%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B49%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B50%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B51%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B52%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B53%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B54%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B55%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B56%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B57%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B58%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B59%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B60%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B61%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B62%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B63%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B64%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B65%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B66%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B67%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B68%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B69%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B70%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B71%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B72%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B73%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B74%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B75%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B76%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B77%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B78%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B79%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B80%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B81%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B82%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B83%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B84%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B85%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B86%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B87%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B88%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B89%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B90%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B91%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B92%5D%5Bfee%5D=100&delivery%5Bdelivery_fees%5D%5B93%5D%5Bfee%5D=100&delivery%5Bdescription%5D=&delivery%5Bvisible%5D=1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2592\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659753921,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop/delivery",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659758353,
+      "cookies": [],
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop/delivery/sort_no/move",
+      "data": "1=1&2=3&{{delivery-id}}=2",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 11\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659789568,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/setting/shop/delivery/{{delivery-id}}/visibility",
+      "data": "_token={{eccube-csrf-token}}&_method=put",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 62\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659794108,
+      "cookies": [],
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/setting/shop/delivery/{{delivery-id}}/delete",
+      "data": "_token={{eccube-csrf-token}}&_method=delete",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659802363,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop/delivery",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656659802399,
+      "cookies": [],
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

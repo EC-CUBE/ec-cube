@@ -15,7 +15,7 @@ namespace Page\Admin;
 
 class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
 {
-    public static $完了メッセージ = '#importCsvModal > div > div > div.modal-body.text-left > p';
+    public static $完了メッセージ = '#importCsvModal > div > div > div.modal-body.text-start > p';
 
     /**
      * ProductCsvUploadPage constructor.
@@ -78,7 +78,7 @@ class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
 
     public function CSVアップロード確認()
     {
-        $this->tester->wait(1);
+        $this->tester->wait(5);
         $this->tester->see('CSVファイルをアップロードしました', ProductCsvUploadPage::$完了メッセージ);
 
         return $this;

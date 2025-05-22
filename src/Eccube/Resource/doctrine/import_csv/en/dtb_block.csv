@@ -13,3 +13,6 @@ id,device_type_id,block_name,file_name,create_date,update_date,use_controller,de
 12,10,News,news,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
 13,10,Product Search,search_product,2017-03-07 10:14:52,2017-03-07 10:14:52,1,0,block
 14,10,Featured,topic,2017-03-07 10:14:52,2017-03-07 10:14:52,0,0,block
+16,10,Google Analytics,google_analytics,2021-02-16 12:00:00,2021-02-16 12:00:00,0,0,block
+17,10,Calendar,calendar,2021-03-16 12:00:00,2021-03-16 12:00:00,1,0,block
+18,10,Auto New Items,auto_new_item,2024-03-12 17:00:00,2024-03-12 17:00:00,1,0,block

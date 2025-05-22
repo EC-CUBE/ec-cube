@@ -43,7 +43,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
      */
     private $paymentRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

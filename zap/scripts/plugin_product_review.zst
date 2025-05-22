@@ -1,0 +1,439 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "plugin_product_review.zst",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "フロント処理 レビューの追加",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/product_review/2/review",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674727890870,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 1,
+        "fieldName": "product_review__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "minInt": 1000000000,
+      "maxInt": 2147483647,
+      "variableName": "product-review-random",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestAssignRandomInteger"
+    },
+    {
+      "url": "https://ec-cube/product_review/2/review",
+      "data": "product_review%5B_token%5D={{csrf1}}&product_review%5Breviewer_name%5D={{product-review-random}}&product_review%5Breviewer_url%5D=http%3A%2F%2Flocalhost&product_review%5Bsex%5D=4&product_review%5Brecommend_level%5D=5&product_review%5Btitle%5D=%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB&product_review%5Bcomment%5D=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88&mode=confirm",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 474\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674727916394,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 1,
+        "fieldName": "product_review__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf2",
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/product_review/2/review",
+      "data": "product_review%5B_token%5D={{csrf2}}&product_review%5Breviewer_name%5D={{product-review-random}}&product_review%5Breviewer_url%5D=http%3A%2F%2Flocalhost&product_review%5Bsex%5D=4&product_review%5Brecommend_level%5D=5&product_review%5Btitle%5D=%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB&product_review%5Bcomment%5D=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88&mode=complete",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 469\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674727919084,
+      "cookies": [],
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/product_review/2/complete",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674727919141,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "管理画面処理 追加したレビューの検索\n",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/product_review/",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674802742545,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "product_review_search__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf3",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/product_review/",
+      "data": "product_review_search%5B_token%5D={{csrf3}}&product_review_search%5Bmulti%5D={{product-review-random}}&product_review_search%5Bproduct_name%5D=&product_review_search%5Bproduct_code%5D=&product_review_search%5Brecommend_level%5D=&product_review_search%5Breview_start%5D=&product_review_search%5Breview_end%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 412\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674807235824,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "<div class=\"modal fade\" id=\"confirmModal-",
+      "postfix": "\" tabindex=\"-1\"",
+      "location": "BODY",
+      "variableName": "product-review-id",
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "message": "product-review-id: {{product-review-id}}",
+      "index": 14,
+      "enabled": false,
+      "elementType": "ZestActionPrint"
+    },
+    {
+      "comment": "検索したレビュー内容の更新",
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product_review/{{product-review-id}}/edit",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674802748850,
+      "cookies": [],
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "product_review__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf4",
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product_review/{{product-review-id}}/edit",
+      "data": "product_review%5B_token%5D={{csrf4}}&product_review%5Breviewer_name%5D={{product-review-random}}&product_review%5Breviewer_url%5D=http%3A%2F%2Flocalhost&product_review%5Bsex%5D=4&product_review%5Brecommend_level%5D=5&product_review%5Btitle%5D=%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB&product_review%5Bcomment%5D=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88&product_review%5BStatus%5D=2",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 475\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674802753350,
+      "cookies": [],
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product_review/{{product-review-id}}/edit",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674802753409,
+      "cookies": [],
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/product_review/page?resume=1",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674802758801,
+      "cookies": [],
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "管理画面処理 編集したレビューの検索\n",
+      "index": 21,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/product_review/",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674802742545,
+      "cookies": [],
+      "index": 22,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "product_review_search__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf3",
+      "index": 23,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/product_review/",
+      "data": "product_review_search%5B_token%5D={{csrf3}}&product_review_search%5Bmulti%5D={{product-review-random}}&product_review_search%5Bproduct_name%5D=&product_review_search%5Bproduct_code%5D=&product_review_search%5Brecommend_level%5D=&product_review_search%5Breview_start%5D=&product_review_search%5Breview_end%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 412\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674807235824,
+      "cookies": [],
+      "index": 24,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "token-for-anchor='",
+      "postfix": "'\\s+data-method=\"delete\">",
+      "location": "BODY",
+      "variableName": "delete-token",
+      "index": 25,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "prefix": "<div class=\"modal fade\" id=\"confirmModal-",
+      "postfix": "\" tabindex=\"-1\"",
+      "location": "BODY",
+      "variableName": "product-review-id",
+      "index": 26,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "message": "product-review-id: {{delete-token}}",
+      "index": 27,
+      "enabled": false,
+      "elementType": "ZestActionPrint"
+    },
+    {
+      "comment": "検索したレビューを削除",
+      "index": 28,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product_review/{{product-review-id}}/delete",
+      "data": "_token={{delete-token}}&_method=delete",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 152\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674814344928,
+      "cookies": [],
+      "index": 29,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

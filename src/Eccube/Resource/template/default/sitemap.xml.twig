@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+{# Pages #}
+{% if DefaultPages is defined %}
+{% for DefaultPage in DefaultPages %}
+  {% if DefaultPage.url != 'product_detail' and DefaultPage.url != 'product_list' %}
+  <url>
+    <loc>{{url(DefaultPage.url)}}</loc>
+    <lastmod>{{DefaultPage.update_date|date_format('','c')}}</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  {% endif %}
+{% endfor %}
+{% endif %}
+{% if UserPages is defined %}
+{% for UserPage in UserPages %}
+  <url>
+    <loc>{{url('user_data', {route: UserPage.url})}}</loc>
+    <lastmod>{{UserPage.update_date|date_format('','c')}}</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+{% endfor %}
+{% endif %}
+{# Categories #}
+{% if Categories is defined %}
+{% for Category in Categories %}
+  <url>
+    <loc>{{ url('product_list') }}?category_id={{Category.id}}</loc>
+    <lastmod>{{Category.update_date|date_format('','c')}}</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+{% endfor %}
+{% endif %}
+{# Products #}
+{% if Products is defined %}
+{% for Product in Products %}
+  <url>
+    <loc>{{ url('product_detail', {'id': Product.id}) }}</loc>
+    <lastmod>{{Product.update_date|date_format('','c')}}</lastmod>
+    <changefreq>daily</changefreq>
+    {% for ProductImage in Product.ProductImage %}
+    <image:image>
+      <image:loc>{{ absolute_url(asset(ProductImage, 'save_image')) }}</image:loc>
+    </image:image>
+    {% endfor %}
+  </url>
+{% endfor %}
+{% endif %}
+</urlset>

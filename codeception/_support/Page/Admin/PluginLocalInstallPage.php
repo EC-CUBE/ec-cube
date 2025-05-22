@@ -23,13 +23,14 @@ class PluginLocalInstallPage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @param $fileName
+     * @param $pluginDirName
      *
      * @return PluginManagePage
      */
-    public function アップロード($fileName)
+    public function アップロード($pluginDirName)
     {
-        $this->tester->attachFile(['id' => 'plugin_local_install_plugin_archive'], $fileName);
+        $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
+        $this->tester->attachFile(['id' => 'plugin_local_install_plugin_archive'], 'plugins/'.$pluginDirName.'.tgz');
         $this->tester->click(['css' => '#upload-form > div > div > div > div > div.card-body > div > div > button']);
 
         return PluginManagePage::at($this->tester);

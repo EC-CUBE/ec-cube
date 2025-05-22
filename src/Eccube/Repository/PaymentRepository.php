@@ -14,8 +14,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\Query;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Payment;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * PaymentRepository

@@ -11,6 +11,12 @@ file that was distributed with this source code.
 <script>
     // 受注明細行を追加する.
     function fnAddOrderItem($row, product_id, type, product_name, tax_type) {
+        // 既存の受注明細のポイント付与率を取得する. 取得できない場合は店舗基本情報の付与率を設定する.
+        var point_rate = $('input[type=hidden][id$=point_rate]').first().val();
+        if (point_rate === undefined) {
+            point_rate = '{{ BaseInfo.basic_point_rate }}';
+        }
+
         var prototype = $collectionHolder.data('prototype');
         index++;
         var newForm = prototype.replace(/__name__/g, index);
@@ -22,6 +28,7 @@ file that was distributed with this source code.
         $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
         $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
         $($lastRow).find(formIdPrefix + index + '_tax_type').val(tax_type);
+        $($lastRow).find(formIdPrefix + index + '_point_rate').val(point_rate);
 
         // モーダル閉じる.
         $('#addOrderItemType').modal('hide');
@@ -37,9 +44,9 @@ file that was distributed with this source code.
 <table class="table table-striped table-sm mb-3">
     <thead class="table-active">
     <tr>
-        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.order_item_type'|trans }}</th>
-        <th class="pt-2 pb-2 pl-3">{{ 'admin.order.tax_type'|trans }}</th>
-        <th class="pt-2 pb-2 pr-3"></th>
+        <th class="pt-2 pb-2 ps-3">{{ 'admin.order.order_item_type'|trans }}</th>
+        <th class="pt-2 pb-2 ps-3">{{ 'admin.order.tax_type'|trans }}</th>
+        <th class="pt-2 pb-2 pe-3"></th>
     </tr>
     </thead>
 
@@ -47,11 +54,11 @@ file that was distributed with this source code.
     {% for OrderItemType in OrderItemTypes %}
         <form name="product_form{{ OrderItemType.OrderItemType.id }}">
             <tr>
-                <td class="align-middle pl-3">{{ OrderItemType.OrderItemType.name }}</td>
-                <td class="align-middle pl-3">{{ OrderItemType.TaxType.name }}</td>
-                <td class="align-middle pr-3 text-right">
+                <td class="align-middle ps-3">{{ OrderItemType.OrderItemType.name }}</td>
+                <td class="align-middle ps-3">{{ OrderItemType.TaxType.name }}</td>
+                <td class="align-middle pe-3 text-end">
                     <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), null, {{ OrderItemType.OrderItemType.id }}, '{{ OrderItemType.OrderItemType.name }}', '{{ OrderItemType.TaxType.id }}')" name="mode" value="modal">
-                        <i class="fa fa-plus fa-lg font-weight-bold text-secondary"></i>
+                        <i class="fa fa-plus fa-lg fw-bold text-secondary"></i>
                     </button>
                 </td>
             </tr>

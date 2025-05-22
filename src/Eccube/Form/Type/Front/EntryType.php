@@ -20,10 +20,10 @@ use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\JobType;
 use Eccube\Form\Type\Master\SexType;
 use Eccube\Form\Type\NameType;
-use Eccube\Form\Type\RepeatedEmailType;
-use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
+use Eccube\Form\Type\RepeatedEmailType;
+use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -76,13 +76,12 @@ class EntryType extends AbstractType
                 'required' => true,
             ])
             ->add('email', RepeatedEmailType::class)
-            ->add('password', RepeatedPasswordType::class)
+            ->add('plain_password', RepeatedPasswordType::class)
             ->add('birth', BirthdayType::class, [
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
-                'format' => 'yyyy/MM/dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\LessThanOrEqual([
@@ -119,8 +118,8 @@ class EntryType extends AbstractType
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
     }

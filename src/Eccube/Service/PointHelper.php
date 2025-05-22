@@ -122,9 +122,20 @@ class PointHelper
         $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
 
+        // 商品明細に保持しているポイント付与率を取得して設定する.
+        // 商品明細が取得できない場合は店舗基本情報のポイント付与率を設定する.
+        $Baseinfo = $this->baseInfoRepository->get();
+        $pointRate = $Baseinfo->getBasicPointRate();
+        // 商品別ポイントは未実装なので, 商品明細のポイント付与率はすべて同じ値が設定されているはず
+        $ProductOrderItem = $itemHolder->getItems()->getProductClasses()->current();
+        if ($ProductOrderItem instanceof OrderItem && $ProductOrderItem->getPointRate() !== null) {
+            $pointRate = $ProductOrderItem->getPointRate();
+        }
+
         $OrderItem = new OrderItem();
         $OrderItem->setProductName($DiscountType->getName())
             ->setPrice($discount)
+            ->setPointRate($pointRate)
             ->setQuantity(1)
             ->setTax(0)
             ->setTaxRate(0)

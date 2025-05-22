@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Form\Type\Admin\MainEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,15 +25,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class CssController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/content/css", name="admin_content_css")
+     * @Route("/%eccube_admin_route%/content/css", name="admin_content_css", methods={"GET", "POST"})
      * @Template("@admin/Content/css.twig")
      */
     public function index(Request $request)
     {
+        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
+
         $builder = $this->formFactory
             ->createBuilder(FormType::class)
             ->add('css', TextareaType::class, [
-                'required' => false
+                'required' => false,
             ]);
         $form = $builder->getForm();
 
@@ -49,6 +50,7 @@ class CssController extends AbstractController
             try {
                 $fs->dumpFile($cssPath, $form->get('css')->getData());
                 $this->addSuccess('admin.common.save_complete', 'admin');
+
                 return $this->redirectToRoute('admin_content_css');
             } catch (IOException $e) {
                 $message = trans('admin.common.save_error');
@@ -56,8 +58,9 @@ class CssController extends AbstractController
                 log_error($message, [$cssPath, $e]);
             }
         }
+
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 }

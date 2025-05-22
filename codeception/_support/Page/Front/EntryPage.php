@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -12,14 +13,21 @@
 
 namespace Page\Front;
 
-
 class EntryPage extends AbstractFrontPage
 {
+    private $formData = [];
+
     public function __construct(\AcceptanceTester $I)
     {
         parent::__construct($I);
     }
 
+    /**
+     * @param $I
+     * @param $id
+     *
+     * @return EntryPage
+     */
     public static function go($I)
     {
         $page = new self($I);
@@ -28,105 +36,45 @@ class EntryPage extends AbstractFrontPage
         return $page;
     }
 
-    public static function at($I)
+    public function フォーム入力($form = [])
     {
-        $page = new self($I);
-        $page->tester->see('新規会員登録', ['css' => 'div.ec-pageHeader > h1']);
+        $this->tester->amOnPage('/entry');
+        $email = uniqid().microtime(true).'@example.com';
 
-        return $page;
-    }
+        $form += [
+            'entry[name][name01]' => '姓',
+            'entry[name][name02]' => '名',
+            'entry[kana][kana01]' => 'セイ',
+            'entry[kana][kana02]' => 'メイ',
+            'entry[postal_code]' => '530-0001',
+            'entry[address][pref]' => ['value' => '27'],
+            'entry[address][addr01]' => '大阪市北区',
+            'entry[address][addr02]' => '梅田2-4-9 ブリーゼタワー13F',
+            'entry[phone_number]' => '1234567890',
+            'entry[email][first]' => $email,
+            'entry[email][second]' => $email,
+            'entry[plain_password][first]' => 'password1234',
+            'entry[plain_password][second]' => 'password1234',
+            'entry[user_policy_check]' => '1',
+        ];
+        $this->formData = $form;
 
-    public function 入力_姓($value)
-    {
-        $this->tester->fillField(['id' => 'entry_name_name01'], $value);
         return $this;
     }
 
-    public function 入力_名($value)
+    public function 同意する()
     {
-        $this->tester->fillField(['id' => 'entry_name_name02'], $value);
+        $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $this->formData, ['css' => 'button.ec-blockBtn--action']);
+        $this->tester->wait(0.1); // XXX 画面遷移直後は ['id' => 'entry_email_first'] に失敗するため wait を入れる
+        $this->tester->seeInField(['id' => 'entry_email_first'], $this->formData['entry[email][first]']);
+
         return $this;
     }
 
-    public function 入力_姓カナ($value)
+    public function 登録する()
     {
-        $this->tester->fillField(['id' => 'entry_kana_kana01'], $value);
-        return $this;
-    }
+        $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
 
-    public function 入力_名カナ($value)
-    {
-        $this->tester->fillField(['id' => 'entry_kana_kana02'], $value);
         return $this;
-    }
-
-    public function 入力_郵便番号($value)
-    {
-        $this->tester->fillField(['id' => 'entry_postal_code'], $value);
-        return $this;
-    }
-
-    public function 入力_都道府県($value)
-    {
-        $this->tester->selectOption(['id' => 'entry_address_pref'], $value);
-        return $this;
-    }
-
-    public function 入力_市区町村($value)
-    {
-        $this->tester->fillField(['id' => 'entry_address_addr01'], $value);
-        return $this;
-    }
-
-    public function 入力_住所($value)
-    {
-        $this->tester->fillField(['id' => 'entry_address_addr02'], $value);
-        return $this;
-    }
-
-    public function 入力_電話番号($value) {
-        $this->tester->fillField(['id' => 'entry_phone_number'], $value);
-        return $this;
-    }
-
-    public function 入力_メールアドレス($value)
-    {
-        $this->tester->fillField(['id' => 'entry_email_first'], $value);
-        return $this;
-    }
-
-    public function 入力_メールアドレス確認($value)
-    {
-        $this->tester->fillField(['id' => 'entry_email_second'], $value);
-        return $this;
-    }
-
-    public function 入力_パスワード($value)
-    {
-        $this->tester->fillField(['id' => 'entry_password_first'], $value);
-        return $this;
-    }
-
-    public function 入力_パスワード確認($value)
-    {
-        $this->tester->fillField(['id' => 'entry_password_second'], $value);
-        return $this;
-    }
-
-    public function 入力_職業($value)
-    {
-        $this->tester->selectOption(['id' => 'entry_job'], $value);
-        return $this;
-    }
-
-    public function 入力_利用規約同意()
-    {
-        $this->tester->checkOption(['id' => 'entry_user_policy_check']);
-        return $this;
-    }
-
-    public function 同意して登録()
-    {
-        $this->tester->click(['css' => 'form > div.ec-registerRole__actions button']);
     }
 }

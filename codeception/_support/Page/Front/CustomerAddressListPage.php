@@ -37,14 +37,14 @@ class CustomerAddressListPage extends AbstractFrontPage
 
     public function 変更($num)
     {
-        $this->tester->click("div.ec-addressList div:nth-child(${num}) div.ec-addressList__action a");
+        $this->tester->click("div.ec-addressList div:nth-child({$num}) div.ec-addressList__action a");
 
         return new CustomerAddressEditPage($this->tester);
     }
 
     public function 削除($num)
     {
-        $this->tester->click("div.ec-addressList div:nth-child(${num}) a.ec-addressList__remove");
+        $this->tester->click("div.ec-addressList div:nth-child({$num}) a.ec-addressList__remove");
         $this->tester->acceptPopup();
 
         return $this;

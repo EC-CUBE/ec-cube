@@ -13,15 +13,21 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Common\Constant;
 use Eccube\Service\SystemService;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SystemController
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+    
     /**
      * @var SystemService
      */
@@ -30,15 +36,19 @@ class SystemController
     /**
      * SystemController constructor.
      *
+     * @param EccubeConfig $eccubeConfig
      * @param SystemService $systemService
      */
-    public function __construct(SystemService $systemService)
-    {
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        SystemService $systemService
+    ){
+        $this->eccubeConfig = $eccubeConfig;
         $this->systemService = $systemService;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system")
+     * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system", methods={"GET"})
      * @Template("@admin/Setting/System/system.twig")
      */
     public function index(Request $request)
@@ -55,11 +65,12 @@ class SystemController
 
         return [
             'info' => $info,
+            'phpinfo_enabled' => $this->eccubeConfig->get('eccube_phpinfo_enabled'),
         ];
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo")
+     * @Route("/%eccube_admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo", methods={"GET"})
      */
     public function phpinfo(Request $request)
     {

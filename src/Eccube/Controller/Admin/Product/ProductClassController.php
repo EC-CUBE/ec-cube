@@ -13,13 +13,13 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
-use Eccube\Entity\TaxRule;
 use Eccube\Form\Type\Admin\ProductClassMatrixType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
@@ -83,7 +83,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格が登録されていなければ新規登録, 登録されていれば更新画面を表示する
      *
-     * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
+     * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class", methods={"GET", "POST"})
      * @Template("@admin/Product/product_class.twig")
      */
     public function index(Request $request, $id, CacheUtil $cacheUtil)
@@ -191,7 +191,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を初期化する.
      *
-     * @Route("/%eccube_admin_route%/product/product/class/{id}/clear", requirements={"id" = "\d+"}, name="admin_product_product_class_clear")
+     * @Route("/%eccube_admin_route%/product/product/class/{id}/clear", requirements={"id" = "\d+"}, name="admin_product_product_class_clear", methods={"POST"})
      */
     public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
     {
@@ -207,22 +207,34 @@ class ProductClassController extends AbstractController
                 'Product' => $Product,
             ]);
 
-            // デフォルト規格のみ有効にする
-            foreach ($ProductClasses as $ProductClass) {
-                $ProductClass->setVisible(false);
-            }
-            foreach ($ProductClasses as $ProductClass) {
-                if (null === $ProductClass->getClassCategory1() && null === $ProductClass->getClassCategory2()) {
-                    $ProductClass->setVisible(true);
-                    break;
+            try {
+                // デフォルト規格のみ有効にし、他は削除する
+                foreach ($ProductClasses as $ProductClass) {
+                    $ProductClass->setVisible(false);
                 }
+                foreach ($ProductClasses as $ProductClass) {
+                    if (null === $ProductClass->getClassCategory1() && null === $ProductClass->getClassCategory2()) {
+                        $ProductClass->setVisible(true);
+                        break;
+                    }
+                }
+                foreach ($ProductClasses as $ProductClass) {
+                    if (!$ProductClass->isVisible()) {
+                        $this->entityManager->remove($ProductClass);
+                    }
+                }
+
+                $this->entityManager->flush();
+
+                $this->addSuccess('admin.product.reset_complete', 'admin');
+
+                $cacheUtil->clearDoctrineCache();
+            } catch (ForeignKeyConstraintViolationException $e) {
+                log_error('商品規格の初期化失敗', [$e]);
+
+                $message = trans('admin.common.delete_error_foreign_key', ['%name%' => trans('admin.product.product_class')]);
+                $this->addError($message, 'admin');
             }
-
-            $this->entityManager->flush();
-
-            $this->addSuccess('admin.product.reset_complete', 'admin');
-
-            $cacheUtil->clearDoctrineCache();
         }
 
         if ($request->get('return_product_list')) {
@@ -336,6 +348,7 @@ class ProductClassController extends AbstractController
                         'create_date',
                         'update_date',
                         'Creator',
+                        'ProductStock',
                     ]);
                     $pc = $ExistsProductClass;
                 }

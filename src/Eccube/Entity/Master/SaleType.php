@@ -31,6 +31,6 @@ if (!class_exists(SaleType::class, false)) {
         /**
          * @var integer
          */
-        const SALE_TYPE_NORMAL = 1;
+        public const SALE_TYPE_NORMAL = 1;
     }
 }

@@ -13,9 +13,9 @@
 
 namespace Eccube\Repository\Master;
 
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\AbstractRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * DeviceTypeRepository

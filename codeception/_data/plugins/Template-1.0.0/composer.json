@@ -1,0 +1,12 @@
+{
+  "name": "ec-cube/template",
+  "version": "1.0.0",
+  "description": "Template",
+  "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "^2.0@dev"
+  },
+  "extra": {
+    "code": "Template"
+  }
+}

@@ -35,7 +35,7 @@ class ZZ99InstallerCest
      *
      * @param AcceptanceTester $I
      */
-    public function installer_CheckPermission(\AcceptanceTester $I)
+    public function installer_CheckPermission(AcceptanceTester $I)
     {
         $I->wantTo('ZZ99 インストーラ 権限チェックのテスト');
 

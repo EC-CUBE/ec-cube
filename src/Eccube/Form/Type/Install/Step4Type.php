@@ -91,6 +91,7 @@ class Step4Type extends AbstractType
             ->add('database_password', PasswordType::class, [
                 'label' => trans('install.database_password'),
                 'required' => false,
+                'purify_html' => false,
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();

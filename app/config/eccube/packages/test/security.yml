@@ -1,0 +1,18 @@
+security:
+    password_hashers:
+        Eccube\Entity\Customer:
+            algorithm: 'auto'
+            iterations: 1
+            cost: 4
+            memory_cost: 10
+            time_cost: 3
+            migrate_from:
+                - legacy
+        Eccube\Entity\Member:
+            algorithm: 'auto'
+            iterations: 1
+            cost: 4
+            memory_cost: 10
+            time_cost: 3
+            migrate_from:
+                - legacy

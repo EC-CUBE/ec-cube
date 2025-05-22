@@ -13,9 +13,9 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Member;
 use Eccube\Entity\OrderPdf;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * OrderPdfRepository.
@@ -59,7 +59,7 @@ class OrderPdfRepository extends AbstractRepository
             ->setNote3($arrData['note3'])
             ->setVisible(true);
         $this->getEntityManager()->persist($OrderPdf);
-        $this->getEntityManager()->flush($OrderPdf);
+        $this->getEntityManager()->flush();
 
         return true;
     }

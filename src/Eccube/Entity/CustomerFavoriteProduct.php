@@ -135,7 +135,7 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
          *
          * @return CustomerFavoriteProduct
          */
-        public function setCustomer(\Eccube\Entity\Customer $customer = null)
+        public function setCustomer(Customer $customer = null)
         {
             $this->Customer = $customer;
 
@@ -159,7 +159,7 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
          *
          * @return CustomerFavoriteProduct
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 

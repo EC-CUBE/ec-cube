@@ -6,7 +6,7 @@
     "service": "ec-cube",
     "workspaceFolder": "/var/www/html",
     "settings": {
-        "intelephense.environment.phpVersion": "7.3",
+        "intelephense.environment.phpVersion": "7.4",
         "php-cs-fixer.allowRisky": false,
         "php-cs-fixer.config": "/var/www/html/.php_cs.dist",
         "php-cs-fixer.executablePath": "/var/www/html/vendor/bin/php-cs-fixer",

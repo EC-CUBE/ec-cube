@@ -1,0 +1,305 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_product_edit_class",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "登録",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/product/product/new",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270651716,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "admin_product__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/product/product/new",
+      "data": "------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[_token]\"\r\n\r\n{{csrf1}}\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[return_link]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[name]\"\r\n\r\nãã¹ã\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][sale_type]\"\r\n\r\n1\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[product_image][]\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[description_detail]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[description_list]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][price02]\"\r\n\r\n1000\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][price01]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][stock_unlimited]\"\r\n\r\n1\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[search_word]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][code]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][sale_limit]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[class][delivery_duration]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[free_area]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[note]\"\r\n\r\n\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nContent-Disposition: form-data; name=\"admin_product[Status]\"\r\n\r\n2\r\n------WebKitFormBoundaryrYPcyvO9D5pyT8A5--\r\n",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2108\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundaryrYPcyvO9D5pyT8A5\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270666694,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "Location: /admin/product/product/",
+      "postfix": "/edit",
+      "location": "HEAD",
+      "variableName": "new-product-id",
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "comment": "規格設定",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product/product/class/{{new-product-id}}",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270671989,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf3",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product/product/class/{{new-product-id}}?return_product_list=0",
+      "data": "_token={{csrf3}}&product_class_matrix%5Bclass_name1%5D=2&product_class_matrix%5Bclass_name2%5D=1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 130\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270678318,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf4",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 1,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf5",
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "規格入力",
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product/product/class/{{new-product-id}}?return_product_list=0",
+      "data": "_token={{csrf5}}&product_class_matrix%5Bclass_name1%5D=2&product_class_matrix%5Bclass_name2%5D=1&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5BClassCategory1%5D=4&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5BClassCategory2%5D=1&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B0%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5BClassCategory1%5D=4&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5BClassCategory2%5D=2&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B1%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5BClassCategory1%5D=4&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5BClassCategory2%5D=3&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B2%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5BClassCategory1%5D=5&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5BClassCategory2%5D=1&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B3%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5BClassCategory1%5D=5&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5BClassCategory2%5D=2&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B4%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5BClassCategory1%5D=5&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5BClassCategory2%5D=3&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B5%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5BClassCategory1%5D=6&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5BClassCategory2%5D=1&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B6%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5BClassCategory1%5D=6&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5BClassCategory2%5D=2&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B7%5D%5Bsale_type%5D=1&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bchecked%5D=1&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5BClassCategory1%5D=6&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5BClassCategory2%5D=3&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bcode%5D=&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bstock_unlimited%5D=1&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bsale_limit%5D=&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bprice01%5D=&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bprice02%5D=1000&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bdelivery_duration%5D=&product_class_matrix%5Bproduct_classes%5D%5B8%5D%5Bsale_type%5D=1&product_class_matrix%5Bsave%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 6219\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270695761,
+      "cookies": [],
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product/product/class/{{new-product-id}}",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270695869,
+      "cookies": [],
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf6",
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "規格初期化",
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product/product/class/{{new-product-id}}/clear?return_product_list=0",
+      "data": "form%5B_token%5D={{csrf6}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 60\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270699605,
+      "cookies": [],
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/product/product/class/{{new-product-id}}",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1657270699659,
+      "cookies": [],
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf8",
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

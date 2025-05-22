@@ -586,6 +586,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Set taxRuleId.
+         *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @param int|null $taxRuleId
@@ -601,6 +602,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
 
         /**
          * Get taxRuleId.
+         *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
          * @return int|null
@@ -665,7 +667,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setOrder(\Eccube\Entity\Order $order = null)
+        public function setOrder(Order $order = null)
         {
             $this->Order = $order;
 
@@ -698,7 +700,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setProduct(\Eccube\Entity\Product $product = null)
+        public function setProduct(Product $product = null)
         {
             $this->Product = $product;
 
@@ -722,7 +724,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
+        public function setProductClass(ProductClass $productClass = null)
         {
             $this->ProductClass = $productClass;
 
@@ -746,7 +748,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setShipping(\Eccube\Entity\Shipping $shipping = null)
+        public function setShipping(Shipping $shipping = null)
         {
             $this->Shipping = $shipping;
 
@@ -788,7 +790,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setTaxType(\Eccube\Entity\Master\TaxType $taxType = null)
+        public function setTaxType(Master\TaxType $taxType = null)
         {
             $this->TaxType = $taxType;
 
@@ -812,7 +814,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setTaxDisplayType(\Eccube\Entity\Master\TaxDisplayType $taxDisplayType = null)
+        public function setTaxDisplayType(TaxDisplayType $taxDisplayType = null)
         {
             $this->TaxDisplayType = $taxDisplayType;
 
@@ -836,7 +838,7 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
          *
          * @return OrderItem
          */
-        public function setOrderItemType(\Eccube\Entity\Master\OrderItemType $orderItemType = null)
+        public function setOrderItemType(OrderItemType $orderItemType = null)
         {
             $this->OrderItemType = $orderItemType;
 

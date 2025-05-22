@@ -17,7 +17,7 @@ use Eccube\Entity\ProductClass;
 
 class InvalidItemException extends \Exception
 {
-    private $messageArgs = [];
+    private $messageArgs;
 
     private $warning;
 
@@ -31,7 +31,7 @@ class InvalidItemException extends \Exception
     /**
      * @return array
      */
-    public function getMessageArgs()
+    public function getMessageArgs(): array
     {
         return $this->messageArgs;
     }
@@ -39,7 +39,7 @@ class InvalidItemException extends \Exception
     /**
      * @return bool
      */
-    public function isWarning()
+    public function isWarning(): bool
     {
         return $this->warning;
     }
@@ -47,7 +47,7 @@ class InvalidItemException extends \Exception
     /**
      * @return InvalidItemException
      */
-    public static function fromProductClass($errorMessage, ProductClass $ProductClass)
+    public static function fromProductClass($errorMessage, ProductClass $ProductClass): self
     {
         $productName = $ProductClass->getProduct()->getName();
         if ($ProductClass->hasClassCategory1()) {

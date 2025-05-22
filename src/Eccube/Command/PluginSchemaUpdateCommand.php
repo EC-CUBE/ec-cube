@@ -42,7 +42,7 @@ class PluginSchemaUpdateCommand extends Command
         /** @var Plugin $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
         if (!$Plugin) {
-            $io->error("No such plugin `${code}`.");
+            $io->error("No such plugin `{$code}`.");
 
             return 1;
         }
@@ -52,5 +52,7 @@ class PluginSchemaUpdateCommand extends Command
         $this->clearCache($io);
 
         $io->success('Schema Updated.');
+
+        return 0;
     }
 }

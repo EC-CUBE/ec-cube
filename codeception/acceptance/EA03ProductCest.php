@@ -12,15 +12,20 @@
  */
 
 use Codeception\Util\Fixtures;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
+use Page\Admin\ClassCategoryCsvUploadPage;
 use Page\Admin\ClassCategoryManagePage;
+use Page\Admin\ClassNameCsvUploadPage;
 use Page\Admin\ClassNameManagePage;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\ProductClassEditPage;
 use Page\Admin\ProductCsvUploadPage;
 use Page\Admin\ProductEditPage;
 use Page\Admin\ProductManagePage;
+use Page\Admin\ProductTagPage;
 
 /**
  * @group admin
@@ -30,41 +35,56 @@ use Page\Admin\ProductManagePage;
  */
 class EA03ProductCest
 {
-    const ページタイトル = '#main .page-header';
-    const ページタイトルStyleGuide = '.c-pageTitle';
+    /** @var EntityManager */
+    private EntityManager $em;
 
-    public function _before(\AcceptanceTester $I)
+    /** @var Connection */
+    private Connection $conn;
+
+    public const ページタイトル = '#main .page-header';
+    public const ページタイトルStyleGuide = '.c-pageTitle';
+
+    public function _before(AcceptanceTester $I)
     {
         // すべてのテストケース実施前にログインしておく
         // ログイン後は管理アプリのトップページに遷移している
         $I->loginAsAdmin();
+
+        $this->em = Fixtures::get('entityManager');
+        $this->conn = $this->em->getConnection();
     }
 
-    public function _after(\AcceptanceTester $I)
+    public function _after(AcceptanceTester $I)
     {
     }
 
-    public function product_商品検索(\AcceptanceTester $I)
+    public function product_商品検索(AcceptanceTester $I)
     {
         $I->wantTo('EA0301-UC01-T01 (& UC01-T02) 商品検索');
 
+        // 商品検索
         ProductManagePage::go($I)->検索('ジェラート');
-
         $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
         $I->see('彩のジェラートCUBE', ProductManagePage::$検索結果_一覧);
 
+        // 検索条件入力フォームが未入力の場合は、全件表示される
+        ProductManagePage::go($I)->検索('');
+        $products_count = count(Fixtures::get('findProducts')());
+        $I->see("検索結果：{$products_count}件が該当しました", ProductManagePage::$検索結果_メッセージ);
+
+        // 検索結果 0 件
         ProductManagePage::go($I)->検索('gege@gege.com');
         $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
 
-    public function product_商品検索エラー(\AcceptanceTester $I)
+    public function product_商品検索エラー(AcceptanceTester $I)
     {
         $I->wantTo('EA0301-UC01-T03 商品検索 エラー');
 
         // バリデーションエラーが発生するフォーム項目がないため, ダミーのステータスを作っておく
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var EntityManager $em */
         $em = Fixtures::get('entityManager');
-        $ProductStatus = new \Eccube\Entity\Master\ProductStatus();
+        $ProductStatus = new Eccube\Entity\Master\ProductStatus();
         $ProductStatus->setName('ダミー');
         $ProductStatus->setSortNo(999);
         $ProductStatus->setId(999);
@@ -83,9 +103,9 @@ class EA03ProductCest
         $I->see('検索条件に誤りがあります', ProductManagePage::$検索結果_エラーメッセージ);
     }
 
-    public function product_規格確認のポップアップ表示(\AcceptanceTester $I)
+    public function product_規格確認のポップアップ表示(AcceptanceTester $I)
     {
-        $I->wantTo('EA0301-UC01-T03 規格確認のポップアップを表示');
+        $I->wantTo('EA0301-UC01-T04 規格確認のポップアップを表示');
 
         ProductManagePage::go($I)
             ->検索(1)
@@ -95,9 +115,12 @@ class EA03ProductCest
         $I->dontSeeElement(['css' => 'div.modal.show']);
     }
 
-    public function product_ポップアップから規格編集画面に遷移(\AcceptanceTester $I)
+    /**
+     * @group vaddy
+     */
+    public function product_ポップアップから規格編集画面に遷移(AcceptanceTester $I)
     {
-        $I->wantTo('EA0301-UC01-T04 ポップアップから規格編集画面に遷移');
+        $I->wantTo('EA0301-UC01-T05 ポップアップから規格編集画面に遷移');
 
         ProductManagePage::go($I)
             ->検索(1)
@@ -107,7 +130,7 @@ class EA03ProductCest
         $I->see('商品規格登録商品管理', self::ページタイトルStyleGuide);
     }
 
-    public function product_商品検索結果無(\AcceptanceTester $I)
+    public function product_商品検索結果無(AcceptanceTester $I)
     {
         $I->wantTo('EA0301-UC01-T02 商品検索 検索結果なし');
 
@@ -119,8 +142,10 @@ class EA03ProductCest
     /**
      * @env firefox
      * @env chrome
+     *
+     * @group vaddy
      */
-    public function product_CSV出力(\AcceptanceTester $I)
+    public function product_CSV出力(AcceptanceTester $I)
     {
         $I->wantTo('EA0301-UC02-T01 CSV出力');
 
@@ -136,20 +161,72 @@ class EA03ProductCest
         $I->assertGreaterOrEquals(count($Products), count(file($ProductCSV)), '検索結果以上の行数があるはず');
     }
 
-    public function product_CSV出力項目設定(\AcceptanceTester $I)
+    public function product_CSV出力項目設定(AcceptanceTester $I)
     {
         $I->wantTo('EA0301-UC02-T02 CSV出力項目設定');
 
-        ProductManagePage::go($I)
-            ->検索()
-            ->CSV出力項目設定();
+        ProductManagePage::go($I)->CSV出力項目設定();
 
         $I->see('CSV出力項目設定店舗設定', self::ページタイトルStyleGuide);
         $value = $I->grabValueFrom(CsvSettingsPage::$CSVタイプ);
         $I->assertEquals('1', $value);
+
+        // 全項目を出力
+        CsvSettingsPage::at($I)
+            ->すべて出力()
+            ->設定();
+
+        // CSVダウンロードして確認
+        $csvHeader = ProductManagePage::go($I)
+            ->CSVダウンロード()
+            ->CSVヘッダ取得();
+        $I->assertStringContainsString('商品ID', $csvHeader);
+        $I->assertStringContainsString('ショップ用メモ欄', $csvHeader);
+        $I->assertStringContainsString('フリーエリア', $csvHeader);
+
+        // 一部項目を出力対象から解除
+        CsvSettingsPage::go($I)
+            ->入力_CSVタイプ(1)
+            ->選択_出力項目(['ショップ用メモ欄', 'フリーエリア'])
+            ->削除()
+            ->設定();
+
+        // CSVダウンロードして確認
+        $csvHeader = ProductManagePage::go($I)
+            ->CSVダウンロード()
+            ->CSVヘッダ取得();
+        $I->assertStringContainsString('商品ID', $csvHeader);
+        $I->assertStringNotContainsString('ショップ用メモ欄', $csvHeader);
+        $I->assertStringNotContainsString('フリーエリア', $csvHeader);
     }
 
-    public function product_一覧からの規格編集規格なし失敗(\AcceptanceTester $I)
+    public function product_一覧でのソート(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0301-UC03-T01 一覧でのソート');
+        $page = ProductManagePage::go($I);
+
+        // 商品一覧・ID横の上矢印をクリック
+        $I->click('[data-sortkey="product_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="product_id"] .fa-arrow-up');
+        $page->assertSortedList(2, 'asc');
+
+        // ID横の下矢印をクリック
+        $I->click('[data-sortkey="product_id"]');
+        $I->seeElement('.listSort-current[data-sortkey="product_id"] .fa-arrow-down');
+        $page->assertSortedList(2, 'desc');
+
+        // 更新日横の上矢印をクリック
+        $I->click('[data-sortkey="update_date"]');
+        $I->seeElement('.listSort-current[data-sortkey="update_date"] .fa-arrow-up');
+        $page->assertSortedList(10, 'asc');
+
+        // 更新日横の下矢印をクリック
+        $I->click('[data-sortkey="update_date"]');
+        $I->seeElement('.listSort-current[data-sortkey="update_date"] .fa-arrow-down');
+        $page->assertSortedList(10, 'desc');
+    }
+
+    public function product_一覧からの規格編集規格なし失敗(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC01-T02 一覧からの規格編集 規格なし 失敗');
 
@@ -163,11 +240,11 @@ class EA03ProductCest
         ProductClassEditPage::at($I)
             ->規格設定();
 
-        $I->seeElement(['css' => '#product_class_matrix_class_name1:invalid']); //規格1がエラー
+        $I->seeElement(['css' => '#product_class_matrix_class_name1:invalid']); // 規格1がエラー
         $I->dontSeeElement(ProductClassEditPage::$規格一覧); // 規格編集行が表示されていない
     }
 
-    public function product_一覧からの規格編集規格なし_(\AcceptanceTester $I)
+    public function product_一覧からの規格編集規格なし_(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC01-T01 一覧からの規格編集 規格なし');
 
@@ -201,9 +278,9 @@ class EA03ProductCest
         $I->seeElement(ProductClassEditPage::$初期化ボタン);
     }
 
-    public function product_一覧からの規格編集規格あり2(\AcceptanceTester $I)
+    public function product_一覧からの規格編集_規格あり_規格登録(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり2');
+        $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり 規格登録');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -223,9 +300,21 @@ class EA03ProductCest
         $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
     }
 
-    public function product_一覧からの商品複製(\AcceptanceTester $I)
+    public function product_商品の確認(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC05-T02 一覧からの商品複製');
+        $I->wantTo('EA0302-UC05-T01 商品の確認');
+
+        $page = ProductManagePage::go($I);
+        $productId = $I->grabTextFrom('.c-primaryCol table tbody tr:first-child td:nth-child(2)');
+        $page->検索結果_確認(1);
+
+        $I->switchToNewWindow();
+        $I->seeInCurrentUrl("/products/detail/{$productId}");
+    }
+
+    public function product_商品の複製(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0302-UC05-T02 商品の複製');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
@@ -240,18 +329,64 @@ class EA03ProductCest
         $I->see('商品を複製しました', ProductEditPage::$登録結果メッセージ);
     }
 
+    public function product_商品の削除(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0302-UC05-T03 商品の削除');
+
+        // 削除用商品の作成
+        ProductEditPage::go($I)
+            ->入力_商品名('削除用商品')
+            ->入力_販売価格('1000')
+            ->入力_公開()
+            ->登録();
+
+        $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
+
+        ProductManagePage::go($I)
+            ->検索結果_チェックボックスON(1)
+            ->検索結果_削除()
+            ->Accept_削除();
+        $I->see('商品の削除処理が完了しました', '.modal.show .modal-body');
+
+        ProductManagePage::go($I);
+        $I->dontSee('削除用商品', ProductManagePage::$検索結果_一覧);
+    }
+
+    public function product_商品の廃止(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0302-UC05-T04 商品の廃止');
+
+        $page = ProductManagePage::go($I);
+        $productName = $I->grabTextFrom(ProductManagePage::$検索結果_1行目_商品名);
+        $page->検索結果_チェックボックスON(1)
+            ->検索結果_廃止();
+
+        $I->see('廃止: 1件が正常に適用されました', ProductManagePage::$アラートメッセージ);
+
+        // 廃止商品を対象に検索し、廃止した商品が表示されることを確認
+        $page->詳細検索_ステータス(3);
+        $I->see($productName, ProductManagePage::$検索結果_一覧);
+    }
+
     /**
      * ATTENTION 削除すると後続の規格編集関連のテストが失敗するため、最後に実行する
      */
-    public function product_一覧からの規格編集規格あり1(\AcceptanceTester $I)
+    public function product_一覧からの規格編集規格あり(AcceptanceTester $I)
     {
-        $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり1');
+        $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり');
 
         $findProducts = Fixtures::get('findProducts');
         $Products = array_filter($findProducts(), function ($Product) {
             return $Product->hasProductClass();
         });
         $Product = array_pop($Products);
+        ProductManagePage::go($I)
+            ->検索($Product->getName())
+            ->検索結果_複製(1)
+            ->Accept_複製する(1);
+
+        $I->see('商品を複製しました', ProductEditPage::$登録結果メッセージ);
+
         ProductManagePage::go($I)
             ->検索($Product->getName())
             ->検索結果_選択(1);
@@ -268,7 +403,7 @@ class EA03ProductCest
         $I->dontSeeElement(ProductClassEditPage::$規格一覧);
     }
 
-    public function product_商品登録非公開(\AcceptanceTester $I)
+    public function product_商品登録非公開(AcceptanceTester $I)
     {
         $I->wantTo('EA0302-UC01-T01 商品登録 非公開');
 
@@ -281,7 +416,7 @@ class EA03ProductCest
         $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
-    public function product_商品登録公開(\AcceptanceTester $I)
+    public function product_商品登録公開(AcceptanceTester $I)
     {
         $I->wantTo('EA0302-UC01-T02 商品登録 公開');
 
@@ -295,7 +430,7 @@ class EA03ProductCest
         $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
-    public function product_商品編集規格なし(\AcceptanceTester $I)
+    public function product_商品編集規格なし(AcceptanceTester $I)
     {
         $I->wantTo('EA0302-UC01-T03 商品編集 規格なし');
 
@@ -312,7 +447,7 @@ class EA03ProductCest
         $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
-    public function product_商品編集規格あり(\AcceptanceTester $I)
+    public function product_商品編集規格あり(AcceptanceTester $I)
     {
         $I->wantTo('EA0302-UC01-T04 商品編集 規格あり');
 
@@ -347,10 +482,11 @@ class EA03ProductCest
         ]);
 
         $ProductEditPage->登録();
+
         $I->see('保存しました', ProductEditPage::$登録結果メッセージ);
     }
 
-    public function product_新製品はタグを持っています(\AcceptanceTester $I)
+    public function product_新製品はタグを持っています(AcceptanceTester $I)
     {
         $I->wantTo('EA0302-UC01-T05-タグを商品に追加する');
 
@@ -362,6 +498,7 @@ class EA03ProductCest
             ->クリックして選択タグ(3)
             ->クリックして選択タグ(4)
             ->登録();
+
         $I->see('保存しました', 'div.c-container > div.c-contentsArea > div.alert');
 
         $I->seeElement(['xpath' => '//*[@id="tag"]/div/div[1]/button']);
@@ -369,13 +506,13 @@ class EA03ProductCest
         $I->seeElement(['xpath' => '//*[@id="tag"]/div/div[3]/button']);
     }
 
-    public function product_商品の一括削除_正常(\AcceptanceTester $I)
+    public function product_商品の一括削除_正常(AcceptanceTester $I)
     {
-        $I->wantTo('EA0302-UC05-T04 商品の一括削除(正常)');
+        $I->wantTo('EA0302-UC05-T05 商品の一括削除(正常)');
 
         $createProduct = Fixtures::get('createProduct');
         foreach (range(1, 5) as $i) {
-            $createProduct("一括削除用_${i}");
+            $createProduct("一括削除用_{$i}");
         }
         $ProductManagePage = ProductManagePage::go($I)
             ->検索('一括削除用')
@@ -390,9 +527,9 @@ class EA03ProductCest
         $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
     }
 
-    public function product_商品の一括削除_削除エラー(\AcceptanceTester $I)
+    public function product_商品の一括削除_削除エラー(AcceptanceTester $I)
     {
-        $I->wantTo('EA0302-UC05-T04 商品の一括削除(正常)');
+        $I->wantTo('EA0302-UC05-T05 商品の一括削除(削除エラー)');
 
         $createProduct = Fixtures::get('createProduct');
         $createOrders = Fixtures::get('createOrders');
@@ -400,40 +537,47 @@ class EA03ProductCest
         $timestamp = time();
         // 受注に紐付いていない商品と紐付いている商品を作成
         foreach (range(1, 5) as $i) {
-            $createProduct("一括削除用_${timestamp}_受注なし_${i}");
+            $createProduct("一括削除用_{$timestamp}_受注なし_{$i}");
         }
         $Customer = (Fixtures::get('createCustomer'))();
         foreach (range(1, 5) as $i) {
-            $Product = $createProduct("一括削除用_${timestamp}_受注あり_${i}");
+            $Product = $createProduct("一括削除用_{$timestamp}_受注あり_{$i}");
             $createOrders($Customer, 1, $Product->getProductClasses()->toArray());
         }
 
         $ProductManagePage = ProductManagePage::go($I)
-            ->検索("一括削除用_${timestamp}")
+            ->検索("一括削除用_{$timestamp}")
             ->すべて選択();
 
         $I->see('検索結果：10件が該当しました', ProductManagePage::$検索結果_メッセージ);
-        $I->see("一括削除用_${timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
-        $I->see("一括削除用_${timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
+        $I->see("一括削除用_{$timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
+        $I->see("一括削除用_{$timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
 
         $ProductManagePage->完全に削除();
 
-        $I->see("一括削除用_${timestamp}_受注あり_1", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_2", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_3", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_4", ProductManagePage::$一括削除エラー);
-        $I->see("一括削除用_${timestamp}_受注あり_5", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_1", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_2", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_3", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_4", ProductManagePage::$一括削除エラー);
+        $I->see("一括削除用_{$timestamp}_受注あり_5", ProductManagePage::$一括削除エラー);
 
         $ProductManagePage->一括削除完了();
 
         $I->see('検索結果：5件が該当しました', ProductManagePage::$検索結果_メッセージ);
-        $I->see("一括削除用_${timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
-        $I->dontSee("一括削除用_${timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
+        $I->see("一括削除用_{$timestamp}_受注あり", ProductManagePage::$検索結果_一覧);
+        $I->dontSee("一括削除用_{$timestamp}_受注なし", ProductManagePage::$検索結果_一覧);
     }
 
-    public function product_規格登録_(\AcceptanceTester $I)
+    public function product_規格登録_(AcceptanceTester $I)
     {
-        $I->wantTo('EA0303-UC01-T01 規格登録');
+        $I->wantTo('EA0303-UC01-T01 規格登録 / EA0303-UC01-T02 規格登録 未登録時');
+
+        // フォーム未入力だと登録できないことを確認する
+        ClassNameManagePage::go($I)
+            ->入力_管理名('')
+            ->入力_表示名('')
+            ->規格作成();
+        $I->dontSeeElement(ClassNameManagePage::$登録完了メッセージ);
 
         ClassNameManagePage::go($I)
             ->入力_管理名('backend test class1')
@@ -443,13 +587,7 @@ class EA03ProductCest
         $I->see('保存しました', ClassNameManagePage::$登録完了メッセージ);
     }
 
-    public function product_規格登録未登録時(\AcceptanceTester $I)
-    {
-        $I->wantTo('EA0303-UC01-T02 規格登録 未登録時');
-        // TODO [fixture] 規格が1件も登録されていない状態にする
-    }
-
-    public function product_規格編集(\AcceptanceTester $I)
+    public function product_規格編集(AcceptanceTester $I)
     {
         $I->wantTo('EA0303-UC02-T01 規格編集');
 
@@ -469,7 +607,7 @@ class EA03ProductCest
             ->acceptModal();
     }
 
-    public function product_規格削除(\AcceptanceTester $I)
+    public function product_規格削除(AcceptanceTester $I)
     {
         $I->wantTo('EA0303-UC03-T01 規格削除');
 
@@ -485,9 +623,12 @@ class EA03ProductCest
         $I->see('削除しました', ClassNameManagePage::$登録完了メッセージ);
     }
 
-    public function product_規格表示順の変更(\AcceptanceTester $I)
+    /**
+     * @group change-display-order
+     */
+    public function product_規格表示順の変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0308-UC01-T01 規格表示順の変更');
+        $I->wantTo('EA0303-UC04-T01 規格表示順の変更');
 
         $ProductClassPage = ClassNameManagePage::go($I);
         $I->see('サイズ', $ProductClassPage->一覧_名称(3));
@@ -502,7 +643,20 @@ class EA03ProductCest
         $I->see('フレーバー', $ProductClassPage->一覧_名称(4));
     }
 
-    public function product_分類表示順の変更(\AcceptanceTester $I)
+    public function product_規格CSVダウンロード(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0303-UC05-T01 規格CSVダウンロード');
+
+        ClassNameManagePage::go($I)->CSVダウンロード実行();
+
+        $file = $I->getLastDownloadFile('/^class_name_\d{14}\.csv$/');
+        $I->assertTrue(file_exists($file));
+    }
+
+    /**
+     * @group change-display-order
+     */
+    public function product_分類表示順の変更(AcceptanceTester $I)
     {
         $I->wantTo('EA0311-UC01-T01 分類表示順の変更');
 
@@ -535,7 +689,7 @@ class EA03ProductCest
         $I->see('64cm × 64cm', $ProductClassCategoryPage->一覧_名称(5));
     }
 
-    public function product_分類登録(\AcceptanceTester $I)
+    public function product_分類登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0304-UC01-T01(& UC01-T02/UC02-T01/UC03-T01) 分類登録/編集/削除');
 
@@ -572,9 +726,20 @@ class EA03ProductCest
         $I->see('削除しました', ClassCategoryManagePage::$登録完了メッセージ);
     }
 
-    public function product_カテゴリ登録(\AcceptanceTester $I)
+    public function product_分類CSVダウンロード(AcceptanceTester $I)
     {
-        $I->wantTo('EA0305-UC01-T01(& UC01-T02/UC02-T01/UC04-T01) カテゴリ登録/編集/削除');
+        $I->wantTo('EA0304-UC04-T01 分類CSVダウンロード');
+
+        ClassNameManagePage::go($I)->一覧_分類登録(3);
+        ClassCategoryManagePage::at($I)->CSVダウンロード実行();
+
+        $file = $I->getLastDownloadFile('/^class_category_\d{14}\.csv$/');
+        $I->assertTrue(file_exists($file));
+    }
+
+    public function product_カテゴリ登録(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0305-UC01-T01(& UC01-T02/UC02-T01/UC02-T02/UC04-T01/UC04-T02) カテゴリ登録/編集/削除');
 
         $CategoryPage = CategoryManagePage::go($I)
             ->入力_カテゴリ名('test category1')
@@ -594,7 +759,7 @@ class EA03ProductCest
         // csv EA0305-UC04-T01
         $CategoryPage
             ->CSVダウンロード実行();
-        /* csvがダウンロードされたかは確認不可 */
+        $I->getLastDownloadFile('/^category_\d{14}\.csv$/');
 
         // csv EA0305-UC04-T02
         $CategoryPage->CSV出力項目設定();
@@ -604,6 +769,7 @@ class EA03ProductCest
         $I->assertEquals('5', $value);
 
         // サブカテゴリ EA0305-UC01-03 & UC01-04
+        $I->wantTo('EA0305-UC01-03 & UC01-04 カテゴリ登録（2階層以下）');
         $CategoryPage = CategoryManagePage::go($I)
             ->一覧_選択(3);
 
@@ -612,6 +778,7 @@ class EA03ProductCest
         $CategoryPage
             ->入力_カテゴリ名('test category11-1')
             ->カテゴリ作成();
+
         $I->see('保存しました', CategoryManagePage::$登録完了メッセージ);
 
         // カテゴリ削除 (children)
@@ -619,13 +786,16 @@ class EA03ProductCest
             ->acceptModal();
 
         // Delete category root
-        CategoryManagePage::go($I)->一覧_削除(3)
-            ->acceptModal();
+        // CategoryManagePage::go($I)->一覧_削除(3)
+        //     ->acceptModal();
     }
 
-    public function product_カテゴリ表示順の変更(\AcceptanceTester $I)
+    /**
+     * @group change-display-order
+     */
+    public function product_カテゴリ表示順の変更(AcceptanceTester $I)
     {
-        $I->wantTo('EA0309-UC01-T01 カテゴリ表示順の変更');
+        $I->wantTo('EA0305-UC03-T01 カテゴリ表示順の変更');
 
         $CategoryPage = CategoryManagePage::go($I);
         $I->see('新入荷', $CategoryPage->一覧_名称(3));
@@ -653,7 +823,7 @@ class EA03ProductCest
         $I->see('アイスサンド', $CategoryPage->一覧_名称(5));
     }
 
-    public function product_商品CSV登録(\AcceptanceTester $I)
+    public function product_商品CSV登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0306-UC01-T01 商品CSV登録');
 
@@ -673,13 +843,23 @@ class EA03ProductCest
 
         ProductManagePage::go($I)->検索('アップロード商品');
         $I->see('検索結果：3件が該当しました', ProductManagePage::$検索結果_メッセージ);
+
+        // アップロード失敗 (フォーマットの異なるcsvをアップロードする)
+        ProductCsvUploadPage::go($I)
+            ->入力_CSVファイル('category.csv')
+            ->アップロードボタン有効化()
+            ->モーダルを表示()
+            ->CSVアップロード実行()
+        ;
+        $I->wait(2);
+        $I->see('CSVのフォーマットが一致しません', '#bulkMessages span:last-child');
     }
 
     /**
      * @env firefox
      * @env chrome
      */
-    public function product_商品CSV登録雛形ファイルダウンロード(\AcceptanceTester $I)
+    public function product_商品CSV登録雛形ファイルダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0306-UC01-T02 商品CSV登録雛形ファイルダウンロード');
 
@@ -688,7 +868,7 @@ class EA03ProductCest
         $I->assertEquals(1, count(file($ProductTemplateCSV)), 'ヘッダ行だけのファイル');
     }
 
-    public function product_カテゴリCSV登録(\AcceptanceTester $I)
+    public function product_カテゴリCSV登録(AcceptanceTester $I)
     {
         $I->wantTo('EA0307-UC01-T01(& UC01-T02) カテゴリCSV登録');
 
@@ -706,13 +886,20 @@ class EA03ProductCest
         $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ1')]);
         $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ2')]);
         $I->seeElement(['xpath' => CategoryManagePage::XPathでタグを取得する('アップロードカテゴリ3')]);
+
+        // アップロード失敗 (フォーマットの異なるcsvをアップロードする)
+        CategoryCsvUploadPage::go($I)
+            ->入力_CSVファイル('product.csv')
+            ->CSVアップロード();
+
+        $I->see('CSVのフォーマットが一致しません', '#upload-form');
     }
 
     /**
      * @env firefox
      * @env chrome
      */
-    public function product_カテゴリCSV登録雛形ファイルダウンロード(\AcceptanceTester $I)
+    public function product_カテゴリCSV登録雛形ファイルダウンロード(AcceptanceTester $I)
     {
         $I->wantTo('EA0307-UC01-T02 カテゴリCSV登録雛形ファイルダウンロード');
 
@@ -722,7 +909,147 @@ class EA03ProductCest
         $I->assertEquals(1, count(file($CategoryTemplateCSV)), 'ヘッダ行だけのファイル');
     }
 
-    public function product_一覧からの商品確認(\AcceptanceTester $I)
+    public function product_規格CSV登録(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0307-UC02-T01 規格CSV登録');
+
+        ClassNameManagePage::go($I);
+        $I->dontSeeElement(['xpath' => '//div[@id="sortable_list_box"]//a[contains(text(), "アップロード規格")]']);
+
+        ClassNameCsvUploadPage::go($I)
+            ->入力_CSVファイル('class_name.csv')
+            ->CSVアップロード();
+
+        $I->see('CSVファイルをアップロードしました', ClassNameCsvUploadPage::$完了メッセージ);
+
+        ClassNameManagePage::go($I);
+
+        $I->seeElement(['xpath' => ClassNameManagePage::XPathでタグを取得する('アップロード規格1')]);
+        $I->seeElement(['xpath' => ClassNameManagePage::XPathでタグを取得する('アップロード規格2')]);
+        $I->seeElement(['xpath' => ClassNameManagePage::XPathでタグを取得する('アップロード規格3')]);
+
+        // アップロード失敗 (フォーマットの異なるcsvをアップロードする)
+        ClassNameCsvUploadPage::go($I)
+            ->入力_CSVファイル('product.csv')
+            ->CSVアップロード();
+
+        $I->see('CSVのフォーマットが一致しません', '#upload-form');
+    }
+
+    /**
+     * @env firefox
+     * @env chrome
+     */
+    public function product_規格CSV登録雛形ファイルダウンロード(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0307-UC02-T02 規格CSV登録雛形ファイルダウンロード');
+
+        // 雛形のダウンロード
+        ClassNameCsvUploadPage::go($I)->雛形ダウンロード();
+        $ClassNameTemplateCSV = $I->getLastDownloadFile('/^class_name\.csv$/');
+        $I->assertEquals(1, count(file($ClassNameTemplateCSV)), 'ヘッダ行だけのファイル');
+    }
+
+    public function product_規格分類CSV登録(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0307-UC03-T01 規格分類CSV登録');
+
+        ClassNameManagePage::go($I)
+            ->一覧_分類登録(3);
+
+        ClassCategoryManagePage::at($I);
+        $I->dontSeeElement(['xpath' => '//div[@id="sortable_list_box"]//a[contains(text(), "アップロード規格分類")]']);
+
+        ClassCategoryCsvUploadPage::go($I)
+            ->入力_CSVファイル('class_category.csv')
+            ->CSVアップロード();
+
+        $I->see('CSVファイルをアップロードしました', ClassCategoryCsvUploadPage::$完了メッセージ);
+
+        ClassNameManagePage::go($I)
+            ->一覧_分類登録2();
+
+        ClassCategoryManagePage::at($I);
+
+        $I->seeElement(['xpath' => ClassCategoryManagePage::XPathでタグを取得する('アップロード規格分類1')]);
+        $I->seeElement(['xpath' => ClassCategoryManagePage::XPathでタグを取得する('アップロード規格分類2')]);
+        $I->seeElement(['xpath' => ClassCategoryManagePage::XPathでタグを取得する('アップロード規格分類3')]);
+
+        // アップロード失敗 (フォーマットの異なるcsvをアップロードする)
+        ClassCategoryCsvUploadPage::go($I)
+            ->入力_CSVファイル('product.csv')
+            ->CSVアップロード();
+
+        $I->see('CSVのフォーマットが一致しません', '#upload-form');
+    }
+
+    /**
+     * @env firefox
+     * @env chrome
+     */
+    public function product_規格分類CSV登録雛形ファイルダウンロード(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0307-UC03-T02 規格分類CSV登録雛形ファイルダウンロード');
+
+        // 雛形のダウンロード
+        ClassCategoryCsvUploadPage::go($I)->雛形ダウンロード();
+        $ClassCategoryTemplateCSV = $I->getLastDownloadFile('/^class_category\.csv$/');
+        $I->assertEquals(1, count(file($ClassCategoryTemplateCSV)), 'ヘッダ行だけのファイル');
+    }
+
+    public function product_タグ登録(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0308-UC01-T01 / UC01-T02 タグ登録');
+
+        ProductTagPage::go($I)
+            ->入力_タグ名('')
+            ->新規作成();
+
+        $I->wait(0.1); // 画面遷移直後は selector の参照に失敗するため wait を入れる
+        // タグが作成されていないことを確認
+        $I->dontSee('保存しました', ProductTagPage::$アラートメッセージ);
+
+        $tagName = 'new-tag '.uniqid();
+
+        ProductTagPage::go($I)
+            ->入力_タグ名($tagName)
+            ->新規作成();
+
+        $I->see('保存しました', ProductTagPage::$アラートメッセージ);
+        $I->see($tagName, ProductTagPage::$タグ一覧);
+    }
+
+    public function product_タグ編集(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0308-UC02-T01 タグ編集');
+
+        $tagName = 'edit-tag '.uniqid();
+
+        ProductTagPage::go($I)
+            ->タグ編集_開始(1)
+            ->タグ編集_入力(1, $tagName)
+            ->タグ編集_決定(1);
+
+        $I->see('保存しました', ProductTagPage::$アラートメッセージ);
+        $I->see($tagName, ProductTagPage::$タグ一覧);
+    }
+
+    public function product_タグ削除(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0308-UC04-T01 タグ削除');
+
+        $page = ProductTagPage::go($I);
+        $tagName = $I->grabTextFrom(['css' => '.c-primaryCol .list-group li:nth-child(3) > div > div:nth-child(3)']);
+        $I->see($tagName, ProductTagPage::$タグ一覧);
+
+        $page->タグ削除(1)
+            ->タグ削除_決定();
+
+        $I->see('削除しました', ProductTagPage::$アラートメッセージ);
+        $I->dontSee($tagName, ProductTagPage::$タグ一覧);
+    }
+
+    public function product_一覧からの商品確認(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC05-T01 一覧からの商品確認');
 
@@ -734,7 +1061,7 @@ class EA03ProductCest
         $I->seeInCurrentUrl('/products/detail/');
     }
 
-    public function product_商品編集からの商品確認_公開(\AcceptanceTester $I)
+    public function product_商品編集からの商品確認_公開(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC05-T02 編集からの商品確認 公開');
 
@@ -751,7 +1078,7 @@ class EA03ProductCest
         $I->seeInCurrentUrl('/products/detail/');
     }
 
-    public function product_商品編集からの商品確認_非公開(\AcceptanceTester $I)
+    public function product_商品編集からの商品確認_非公開(AcceptanceTester $I)
     {
         $I->wantTo('EA0310-UC05-T03 編集からの商品確認 非公開');
 
@@ -766,5 +1093,118 @@ class EA03ProductCest
 
         $I->switchToNewWindow();
         $I->seeInCurrentUrl('/products/detail/');
+    }
+
+    public function product_詳細検索_タグ(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0312-UC01-T01 詳細検索 (タグ)');
+
+        $name = uniqid();
+        $entityManager = Fixtures::get('entityManager');
+        $createProduct = Fixtures::get('createProduct');
+        /** @var Eccube\Entity\Product $Product */
+        $Product = $createProduct($name);
+        foreach ($Product->getProductTag() as $ProductTag) {
+            $Product->removeProductTag($ProductTag);
+            $entityManager->remove($ProductTag);
+        }
+        $entityManager->flush();
+
+        // タグを指定して検索 -> 0件
+        ProductManagePage::go($I)
+            ->検索_入力_フリー検索($name)
+            ->詳細検索ボタンをクリック()
+            ->詳細検索_入力_タグ(1)
+            ->検索を実行();
+
+        $I->see('検索結果：0件が該当しました', ProductManagePage::$検索結果_メッセージ);
+
+        // 編集画面へ移動
+        ProductManagePage::go($I)
+            ->検索($name)
+            ->検索結果_選択(1);
+
+        // タグ登録
+        (new ProductEditPage($I))
+            ->クリックして開くタグリスト()
+            ->クリックして選択タグ(2)
+            ->クリックして選択タグ(3)
+            ->クリックして選択タグ(4)
+            ->登録();
+
+        $I->see('保存しました', 'div.c-container > div.c-contentsArea > div.alert');
+
+        // タグを指定して検索 -> 1件
+        ProductManagePage::go($I)
+            ->検索_入力_フリー検索($name)
+            ->詳細検索ボタンをクリック()
+            ->詳細検索_入力_タグ(1)
+            ->検索を実行();
+
+        $I->see('検索結果：1件が該当しました', ProductManagePage::$検索結果_メッセージ);
+    }
+
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/pull/6029
+     *
+     * @throws Doctrine\ORM\OptimisticLockException
+     * @throws Doctrine\ORM\TransactionRequiredException
+     * @throws Doctrine\ORM\Exception\ORMException
+     * @throws Doctrine\DBAL\Exception
+     */
+    public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0310-UC02-T03 一覧からの規格編集 規格あり 重複在庫の修正');
+        // see https://github.com/EC-CUBE/ec-cube/issues/6150
+        $I->getScenario()->incomplete('ローカルで通るが何故か GitHub Actions でエラーになるためスキップ');
+
+        $findProducts = Fixtures::get('findProducts');
+        $Products = array_filter($findProducts(), function ($Product) {
+            return $Product->hasProductClass();
+        });
+        $Product = array_pop($Products);
+
+        // 先頭のproductClass要素に対してStockを登録する
+        ProductManagePage::go($I)
+            ->検索($Product->getName())
+            ->検索結果_選択(1);
+
+        ProductEditPage::at($I)
+            ->規格管理();
+
+        ProductClassEditPage::at($I)
+            ->入力_在庫数無制限(1)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->無効_在庫数無制限(1)
+            ->入力_個数(1, 100)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->無効_規格(1)
+            ->登録();
+
+        ProductClassEditPage::at($I)
+            ->有効_規格(1)
+            ->入力_個数(1, 10)
+            ->入力_販売価格(1, 5000)
+            ->登録();
+
+        $I->see('保存しました', ProductClassEditPage::$登録完了メッセージ);
+
+        /** 重複して在庫が登録されていないのかチェック **/
+        // idを取得
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $id = $ProductClass->getId();
+
+        // 該当IDの商品が1つか確認
+        $count = $this->conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?', [$id]);
+        $I->assertEquals('1', $count, '該当データは1件です');
+
+        // 個数のズレがないか確認
+        $stock = $this->conn->fetchOne('SELECT stock FROM dtb_product_stock WHERE product_class_id = ?', [$id]);
+        $I->assertEquals('10', $stock, 'Stockが一致');
     }
 }

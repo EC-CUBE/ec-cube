@@ -12,23 +12,7 @@ file that was distributed with this source code.
 
 {% set current = 4 %}
 
-{% form_theme form _self %}
-{% block form_row %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        <label>{{ label }}
-            {% if required %}<span class="required">*</span>{% endif %}
-        </label>
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
-
-{% block checkbox_row %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
+{% form_theme form 'layout.html.twig' %}
 
 {% block main %}
     <div id="main" class="step5">
@@ -49,8 +33,8 @@ file that was distributed with this source code.
                                 {{ form_row(form.database_user) }}
                                 {{ form_row(form.database_password) }}
                                 <ul class="btn_area">
-                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
-                                    <li><a href="{{ path('install_step3') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
+                                    <li class="d-grid gap-2"><button type="submit" class="btn btn-primary btn-block btn-lg">{{ 'install.next'|trans }}</button></li>
+                                    <li class="d-grid gap-2"><a href="{{ path('install_step3') }}" class="btn btn-link btn-block btn-lg">{{ 'install.back'|trans }}</a></li>
                                 </ul>
                             </form>
                         </div>

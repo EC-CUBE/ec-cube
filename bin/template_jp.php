@@ -57,7 +57,7 @@ foreach ($templates as $template) {
             echoLn('  message id: '.$messageId);
             echoLn('  message text: '.$messageText);
 
-            eixt(1);
+            exit(1);
         }
         $replaced = $result;
     }

@@ -2,4 +2,4 @@
 # https://symfony.com/doc/master/bundles/DoctrineBundle/configuration.html
 doctrine:
     orm:
-        result_cache_driver: array
+        result_cache_driver: ~

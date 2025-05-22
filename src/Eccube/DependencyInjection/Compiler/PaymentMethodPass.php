@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PaymentMethodPass implements CompilerPassInterface
 {
-    const PAYMENT_METHOD_TAG = 'eccube.payment.method';
+    public const PAYMENT_METHOD_TAG = 'eccube.payment.method';
 
     public function process(ContainerBuilder $container)
     {
@@ -29,8 +29,7 @@ class PaymentMethodPass implements CompilerPassInterface
             $def = $container->getDefinition($id);
             $class = $container->getParameterBag()->resolveValue($def->getClass());
             if (!is_subclass_of($class, PaymentMethodInterface::class)) {
-                throw new \InvalidArgumentException(
-                    sprintf('Service "%s" must implement interface "%s".', $id, PaymentMethodInterface::class));
+                throw new \InvalidArgumentException(sprintf('Service "%s" must implement interface "%s".', $id, PaymentMethodInterface::class));
             }
             $def->setPublic(true);
         }

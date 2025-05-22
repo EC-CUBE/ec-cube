@@ -13,13 +13,13 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Entity\Customer;
 
 /**
  * CustomerRepository test cases.
@@ -81,13 +81,13 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->customerRepo = $this->container->get(CustomerRepository::class);
-        $this->customerAddressRepo = $this->container->get(CustomerAddressRepository::class);
-        $this->masterPrefRepo = $this->container->get(PrefRepository::class);
-        $this->masterSexRepo = $this->container->get(SexRepository::class);
+        $this->customerRepo = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->customerAddressRepo = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class);
+        $this->masterPrefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
+        $this->masterSexRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
         $this->deleteAllRows([
             'dtb_order_item',
             'dtb_shipping',
@@ -247,6 +247,25 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     public function testMultiWithKana()
     {
         $this->Customer->setKana01('セイ')
+            ->setKana02('メイ');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'multi' => 'メイ',
+        ];
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 'メイ';
+        $this->actual = $this->Results[0]->getKana02();
+        $this->verify();
+    }
+
+    public function testMultiWithKanaNull()
+    {
+        $this->Customer->setKana01(null)
             ->setKana02('メイ');
         $this->entityManager->flush();
 

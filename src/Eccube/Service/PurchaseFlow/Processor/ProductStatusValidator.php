@@ -16,8 +16,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 商品が公開されているかどうか。
@@ -33,7 +33,12 @@ class ProductStatusValidator extends ItemValidator
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if ($item->isProduct()) {
-            $Product = $item->getProductClass()->getProduct();
+            $ProductClass = $item->getProductClass();
+            if (!$item->getProductClass()->isVisible()) {
+                $this->throwInvalidItemException('front.shopping.not_purchase_product_class', $ProductClass);
+            }
+
+            $Product = $ProductClass->getProduct();
             if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
                 $this->throwInvalidItemException('front.shopping.not_purchase');
             }

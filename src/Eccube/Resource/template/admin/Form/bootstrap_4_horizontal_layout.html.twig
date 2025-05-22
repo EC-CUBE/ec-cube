@@ -8,7 +8,7 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-{%- extends 'bootstrap_4_horizontal_layout.html.twig' -%}
+{%- extends 'bootstrap_5_horizontal_layout.html.twig' -%}
 
 {%- block toggle_switch_widget -%}
     <div class="c-toggleSwitch">
@@ -44,4 +44,21 @@ file that was distributed with this source code.
         {{ parent() }}
     {% endif %}
 {% endblock %}
+
+{%- block file_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control-file')|trim}) -%}
+    <input type="file" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock -%}
+
+{% block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
+            {%- for error in errors -%}
+                <span class="d-block">
+                    <span class="form-error-icon badge bg-danger text-uppercase">{{ 'Error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
+                </span>
+            {%- endfor -%}
+        </span>
+    {%- endif %}
+{%- endblock form_errors %}
 

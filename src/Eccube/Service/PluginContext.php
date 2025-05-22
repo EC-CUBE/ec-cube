@@ -71,11 +71,11 @@ class PluginContext
         $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
         $composerJsonPath = $projectRoot.'/app/Plugin/'.$this->code.'/composer.json';
         if (file_exists($composerJsonPath) === false) {
-            throw new PluginException("${composerJsonPath} not found.");
+            throw new PluginException("{$composerJsonPath} not found.");
         }
         $this->composerJson = json_decode(file_get_contents($composerJsonPath), true);
         if ($this->composerJson === null) {
-            throw new PluginException("Invalid json format. [${composerJsonPath}]");
+            throw new PluginException("Invalid json format. [{$composerJsonPath}]");
         }
 
         return $this->composerJson;

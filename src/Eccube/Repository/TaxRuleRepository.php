@@ -14,12 +14,12 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -99,10 +99,10 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * 現在有効な税率設定情報を返す
      *
-     * @param  int|null|\Eccube\Entity\Product        $Product      商品
-     * @param  int|null|\Eccube\Entity\ProductClass   $ProductClass 商品規格
-     * @param  int|null|\Eccube\Entity\Master\Pref    $Pref         都道府県
-     * @param  int|null|\Eccube\Entity\Master\Country $Country      国
+     * @param  int|\Eccube\Entity\Product|null        $Product      商品
+     * @param  int|\Eccube\Entity\ProductClass|null   $ProductClass 商品規格
+     * @param  int|\Eccube\Entity\Master\Pref|null    $Pref         都道府県
+     * @param  int|\Eccube\Entity\Master\Country|null $Country      国
      *
      * @return \Eccube\Entity\TaxRule                 税設定情報
      *
@@ -112,7 +112,7 @@ class TaxRuleRepository extends AbstractRepository
     {
         // Pref Country 設定
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
-            /* @var $Customer \Eccube\Entity\Customer */
+            /** @var \Eccube\Entity\Customer $Customer */
             $Customer = $this->tokenStorage->getToken()->getUser();
             // FIXME なぜか管理画面でも実行されている.
             if ($Customer instanceof Customer) {

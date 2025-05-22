@@ -9,8 +9,9 @@ config.paths = {
   },
   assets: {
     scss: '/**/scss/**/*.scss',
+    js: '/**/js/bundle.js'
   },
 }
-config.server = 'http://localhost:8080'
+config.server = 'http://127.0.0.1:8080/'
 
 module.exports = config

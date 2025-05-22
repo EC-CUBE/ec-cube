@@ -55,5 +55,7 @@ abstract class CreditCard implements PaymentMethodInterface
     public function setOrder(Order $Order)
     {
         $this->Order = $Order;
+
+        return $this;
     }
 }

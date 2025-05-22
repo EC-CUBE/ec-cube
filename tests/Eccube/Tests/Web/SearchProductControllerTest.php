@@ -22,12 +22,12 @@ class SearchProductControllerTest extends AbstractWebTestCase
      */
     protected $categoryRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->remove();
         $this->createCategories();
-        $this->categoryRepository = $this->container->get(\Eccube\Repository\CategoryRepository::class);
+        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
     }
 
     public function createCategories()

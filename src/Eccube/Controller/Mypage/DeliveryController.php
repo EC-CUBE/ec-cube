@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -39,16 +40,26 @@ class DeliveryController extends AbstractController
      */
     protected $customerAddressRepository;
 
-    public function __construct(BaseInfoRepository $baseInfoRepository, CustomerAddressRepository $customerAddressRepository)
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    public function __construct(
+        BaseInfoRepository $baseInfoRepository,
+        CustomerAddressRepository $customerAddressRepository,
+        MailService $mailService
+    )
     {
         $this->BaseInfo = $baseInfoRepository->get();
         $this->customerAddressRepository = $customerAddressRepository;
+        $this->mailService = $mailService;
     }
 
     /**
      * お届け先一覧画面.
      *
-     * @Route("/mypage/delivery", name="mypage_delivery")
+     * @Route("/mypage/delivery", name="mypage_delivery", methods={"GET"})
      * @Template("Mypage/delivery.twig")
      */
     public function index(Request $request)
@@ -63,8 +74,8 @@ class DeliveryController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/mypage/delivery/new", name="mypage_delivery_new")
-     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"})
+     * @Route("/mypage/delivery/new", name="mypage_delivery_new", methods={"GET", "POST"})
+     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      * @Template("Mypage/delivery_edit.twig")
      */
     public function edit(Request $request, $id = null)
@@ -118,7 +129,7 @@ class DeliveryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -128,6 +139,15 @@ class DeliveryController extends AbstractController
 
             $this->entityManager->persist($CustomerAddress);
             $this->entityManager->flush();
+
+            // 会員情報変更時にメールを送信
+            if($this->BaseInfo->isOptionMailNotifier()) {
+                // 情報のセット
+                $userData['userAgent'] = $request->headers->get('User-Agent');
+                $userData['ipAddress'] = $request->getClientIp();
+
+                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+            }
 
             log_info('お届け先登録完了', [$id]);
 
@@ -139,7 +159,7 @@ class DeliveryController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE);
 
             return $this->redirect($this->generateUrl('mypage_delivery'));
         }
@@ -176,7 +196,16 @@ class DeliveryController extends AbstractController
                 'CustomerAddress' => $CustomerAddress,
             ], $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE);
+
+        // 会員情報変更時にメールを送信
+        if($this->BaseInfo->isOptionMailNotifier()) {
+            // 情報のセット
+            $userData['userAgent'] = $request->headers->get('User-Agent');
+            $userData['ipAddress'] = $request->getClientIp();
+
+            $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+        }
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 

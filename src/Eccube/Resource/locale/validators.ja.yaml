@@ -22,6 +22,9 @@ Invalid credentials.: |
 Invalid CSRF token.: |
   ログインできませんでした。
   入力内容に誤りがないかご確認ください。
+Too many failed login attempts, please try again later.: ログイン試行回数を超えました。しばらくして再度お試しください。
+Too many failed login attempts, please try again in %minutes% minute.: ログイン試行回数が多すぎます。%minutes%分後に再度お試しください。
+Too many failed login attempts, please try again in %minutes% minutes.: ログイン試行回数が多すぎます。%minutes%分後に再度お試しください。
 
 #------------------------------------------------------------------------------------
 # EC-CUBE error message
@@ -42,6 +45,8 @@ form_error.same_email: 同じメールアドレスを入力してください。
 form_error.admin_is_not_available: ディレクトリ名に「admin」を使用することはできません。
 form_error.member_already_exists: 既に利用されているログインIDです。
 form_error.customer_already_exists:  このメールアドレスは利用できません。
+form_error.password_pattern_invalid: 英数字をそれぞれ1種類使用してください。
+form_error.out_of_range: 不正な日付です。
 
 #------------------------------------------------------------------------------------
 # Deplicated

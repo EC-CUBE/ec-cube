@@ -14,16 +14,23 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
+use Eccube\Util\StringUtil;
+use function explode;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use function unlink;
 
 class SystemService implements EventSubscriberInterface
 {
-    const AUTO_MAINTENANCE = 'auto_maintenance';
-    const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
+    public const MAINTENANCE_TOKEN_KEY = 'maintenance_token';
+    public const AUTO_MAINTENANCE = 'auto_maintenance';
+    public const AUTO_MAINTENANCE_UPDATE = 'auto_maintenance_update';
 
     /**
      * メンテナンスモードを無効にする場合はtrue
@@ -45,22 +52,20 @@ class SystemService implements EventSubscriberInterface
     protected $entityManager;
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
+
 
     /**
      * SystemService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        ContainerInterface $container
+        EccubeConfig $eccubeConfig,
     ) {
         $this->entityManager = $entityManager;
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -141,30 +146,43 @@ class SystemService implements EventSubscriberInterface
      * @param bool $isEnable
      * @param string $mode
      */
-    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE)
+    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE, bool $force = false)
     {
-        $isMaintenanceMode = $this->isMaintenanceMode();
-        $path = $this->container->getParameter('eccube_content_maintenance_file_path');
-
-        if ($isEnable && $isMaintenanceMode === false) {
-            file_put_contents($path, $mode);
-        } elseif ($isEnable === false && $isMaintenanceMode) {
-            $contents = file_get_contents($path);
-            if ($contents == $mode) {
-                unlink($path);
-            }
+        if ($isEnable) {
+            $this->enableMaintenance($mode, $force);
+        } else {
+            $this->disableMaintenanceNow($mode, $force);
         }
+    }
+
+    public function getMaintenanceToken(): ?string
+    {
+        $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
+        if (!file_exists($path)) {
+            return null;
+        }
+
+        $contents = file_get_contents($path);
+
+        return explode(':', $contents)[1] ?? null;
     }
 
     /**
      * KernelEvents::TERMINATE で設定されるEvent
-     *
-     * @param PostResponseEvent $event
      */
-    public function disableMaintenanceEvent(PostResponseEvent $event)
+    public function disableMaintenanceEvent(TerminateEvent $event)
     {
         if ($this->disableMaintenanceAfterResponse) {
             $this->switchMaintenance(false, $this->maintenanceMode);
+        }
+    }
+
+    public function enableMaintenance($mode = self::AUTO_MAINTENANCE, bool $force = false): void
+    {
+        if ($force || !$this->isMaintenanceMode()) {
+            $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
+            $token = StringUtil::random(32);
+            file_put_contents($path, "{$mode}:{$token}");
         }
     }
 
@@ -181,6 +199,21 @@ class SystemService implements EventSubscriberInterface
         $this->maintenanceMode = $mode;
     }
 
+    public function disableMaintenanceNow($mode = self::AUTO_MAINTENANCE, bool $force = false): void
+    {
+        if (!$this->isMaintenanceMode()) {
+            return;
+        }
+
+        $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
+        $contents = file_get_contents($path);
+        $currentMode = explode(':', $contents)[0] ?? null;
+
+        if ($force || $currentMode === $mode) {
+            unlink($path);
+        }
+    }
+
     /**
      *　メンテナンスモードの状態を判定する
      *
@@ -189,7 +222,7 @@ class SystemService implements EventSubscriberInterface
     public function isMaintenanceMode()
     {
         // .maintenanceが存在しているかチェック
-        return file_exists($this->container->getParameter('eccube_content_maintenance_file_path'));
+        return file_exists($this->eccubeConfig->get('eccube_content_maintenance_file_path'));
     }
 
     /**

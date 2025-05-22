@@ -27,7 +27,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     protected $Order;
     protected $Product;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
@@ -40,7 +40,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNew()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $this->client->request('GET', $this->app->url('admin_order_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -48,7 +48,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNewPost()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
@@ -68,7 +68,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderEdit()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
@@ -79,7 +79,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderEditPost()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
@@ -189,7 +189,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      */
     public function testOrderProcessingToFrontConfirm()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
@@ -217,7 +217,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->verify();
 
         // フロント側から, product_class_id = 1 をカート投入
-        $client = $this->createClient();
+        $client = $this->client;
         $crawler = $client->request('POST', '/cart/add', ['product_class_id' => 1]);
         $this->app['eccube.service.cart']->lock();
 
@@ -283,7 +283,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      */
     public function testOrderProcessingWithTax()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
@@ -338,7 +338,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testOrderEditWithShippingItemDelete()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
@@ -398,7 +398,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testOrderEditWithShippingDelete()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Shippings = [];
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());

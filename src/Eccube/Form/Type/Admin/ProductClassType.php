@@ -13,6 +13,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
+use Eccube\Entity\ClassCategory;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
@@ -27,8 +30,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Entity\ClassCategory;
 
 class ProductClassType extends AbstractType
 {
@@ -38,14 +39,21 @@ class ProductClassType extends AbstractType
     protected $entityManager;
 
     /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
      * ProductClassType constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -58,7 +66,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
-                        'max' => 255,
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
             ])

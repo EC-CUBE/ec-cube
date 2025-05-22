@@ -59,9 +59,8 @@ class TaxRuleType extends AbstractType
                 'required' => true,
             ])
             ->add('apply_date', DateTimeType::class, [
-                'date_widget' => 'choice',
+                'widget' => 'single_text',
                 'input' => 'datetime',
-                'format' => 'yyyy-MM-dd HH:mm',
                 'years' => range(date('Y'), date('Y') + 10),
                 'placeholder' => [
                     'year' => '----', 'month' => '--', 'day' => '--',
@@ -78,6 +77,7 @@ class TaxRuleType extends AbstractType
             $qb
                 ->select('count(t.id)')
                 ->where('t.apply_date = :apply_date')
+                ->andWhere('t.ProductClass IS NULL')
                 ->setParameter('apply_date', $TaxRule->getApplyDate());
 
             if ($TaxRule->getId()) {

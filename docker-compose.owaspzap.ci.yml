@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  zap:
+    image: kiy0taka/zap2docker-eccube
+    command: bash -c "zap.sh -cmd -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && sleep infinity"
+    volumes:
+      - ./zap/policies:/home/zap/.ZAP/policies/
+      - ./zap:/zap/wrk/
+    depends_on:
+      - ec-cube
+    networks:
+      - backend
+      - default
+    tty: true
+    healthcheck:
+      test: echo 'zap'
+      interval: 3s
+      timeout: 3s
+      retries: 3

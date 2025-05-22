@@ -25,17 +25,25 @@ file that was distributed with this source code.
                         <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
                     {% else %}
                         <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__text">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}
+                            <div class="ec-alert-warning__inner">
+                                <div class="ec-alert-warning__inner__item">
+                                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                                    <div class="ec-alert-warning__text">
+                                        {{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endif %}
                     {% if has_errors(form.addresses) %}
                         <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__text">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'front.shopping.shipping_unselected'|trans }}
+                            <div class="ec-alert-warning__inner">
+                                <div class="ec-alert-warning__inner__item">
+                                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                                    <div class="ec-alert-warning__text">
+                                        {{ 'front.shopping.shipping_unselected'|trans }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endif %}

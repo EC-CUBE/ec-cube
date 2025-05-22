@@ -1,0 +1,267 @@
+name: OWASP ZAP
+
+# このGitHub Actionsワークフローは手動でトリガー可能です。
+# 手動で実行するには、以下の手順に従ってください：
+# 1. GitHubリポジトリの「Actions」タブに移動します。
+# 2. 「OWASP ZAP」ワークフローを選択します。
+# 3. 「Run workflow」ボタンをクリックします。
+# 4. 必要に応じて、表示される入力フォームでパラメータを指定し、「Run workflow」を再度クリックして実行します。
+on:
+  workflow_dispatch:
+
+jobs:
+  prune:
+    name: Prune Docker images
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Prune Docker images
+        run: docker image prune --force
+        
+  build:
+    name: Build
+    needs: prune
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Container Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: ec-cube
+          outputs: type=docker,dest=/tmp/ec-cube.tar
+
+      - name: Upload image
+        uses: actions/upload-artifact@v4
+        with:
+          name: ec-cube
+          path: /tmp/ec-cube.tar
+
+  scan:
+    name: Scan
+    needs: build
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - admin_authority
+          - admin_class_category_csv
+          - admin_class_name_csv
+          - admin_content_block
+          - admin_content_cache
+          - admin_content_file
+          - admin_content_layout
+          - admin_customer_delivery
+          - admin_customer_edit
+          - admin_customer_list
+          - admin_delivery
+          - admin_js_css
+          - admin_log
+          - admin_login_history
+          - admin_mail
+          - admin_mail_edit
+          - admin_masterdata
+          - admin_member_edit
+          - admin_member_setting
+          - admin_news
+          - admin_order_edit
+          - admin_order_edit_search
+          - admin_order_list
+          - admin_order_mail
+          - admin_page
+          - admin_payment
+          - admin_product_category
+          - admin_product_class_name
+          - admin_product_csv
+          - admin_product_copy
+          - admin_product_edit
+          - admin_product_edit_class
+          - admin_product_tag
+          - admin_product_view
+          - admin_shipping_csv
+          - admin_shop_setting
+          - admin_system
+          - admin_tax
+          - admin_template
+          - entry
+          - front_block
+          - front_contact
+          - front_help
+          - front_mypage
+          - front_new_item
+          - front_product
+          - front_sitemap
+          - guest_cart
+          - guest_front
+          - guest_shopping
+          - guest_shopping_customer_edit
+          - guest_shopping_shipping_edit
+          - guest_shopping_shipping_multiple
+          - mypage_change
+          - mypage_delivery
+          - mypage_favorite
+          - mypage_order
+          - plugin_coupon_admin_coupon
+          - plugin_coupon_guest_shopping
+          - plugin_mailmagazine_send
+          - plugin_mailmagazine_template
+          - plugin_product_review
+          - plugin_recommend
+          - plugin_related_product
+          - plugin_sales_report
+        include:
+          - target: admin_authority
+            thread_per_host: 1
+          - target: admin_customer_delivery
+            before_script: admin_create_customer.zst
+          - target: admin_content_cache
+            thread_per_host: 1
+          - target: admin_js_css
+            thread_per_host: 1
+          - target: admin_mail
+            thread_per_host: 1
+          - target: admin_masterdata
+            thread_per_host: 1
+          - target: admin_member_setting
+            context: default
+          - target: admin_order_edit_search
+            before_script: admin_create_customers.zst
+          - target: admin_shop_setting
+            thread_per_host: 1
+          - target: admin_system
+            thread_per_host: 1
+          - target: admin_template
+            thread_per_host: 1
+          - target: entry
+            thread_per_host: 1
+          - target: mypage_delivery
+            before_script: admin_create_customer.zst
+          - target: mypage_order
+            before_script: admin_create_customer.zst
+          - target: plugin_coupon_admin_coupon
+            thread_per_host: 1
+          - target: plugin_coupon_guest_shopping
+            before_script: plugin_coupon_admin_create_coupon.zst
+          - target: plugin_mailmagazine_send
+            before_script: plugin_mailmagazine_create_customers.zst
+          - target: plugin_related_product
+            thread_per_host: 1
+
+    steps:
+
+      - name: Maximize build space
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Download image
+        uses: actions/download-artifact@v3
+        with:
+          name: ec-cube
+          path: /tmp
+
+      - name: Load image
+        run: |
+          docker load --input /tmp/ec-cube.tar
+          docker tag ec-cube ghcr.io/ec-cube/ec-cube-php:8.1-apache
+
+      - name: Run containers
+        env:
+          APP_ENV: prod
+          APP_DEBUG: 0
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml up -d --wait
+          docker compose cp zap/delete_data.sh postgres:/
+          docker compose exec -d -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres /delete_data.sh
+          docker compose cp zap/delete_files.sh ec-cube:/
+          docker compose exec -d ec-cube /delete_files.sh
+
+      - name: Set up plugins
+        env:
+            APP_ENV: prod
+            APP_DEBUG: 0
+        run: |
+          for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42 SiteKit42
+          do
+              docker compose exec -u www-data:www-data ec-cube bin/console eccube:composer:require "ec-cube/${code,,}"
+              docker compose exec -u www-data:www-data ec-cube bin/console eccube:plugin:enable --code ${code}
+          done
+
+      - name: Disable rate limiter
+        run: |
+          docker compose exec -u www-data:www-data ec-cube sed -i -e "s/eccube_login_throttling_max_attempts: 5/eccube_login_throttling_max_attempts: 1024/" -e "s/eccube_login_throttling_interval: '30 minutes'/eccube_login_throttling_interval: '1 minutes'/" app/config/eccube/packages/eccube.yaml
+          docker compose exec -u www-data:www-data ec-cube rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+          docker compose exec -u www-data:www-data ec-cube sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+          docker compose exec -u www-data:www-data ec-cube bin/console cache:clear
+          docker compose exec -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_max_attempts
+          docker compose exec -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_interval
+          docker compose exec -u www-data:www-data ec-cube bin/console debug:config eccube
+
+      - name: Generate automation config
+        env:
+          ZAP_CONTEXT: "${{ matrix.context }}"
+          ZAP_THREAD_PER_HOST: "${{ matrix.thread_per_host }}"
+          ZAP_BEFORE_SCRIPT: "${{ matrix.before_script }}"
+        run: |
+          zap/generate_automation_config.sh \
+            -t ${{ matrix.target }} \
+            ${ZAP_BEFORE_SCRIPT:+"-b ${ZAP_BEFORE_SCRIPT}"} \
+            ${ZAP_CONTEXT:+"-c ${ZAP_CONTEXT}"} \
+            ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
+          cat zap/automation/${{ matrix.target }}.yml
+
+      - name: Autorun
+        run: docker compose exec -it zap ./zap.sh -cmd -configfile /zap/wrk/options.properties -autorun wrk/automation/${{ matrix.target }}.yml
+
+      - name: Copy report
+        if: ${{ always() }}
+        run: |
+          docker compose cp zap:/tmp/report /tmp
+          docker compose cp zap:/tmp/alerts.json /tmp
+
+      - name: Upload report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-${{ matrix.target }}-report
+          path: /tmp/report
+
+      - name: Upload alerts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-${{ matrix.target }}-report
+          path: /tmp/alerts.json
+
+  merge:
+    name: Merge alerts
+    needs: scan
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      - name: Merge alerts
+        run: |
+          find .
+          jq -s add **/alerts.json > all_alerts.json
+        working-directory: artifacts
+      - name: Upload alerts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all_alerts
+          path: artifacts/all_alerts.json

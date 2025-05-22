@@ -4,7 +4,8 @@
         // モーダルの表示を制御
         $('#bulkSendMail, .confirmationModal').on('click', function (e) {
             var modal = $('#sentUpdateModal');
-            modal.modal();
+            var bootstrapModal = new bootstrap.Modal(modal.get(0));
+            bootstrapModal.show();
             var eventTarget = $(e.currentTarget);
             var type = eventTarget.data('type');
             switch (type) {
@@ -42,7 +43,13 @@
             //alert(1119);
             var eventTarget = $(e.currentTarget);
             var type = eventTarget.data('type');
+            if (type == 'status' && eventTarget.data('bulk-update') && $('#option_bulk_status').val() === '') {
+                alert('対応状況を選択してください');
+                return;
+            }
             var modal = $('#sentUpdateModal');
+            var bootstrapModal = new bootstrap.Modal(modal.get(0));
+            bootstrapModal.show();
             switch (type) {
                 case 'mail':
                     updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
@@ -50,12 +57,7 @@
                 default:
                 case 'status':
                     if (eventTarget.data('bulk-update')) {
-                        if ($('#option_bulk_status').val() == '') {
-                            alert('対応状況を選択してください');
-                            return;
-                        }
                         updater = new BulkStatusUpdate(modal, eventTarget);
-                        modal.modal();
                     } else {
                         updater = new SimpleStatusUpdate(modal, eventTarget);
                     }
@@ -101,7 +103,7 @@
         progress: function (result, progress) {
             $('.progress-bar', this.modal).css('width', (++this.currentCount / this.totalCount * 100) + '%');
             if (result['message']) {
-                $('<li><span class="badge badge-warning">NOTICE</span> </li>')
+                $('<li><span class="badge bg-warning">NOTICE</span> </li>')
                     .append($('<span></span>').text(result['message']))
                     .appendTo('#bulkErrors');
             }
@@ -110,7 +112,7 @@
             }
         },
         fail: function (result) {
-            $('<li><span class="badge badge-danger">ERROR</span> </li>')
+            $('<li><span class="badge bg-danger">ERROR</span> </li>')
                 .append($('<span></span>').text("{{ 'admin.common.system_error'|trans }}"))
                 .appendTo('#bulkErrors');
         },
@@ -159,11 +161,27 @@
         },
         getPromises: {
             value: function (progress) {
-                return $('input[data-id]:checked').map(function () {
-                    var url = $(this).data('update-status-url');
-                    var data = {'order_status': $('#option_bulk_status').val()};
-                    return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
+                var statuses = [];
+                $('input[data-id]:checked').each(function () {
+                    statuses.push({
+                        'url': $(this).data('update-status-url'),
+                        'data': {'order_status': $('#option_bulk_status').val()}
+                    });
                 });
+                // ポイントや在庫の加算・減算は非同期で実行できないため、同期処理で実行
+                var callback = function () {
+                    var status = statuses.shift();
+                    var url = status.url;
+                    var data = status.data;
+
+                    ConfirmationModal.prototype.getPromises.call(this, progress, url, data)
+                        .done(function () {
+                            if (statuses.length) {
+                                callback();
+                            }
+                        })
+                }
+                callback();
             }
         }
     });

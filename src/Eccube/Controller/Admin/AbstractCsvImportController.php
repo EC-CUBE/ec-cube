@@ -43,30 +43,7 @@ class AbstractCsvImportController extends AbstractController
         $this->csvFileName = 'upload_'.StringUtil::random().'.'.$formFile->getClientOriginalExtension();
         $formFile->move($this->eccubeConfig['eccube_csv_temp_realdir'], $this->csvFileName);
 
-        $file = file_get_contents($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
-
-        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
-            // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
-            // see https://github.com/EC-CUBE/ec-cube/issues/1780
-            setlocale(LC_ALL, ''); // 既定のロケールに設定
-            if (mb_detect_encoding($file) === 'UTF-8') { // UTF-8 を検出したら SJIS-win に変換
-                $file = mb_convert_encoding($file, 'SJIS-win', 'UTF-8');
-            }
-        } else {
-            // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding($file, $this->eccubeConfig['eccube_csv_import_encoding']);
-            if (!empty($encode) && $encode != 'UTF-8') {
-                $file = mb_convert_encoding($file, 'UTF-8', $encode);
-            }
-        }
-
-        $file = StringUtil::convertLineFeed($file);
-
-        $tmp = tmpfile();
-        fwrite($tmp, $file);
-        rewind($tmp);
-        $meta = stream_get_meta_data($tmp);
-        $file = new \SplFileObject($meta['uri']);
+        $file = new \SplFileObject($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
 
         set_time_limit(0);
 
@@ -95,7 +72,6 @@ class AbstractCsvImportController extends AbstractController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         return $response;
     }

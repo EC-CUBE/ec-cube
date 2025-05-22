@@ -423,7 +423,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
          *
          * @return Payment
          */
-        public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
+        public function addPaymentOption(PaymentOption $paymentOption)
         {
             $this->PaymentOptions[] = $paymentOption;
 
@@ -437,7 +437,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removePaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
+        public function removePaymentOption(PaymentOption $paymentOption)
         {
             return $this->PaymentOptions->removeElement($paymentOption);
         }
@@ -459,7 +459,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
          *
          * @return Payment
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

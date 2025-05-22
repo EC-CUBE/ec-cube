@@ -1,0 +1,90 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_create_orders_100",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "set": {
+        "start": 0,
+        "end": 100,
+        "step": 1,
+        "elementType": "ZestLoopTokenIntegerSet"
+      },
+      "statements": [
+        {
+          "url": "https://ec-cube/admin/order/new",
+          "data": "",
+          "method": "GET",
+          "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+          "assertions": [
+            {
+              "rootExpression": {
+                "code": 200,
+                "not": false,
+                "elementType": "ZestExpressionStatusCode"
+              },
+              "elementType": "ZestAssertion"
+            }
+          ],
+          "followRedirects": false,
+          "timestamp": 1655430332261,
+          "cookies": [],
+          "index": 1,
+          "enabled": true,
+          "elementType": "ZestRequest"
+        },
+        {
+          "fieldDefinition": {
+            "formIndex": 0,
+            "fieldName": "order__token",
+            "elementType": "ZestFieldDefinition"
+          },
+          "variableName": "csrf1",
+          "index": 2,
+          "enabled": true,
+          "elementType": "ZestAssignFieldValue"
+        },
+        {
+          "url": "https://ec-cube/admin/order/new",
+          "data": "mode=&order%5B_token%5D={{csrf1}}&order%5Breturn_link%5D=&order%5BPayment%5D=4&admin_search_customer%5Bmulti%5D=&order%5BCustomer%5D=&order%5Bname%5D%5Bname01%5D=%E5%A7%93&order%5Bname%5D%5Bname02%5D=%E5%90%8D&order%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&order%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&order%5Bpostal_code%5D=5300001&order%5Baddress%5D%5Bpref%5D=27&order%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&order%5Baddress%5D%5Baddr02%5D=1-2-3&order%5Bemail%5D=test%40example.com&order%5Bphone_number%5D=08012345678&order%5Bcompany_name%5D=&order%5Bmessage%5D=&order%5BShipping%5D%5Bname%5D%5Bname01%5D=%E5%A7%93&order%5BShipping%5D%5Bname%5D%5Bname02%5D=%E5%90%8D&order%5BShipping%5D%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&order%5BShipping%5D%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&order%5BShipping%5D%5Bpostal_code%5D=5300001&order%5BShipping%5D%5Baddress%5D%5Bpref%5D=27&order%5BShipping%5D%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&order%5BShipping%5D%5Baddress%5D%5Baddr02%5D=1-2-3&order%5BShipping%5D%5Bphone_number%5D=08012345678&order%5BShipping%5D%5Bcompany_name%5D=&order%5BShipping%5D%5Btracking_number%5D=&order%5BShipping%5D%5BDelivery%5D=1&order%5BShipping%5D%5Bnote%5D=&order%5BShipping%5D%5Bshipping_delivery_date%5D=&order%5BShipping%5D%5BDeliveryTime%5D=&admin_search_product%5Bid%5D=&admin_search_product%5Bcategory_id%5D=&order%5BOrderItems%5D%5B1%5D%5BProductClass%5D=7&order%5BOrderItems%5D%5B1%5D%5Border_item_type%5D=1&order%5BOrderItems%5D%5B1%5D%5Btax_type%5D=1&order%5BOrderItems%5D%5B1%5D%5Bproduct_name%5D=%E5%BD%A9%E3%81%AE%E3%82%B8%E3%82%A7%E3%83%A9%E3%83%BC%E3%83%88CUBE&order%5BOrderItems%5D%5B1%5D%5Bprice%5D=34%2C500&order%5BOrderItems%5D%5B1%5D%5Bquantity%5D=1&order%5BOrderItems%5D%5B1%5D%5Btax_rate%5D=10&order%5Buse_point%5D=0&order%5Bnote%5D=&mode=register",
+          "method": "POST",
+          "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2071\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+          "assertions": [
+            {
+              "rootExpression": {
+                "code": 302,
+                "not": false,
+                "elementType": "ZestExpressionStatusCode"
+              },
+              "elementType": "ZestAssertion"
+            }
+          ],
+          "followRedirects": false,
+          "timestamp": 1655430403043,
+          "cookies": [],
+          "index": 3,
+          "enabled": true,
+          "elementType": "ZestRequest"
+        }
+      ],
+      "variableName": "order-id",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestLoopInteger"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

@@ -14,6 +14,9 @@
 namespace Eccube\Security\Http\Authentication;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
 
@@ -22,9 +25,13 @@ class EccubeAuthenticationSuccessHandler extends DefaultAuthenticationSuccessHan
     /**
      * {@inheritdoc}
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
-        $response = parent::onAuthenticationSuccess($request, $token);
+        try {
+            $response = parent::onAuthenticationSuccess($request, $token);
+        } catch (RouteNotFoundException $e) {
+            throw new BadRequestHttpException($e->getMessage(), $e, $e->getCode());
+        }
 
         if (preg_match('/^https?:\\\\/i', $response->getTargetUrl())) {
             $response->setTargetUrl($request->getUriForPath('/'));

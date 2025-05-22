@@ -117,14 +117,15 @@ file that was distributed with this source code.
                                     </dd>
                                 </dl>
                                 {# エンティティ拡張の自動出力 #}
-                                {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                     {% if f.vars.eccube_form_options.form_theme %}
                                         {% form_theme f f.vars.eccube_form_options.form_theme %}
                                         {{ form_row(f) }}
                                     {% else %}
                                         <dl>
                                             <dt>
-                                                {{ form_label(f) }}
+                                                {% set label_class =  f.vars.label_attr.class is defined ? f.vars.label_attr.class : '' %}
+                                                {{ form_label(f, f.vars.label, { 'label_attr': {'class': label_class ~ ' ec-label' }}) }}
                                             </dt>
                                             <dd>
                                                 <div class="{{ f.vars.eccube_form_options.style_class }}{{ has_errors(f) ? ' error' }}">

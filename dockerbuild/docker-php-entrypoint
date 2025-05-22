@@ -1,0 +1,40 @@
+#!/bin/sh
+set -e
+
+if [ -n "${USER_ID}" ]; then
+    usermod -u ${USER_ID} -o www-data
+fi
+if [ -n "${GROUP_ID}" ]; then
+    groupmod -g ${GROUP_ID} www-data
+fi
+
+if [ ! -d /var/www/html/vendor/bin ]; then
+    composer install \
+        --no-scripts \
+        --no-autoloader \
+        --no-plugins \
+        -d ${APACHE_DOCUMENT_ROOT}
+    composer dumpautoload -o --apcu
+    chown -R www-data: vendor
+fi
+
+bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
+    if [ -z ${DATABASE_URL} ]; then
+        cp .env.dist .env
+    fi
+    composer run-script installer-scripts
+    composer run-script auto-scripts
+    find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
+        | xargs -0 chown www-data:www-data
+    find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
+      | xargs -0 chmod g+s
+)
+
+echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- apache2-foreground "$@"
+fi
+
+exec "$@"

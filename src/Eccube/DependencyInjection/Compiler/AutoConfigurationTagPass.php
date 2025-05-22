@@ -14,10 +14,11 @@
 namespace Eccube\DependencyInjection\Compiler;
 
 use Doctrine\Common\EventSubscriber;
+use Eccube\Service\Payment\PaymentMethodInterface;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Form\AbstractTypeExtension;
 
 /**
  * サービスタグの自動設定を行う
@@ -25,7 +26,6 @@ use Symfony\Component\Form\AbstractTypeExtension;
  * 以下のタグは自動設定が行われないため, 自動設定対象になるように処理する
  *
  * - doctrine.event_subscriber
- * - form.type_extension
  *
  * PluginPassで無効なプラグインのタグは解除されるため, PluginPassより先行して実行する必要がある
  */
@@ -33,9 +33,10 @@ class AutoConfigurationTagPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        foreach ($container->getDefinitions() as $definition) {
+        foreach ($container->getDefinitions() as $id => $definition) {
             $this->configureDoctrineEventSubscriberTag($definition);
-            $this->configureFormTypeExtensionTag($definition);
+            $this->configureRateLimiterTag($id, $definition);
+            $this->configurePaymentMethodTag($id, $definition);
         }
     }
 
@@ -45,6 +46,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         if (!is_subclass_of($class, EventSubscriber::class)) {
             return;
         }
+
         if ($definition->hasTag('doctrine.event_subscriber')) {
             return;
         }
@@ -52,20 +54,21 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         $definition->addTag('doctrine.event_subscriber');
     }
 
-    protected function configureFormTypeExtensionTag(Definition $definition)
+    protected function configureRateLimiterTag($id, Definition $definition)
+    {
+        if (\str_starts_with($id, 'limiter')
+            && $definition instanceof ChildDefinition
+            && $definition->getParent() === 'limiter'
+            && !$definition->hasTag('eccube_rate_limiter')) {
+            $definition->addTag('eccube_rate_limiter');
+        }
+    }
+
+    protected function configurePaymentMethodTag($id, Definition $definition)
     {
         $class = $definition->getClass();
-        if (!is_subclass_of($class, AbstractTypeExtension::class)) {
-            return;
+        if (is_subclass_of($class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
+            $definition->addTag('eccube_payment_method');
         }
-        if ($definition->hasTag('form.type_extension')) {
-            return;
-        }
-
-        $ref = new \ReflectionClass($class);
-        $instance = $ref->newInstanceWithoutConstructor();
-        $type = $instance->getExtendedType();
-
-        $definition->addTag('form.type_extension', ['extended_type' => $type]);
     }
 }

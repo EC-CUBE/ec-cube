@@ -14,13 +14,17 @@
 namespace Eccube\Plugin;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
+use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
+use Doctrine\Migrations\MigratorConfiguration;
+use Psr\Container\ContainerInterface;
 
 abstract class AbstractPluginManager
 {
-    const MIGRATION_TABLE_PREFIX = 'migration_';
+    public const MIGRATION_TABLE_PREFIX = 'migration_';
 
     /**
      * プラグインのマイグレーションを実行する.
@@ -42,19 +46,45 @@ abstract class AbstractPluginManager
         if (null === $migrationFilePath) {
             $migrationFilePath = __DIR__.'/../../../app/Plugin/'.$pluginCode.'/DoctrineMigrations';
         }
-        $config = new Configuration($connection);
-        $config->setMigrationsNamespace('\Plugin\\'.$pluginCode.'\DoctrineMigrations');
-        $config->setMigrationsDirectory($migrationFilePath);
-        $config->registerMigrationsFromDirectory($migrationFilePath);
-        $config->setMigrationsTableName(self::MIGRATION_TABLE_PREFIX.$pluginCode);
-        $migration = new Migration($config);
-        $migration->migrate($version, false);
+
+        if (null == $version) {
+            $version = 'latest';
+        }
+
+        $migrationNamespace = 'Plugin\\'.$pluginCode.'\\DoctrineMigrations';
+        $migrationTableName = self::MIGRATION_TABLE_PREFIX.strtolower($pluginCode);
+        $configuration = new Configuration();
+        $configuration->addMigrationsDirectory($migrationNamespace, $migrationFilePath);
+        $configuration->setAllOrNothing(false);
+        $configuration->setCheckDatabasePlatform(false);
+
+        $storageConfiguration = new TableMetadataStorageConfiguration();
+        $storageConfiguration->setTableName($migrationTableName);
+        $configuration->setMetadataStorageConfiguration($storageConfiguration);
+
+        $dependencyFactory = DependencyFactory::fromConnection(
+            new ExistingConfiguration($configuration),
+            new ExistingConnection($connection)
+        );
+
+        $dependencyFactory->getMetadataStorage()->ensureInitialized();
+
+        $migratorConfiguration = (new MigratorConfiguration())
+            ->setDryRun(false)
+            ->setTimeAllQueries(false)
+            ->setAllOrNothing(false);
+
+        $version = $dependencyFactory->getVersionAliasResolver()->resolveVersionAlias($version);
+        $planCalculator = $dependencyFactory->getMigrationPlanCalculator();
+        $plan = $planCalculator->getPlanUntilVersion($version);
+        $migrator = $dependencyFactory->getMigrator();
+        $migrator->migrate($plan, $migratorConfiguration);
     }
 
     /**
      * Install the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function install(array $meta, ContainerInterface $container)
@@ -65,7 +95,7 @@ abstract class AbstractPluginManager
     /**
      * Update the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function update(array $meta, ContainerInterface $container)
@@ -76,7 +106,7 @@ abstract class AbstractPluginManager
     /**
      * Enable the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function enable(array $meta, ContainerInterface $container)
@@ -87,7 +117,7 @@ abstract class AbstractPluginManager
     /**
      * Disable the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function disable(array $meta, ContainerInterface $container)
@@ -98,7 +128,7 @@ abstract class AbstractPluginManager
     /**
      * Uninstall the plugin.
      *
-     * @param array $meta
+     * @param array{code:string, name:string, version:string, source:int} $meta
      * @param ContainerInterface $container
      */
     public function uninstall(array $meta, ContainerInterface $container)

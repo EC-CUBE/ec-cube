@@ -4,3 +4,5 @@ id,name,sort_no,discriminator_type
 3,Order CSV,1,csvtype
 4,Delivery CSV,1,csvtype
 5,Category CSV,5,csvtype
+6,Class NameCSV,6,csvtype
+7,Class Category CSV,7,csvtype

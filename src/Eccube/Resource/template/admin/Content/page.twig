@@ -35,11 +35,11 @@ file that was distributed with this source code.
                         </a>
                     </div>
                     <div class="col-3">
-                        <div class="form-row">
+                        <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    <div class="input-group-text">
+                                        <span id="basic-addon1"><i class="fa fa-search"></i></span>
                                     </div>
                                     <input id="search-page" class="form-control" type="search" aria-label="Search">
                                 </div>
@@ -51,29 +51,29 @@ file that was distributed with this source code.
                     <div class="card-body p-0">
                         <table class="table table-sm">
                             <thead>
-                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_name'|trans }}</th>
-                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_route_name'|trans }}</th>
-                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_url'|trans }}</th>
-                            <th class="border-0 pt-2 pb-2 pl-3">{{ 'admin.content.page_file_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 ps-3">{{ 'admin.content.page_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 ps-3">{{ 'admin.content.page_route_name'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 ps-3">{{ 'admin.content.page_url'|trans }}</th>
+                            <th class="border-0 pt-2 pb-2 ps-3">{{ 'admin.content.page_file_name'|trans }}</th>
                             <th class="border-0 pt-2 pb-2">{{ 'admin.content.layout_name'|trans }}</th>
-                            <th class="border-0 pt-2 pb-2 pr-3"></th>
+                            <th class="border-0 pt-2 pb-2 pe-3"></th>
                             </thead>
                             {% for Page in Pages %}
                                 <tr id="ex-page-{{ Page.id }}">
-                                    <td class="align-middle pl-3">
+                                    <td class="align-middle ps-3">
                                         <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
                                     </td>
-                                    <td class="align-middle pl-3 text-break">
+                                    <td class="align-middle ps-3 text-break">
                                         {{ Page.url }}
                                     </td>
-                                    <td class="align-middle pl-3 text-break">
+                                    <td class="align-middle ps-3 text-break">
                                         {% if router.routecollection.get(Page.url) %}
                                             {{ router.routecollection.get(Page.url).path }}
                                         {% else %}
                                             {{ Page.url }}
                                         {% endif %}
                                     </td>
-                                    <td class="align-middle pl-3 text-break">
+                                    <td class="align-middle ps-3 text-break">
                                         {% if Page.file_name %}{{ Page.file_name }}.twig{% endif %}
                                     </td>
                                     {# TODO レイアウトの数にかかわらず高さを揃えたい #}
@@ -85,16 +85,16 @@ file that was distributed with this source code.
                                                 {% set icon = 'fa-mobile fa-2x' %}
                                             {% endif %}
                                             <div class="d-block">
-                                                <i class="fa {{ icon }} mr-2"></i>
+                                                <i class="fa {{ icon }} me-2"></i>
                                                 <span>{{ Layout.name }}</span>
                                             </div>
                                         {% endfor %}
                                     </td>
-                                    <td class="align-middle pr-3">
+                                    <td class="align-middle pe-3">
                                         <div class="row justify-content-end">
                                             {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
-                                                <div class="col-auto text-center" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#delete_{{ Page.id }}">
+                                                <div class="col-auto text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#delete_{{ Page.id }}">
                                                         <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -103,16 +103,16 @@ file that was distributed with this source code.
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">×</span>
+                                                                <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body text-left">
-                                                                <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Page.name }) }}</p>
+                                                            <div class="modal-body text-start">
+                                                                <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Page.name }) }}</p>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                 <a class="btn btn-ec-delete" href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}"
                                                                         {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
                                                             </div>

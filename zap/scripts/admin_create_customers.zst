@@ -1,0 +1,104 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_create_customers",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "set": {
+        "start": 0,
+        "end": 100,
+        "step": 1,
+        "elementType": "ZestLoopTokenIntegerSet"
+      },
+      "statements": [
+        {
+          "url": "https://ec-cube/admin/customer/new",
+          "data": "",
+          "method": "GET",
+          "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+          "response": {
+            "url": "https://ec-cube/admin/customer/new",
+            "statusCode": 200,
+            "responseTimeInMs": 63,
+            "elementType": "ZestResponse"
+          },
+          "assertions": [
+            {
+              "rootExpression": {
+                "code": 200,
+                "not": false,
+                "elementType": "ZestExpressionStatusCode"
+              },
+              "elementType": "ZestAssertion"
+            }
+          ],
+          "followRedirects": false,
+          "timestamp": 1655292294336,
+          "cookies": [],
+          "index": 1,
+          "enabled": true,
+          "elementType": "ZestRequest"
+        },
+        {
+          "fieldDefinition": {
+            "formIndex": 0,
+            "fieldName": "admin_customer__token",
+            "elementType": "ZestFieldDefinition"
+          },
+          "variableName": "csrf2",
+          "index": 2,
+          "enabled": true,
+          "elementType": "ZestAssignFieldValue"
+        },
+        {
+          "url": "https://ec-cube/admin/customer/new",
+          "data": "admin_customer%5B_token%5D={{csrf2}}&admin_customer%5Bname%5D%5Bname01%5D=%E5%A7%93&admin_customer%5Bname%5D%5Bname02%5D=%E5%90%8D&admin_customer%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&admin_customer%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&admin_customer%5Bcompany_name%5D=&admin_customer%5Bpostal_code%5D=5300001&admin_customer%5Baddress%5D%5Bpref%5D=27&admin_customer%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&admin_customer%5Baddress%5D%5Baddr02%5D=1-2-3&admin_customer%5Bemail%5D=user-{{customer-id}}%40example.com&admin_customer%5Bphone_number%5D=08012345678&admin_customer%5Bplain_password%5D%5Bfirst%5D=password1234&admin_customer%5Bplain_password%5D%5Bsecond%5D=password1234&admin_customer%5Bsex%5D=1&admin_customer%5Bjob%5D=&admin_customer%5Bbirth%5D=&admin_customer%5Bpoint%5D=0&admin_customer%5Bnote%5D=&admin_customer%5Bstatus%5D=2&admin_customer%5Bmailmaga_flg%5D=0",
+          "method": "POST",
+          "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 891\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+          "response": {
+            "url": "https://ec-cube/admin/customer/new",
+            "headers": "HTTP/1.1 302 Found\nDate: Wed, 15 Jun 2022 11:25:48 GMT\nServer: Apache/2.4.53 (Debian)\nX-Frame-Options: SAMEORIGIN\nX-Powered-By: PHP/7.4.29\nCache-Control: max-age=0, must-revalidate, private\nLocation: /admin/customer/11/edit\nExpires: Wed, 15 Jun 2022 11:25:48 GMT\nSet-Cookie: maintenance_token=deleted; expires=Tue, 15-Jun-2021 11:25:47 GMT; Max-Age=0; path=/; httponly\nX-XSS-Protection: 1; mode=block\nX-Content-Type-Options: nosniff\nContent-Length: 338\nContent-Type: text/html; charset=UTF-8\n\n",
+            "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/admin/customer/11/edit'\" />\n\n        <title>Redirecting to /admin/customer/11/edit</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/admin/customer/11/edit\">/admin/customer/11/edit</a>.\n    </body>\n</html>",
+            "statusCode": 302,
+            "responseTimeInMs": 38,
+            "elementType": "ZestResponse"
+          },
+          "assertions": [
+            {
+              "rootExpression": {
+                "code": 302,
+                "not": false,
+                "elementType": "ZestExpressionStatusCode"
+              },
+              "elementType": "ZestAssertion"
+            }
+          ],
+          "followRedirects": false,
+          "timestamp": 1655292348003,
+          "cookies": [],
+          "index": 3,
+          "enabled": true,
+          "elementType": "ZestRequest"
+        }
+      ],
+      "variableName": "customer-id",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestLoopInteger"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

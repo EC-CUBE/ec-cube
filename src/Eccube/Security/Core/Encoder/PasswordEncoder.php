@@ -16,7 +16,7 @@ namespace Eccube\Security\Core\Encoder;
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
-class PasswordEncoder implements PasswordEncoderInterface
+class PasswordEncoder
 {
     /**
      * @var string
@@ -105,6 +105,14 @@ class PasswordEncoder implements PasswordEncoderInterface
         }
 
         return $res;
+    }
+
+    /**
+     * Checks if an encoded password would benefit from rehashing.
+     */
+    public function needsRehash(string $encoded): bool
+    {
+        return false;
     }
 
     /**

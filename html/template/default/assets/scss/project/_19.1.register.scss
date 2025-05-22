@@ -18,9 +18,6 @@ Styleguide 19.1
   & &__actions {
     padding-top:20px;
     text-align: center;
-    @include media_desktop {
-      text-align: left;
-    }
     p {
       margin-bottom: 16px;
     }

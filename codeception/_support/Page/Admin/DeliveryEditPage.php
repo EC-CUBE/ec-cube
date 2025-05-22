@@ -46,8 +46,16 @@ class DeliveryEditPage extends AbstractAdminPageStyleGuide
     public function 入力_支払方法選択($array)
     {
         foreach ($array as $id) {
-            $this->tester->checkOption(['id' => "delivery_payments_${id}"]);
+            $this->tester->checkOption(['id' => "delivery_payments_{$id}"]);
         }
+
+        return $this;
+    }
+
+    public function 入力_お届け時間($value)
+    {
+        $this->tester->fillField(['id' => 'add-delivery-time-value'], $value);
+        $this->tester->click('#add-delivery-time-button');
 
         return $this;
     }

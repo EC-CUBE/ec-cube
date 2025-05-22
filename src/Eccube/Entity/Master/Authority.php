@@ -31,11 +31,11 @@ if (!class_exists(Authority::class, false)) {
         /**
          * システム管理者
          */
-        const ADMIN = 0;
+        public const ADMIN = 0;
 
         /**
          * 店舗オーナー
          */
-        const OWNER = 1;
+        public const OWNER = 1;
     }
 }

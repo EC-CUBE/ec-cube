@@ -69,13 +69,16 @@ file that was distributed with this source code.
                                     <th class="border-top-0 pt-2 pb-2 text-center">
                                         {{ 'admin.setting.system.member.work'|trans }}
                                     </th>
+                                    <th class="border-top-0 pt-2 pb-2 text-center">
+                                        {{ 'admin.setting.system.member.two_factor_auth_enabled'|trans }}
+                                    </th>
                                     <th class="border-top-0 pt-2 pb-2 text-center"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for Member in Members %}
                                     <tr id="ex-member-{{ Member.id }}">
-                                        <td class="align-middle text-center pl-3">
+                                        <td class="align-middle text-center ps-3">
                                             {{ Member.name }}
                                         </td>
                                         <td class="align-middle text-center">
@@ -87,50 +90,63 @@ file that was distributed with this source code.
                                         <td class="align-middle text-center">
                                             {{ Member.Work.name }}
                                         </td>
-                                        <td class="align-middle pr-3">
-                                            <div class="text-right">
+                                        <td class="align-middle text-center">
+                                            {% if Member.two_factor_auth_enabled %}
+                                                {{ 'common.enabled'|trans }}
+                                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Member.two_factor_auth_key
+                                                    ? 'admin.setting.system.member.two_factor_auth_completed'|trans
+                                                    : 'admin.setting.system.member.two_factor_auth_incompleted'|trans }}">
+                                                    <i class="fa fa-check fa-lg {{ Member.two_factor_auth_key ? 'text-success' : 'text-danger' }}"
+                                                       aria-hidden="true"></i>
+                                                </span>
+                                            {% else %}
+                                                {{ 'common.disabled'|trans }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="align-middle pe-3">
+                                            <div class="text-end">
                                                 <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-edit"
                                                        href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}"
-                                                       data-tooltip="true"
-                                                       data-placement="top"
-                                                       data-original-title="{{ 'admin.common.edit'|trans }}">
+                                                       data-bs-toggle="tooltip"
+                                                       data-bs-placement="top"
+                                                       title="{{ 'admin.common.edit'|trans }}">
                                                         <i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                                 <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-up {% if loop.first %} disabled {% endif %}"
                                                        href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"
-                                                       data-tooltip="true"
+                                                       data-bs-toggle="tooltip"
                                                        data-method="put"
-                                                       data-placement="top"
-                                                       data-original-title="{{ 'admin.common.up'|trans }}">
+                                                       data-bs-placement="top"
+                                                       title="{{ 'admin.common.up'|trans }}">
                                                         <i class="fa fa-arrow-up fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                                 <div class="px-1 d-inline-block">
                                                     <a class="btn btn-ec-actionIcon action-down {% if loop.last %} disabled {% endif %}"
                                                        href="{{ url('admin_setting_system_member_down', {id: Member.id}) }}"
-                                                       data-tooltip="true"
+                                                       data-bs-toggle="tooltip"
                                                        data-method="put"
-                                                       data-placement="top"
-                                                       data-original-title="{{ 'admin.common.down'|trans }}">
+                                                       data-bs-placement="top"
+                                                       title="{{ 'admin.common.down'|trans }}">
                                                         <i class="fa fa-arrow-down fa-lg text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                                 <div class="px-1 d-inline-block">
                                                     {% if Member.id == app.user.id %}
-                                                        <a class="btn btn-ec-actionIcon action-delete mr-2 disabled"
-                                                            data-tooltip="true" data-placement="top"
+                                                        <a class="btn btn-ec-actionIcon action-delete me-2 disabled"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="{{ 'admin.common.delete'|trans }}">
                                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
                                                     {% else %}
-                                                        <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
+                                                        <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon action-delete"
-                                                               data-toggle="modal"
-                                                               data-target="#member_delete_{{ Member.id }}">
+                                                               data-bs-toggle="modal"
+                                                               data-bs-target="#member_delete_{{ Member.id }}">
                                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
@@ -140,20 +156,19 @@ file that was distributed with this source code.
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title font-weight-bold">
+                                                                        <h5 class="modal-title fw-bold">
                                                                             {{ 'admin.setting.system.member.delete__confirm_title'|trans }}</h5>
-                                                                        <button class="close" type="button"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close"><span
-                                                                                    aria-hidden="true">×</span>
+                                                                        <button class="btn-close" type="button"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close">
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body text-left">
-                                                                        <p class="text-left">
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">
                                                                             {{ 'admin.setting.system.member.delete__confirm_message'|trans }}</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}
+                                                                        <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                                                                         </button>
                                                                         <a class="btn btn-ec-delete"
                                                                            href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}"

@@ -1,0 +1,14 @@
+eccube:
+    rate_limiter:
+        test_ip:
+            route: ~
+            limit: 1
+            interval: '30 minutes'
+        test_customer:
+            route: ~
+            limit: 1
+            interval: '30 minutes'
+        test_params:
+            route: ~
+            limit: 1
+            interval: '30 minutes'

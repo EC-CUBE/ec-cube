@@ -25,25 +25,26 @@ var mainNavArea = function() {
 mainNavArea();
 
 //Bootstrap ツールチップ
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+});
+
+/** @deprecated プラグイン等の後方互換用 */
 var toolTip = function() {
     $(function() {
         $('[data-tooltip="true"]').tooltip();
     })
 };
-
 toolTip();
 
-//popover ポップオーバー
-// header
-var popoverHeader = function() {
-    $(function() {
-        $('.c-headerBar__userMenu').popover({
-            container: 'body'
-        })
-    })
-};
-popoverHeader();
-// all page
+// popover ポップオーバー
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+});
+
+/** @deprecated プラグイン等の後方互換用 */
 var popoverAll = function() {
     $(function() {
         $('[data-toggle="popover"]').popover();
@@ -117,7 +118,11 @@ var toggleBtnBulk = function(checkboxSelector, btnSelector) {
 /////////// 2重submit制御.
 
 if (typeof Ladda !== 'undefined') {
-    Ladda.bind('button[type=submit]', {timeout: 2000});
+    // a[token-for-anchor] を押下されるとJavaScriptで formを作成してPOSTする仕様になっていて、
+    // aタグにdisable属性を付与しても駄目（form生成&postしてしまう）だったので、cssでpointer-event:none;しています。
+    // https://github.com/EC-CUBE/ec-cube/pull/5971
+    Ladda.bind('button[type=submit],a[token-for-anchor]', {timeout: 2000});
+    $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
 }
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
@@ -142,6 +147,7 @@ $(function() {
     $('a[token-for-anchor]').click(function(e) {
         e.preventDefault();
         var $this = $(this);
+        $this.css('pointer-events','none');
         var data = $this.data();
         if (data.confirm != false) {
             if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
@@ -208,3 +214,46 @@ var searchWord = function (searchText, el) {
         }
     });
 };
+
+// 一覧ページのソート機能
+$(function() {
+    if ($('.js-listSort').length < 1) {
+        return;
+    }
+
+    // 現在のソート状況をボタン表示に反映
+    const sortkey = $('.js-listSort-key').val();
+    const target = $('.js-listSort').filter('[data-sortkey="' + sortkey + '"]');
+    if (target.length === 1) {
+        target.addClass('listSort-current');
+        if ($('.js-listSort-type').val() === 'd') {
+            target.find('.fa').addClass('fa-arrow-down').removeClass('fa-arrow-up');
+        }
+    }
+
+    // ソート実施
+    $('.js-listSort').on({
+        click: function (e) {
+            const sortkey = $(e.currentTarget).data('sortkey');
+            const sorttype = ($('.js-listSort-key').val() === sortkey && $('.js-listSort-type').val() !== 'd') ? 'd' : 'a';
+            $('.js-listSort-key').val(sortkey);
+            $('.js-listSort-type').val(sorttype);
+            $('#search_form').submit();
+            e.preventDefault();
+        }
+    });
+});
+
+// input[type="datetime-local"]、初期クリック時に当日の0時0分を設定
+$(function() {
+    if( $('[type="datetime-local"]').length ){
+        $('[type="datetime-local"]').on('click',function(){
+            if( $(this).val() === '' && !$(this).hasClass('is_adjusted') ){
+                $(this).addClass('is_adjusted');
+                let date = new Date();
+                let adjusted_date = date.toLocaleDateString().split('/').map((e)=>{ return ( String(e).length < 2 )? "0"+e : e ; }).join('-');
+                $(this).val( adjusted_date + 'T00:00');
+            }
+        });
+    }
+});

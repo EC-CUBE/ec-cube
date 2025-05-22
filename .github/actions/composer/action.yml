@@ -1,0 +1,15 @@
+runs:
+  using: "Composite"
+  steps:
+    - name: Get Composer Cache Directory
+      uses: actions/cache@v4
+      id: composer-cache
+      with:
+        path: ${{ github.workspace }}/vendor
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
+    - name: composer install
+      run: composer install --dev --no-interaction -o --apcu-autoloader
+      shell: bash

@@ -23,17 +23,17 @@ file that was distributed with this source code.
             {% include 'Mypage/navi.twig' %}
         </div>
         <div class="ec-registerCompleteRole">
+            <div class="ec-reportHeading">
+                <h2>{{ 'front.mypage.customer_complete_message__title'|trans }}</h2>
+            </div>
             <div class="ec-off2Grid ec-text-ac">
                 <div class="ec-off2Grid__cell">
-                    <div class="ec-reportHeading">
-                        <h2>{{ 'front.mypage.customer_complete_message__title'|trans }}</h2>
-                    </div>
                     <p class="ec-reportDescription">{{ 'front.mypage.customer_complete_message__body'|trans }}</p>
-                    <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel"
-                                                          href="{{ url('homepage') }}">{{ 'common.back'|trans }}</a>
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="ec-off4Grid">
+                <div class="ec-off4Grid__cell">
+                    <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.back'|trans }}</a>
                 </div>
             </div>
         </div>

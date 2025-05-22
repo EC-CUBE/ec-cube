@@ -16,10 +16,6 @@ file that was distributed with this source code.
 {% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             var oldSortNos = [];
@@ -128,21 +124,21 @@ file that was distributed with this source code.
                                                             {{ Delivery.name }} / {{ Delivery.service_name }}
                                                         </a>
                                                     </div>
-                                                    <div class="col-auto text-right">
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-2 action-up {% if loop.first %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                                    <div class="col-auto text-end">
+                                                        <a href="#" class="btn btn-ec-actionIcon me-2 action-up {% if loop.first %}disabled{% endif %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                             <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-ec-actionIcon mr-2 action-down {% if loop.last %}disabled{% endif %}" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                        <a href="#" class="btn btn-ec-actionIcon me-2 action-down {% if loop.last %}disabled{% endif %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                             <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon mr-2 action-visible" href="{{ url('admin_setting_shop_delivery_visibility', {'id': Delivery.id }) }}"
-                                                           data-tooltip="true" data-placement="top" title="{{ Delivery.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
+                                                        <a class="btn btn-ec-actionIcon me-2 action-visible" href="{{ url('admin_setting_shop_delivery_visibility', {'id': Delivery.id }) }}"
+                                                           data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Delivery.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
                                                            data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
                                                             <i class="fa fa-toggle-{{ Delivery.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                                         </a>
-                                                        <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top"
+                                                        <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
-                                                            <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
+                                                            <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                                data-url="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}"
                                                                data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Delivery.name }) }}">
                                                                 <i class="fa fa-close fa-lg"></i>
@@ -160,18 +156,18 @@ file that was distributed with this source code.
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title font-weight-bold">
+                                                <h5 class="modal-title fw-bold">
                                                     {{ 'admin.common.delete_modal__title'|trans }}
                                                 </h5>
-                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
+                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+
                                                 </button>
                                             </div>
-                                            <div class="modal-body text-left">
-                                                <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                            <div class="modal-body text-start">
+                                                <p class="text-start modal-message"><!-- jsでメッセージを挿入 --></p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                                <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                                     {{ 'admin.common.cancel'|trans }}
                                                 </button>
                                                 <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}

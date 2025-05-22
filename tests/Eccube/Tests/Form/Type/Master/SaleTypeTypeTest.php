@@ -25,10 +25,10 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     /** @var SaleTypeRepository */
     protected $saleTypeRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->saleTypeRepo = $this->container->get(SaleTypeRepository::class);
+        $this->saleTypeRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
@@ -65,7 +65,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_Int()
+    public function testInvalidDataInt()
     {
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
@@ -74,7 +74,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_String()
+    public function testInvalidDataString()
     {
         $this->form->submit('a');
         $this->assertFalse($this->form->isValid());

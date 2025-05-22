@@ -17,8 +17,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\News;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * NewsRepository
@@ -42,7 +42,7 @@ class NewsRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->persist($News);
-        $em->flush($News);
+        $em->flush();
     }
 
     /**
@@ -57,7 +57,7 @@ class NewsRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
         $em->remove($News);
-        $em->flush($News);
+        $em->flush();
     }
 
     /**

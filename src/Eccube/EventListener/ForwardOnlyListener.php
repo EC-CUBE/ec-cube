@@ -14,7 +14,7 @@
 namespace Eccube\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -30,13 +30,13 @@ class ForwardOnlyListener implements EventSubscriberInterface
      *
      * @param FilterControllerEvent $event
      */
-    public function onController(FilterControllerEvent $event)
+    public function onController(ControllerEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
-        if (!is_array($controller = $event->getController())) {
+        if (!is_array($event->getController())) {
             return;
         }
 

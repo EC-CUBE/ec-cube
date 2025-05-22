@@ -64,7 +64,7 @@ class Step3Type extends AbstractType
                 'label' => trans('install.mail_address'),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                 ],
             ])
             ->add('login_id', TextType::class, [
@@ -96,8 +96,8 @@ class Step3Type extends AbstractType
                         'max' => $this->eccubeConfig['eccube_password_max_len'],
                     ]),
                     new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form_error.graph_only',
+                        'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                        'message' => 'form_error.password_pattern_invalid',
                     ]),
                 ],
             ])

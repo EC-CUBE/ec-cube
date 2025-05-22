@@ -22,8 +22,16 @@ class TopPage extends AbstractFrontPage
     {
         $page = new self($I);
 
-        return $page->goPage('');
+        return $page->goPage('/');
     }
+
+    public function at($title)
+    {
+        $this->tester->see($title);
+
+        return $this;
+    }
+
 
     public function 新着情報選択($rowNum)
     {

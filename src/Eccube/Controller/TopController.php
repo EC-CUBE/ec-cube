@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TopController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="homepage", methods={"GET"})
      * @Template("index.twig")
      */
     public function index()

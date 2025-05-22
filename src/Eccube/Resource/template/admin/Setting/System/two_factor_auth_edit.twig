@@ -1,0 +1,121 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'system', 'member'] %}
+
+{% block title %}{{ 'admin.setting.system.two_factor_auth_title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script>
+$(function () {
+    $("#qrcode").qrcode({
+        size: 200,
+        fill: '#000',
+        text: 'otpauth://totp/{{ 'EC-CUBE:'|url_encode }}{{ BaseInfo.shop_name|url_encode }}{{ ' - '|url_encode }}{{ Member.name|url_encode }}?secret={{ auth_key }}&issuer={{ 'EC-CUBE'|url_encode }}',
+        radius: 0,
+        quiet: 0,
+        mode: 0, // 0: normal , 1: label strip , 2: label box , 3: image strip , 4: image box
+        mSize: 0.1,
+        mPosX: 0.5,
+        mPosY: 0.5,
+        label: 'no label',
+        fontname: 'sans',
+        fontcolor: '#000',
+        image: null
+    });
+});
+</script>
+{% endblock %}
+
+{% block stylesheet %}
+<style>
+#qrcode canvas { width: 150px; }
+</style>
+{% endblock %}
+
+{% block main %}
+    <form name="two_factor_auth_form" role="form" id="two_factor_auth_form" method="post" action="" novalidate>
+        {{ form_widget(form._token) }}
+        {{ form_widget(form.auth_key) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8"><span class="card-title">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</span></div>
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#memberInfo" aria-expanded="false" aria-controls="memberInfo">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="memberInfo">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.setting.system.two_factor_auth.qr'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+	                                    <div id="qrcode"></div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.two_factor_auth.qr_code'|trans }}">
+                                            <span>{{ form.device_token.vars.label|trans }}</span>
+                                            <i class="fa fa-question-circle fa-lg ms-1"></i>
+                                            <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form_widget(form.device_token) }}
+                                            </div>
+                                            {{ form_errors(form.device_token) }}
+                                            {% if error is not empty %}
+                                                <div class="text-danger mb-3 text-start small">{{ error }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5"
+                                        type="submit">{{ 'admin.common.registration'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

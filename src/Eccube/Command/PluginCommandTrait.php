@@ -15,9 +15,10 @@ namespace Eccube\Command;
 
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait PluginCommandTrait
 {
@@ -33,8 +34,8 @@ trait PluginCommandTrait
 
     /**
      * @param PluginService $pluginService
-     * @required
      */
+    #[Required]
     public function setPluginService(PluginService $pluginService)
     {
         $this->pluginService = $pluginService;
@@ -42,8 +43,8 @@ trait PluginCommandTrait
 
     /**
      * @param PluginRepository $pluginRepository
-     * @required
      */
+    #[Required]
     public function setPluginRepository(PluginRepository $pluginRepository)
     {
         $this->pluginRepository = $pluginRepository;
@@ -51,14 +52,13 @@ trait PluginCommandTrait
 
     protected function clearCache(SymfonyStyle $io)
     {
+        $command = ['bin/console', 'cache:clear', '--no-warmup'];
         try {
-            /* @var Command $command */
-            $command = $this->getApplication()->get('cache:clear');
-            $command->run(new ArrayInput([
-                'command' => 'cache:clear',
-                '--no-warmup' => true,
-            ]), $io);
-        } catch (\Exception $e) {
+            $io->text(sprintf('<info>Run %s</info>...', implode(' ', $command)));
+            $process = new Process($command);
+            $process->mustRun();
+            $io->text($process->getOutput());
+        } catch (ProcessFailedException $e) {
             $io->error($e->getMessage());
         }
     }

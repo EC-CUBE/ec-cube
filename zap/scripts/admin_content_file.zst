@@ -1,0 +1,355 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_content_file",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "ファイルアップロード",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/content/file_manager",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641448897,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "minInt": 0,
+      "maxInt": 2147483647,
+      "variableName": "file-id",
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestAssignRandomInteger"
+    },
+    {
+      "url": "https://ec-cube/admin/content/file_manager",
+      "data": "------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"mode\"\r\n\r\nupload\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"now_file\"\r\n\r\n/\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"now_dir\"\r\n\r\n/\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"tree_select_file\"\r\n\r\n/\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"tree_status\"\r\n\r\n\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"select_file\"\r\n\r\n\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"form[_token]\"\r\n\r\n{{csrf1}}\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"form[file][]\"; filename=\"file-{{file-id}}.txt\"\r\nContent-Type: text/plain\r\n\r\na\n\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nContent-Disposition: form-data; name=\"form[create_file]\"\r\n\r\n\r\n------WebKitFormBoundary6fZWHGPQgGgZfhhW--\r\n",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 1026\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundary6fZWHGPQgGgZfhhW\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641457587,
+      "cookies": [],
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "ファイル表示",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/content/file_view?file=%2Ffile-{{file-id}}.txt",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641470744,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "ファイルダウンロード",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/content/file_download?select_file=%2Ffile-{{file-id}}.txt",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641477929,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "ファイル削除",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/content/file_delete?select_file=/file-{{file-id}}.txt",
+      "data": "_token={{eccube-csrf-token}}&_method=delete",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641488388,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/content/file_manager?tree_select_file=/",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641488409,
+      "cookies": [],
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf3",
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "ディレクトリ作成",
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/content/file_manager",
+      "data": "------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"mode\"\r\n\r\ncreate\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"now_file\"\r\n\r\n/\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"now_dir\"\r\n\r\n/\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"tree_select_file\"\r\n\r\n/\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"tree_status\"\r\n\r\n\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"select_file\"\r\n\r\n\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"form[_token]\"\r\n\r\n{{csrf3}}\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"form[file][]\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nContent-Disposition: form-data; name=\"form[create_file]\"\r\n\r\ndir\r-{{file-id}}\n------WebKitFormBoundary9Aj2Zxq4Yh7OUCCL--\r\n",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 1034\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundary9Aj2Zxq4Yh7OUCCL\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641497148,
+      "cookies": [],
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf4",
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "ディレクトリ移動",
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/content/file_manager",
+      "data": "------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"mode\"\r\n\r\nmove\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"now_file\"\r\n\r\n/\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"now_dir\"\r\n\r\n/\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"tree_select_file\"\r\n\r\n/dir-{{file-id}}\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"tree_status\"\r\n\r\n\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"select_file\"\r\n\r\n\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"form[_token]\"\r\n\r\n{{csrf4}}\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"form[file][]\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nContent-Disposition: form-data; name=\"form[create_file]\"\r\n\r\n\r\n------WebKitFormBoundaryveHc6yQ9oBhRdRi5--\r\n",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 1032\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundaryveHc6yQ9oBhRdRi5\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641501158,
+      "cookies": [],
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf5",
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "ディレクトリ削除",
+      "index": 21,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/content/file_delete?select_file=/dir-{{file-id}}",
+      "data": "_token={{eccube-csrf-token}}&_method=delete",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641513454,
+      "cookies": [],
+      "index": 22,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/content/file_manager?tree_select_file=/",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656641513476,
+      "cookies": [],
+      "index": 23,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf7",
+      "index": 24,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

@@ -15,8 +15,8 @@ namespace Eccube\Tests\Util;
 
 use Eccube\Util\CacheUtil;
 use org\bovigo\vfs\vfsStream;
-use Symfony\Component\Finder\Finder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 
 /**
  * CacheUtil test cases.
@@ -29,7 +29,7 @@ class CacheUtilTest extends TestCase
     private $root;
     private $dirs;
 
-    public function setUp()
+    protected function setUp(): void
     {
         // 仮想ファイルを生成
         $this->root = vfsStream::setup('rootDir');

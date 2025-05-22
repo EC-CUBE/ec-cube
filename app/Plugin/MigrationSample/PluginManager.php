@@ -14,7 +14,7 @@
 namespace Plugin\MigrationSample;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class PluginManager.
@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PluginManager extends AbstractPluginManager
 {
     const VERSION = '1.0.0';
+
     /**
      * Install the plugin.
      *

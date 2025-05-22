@@ -41,4 +41,12 @@ class Acceptance extends \Codeception\Module
     {
         return $this->getModule('WebDriver')->_getUrl();
     }
+
+    /**
+     * @param string|string[]
+     */
+    public function sendKeys($keys)
+    {
+        return $this->getModule('WebDriver')->webDriver->getKeyboard()->sendKeys($keys);
+    }
 }

@@ -61,11 +61,7 @@ class UTCDateTimeType extends DateTimeType
         );
 
         if (!$converted) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $platform->getDateTimeFormatString()
-            );
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
         }
 
         $converted->setTimezone(self::getTimezone());
@@ -103,5 +99,10 @@ class UTCDateTimeType extends DateTimeType
     public static function setTimeZone($timezone = 'Asia/Tokyo')
     {
         self::$timezone = new \DateTimeZone($timezone);
+    }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
     }
 }

@@ -13,16 +13,18 @@
 
 namespace Eccube\Log\Processor;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Eccube\Session\Session;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SessionProcessor
 {
     /**
-     * @var SessionInterface
+     * @var Session
      */
     protected $session;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(Session $session)
     {
         $this->session = $session;
     }
@@ -31,7 +33,11 @@ class SessionProcessor
     {
         $records['extra']['session_id'] = 'N/A';
 
-        if (!$this->session->isStarted()) {
+        try {
+            if (!$this->session->isStarted()) {
+                return $records;
+            }
+        } catch (SessionNotFoundException $e) {
             return $records;
         }
 

@@ -25,10 +25,10 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     /** @var ProductStatusRepository */
     protected $productStatusRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->productStatusRepo = $this->container->get(ProductStatusRepository::class);
+        $this->productStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
@@ -65,7 +65,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_Int()
+    public function testInvalidDataInt()
     {
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
@@ -74,7 +74,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_String()
+    public function testInvalidDataString()
     {
         $this->form->submit('a');
         $this->assertFalse($this->form->isValid());

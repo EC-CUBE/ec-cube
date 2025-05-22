@@ -13,14 +13,16 @@
 
 namespace Eccube\Tests\Fixture;
 
-use bheller\ImagesGenerator\ImagesGeneratorProvider;
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -35,6 +37,7 @@ use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\ProductTag;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
@@ -46,13 +49,16 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
-use Faker\Factory as Faker;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Fixture Object Generator.
@@ -69,14 +75,19 @@ class Generator
     protected $entityManager;
 
     /**
-     * @var PasswordEncoder
+     * @var UserPasswordHasherInterface
      */
-    protected $passwordEncoder;
+    protected $passwordHasher;
 
     /**
      * @var MemberRepository
      */
     protected $memberRepository;
+
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
 
     /**
      * @var CustomerRepository
@@ -109,6 +120,11 @@ class Generator
     protected $paymentRepository;
 
     /**
+     * @var TagRepository
+     */
+    private $tagRepository;
+
+    /**
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
@@ -124,9 +140,19 @@ class Generator
     protected $PrefRepository;
 
     /**
+     * @var PrefRepository
+     */
+    private $prefRepository;
+
+    /**
      * @var SessionInterface
      */
     protected $session;
+
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
 
     /**
      * @var PurchaseFlow
@@ -135,7 +161,7 @@ class Generator
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        PasswordEncoder $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
         CategoryRepository $categoryRepository,
         CustomerRepository $customerRepository,
@@ -146,14 +172,15 @@ class Generator
         PaymentRepository $paymentRepository,
         PageRepository $pageRepository,
         PrefRepository $prefRepository,
+        TagRepository $tagRepository,
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
-        SessionInterface $session,
+        RequestStack $requestStack,
         $locale = 'ja_JP'
     ) {
         $this->locale = $locale;
         $this->entityManager = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
         $this->categoryRepository = $categoryRepository;
         $this->customerRepository = $customerRepository;
@@ -164,9 +191,10 @@ class Generator
         $this->paymentRepository = $paymentRepository;
         $this->pageRepository = $pageRepository;
         $this->prefRepository = $prefRepository;
+        $this->tagRepository = $tagRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -182,19 +210,22 @@ class Generator
         $Member = new Member();
         if (is_null($username)) {
             $username = $faker->word;
+            do {
+                $loginId = $faker->word;
+            } while ($this->memberRepository->findBy(['login_id' => $loginId]));
+        } else {
+            $loginId = $username;
         }
         $Work = $this->entityManager->find(\Eccube\Entity\Master\Work::class, 1);
         $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
         $Creator = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
 
-        $salt = bin2hex(openssl_random_pseudo_bytes(5));
         $password = 'password';
-        $password = $this->passwordEncoder->encodePassword($password, $salt);
+        $password = $this->passwordHasher->hashPassword($Member, $password);
 
         $Member
-            ->setLoginId($username)
+            ->setLoginId($loginId)
             ->setName($username)
-            ->setSalt($salt)
             ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
@@ -217,7 +248,9 @@ class Generator
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->safeEmail;
+            do {
+                $email = $faker->safeEmail;
+            } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
@@ -225,8 +258,7 @@ class Generator
         $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
         $Job = $this->entityManager->find(\Eccube\Entity\Master\Job::class, $faker->numberBetween(1, 18));
 
-        $salt = $this->passwordEncoder->createSalt();
-        $password = $this->passwordEncoder->encodePassword('password', $salt);
+        $password = $this->passwordHasher->hashPassword($Customer, 'password');
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -243,16 +275,13 @@ class Generator
             ->setSex($Sex)
             ->setJob($Job)
             ->setPassword($password)
-            ->setSalt($salt)
             ->setSecretKey($this->customerRepository->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setPoint($faker->randomNumber(5));
         $this->entityManager->persist($Customer);
-        $this->entityManager->flush($Customer);
-
-        $this->entityManager->flush($Customer);
+        $this->entityManager->flush();
 
         return $Customer;
     }
@@ -287,15 +316,15 @@ class Generator
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-            $customerAddresses = unserialize($this->session->get($sessionCustomerAddressKey));
+            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey));
             if (!is_array($customerAddresses)) {
                 $customerAddresses = [];
             }
             $customerAddresses[] = $CustomerAddress;
-            $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->requestStack->getSession()->set($sessionCustomerAddressKey, serialize($customerAddresses));
         } else {
             $this->entityManager->persist($CustomerAddress);
-            $this->entityManager->flush($CustomerAddress);
+            $this->entityManager->flush();
         }
 
         return $CustomerAddress;
@@ -315,7 +344,9 @@ class Generator
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->safeEmail;
+            do {
+                $email = $faker->safeEmail;
+            } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
@@ -335,10 +366,10 @@ class Generator
         $nonMember = [];
         $nonMember['customer'] = $Customer;
         $nonMember['pref'] = $Customer->getPref()->getId();
-        $this->session->set($sessionKey, $nonMember);
+        $this->requestStack->getSession()->set($sessionKey, $nonMember);
 
         $customerAddresses = [];
-        $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
+        $this->requestStack->getSession()->set($sessionCustomerAddressKey, serialize($customerAddresses));
 
         return $Customer;
     }
@@ -350,19 +381,18 @@ class Generator
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
-     * @param string $image_type 生成する画像タイプ.
-     *        abstract, animals, business, cats, city, food, night, life, fashion, people, nature, sports, technics, transport から選択可能
-     *        null の場合は、画像を生成せずにファイル名のみを設定する.
+     * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
      *
      * @return \Eccube\Entity\Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3, $image_type = null)
+    public function createProduct($product_name = null, $product_class_num = 3, $with_image = false)
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
         $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $DeliveryDurations = $this->durationRepository->findAll();
+        $ProductCodesGenerated = [];
 
         $Product = new Product();
         if (is_null($product_name)) {
@@ -379,19 +409,18 @@ class Generator
         $Product->extendedParameter = 'aaaa';
 
         $this->entityManager->persist($Product);
-        $this->entityManager->flush($Product);
+        $this->entityManager->flush();
 
-        $faker2 = Faker::create($this->locale);
-        $faker2->addProvider(new ImagesGeneratorProvider($faker2));
+        $faker2 = \Faker\Factory::create($this->locale);
+
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
-            if ($image_type) {
-                $image = $faker2->imageGenerator(
-                    __DIR__.'/../../../../html/upload/save_image',
-                    $faker->numberBetween(480, 640),
-                    $faker->numberBetween(480, 640),
-                    'png', false, true, '#cccccc', '#ffffff'
-                );
+            if ($with_image) {
+                $image = $faker->uuid.'.png';
+                $src = __DIR__.'/../../../../html/upload/save_image/no_image_product.png';
+                $dist = __DIR__.'/../../../../html/upload/save_image/'.$image;
+                $fs = new Filesystem();
+                $fs->copy($src, $dist);
             } else {
                 $image = $faker->word.'.jpg';
             }
@@ -402,7 +431,7 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
             $this->entityManager->persist($ProductImage);
-            $this->entityManager->flush($ProductImage);
+            $this->entityManager->flush();
             $Product->addProductImage($ProductImage);
         }
 
@@ -427,10 +456,14 @@ class Generator
                 ->setCreator($Member)
                 ->setStock($faker->numberBetween(100, 999));
             $this->entityManager->persist($ProductStock);
-            $this->entityManager->flush($ProductStock);
+            $this->entityManager->flush();
             $ProductClass = new ProductClass();
+            do {
+                $ProductCode = $faker->word;
+            } while (in_array($ProductCode, $ProductCodesGenerated));
+            $ProductCodesGenerated[] = $ProductCode;
             $ProductClass
-                ->setCode($faker->word)
+                ->setCode($ProductCode)
                 ->setCreator($Member)
                 ->setStock($ProductStock->getStock())
                 ->setProductStock($ProductStock)
@@ -451,11 +484,11 @@ class Generator
             }
 
             $this->entityManager->persist($ProductClass);
-            $this->entityManager->flush($ProductClass);
+            $this->entityManager->flush();
 
             $ProductStock->setProductClass($ProductClass);
             $ProductStock->setProductClassId($ProductClass->getId());
-            $this->entityManager->flush($ProductStock);
+            $this->entityManager->flush();
             $Product->addProductClass($ProductClass);
         }
 
@@ -467,15 +500,19 @@ class Generator
             ->setCreator($Member)
             ->setStock($faker->randomNumber(3));
         $this->entityManager->persist($ProductStock);
-        $this->entityManager->flush($ProductStock);
+        $this->entityManager->flush();
         $ProductClass = new ProductClass();
         if ($product_class_num > 0) {
             $ProductClass->setVisible(false);
         } else {
             $ProductClass->setVisible(true);
         }
+        do {
+            $ProductCode = $faker->word;
+        } while (in_array($ProductCode, $ProductCodesGenerated));
+        $ProductCodesGenerated[] = $ProductCode;
         $ProductClass
-            ->setCode($faker->word)
+            ->setCode($ProductCode)
             ->setCreator($Member)
             ->setStock($ProductStock->getStock())
             ->setProductStock($ProductStock)
@@ -488,11 +525,11 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setProduct($Product);
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush($ProductClass);
+        $this->entityManager->flush();
 
         $ProductStock->setProductClass($ProductClass);
         $ProductStock->setProductClassId($ProductClass->getId());
-        $this->entityManager->flush($ProductStock);
+        $this->entityManager->flush();
 
         $Product->addProductClass($ProductClass);
 
@@ -505,11 +542,24 @@ class Generator
                 ->setCategoryId($Category->getId())
                 ->setProductId($Product->getId());
             $this->entityManager->persist($ProductCategory);
-            $this->entityManager->flush($ProductCategory);
+            $this->entityManager->flush();
             $Product->addProductCategory($ProductCategory);
         }
 
-        $this->entityManager->flush($Product);
+        $Tags = $this->tagRepository->findAll();
+        foreach ($Tags as $Tag) {
+            $ProductTag = new ProductTag();
+            $ProductTag
+                ->setProduct($Product)
+                ->setTag($Tag)
+                ->setCreateDate(new \DateTime()) // FIXME
+                ->setCreator($Member);
+            $this->entityManager->persist($ProductTag);
+            $this->entityManager->flush();
+            $Product->addProductTag($ProductTag);
+        }
+
+        $this->entityManager->flush();
 
         return $Product;
     }
@@ -552,7 +602,7 @@ class Generator
         ;
 
         $this->entityManager->persist($Order);
-        $this->entityManager->flush($Order);
+        $this->entityManager->flush();
         if (!is_object($Delivery)) {
             $Delivery = $this->createDelivery();
             foreach ($Payments as $Payment) {
@@ -564,9 +614,9 @@ class Generator
                     ->setPayment($Payment);
                 $Payment->addPaymentOption($PaymentOption);
                 $this->entityManager->persist($PaymentOption);
-                $this->entityManager->flush($PaymentOption);
+                $this->entityManager->flush();
             }
-            $this->entityManager->flush($Payment);
+            $this->entityManager->flush();
         }
         $DeliveryFee = $this->deliveryFeeRepository->findOneBy(
             [
@@ -588,7 +638,7 @@ class Generator
         $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
-        $this->entityManager->flush($Shipping);
+        $this->entityManager->flush();
 
         if (empty($ProductClasses)) {
             $Product = $this->createProduct();
@@ -602,6 +652,9 @@ class Generator
         $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
         $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $ItemPoint = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+
         /** @var ProductClass $ProductClass */
         foreach ($ProductClasses as $ProductClass) {
             if (!$ProductClass->isVisible()) {
@@ -621,6 +674,7 @@ class Generator
                 ->setTaxType($Taxation) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
+                ->setPointRate($BaseInfo->getBasicPointRate())
             ;
             if ($ProductClass->hasClassCategory1()) {
                 $OrderItem
@@ -678,6 +732,19 @@ class Generator
         // $Shipping->addOrderItem($OrderItemDiscount); // Shipping には登録しない
         $Order->addOrderItem($OrderItemDiscount);
 
+        if (($point = mt_rand(0, min($Customer->getPoint(), $Order->getPaymentTotal()))) > 0) {
+            $OrderItemPoint = new OrderItem();
+            $OrderItemPoint
+                ->setOrder($Order)
+                ->setProductName('ポイント')
+                ->setPrice($point * -1)
+                ->setQuantity(1)
+                ->setTaxType($NonTaxable)
+                ->setTaxDisplayType($TaxInclude)
+                ->setOrderItemType($ItemPoint);
+            $Order->addOrderItem($OrderItemPoint);
+        }
+
         $this->orderPurchaseFlow->validate($Order, new PurchaseContext($Order));
 
         $this->entityManager->flush();
@@ -708,7 +775,7 @@ class Generator
             ->setCreator($Member)
             ->setVisible(true);
         $this->entityManager->persist($Payment);
-        $this->entityManager->flush($Payment);
+        $this->entityManager->flush();
 
         $PaymentOption = new PaymentOption();
         $PaymentOption
@@ -719,10 +786,10 @@ class Generator
         $Payment->addPaymentOption($PaymentOption);
 
         $this->entityManager->persist($PaymentOption);
-        $this->entityManager->flush($PaymentOption);
+        $this->entityManager->flush();
 
         $Delivery->addPaymentOption($PaymentOption);
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         return $Payment;
     }
@@ -753,7 +820,7 @@ class Generator
             ->setSaleType($SaleType)
             ->setVisible(true);
         $this->entityManager->persist($Delivery);
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         $delivery_time_patten = $faker->numberBetween(0, $delivery_time_max_pattern);
         for ($i = 0; $i < $delivery_time_patten; $i++) {
@@ -764,7 +831,7 @@ class Generator
                 ->setSortNo($i + 1)
                 ->setVisible(true);
             $this->entityManager->persist($DeliveryTime);
-            $this->entityManager->flush($DeliveryTime);
+            $this->entityManager->flush();
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
@@ -777,11 +844,11 @@ class Generator
                 ->setPref($Pref)
                 ->setDelivery($Delivery);
             $this->entityManager->persist($DeliveryFee);
-            $this->entityManager->flush($DeliveryFee);
+            $this->entityManager->flush();
             $Delivery->addDeliveryFee($DeliveryFee);
         }
 
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         return $Delivery;
     }
@@ -796,10 +863,16 @@ class Generator
         $faker = $this->getFaker();
         /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
+        do {
+            $url = $faker->word;
+        } while ($this->pageRepository->findBy(['url' => $url]));
+        do {
+            $filename = $faker->word;
+        } while ($this->pageRepository->findBy(['file_name' => $filename]));
         $Page
             ->setName($faker->word)
-            ->setUrl($faker->word)
-            ->setFileName($faker->word)
+            ->setUrl($url)
+            ->setFileName($filename)
             ->setAuthor($faker->word)
             ->setDescription($faker->word)
             ->setKeyword($faker->word)
@@ -807,72 +880,47 @@ class Generator
             ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word).'" />')
         ;
         $this->entityManager->persist($Page);
-        $this->entityManager->flush($Page);
+        $this->entityManager->flush();
 
         return $Page;
     }
 
     /**
+     * ログイン履歴を生成する
+     *
+     * @param string $user_name
+     * @param string|null $client_ip
+     * @param int|null $status
+     * @param Member|null $Member
+     *
+     * @return LoginHistory
+     */
+    public function createLoginHistory($user_name, $client_ip = null, $status = null, $Member = null)
+    {
+        $faker = $this->getFaker();
+        $LoginHistory = new LoginHistory();
+        $LoginHistory
+            ->setUserName($user_name)
+            ->setClientIp($client_ip ?? $faker->ipv4)
+            ->setLoginUser($Member);
+
+        $LoginHistory->setStatus(
+            $this->entityManager->find(LoginHistoryStatus::class, $status ?? LoginHistoryStatus::FAILURE)
+        );
+
+        $this->entityManager->persist($LoginHistory);
+        $this->entityManager->flush();
+
+        return $LoginHistory;
+    }
+
+    /**
      * Faker を生成する.
      *
-     * @return Faker\Generator
-     *
-     * @see https://github.com/fzaninotto/Faker
+     * @return \Faker\Generator
      */
     protected function getFaker()
     {
-        return new Generator_Faker(Faker::create($this->locale));
+        return \Faker\Factory::create($this->locale);
     }
 }
-
-class Generator_Faker extends Faker
-{
-    private $faker;
-
-    public function __construct(\Faker\Generator $faker)
-    {
-        $this->faker = $faker;
-    }
-
-    public function __get($attribute)
-    {
-        return $this->faker->$attribute;
-    }
-
-    public function __call($method, $attributes)
-    {
-        return call_user_func_array([$this->faker, $method], $attributes);
-    }
-
-    public function __isset($name)
-    {
-        if (isset($this->faker->$name)) {
-            return true;
-        }
-
-        foreach ($this->faker->getProviders() as $provider) {
-            if (method_exists($provider, $name)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-// class Generator_FakerTest extends EccubeTestCase
-// {
-//     public function testKana01ShouldNotEmptyInJAJP()
-//     {
-//         $generator = new Generator($this->app, 'ja_JP');
-//         $Customer = $generator->createCustomer();
-//         self::assertNotEmpty($Customer->getKana01());
-//     }
-
-//     public function testKana01ShouldEmptyInENUS()
-//     {
-//         $generator = new Generator($this->app, 'en_US');
-//         $Customer = $generator->createCustomer();
-//         self::assertEmpty($Customer->getKana01());
-//     }
-// }

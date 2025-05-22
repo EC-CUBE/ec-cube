@@ -17,8 +17,8 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class ValidatableItemProcessorTest extends EccubeTestCase

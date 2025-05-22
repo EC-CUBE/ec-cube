@@ -11,8 +11,10 @@
  * file that was distributed with this source code.
  */
 
+use Codeception\Scenario;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -32,11 +34,11 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
  *
  * @SuppressWarnings(PHPMD)
  */
-class AcceptanceTester extends \Codeception\Actor
+class AcceptanceTester extends Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
-    public function getScenario()
+    public function getScenario(): Scenario
     {
         return $this->scenario;
     }
@@ -66,10 +68,10 @@ class AcceptanceTester extends \Codeception\Actor
         $isLogin = $I->grabTextFrom('header.c-headerBar div.c-headerBar__container a.c-headerBar__userMenu span');
         if ($isLogin == '管理者 様') {
             $I->click('header.c-headerBar div.c-headerBar__container a.c-headerBar__userMenu');
-            $I->click('#page_admin_homepage div.popover .popover-body a:last-child');
+            $I->click('body div.popover .popover-body a:last-child');
             $config = Fixtures::get('config');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/logout');
-            $I->see('ログイン', '#form1 > button');
+            $I->see('ログイン', '#form1 > div > button');
         }
     }
 
@@ -78,7 +80,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         if ($dir == '') {
             $config = Fixtures::get('config');
-            $I->amOnPage('/'.$config['eccube_admin_route']);
+            $I->amOnPage('/'.$config['eccube_admin_route'].'/');
         } else {
             $I->amOnPage('/'.$dir);
         }
@@ -93,13 +95,14 @@ class AcceptanceTester extends \Codeception\Actor
             'login_pass' => $password,
         ]);
         $I->see('新着情報', '.ec-secHeading__ja');
-        $I->see('ログアウト', ['css' => 'div.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
+        $I->see('ログアウト', ['css' => 'header.ec-layoutRole__header > div.ec-headerNaviRole > div.ec-headerNaviRole__right > div.ec-headerNaviRole__nav > div > div:nth-child(3) > a > span']);
     }
 
     public function logoutAsMember()
     {
         $I = $this;
         $I->amOnPage('/');
+        $I->waitForElement('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         $isLogin = $I->grabTextFrom('.ec-headerNaviRole .ec-headerNav .ec-headerNav__item:nth-child(3) a');
         if ($isLogin == 'ログアウト') {
             $I->wait(1);
@@ -215,17 +218,79 @@ class AcceptanceTester extends \Codeception\Actor
         $result = array_filter($arrayOfSelector, function ($element) use ($self) {
             $id = $element['id'];
 
-            return $self->executeJS("return document.getElementById('${id}') != null;");
+            return $self->executeJS("return document.getElementById('{$id}') != null;");
         });
         $this->assertTrue(empty($result));
     }
 
     public function dragAndDropBy($selector, $x_offset, $y_offset)
     {
-        $this->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
+        $this->executeInSelenium(function (Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
             $node = $webDriver->findElement(WebDriverBy::cssSelector($selector));
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset);
             $action->perform();
         });
+    }
+
+    public function compressPlugin($pluginDirName, $destDir)
+    {
+        $archiveName = $pluginDirName.'.tgz';
+        $tgzPath = $destDir.'/'.$archiveName;
+        if (file_exists($tgzPath)) {
+            $this->comment('deleted.');
+            unlink($tgzPath);
+        }
+        $tarPath = $destDir.'/'.$pluginDirName.'.tar';
+        $phar = new PharData($tarPath);
+        $published = $phar->buildFromDirectory(codecept_data_dir('plugins/'.$pluginDirName));
+        $phar->compress(Phar::GZ, '.tgz');
+        unlink($tarPath);
+
+        return $published;
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::see()
+     */
+    public function see($text, $selector = null): void
+    {
+        $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
+        $this->getScenario()->runStep(new Codeception\Step\Assertion('see', func_get_args()));
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::seeInField()
+     */
+    public function seeInField($field, $value): void
+    {
+        $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
+        $this->getScenario()->runStep(new Codeception\Step\Assertion('seeInField', func_get_args()));
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::waitForText()
+     */
+    public function waitForText(string $text, int $timeout = 10, $selector = null): void
+    {
+        $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
+        $this->getScenario()->runStep(new Codeception\Step\Action('waitForText', func_get_args()));
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @see \Codeception\Module\WebDriver::amOnPage()
+     */
+    public function amOnPage($page): void
+    {
+        $this->wait(1); // XXX WebDriver::amOnPage() の前に wait を入れないと画面遷移しない場合がある
+        $this->getScenario()->runStep(new Codeception\Step\Condition('amOnPage', func_get_args()));
+        $this->wait(1); // XXX 画面遷移直後は selector の参照に失敗する場合があるため wait を入れる
     }
 }

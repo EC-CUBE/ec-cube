@@ -18,9 +18,9 @@ use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\OptionsResolver\Options;
 
 class RepeatedEmailType extends AbstractType
 {
@@ -51,9 +51,9 @@ class RepeatedEmailType extends AbstractType
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
                     new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                        'max' => $this->eccubeConfig['eccube_email_len'],
                     ]),
                 ],
             ],

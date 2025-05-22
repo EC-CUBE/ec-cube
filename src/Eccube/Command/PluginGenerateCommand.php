@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +21,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PluginGenerateCommand extends Command
@@ -38,14 +38,14 @@ class PluginGenerateCommand extends Command
     protected $fs;
 
     /**
-     * @var ContainerInterface
+     * @var EccubeConfig
      */
-    protected $container;
+    protected $eccubeConfig;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     protected function configure()
@@ -108,7 +108,7 @@ class PluginGenerateCommand extends Command
         $this->validateCode($code);
         $this->validateVersion($version);
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->eccubeConfig->get('kernel.project_dir').'/app/Plugin/'.$code;
 
         $this->createDirectories($pluginDir);
         $this->createConfig($pluginDir, $name, $code, $version);
@@ -118,8 +118,11 @@ class PluginGenerateCommand extends Command
         $this->createTwigBlock($pluginDir, $code);
         $this->createConfigController($pluginDir, $code);
         $this->createGithubActions($pluginDir);
+        $this->createGitattributes($pluginDir);
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
+
+        return 0;
     }
 
     public function validateCode($code)
@@ -134,7 +137,7 @@ class PluginGenerateCommand extends Command
             throw new InvalidArgumentException('The code [a-zA-Z_] is available.');
         }
 
-        $pluginDir = $this->container->getParameter('kernel.project_dir').'/app/Plugin/'.$code;
+        $pluginDir = $this->eccubeConfig->get('kernel.project_dir').'/app/Plugin/'.$code;
         if (file_exists($pluginDir)) {
             throw new InvalidArgumentException('Plugin directory exists.');
         }
@@ -175,14 +178,15 @@ class PluginGenerateCommand extends Command
      */
     protected function createConfig($pluginDir, $name, $code, $version)
     {
+        $lowerCode = mb_strtolower($code);
         $source = <<<EOL
 {
-  "name": "ec-cube/$code",
+  "name": "ec-cube/$lowerCode",
   "version": "$version",
   "description": "$name",
   "type": "eccube-plugin",
   "require": {
-    "ec-cube/plugin-installer": "~0.0.7"
+    "ec-cube/plugin-installer": "~0.0.7 || ^2.0"
   },
   "extra": {
     "code": "$code"
@@ -192,7 +196,6 @@ EOL;
 
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
-
 
     /**
      * @param string $pluginDir
@@ -207,19 +210,13 @@ on:
 jobs:
   deploy:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Packaging
-        working-directory: ../
         run: |
-          rm -rf $GITHUB_WORKSPACE/.github
-          find $GITHUB_WORKSPACE -name "dummy" -delete
-          find $GITHUB_WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
-          chmod -R o+w $GITHUB_WORKSPACE
-          cd $GITHUB_WORKSPACE
-          tar cvzf ../${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz ./*
+          git archive HEAD --format=tar.gz > ../${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz
       - name: Upload binaries to release of TGZ
         uses: svenstaro/upload-release-action@v1-release
         with:
@@ -233,6 +230,17 @@ jobs:
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
 
+    protected function createGitattributes($pluginDir)
+    {
+        $source = <<<EOL
+/.gitattributes             export-ignore
+/.github                    export-ignore
+/.gitignore                 export-ignore
+/dummy                      export-ignore
+EOL;
+
+        $this->fs->dumpFile($pluginDir.'/.gitattributes', $source);
+    }
 
     /**
      * @param string $pluginDir
@@ -251,7 +259,7 @@ jobs:
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code};
+namespace Plugin\\{$code};
 
 use Eccube\\Common\\EccubeTwigBlock;
 
@@ -278,7 +286,7 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code};
+namespace Plugin\\{$code};
 
 use Eccube\\Common\\EccubeNav;
 
@@ -305,7 +313,7 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code};
+namespace Plugin\\{$code};
 
 use Symfony\\Component\\EventDispatcher\\EventSubscriberInterface;
 
@@ -334,11 +342,11 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Controller\\Admin;
+namespace Plugin\\{$code}\\Controller\\Admin;
 
 use Eccube\\Controller\\AbstractController;
-use Plugin\\${code}\\Form\\Type\\Admin\\ConfigType;
-use Plugin\\${code}\\Repository\\ConfigRepository;
+use Plugin\\{$code}\\Form\\Type\\Admin\\ConfigType;
+use Plugin\\{$code}\\Repository\\ConfigRepository;
 use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Template;
 use Symfony\\Component\\HttpFoundation\\Request;
 use Symfony\\Component\\Routing\\Annotation\\Route;
@@ -361,8 +369,8 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/${snakecased}/config", name="${snakecased}_admin_config")
-     * @Template("@${code}/admin/config.twig")
+     * @Route("/%eccube_admin_route%/{$snakecased}/config", name="{$snakecased}_admin_config")
+     * @Template("@{$code}/admin/config.twig")
      */
     public function index(Request \$request)
     {
@@ -373,10 +381,10 @@ class ConfigController extends AbstractController
         if (\$form->isSubmitted() && \$form->isValid()) {
             \$Config = \$form->getData();
             \$this->entityManager->persist(\$Config);
-            \$this->entityManager->flush(\$Config);
+            \$this->entityManager->flush();
             \$this->addSuccess('登録しました。', 'admin');
 
-            return \$this->redirectToRoute('${snakecased}_admin_config');
+            return \$this->redirectToRoute('{$snakecased}_admin_config');
         }
 
         return [
@@ -392,16 +400,16 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Entity;
+namespace Plugin\\{$code}\\Entity;
 
 use Doctrine\\ORM\\Mapping as ORM;
 
-if (!class_exists('\\Plugin\\${code}\\Entity\\Config', false)) {
+if (!class_exists('\\Plugin\\{$code}\\Entity\\Config', false)) {
     /**
      * Config
      *
-     * @ORM\Table(name="plg_${snakecased}_config")
-     * @ORM\Entity(repositoryClass="Plugin\\${code}\\Repository\\ConfigRepository")
+     * @ORM\Table(name="plg_{$snakecased}_config")
+     * @ORM\Entity(repositoryClass="Plugin\\{$code}\\Repository\\ConfigRepository")
      */
     class Config
     {
@@ -458,11 +466,11 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Repository;
+namespace Plugin\\{$code}\\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\\Repository\\AbstractRepository;
-use Plugin\\${code}\\Entity\\Config;
-use Symfony\\Bridge\\Doctrine\\RegistryInterface;
+use Plugin\\{$code}\\Entity\\Config;
 
 /**
  * ConfigRepository
@@ -475,9 +483,9 @@ class ConfigRepository extends AbstractRepository
     /**
      * ConfigRepository constructor.
      *
-     * @param RegistryInterface \$registry
+     * @param ManagerRegistry \$registry
      */
-    public function __construct(RegistryInterface \$registry)
+    public function __construct(ManagerRegistry \$registry)
     {
         parent::__construct(\$registry, Config::class);
     }
@@ -485,11 +493,19 @@ class ConfigRepository extends AbstractRepository
     /**
      * @param int \$id
      *
-     * @return null|Config
+     * @return Config
+     *
+     * @throws \Exception
      */
     public function get(\$id = 1)
     {
-        return \$this->find(\$id);
+        \$Config = \$this->find(\$id);
+
+        if (null === \$Config) {
+            throw new \Exception('Config not found. id = '.\$id);
+        }
+
+        return \$Config;
     }
 }
 
@@ -500,9 +516,9 @@ EOL;
         $source = <<<EOL
 <?php
 
-namespace Plugin\\${code}\\Form\\Type\\Admin;
+namespace Plugin\\{$code}\\Form\\Type\\Admin;
 
-use Plugin\\${code}\\Entity\\Config;
+use Plugin\\{$code}\\Entity\\Config;
 use Symfony\\Component\\Form\\AbstractType;
 use Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType;
 use Symfony\\Component\\Form\\FormBuilderInterface;
@@ -545,7 +561,7 @@ EOL;
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}${code}{% endblock %}
+{% block title %}{$code}{% endblock %}
 {% block sub_title %}プラグイン一覧{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
@@ -567,7 +583,7 @@ EOL;
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3"><span>名前</span><span
-                                            class="badge badge-primary ml-1">必須</span></div>
+                                            class="badge bg-primary ml-1">必須</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.name) }}
                                     {{ form_errors(form.name) }}

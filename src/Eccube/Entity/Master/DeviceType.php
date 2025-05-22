@@ -28,8 +28,8 @@ if (!class_exists(DeviceType::class, false)) {
      */
     class DeviceType extends \Eccube\Entity\Master\AbstractMasterEntity
     {
-        const DEVICE_TYPE_MB = 2;
+        public const DEVICE_TYPE_MB = 2;
         // const DEVICE_TYPE_TABLET = 3;
-        const DEVICE_TYPE_PC = 10;
+        public const DEVICE_TYPE_PC = 10;
     }
 }

@@ -40,12 +40,12 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->pluginRepository = $this->container->get(PluginRepository::class);
-        $this->pluginService = $this->container->get(PluginService::class);
+        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginService = static::getContainer()->get(PluginService::class);
     }
 
     // インストーラが例外を上げた場合ロールバックできるか
@@ -62,7 +62,7 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
         $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -87,7 +87,7 @@ EOD;
         }
 
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
-        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
+        $this->assertFileDoesNotExist(__DIR__."/../../../../app/Plugin/$tmpname");
         // XXX PHPUnit によってロールバックが遅延してしまうので, 検証できないが, 消えているはず
         $this->assertFalse((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
     }

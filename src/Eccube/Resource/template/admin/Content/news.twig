@@ -48,7 +48,7 @@ file that was distributed with this source code.
                                 <li class="list-group-item sortable-item" data-id="{{ News.id }}">
                                     <div class="row justify-content-around">
                                         <div class="col-2 d-flex align-items-center">
-                                            <span>{{ News.publishDate|date_min }}</span></div>
+                                            <span>{{ News.publishDate|date_sec }}</span></div>
                                         <div class="col-1 d-flex align-items-center">{{ News.visible ? 'admin.content.news.display_status__show'|trans : 'admin.content.news.display_status__hide'|trans }}</div>
                                         <div class="col d-flex align-items-center"><a
                                                     href="{{ url('admin_content_news_edit', {id: News.id}) }}">{{ News.title }}</a>
@@ -58,15 +58,15 @@ file that was distributed with this source code.
                                                 <div class="col px-0 text-center">
                                                     <a class="btn btn-ec-actionIcon"
                                                        href="{{ url('admin_content_news_edit', {id: News.id}) }}"
-                                                       data-toggle="tooltip" data-placement="top"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top"
                                                        title="{{ 'admin.common.edit'|trans }}">
                                                         <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                     </a>
                                                 </div>
-                                                <div class="col pl-0 text-center" data-toggle="tooltip"
-                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal"
-                                                       data-target="#delete_{{ News.id }}">
+                                                <div class="col ps-0 text-center" data-bs-toggle="tooltip"
+                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-bs-toggle="modal"
+                                                       data-bs-target="#delete_{{ News.id }}">
                                                         <i class="fa fa-close fa-lg text-secondary"
                                                            aria-hidden="true"></i>
                                                     </a>
@@ -76,19 +76,18 @@ file that was distributed with this source code.
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                                                    <button class="close" type="button"
-                                                                            data-dismiss="modal"
-                                                                            aria-label="Close"><span
-                                                                                aria-hidden="true">×</span>
+                                                                    <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <button class="btn-close" type="button"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close">
                                                                     </button>
                                                                 </div>
-                                                                <div class="modal-body text-left">
-                                                                    <p class="text-left">{{ 'admin.common.delete_modal__message'|trans({'%name%': News.title}) }}</p>
+                                                                <div class="modal-body text-start">
+                                                                    <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({'%name%': News.title}) }}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button class="btn btn-ec-sub" type="button"
-                                                                            data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                            data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                     <a class="btn btn-ec-delete"
                                                                        href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }}
                                                                        data-method="delete"

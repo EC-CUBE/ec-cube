@@ -47,7 +47,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import")
+     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import", methods={"GET", "POST"})
      * @Template("@admin/Order/csv_shipping.twig")
      *
      * @throws \Doctrine\DBAL\ConnectionException
@@ -142,6 +142,12 @@ class CsvImportController extends AbstractCsvImportController
             }
 
             if (isset($row[$columnNames['tracking_number']])) {
+                // 半角英数字ハイフン以外エラー
+                if (!preg_match('/^[0-9a-zA-Z-]*$/u', $row[$columnNames['tracking_number']])) {
+                    $errors[] = trans('admin.common.csv_invalid_format_line_name', ['%line%' => $line + 1, '%name%' => $columnNames['tracking_number']]);
+                    continue;
+                }
+
                 $Shipping->setTrackingNumber($row[$columnNames['tracking_number']]);
             }
 
@@ -186,7 +192,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template")
+     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template", methods={"GET"})
      */
     public function csvTemplate(Request $request)
     {

@@ -49,20 +49,20 @@ file that was distributed with this source code.
                                     {% else %}
                                         {% set icon = 'fa-mobile' %}
                                     {% endif %}
-                                    <i class="fa fa-fw {{ icon }} fa-lg mr-2"></i>
+                                    <i class="fa fa-fw {{ icon }} fa-lg me-2"></i>
                                     <a class="card-title align-middle"
                                        href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}">{{ Layout.name }}</a>
                                 </div>
-                                <div class="col-4 text-right">
+                                <div class="col-4 text-end">
                                     {% if Layout.isDefault() == false %}
-                                        <button class="btn btn-ec-sub mr-3" type="button" data-toggle="modal" data-target="#DeleteModal"
+                                        <button class="btn btn-ec-sub me-3" type="button" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                 data-url="{{ url('admin_content_layout_delete', { id: Layout.id }) }}"
                                                 data-message="{{ 'admin.common.delete_modal__message'|trans({ '%name%' : Layout.name }) }}">
                                             <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                             {{ 'admin.content.layout_delete'|trans }}
                                         </button>
                                     {% endif %}
-                                    <a href="#layout-{{ Layout.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="layout-{{ Layout.id }}">
+                                    <a href="#layout-{{ Layout.id }}" data-bs-toggle="collapse" aria-expanded="false" aria-controls="layout-{{ Layout.id }}">
                                         <i class="fa fa-angle-down fa-lg"></i>
                                     </a>
                                 </div>
@@ -99,13 +99,13 @@ file that was distributed with this source code.
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">{{ 'admin.common.delete_modal__title'|trans }}</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p class="modal-message"><!-- jsでメッセージを挿入 --></p>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-ec-sub w-25" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <button class="btn btn-ec-sub w-25" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                 <a href="#" class="btn btn-ec-delete" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
                                     {{ 'admin.common.delete'|trans }}
                                 </a>

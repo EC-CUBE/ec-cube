@@ -44,13 +44,13 @@ class CsvExportServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->csvExportService = $this->container->get(CsvExportService::class);
-        $this->csvRepository = $this->container->get(CsvRepository::class);
-        $this->orderRepository = $this->container->get(OrderRepository::class);
+        $this->csvExportService = static::getContainer()->get(CsvExportService::class);
+        $this->csvRepository = $this->entityManager->getRepository(\Eccube\Entity\Csv::class);
+        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
 
         $root = vfsStream::setup('rootDir');
         $this->url = vfsStream::url('rootDir/test.csv');
@@ -106,7 +106,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->csvExportService->exportData(function ($entity, $csvService) {
             $Csvs = $csvService->getCsvs();
 
-            /** @var $Order \Eccube\Entity\Order */
+            /** @var \Eccube\Entity\Order $Order */
             $Order = $entity;
             $row = [];
             // CSV出力項目と合致するデータを取得.

@@ -65,6 +65,13 @@ class CsvSettingsPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function すべて出力()
+    {
+        $this->tester->click('#add-all');
+
+        return $this;
+    }
+
     public function 設定()
     {
         $this->tester->click('#csv-form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');

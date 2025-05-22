@@ -1,0 +1,540 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "plugin_mailmagazine_send.zst",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "ユーザ検索",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine",
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine",
+      "data": "mail_magazine%5B_token%5D={{csrf10}}&mail_magazine%5Bmulti%5D=%E5%A7%93+%E5%90%8D&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_end%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 833\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675679235590,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "mail_magazine__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf10",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "ユーザページ切替",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/1",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680264343,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "mail_magazine__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf12",
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "配信作成",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "comment": "配信作成",
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/select",
+      "data": "mail_magazine%5B_token%5D=07389c8014.6bsoIFSlqzs3nP_yPCUSw3qoFy4SW0V_BCSO4Xl2r6s.kdBQRzXgyVN_r7CYcEh6shTfIEpFKwILTxy_jwwsndqw3kpaPMrRV2j1pg&mail_magazine%5Bmulti%5D=&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_end%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 796\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680414382,
+      "cookies": [],
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "mail_magazine__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf11",
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/select",
+      "data": "mail_magazine%5B_token%5D={{csrf11}}&mode=select&mail_magazine%5Btemplate%5D=13&mail_magazine%5Bsubject%5D=&mail_magazine%5Bbody%5D=&mail_magazine%5BhtmlBody%5D=&mail_magazine%5Bmulti%5D=&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_datetime_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bcreate_datetime_end%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_datetime_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bupdate_datetime_end%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_datetime_start%5D=&mail_magazine%5Blast_buy_end%5D=&mail_magazine%5Blast_buy_datetime_end%5D=&mail_magazine%5Bsortkey%5D=&mail_magazine%5Bsorttype%5D=&mail_magazine%5Bid%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 1257\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680417434,
+      "cookies": [],
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "mail_magazine__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf13",
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/select",
+      "data": "mail_magazine%5B_token%5D={{csrf13}}&mode=confirm&mail_magazine%5Btemplate%5D=13&mail_magazine%5Bsubject%5D=test&mail_magazine%5Bbody%5D=body&mail_magazine%5BhtmlBody%5D=%3Cb%3Ebody%3C%2Fb%3E&mail_magazine%5Bmulti%5D=&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_datetime_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bcreate_datetime_end%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_datetime_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bupdate_datetime_end%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_datetime_start%5D=&mail_magazine%5Blast_buy_end%5D=&mail_magazine%5Blast_buy_datetime_end%5D=&mail_magazine%5Bsortkey%5D=&mail_magazine%5Bsorttype%5D=&mail_magazine%5Bid%5D=",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 1297\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680420632,
+      "cookies": [],
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "mail_magazine__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf14",
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/test",
+      "data": "email=admin%40example.com&name=%E7%AE%A1%E7%90%86%E8%80%85&subject=test&body=body&htmlBody=%3Cb%3Ebody%3C%2Fb%3E",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 112\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: 22de5efbff6a130174093adfce840ac.fhN7TzSjVNcLeong7cMZ9nmjShCK3BKHcpOr2-z72jI.CUo0Ckz3HIdcGbukrpMvgE3GeUXM6VPwQdHC7IO0vwE2XxEVfPMH4U4YyA\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"macOS\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680426291,
+      "cookies": [],
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/prepare",
+      "data": "mail_magazine%5B_token%5D={{csrf14}}&mail_magazine%5Bmulti%5D=&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_datetime_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bcreate_datetime_end%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_datetime_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bupdate_datetime_end%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_datetime_start%5D=&mail_magazine%5Blast_buy_end%5D=&mail_magazine%5Blast_buy_datetime_end%5D=&mail_magazine%5Bsortkey%5D=&mail_magazine%5Bsorttype%5D=&mail_magazine%5Bid%5D=&mail_magazine%5Btemplate%5D=&mail_magazine%5Bsubject%5D=test&mail_magazine%5Bbody%5D=body&mail_magazine%5BhtmlBody%5D=%3Cb%3Ebody%3C%2Fb%3E",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 1263\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680431395,
+      "cookies": [],
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/history",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680432374,
+      "cookies": [],
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "sendMail\\((?=\\d+)",
+      "postfix": ", 0\\);",
+      "location": "BODY",
+      "variableName": "history-id",
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf15",
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "message": "history-id: {{history-id}}",
+      "index": 20,
+      "enabled": false,
+      "elementType": "ZestActionPrint"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/commit",
+      "data": "id={{history-id}}&offset=0",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 13\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: d4d39e934d.CSH12sLoYwcafMO3QOh1Van_T_tn9jwhIrD4x2nccJ0.fni6n7q8K1dNH_HzA7hDI52afK4hw31WEfKR8AaTFa5BbZ-AirgwMV8egg\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"macOS\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680433172,
+      "cookies": [],
+      "index": 21,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/history",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675680439968,
+      "cookies": [],
+      "index": 22,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf16",
+      "index": 23,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "ヒストリー操作",
+      "index": 24,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/history",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681644783,
+      "cookies": [],
+      "index": 25,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf17",
+      "index": 26,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine/history/{{history-id}}/preview",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681649834,
+      "cookies": [],
+      "index": 27,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine/history/{{history-id}}/condition",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681654635,
+      "cookies": [],
+      "index": 28,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine/history/result/{{history-id}}",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681658568,
+      "cookies": [],
+      "index": 29,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine/history/{{history-id}}/retry",
+      "data": "",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 0\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: bd27de199f71bd9ba1c31fa7d46.2nhAo8obkR62dnTXiZZJ67WvNgHU21lp7RG5aomTkeQ.rSEP5rJP2U7hFUaTysZ_nYHKBVSS7hge3lPQXebc9NeSNCr5gkvCKPMUNQ\r\nsec-ch-ua-platform: \"macOS\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681664174,
+      "cookies": [],
+      "index": 30,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine/history/1",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681671226,
+      "cookies": [],
+      "index": 31,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf21",
+      "index": 32,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine/history/{{history-id}}/delete",
+      "data": "_token={{csrf21}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 137\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675681678972,
+      "cookies": [],
+      "index": 33,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

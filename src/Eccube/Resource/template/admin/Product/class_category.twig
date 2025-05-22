@@ -25,10 +25,6 @@ file that was distributed with this source code.
     </style>
 {% endblock stylesheet %}
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script type="text/javascript">
         $(function() {
             // 初期表示時のsort noを保持.
@@ -103,13 +99,7 @@ file that was distributed with this source code.
                 current.find('.mode-edit').removeClass('d-none');
             });
             sortable.on('click', 'button.action-edit-cancel', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value'));
-                });
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
+                location.href = "{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}";
             });
             sortable.find('.is-invalid').each(function(e) {
                 var current = $(this).parents('li');
@@ -152,6 +142,24 @@ file that was distributed with this source code.
                         </div>
                     </div>
                 </div>
+                <div class="c-outsideBlock">
+                    <div class="c-outsideBlock__contents mb-2">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-ec-regular" href="{{ url('admin_product_class_category_export', {'class_name_id':ClassName.id}) }}">
+                                        <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                        <span>{{ 'admin.common.csv_download'|trans }}</span>
+                                    </a>
+                                    <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CLASS_CATEGORY') }) }}">
+                                        <i class="fa fa-cog mr-1 text-secondary"></i>
+                                        <span>{{ 'admin.setting.shop.csv_setting'|trans }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header"><span class="card-title">{{ 'admin.product.class_category'|trans }}</span></div>
                     <div id="ex-class_category-edit" class="card-body p-0">
@@ -159,9 +167,12 @@ file that was distributed with this source code.
 
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
-                                    <form role="form" class="form-row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}">
-                                        <div class="col-auto align-self-center"><span>{{ 'admin.product.class_category_name__short'|trans }}</span></div>
-                                        <div class="col-3 mr-2">
+                                    <form role="form" class="row" name="form1" id="form1" method="post" action="{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}">
+                                        <div class="col-auto align-self-center">
+                                            <span>{{ 'admin.product.class_category_name__short'|trans }}</span>
+                                            <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
+                                        <div class="col-3 me-2">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
@@ -189,23 +200,23 @@ file that was distributed with this source code.
                                             <div class="col-auto d-flex align-items-center"><i class="fa fa-bars text-ec-gray"></i></div>
                                             <div class="col-auto d-flex align-items-center">{{ ClassCategory.id }}</div>
                                             <div class="col d-flex align-items-center">{{ ClassCategory.name }} ［{{ 'admin.product.class_category__backend_name'|trans }}{{ 'admin.common.separator__colon'|trans }}{{ ClassCategory.backend_name }}］</div>
-                                            <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-2 action-up {% if loop.first %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                            <div class="col-auto text-end">
+                                                <a class="btn btn-ec-actionIcon me-2 action-up {% if loop.first %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-down {% if loop.last %}disabled{% endif %}" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 action-down {% if loop.last %}disabled{% endif %}" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" href="" data-tooltip="true" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 action-edit" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-visible" href="{{ url('admin_product_class_category_visibility', {'class_name_id': ClassCategory.ClassName.id, 'id': ClassCategory.id}) }}"
-                                                   data-tooltip="true" data-placement="top" title="{{ ClassCategory.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
+                                                <a class="btn btn-ec-actionIcon me-2 action-visible" href="{{ url('admin_product_class_category_visibility', {'class_name_id': ClassCategory.ClassName.id, 'id': ClassCategory.id}) }}"
+                                                   data-bs-toggle="tooltip" data-bs-placement="top" title="{{ ClassCategory.visible ? 'admin.common.to_hide'|trans : 'admin.common.to_show'|trans }}"
                                                    data-confirm="false" data-method="put" {{ csrf_token_for_anchor() }} >
                                                     <i class="fa fa-toggle-{{ ClassCategory.visible ? 'on' : 'off' }} fa-lg text-secondary" aria-hidden="true"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-2" data-tooltip="true" data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
+                                                <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                        data-url="{{ url('admin_product_class_category_delete', {'class_name_id' : ClassName.id, 'id': ClassCategory.id}) }}"
                                                        data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : ClassCategory.name }) }}">
                                                         <i class="fa fa-close fa-lg text-secondary"></i>
@@ -213,9 +224,9 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         </div>
-                                        <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_class_category_edit', {'class_name_id': ClassName.id, 'id': ClassCategory.id}) }}">
+                                        <form class="row d-none mode-edit" method="post" action="{{ url('admin_product_class_category_edit', {'class_name_id': ClassName.id, 'id': ClassCategory.id}) }}">
                                             {{ form_widget(forms[ClassCategory.id]._token) }}
-                                            <div class="col-3 mr-2">
+                                            <div class="col-3 me-2">
                                                 {{ form_widget(forms[ClassCategory.id].name, {'attr': {'data-origin-value': forms[ClassCategory.id].name.vars.value}}) }}
                                                 {{ form_errors(forms[ClassCategory.id].name) }}
                                             </div>
@@ -241,18 +252,18 @@ file that was distributed with this source code.
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bold">
+                                            <h5 class="modal-title fw-bold">
                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                             </h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+
                                             </button>
                                         </div>
-                                        <div class="modal-body text-left">
-                                            <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                        <div class="modal-body text-start">
+                                            <p class="text-start modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                            <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                                 {{ 'admin.common.cancel'|trans }}
                                             </button>
                                             <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}

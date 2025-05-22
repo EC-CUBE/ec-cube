@@ -43,7 +43,7 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
         'phone_number' => '012-345-6789',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -61,7 +61,7 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidPhoneNumber_Blank()
+    public function testInvalidPhoneNumberBlank()
     {
         $this->formData['phone_number'] = '';
 

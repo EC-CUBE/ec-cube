@@ -35,13 +35,13 @@ if (!class_exists(TaxDisplayType::class, false)) {
          *
          * @var integer
          */
-        const EXCLUDED = 1;
+        public const EXCLUDED = 1;
 
         /**
          * 税込.
          *
          * @var integer
          */
-        const INCLUDED = 2;
+        public const INCLUDED = 2;
     }
 }

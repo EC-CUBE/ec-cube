@@ -49,12 +49,15 @@ class ComposerRemoveCommand extends Command
         try {
             /* @var Command $command */
             $command = $this->getApplication()->get('cache:clear');
-            $command->run(new ArrayInput([
+
+            return $command->run(new ArrayInput([
                 'command' => 'cache:clear',
                 '--no-warmup' => true,
             ]), $io);
         } catch (\Exception $e) {
             $io->error($e->getMessage());
+
+            return 1;
         }
     }
 }

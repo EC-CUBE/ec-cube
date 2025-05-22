@@ -60,48 +60,48 @@ class FileManagePage extends AbstractAdminPageStyleGuide
 
     public function ファイル名($rowNum)
     {
-        return "#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(2)";
+        return "#fileList table > tbody > tr:nth-child({$rowNum}) > td:nth-child(2)";
     }
 
     public function 一覧_ダウンロード($rowNum)
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) a.action-download");
+        $this->tester->click("#fileList table > tbody > tr:nth-child({$rowNum}) > td:nth-child(5) a.action-download");
 
         return $this;
     }
 
     public function 一覧_表示($rowNum)
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) a.action-view");
+        $this->tester->click("#fileList table > tbody > tr:nth-child({$rowNum}) > td:nth-child(5) a.action-view");
 
         return $this;
     }
 
     public function 一覧_パスをコピー($rowNum)
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) a.action-copy");
+        $this->tester->click("#fileList table > tbody > tr:nth-child({$rowNum}) > td:nth-child(5) a.action-copy");
 
         return $this;
     }
 
     public function 一覧_ファイル名_クリック($rowNum)
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(2) a");
+        $this->tester->click("#fileList table > tbody > tr:nth-child({$rowNum}) > td:nth-child(2) a");
 
         return $this;
     }
 
     public function 一覧_削除($rowNum)
     {
-        $this->tester->click("#fileList table > tbody > tr:nth-child(${rowNum}) > td:nth-child(5) a.action-delete");
+        $this->tester->click("#fileList table > tbody > tr:nth-child({$rowNum}) > td:nth-child(5) a.action-delete");
 
         return $this;
     }
 
     public function 一覧_削除_accept($rowNum)
     {
-        $this->tester->waitForElementVisible("#confirmModal-${rowNum} div.modal-footer a.btn-ec-delete");
-        $this->tester->click("#confirmModal-${rowNum} div.modal-footer a.btn-ec-delete");
+        $this->tester->waitForElementVisible("#confirmModal-{$rowNum} div.modal-footer a.btn-ec-delete");
+        $this->tester->click("#confirmModal-{$rowNum} div.modal-footer a.btn-ec-delete");
 
         return $this;
     }
@@ -115,6 +115,6 @@ class FileManagePage extends AbstractAdminPageStyleGuide
      */
     public function パンくず($index)
     {
-        return "//*[@id=\"bread\"]/li[${index}]";
+        return "//*[@id=\"bread\"]/li[{$index}]";
     }
 }

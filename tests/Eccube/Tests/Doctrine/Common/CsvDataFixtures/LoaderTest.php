@@ -14,10 +14,10 @@
 namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
 
 class LoaderTest extends EccubeTestCase
 {
@@ -34,7 +34,7 @@ class LoaderTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loader = new Loader();

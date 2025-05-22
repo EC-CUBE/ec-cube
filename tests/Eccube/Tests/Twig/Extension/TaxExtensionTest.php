@@ -29,11 +29,11 @@ class TaxExtensionTest extends EccubeTestCase
      */
     protected $taxRuleRepository;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->taxExtension = $this->container->get(TaxExtension::class);
-        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->taxExtension = static::getContainer()->get(TaxExtension::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
     }
 
     public function testIsReducedTaxRate()

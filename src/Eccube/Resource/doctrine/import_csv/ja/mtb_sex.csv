@@ -1,3 +1,5 @@
 id,name,sort_no,discriminator_type
 "1","男性","0","sex"
 "2","女性","1","sex"
+"3","その他","2","sex"
+"4","回答しない","3","sex"

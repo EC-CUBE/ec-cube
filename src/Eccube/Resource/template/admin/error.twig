@@ -16,11 +16,9 @@ file that was distributed with this source code.
     <title>{{ error_title }}</title>
     <meta name="robots" content="noindex,nofollow"/>
     <link rel="icon" href="{{ asset('assets/img/favicon.ico', 'admin') }}">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/v4-shims.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/v4-shims.css" integrity="sha384-XyvK/kKwgVW+fuRkusfLgfhAMuaxLPSOY8W7wj8tUkf0Nr2WGHniPmpdu+cmPS5n" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css', 'admin') }}">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body id="error-page" class="bg-light">
 
@@ -33,7 +31,7 @@ file that was distributed with this source code.
                 <div class="col-12 col-sm-6 offset-sm-3">
 
                     <div class="text-center p-5 bg-white">
-                        <h3><i class="fa fa-exclamation-triangle fa-lg ml-1"></i>{{ error_title }}</h3>
+                        <h3><i class="fa fa-exclamation-triangle fa-lg ms-1"></i>{{ error_title }}</h3>
                         <p>{{ error_message }}</p>
                         <a href="{{ path('admin_homepage') }}" class="btn btn-info btn-lg">{{ 'admin.error.go_to_login'|trans }}</a>
                     </div>
@@ -44,8 +42,6 @@ file that was distributed with this source code.
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="{{ asset('assets/js/function.js', 'admin') }}"></script>
 </body>
 </html>

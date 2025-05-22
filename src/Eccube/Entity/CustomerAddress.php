@@ -483,7 +483,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
          *
          * @return CustomerAddress
          */
-        public function setCustomer(\Eccube\Entity\Customer $customer = null)
+        public function setCustomer(Customer $customer = null)
         {
             $this->Customer = $customer;
 
@@ -507,7 +507,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
          *
          * @return CustomerAddress
          */
-        public function setCountry(\Eccube\Entity\Master\Country $country = null)
+        public function setCountry(Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -531,7 +531,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
          *
          * @return CustomerAddress
          */
-        public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+        public function setPref(Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 

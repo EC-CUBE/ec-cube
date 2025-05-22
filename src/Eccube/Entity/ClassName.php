@@ -244,7 +244,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
          *
          * @return ClassName
          */
-        public function addClassCategory(\Eccube\Entity\ClassCategory $classCategory)
+        public function addClassCategory(ClassCategory $classCategory)
         {
             $this->ClassCategories[] = $classCategory;
 
@@ -258,7 +258,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
          *
          * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeClassCategory(\Eccube\Entity\ClassCategory $classCategory)
+        public function removeClassCategory(ClassCategory $classCategory)
         {
             return $this->ClassCategories->removeElement($classCategory);
         }
@@ -280,7 +280,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
          *
          * @return ClassName
          */
-        public function setCreator(\Eccube\Entity\Member $creator = null)
+        public function setCreator(Member $creator = null)
         {
             $this->Creator = $creator;
 

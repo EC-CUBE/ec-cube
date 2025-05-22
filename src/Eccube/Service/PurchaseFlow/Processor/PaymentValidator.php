@@ -17,15 +17,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.
  */
-class PaymentValidator extends ItemHolderValidator
+class PaymentValidator extends ItemHolderPostValidator
 {
     /**
      * @var DeliveryRepository
@@ -75,6 +76,17 @@ class PaymentValidator extends ItemHolderValidator
         // 共通項がなければエラー
         if (empty($paymentIds)) {
             $this->throwInvalidItemException('front.shopping.different_payment_methods');
+        }
+
+        if ($itemHolder instanceof Order) {
+            if (null === $itemHolder->getPayment()) {
+                return;
+            }
+
+            // 支払い方法が非表示の場合はエラー
+            if (false === $itemHolder->getPayment()->isVisible()) {
+                $this->throwInvalidItemException('front.shopping.not_available_payment_method');
+            }
         }
     }
 

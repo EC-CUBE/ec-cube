@@ -15,8 +15,8 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\ClassCategory;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ClasscategoryRepository
@@ -79,7 +79,7 @@ class ClassCategoryRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($ClassCategory);
-        $em->flush($ClassCategory);
+        $em->flush();
     }
 
     /**
@@ -103,7 +103,7 @@ class ClassCategoryRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->remove($ClassCategory);
-        $em->flush($ClassCategory);
+        $em->flush();
     }
 
     /**
@@ -121,6 +121,6 @@ class ClassCategoryRepository extends AbstractRepository
 
         $em = $this->getEntityManager();
         $em->persist($ClassCategory);
-        $em->flush($ClassCategory);
+        $em->flush();
     }
 }

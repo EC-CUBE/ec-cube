@@ -23,10 +23,6 @@ file that was distributed with this source code.
     </style>
 {% endblock stylesheet %}
 {% block javascript %}
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
-    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             // 初期表示時のsort noを保持.
@@ -103,13 +99,7 @@ file that was distributed with this source code.
 
             // 編集キャンセル
             $('.sortable-item').on('click', 'button.action-edit-cancel', function(e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value'));
-                });
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
+                location.href = '{{ url('admin_product_tag') }}';
             });
             // 編集時, エラーがあれば入力欄を表示.
             $('.sortable-item').find('.is-invalid').each(function(e) {
@@ -140,20 +130,15 @@ file that was distributed with this source code.
                         <div class="card rounded border-0">
                             <ul class="list-group list-group-flush sortable-container">
                                 <li class="list-group-item">
-                                    <form role="form" class="form-row" method="post" action="{{ url('admin_product_tag') }}">
+                                    <form role="form" class="row" method="post" action="{{ url('admin_product_tag') }}">
                                         {{ form_widget(form._token) }}
                                         <div class="col-auto align-items-center">
                                             {{ form_widget(form.name) }}
                                             {{ form_errors(form.name) }}
                                         </div>
-                                        <div class="col-auto align-items-center">
-                                            <button class="btn btn-ec-regular" type="submit">
-                                                {{ 'admin.common.create__new'|trans }}
-                                            </button>
-                                        </div>
 
                                         {# エンティティ拡張の自動出力 #}
-                                        {% for f in form if f.vars.eccube_form_options.auto_render %}
+                                        {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                             {% if f.vars.eccube_form_options.form_theme %}
                                                 {% form_theme f f.vars.eccube_form_options.form_theme %}
                                                 {{ form_row(f) }}
@@ -167,7 +152,13 @@ file that was distributed with this source code.
                                                 </div>
                                             {% endif %}
                                         {% endfor %}
-                                    </form>
+
+                                        <div class="col-auto align-items-center">
+                                            <button class="btn btn-ec-regular" type="submit">
+                                                {{ 'admin.common.create__new'|trans }}
+                                            </button>
+                                        </div>
+                                  </form>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
@@ -184,19 +175,19 @@ file that was distributed with this source code.
                                             <div class="col-auto d-flex align-items-center">{{ Tag.id }}</div>
                                             <div class="col d-flex align-items-center"><a>{{ Tag.name }}</a>
                                             </div>
-                                            <div class="col-auto text-right">
-                                                <a class="btn btn-ec-actionIcon mr-2 action-up{% if loop.first %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                            <div class="col-auto text-end">
+                                                <a class="btn btn-ec-actionIcon me-2 action-up{% if loop.first %} disabled{% endif %}" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
                                                     <i class="fa fa-arrow-up fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-down{% if loop.last %} disabled{% endif %}" href="#" data-tooltip="true" data-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 action-down{% if loop.last %} disabled{% endif %}" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
                                                     <i class="fa fa-arrow-down fa-lg text-secondary"></i>
                                                 </a>
-                                                <a class="btn btn-ec-actionIcon mr-2 action-edit" data-tooltip="true" data-placement="top" title="{{ 'admin.common.edit'|trans }}">
+                                                <a class="btn btn-ec-actionIcon me-2 action-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}">
                                                     <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                 </a>
-                                                <div class="d-inline-block mr-2" data-tooltip="true"
-                                                     data-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                                                    <a class="btn btn-ec-actionIcon" data-toggle="modal" data-target="#DeleteModal"
+                                                <div class="d-inline-block me-2" data-bs-toggle="tooltip"
+                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#DeleteModal"
                                                        data-url="{{ url('admin_product_tag_delete', {'id' : Tag.id}) }}"
                                                        data-message="{{ 'admin.common.delete_modal__message'|trans({ "%name%" : Tag.name }) }}">
                                                         <i class="fa fa-close fa-lg text-secondary"></i>
@@ -204,7 +195,7 @@ file that was distributed with this source code.
                                                 </div>
                                             </div>
                                         </div>
-                                        <form class="form-row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
+                                        <form class="row d-none mode-edit" method="post" action="{{ url('admin_product_tag') }}">
                                             {{ form_widget(forms[Tag.id]._token) }}
                                             <div class="col-auto align-items-center">
                                                 {{ form_widget(forms[Tag.id].name, {'attr': {'data-origin-value': forms[Tag.id].name.vars.value }}) }}
@@ -212,7 +203,7 @@ file that was distributed with this source code.
                                             </div>
 
                                             {# エンティティ拡張の自動出力 #}
-                                            {% for f in forms[Tag.id] if f.vars.eccube_form_options.auto_render %}
+                                            {% for f in forms[Tag.id]|filter(f => f.vars.eccube_form_options.auto_render) %}
                                                 {% if f.vars.eccube_form_options.form_theme %}
                                                     {% form_theme f f.vars.eccube_form_options.form_theme %}
                                                     {{ form_row(f) }}
@@ -243,18 +234,18 @@ file that was distributed with this source code.
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title font-weight-bold">
+                                            <h5 class="modal-title fw-bold">
                                                 {{ 'admin.common.delete_modal__title'|trans }}
                                             </h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+
                                             </button>
                                         </div>
-                                        <div class="modal-body text-left">
-                                            <p class="text-left modal-message"><!-- jsでメッセージを挿入 --></p>
+                                        <div class="modal-body text-start">
+                                            <p class="text-start modal-message"><!-- jsでメッセージを挿入 --></p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn btn-ec-sub" type="button" data-dismiss="modal">
+                                            <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
                                                 {{ 'admin.common.cancel'|trans }}
                                             </button>
                                             <a class="btn btn-ec-delete" href="#" {{ csrf_token_for_anchor() }}

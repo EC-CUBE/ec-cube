@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Dotenv\Dotenv;
 use Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +31,13 @@ while (!@file_exists($parent.'/vendor/autoload.php')) {
 
 require $parent.'/vendor/autoload.php';
 if (file_exists($parent.'/.env')) {
-    (new Dotenv($parent))->overload();
+    (Dotenv::createUnsafeMutable($parent, '.env'))->load();
 }
 
-Request::setTrustedProxies(['127.0.0.1', '::1', 'REMOTE_ADDR'], Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+Request::setTrustedProxies(
+    ['127.0.0.1', '::1', 'REMOTE_ADDR'],
+    Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO ^ Request::HEADER_X_FORWARDED_HOST
+);
 Request::setTrustedHosts(['127.0.0.1', '::1']);
 Request::createFromGlobals();
 
@@ -63,10 +77,12 @@ ob_start();
 class MockSessionHandler extends \SessionHandler
 {
     private $data;
+    private $sessionId;
 
-    public function __construct($data = null)
+    public function __construct($data = '', $sessionId = null)
     {
         $this->data = $data;
+        $this->sessionId = $sessionId;
     }
 
     public function getData()
@@ -74,6 +90,7 @@ class MockSessionHandler extends \SessionHandler
         return $this->data;
     }
 
+    #[\ReturnTypeWillChange]
     public function open($path, $name)
     {
         return parent::open($path, $name);
@@ -83,21 +100,27 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
 {
     private $handler;
     private $data;
+    private $sessionId;
 
-    public function __construct(\SessionHandlerInterface $handler)
+    public function __construct(SessionHandlerInterface $handler)
     {
         parent::__construct($handler);
         $this->data = $handler->getData();
     }
 
-    public function open($path, $name)
+    #[\ReturnTypeWillChange]
+    public function open($path, $name): bool
     {
         echo __FUNCTION__, "\n";
 
         return parent::open($path, $name);
     }
 
-    public function validateId($sessionId)
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
+    public function validateId($sessionId): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -107,7 +130,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId)
+    #[\ReturnTypeWillChange]
+    public function read($sessionId): string
     {
         echo __FUNCTION__, "\n";
 
@@ -117,7 +141,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function updateTimestamp($sessionId, $data)
+    #[\ReturnTypeWillChange]
+    public function updateTimestamp($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -127,7 +152,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data)
+    #[\ReturnTypeWillChange]
+    public function write($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -137,44 +163,61 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId)
+    #[\ReturnTypeWillChange]
+    public function destroy($sessionId):bool
     {
         echo __FUNCTION__, "\n";
 
         return parent::destroy($sessionId);
     }
 
-    public function close()
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
+    public function close(): bool
     {
         echo __FUNCTION__, "\n";
 
         return true;
     }
 
-    public function gc($maxLifetime)
+    /**
+     * {@inheritdoc}
+     */
+    #[\ReturnTypeWillChange]
+    public function gc($maxLifetime): int|false
     {
         echo __FUNCTION__, "\n";
 
         return true;
     }
 
-    protected function doRead($sessionId)
+    protected function doRead($sessionId): string
     {
+        if (isset($this->sessionId) && $sessionId !== $this->sessionId) {
+            echo __FUNCTION__ . ": invalid sessionId\n";
+
+            return '';
+        }
         echo __FUNCTION__.': ', $this->data, "\n";
+        $this->sessionId = $sessionId;
 
         return $this->data;
     }
 
-    protected function doWrite($sessionId, $data)
+    protected function doWrite($sessionId, $data): bool
     {
         echo __FUNCTION__.': ', $data, "\n";
+        $this->sessionId = $sessionId;
 
         return true;
     }
 
-    protected function doDestroy($sessionId)
+    protected function doDestroy($sessionId): bool
     {
         echo __FUNCTION__, "\n";
+        $this->sessionId = $sessionId;
 
         return true;
     }

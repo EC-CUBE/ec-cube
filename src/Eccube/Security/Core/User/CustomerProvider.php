@@ -13,50 +13,45 @@
 
 namespace Eccube\Security\Core\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class CustomerProvider implements UserProviderInterface
+class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     /**
      * @var CustomerRepository
      */
     protected $customerRepository;
 
-    public function __construct(CustomerRepository $customerRepository)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $entityManager)
     {
         $this->customerRepository = $customerRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * Loads the user for the given username.
-     *
-     * This method must throw UsernameNotFoundException if the user is not
-     * found.
-     *
-     * @param string $username The username
-     *
      * @return UserInterface
      *
-     * @throws UsernameNotFoundException if the user is not found
+     * @throws UserNotFoundException
+     *
+     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): Customer
     {
-        $Customer = $this->customerRepository->findOneBy([
-            'email' => $username,
-            'Status' => CustomerStatus::REGULAR,
-        ]);
-
-        if (null === $Customer) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return $Customer;
+        return $this->loadUserByIdentifier($username);
     }
 
     /**
@@ -90,5 +85,25 @@ class CustomerProvider implements UserProviderInterface
     public function supportsClass($class)
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
+    }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        $Customer = $this->customerRepository->findOneBy([
+            'email' => $identifier,
+            'Status' => CustomerStatus::REGULAR,
+        ]);
+
+        if (null === $Customer) {
+            throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $identifier));
+        }
+
+        return $Customer;
+    }
+
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    {
+        $user->setPassword($newHashedPassword);
+        $this->entityManager->flush();
     }
 }

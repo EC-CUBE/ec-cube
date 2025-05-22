@@ -19,9 +19,13 @@ use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\Mime\Email;
 
 class MailControllerTest extends AbstractAdminWebTestCase
 {
+    use MailerAssertionsTrait;
+
     /**
      * @var Customer
      */
@@ -32,7 +36,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      */
     protected $Order;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $faker = $this->getFaker();
@@ -67,6 +71,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = [
             'template' => 1,
             'mail_subject' => $faker->word,
+            'tpl_data' => $faker->realText(),
             '_token' => 'dummy',
         ];
 
@@ -98,7 +103,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     public function testComplete()
     {
-        $this->client->enableProfiler();
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
@@ -110,12 +114,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $this->Order->getId()])));
 
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
@@ -123,20 +124,46 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function testView()
+    /**
+     * メールテンプレートを選択する
+     *
+     * @return void
+     */
+    public function testSelectMailTemplate()
     {
+        $form = $this->createFormData();
+        // 注文完了メール
+        $form['template'] = 1;
         $crawler = $this->client->request(
             'POST',
-            $this->generateUrl('admin_order_mail_view'),
+            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
-                'id' => $this->MailHistories[0]->getId(),
-            ],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
+                'admin_order_mail' => $form,
+                'mode' => 'change',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertTrue($this->client->getResponse()->isOk());
+
+        $this->actual = $crawler->filter('input[name="admin_order_mail[mail_subject]"]')->attr('value');
+        $this->expected = 'ご注文ありがとうございます';
+        $this->verify();
+
+        // 会員仮登録完了メール
+        $form['template'] = 2;
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
+            [
+                'admin_order_mail' => $form,
+                'mode' => 'change',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isOk());
+
+        $this->actual = $crawler->filter('input[name="admin_order_mail[mail_subject]"]')->attr('value');
+        $this->expected = '会員登録のご確認';
+        $this->verify();
     }
 }

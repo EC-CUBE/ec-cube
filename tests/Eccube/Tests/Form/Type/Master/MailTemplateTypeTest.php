@@ -25,10 +25,10 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     /** @var MailTemplateRepository */
     protected $mailTemplateRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->mailTemplateRepo = $this->container->get(MailTemplateRepository::class);
+        $this->mailTemplateRepo = $this->entityManager->getRepository(\Eccube\Entity\MailTemplate::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
@@ -65,7 +65,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_Int()
+    public function testInvalidDataInt()
     {
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
@@ -74,7 +74,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     /**
      * 範囲外の値のテスト
      */
-    public function testInvalidData_String()
+    public function testInvalidDataString()
     {
         $this->form->submit('a');
         $this->assertFalse($this->form->isValid());

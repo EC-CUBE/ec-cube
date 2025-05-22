@@ -15,23 +15,15 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class MasterdataControllerTest
  */
 class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Session
-     */
-    private $session;
-
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->session = $this->container->get('session');
     }
 
     protected $entityTest = 'Eccube-Entity-Master-Sex';
@@ -71,7 +63,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $crawler->filter('.table.table-sm')->html();
         $this->expected = $this->entityManager->getRepository($entityName)->find(1)->getName();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -108,7 +100,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
+        $this->assertStringContainsString('入力されていません。', $html);
 
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
@@ -138,7 +130,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
+        $this->assertStringContainsString('入力されていません。', $html);
 
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
@@ -175,9 +167,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -212,9 +204,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -244,9 +236,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -278,9 +270,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -292,7 +284,8 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][$id]['id'] = 0;
         $editForm['data'][$id]['name'] = '0削除テスト';
 
-        $this->client->request(
+        //$this->client->followRedirects(true);
+        $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
@@ -310,9 +303,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -363,9 +356,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($this->entityManager->getRepository($entityName)->find(0));
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -393,9 +386,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
 
         /** @var OrderStatus $actual */

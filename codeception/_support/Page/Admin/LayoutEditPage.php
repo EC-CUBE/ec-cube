@@ -43,15 +43,15 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
 
     public function ブロックを移動($blockName, $dest, $timeout = 10)
     {
-        $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]"], $timeout);
-        $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]"], $dest);
+        $this->tester->waitForElementVisible(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='{$blockName}']]]]"], $timeout);
+        $this->tester->dragAndDrop(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='{$blockName}']]]]"], $dest);
 
         return $this;
     }
 
     public function コンテキストメニューを開く($blockName)
     {
-        $this->tester->click(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='${blockName}']]]]/div/div[2]"]);
+        $this->tester->click(['xpath' => "//div[contains(@id, 'detail_box__layout_item')][div[div[1][span[text()='{$blockName}']]]]/div/div[2]"]);
 
         return $this;
     }
@@ -128,6 +128,13 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
     public function レイアウト名($value)
     {
         $this->tester->fillField(['css' => '#admin_layout_name'], $value);
+
+        return $this;
+    }
+
+    public function 端末種別($text)
+    {
+        $this->tester->selectOption(['css' => '#admin_layout_DeviceType'], ['text' => $text]);
 
         return $this;
     }

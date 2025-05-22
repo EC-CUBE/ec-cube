@@ -1,159 +1,269 @@
 services:
 
     # Purchase Flow for Cart
-
     eccube.purchase.flow.cart:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setFlowType, ['cart']]
-            - [setItemValidators, ['@eccube.purchase.flow.cart.item_validators']]
-            - [setItemHolderValidators, ['@eccube.purchase.flow.cart.holder_validators']]
-            - [setItemPreprocessors, ['@eccube.purchase.flow.cart.item_preprocessors']]
-            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.cart.holder_preprocessors']]
-            - [setItemHolderPostValidators, ['@eccube.purchase.flow.cart.holder_post_validators']]
-
-    eccube.purchase.flow.cart.item_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator' # 配送設定のチェック
-                - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator' # 商品の公開状態のチェック
-                - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator' # 商品価格の変更検知
-                - '@Eccube\Service\PurchaseFlow\Processor\StockValidator' # 在庫のチェック
-                - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator' # 販売制限数のチェック
-
-    eccube.purchase.flow.cart.holder_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator'  # 空明細の削除処理
-
-    eccube.purchase.flow.cart.item_preprocessors:
-        class: Doctrine\Common\Collections\ArrayCollection
-
-    eccube.purchase.flow.cart.holder_preprocessors:
-        class: Doctrine\Common\Collections\ArrayCollection
-
-    eccube.purchase.flow.cart.holder_post_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentValidator' # 使用できない支払い方法が含まれていないかどうか
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator' # 支払金額の上限チェック
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'  # 支払金額のマイナスチェック
+            - [ setFlowType, [ 'cart' ] ]
 
     # Purchase Flow for Shopping
     eccube.purchase.flow.shopping:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setFlowType, ['shopping']]
-            - [setItemValidators, ['@eccube.purchase.flow.shopping.item_validators']]
-            - [setItemHolderValidators, ['@eccube.purchase.flow.shopping.holder_validators']]
-            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.shopping.holder_preprocessors']]
-            - [setDiscountProcessors, ['@eccube.purchase.flow.shopping.discount_processors']]
-            - [setItemHolderPostValidators, ['@eccube.purchase.flow.shopping.holder_post_validators']]
-            - [setPurchaseProcessors, ['@eccube.purchase.flow.shopping.purchase']]
-
-    eccube.purchase.flow.shopping.item_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator'
-
-    eccube.purchase.flow.shopping.holder_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator'  # 空明細の削除処理
-
-    eccube.purchase.flow.shopping.holder_preprocessors:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'  # 税額の計算(商品明細に対して税額計算)
-                - '@Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'  # 税額の計算(送料明細・手数料明細に対して税額を計算)
-
-    eccube.purchase.flow.shopping.discount_processors:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor' # ポイント明細の追加
-
-    eccube.purchase.flow.shopping.holder_post_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator' # 手数料の変更検知
-                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator' # 送料の変更検知
-
-    eccube.purchase.flow.shopping.purchase:
-        class: Doctrine\Common\Collections\ArrayCollection
-        arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\PreOrderIdValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\CustomerPurchaseInfoProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\OrderUpdateProcessor'
+            - [ setFlowType, [ 'shopping' ] ]
 
     # Purchase Flow for Order
-
     eccube.purchase.flow.order:
         class: Eccube\Service\PurchaseFlow\PurchaseFlow
         calls:
-            - [setFlowType, ['order']]
-            - [setItemValidators, ['@eccube.purchase.flow.order.item_validators']]
-            - [setItemHolderValidators, ['@eccube.purchase.flow.order.holder_validators']]
-            - [setItemHolderPreprocessors, ['@eccube.purchase.flow.order.holder_preprocessors']]
-            - [setDiscountProcessors, ['@eccube.purchase.flow.order.discount_processors']]
-            - [setItemHolderPostValidators, ['@eccube.purchase.flow.order.holder_post_validators']]
-            - [setPurchaseProcessors, ['@eccube.purchase.flow.order.purchase']]
+            - [ setFlowType, [ 'order' ] ]
 
-    eccube.purchase.flow.order.item_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
 
-    eccube.purchase.flow.order.holder_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
+    # addItemValidator
+    eccube.purchase.flow.item.validator.delivery.setting.validator: # 配送設定のチェック
+        class: Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator
         arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor'
+            - '@Eccube\Repository\DeliveryRepository'
+        tags:
+            - { name: eccube.item.validator, flow_type: cart, priority: 1000 }
+            - { name: eccube.item.validator, flow_type: shopping, priority: 1000 }
 
-    eccube.purchase.flow.order.holder_preprocessors:
-        class: Doctrine\Common\Collections\ArrayCollection
+    eccube.purchase.flow.item.validator.product.status.validator: # 商品の公開状態のチェック
+        class: Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator
+        tags:
+            - { name: eccube.item.validator, flow_type: cart, priority: 900 }
+            - { name: eccube.item.validator, flow_type: shopping, priority: 900 }
+
+    eccube.purchase.flow.item.validator.price.change.validator: # 商品価格の変更検知
+        class: Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator
+        tags:
+            - { name: eccube.item.validator, flow_type: cart, priority: 800 }
+            - { name: eccube.item.validator, flow_type: shopping, priority: 800 }
+
+    eccube.purchase.flow.item.validator.stock.validator: # 在庫のチェック
+        class: Eccube\Service\PurchaseFlow\Processor\StockValidator
+        tags:
+            - { name: eccube.item.validator, flow_type: cart, priority: 700 }
+
+    eccube.purchase.flow.item.validator.sale.limit.validator: # 販売制限数のチェック
+        class: Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator
+        tags:
+            - { name: eccube.item.validator, flow_type: cart, priority: 600 }
+
+    eccube.purchase.flow.item.validator.class_category.validator: # 商品規格の公開状態チェック
+        class: Eccube\Service\PurchaseFlow\Processor\ClassCategoryValidator
+        tags:
+            - { name: eccube.item.validator, flow_type: cart, priority: 500 }
+            - { name: eccube.item.validator, flow_type: shopping, priority: 500 }
+
+    # addItemHolderValidator
+    eccube.purchase.flow.item.holder.validator.stock.multiple.validator:
+        class: Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator
         arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\TaxProcessor'
+            - '@Eccube\Repository\ProductClassRepository'
+        tags:
+            - { name: eccube.item.holder.validator, flow_type: shopping, priority: 1000 }
 
-    eccube.purchase.flow.order.discount_processors:
-        class: Doctrine\Common\Collections\ArrayCollection
+    eccube.purchase.flow.item.holder.validator.sale.limit.multiple.validator:
+        class: Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator
         arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\PointProcessor' # ポイント明細の追加
+            - '@Eccube\Repository\ProductClassRepository'
+        tags:
+            - { name: eccube.item.holder.validator, flow_type: shopping, priority: 900 }
 
-    eccube.purchase.flow.order.holder_post_validators:
-        class: Doctrine\Common\Collections\ArrayCollection
+    eccube.purchase.flow.item.holder.validator.empty.items.validator: # 空明細の削除処理
+        class: Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator
         arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'  # 加算ポイントの計算
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'  # 支払金額のマイナスチェック
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: eccube.item.holder.validator, flow_type: cart, priority: 1000 }
+            - { name: eccube.item.holder.validator, flow_type: shopping, priority: 800 }
 
-
-    eccube.purchase.flow.order.purchase:
-        class: Doctrine\Common\Collections\ArrayCollection
+    eccube.purchase.flow.item.holder.validator.stock.diff.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor
         arguments:
-            - #
-                - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
-                - '@Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor'
+            - '@Eccube\Repository\ProductClassRepository'
+        tags:
+            - { name: eccube.item.holder.validator, flow_type: order, priority: 1000 }
+
+    eccube.purchase.flow.item.holder.validator.point.diff.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Service\PointHelper'
+        tags:
+            - { name: eccube.item.holder.validator, flow_type: order, priority: 900 }
+
+    # addItemPreprocessor
+
+    # addItemHolderPreprocessor
+    eccube.purchase.flow.item.holder.preprocessor.tax.processor.before: # 税額の計算(商品明細に対して税額計算)
+        class: Eccube\Service\PurchaseFlow\Processor\TaxProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Repository\TaxRuleRepository'
+            - '@Eccube\Service\TaxRuleService'
+            - '@Eccube\Service\OrderHelper'
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 1000 }
+            - { name: eccube.item.holder.preprocessor, flow_type: order, priority: 1000 }
+
+    eccube.purchase.flow.item.holder.preprocessor.order.no.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor
+        arguments:
+            - '@Eccube\Common\EccubeConfig'
+            - '@Eccube\Repository\OrderRepository'
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 900 }
+
+    eccube.purchase.flow.item.holder.preprocessor.delivery.fee.preprocessor:
+        class: Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Repository\TaxRuleRepository'
+            - '@Eccube\Repository\DeliveryFeeRepository'
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 800 }
+
+    eccube.purchase.flow.item.holder.preprocessor.delivery.fee.free.by.shipping.preprocessor:
+        class: Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 700 }
+
+    eccube.purchase.flow.item.holder.preprocessor.pyament.charge.preprocessor:
+        class: Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor
+        arguments:
+            - '@Eccube\Repository\Master\OrderItemTypeRepository'
+            - '@Eccube\Repository\Master\TaxDisplayTypeRepository'
+            - '@Eccube\Repository\Master\TaxTypeRepository'
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 600 }
+
+    eccube.purchase.flow.item.holder.preprocessor.tax.processor.after: # 税額の計算(送料明細・手数料明細に対して税額を計算)
+        class: Eccube\Service\PurchaseFlow\Processor\TaxProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Repository\TaxRuleRepository'
+            - '@Eccube\Service\TaxRuleService'
+            - '@Eccube\Service\OrderHelper'
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 500 }
+
+    # addDiscountProcessor
+    eccube.purchase.flow.discount.processor.point.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\PointProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Service\PointHelper'
+        tags:
+            - { name: eccube.discount.processor, flow_type: shopping, priority: 1000 }
+            - { name: eccube.discount.processor, flow_type: order, priority: 1000 }
+
+    # addItemHolderPostValidator
+    eccube.purchase.flow.item.holder.post.validator.point.rate.validator: # 明細にポイント付与率を設定する
+        class: Eccube\Service\PurchaseFlow\Processor\PointRateProcessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 1000 }
+
+    eccube.purchase.flow.item.holder.post.validator.add.point.validator: # 加算ポイントの計算
+        class: Eccube\Service\PurchaseFlow\Processor\AddPointProcessor
+        arguments:
+            - '@Eccube\Repository\BaseInfoRepository'
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 900 }
+            - { name: eccube.item.holder.post.validator, flow_type: order, priority: 1000 }
+
+    eccube.purchase.flow.item.holder.post.validator.payment.validator: # 使用できない支払い方法が含まれていないかどうか
+        class: Eccube\Service\PurchaseFlow\Processor\PaymentValidator
+        arguments:
+            - '@Eccube\Repository\DeliveryRepository'
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: cart, priority: 1000 }
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 800 }
+
+    eccube.purchase.flow.item.holder.post.validator.payment.total.limit.validator: # 支払金額の上限チェック
+        class: Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator
+        arguments:
+            - '@Eccube\Common\EccubeConfig'
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: cart, priority: 900 }
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 700 }
+            - { name: eccube.item.holder.post.validator, flow_type: order, priority: 900 }
+
+    eccube.purchase.flow.item.holder.post.validator.total.negative.validator: # 支払金額のマイナスチェック
+        class: Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: cart, priority: 800 }
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 600 }
+            - { name: eccube.item.holder.post.validator, flow_type: order, priority: 800 }
+
+    eccube.purchase.flow.item.holder.post.validator.payment.charge.change.validator: # 手数料の変更検知
+        class: Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 500 }
+
+    eccube.purcahse.flow.item.holder.post.validator.delivery.fee.change.validator: # 送料の変更検知
+        class: Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 400 }
+
+    eccube.purcahse.flow.item.holder.post.validator.tax.rate.change.validator: # 税率の変更検知
+        class: Eccube\Service\PurchaseFlow\Processor\TaxRateChangeValidator
+        tags:
+            - { name: eccube.item.holder.post.validator, flow_type: shopping, priority: 300 }
+
+    # addPurchaseProcessor
+    eccube.purchase.flow.purchase.processor.pre.order.id.validator:
+        class: Eccube\Service\PurchaseFlow\Processor\PreOrderIdValidator
+        arguments:
+            - '@Eccube\Service\CartService'
+        tags:
+            - { name: eccube.purchase.processor, flow_type: shopping, priority: 1000 }
+
+    eccube.purchase.flow.purchase.processor.point.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\PointProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Service\PointHelper'
+        tags:
+            - { name: eccube.purchase.processor, flow_type: shopping, priority: 900 }
+
+    eccube.purchase.flow.purchase.processor.stock.reduce.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor
+        arguments:
+            - '@Eccube\Repository\ProductStockRepository'
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: eccube.purchase.processor, flow_type: shopping, priority: 800 }
+
+    eccube.purchase.flow.purchase.processor.customer.purchase.info.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\CustomerPurchaseInfoProcessor
+        tags:
+            - { name: eccube.purchase.processor, flow_type: shopping, priority: 700 }
+
+    eccube.purchase.flow.purchase.processor.order.update.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\OrderUpdateProcessor
+        arguments:
+            - '@Eccube\Repository\Master\OrderStatusRepository'
+        tags:
+            - { name: eccube.purchase.processor, flow_type: shopping, priority: 600 }
+
+    eccube.purchase.flow.purchase.processor.stock.diff.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor
+        arguments:
+            - '@Eccube\Repository\ProductClassRepository'
+        tags:
+            - { name: eccube.purchase.processor, flow_type: order, priority: 1000 }
+
+    eccube.purchase.flow.purchase.processor.point.diff.processor:
+        class: Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Service\PointHelper'
+        tags:
+            - { name: eccube.purchase.processor, flow_type: order, priority: 900 }

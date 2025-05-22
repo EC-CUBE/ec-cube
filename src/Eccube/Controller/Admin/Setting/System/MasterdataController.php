@@ -13,21 +13,21 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\MappingException;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MasterdataController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata")
-     * @Route("/%eccube_admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view")
+     * @Route("/%eccube_admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata", methods={"GET", "POST"})
+     * @Route("/%eccube_admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/masterdata.twig")
      */
     public function index(Request $request, $entity = null)
@@ -42,7 +42,7 @@ class MasterdataController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -55,7 +55,7 @@ class MasterdataController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -97,7 +97,7 @@ class MasterdataController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE);
 
         $form2 = $builder2->getForm();
 
@@ -108,7 +108,7 @@ class MasterdataController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit")
+     * @Route("/%eccube_admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit", methods={"GET", "POST"})
      * @Template("@admin/Setting/System/masterdata.twig")
      */
     public function edit(Request $request)
@@ -121,7 +121,7 @@ class MasterdataController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE);
 
         $form2 = $builder2->getForm();
 
@@ -171,8 +171,8 @@ class MasterdataController extends AbstractController
                         $request
                     );
                     $this->eventDispatcher->dispatch(
-                        EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE,
-                        $event
+                        $event,
+                        EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE
                     );
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
@@ -195,7 +195,7 @@ class MasterdataController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE);
 
         $form = $builder->getForm();
         $parameter = array_merge($request->request->all(), ['masterdata' => $form2['masterdata_name']->getData()]);

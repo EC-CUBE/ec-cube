@@ -1,0 +1,54 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/login_frame.twig' %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+
+    <div class="container" style="margin-top: 150px;">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                <div class="text-center p-5 bg-white">
+                    {{ include('@admin/alert.twig') }}
+                    <form name="form1" id="form1" method="post" action="{{ path('admin_two_factor_auth') }}">
+                        {{ form_widget(form._token) }}
+                        <p><img src="{{ asset('assets/img/logo2.png', 'admin') }}" width="106"></p>
+                        <h5 class="mb-3">{{ 'admin.setting.system.two_factor_auth_title'|trans }}</h5>
+
+                        {% if error is not empty %}
+                            <div class="text-danger mb-3 text-start small">{{ error }}</div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3 d-flex justify-content-center">
+                                    {{ form_widget(form.device_token, {'attr': {'class':'w-100','placeholder': 'admin.setting.system.two_factor_auth.device_token', 'autofocus': true}}) }}
+                                </div>
+                                {{ form_errors(form.device_token) }}
+                            </div>
+                            <div class="col-12">
+                            	<button type="submit" class="btn btn-primary w-100">{{ 'admin.setting.system.two_factor_auth.auth'|trans }}</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            <div class="col-12">
+                <p class="text-center mt-3">
+                    <small>Copyright &copy; 2000-{{ "now"|date("Y") }} EC-CUBE CO.,LTD. All Rights Reserved.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

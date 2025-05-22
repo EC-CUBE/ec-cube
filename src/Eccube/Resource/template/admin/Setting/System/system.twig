@@ -24,13 +24,13 @@ file that was distributed with this source code.
                     <div class="card-header">
                         <div class="row" >
                             <div class="col-8" id="server_info_box__header">
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.system_info'|trans }}">
+                                <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.system_info'|trans }}">
                                     <span class="card-title ">{{ 'admin.setting.system.system_info'|trans }}</span>
-                                    <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <i class="fa fa-question-circle fa-lg ms-1"></i>
                                 </div>
                             </div>
-                            <div class="col-4 text-right">
-                                <a data-toggle="collapse" href="#systemInfo"
+                            <div class="col-4 text-end">
+                                <a data-bs-toggle="collapse" href="#systemInfo"
                                    aria-expanded="false" aria-controls="systemInfo">
                                     <i class="fa fa-angle-up fa-lg"></i>
                                 </a>
@@ -57,15 +57,16 @@ file that was distributed with this source code.
                     </div>
                 </div>
             </div>
-
+            
+            {% if phpinfo_enabled %}
             <div class="c-primaryCol">
                 <div class="card rounded border-0 mb-4">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-8" id="php_info_box__header" >
-                                <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.system.system.php_info'|trans }}">
+                                <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.system.system.php_info'|trans }}">
                                     <span class="card-title">{{ 'admin.setting.system.system.php_info'|trans }}</span>
-                                    <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                    <i class="fa fa-question-circle fa-lg ms-1"></i>
                                 </div>
                             </div>
                         </div>
@@ -76,6 +77,7 @@ file that was distributed with this source code.
 
                 </div>
             </div>
+            {% endif %}
 
         </div>
     </div>
