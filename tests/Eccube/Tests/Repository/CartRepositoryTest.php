@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Cart;
 use Eccube\Repository\CartRepository;
 use Eccube\Tests\EccubeTestCase;
 
@@ -21,7 +22,7 @@ class CartRepositoryTest extends EccubeTestCase
     public function testConstruct()
     {
         /** @var CartRepository $CartRepository */
-        $CartRepository = $this->entityManager->getRepository(\Eccube\Entity\Cart::class);
+        $CartRepository = $this->entityManager->getRepository(Cart::class);
         $this->assertInstanceOf(CartRepository::class, $CartRepository);
 
         $Cart = $CartRepository->find(1);

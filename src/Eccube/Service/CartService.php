@@ -406,8 +406,6 @@ class CartService
         }
 
         $this->session->set('cart_keys', $cartKeys);
-
-        return;
     }
 
     /**

@@ -81,7 +81,7 @@ if (!class_exists('\Eccube\Entity\Cart')) {
          *
          * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
          */
-        private $pre_order_id = null;
+        private $pre_order_id;
 
         /**
          * @var string

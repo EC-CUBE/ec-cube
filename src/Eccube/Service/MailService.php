@@ -879,7 +879,6 @@ class MailService
 
         $dot_atom_loose = "$atext+(?:[.]|$atext)*";
         $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
-        $addr_spec_loose = "{$local_part_loose}[@]$domain";
 
         $regexp = "/\A{$addr_spec}\z/";
         if (!preg_match($regexp, $email)) {

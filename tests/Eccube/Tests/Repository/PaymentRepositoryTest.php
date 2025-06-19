@@ -15,6 +15,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\PaymentOptionRepository;
@@ -45,9 +46,9 @@ class PaymentRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->deliveryRepository = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class);
-        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->paymentOptionRepository = $this->entityManager->getRepository(\Eccube\Entity\PaymentOption::class);
+        $this->deliveryRepository = $this->entityManager->getRepository(Delivery::class);
+        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
+        $this->paymentOptionRepository = $this->entityManager->getRepository(PaymentOption::class);
     }
 
     public function testFindAllowedPaymentEmpty()

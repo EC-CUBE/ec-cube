@@ -184,8 +184,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
-        // 何もしない.
-        return;
     }
 
     /**
@@ -196,7 +194,5 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        // 何もしない.
-        return;
     }
 }

@@ -308,7 +308,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          */
         public function __toString()
         {
-            return (string) ($this->getName01().' '.$this->getName02());
+            return $this->getName01().' '.$this->getName02();
         }
 
         /**

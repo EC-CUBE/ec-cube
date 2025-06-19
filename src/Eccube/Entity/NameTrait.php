@@ -17,11 +17,11 @@ trait NameTrait
 {
     public function getFullName()
     {
-        return (string) $this->name01.' '.$this->name02;
+        return $this->name01.' '.$this->name02;
     }
 
     public function getFullNameKana()
     {
-        return (string) $this->kana01.' '.$this->kana02;
+        return $this->kana01.' '.$this->kana02;
     }
 }

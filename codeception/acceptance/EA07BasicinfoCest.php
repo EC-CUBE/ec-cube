@@ -145,7 +145,7 @@ class EA07BasicinfoCest
 
         $entityManager = Fixtures::get('entityManager');
         $customer = $entityManager->getRepository('Eccube\Entity\Customer')->find(1);
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, false)
             ->登録();
 
@@ -155,7 +155,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T07_会員設定の設定、編集(マイページに注文状況を表示：有効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, true)
             ->登録();
 
@@ -168,7 +168,7 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0701-UC01-T10_会員設定の設定、編集(お気に入り商品機能：無効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, false)
             ->登録();
 
@@ -180,7 +180,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：有効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, true)
             ->登録();
 
@@ -198,7 +198,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T12_会員設定の設定、編集(自動ログイン機能：無効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, false)
             ->登録();
 
@@ -208,7 +208,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T011_会員設定の設定、編集(自動ログイン機能：有効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, true)
             ->登録();
 
@@ -243,7 +243,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T13 商品設定の設定、編集(在庫切れ商品の非表示：有効)');
 
         // 在庫切れ商品の非表示設定
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->設定_在庫切れ商品の非表示(true);
 
         // 表示確認
@@ -255,7 +255,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T14 商品設定の設定、編集(在庫切れ商品の非表示：無効)');
 
         // 在庫切れ商品の表示設定
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->設定_在庫切れ商品の非表示(false);
 
         // 表示確認
@@ -901,7 +901,7 @@ class EA07BasicinfoCest
         $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
 
-        $baseinfo = Fixtures::get('baseinfo');
+        Fixtures::get('baseinfo');
         $I->seeInLastEmailSubjectTo('admin@example.com', $title);
 
         /* メールテンプレート削除 */

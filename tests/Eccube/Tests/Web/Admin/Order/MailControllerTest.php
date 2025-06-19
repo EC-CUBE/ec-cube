@@ -68,14 +68,13 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function createFormData()
     {
         $faker = $this->getFaker();
-        $form = [
+
+        return [
             'template' => 1,
             'mail_subject' => $faker->word,
             'tpl_data' => $faker->realText(),
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testIndex()
@@ -90,7 +89,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithConfirm()
     {
         $form = $this->createFormData();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
@@ -104,7 +103,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testComplete()
     {
         $form = $this->createFormData();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [

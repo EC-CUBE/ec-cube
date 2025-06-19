@@ -25,7 +25,6 @@ use Symfony\Component\Mime\Email;
 
 class ShippingControllerTest extends AbstractEditControllerTestCase
 {
-
     use MailerAssertionsTrait;
 
     /**
@@ -39,7 +38,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
+        $this->shippingRepository = $this->entityManager->getRepository(Shipping::class);
     }
 
     public function testIndex()

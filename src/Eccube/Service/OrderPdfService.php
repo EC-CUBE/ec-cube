@@ -88,7 +88,7 @@ class OrderPdfService extends Fpdi
     protected $widthCell = [];
 
     /** 最後に処理した注文番号 @var string */
-    protected $lastOrderId = null;
+    protected $lastOrderId;
 
     // --------------------------------------
     // Font情報のバックアップデータ
@@ -105,7 +105,7 @@ class OrderPdfService extends Fpdi
     protected $baseOffsetY = -4;
 
     /** ダウンロードファイル名 @var string */
-    protected $downloadFileName = null;
+    protected $downloadFileName;
 
     /** 発行日 @var string */
     protected $issueDate = '';

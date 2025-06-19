@@ -215,7 +215,7 @@ class EA06ContentsManagementCest
         $I->waitForText('保存しました', 10, PageEditPage::$登録完了メッセージ);
 
         $I->amOnPage('/user_data/'.$page);
-        $config = Fixtures::get('config');
+        Fixtures::get('config');
         $I->seeElement('footer.ec-layoutRole__footer');
 
         /* レイアウト編集 */

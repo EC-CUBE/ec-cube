@@ -93,7 +93,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      */
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {
-        /** @var Order $itemHolder */
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
         $Taxation = $this->taxTypeRepository->find(TaxType::TAXATION);

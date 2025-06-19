@@ -49,7 +49,6 @@ class PurchaseFlowPass implements CompilerPassInterface
          * purchaseflow.yamlに定義を追加した場合の処理
          */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
-            /** @var Reference $id */
             $allMethod = [];
             $i = 0;
             // findAndSortTaggedServicesでは、flow_typeごとのソートができないため

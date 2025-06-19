@@ -12,10 +12,12 @@
  */
 
 use Codeception\Util\Fixtures;
+use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\News;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
@@ -30,7 +32,7 @@ $config = parse_ini_file(__DIR__.'/config.ini', true);
 require_once __DIR__.'/../../vendor/autoload.php';
 
 if (file_exists(__DIR__.'/../../.env')) {
-    (\Dotenv\Dotenv::createUnsafeMutable(__DIR__.'/../../'))->load();
+    Dotenv::createUnsafeMutable(__DIR__.'/../../')->load();
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();
@@ -241,7 +243,7 @@ $setShippingDate = function () use ($entityManager) {
     $Shippings = $entityManager->getRepository('Eccube\Entity\Shipping')
         ->findAll();
     foreach ($Shippings as $Shipping) {
-        $Shipping->setShippingDate(new \DateTime());
+        $Shipping->setShippingDate(new DateTime());
     }
     $entityManager->flush();
 
@@ -344,13 +346,13 @@ Fixtures::add('findCustomers', $findCustomers);
 
 /* 新着情報を検索するクロージャ */
 Fixtures::add('findNews', function () use ($entityManager) {
-    return $entityManager->getRepository(\Eccube\Entity\News::class)
+    return $entityManager->getRepository(News::class)
         ->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);
 });
 
 /* 新着情報を登録するクロージャ */
 Fixtures::add('createNews', function ($publishDate, $title, $description, $url = null) use ($entityManager) {
-    $News = new \Eccube\Entity\News();
+    $News = new News();
     $News->setPublishDate($publishDate);
     $News->setTitle($title);
     $News->setDescription($description);

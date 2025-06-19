@@ -42,7 +42,7 @@ class OrderNoProcessorTest extends EccubeTestCase
         $config = $this->createMock(EccubeConfig::class);
         $config->method('offsetGet')->willReturn($orderNoFormat);
         $config->method('get')->willReturn('Asia/Tokyo');
-        $processor = new OrderNoProcessor($config, $this->entityManager->getRepository(\Eccube\Entity\Order::class));
+        $processor = new OrderNoProcessor($config, $this->entityManager->getRepository(Order::class));
 
         $processor->process($Order, new PurchaseContext());
 

@@ -23,6 +23,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpKernel\Client;
 
 /**
@@ -42,9 +43,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
-        $this->orderRepo = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->orderPdfRepository = $this->entityManager->getRepository(\Eccube\Entity\OrderPdf::class);
+        $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
+        $this->orderRepo = $this->entityManager->getRepository(Order::class);
+        $this->orderPdfRepository = $this->entityManager->getRepository(OrderPdf::class);
     }
 
     /**
@@ -365,7 +366,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         );
 
         /**
-         * @var \Symfony\Component\DomCrawler\Form
+         * @var Form
          */
         $form = $this->getForm($crawler);
         // fields set to empty.
@@ -406,7 +407,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     /**
      * @param Crawler $crawler
      *
-     * @return \Symfony\Component\DomCrawler\Form
+     * @return Form
      */
     private function getForm(Crawler $crawler)
     {

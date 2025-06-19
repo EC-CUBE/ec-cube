@@ -13,6 +13,7 @@
 
 use Codeception\Util\Fixtures;
 use Page\Front\TopPage;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @group front
@@ -33,7 +34,7 @@ class EF01TopCest
     {
         // APP_ENV=prod/codeceptionで実行した際は, 直接データを投入しても反映されないため,
         // キャッシュを削除して表示できるようにする
-        $fs = new Symfony\Component\Filesystem\Filesystem();
+        $fs = new Filesystem();
         foreach (['prod', 'codeception'] as $env) {
             $cacheDir = __DIR__."/../../var/cache/{$env}/pools";
             if ($fs->exists($cacheDir)) {
@@ -60,7 +61,7 @@ class EF01TopCest
             $I->see($category->getName(), '.searchform .category_id option');
         }
 
-        //管理側のコンテンツ管理（新着情報管理）に設定されている情報が、順位順に表示されている
+        // 管理側のコンテンツ管理（新着情報管理）に設定されている情報が、順位順に表示されている
         $today = new DateTime();
         $minus1 = $today->sub(new DateInterval('P1D'));
         $minus2 = $today->sub(new DateInterval('P2D'));
@@ -95,7 +96,7 @@ class EF01TopCest
         $I->wantTo('EF0101-UC01-T02 TOPページ 新着情報');
 
         $createNews = Fixtures::get('createNews');
-        $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.example.com');
+        $News = $createNews(new DateTime(), 'タイトル1', 'コメント1', 'https://www.example.com');
 
         $this->clearDoctrineCache();
 
@@ -142,7 +143,7 @@ class EF01TopCest
 
         // カテゴリに分類されている商品のみ表示される
         $products = $I->grabMultiple('ul.ec-shelfGrid li.ec-shelfGrid__item');
-        $I->assertTrue((count($products) >= 2));
+        $I->assertTrue(count($products) >= 2);
     }
 
     public function topページ_カテゴリ絞込検索(AcceptanceTester $I)

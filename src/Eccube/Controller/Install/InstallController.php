@@ -462,7 +462,7 @@ class InstallController extends AbstractController
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
         $mailerUrl = $this->createMailerUrl($sessionData);
-        $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool) $sessionData['admin_force_ssl'] : false;
+        $forceSSL = isset($sessionData['admin_force_ssl']) && (bool) $sessionData['admin_force_ssl'];
         if ($forceSSL === false) {
             $forceSSL = '0';
         } elseif ($forceSSL === true) {

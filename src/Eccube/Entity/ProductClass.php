@@ -27,8 +27,8 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
      */
     class ProductClass extends \Eccube\Entity\AbstractEntity
     {
-        private $price01_inc_tax = null;
-        private $price02_inc_tax = null;
+        private $price01_inc_tax;
+        private $price02_inc_tax;
         private $tax_rate = false;
 
         /**

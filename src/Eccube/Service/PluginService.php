@@ -630,13 +630,9 @@ class PluginService
 
     public function unregisterPlugin(Plugin $p)
     {
-        try {
-            $em = $this->entityManager;
-            $em->remove($p);
-            $em->flush();
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        $em = $this->entityManager;
+        $em->remove($p);
+        $em->flush();
     }
 
     public function disable(Plugin $plugin)

@@ -132,13 +132,6 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    private function 一覧_メニュー($rowNum)
-    {
-        $this->tester->click("#search_form > div.row > div > div > div.box-body > div.table_list > div > table > tbody > tr:nth-child({$rowNum}) > td.icon_edit > div > a");
-
-        return $this;
-    }
-
     public function CSVダウンロード()
     {
         $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-end > div:nth-child(2) > div > a:nth-child(1)');

@@ -13,7 +13,13 @@
 
 use Codeception\Util\Fixtures;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\TransactionRequiredException;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
 use Page\Admin\CategoryCsvUploadPage;
 use Page\Admin\CategoryManagePage;
 use Page\Admin\ClassCategoryCsvUploadPage;
@@ -35,10 +41,8 @@ use Page\Admin\ProductTagPage;
  */
 class EA03ProductCest
 {
-    /** @var EntityManager */
     private EntityManager $em;
 
-    /** @var Connection */
     private Connection $conn;
 
     public const ページタイトル = '#main .page-header';
@@ -84,7 +88,7 @@ class EA03ProductCest
         // バリデーションエラーが発生するフォーム項目がないため, ダミーのステータスを作っておく
         /** @var EntityManager $em */
         $em = Fixtures::get('entityManager');
-        $ProductStatus = new Eccube\Entity\Master\ProductStatus();
+        $ProductStatus = new ProductStatus();
         $ProductStatus->setName('ダミー');
         $ProductStatus->setSortNo(999);
         $ProductStatus->setId(999);
@@ -1102,7 +1106,7 @@ class EA03ProductCest
         $name = uniqid();
         $entityManager = Fixtures::get('entityManager');
         $createProduct = Fixtures::get('createProduct');
-        /** @var Eccube\Entity\Product $Product */
+        /** @var Product $Product */
         $Product = $createProduct($name);
         foreach ($Product->getProductTag() as $ProductTag) {
             $Product->removeProductTag($ProductTag);
@@ -1147,10 +1151,10 @@ class EA03ProductCest
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/6029
      *
-     * @throws Doctrine\ORM\OptimisticLockException
-     * @throws Doctrine\ORM\TransactionRequiredException
-     * @throws Doctrine\ORM\Exception\ORMException
-     * @throws Doctrine\DBAL\Exception
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
+     * @throws ORMException
+     * @throws Exception
      */
     public function product_一覧からの規格編集_規格あり_重複在庫の修正(AcceptanceTester $I)
     {

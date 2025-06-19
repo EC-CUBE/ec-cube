@@ -32,7 +32,6 @@ class TopPage extends AbstractFrontPage
         return $this;
     }
 
-
     public function 新着情報選択($rowNum)
     {
         $this->tester->click(['css' => "div.ec-newsRole__news > div:nth-child($rowNum) > div.ec-newsRole__newsHeading"]);
@@ -55,7 +54,7 @@ class TopPage extends AbstractFrontPage
     public function カテゴリ選択($categories)
     {
         $xpath = "//*[@class='ec-layoutRole__header']/";
-        foreach ($categories as $i => $category) {
+        foreach ($categories as $category) {
             $xpath .= "/ul/li/a[contains(text(), '$category')]/parent::node()";
             $this->tester->waitForElement(['xpath' => $xpath]);
             $this->tester->moveMouseOver(['xpath' => $xpath]);

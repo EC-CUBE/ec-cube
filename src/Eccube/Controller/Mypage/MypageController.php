@@ -106,7 +106,6 @@ class MypageController extends AbstractController
             return $this->redirectToRoute('mypage');
         }
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
         $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 

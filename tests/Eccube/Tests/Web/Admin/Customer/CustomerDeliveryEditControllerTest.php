@@ -51,7 +51,8 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     protected function deliveryFormData()
     {
         $faker = $this->getFaker();
-        $form = [
+
+        return [
             'name' => ['name01' => $faker->lastName, 'name02' => $faker->firstName],
             'kana' => ['kana01' => $faker->lastKanaName, 'kana02' => $faker->firstKanaName],
             'company_name' => $faker->company,
@@ -60,8 +61,6 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
             'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     /**

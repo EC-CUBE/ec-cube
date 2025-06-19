@@ -12,8 +12,9 @@
  */
 
 use Codeception\Util\Fixtures;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
+use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CustomerAddressRepository;
 use Page\Front\CartPage;
 use Page\Front\CustomerAddressEditPage;
@@ -30,21 +31,10 @@ use Page\Front\ShoppingPage;
  */
 class EF05MypageCest
 {
-    /** @var EntityManager */
-    private EntityManager $em;
-
-    /** @var Connection */
-    private Connection $conn;
-
-    /**
-     * @var CustomerAddressRepository
-     */
     protected CustomerAddressRepository $customerAddressRepository;
 
     public function _before(AcceptanceTester $I)
     {
-        $this->em = Fixtures::get('entityManager');
-        $this->conn = $this->em->getConnection();
     }
 
     public function _after(AcceptanceTester $I)
@@ -68,7 +58,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $Orders = $createOrders($customer, 5, [], Eccube\Entity\Master\OrderStatus::NEW);
+        $createOrders($customer, 5, [], OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -90,7 +80,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $createOrders($customer, 5, [], Eccube\Entity\Master\OrderStatus::NEW);
+        $createOrders($customer, 5, [], OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -322,10 +312,10 @@ class EF05MypageCest
         /** @var EntityManager $em */
         $em = Fixtures::get('entityManager');
 
-        $this->customerAddressRepository = $em->getRepository(Eccube\Entity\CustomerAddress::class);
+        $this->customerAddressRepository = $em->getRepository(CustomerAddress::class);
 
         for ($i = 0; $i < $max; $i++) {
-            $customerAddress = new Eccube\Entity\CustomerAddress();
+            $customerAddress = new CustomerAddress();
             $customerAddress
                 ->setCustomer($customer)
                 ->setName01($customer->getName01())

@@ -12,6 +12,7 @@
  */
 
 use Codeception\Util\Fixtures;
+use Eccube\Util\StringUtil;
 use Page\Front\CartPage;
 use Page\Front\CustomerAddressAddPage;
 use Page\Front\CustomerAddressChangePage;
@@ -25,6 +26,7 @@ use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingNonmemberPage;
 use Page\Front\ShoppingPage;
+use RobThree\Auth\TwoFactorAuth;
 
 /**
  * @group throttling
@@ -789,7 +791,7 @@ class EF09ThrottlingCest
         $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/member/new');
         $I->see('メンバー登録システム設定', '.c-pageTitle');
 
-        $login_id = 'admin_'.Eccube\Util\StringUtil::random(6);
+        $login_id = 'admin_'.StringUtil::random(6);
         $password = 'password1234';
         $I->fillField(['id' => 'admin_member_name'], '管理者');
         $I->fillField(['id' => 'admin_member_department'], 'admin_throttling');
@@ -812,7 +814,7 @@ class EF09ThrottlingCest
 
         // 二段階認証のセットアップ
         $secret = $I->executeJS('return $("#admin_two_factor_auth_auth_key").val();');
-        $tfa = new RobThree\Auth\TwoFactorAuth();
+        $tfa = new TwoFactorAuth();
         $code = $tfa->getCode($secret);
         $I->fillField(['id' => 'admin_two_factor_auth_device_token'], $code);
         $I->click('登録');

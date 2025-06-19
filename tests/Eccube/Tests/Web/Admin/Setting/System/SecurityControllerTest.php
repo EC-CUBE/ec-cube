@@ -115,7 +115,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
      */
     public function createFormData()
     {
-        $formData = [
+        return [
             '_token' => 'dummy',
             'admin_route_dir' => 'admintest',
             'admin_allow_hosts' => '127.0.0.1/32',
@@ -124,7 +124,5 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
             'front_deny_hosts' => '127.0.0.1/32',
             'trusted_hosts' => '^127\.0\.0\.1$,^localhost$',
         ];
-
-        return $formData;
     }
 }

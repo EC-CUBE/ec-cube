@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -23,6 +24,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\TaxRule;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -84,15 +86,15 @@ class ShippingRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
-        $this->shippingRepository = $this->entityManager->getRepository(\Eccube\Entity\Shipping::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
+        $this->shippingRepository = $this->entityManager->getRepository(Shipping::class);
 
         $faker = $this->getFaker();
         $this->Member = $this->memberRepository->find(2);

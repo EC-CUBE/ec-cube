@@ -54,8 +54,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         parent::setUp();
 
-        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
-        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
+        $this->categoryRepository = $this->entityManager->getRepository(Category::class);
     }
 
     public function scenario()
@@ -197,7 +197,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testStockStatusWithUnlimited()
     {
-        $faker = $this->getFaker();
+        $this->getFaker();
         // 全商品の在庫をなしにする
         $Products = $this->productRepository->findAll();
         foreach ($Products as $Product) {

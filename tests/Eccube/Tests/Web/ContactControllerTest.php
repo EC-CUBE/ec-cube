@@ -25,9 +25,9 @@ class ContactControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $faker->lexify('????????');
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -47,8 +47,6 @@ class ContactControllerTest extends AbstractWebTestCase
             'contents' => $faker->realText(),
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testRoutingIndex()
@@ -64,7 +62,7 @@ class ContactControllerTest extends AbstractWebTestCase
             'POST',
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
-                  'mode' => 'confirm', ]
+                'mode' => 'confirm', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -77,11 +75,11 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testComplete()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
@@ -101,11 +99,11 @@ class ContactControllerTest extends AbstractWebTestCase
     {
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>';
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('contact'),
             ['contact' => $form,
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
@@ -141,11 +139,11 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData['phone_number'] = null;
 
         $this->client->enableProfiler();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('contact'),
             ['contact' => $formData,
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
@@ -166,11 +164,11 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData = $this->createFormData();
         $this->logInTo($this->createCustomer());
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('contact'),
             ['contact' => $formData,
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
@@ -198,7 +196,7 @@ class ContactControllerTest extends AbstractWebTestCase
         // RFCに準拠していないメールアドレスを設定
         $formData['email'] = 'aa..@example.com';
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('contact'),
             ['contact' => $formData,

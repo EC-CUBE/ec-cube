@@ -364,7 +364,7 @@ class EA08SysteminfoCest
     public function systeminfo_権限管理登録(AcceptanceTester $I)
     {
         // 店舗オーナーアカウントを作成
-        $page = SystemMemberEditPage::go_new($I)
+        SystemMemberEditPage::go_new($I)
             ->メンバー登録([
                 'login_id' => 'shop_owner',
                 'authority' => '店舗オーナー',

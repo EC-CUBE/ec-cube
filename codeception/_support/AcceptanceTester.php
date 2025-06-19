@@ -11,9 +11,16 @@
  * file that was distributed with this source code.
  */
 
+use _generated\AcceptanceTesterActions;
+use Codeception\Actor;
+use Codeception\Lib\Friend;
 use Codeception\Scenario;
+use Codeception\Step\Action;
+use Codeception\Step\Assertion;
+use Codeception\Step\Condition;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -30,13 +37,13 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
  */
-class AcceptanceTester extends Codeception\Actor
+class AcceptanceTester extends Actor
 {
-    use _generated\AcceptanceTesterActions;
+    use AcceptanceTesterActions;
 
     public function getScenario(): Scenario
     {
@@ -225,7 +232,7 @@ class AcceptanceTester extends Codeception\Actor
 
     public function dragAndDropBy($selector, $x_offset, $y_offset)
     {
-        $this->executeInSelenium(function (Facebook\WebDriver\Remote\RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
+        $this->executeInSelenium(function (RemoteWebDriver $webDriver) use ($selector, $x_offset, $y_offset) {
             $node = $webDriver->findElement(WebDriverBy::cssSelector($selector));
             $action = new DragAndDropBy($webDriver, $node, $x_offset, $y_offset);
             $action->perform();
@@ -257,7 +264,7 @@ class AcceptanceTester extends Codeception\Actor
     public function see($text, $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
-        $this->getScenario()->runStep(new Codeception\Step\Assertion('see', func_get_args()));
+        $this->getScenario()->runStep(new Assertion('see', func_get_args()));
     }
 
     /**
@@ -268,7 +275,7 @@ class AcceptanceTester extends Codeception\Actor
     public function seeInField($field, $value): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
-        $this->getScenario()->runStep(new Codeception\Step\Assertion('seeInField', func_get_args()));
+        $this->getScenario()->runStep(new Assertion('seeInField', func_get_args()));
     }
 
     /**
@@ -279,7 +286,7 @@ class AcceptanceTester extends Codeception\Actor
     public function waitForText(string $text, int $timeout = 10, $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
-        $this->getScenario()->runStep(new Codeception\Step\Action('waitForText', func_get_args()));
+        $this->getScenario()->runStep(new Action('waitForText', func_get_args()));
     }
 
     /**
@@ -290,7 +297,20 @@ class AcceptanceTester extends Codeception\Actor
     public function amOnPage($page): void
     {
         $this->wait(1); // XXX WebDriver::amOnPage() の前に wait を入れないと画面遷移しない場合がある
-        $this->getScenario()->runStep(new Codeception\Step\Condition('amOnPage', func_get_args()));
+        $this->getScenario()->runStep(new Condition('amOnPage', func_get_args()));
         $this->wait(1); // XXX 画面遷移直後は selector の参照に失敗する場合があるため wait を入れる
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @param string|array $link
+     *
+     * @see \Codeception\Module\WebDriver::click()
+     */
+    public function click($link, $context = null): void
+    {
+        $this->getScenario()->runStep(new Action('click', func_get_args()));
+        $this->wait(1); // XXX click 直後は selector の参照に失敗するため wait を入れる
     }
 }

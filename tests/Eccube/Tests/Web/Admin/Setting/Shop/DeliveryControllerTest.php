@@ -103,6 +103,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testNew($isSuccess, $expected)
@@ -140,6 +141,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testEdit($isSuccess, $expected)
@@ -237,7 +239,8 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         }
 
         $i = 0;
-        $form = [
+
+        return [
             '_token' => 'dummy',
             'name' => $faker->word,
             'service_name' => $faker->word,
@@ -266,8 +269,6 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             'free_all' => $faker->randomNumber(5),
             'delivery_fees' => $deliveryFree,
         ];
-
-        return $form;
     }
 
     public function dataSubmitProvider()

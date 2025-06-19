@@ -21,11 +21,19 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\LoginHistory;
+use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
@@ -54,6 +62,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
+use Faker\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -215,8 +224,8 @@ class Generator
         } else {
             $loginId = $username;
         }
-        $Work = $this->entityManager->find(\Eccube\Entity\Master\Work::class, 1);
-        $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
+        $Work = $this->entityManager->find(Work::class, 1);
+        $Authority = $this->entityManager->find(Authority::class, 0);
         $Creator = $this->entityManager->find(Member::class, 2);
 
         $password = 'password';
@@ -253,9 +262,9 @@ class Generator
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Status = $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
-        $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
-        $Job = $this->entityManager->find(\Eccube\Entity\Master\Job::class, $faker->numberBetween(1, 18));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
+        $Sex = $this->entityManager->find(Sex::class, $faker->numberBetween(1, 2));
+        $Job = $this->entityManager->find(Job::class, $faker->numberBetween(1, 18));
 
         $password = $this->passwordHasher->hashPassword($Customer, 'password');
         $Customer
@@ -296,7 +305,7 @@ class Generator
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
         $faker = $this->getFaker();
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress
@@ -347,7 +356,7 @@ class Generator
                 $email = $faker->safeEmail;
             } while ($this->customerRepository->findBy(['email' => $email]));
         }
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Customer
             ->setName01($faker->lastName)
@@ -388,8 +397,8 @@ class Generator
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(Member::class, 2);
-        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
+        $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_SHOW);
+        $SaleType = $this->entityManager->find(SaleType::class, 1);
         $DeliveryDurations = $this->durationRepository->findAll();
         $ProductCodesGenerated = [];
 
@@ -409,7 +418,7 @@ class Generator
         $this->entityManager->persist($Product);
         $this->entityManager->flush();
 
-        $faker2 = \Faker\Factory::create($this->locale);
+        Factory::create($this->locale);
 
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
@@ -578,12 +587,12 @@ class Generator
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Payments = $this->paymentRepository->findAll();
         if ($statusTypeId === null) {
-            $statusTypeId = \Eccube\Entity\Master\OrderStatus::PROCESSING;
+            $statusTypeId = OrderStatus::PROCESSING;
         }
-        $OrderStatus = $this->entityManager->find(\Eccube\Entity\Master\OrderStatus::class, $statusTypeId);
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $statusTypeId);
         $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
@@ -802,7 +811,7 @@ class Generator
     public function createDelivery($delivery_time_max_pattern = 5)
     {
         $Member = $this->entityManager->find(Member::class, 2);
-        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
+        $SaleType = $this->entityManager->find(SaleType::class, 1);
 
         $faker = $this->getFaker();
         $Delivery = new Delivery();
@@ -919,6 +928,6 @@ class Generator
      */
     protected function getFaker()
     {
-        return \Faker\Factory::create($this->locale);
+        return Factory::create($this->locale);
     }
 }

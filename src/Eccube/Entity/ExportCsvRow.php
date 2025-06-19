@@ -24,7 +24,7 @@ if (!class_exists('\Eccube\Entity\ExportCsvRow')) {
         /**
          * @var string
          */
-        private $data = null;
+        private $data;
 
         /**
          * Set data

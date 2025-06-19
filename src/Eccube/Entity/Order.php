@@ -708,7 +708,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function __clone()
         {
-            $OriginOrderItems = $this->OrderItems;
             $OrderItems = new ArrayCollection();
             foreach ($this->OrderItems as $OrderItem) {
                 $OrderItems->add(clone $OrderItem);

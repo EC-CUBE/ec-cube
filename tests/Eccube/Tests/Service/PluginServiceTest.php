@@ -14,9 +14,11 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
+use Faker\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -46,7 +48,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         parent::setUp();
 
         $this->service = static::getContainer()->get(PluginService::class);
-        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
     protected function tearDown(): void
@@ -128,7 +130,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         try {
             $this->service->install($tmpfile);
             $this->fail('checkSamePlugin dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         } catch (\Exception $e) {
             $this->fail('checkSamePlugin throw unexpected exception.'.$e->toString());
         }
@@ -137,7 +139,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // --if-not-exists オプションの検証
         try {
             $this->service->install($tmpfile, 0, true);
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
             $this->fail('--if-not-exists オプションを指定した場合は例外が発生しない: '.$e->getMessage());
         }
 
@@ -152,9 +154,9 @@ class PluginServiceTest extends AbstractServiceTestCase
      */
     public function testInstallPluginEmptyError()
     {
-        $this->expectException(\Eccube\Exception\PluginException::class);
+        $this->expectException(PluginException::class);
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        sha1(mt_rand());
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
 
@@ -172,36 +174,36 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         // 必須項目のチェック
         $config = [];
-        //$config['name'] = $tmpname;
+        // $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         try {
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         }
 
         $config = [];
         $config['name'] = $tmpname;
-        //$config['code'] = $tmpname;
+        // $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         try {
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         }
 
         $config = [];
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
-        //$config['version'] = $tmpname;
+        // $config['version'] = $tmpname;
         try {
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         }
 
         // 禁止文字のチェック
@@ -213,7 +215,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         }
 
         $config = [];
@@ -224,7 +226,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         }
 
         // 長さのチェック
@@ -236,7 +238,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (PluginException $e) {
         }
 
         $this->expectException(PluginException::class);
@@ -254,7 +256,7 @@ class PluginServiceTest extends AbstractServiceTestCase
      */
     public function testnstallPluginMalformedConfigError()
     {
-        $this->expectException(\Eccube\Exception\PluginException::class);
+        $this->expectException(PluginException::class);
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
@@ -631,27 +633,7 @@ class Block
 }
 EOD;
         $dummyEntity = str_replace('@@@@', $tmpname, $dummyEntity); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
-        $tar->addFromString('Entity/Block.php', $dummyEntity);
-
-        $dummyTrait = <<<'EOD'
-<?php
-namespace Plugin\@@@@\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation as Eccube;
-
-/**
- * @Eccube\EntityExtension("Plugin\@@@@\Entity\Block")
- */
-trait BlockTrait {
-
-    /**
-     * @ORM\Column(name="sample", type="boolean", options={"default":false})
-     */
-    public $sample;
-}
-EOD;
-        $dummyTrait = str_replace('@@@@', $tmpname, $dummyTrait); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString('Entity/Block.php', $dummyEntity); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString('Entity/BlockTrait.php', $dummyEntity);
 
         // インストールできるか、インストーラが呼ばれるか
@@ -728,21 +710,20 @@ EOD;
      */
     private function createComposerJsonFile($config)
     {
-        /** @var \Faker\Generator $faker */
+        /** @var Generator $faker */
         $faker = $this->getFaker();
-        $jsonPHP = [
+
+        return [
             'name' => $config['name'],
             'description' => $faker->word,
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [
                 'ec-cube/plugin-installer' => '*',
-                 ],
+            ],
             'extra' => [
                 'code' => $config['code'],
             ],
         ];
-
-        return $jsonPHP;
     }
 }

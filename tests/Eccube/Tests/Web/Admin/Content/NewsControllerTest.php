@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Eccube\Entity\News;
 use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -31,7 +32,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->newsRepository = $this->entityManager->getRepository(\Eccube\Entity\News::class);
+        $this->newsRepository = $this->entityManager->getRepository(News::class);
     }
 
     public function testRoutingAdminContentNews()
@@ -90,7 +91,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'publish_date' => '2022-09-12T18:03:18',
             'title' => 'test',
-            'description' =>  "<div id='dangerous-id' class='safe_to_use_class'>
+            'description' => "<div id='dangerous-id' class='safe_to_use_class'>
                 <p>新着情報テスト</p>
                 <script>alert('XSS Attack')</script>
                 <a href='https://www.google.com'>safe html</a>
@@ -130,7 +131,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     private function createNews($TestCreator, $sortNo = 1)
     {
-        $TestNews = new \Eccube\Entity\News();
+        $TestNews = new News();
         $TestNews
             ->setPublishDate(new \DateTime())
             ->setTitle('テストタイトル'.$sortNo)

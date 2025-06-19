@@ -16,13 +16,19 @@ namespace Eccube\Tests;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Delivery;
+use Eccube\Entity\LoginHistory;
+use Eccube\Entity\Member;
+use Eccube\Entity\Order;
+use Eccube\Entity\Page;
+use Eccube\Entity\Payment;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
-use GuzzleHttp\Client as HttpClient;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -33,7 +39,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 abstract class EccubeTestCase extends WebTestCase
 {
     /** MailCatcher の URL. */
-    const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
+    public const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
 
     protected $actual;
     protected $expected;
@@ -59,7 +65,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::$booted ? static::getClient(): static::createClient();
+        $this->client = static::$booted ? static::getClient() : static::createClient();
         $this->entityManager = static::getContainer()->get('doctrine')->getManager();
         $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
     }
@@ -105,7 +111,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
      *
-     * @return \Eccube\Entity\Member
+     * @return Member
      */
     public function createMember($username = null)
     {
@@ -117,7 +123,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      *
-     * @return \Eccube\Entity\Customer
+     * @return Customer
      */
     public function createCustomer($email = null)
     {
@@ -130,7 +136,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @param Customer $Customer 対象の Customer インスタンス
      * @param boolean $is_nonmember 非会員の場合 true
      *
-     * @return \Eccube\Entity\CustomerAddress
+     * @return CustomerAddress
      */
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
@@ -142,7 +148,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      *
-     * @return \Eccube\Entity\Customer
+     * @return Customer
      */
     public function createNonMember($email = null)
     {
@@ -155,7 +161,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
      *
-     * @return \Eccube\Entity\Product
+     * @return Product
      */
     public function createProduct($product_name = null, $product_class_num = 3)
     {
@@ -165,9 +171,9 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Order オブジェクトを生成して返す.
      *
-     * @param \Eccube\Entity\Customer $Customer Customer インスタンス
+     * @param Customer $Customer Customer インスタンス
      *
-     * @return \Eccube\Entity\Order
+     * @return Order
      */
     public function createOrder(Customer $Customer)
     {
@@ -181,10 +187,10 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Order オブジェクトを生成して返す.
      *
-     * @param \Eccube\Entity\Customer $Customer Customer インスタンス
+     * @param Customer $Customer Customer インスタンス
      * @param ProductClass[] $ProductClasses
      *
-     * @return \Eccube\Entity\Order
+     * @return Order
      */
     public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)
     {
@@ -194,15 +200,15 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Payment オプジェクトを生成して返す.
      *
-     * @param \Eccube\Entity\Delivery $Delivery デフォルトで設定する配送オブジェクト
+     * @param Delivery $Delivery デフォルトで設定する配送オブジェクト
      * @param string $method 支払い方法名称
      * @param integer $charge 手数料
      * @param integer $rule_min 下限金額
      * @param integer $rule_max 上限金額
      *
-     * @return \Eccube\Entity\Payment
+     * @return Payment
      */
-    public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
         return static::getContainer()->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
@@ -210,7 +216,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Page オブジェクトを生成して返す
      *
-     * @return \Eccube\Entity\Page
+     * @return Page
      */
     public function createPage()
     {
@@ -220,7 +226,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * LoginHistory オブジェクトを生成して返す
      *
-     * @return \Eccube\Entity\LoginHistory
+     * @return LoginHistory
      */
     public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)
     {

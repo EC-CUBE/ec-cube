@@ -32,7 +32,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $configs = $this->processConfiguration($configuration, $configs);
+        $this->processConfiguration($configuration, $configs);
     }
 
     public function getAlias(): string

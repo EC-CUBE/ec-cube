@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\OrderStatus;
@@ -68,8 +69,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->customerRepository = $this->entityManager->getRepository(Customer::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
         $this->cartService = static::getContainer()->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
@@ -107,7 +108,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -152,7 +153,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($Customer, $this->Product);
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
@@ -169,7 +170,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     /**
      * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
-
+     *
      * 下記のものをチェックします。
      *     ・ ID属性の追加
      *     ・ <script> スクリプトインジェクション
@@ -281,7 +282,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testSearchCustomerHtml()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_search_customer_html'),
             [
@@ -299,7 +300,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testSearchCustomerById()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_search_customer_by_id'),
             [
@@ -320,7 +321,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testSearchProduct()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_search_product'),
             [
@@ -492,13 +493,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
         }
         foreach ($totalByTaxRate as $rate => $price) {
             $tax = static::getContainer()->get(TaxRuleService::class)
-                ->roundByRoundingType($price * ($rate / (100 + $rate)), \Eccube\Entity\Master\RoundingType::ROUND);
+                ->roundByRoundingType($price * ($rate / (100 + $rate)), RoundingType::ROUND);
             $totalTaxByTaxRate[$rate] = $tax;
         }
         $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
-            $sum += $tax;
-
-            return $sum;
+            return $sum + $tax;
         }, 0);
 
         // 確認する「トータル税金」
@@ -580,20 +579,20 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     public function testUpdateShippingDeliveryTimeToNoneSpecified()
     {
-        $Customer = $this->createCustomer();
+        $this->createCustomer();
         $Order = $this->createOrder($this->Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
         $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($this->Customer, $this->Product);
         // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
-        $Delivery = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class)->find($formData['Shipping']['Delivery']);
+        $Delivery = $this->entityManager->getRepository(Delivery::class)->find($formData['Shipping']['Delivery']);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
         $delivery_time = $DeliveryTime->getDeliveryTime();
         $formData['Shipping']['DeliveryTime'] = $delivery_time_id;
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [

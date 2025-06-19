@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -137,7 +139,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchById()
     {
-        $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
+        $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),
@@ -157,7 +159,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
-        $Customer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->findOneBy([], ['id' => 'DESC']);
+        $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
         $Order = $this->createOrder($Customer);
 
         /** @var OrderStatus $OrderStatus */
@@ -213,12 +215,12 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        //test mail resend to 仮会員.
+        // test mail resend to 仮会員.
         $this->assertStringContainsString($BaseInfo->getEmail02(), $Message->toString());
     }
 
@@ -242,10 +244,10 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
         $MessageSecondTime = $this->getMailerMessage(0);
 
-        //test mail resend to 仮会員. (シークレットキーが毎回変わることを確認)
-        $FirstTimeMail       = $MessageFistTime->toString();
-        $SecondTimeMail      = $MessageSecondTime->toString();
-        $secretKeyFirstTime  = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
+        // test mail resend to 仮会員. (シークレットキーが毎回変わることを確認)
+        $FirstTimeMail = $MessageFistTime->toString();
+        $SecondTimeMail = $MessageSecondTime->toString();
+        $secretKeyFirstTime = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
         $secretKeySecondTime = mb_substr($SecondTimeMail, mb_strrpos($SecondTimeMail, '/activate/') + 10, 32);
         $this->assertNotEquals($secretKeyFirstTime, $secretKeySecondTime);
     }
@@ -262,9 +264,9 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_customer_delete', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer_page',
-                ['page_no' => 1]).'?resume=1'));
+            ['page_no' => 1]).'?resume=1'));
 
-        $DeletedCustomer = $this->entityManager->getRepository(\Eccube\Entity\Customer::class)->find($id);
+        $DeletedCustomer = $this->entityManager->getRepository(Customer::class)->find($id);
 
         $this->assertNull($DeletedCustomer);
     }

@@ -15,6 +15,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Order;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\SaleTypeRepository;
@@ -85,9 +86,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $refClass = new \ReflectionClass(CartService::class);
         $refClass->getProperty('session')->setValue($this->cartService, new SessionMock());
 
-        $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
+        $this->saleTypeRepository = $this->entityManager->getRepository(SaleType::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
+        $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
         $this->purchaseFlow = static::getContainer()->get('eccube.purchase.flow.cart');
 
         $this->SaleType1 = $this->saleTypeRepository->find(1);
@@ -130,9 +131,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(1);
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
         $this->assertEquals(1, $quantity);
     }
@@ -142,9 +141,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(10, 6);
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
         $this->assertEquals(6, $quantity);
@@ -164,9 +161,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->save();
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
         $this->assertEquals(5, $quantity);
     }
@@ -218,9 +213,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->save();
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
         $this->assertEquals(2, $quantity);
     }
@@ -238,9 +231,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->save();
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
         $this->assertEquals(1, $quantity);
     }
@@ -291,7 +282,8 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
     }
 }
 
-class SessionMock {
+class SessionMock
+{
     private array $bag = [];
 
     public function set($key, $value): void

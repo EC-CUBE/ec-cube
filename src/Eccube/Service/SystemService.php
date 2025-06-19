@@ -44,7 +44,7 @@ class SystemService implements EventSubscriberInterface
      *
      * @var string
      */
-    private $maintenanceMode = null;
+    private $maintenanceMode;
 
     /**
      * @var EntityManagerInterface
