@@ -229,6 +229,13 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * @var boolean
          *
+         * @ORM\Column(name="option_require_kana", type="boolean", options={"default":true})
+         */
+        private $option_require_kana = true;
+
+        /**
+         * @var boolean
+         *
          * @ORM\Column(name="option_mail_notifier", type="boolean", options={"default":false})
          */
         private $option_mail_notifier = false;
@@ -948,6 +955,20 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         }
 
         /**
+         * Set optionRequireKana
+         *
+         * @param boolean $optionRequireKana
+         *
+         * @return BaseInfo
+         */
+        public function setOptionRequireKana($optionRequireKana)
+        {
+            $this->option_require_kana = $optionRequireKana;
+
+            return $this;
+        }
+
+        /**
          * Get optionRememberMe.
          *
          * @return boolean
@@ -955,6 +976,16 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         public function isOptionRememberMe()
         {
             return $this->option_remember_me;
+        }
+
+        /**
+         * Get optionRequireKana
+         *
+         * @return boolean
+         */
+        public function isOptionRequireKana()
+        {
+            return $this->option_require_kana;
         }
 
         /**
@@ -980,7 +1011,6 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         {
             return $this->option_mail_notifier;
         }
-
 
         /**
          * Set authenticationKey.

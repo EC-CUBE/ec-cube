@@ -87,6 +87,16 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    public function 切替_カナ必須項目($value)
+    {
+        $cssClass = $this->tester->grabAttributeFrom(['css' => 'span.shop_master_option_require_kana-on'], 'class');
+        $optionOn = strpos($cssClass, 'd-none') === false;
+        $this->tester->scrollTo(['xpath' => '//label[@for="shop_master_option_require_kana"]'], 0, 100);
+        if (($optionOn && !$value) || (!$optionOn && $value)) {
+            $this->tester->click(['xpath' => '//label[@for="shop_master_option_require_kana"]']);
+        }
+    }
+
     public function 入力_適格請求書発行事業者登録番号($value)
     {
         $this->tester->fillField(['id' => 'shop_master_invoice_registration_number'], $value);

@@ -335,10 +335,12 @@ file that was distributed with this source code.
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-3 col-form-label">
-                                                    {{ 'admin.common.kana'|trans }}
-                                                    <span class="badge bg-primary ms-1">
-                                                        {{ 'admin.common.required'|trans }}
-                                                    </span>
+                                                    {{- 'admin.common.kana'|trans -}}
+                                                    {%- if BaseInfo.option_require_kana -%}
+                                                        <span class="badge bg-primary ms-1">
+                                                            {{ 'admin.common.required'|trans }}
+                                                        </span>
+                                                    {%- endif -%}
                                                 </label>
                                                 <div class="col">
                                                     <div class="row">

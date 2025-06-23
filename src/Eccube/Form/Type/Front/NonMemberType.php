@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Front;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -51,9 +52,7 @@ class NonMemberType extends AbstractType
             ->add('name', NameType::class, [
                 'required' => true,
             ])
-            ->add('kana', KanaType::class, [
-                'required' => true,
-            ])
+            ->add('kana', KanaType::class)
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [

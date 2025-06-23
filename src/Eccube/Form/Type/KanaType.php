@@ -14,6 +14,8 @@
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,18 +24,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class KanaType extends AbstractType
 {
     /**
-     * @var \Eccube\Common\EccubeConfig
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
+
+    /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
 
     /**
      * KanaType constructor.
      *
      * @param EccubeConfig $eccubeConfig
+     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig, BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->baseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -52,6 +61,7 @@ class KanaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'required' => $this->baseInfo->isOptionRequireKana(),
             'lastname_options' => [
                 'attr' => [
                     'placeholder' => 'common.last_name_kana',

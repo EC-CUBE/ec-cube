@@ -28,10 +28,10 @@ class EF04CustomerCest
     public function customer_会員登録正常(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T01 会員登録 正常パターン');
-        $I->amOnPage('/entry');
         $faker = Fixtures::get('faker');
         $BaseInfo = Fixtures::get('baseinfo');
         $new_email = microtime(true).'.'.$faker->safeEmail;
+
         // 会員情報入力フォームに、会員情報を入力する
         // 「同意する」ボタンを押下する
         $form = [
@@ -57,16 +57,19 @@ class EF04CustomerCest
             $I->amGoingTo('メルマガプラグインを発見したため、メルマガを購読します');
             $form['entry[mailmaga_flg]'] = '1';
         }
-        $I->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
+        $EntryPage->同意して登録();
 
         // 入力した会員情報を確認する。
-        $I->see('姓 名', '.ec-registerRole form .ec-borderedDefs dl:nth-child(1) dd');
-        $I->see('111111111', '.ec-registerRole form .ec-borderedDefs dl:nth-child(5) dd');
-        $I->see($new_email, '.ec-registerRole form .ec-borderedDefs dl:nth-child(6) dd');
+        $EntryConfirmPage = EntryConfirmPage::at($I);
+        $I->assertEquals('姓 名', $EntryConfirmPage->お名前());
+        $I->assertEquals('セイ メイ', $EntryConfirmPage->お名前カナ());
+        $I->assertEquals('〒5300001 大阪府 大阪市北区 梅田2-4-9 ブリーゼタワー13F', $EntryConfirmPage->住所());
+        $I->assertEquals('111111111', $EntryConfirmPage->電話番号());
+        $I->assertEquals($new_email, $EntryConfirmPage->メールアドレス());
+        $I->assertEquals('公務員', $EntryConfirmPage->職業());
 
         $I->resetEmails();
-        // 「会員登録をする」ボタンを押下する
-        $I->click('.ec-registerRole form button.ec-blockBtn--action');
+        $EntryConfirmPage->会員登録をする();
 
         $message = $I->lastMessage();
         $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
@@ -105,7 +108,6 @@ class EF04CustomerCest
     public function customer_会員登録異常1(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T02 会員登録 異常パターン 重複');
-        $I->amOnPage('/entry');
 
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
@@ -135,7 +137,6 @@ class EF04CustomerCest
     public function customer_会員登録異常2(AcceptanceTester $I)
     {
         $I->wantTo('EF0401-UC01-T03 会員登録 異常パターン 入力ミス');
-        $I->amOnPage('/entry');
 
         $faker = Fixtures::get('faker');
         $new_email = microtime(true).'.'.$faker->safeEmail;
@@ -160,8 +161,6 @@ class EF04CustomerCest
 
         // 入力した会員情報を確認する。
         $I->see('新規会員登録', '.ec-pageHeader h1');
-
-        // TODO [fixture] 確認画面のあとでのメールアドレス重複エラー
     }
 
     public function customer_会員登録同意しない(AcceptanceTester $I)
@@ -208,10 +207,12 @@ class EF04CustomerCest
             $I->amGoingTo('メルマガプラグインを発見したため、メルマガを購読します');
             $form['entry[mailmaga_flg]'] = '1';
         }
-        $I->submitForm(['css' => '.ec-layoutRole__main form'], $form, ['css' => 'button.ec-blockBtn--action']);
+        $EntryPage->同意して登録();
 
-        $I->click('.ec-registerRole form button.ec-blockBtn--cancel');
-        $I->see('新規会員登録', '.ec-pageHeader h1');
+        EntryConfirmPage::at($I)
+            ->戻る();
+
+        EntryPage::at($I);
     }
 
     public function customer_会員登録正常_ログイン(AcceptanceTester $I)

@@ -98,14 +98,7 @@ class ShippingType extends AbstractType
                     ],
                 ],
             ])
-            ->add('kana', KanaType::class, [
-                'required' => false,
-                'options' => [
-                    'constraints' => [
-                        new Assert\NotBlank(),
-                    ],
-                ],
-            ])
+            ->add('kana', KanaType::class)
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
