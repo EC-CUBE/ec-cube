@@ -19,7 +19,7 @@ use Eccube\Entity\Master\OrderStatus;
 
 class OrderStatusFilter extends SQLFilter
 {
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
+    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         // 決済処理中/購入処理中を除く.
         if ($targetEntity->reflClass->getName() === 'Eccube\Entity\Order') {

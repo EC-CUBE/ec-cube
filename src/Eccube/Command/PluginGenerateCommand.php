@@ -48,7 +48,7 @@ class PluginGenerateCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('name', InputOption::VALUE_REQUIRED, 'plugin name')
@@ -57,13 +57,13 @@ class PluginGenerateCommand extends Command
             ->setDescription('Generate plugin skeleton.');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->fs = new Filesystem();
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('name') && null !== $input->getArgument('code') && null !== $input->getArgument('ver')) {
             return;
@@ -99,7 +99,7 @@ class PluginGenerateCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
         $code = $input->getArgument('code');
@@ -122,7 +122,7 @@ class PluginGenerateCommand extends Command
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     public function validateCode($code)
@@ -322,7 +322,7 @@ class Event implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [];
     }

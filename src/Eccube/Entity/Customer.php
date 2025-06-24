@@ -330,7 +330,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * {@inheritdoc}
          */
-        public function eraseCredentials()
+        public function eraseCredentials(): void
         {
         }
 

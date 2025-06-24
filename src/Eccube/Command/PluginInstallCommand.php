@@ -24,7 +24,7 @@ class PluginInstallCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:install';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
@@ -33,7 +33,7 @@ class PluginInstallCommand extends Command
             ->setDescription('Install plugin from local.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -46,7 +46,7 @@ class PluginInstallCommand extends Command
             if ($this->pluginService->install($path, $ifNotExists)) {
                 $io->success('Installed.');
 
-                return 0;
+                return Command::SUCCESS;
             }
         }
 
@@ -56,11 +56,11 @@ class PluginInstallCommand extends Command
             $this->clearCache($io);
             $io->success('Installed.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->error('path or code is required.');
 
-        return 1;
+        return Command::FAILURE;
     }
 }

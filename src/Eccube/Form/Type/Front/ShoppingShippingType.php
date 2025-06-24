@@ -22,14 +22,14 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\CustomerAddress',
@@ -39,7 +39,7 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return CustomerAddressType::class;
     }
@@ -47,7 +47,7 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'shopping_shipping';
     }

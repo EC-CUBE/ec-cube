@@ -22,7 +22,7 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\CsvType',
@@ -35,7 +35,7 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'csv_type';
     }
@@ -43,7 +43,7 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return MasterType::class;
     }

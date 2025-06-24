@@ -24,13 +24,13 @@ class PluginDisableCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:disable';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -39,14 +39,14 @@ class PluginDisableCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not found.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->pluginService->disable($plugin);
@@ -54,6 +54,6 @@ class PluginDisableCommand extends Command
 
         $io->success('Plugin Disabled.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

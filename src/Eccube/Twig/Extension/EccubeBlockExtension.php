@@ -29,7 +29,7 @@ class EccubeBlockExtension extends AbstractExtension
         $this->blockTemplates = $blockTemplates;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('eccube_block_*', function ($context, $name, array $parameters = []) {

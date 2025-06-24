@@ -41,13 +41,13 @@ class GenerateProxyCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Generate entity proxies');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projectDir = $this->eccubeConfig->get('kernel.project_dir');
         $includeDirs = [$projectDir.'/app/Customize/Entity'];
@@ -66,6 +66,6 @@ class GenerateProxyCommand extends Command
             $output
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

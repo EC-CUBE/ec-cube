@@ -105,13 +105,13 @@ class InstallerCommand extends Command
         };
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Install EC-CUBE');
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
         $this->io->text([
@@ -209,12 +209,12 @@ class InstallerCommand extends Command
         $this->envFileUpdater->updateEnvFile();
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
@@ -254,13 +254,13 @@ class InstallerCommand extends Command
             } catch (ProcessFailedException $e) {
                 $this->io->error($e->getMessage());
 
-                return 1;
+                return Command::FAILURE;
             }
         }
 
         $this->io->success('EC-CUBE installation successful.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function getDatabaseName($databaseUrl)

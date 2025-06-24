@@ -68,7 +68,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * {@inheritdoc}
          */
-        public function eraseCredentials()
+        public function eraseCredentials(): void
         {
         }
 

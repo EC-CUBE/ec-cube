@@ -11,7 +11,7 @@ use Twig\NodeVisitor\NodeVisitorInterface;
 
 class TemplateEventExtension extends AbstractExtension
 {
-    public function getNodeVisitors()
+    public function getNodeVisitors(): array
     {
         return [new TemplateEventNodeVisiror()];
     }

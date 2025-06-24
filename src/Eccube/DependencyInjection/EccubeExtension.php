@@ -16,6 +16,7 @@ namespace Eccube\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -29,7 +30,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
@@ -40,7 +41,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         return 'eccube';
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
     {
         return parent::getConfiguration($config, $container);
     }
@@ -48,7 +49,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     /**
      * Allow an extension to prepend the extension configurations.
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         // FrameworkBundleの設定を動的に変更する.
         $this->configureFramework($container);
@@ -57,7 +58,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $this->configurePlugins($container);
     }
 
-    protected function configureFramework(ContainerBuilder $container)
+    protected function configureFramework(ContainerBuilder $container): void
     {
         $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
         // envから取得した内容が文字列のため, booleanに変換
@@ -119,7 +120,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $container->setParameter('eccube_rate_limiter_configs', $rateLimiterConfigs);
     }
 
-    protected function configurePlugins(ContainerBuilder $container)
+    protected function configurePlugins(ContainerBuilder $container): void
     {
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
         $pluginDirs = $this->getPluginDirectories($pluginDir);
@@ -181,7 +182,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     /**
      * @param string $pluginDir
      */
-    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir)
+    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir): void
     {
         $paths = [];
         $projectDir = $container->getParameter('kernel.project_dir');
@@ -209,7 +210,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     /**
      * @param string $pluginDir
      */
-    protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir)
+    protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir): void
     {
         $paths = [];
 

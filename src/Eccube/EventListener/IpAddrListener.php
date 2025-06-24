@@ -89,7 +89,7 @@ class IpAddrListener implements EventSubscriberInterface
         return true;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'kernel.request' => ['onKernelRequest', 512],

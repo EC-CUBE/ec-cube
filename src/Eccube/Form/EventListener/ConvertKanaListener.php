@@ -35,14 +35,14 @@ class ConvertKanaListener implements EventSubscriberInterface
         $this->encoding = $encoding;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
         ];
     }
 
-    public function onPreSubmit(FormEvent $event)
+    public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();
 

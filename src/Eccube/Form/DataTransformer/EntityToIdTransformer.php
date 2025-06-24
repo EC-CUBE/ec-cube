@@ -39,7 +39,7 @@ class EntityToIdTransformer implements DataTransformerInterface
         $this->className = $className;
     }
 
-    public function transform($entity)
+    public function transform($entity): mixed
     {
         if (null === $entity) {
             return '';
@@ -48,7 +48,7 @@ class EntityToIdTransformer implements DataTransformerInterface
         return $entity->getId();
     }
 
-    public function reverseTransform($id)
+    public function reverseTransform($id): mixed
     {
         if ('' === $id || null === $id) {
             return null;

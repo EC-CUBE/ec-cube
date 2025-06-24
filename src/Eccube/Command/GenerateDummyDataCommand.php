@@ -57,7 +57,7 @@ class GenerateDummyDataCommand extends Command
         $this->productRepository = $productRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Dummy data generator')
@@ -81,7 +81,7 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locale = $input->getOption('with-locale');
         $notImage = $input->getOption('without-image');
@@ -189,6 +189,6 @@ EOF
         $output->writeln('');
         $output->writeln(sprintf('%s <info>success</info>', 'eccube:fixtures:generate'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

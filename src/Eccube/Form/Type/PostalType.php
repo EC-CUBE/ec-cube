@@ -43,7 +43,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
         $builder->addEventSubscriber(new \Eccube\Form\EventListener\TruncateHyphenListener());
@@ -52,7 +52,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setNormalizer('constraints', function($options, $value) {
             $constraints = [];
@@ -86,7 +86,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return TelType::class;
     }
@@ -94,7 +94,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'postal';
     }

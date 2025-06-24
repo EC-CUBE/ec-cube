@@ -25,14 +25,14 @@ class PluginUpdateCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:update';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
             ->setDescription('Execute plugin update process.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -44,7 +44,7 @@ class PluginUpdateCommand extends Command
         if (!$Plugin) {
             $io->error("No such plugin `{$code}`.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
@@ -53,6 +53,6 @@ class PluginUpdateCommand extends Command
 
         $io->success('Updated.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

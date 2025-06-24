@@ -234,7 +234,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         if (null === $this->count) {
             $position = $this->key();
@@ -278,7 +278,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
-    public function seek($pointer)
+    public function seek($pointer): void
     {
         $this->file->seek($pointer);
     }

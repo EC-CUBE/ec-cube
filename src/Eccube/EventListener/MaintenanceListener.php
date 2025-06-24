@@ -35,7 +35,7 @@ class MaintenanceListener implements EventSubscriberInterface
         $this->systemService = $systemService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onResponse'],

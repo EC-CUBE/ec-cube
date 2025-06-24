@@ -45,7 +45,7 @@ class Template extends \Twig\Template
         }
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         // デバッグツールバーでエラーが発生するため空文字を返しておく。
@@ -53,7 +53,7 @@ class Template extends \Twig\Template
         return '';
     }
 
-    public function getDebugInfo()
+    public function getDebugInfo(): array
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         return [];
@@ -64,7 +64,7 @@ class Template extends \Twig\Template
         // Templateのキャッシュ作成時に動的に作成されるメソッド
     }
 
-    public function getSourceContext()
+    public function getSourceContext(): Source
     {
         // FIXME Twig\Loader\FilesystemLoader の実装を持ってきたが,これで問題ないか要確認
         return new Source('', $this->getTemplateName(), '');

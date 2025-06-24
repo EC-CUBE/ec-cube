@@ -59,12 +59,12 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $this->pluginRepository = $pluginRepository;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    public function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packageNames = [];
         $unSupportedPlugins = [];
@@ -90,7 +90,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             ]);
             $question = new ConfirmationQuestion($message);
             if (!$this->io->askQuestion($question)) {
-                return;
+                return Command::FAILURE;
             }
         }
 
@@ -98,6 +98,6 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             $this->composerService->execRequire(implode(' ', $packageNames), $this->io);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

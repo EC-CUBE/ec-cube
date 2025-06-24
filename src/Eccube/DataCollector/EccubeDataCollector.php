@@ -106,7 +106,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         $this->data['base_currency_code'] = $this->eccubeConfig->get('currency');
         $this->data['currency_code'] = $this->eccubeConfig->get('currency');
@@ -144,7 +144,7 @@ class EccubeDataCollector extends DataCollector
         }
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -152,7 +152,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'eccube_core';
     }

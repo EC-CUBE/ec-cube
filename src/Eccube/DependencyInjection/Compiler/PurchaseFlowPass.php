@@ -37,7 +37,7 @@ class PurchaseFlowPass implements CompilerPassInterface
     public const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
     public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $flowTypes = [
             PurchaseContext::CART_FLOW => $container->findDefinition('eccube.purchase.flow.cart'),

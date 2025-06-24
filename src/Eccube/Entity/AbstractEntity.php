@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Serializer;
 abstract class AbstractEntity implements \ArrayAccess
 {
     #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
         $method = $inflector->classify($offset);
@@ -41,12 +41,12 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
         $method = $inflector->classify($offset);
@@ -60,10 +60,12 @@ abstract class AbstractEntity implements \ArrayAccess
         } elseif (method_exists($this, "has$method")) {
             return $this->{"has$method"}();
         }
+
+        return null;
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
     }
 

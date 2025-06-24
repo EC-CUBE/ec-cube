@@ -35,14 +35,14 @@ class ComposerRequireCommand extends Command
         $this->composerService = $composerService;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('package', InputArgument::REQUIRED)
             ->addArgument('version', InputArgument::OPTIONAL)
             ->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Path of composer repository');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packageName = $input->getArgument('package');
         if ($input->getArgument('version')) {
@@ -51,6 +51,6 @@ class ComposerRequireCommand extends Command
 
         $this->composerService->execRequire($packageName, $output, $input->getOption('from'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

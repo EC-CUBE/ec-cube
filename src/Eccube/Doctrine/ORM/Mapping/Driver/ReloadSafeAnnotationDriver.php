@@ -51,7 +51,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
     /**
      * {@inheritdoc}
      */
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         if ($this->classNames !== null) {
             return $this->classNames;

@@ -23,7 +23,7 @@ class QueryCustomizerPass implements CompilerPassInterface
 {
     public const QUERY_CUSTOMIZER_TAG = 'eccube.query_customizer';
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $queries = $container->getDefinition(Queries::class);
         $ids = $container->findTaggedServiceIds(self::QUERY_CUSTOMIZER_TAG);

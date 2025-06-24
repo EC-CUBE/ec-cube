@@ -31,7 +31,7 @@ class PluginPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // 無効状態のプラグインコード一覧を取得.
         // 無効なプラグインの一覧はEccubeExtensionで定義している.

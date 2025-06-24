@@ -36,12 +36,12 @@ class ComposerRemoveCommand extends Command
         $this->composerService = $composerService;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('package', InputArgument::REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execRemove($input->getArgument('package'), $output);
 
@@ -57,7 +57,7 @@ class ComposerRemoveCommand extends Command
         } catch (\Exception $e) {
             $io->error($e->getMessage());
 
-            return 1;
+            return Command::FAILURE;
         }
     }
 }

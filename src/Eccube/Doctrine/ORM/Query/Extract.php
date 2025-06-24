@@ -61,7 +61,7 @@ class Extract extends FunctionNode
         'TIME',
     ];
 
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
         $parser->match(Lexer::T_IDENTIFIER);
@@ -90,7 +90,7 @@ class Extract extends FunctionNode
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker): string
     {
         $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
         // UTCとの時差(秒数)

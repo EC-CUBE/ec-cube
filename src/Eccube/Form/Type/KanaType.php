@@ -39,7 +39,7 @@ class KanaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // ひらがなをカタカナに変換する
         // 引数はmb_convert_kanaのもの
@@ -49,7 +49,7 @@ class KanaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'lastname_options' => [
@@ -86,7 +86,7 @@ class KanaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return NameType::class;
     }
@@ -94,7 +94,7 @@ class KanaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'kana';
     }

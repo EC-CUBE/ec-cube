@@ -24,13 +24,13 @@ class PluginEnableCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:enable';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -39,14 +39,14 @@ class PluginEnableCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not found.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$plugin->isInitialized()) {
@@ -58,6 +58,6 @@ class PluginEnableCommand extends Command
 
         $io->success('Plugin Enabled.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -58,7 +58,7 @@ class Logger extends AbstractLogger
      * @param string $message
      * @param array $context
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if ($this->context->isAdmin()) {
             $this->adminLogger->log($level, $message, $context);

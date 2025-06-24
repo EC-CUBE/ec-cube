@@ -25,7 +25,7 @@ class SaleTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\SaleType',
@@ -36,7 +36,7 @@ class SaleTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sale_type';
     }
@@ -44,7 +44,7 @@ class SaleTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return MasterType::class;
     }

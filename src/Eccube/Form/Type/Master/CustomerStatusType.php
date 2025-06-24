@@ -23,13 +23,13 @@ class CustomerStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // todo ???
         $options['sex_options']['required'] = $options['required'];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => 'Eccube\Entity\Master\CustomerStatus',
@@ -37,12 +37,12 @@ class CustomerStatusType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return MasterType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'customer_status';
     }

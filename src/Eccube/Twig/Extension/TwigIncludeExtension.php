@@ -25,7 +25,7 @@ class TwigIncludeExtension extends AbstractExtension
         $this->twig = $twig;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('include_dispatch', [$this, 'include_dispatch'],
