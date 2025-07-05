@@ -81,7 +81,7 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
 
     public function 一覧_分類登録2()
     {
-        $this->tester->click("ul.list-group > li:last-child > div > div.col.d-flex.align-items-center > a");
+        $this->tester->click('ul.list-group > li:last-child > div > div.col.d-flex.align-items-center > a');
 
         return $this;
     }

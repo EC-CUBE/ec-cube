@@ -52,6 +52,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment", methods={"GET"})
+     *
      * @Template("@admin/Setting/Shop/payment.twig")
      */
     public function index(Request $request)
@@ -78,9 +79,10 @@ class PaymentController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/Shop/payment_edit.twig")
      */
-    public function edit(Request $request, Payment $Payment = null)
+    public function edit(Request $request, ?Payment $Payment = null)
     {
         if (is_null($Payment)) {
             $Payment = $this->paymentRepository->findOneBy([], ['sort_no' => 'DESC']);
@@ -89,7 +91,7 @@ class PaymentController extends AbstractController
                 $sortNo = $Payment->getSortNo() + 1;
             }
 
-            $Payment = new \Eccube\Entity\Payment();
+            $Payment = new Payment();
             $Payment
                 ->setSortNo($sortNo)
                 ->setFixed(true)
@@ -163,6 +165,7 @@ class PaymentController extends AbstractController
      * 画像アップロード時にリクエストされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
+     *
      * @Route("/%eccube_admin_route%/setting/shop/payment/image/process", name="admin_payment_image_process", methods={"POST"})
      */
     public function imageProcess(Request $request)
@@ -211,6 +214,7 @@ class PaymentController extends AbstractController
      * アップロード画像を取得する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
+     *
      * @Route("/%eccube_admin_route%/setting/shop/payment/image/load", name="admin_payment_image_load", methods={"GET"})
      */
     public function imageLoad(Request $request)
@@ -242,6 +246,7 @@ class PaymentController extends AbstractController
      * アップロード画像をすぐ削除する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
+     *
      * @Route("/%eccube_admin_route%/setting/shop/payment/image/revert", name="admin_payment_image_revert", methods={"DELETE"})
      */
     public function imageRevert(Request $request)

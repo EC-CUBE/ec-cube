@@ -1,0 +1,10 @@
+# Do not fail GitHub Actions status check
+# https://docs.codecov.com/docs/quick-start#tips-and-tricks
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true

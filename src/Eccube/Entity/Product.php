@@ -21,12 +21,16 @@ if (!class_exists('\Eccube\Entity\Product')) {
      * Product
      *
      * @ORM\Table(name="dtb_product")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
      */
-    class Product extends \Eccube\Entity\AbstractEntity
+    class Product extends AbstractEntity
     {
         private $_calc = false;
         private $stockFinds = [];
@@ -55,7 +59,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
             if (!$this->_calc) {
                 $i = 0;
                 foreach ($this->getProductClasses() as $ProductClass) {
-                    /** @var \Eccube\Entity\ProductClass $ProductClass */
+                    /** @var ProductClass $ProductClass */
                     // stock_find
                     if ($ProductClass->isVisible() == false) {
                         continue;
@@ -128,7 +132,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          */
         public function isEnable()
         {
-            return $this->getStatus()->getId() === \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW ? true : false;
+            return $this->getStatus()->getId() === Master\ProductStatus::DISPLAY_SHOW ? true : false;
         }
 
         /**
@@ -206,7 +210,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Stock min
          *
-         * @return integer
+         * @return int
          */
         public function getStockMin()
         {
@@ -220,7 +224,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Stock max
          *
-         * @return integer
+         * @return int
          */
         public function getStockMax()
         {
@@ -234,7 +238,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get StockUnlimited min
          *
-         * @return integer
+         * @return int
          */
         public function getStockUnlimitedMin()
         {
@@ -248,7 +252,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get StockUnlimited max
          *
-         * @return integer
+         * @return int
          */
         public function getStockUnlimitedMax()
         {
@@ -262,7 +266,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price01 min
          *
-         * @return integer
+         * @return int
          */
         public function getPrice01Min()
         {
@@ -278,7 +282,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price01 max
          *
-         * @return integer
+         * @return int
          */
         public function getPrice01Max()
         {
@@ -294,7 +298,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price02 min
          *
-         * @return integer
+         * @return int
          */
         public function getPrice02Min()
         {
@@ -308,7 +312,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price02 max
          *
-         * @return integer
+         * @return int
          */
         public function getPrice02Max()
         {
@@ -322,7 +326,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price01IncTax min
          *
-         * @return integer
+         * @return int
          */
         public function getPrice01IncTaxMin()
         {
@@ -336,7 +340,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price01IncTax max
          *
-         * @return integer
+         * @return int
          */
         public function getPrice01IncTaxMax()
         {
@@ -350,7 +354,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price02IncTax min
          *
-         * @return integer
+         * @return int
          */
         public function getPrice02IncTaxMin()
         {
@@ -364,7 +368,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Price02IncTax max
          *
-         * @return integer
+         * @return int
          */
         public function getPrice02IncTaxMax()
         {
@@ -378,7 +382,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Product_code min
          *
-         * @return integer
+         * @return int
          */
         public function getCodeMin()
         {
@@ -397,7 +401,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get Product_code max
          *
-         * @return integer
+         * @return int
          */
         public function getCodeMax()
         {
@@ -444,10 +448,12 @@ if (!class_exists('\Eccube\Entity\Product')) {
         }
 
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -526,6 +532,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
          * @var \Doctrine\Common\Collections\Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product", cascade={"remove"})
+         *
          * @ORM\OrderBy({
          *     "sort_no"="ASC"
          * })
@@ -547,20 +554,24 @@ if (!class_exists('\Eccube\Entity\Product')) {
         private $CustomerFavoriteProducts;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
         private $Creator;
 
         /**
-         * @var \Eccube\Entity\Master\ProductStatus
+         * @var Master\ProductStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductStatus")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_status_id", referencedColumnName="id")
          * })
          */
@@ -571,11 +582,11 @@ if (!class_exists('\Eccube\Entity\Product')) {
          */
         public function __construct()
         {
-            $this->ProductCategories = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->ProductClasses = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->ProductImage = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->ProductCategories = new ArrayCollection();
+            $this->ProductClasses = new ArrayCollection();
+            $this->ProductImage = new ArrayCollection();
+            $this->ProductTag = new ArrayCollection();
+            $this->CustomerFavoriteProducts = new ArrayCollection();
         }
 
         public function __clone()
@@ -828,7 +839,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productCategory.
          *
-         * @param \Eccube\Entity\ProductCategory $productCategory
+         * @param ProductCategory $productCategory
          *
          * @return Product
          */
@@ -842,9 +853,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productCategory.
          *
-         * @param \Eccube\Entity\ProductCategory $productCategory
+         * @param ProductCategory $productCategory
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeProductCategory(ProductCategory $productCategory)
         {
@@ -864,7 +875,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productClass.
          *
-         * @param \Eccube\Entity\ProductClass $productClass
+         * @param ProductClass $productClass
          *
          * @return Product
          */
@@ -878,9 +889,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productClass.
          *
-         * @param \Eccube\Entity\ProductClass $productClass
+         * @param ProductClass $productClass
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeProductClass(ProductClass $productClass)
         {
@@ -900,7 +911,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productImage.
          *
-         * @param \Eccube\Entity\ProductImage $productImage
+         * @param ProductImage $productImage
          *
          * @return Product
          */
@@ -914,9 +925,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productImage.
          *
-         * @param \Eccube\Entity\ProductImage $productImage
+         * @param ProductImage $productImage
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeProductImage(ProductImage $productImage)
         {
@@ -936,7 +947,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productTag.
          *
-         * @param \Eccube\Entity\ProductTag $productTag
+         * @param ProductTag $productTag
          *
          * @return Product
          */
@@ -950,9 +961,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productTag.
          *
-         * @param \Eccube\Entity\ProductTag $productTag
+         * @param ProductTag $productTag
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeProductTag(ProductTag $productTag)
         {
@@ -984,7 +995,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
             }
 
             usort($tags, function (Tag $tag1, Tag $tag2) {
-                return $tag1->getSortNo() < $tag2->getSortNo();
+                return $tag1->getSortNo() <=> $tag2->getSortNo();
             });
 
             return $tags;
@@ -993,7 +1004,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return Product
          */
@@ -1007,9 +1018,9 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove customerFavoriteProduct.
          *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
         {
@@ -1029,11 +1040,11 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return Product
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -1043,7 +1054,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {
@@ -1053,11 +1064,11 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Set status.
          *
-         * @param \Eccube\Entity\Master\ProductStatus|null $status
+         * @param Master\ProductStatus|null $status
          *
          * @return Product
          */
-        public function setStatus(Master\ProductStatus $status = null)
+        public function setStatus(?Master\ProductStatus $status = null)
         {
             $this->Status = $status;
 
@@ -1067,7 +1078,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Get status.
          *
-         * @return \Eccube\Entity\Master\ProductStatus|null
+         * @return Master\ProductStatus|null
          */
         public function getStatus()
         {

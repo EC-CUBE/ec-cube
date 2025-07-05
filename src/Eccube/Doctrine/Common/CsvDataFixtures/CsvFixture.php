@@ -34,7 +34,7 @@ class CsvFixture implements FixtureInterface
      *
      * @param \SplFileObject|null $file
      */
-    public function __construct(\SplFileObject $file = null)
+    public function __construct(?\SplFileObject $file = null)
     {
         $this->file = $file;
     }

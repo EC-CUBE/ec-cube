@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -44,7 +45,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->BaseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->BaseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
     }

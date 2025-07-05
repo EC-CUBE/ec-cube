@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\Payment')) {
      * Payment
      *
      * @ORM\Table(name="dtb_payment")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentRepository")
      */
-    class Payment extends \Eccube\Entity\AbstractEntity
+    class Payment extends AbstractEntity
     {
         /**
          * @return string
@@ -39,7 +43,9 @@ if (!class_exists('\Eccube\Entity\Payment')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -73,7 +79,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         private $sort_no;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="fixed", type="boolean", options={"default":true})
          */
@@ -129,10 +135,12 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         private $PaymentOptions;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -255,7 +263,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Set fixed.
          *
-         * @param boolean $fixed
+         * @param bool $fixed
          *
          * @return Payment
          */
@@ -269,7 +277,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Get fixed.
          *
-         * @return boolean
+         * @return bool
          */
         public function isFixed()
         {
@@ -349,7 +357,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         }
 
         /**
-         * @return integer
+         * @return int
          */
         public function isVisible()
         {
@@ -357,7 +365,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         }
 
         /**
-         * @param boolean $visible
+         * @param bool $visible
          *
          * @return Payment
          */
@@ -419,7 +427,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Add paymentOption.
          *
-         * @param \Eccube\Entity\PaymentOption $paymentOption
+         * @param PaymentOption $paymentOption
          *
          * @return Payment
          */
@@ -433,9 +441,9 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Remove paymentOption.
          *
-         * @param \Eccube\Entity\PaymentOption $paymentOption
+         * @param PaymentOption $paymentOption
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removePaymentOption(PaymentOption $paymentOption)
         {
@@ -455,11 +463,11 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return Payment
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -469,7 +477,7 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

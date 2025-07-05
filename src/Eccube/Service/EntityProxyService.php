@@ -44,7 +44,7 @@ class EntityProxyService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
@@ -60,7 +60,7 @@ class EntityProxyService
      *
      * @return array 生成したファイルのリスト
      */
-    public function generate($includesDirs, $excludeDirs, $outputDir, OutputInterface $output = null)
+    public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null)
     {
         if (is_null($output)) {
             $output = new ConsoleOutput();

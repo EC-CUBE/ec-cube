@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
      * BlockPosition
      *
      * @ORM\Table(name="dtb_block_position")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\BlockPositionRepository")
      */
-    class BlockPosition extends \Eccube\Entity\AbstractEntity
+    class BlockPosition extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="section", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $section;
@@ -40,7 +46,9 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          * @var int
          *
          * @ORM\Column(name="block_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $block_id;
@@ -49,7 +57,9 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
          * @var int
          *
          * @ORM\Column(name="layout_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $layout_id;
@@ -62,20 +72,24 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         private $block_row;
 
         /**
-         * @var \Eccube\Entity\Block
+         * @var Block
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Block", inversedBy="BlockPositions")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="block_id", referencedColumnName="id")
          * })
          */
         private $Block;
 
         /**
-         * @var \Eccube\Entity\Layout
+         * @var Layout
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="BlockPositions")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="layout_id", referencedColumnName="id")
          * })
          */
@@ -180,11 +194,11 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Set block.
          *
-         * @param \Eccube\Entity\Block|null $block
+         * @param Block|null $block
          *
          * @return BlockPosition
          */
-        public function setBlock(Block $block = null)
+        public function setBlock(?Block $block = null)
         {
             $this->Block = $block;
 
@@ -194,7 +208,7 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Get block.
          *
-         * @return \Eccube\Entity\Block|null
+         * @return Block|null
          */
         public function getBlock()
         {
@@ -204,11 +218,11 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Set layout.
          *
-         * @param \Eccube\Entity\Layout|null $Layout
+         * @param Layout|null $Layout
          *
          * @return BlockPosition
          */
-        public function setLayout(Layout $Layout = null)
+        public function setLayout(?Layout $Layout = null)
         {
             $this->Layout = $Layout;
 
@@ -218,7 +232,7 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Get Layout.
          *
-         * @return \Eccube\Entity\Layout|null
+         * @return Layout|null
          */
         public function getLayout()
         {

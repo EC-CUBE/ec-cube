@@ -54,14 +54,10 @@ runs:
             StrictHostKeyChecking no' >> ${HOME}/.ssh/config
 
     - name: Get Composer Cache Directory
+      uses: actions/cache@v4
       id: composer-cache
-      shell: bash
-      run: |
-        echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - uses: actions/cache@v1
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
+        path: ${{ github.workspace }}/vendor
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-composer-

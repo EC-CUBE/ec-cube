@@ -26,12 +26,16 @@ if (!class_exists('\Eccube\Entity\Member')) {
      * Member
      *
      * @ORM\Table(name="dtb_member")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
      */
-    class Member extends \Eccube\Entity\AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
     {
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
@@ -76,7 +80,9 @@ if (!class_exists('\Eccube\Entity\Member')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -104,6 +110,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
 
         /**
          * @Assert\NotBlank()
+         *
          * @Assert\Length(max=4096)
          */
         private $plainPassword;
@@ -139,7 +146,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
          *
-         * @var integer
+         * @var int
          */
         private $two_factor_auth_enabled = false;
 
@@ -165,30 +172,36 @@ if (!class_exists('\Eccube\Entity\Member')) {
         private $login_date;
 
         /**
-         * @var \Eccube\Entity\Master\Work
+         * @var Master\Work
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
          * })
          */
         private $Work;
 
         /**
-         * @var \Eccube\Entity\Master\Authority
+         * @var Master\Authority
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
          * })
          */
         private $Authority;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -395,7 +408,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set twoFactorAuthEnabled.
          *
-         * @param boolean $two_factor_auth_enabled
+         * @param bool $two_factor_auth_enabled
          *
          * @return Member
          */
@@ -409,7 +422,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Get twoFactorAuthEnabled.
          *
-         * @return boolean
+         * @return bool
          */
         public function isTwoFactorAuthEnabled()
         {
@@ -491,11 +504,11 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set Work
          *
-         * @param \Eccube\Entity\Master\Work
+         * @param Master\Work
          *
          * @return Member
          */
-        public function setWork(Master\Work $work = null)
+        public function setWork(?Master\Work $work = null)
         {
             $this->Work = $work;
 
@@ -505,7 +518,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Get work.
          *
-         * @return \Eccube\Entity\Master\Work|null
+         * @return Master\Work|null
          */
         public function getWork()
         {
@@ -515,11 +528,11 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set authority.
          *
-         * @param \Eccube\Entity\Master\Authority|null $authority
+         * @param Master\Authority|null $authority
          *
          * @return Member
          */
-        public function setAuthority(Master\Authority $authority = null)
+        public function setAuthority(?Master\Authority $authority = null)
         {
             $this->Authority = $authority;
 
@@ -529,7 +542,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Get authority.
          *
-         * @return \Eccube\Entity\Master\Authority|null
+         * @return Master\Authority|null
          */
         public function getAuthority()
         {
@@ -539,11 +552,11 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return Member
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -553,7 +566,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

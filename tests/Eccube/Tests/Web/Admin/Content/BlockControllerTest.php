@@ -73,7 +73,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         $this->loginTo($this->createMember());
 
-
         $this->client->request('DELETE',
             $this->generateUrl('admin_content_block_delete', ['id' => 1])
         );

@@ -71,7 +71,7 @@ class ProductClassEditType extends AbstractType
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         BaseInfoRepository $baseInfoRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;

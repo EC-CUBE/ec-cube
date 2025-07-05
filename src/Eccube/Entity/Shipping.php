@@ -22,12 +22,16 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
      * Shipping
      *
      * @ORM\Table(name="dtb_shipping")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ShippingRepository")
      */
-    class Shipping extends \Eccube\Entity\AbstractEntity
+    class Shipping extends AbstractEntity
     {
         use NameTrait;
 
@@ -49,7 +53,9 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -199,10 +205,12 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         private $mail_send_date;
 
         /**
-         * @var \Eccube\Entity\Order
+         * @var Order
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings", cascade={"persist"})
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
          * })
          */
@@ -216,45 +224,53 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         private $OrderItems;
 
         /**
-         * @var \Eccube\Entity\Master\Country
+         * @var Master\Country
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
          * })
          */
         private $Country;
 
         /**
-         * @var \Eccube\Entity\Master\Pref
+         * @var Master\Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
          * })
          */
         private $Pref;
 
         /**
-         * @var \Eccube\Entity\Delivery
+         * @var Delivery
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
          * })
          */
         private $Delivery;
 
         /**
-         * @var \Eccube\Entity\ProductClass
+         * @var ProductClass
          */
         private $ProductClassOfTemp;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -271,9 +287,9 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * CustomerAddress から個人情報を設定.
          *
-         * @param \Eccube\Entity\CustomerAddress $CustomerAddress
+         * @param CustomerAddress $CustomerAddress
          *
-         * @return \Eccube\Entity\Shipping
+         * @return Shipping
          */
         public function setFromCustomerAddress(CustomerAddress $CustomerAddress)
         {
@@ -295,7 +311,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * 個人情報をクリア.
          *
-         * @return \Eccube\Entity\Shipping
+         * @return Shipping
          */
         public function clearCustomerAddress()
         {
@@ -735,7 +751,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Add orderItem.
          *
-         * @param \Eccube\Entity\OrderItem $OrderItem
+         * @param OrderItem $OrderItem
          *
          * @return Shipping
          */
@@ -749,9 +765,9 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Remove orderItem.
          *
-         * @param \Eccube\Entity\OrderItem $OrderItem
+         * @param OrderItem $OrderItem
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeOrderItem(OrderItem $OrderItem)
         {
@@ -783,11 +799,11 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
+         * @param Master\Country|null $country
          *
          * @return Shipping
          */
-        public function setCountry(Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -797,7 +813,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Get country.
          *
-         * @return \Eccube\Entity\Master\Country|null
+         * @return Master\Country|null
          */
         public function getCountry()
         {
@@ -807,11 +823,11 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
+         * @param Master\Pref|null $pref
          *
          * @return Shipping
          */
-        public function setPref(Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -821,7 +837,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Get pref.
          *
-         * @return \Eccube\Entity\Master\Pref|null
+         * @return Master\Pref|null
          */
         public function getPref()
         {
@@ -831,11 +847,11 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
+         * @param Delivery|null $delivery
          *
          * @return Shipping
          */
-        public function setDelivery(Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -845,7 +861,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Get delivery.
          *
-         * @return \Eccube\Entity\Delivery|null
+         * @return Delivery|null
          */
         public function getDelivery()
         {
@@ -855,7 +871,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Product class of shipment item (temp)
          *
-         * @return \Eccube\Entity\ProductClass
+         * @return ProductClass
          */
         public function getProductClassOfTemp()
         {
@@ -865,7 +881,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Product class of shipment item (temp)
          *
-         * @param \Eccube\Entity\ProductClass $ProductClassOfTemp
+         * @param ProductClass $ProductClassOfTemp
          *
          * @return $this
          */
@@ -951,7 +967,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * 出荷済みの場合はtrue, 未出荷の場合はfalseを返す
          *
-         * @return boolean
+         * @return bool
          */
         public function isShipped()
         {
@@ -961,7 +977,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set timeId
          *
-         * @param integer $timeId
+         * @param int $timeId
          *
          * @return Shipping
          */
@@ -975,7 +991,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Get timeId
          *
-         * @return integer
+         * @return int
          */
         public function getTimeId()
         {
@@ -985,11 +1001,11 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return Shipping
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -999,7 +1015,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

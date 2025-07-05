@@ -30,7 +30,7 @@ class ProcessResult
      * @param string|null $message
      * @param string|null $class 呼び出し元クラス
      */
-    private function __construct($type, string $message = null, $class = null)
+    private function __construct($type, ?string $message = null, $class = null)
     {
         $this->type = $type;
         $this->message = $message;

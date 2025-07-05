@@ -36,7 +36,6 @@ class CustomerAddressChangePage extends AbstractFrontPage
         return $this;
     }
 
-
     public function 入力_姓($value)
     {
         $this->tester->fillField(['id' => 'shopping_shipping_name_name01'], $value);

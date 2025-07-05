@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class DeliveryControllerTest extends AbstractWebTestCase
@@ -33,10 +34,9 @@ class DeliveryControllerTest extends AbstractWebTestCase
     protected function createFormData()
     {
         $faker = $this->getFaker();
-        $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $faker->lexify('????????');
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -55,8 +55,6 @@ class DeliveryControllerTest extends AbstractWebTestCase
             'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testIndex()
@@ -89,7 +87,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $form = $this->createFormData();
-        $crawler = $client->request(
+        $client->request(
             'POST',
             $this->generateUrl('mypage_delivery_new'),
             ['customer_address' => $form]
@@ -103,11 +101,11 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
         $client = $this->client;
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
-        $crawler = $client->request(
+        $client->request(
             'GET',
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()])
         );
@@ -119,12 +117,12 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
         $form = $this->createFormData();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()]),
             ['customer_address' => $form]
@@ -141,20 +139,20 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
         $id = $CustomerAddress->getId();
 
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
+        $this->createFormData();
+        $this->client->request(
             'DELETE',
             $this->generateUrl('mypage_delivery_delete', ['id' => $id])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->find($id);
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
         $this->assertNull($CustomerAddress);
     }
 
@@ -162,7 +160,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'DELETE',
             $this->generateUrl('mypage_delivery_delete', ['id' => 999999999])
         );

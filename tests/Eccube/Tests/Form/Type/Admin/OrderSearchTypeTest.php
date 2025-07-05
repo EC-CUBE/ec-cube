@@ -14,10 +14,12 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchOrderType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class OrderSearchTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     protected function setUp(): void
@@ -74,7 +76,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testPhoneNumberNotValidData()
     {
-        //意味あんだか良くわからんが一応書いとく
+        // 意味あんだか良くわからんが一応書いとく
         $formData = [
             'phone_number' => '+〇三=abcふれ',
         ];

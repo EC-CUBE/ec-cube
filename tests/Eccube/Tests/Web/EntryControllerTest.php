@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\CustomerStatus;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Mime\Email;
@@ -34,7 +35,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -69,8 +70,6 @@ class EntryControllerTest extends AbstractWebTestCase
             'user_policy_check' => 1,
             Constant::TOKEN_NAME => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testRoutingIndex()
@@ -142,12 +141,12 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivate()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $BaseInfo->setOptionCustomerActivate(1);
         $this->entityManager->flush();
 
         $client = $this->client;
-        $crawler = $client->request('POST',
+        $client->request('POST',
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -168,14 +167,14 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivateWithMultipartSanitize()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $BaseInfo->setOptionCustomerActivate(1);
         $this->entityManager->flush();
 
         $client = $this->client;
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>'; // サニタイズ対象の文字列
-        $crawler = $client->request('POST',
+        $client->request('POST',
             $this->generateUrl('entry'),
             [
                 'entry' => $form,
@@ -207,7 +206,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivate()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
         $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
@@ -228,7 +227,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithSanitize()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $Customer->setName01('<Sanitize&>');
         $secret_key = $Customer->getSecretKey();

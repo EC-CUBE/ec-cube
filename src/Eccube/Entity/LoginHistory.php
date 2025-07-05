@@ -21,9 +21,13 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
      * LoginHistory
      *
      * @ORM\Table(name="dtb_login_history")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\LoginHistoryRepository")
      */
     class LoginHistory extends AbstractEntity
@@ -32,19 +36,23 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
 
         /**
          * @var string
+         *
          * @ORM\Column(type="text",nullable=true)
          */
         private $user_name;
 
         /**
          * @var string
+         *
          * @ORM\Column(type="text",nullable=true)
          */
         private $client_ip;
@@ -65,8 +73,11 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
 
         /**
          * @var LoginHistoryStatus
+         *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\LoginHistoryStatus")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="login_history_status_id", referencedColumnName="id", nullable=false)
          * })
          */
@@ -74,8 +85,11 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
 
         /**
          * @var Member
+         *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
          * })
          */
@@ -84,7 +98,7 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
         /**
          * Get id
          *
-         * @return integer
+         * @return int
          */
         public function getId()
         {
@@ -214,7 +228,7 @@ if (!class_exists('\Eccube\Entity\LoginHistory')) {
          *
          * @return LoginHistory
          */
-        public function setLoginUser(Member $loginUser = null)
+        public function setLoginUser(?Member $loginUser = null)
         {
             $this->LoginUser = $loginUser;
 

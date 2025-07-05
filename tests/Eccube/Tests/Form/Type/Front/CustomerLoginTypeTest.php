@@ -14,11 +14,13 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\CustomerLoginType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class CustomerLoginTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */

@@ -80,6 +80,5 @@ class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
 
     public function getQueryKey()
     {
-        return;
     }
 }

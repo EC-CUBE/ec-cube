@@ -12,7 +12,7 @@ on:
 jobs:
   prune:
     name: Prune Docker images
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Prune Docker images
         run: docker image prune --force
@@ -20,7 +20,7 @@ jobs:
   build:
     name: Build
     needs: prune
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -44,7 +44,7 @@ jobs:
   scan:
     name: Scan
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -249,7 +249,7 @@ jobs:
     name: Merge alerts
     needs: scan
     if: ${{ always() }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v3

@@ -59,12 +59,12 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         $this->getSession()->setName($name);
     }
 
-    public function invalidate(int $lifetime = null): bool
+    public function invalidate(?int $lifetime = null): bool
     {
         return $this->getSession()->invalidate($lifetime);
     }
 
-    public function migrate(bool $destroy = false, int $lifetime = null): bool
+    public function migrate(bool $destroy = false, ?int $lifetime = null): bool
     {
         return $this->getSession()->migrate($destroy, $lifetime);
     }

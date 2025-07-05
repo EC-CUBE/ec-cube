@@ -26,6 +26,7 @@ class CssController extends AbstractController
 {
     /**
      * @Route("/%eccube_admin_route%/content/css", name="admin_content_css", methods={"GET", "POST"})
+     *
      * @Template("@admin/Content/css.twig")
      */
     public function index(Request $request)

@@ -64,7 +64,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         BaseInfoRepository $baseInfoRepository,
         EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
-        DeliveryFeeRepository $deliveryFeeRepository
+        DeliveryFeeRepository $deliveryFeeRepository,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
         $this->entityManager = $entityManager;

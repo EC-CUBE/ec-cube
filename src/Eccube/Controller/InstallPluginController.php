@@ -212,7 +212,6 @@ class InstallPluginController extends InstallController
 
         // WebApiプラグインがインストールされているが、sodium拡張がない場合は、プラグインをアンインストールする
         if ($Plugin && !extension_loaded('sodium')) {
-
             $this->clearCacheOnTerminate();
 
             try {

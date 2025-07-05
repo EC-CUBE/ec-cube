@@ -20,27 +20,35 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
      * PageLayout
      *
      * @ORM\Table(name="dtb_page_layout")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PageLayoutRepository")
      */
     class PageLayout extends AbstractEntity
     {
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="page_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $page_id;
 
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="layout_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $layout_id;
@@ -53,20 +61,24 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         private $sort_no;
 
         /**
-         * @var \Eccube\Entity\Page
+         * @var Page
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayouts")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
          * })
          */
         private $Page;
 
         /**
-         * @var \Eccube\Entity\Layout
+         * @var Layout
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="PageLayouts")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="layout_id", referencedColumnName="id")
          * })
          */
@@ -75,7 +87,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Set pageId
          *
-         * @param integer $pageId
+         * @param int $pageId
          *
          * @return PageLayout
          */
@@ -89,7 +101,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Get pageId
          *
-         * @return integer
+         * @return int
          */
         public function getPageId()
         {
@@ -99,7 +111,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Set layoutId
          *
-         * @param integer $layoutId
+         * @param int $layoutId
          *
          * @return PageLayout
          */
@@ -113,7 +125,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Get layoutId
          *
-         * @return integer
+         * @return int
          */
         public function getLayoutId()
         {
@@ -147,11 +159,11 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Set pageLayout
          *
-         * @param \Eccube\Entity\Page $Page
+         * @param Page $Page
          *
          * @return PageLayout
          */
-        public function setPage(Page $Page = null)
+        public function setPage(?Page $Page = null)
         {
             $this->Page = $Page;
 
@@ -171,11 +183,11 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Set layout
          *
-         * @param \Eccube\Entity\Layout $layout
+         * @param Layout $layout
          *
          * @return PageLayout
          */
-        public function setLayout(Layout $layout = null)
+        public function setLayout(?Layout $layout = null)
         {
             $this->Layout = $layout;
 
@@ -185,7 +197,7 @@ if (!class_exists('\Eccube\Entity\PageLayout')) {
         /**
          * Get layout
          *
-         * @return \Eccube\Entity\Layout
+         * @return Layout
          */
         public function getLayout()
         {

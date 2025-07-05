@@ -51,9 +51,9 @@ class PluginRepositoryTest extends EccubeTestCase
      */
     public function testFindByCode($code, $search, $isNotNull)
     {
-        $Plugin1 = $this->createPlugin($code);
-        $Plugin2 = $this->createPlugin('EnAblE2');
-        $Plugin3 = $this->createPlugin('enable3');
+        $this->createPlugin($code);
+        $this->createPlugin('EnAblE2');
+        $this->createPlugin('enable3');
 
         $Result = $this->pluginRepository->findByCode($search);
         if ($isNotNull) {

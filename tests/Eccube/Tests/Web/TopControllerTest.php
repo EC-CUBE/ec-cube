@@ -14,9 +14,8 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Entity\Page;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PageRepository;
 
 class TopControllerTest extends AbstractWebTestCase
@@ -34,7 +33,7 @@ class TopControllerTest extends AbstractWebTestCase
         $this->assertEquals('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
     }
 
-    public function test_GAスクリプト表示確認()
+    public function testGAスクリプト表示確認()
     {
         // GAスクリプト表示がある時
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();

@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
      * PaymentOption
      *
      * @ORM\Table(name="dtb_payment_option")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentOptionRepository")
      */
-    class PaymentOption extends \Eccube\Entity\AbstractEntity
+    class PaymentOption extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="delivery_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $delivery_id;
@@ -40,26 +46,32 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
          * @var int
          *
          * @ORM\Column(name="payment_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="NONE")
          */
         private $payment_id;
 
         /**
-         * @var \Eccube\Entity\Delivery
+         * @var Delivery
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="PaymentOptions")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
          * })
          */
         private $Delivery;
 
         /**
-         * @var \Eccube\Entity\Payment
+         * @var Payment
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment", inversedBy="PaymentOptions")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
          * })
          */
@@ -116,11 +128,11 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
+         * @param Delivery|null $delivery
          *
          * @return PaymentOption
          */
-        public function setDelivery(Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -130,7 +142,7 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Get delivery.
          *
-         * @return \Eccube\Entity\Delivery|null
+         * @return Delivery|null
          */
         public function getDelivery()
         {
@@ -140,11 +152,11 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Set payment.
          *
-         * @param \Eccube\Entity\Payment|null $payment
+         * @param Payment|null $payment
          *
          * @return PaymentOption
          */
-        public function setPayment(Payment $payment = null)
+        public function setPayment(?Payment $payment = null)
         {
             $this->Payment = $payment;
 
@@ -154,7 +166,7 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Get payment.
          *
-         * @return \Eccube\Entity\Payment|null
+         * @return Payment|null
          */
         public function getPayment()
         {

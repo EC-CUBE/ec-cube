@@ -74,7 +74,7 @@ class ShippingMultipleController extends AbstractShoppingController
     protected $mailService;
 
     /**
-     * @var baseInfoRepository
+     * @var BaseInfoRepository
      */
     protected $baseInfoRepository;
 
@@ -96,7 +96,7 @@ class ShippingMultipleController extends AbstractShoppingController
         CartService $cartService,
         PurchaseFlow $cartPurchaseFlow,
         BaseInfoRepository $baseInfoRepository,
-        MailService $mailService
+        MailService $mailService,
     ) {
         $this->prefRepository = $prefRepository;
         $this->orderRepository = $orderRepository;
@@ -112,6 +112,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * 複数配送処理
      *
      * @Route("/shopping/shipping_multiple", name="shopping_shipping_multiple", methods={"GET", "POST"})
+     *
      * @Template("Shopping/shipping_multiple.twig")
      */
     public function index(Request $request)
@@ -384,6 +385,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * 非会員時はセッションに追加する
      *
      * @Route("/shopping/shipping_multiple_edit", name="shopping_shipping_multiple_edit", methods={"GET", "POST"})
+     *
      * @Template("Shopping/shipping_multiple_edit.twig")
      */
     public function shippingMultipleEdit(Request $request)

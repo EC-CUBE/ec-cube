@@ -51,10 +51,10 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->PageLayoutRepo = $this->entityManager->getRepository(\Eccube\Entity\PageLayout::class);
-        $this->layoutRepository = $this->entityManager->getRepository(\Eccube\Entity\Layout::class);
-        $this->deviceTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class);
-        $this->pageRepository = $this->entityManager->getRepository(\Eccube\Entity\Page::class);
+        $this->PageLayoutRepo = $this->entityManager->getRepository(PageLayout::class);
+        $this->layoutRepository = $this->entityManager->getRepository(Layout::class);
+        $this->deviceTypeRepository = $this->entityManager->getRepository(DeviceType::class);
+        $this->pageRepository = $this->entityManager->getRepository(Page::class);
     }
 
     public function testIndex()
@@ -65,7 +65,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
     public function testIndexWithPost()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl(
                 'admin_content_layout_edit',
@@ -105,7 +105,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
     public function testIndexWithPostPreview()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl(
                 'admin_content_layout_preview',

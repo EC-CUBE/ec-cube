@@ -53,9 +53,7 @@ class StringUtilTest extends TestCase
 
     public function testRandomException()
     {
-        if (PHP_VERSION_ID >= 70400) {
-            $this->markTestSkipped('Skip because it is fatal error in PHP7.4 or higher.');
-        }
+        $this->markTestSkipped('Skip because it is fatal error in PHP7.4 or higher.');
         $this->expected = 'Unable to generate random string.';
         try {
             StringUtil::random(0);
@@ -339,6 +337,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithObject()
@@ -351,6 +350,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArray()
@@ -363,6 +363,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayGreedy()
@@ -376,6 +377,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayGreedy2()
@@ -389,6 +391,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayGreedy3()
@@ -402,6 +405,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation  \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsNotBlankWithArray()
@@ -414,6 +418,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayCollectionEmpty()
@@ -426,6 +431,7 @@ class StringUtilTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayCollectionNotEmpty()

@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\Page')) {
      * Page
      *
      * @ORM\Table(name="dtb_page", indexes={@ORM\Index(name="dtb_page_url_idx", columns={"url"})})
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PageRepository")
      */
-    class Page extends \Eccube\Entity\AbstractEntity
+    class Page extends AbstractEntity
     {
         // 編集可能フラグ
         public const EDIT_TYPE_USER = 0;
@@ -53,7 +57,9 @@ if (!class_exists('\Eccube\Entity\Page')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -143,10 +149,12 @@ if (!class_exists('\Eccube\Entity\Page')) {
         private $PageLayouts;
 
         /**
-         * @var \Eccube\Entity\Page
+         * @var Page
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="master_page_id", referencedColumnName="id")
          * })
          */
@@ -175,7 +183,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Get id
          *
-         * @return integer
+         * @return int
          */
         public function getId()
         {
@@ -459,7 +467,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Add pageLayoutLayout
          *
-         * @param \Eccube\Entity\PageLayout $PageLayout
+         * @param PageLayout $PageLayout
          *
          * @return Page
          */
@@ -473,7 +481,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Remove pageLayoutLayout
          *
-         * @param \Eccube\Entity\PageLayout $PageLayout
+         * @param PageLayout $PageLayout
          */
         public function removePageLayout(PageLayout $PageLayout)
         {
@@ -483,11 +491,11 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Set MasterPage.
          *
-         * @param \Eccube\Entity\Page|null $page
+         * @param Page|null $page
          *
          * @return Page
          */
-        public function setMasterPage(Page $page = null)
+        public function setMasterPage(?Page $page = null)
         {
             $this->MasterPage = $page;
 
@@ -497,7 +505,7 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Get MasterPage.
          *
-         * @return \Eccube\Entity\Page|null
+         * @return Page|null
          */
         public function getMasterPage()
         {

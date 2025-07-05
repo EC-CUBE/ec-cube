@@ -20,9 +20,13 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
      * TradeLaw
      *
      * @ORM\Table(name="dtb_tradelaw")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TradeLawRepository")
      */
     class TradeLaw extends AbstractEntity
@@ -31,7 +35,9 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private int $id;
@@ -58,7 +64,7 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         private int $sortNo;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="display_order_screen", type="boolean")
          */

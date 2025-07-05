@@ -20,20 +20,26 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
      * CartItem
      *
      * @ORM\Table(name="dtb_cart_item")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CartItemRepository")
      */
-    class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
+    class CartItem extends AbstractEntity implements ItemInterface
     {
         use PointRateTrait;
 
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -53,20 +59,24 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         private $quantity = 0;
 
         /**
-         * @var \Eccube\Entity\ProductClass
+         * @var ProductClass
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
          * })
          */
         private $ProductClass;
 
         /**
-         * @var \Eccube\Entity\Cart
+         * @var Cart
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems", cascade={"persist"})
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id", onDelete="CASCADE")
          * })
          */
@@ -93,7 +103,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         }
 
         /**
-         * @param  integer  $price
+         * @param  int  $price
          *
          * @return CartItem
          */
@@ -113,7 +123,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         }
 
         /**
-         * @param  integer  $quantity
+         * @param  int  $quantity
          *
          * @return CartItem
          */
@@ -133,7 +143,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         }
 
         /**
-         * @return integer
+         * @return int
          */
         public function getTotalPrice()
         {
@@ -143,7 +153,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * 商品明細かどうか.
          *
-         * @return boolean 商品明細の場合 true
+         * @return bool 商品明細の場合 true
          */
         public function isProduct()
         {
@@ -153,7 +163,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * 送料明細かどうか.
          *
-         * @return boolean 送料明細の場合 true
+         * @return bool 送料明細の場合 true
          */
         public function isDeliveryFee()
         {
@@ -163,7 +173,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * 手数料明細かどうか.
          *
-         * @return boolean 手数料明細の場合 true
+         * @return bool 手数料明細の場合 true
          */
         public function isCharge()
         {
@@ -173,7 +183,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * 値引き明細かどうか.
          *
-         * @return boolean 値引き明細の場合 true
+         * @return bool 値引き明細の場合 true
          */
         public function isDiscount()
         {
@@ -183,7 +193,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * 税額明細かどうか.
          *
-         * @return boolean 税額明細の場合 true
+         * @return bool 税額明細の場合 true
          */
         public function isTax()
         {
@@ -193,7 +203,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         /**
          * ポイント明細かどうか.
          *
-         * @return boolean ポイント明細の場合 true
+         * @return bool ポイント明細の場合 true
          */
         public function isPoint()
         {
@@ -203,7 +213,7 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         public function getOrderItemType()
         {
             // TODO OrderItemType::PRODUCT
-            $ItemType = new \Eccube\Entity\Master\OrderItemType();
+            $ItemType = new Master\OrderItemType();
 
             return $ItemType;
         }

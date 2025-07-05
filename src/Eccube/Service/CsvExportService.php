@@ -41,7 +41,7 @@ class CsvExportService
     protected $fp;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $closed = false;
 
@@ -137,7 +137,7 @@ class CsvExportService
         ProductRepository $productRepository,
         EccubeConfig $eccubeConfig,
         FormFactoryInterface $formFactory,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
     ) {
         $this->entityManager = $entityManager;
         $this->csvRepository = $csvRepository;
@@ -310,7 +310,7 @@ class CsvExportService
     /**
      * CSV出力項目と比較し, 合致するデータを返す.
      *
-     * @param \Eccube\Entity\Csv $Csv
+     * @param Csv $Csv
      * @param $entity
      *
      * @return string|null
@@ -346,7 +346,6 @@ class CsvExportService
         } elseif ($data instanceof \DateTime) {
             // datetimeの場合は文字列に変換する.
             return $data->format($this->eccubeConfig['eccube_csv_export_date_format']);
-
         } elseif (is_bool($data)) {
             // booleanの場合は文字列に変換する.
             return $data ? '1' : '0';
@@ -388,7 +387,7 @@ class CsvExportService
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
         }
 
-        fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator']);
+        fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
     }
 
     public function fclose()
@@ -404,7 +403,7 @@ class CsvExportService
      *
      * @param Request $request
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getOrderQueryBuilder(Request $request)
     {
@@ -428,7 +427,7 @@ class CsvExportService
      *
      * @param Request $request
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getCustomerQueryBuilder(Request $request)
     {
@@ -452,7 +451,7 @@ class CsvExportService
      *
      * @param Request $request
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getProductQueryBuilder(Request $request)
     {

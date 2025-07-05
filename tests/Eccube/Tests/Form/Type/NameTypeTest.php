@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\NameType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
 class NameTypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 

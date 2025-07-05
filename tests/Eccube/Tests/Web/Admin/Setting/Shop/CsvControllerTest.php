@@ -28,10 +28,10 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     public function testGetCsv()
     {
-        $CsvType = $this->entityManager->getRepository(\Eccube\Entity\Master\CsvType::class)->find(1);
+        $CsvType = $this->entityManager->getRepository(CsvType::class)->find(1);
         $this->assertNotEmpty($CsvType);
 
-        $Csv = $this->entityManager->getRepository(\Eccube\Entity\Csv::class)->findBy(['CsvType' => $CsvType, 'enabled' => true], ['sort_no' => 'ASC']);
+        $Csv = $this->entityManager->getRepository(Csv::class)->findBy(['CsvType' => $CsvType, 'enabled' => true], ['sort_no' => 'ASC']);
         $this->assertNotEmpty($Csv);
     }
 
@@ -39,13 +39,13 @@ class CsvControllerTest extends AbstractAdminWebTestCase
     {
         $this->entityManager->getConnection()->beginTransaction();
 
-        $Csv = $this->entityManager->getRepository(\Eccube\Entity\Csv::class)->find(1);
+        $Csv = $this->entityManager->getRepository(Csv::class)->find(1);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
 
         $this->entityManager->flush();
 
-        $Csv2 = $this->entityManager->getRepository(\Eccube\Entity\Csv::class)->find(1);
+        $Csv2 = $this->entityManager->getRepository(Csv::class)->find(1);
         $this->assertEquals(false, $Csv2->isEnabled());
 
         $this->entityManager->getConnection()->rollback();
@@ -91,10 +91,10 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = 'Eccube\Entity\Product', $ref = null)
     {
-        $CsvType = $this->entityManager->getRepository(\Eccube\Entity\Master\CsvType::class)->find($csvType);
+        $CsvType = $this->entityManager->getRepository(CsvType::class)->find($csvType);
         $Creator = $this->createMember();
 
-        $csv = $this->entityManager->getRepository(\Eccube\Entity\Csv::class)->findOneBy(['CsvType' => $CsvType], ['sort_no' => 'DESC']);
+        $csv = $this->entityManager->getRepository(Csv::class)->findOneBy(['CsvType' => $CsvType], ['sort_no' => 'DESC']);
         $sortNo = 1;
         if ($csv) {
             $sortNo = $csv->getSortNo() + 1;

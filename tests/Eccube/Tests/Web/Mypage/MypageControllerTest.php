@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Mypage;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Product;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
@@ -78,7 +79,7 @@ class MypageControllerTest extends AbstractWebTestCase
     public function testLogin()
     {
         $this->logInTo($this->Customer);
-        $crawler = $this->client->request(
+        $this->client->request(
             'GET',
             $this->generateUrl('mypage_login')
         );
@@ -87,7 +88,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testLoginWithFailure()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'GET',
             $this->generateUrl('mypage_login')
         );
@@ -96,10 +97,10 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testIndex()
     {
-        $Order = $this->createOrder($this->Customer);
+        $this->createOrder($this->Customer);
         $this->logInTo($this->Customer);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'GET',
             $this->generateUrl('mypage')
         );
@@ -116,7 +117,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
         $client = $this->client;
 
-        $crawler = $client->request(
+        $client->request(
             'GET',
             $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
@@ -132,7 +133,7 @@ class MypageControllerTest extends AbstractWebTestCase
             0, 0, OrderStatus::PROCESSING);
         $this->loginTo($this->Customer);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'GET',
             $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
@@ -146,7 +147,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $this->loginTo($this->Customer);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'GET',
             $this->generateUrl('mypage_history', ['order_no' => 999999999])
         );
@@ -206,7 +207,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $CustomerFavoriteProduct = new CustomerFavoriteProduct();
         $CustomerFavoriteProduct->setCustomer($this->Customer);
-        $Product = $this->entityManager->getRepository(\Eccube\Entity\Product::class)->find(1);
+        $Product = $this->entityManager->getRepository(Product::class)->find(1);
         $CustomerFavoriteProduct->setCreateDate(new \DateTime());
         $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
         $CustomerFavoriteProduct->setProduct($Product);

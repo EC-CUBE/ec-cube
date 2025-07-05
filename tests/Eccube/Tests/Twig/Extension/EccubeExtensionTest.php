@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Product;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\EccubeExtension;
 
@@ -28,7 +29,7 @@ class EccubeExtensionTest extends EccubeTestCase
     {
         parent::setUp();
         $EccubeConfig = static::getContainer()->get(EccubeConfig::class);
-        $productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $productRepository = $this->entityManager->getRepository(Product::class);
         $this->Extension = new EccubeExtension($EccubeConfig, $productRepository);
     }
 

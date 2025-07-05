@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Store;
 
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Template;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
@@ -62,8 +63,8 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->templateRepository = $this->entityManager->getRepository(\Eccube\Entity\Template::class);
-        $this->deviceTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class);
+        $this->templateRepository = $this->entityManager->getRepository(Template::class);
+        $this->deviceTypeRepository = $this->entityManager->getRepository(DeviceType::class);
 
         $this->dir = \tempnam(\sys_get_temp_dir(), 'TemplateControllerTest');
         $fs = new Filesystem();

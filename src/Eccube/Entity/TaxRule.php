@@ -20,20 +20,24 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
      * TaxRule
      *
      * @ORM\Table(name="dtb_tax_rule")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TaxRuleRepository")
      */
-    class TaxRule extends \Eccube\Entity\AbstractEntity
+    class TaxRule extends AbstractEntity
     {
         /**
-         * @var integer
+         * @var int
          */
         public const DEFAULT_TAX_RULE_ID = 1;
 
         /**
-         * @var integer
+         * @var int
          */
         private $sort_no;
 
@@ -50,7 +54,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set sortNo
          *
-         * @param  integer $sortNo
+         * @param  int $sortNo
          *
          * @return TaxRule
          */
@@ -64,7 +68,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get sortNo
          *
-         * @return integer
+         * @return int
          */
         public function getSortNo()
         {
@@ -75,7 +79,9 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -116,60 +122,72 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\ProductClass
+         * @var ProductClass
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="TaxRule")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
          * })
          */
         private $ProductClass;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
         private $Creator;
 
         /**
-         * @var \Eccube\Entity\Master\Country
+         * @var Master\Country
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
          * })
          */
         private $Country;
 
         /**
-         * @var \Eccube\Entity\Master\Pref
+         * @var Master\Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
          * })
          */
         private $Pref;
 
         /**
-         * @var \Eccube\Entity\Product
+         * @var Product
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
          * })
          */
         private $Product;
 
         /**
-         * @var \Eccube\Entity\Master\RoundingType
+         * @var Master\RoundingType
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="rounding_type_id", referencedColumnName="id")
          * })
          */
@@ -308,11 +326,11 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set productClass.
          *
-         * @param \Eccube\Entity\ProductClass|null $productClass
+         * @param ProductClass|null $productClass
          *
          * @return TaxRule
          */
-        public function setProductClass(ProductClass $productClass = null)
+        public function setProductClass(?ProductClass $productClass = null)
         {
             $this->ProductClass = $productClass;
 
@@ -322,7 +340,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get productClass.
          *
-         * @return \Eccube\Entity\ProductClass|null
+         * @return ProductClass|null
          */
         public function getProductClass()
         {
@@ -332,11 +350,11 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return TaxRule
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -346,7 +364,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {
@@ -356,11 +374,11 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
+         * @param Master\Country|null $country
          *
          * @return TaxRule
          */
-        public function setCountry(Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -370,7 +388,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get country.
          *
-         * @return \Eccube\Entity\Master\Country|null
+         * @return Master\Country|null
          */
         public function getCountry()
         {
@@ -380,11 +398,11 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
+         * @param Master\Pref|null $pref
          *
          * @return TaxRule
          */
-        public function setPref(Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -394,7 +412,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get pref.
          *
-         * @return \Eccube\Entity\Master\Pref|null
+         * @return Master\Pref|null
          */
         public function getPref()
         {
@@ -404,11 +422,11 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
+         * @param Product|null $product
          *
          * @return TaxRule
          */
-        public function setProduct(Product $product = null)
+        public function setProduct(?Product $product = null)
         {
             $this->Product = $product;
 
@@ -418,7 +436,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get product.
          *
-         * @return \Eccube\Entity\Product|null
+         * @return Product|null
          */
         public function getProduct()
         {
@@ -430,7 +448,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @return TaxRule
          */
-        public function setRoundingType(Master\RoundingType $RoundingType = null)
+        public function setRoundingType(?Master\RoundingType $RoundingType = null)
         {
             $this->RoundingType = $RoundingType;
 
@@ -440,7 +458,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Get roundingType.
          *
-         * @return \Eccube\Entity\Master\RoundingType|null
+         * @return Master\RoundingType|null
          */
         public function getRoundingType()
         {
@@ -464,7 +482,7 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
          *
          * @param TaxRule $Target 比較対象の TaxRule
          *
-         * @return integer
+         * @return int
          */
         public function compareTo(TaxRule $Target)
         {

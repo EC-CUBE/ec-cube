@@ -13,6 +13,9 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Member;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\Master\AuthorityRepository;
 use Eccube\Repository\MemberRepository;
@@ -42,9 +45,9 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
-        $this->authorityMasterRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Authority::class);
-        $this->authorityRoleRepository = $this->entityManager->getRepository(\Eccube\Entity\AuthorityRole::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
+        $this->authorityMasterRepository = $this->entityManager->getRepository(Authority::class);
+        $this->authorityRoleRepository = $this->entityManager->getRepository(AuthorityRole::class);
     }
 
     /**
@@ -180,12 +183,12 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @return \Eccube\Entity\AuthorityRole
+     * @return AuthorityRole
      */
     private function newTestAuthorityRole()
     {
         $TestCreator = $this->memberRepository->find(1);
-        $AuthorityRole = new \Eccube\Entity\AuthorityRole();
+        $AuthorityRole = new AuthorityRole();
         $Authority = $this->authorityMasterRepository->find(0);
         $AuthorityRole->setAuthority($Authority);
         $AuthorityRole->setDenyUrl('/abab');
@@ -208,13 +211,11 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
             $AuthorityRole = $this->newTestAuthorityRole();
         }
 
-        $form = [
+        return [
             [
-                 'Authority' => $AuthorityRole->getAuthority()->getId(),
-                 'deny_url' => '/test',
-                ],
-            ];
-
-        return $form;
+                'Authority' => $AuthorityRole->getAuthority()->getId(),
+                'deny_url' => '/test',
+            ],
+        ];
     }
 }

@@ -49,7 +49,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $shipping = $this->createShippingFormData();
         $orderItems = $this->createOrderItemFormData($Product, $charge);
 
-        $order = [
+        return [
             '_token' => 'dummy',
             'Customer' => $Customer->getId(),
             'OrderStatus' => OrderStatus::IN_PROGRESS,
@@ -80,8 +80,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'use_point' => 0,
             'Shipping' => $shipping,
         ];
-
-        return $order;
     }
 
     /**
@@ -91,7 +89,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createShippingFormData(Product $Product = null)
+    public function createShippingFormData(?Product $Product = null)
     {
         $faker = $this->getFaker();
 
@@ -164,7 +162,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      */
     public function createFormDataForEdit(Order $Order)
     {
-        //受注アイテム
+        // 受注アイテム
         $orderItem = $this->createOrderItemsFormDataEdit($Order->getOrderItems());
 
         $Customer = $Order->getCustomer();
@@ -177,7 +175,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
         $shipping = $this->createShippingFormDataForEdit($Shipping);
 
-        //受注フォーム
+        // 受注フォーム
         $order = [
             '_token' => 'dummy',
             'OrderStatus' => (string) $Order->getOrderStatus()->getId(),

@@ -105,7 +105,7 @@ class EA02AuthenticationCest
         $I->wantTo('EA0201-UC01-T04_パスワード認証機能(非稼働)');
 
         // 非稼働ユーザ作成
-        $page = SystemMemberEditPage::go_new($I)
+        SystemMemberEditPage::go_new($I)
             ->メンバー登録([
                 'login_id' => $login_id,
                 'name' => $member_name,

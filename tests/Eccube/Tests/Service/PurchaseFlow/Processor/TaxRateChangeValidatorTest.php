@@ -15,11 +15,9 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\Processor\TaxRateChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
-use function PHPUnit\Framework\assertInstanceOf;
 
 class TaxRateChangeValidatorTest extends EccubeTestCase
 {

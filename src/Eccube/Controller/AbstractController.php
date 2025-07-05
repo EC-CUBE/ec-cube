@@ -120,6 +120,7 @@ class AbstractController extends Controller
 
     /**
      * @param RouterInterface $router
+     *
      * @return void
      */
     #[Required]

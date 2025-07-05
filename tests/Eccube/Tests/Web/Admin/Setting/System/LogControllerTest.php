@@ -53,7 +53,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        if (file_exists($this->logTest)) {
+        if (isset($this->logTest) && file_exists($this->logTest)) {
             unlink($this->logTest);
         }
     }
@@ -89,6 +89,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * @param string|int $value
      * @param string $expected
      * @param string $message
+     *
      * @dataProvider dataProvider
      */
     public function testSystemLogValidate($value, $expected, $message)

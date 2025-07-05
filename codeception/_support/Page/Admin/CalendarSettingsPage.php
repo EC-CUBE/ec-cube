@@ -39,6 +39,7 @@ class CalendarSettingsPage extends AbstractAdminPageStyleGuide
     public function 入力_日付($value)
     {
         $this->tester->executeJS("$('#calendar_holiday').val('{$value}');");
+
         return $this;
     }
 

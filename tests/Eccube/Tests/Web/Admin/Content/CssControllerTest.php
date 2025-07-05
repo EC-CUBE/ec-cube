@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CssControllerTest extends AbstractAdminWebTestCase
 {
-    const CSS_FILE = 'customize.css';
+    public const CSS_FILE = 'customize.css';
 
     /**
      * @var string
@@ -64,8 +64,8 @@ __CSS_CONTENTS__;
             'POST',
             $this->generateUrl('admin_content_css'),
             ['form' => [
-                 'css' => $css,
-             ],
+                'css' => $css,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -92,8 +92,8 @@ __CSS_CONTENTS__;
             'POST',
             $this->generateUrl('admin_content_css'),
             ['form' => [
-                 'css' => $css,
-             ],
+                'css' => $css,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -117,8 +117,8 @@ __CSS_CONTENTS__;
             'POST',
             $this->generateUrl('admin_content_css'),
             ['form' => [
-                 'css' => $css,
-             ],
+                'css' => $css,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();

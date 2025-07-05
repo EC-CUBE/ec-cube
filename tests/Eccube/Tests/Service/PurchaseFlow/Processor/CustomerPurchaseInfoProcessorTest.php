@@ -15,12 +15,13 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Service\PurchaseFlow\Processor\CustomerPurchaseInfoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Tests\EccubeTestCase;
 
 class CustomerPurchaseInfoProcessorTest extends EccubeTestCase
 {
     /**
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     public function testCommit()
     {

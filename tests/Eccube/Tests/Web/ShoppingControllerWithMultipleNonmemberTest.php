@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
@@ -37,8 +38,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     protected function setUp(): void
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
     }
 
     protected function tearDown(): void
@@ -90,22 +91,22 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         );
 
         // 複数配送設定
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => [
-                      'shipping_multiple' => [0 => [
-                                // 配送先1, 配送先2 の 情報を渡す
-                                'shipping' => $shippings,
-                            ],
-                      ],
-                      '_token' => 'dummy',
-                  ],
+                'shipping_multiple' => [0 => [
+                    // 配送先1, 配送先2 の 情報を渡す
+                    'shipping' => $shippings,
+                ],
+                ],
+                '_token' => 'dummy',
+            ],
             ]
         );
 
         // 確認画面
-        $crawler = $this->scenarioComplete(
+        $this->scenarioComplete(
             null,
             $this->generateUrl('shopping_confirm'),
             [
@@ -135,7 +136,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $body = $Message->getBody();
+        $Message->getBody();
         $this->assertEmailTextBodyContains($Message, '◎お届け先2', '複数配送のため, お届け先2が存在する');
     }
 
@@ -162,7 +163,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         // add multi shipping
         $multiForm = [
@@ -208,7 +209,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         // add multi shipping
         $multiForm = [
@@ -275,7 +276,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         // add multi shipping
         $multiForm = [
@@ -348,7 +349,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         $addressNumber = 1;
 
@@ -440,7 +441,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         // お届け先設定画面への遷移前チェック
         $addressNumber = 1;
@@ -546,7 +547,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         // お届け先設定画面への遷移前チェック
         $addressNumber = 1;
@@ -648,7 +649,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         $addressNumber = 1;
 
@@ -764,7 +765,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         $addressNumber = 1;
 
@@ -895,7 +896,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         // add multi shipping
         $multiForm = [
@@ -1033,7 +1034,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $crawler = $this->scenarioConfirm();
+        $this->scenarioConfirm();
 
         $addressNumber = 1;
 
@@ -1450,7 +1451,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $body = $Message->getBody();
+        $Message->getBody();
         $this->assertEmailTextBodyContains($Message, '◎お届け先', '複数配送のため, お届け先1が存在する');
     }
 

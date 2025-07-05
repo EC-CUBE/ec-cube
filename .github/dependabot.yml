@@ -8,6 +8,13 @@ updates:
       - dependency-type: "all"
     ignore:
       - dependency-name: "twig/twig"
+        versions: [ ">=3.8.0" ]
+      - dependency-name: "robthree/twofactorauth"
+        versions: [ ">=2.0.0" ]
+      - dependency-name: "doctrine/lexer"
+        versions: [ ">=3.0.0" ]
+      - dependency-name: "psr/log"
+        versions: [ ">=3.0.0" ]
 
   # GitHub アクションの依存関係を維持する
   - package-ecosystem: "github-actions"
@@ -20,3 +27,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-name: "sort-css-media-queries"
+        versions: [ ">=2.4.0" ]

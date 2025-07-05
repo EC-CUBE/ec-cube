@@ -18,8 +18,8 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\Master\SexType;
-use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\PhoneNumberType;
+use Eccube\Form\Type\PriceType;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -55,7 +55,7 @@ class SearchCustomerType extends AbstractType
      */
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->customerStatusRepository = $customerStatusRepository;
@@ -109,7 +109,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -127,7 +127,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -188,7 +188,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -205,7 +205,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -223,7 +223,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -240,7 +240,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -258,7 +258,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -275,7 +275,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -293,7 +293,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -310,7 +310,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -328,7 +328,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -345,7 +345,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -363,7 +363,7 @@ class SearchCustomerType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -380,7 +380,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -402,7 +402,7 @@ class SearchCustomerType extends AbstractType
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
 
-                # 登録日
+                // 登録日
                 $create_datetime_start = $form['create_datetime_start']->getData();
                 $create_datetime_end = $form['create_datetime_end']->getData();
 
@@ -412,7 +412,7 @@ class SearchCustomerType extends AbstractType
                     }
                 }
 
-                # 更新日
+                // 更新日
                 $update_datetime_start = $form['update_datetime_start']->getData();
                 $update_datetime_end = $form['update_datetime_end']->getData();
 
@@ -422,7 +422,7 @@ class SearchCustomerType extends AbstractType
                     }
                 }
 
-                # 最終購入日
+                // 最終購入日
                 $last_buy_start = $form['last_buy_start']->getData();
                 $last_buy_end = $form['last_buy_end']->getData();
 

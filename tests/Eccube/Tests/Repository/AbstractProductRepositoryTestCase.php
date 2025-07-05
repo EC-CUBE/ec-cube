@@ -16,6 +16,7 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductTag;
+use Eccube\Entity\Tag;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -44,8 +45,8 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-        $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
+        $this->tagRepository = $this->entityManager->getRepository(Tag::class);
 
         $tables = [
             'dtb_product_image',

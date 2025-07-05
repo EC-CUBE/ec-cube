@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,6 +19,7 @@ class RecommendManagePage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->goPage('/plugin/recommend', 'おすすめ商品管理');
+
         return $page;
     }
 
@@ -25,18 +27,21 @@ class RecommendManagePage extends AbstractAdminPageStyleGuide
     {
         $page = new RecommendManagePage($I);
         $page->tester->see('おすすめ商品内容設定', '#page_plugin_recommend_list > div > div.c-contentsArea > div.c-pageTitle > div > span');
+
         return $page;
     }
 
     public function 新規登録()
     {
         $this->tester->click(['css' => '#page_plugin_recommend_list > div > div.c-contentsArea > div.c-contentsArea__cols a.btn-ec-regular']);
+
         return $this;
     }
 
     public function 編集($i)
     {
         $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//a[1]"]);
+
         return $this;
     }
 
@@ -45,6 +50,7 @@ class RecommendManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//a[2]"]);
         $this->tester->waitForElementVisible(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//div[contains(@class, 'modal')]//a"]);
         $this->tester->click(['xpath' => "//*[@id='page_plugin_recommend_list']//li[contains(@class, 'sortable-item')][{$i}]//div[contains(@class, 'modal')]//a"]);
+
         return $this;
     }
 }

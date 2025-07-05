@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
      * AuthorityRole
      *
      * @ORM\Table(name="dtb_authority_role")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\AuthorityRoleRepository")
      */
-    class AuthorityRole extends \Eccube\Entity\AbstractEntity
+    class AuthorityRole extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -58,20 +64,24 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\Master\Authority
+         * @var Master\Authority
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
          * })
          */
         private $Authority;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -162,11 +172,11 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         /**
          * Set authority.
          *
-         * @param \Eccube\Entity\Master\Authority|null $authority
+         * @param Master\Authority|null $authority
          *
          * @return AuthorityRole
          */
-        public function setAuthority(Master\Authority $authority = null)
+        public function setAuthority(?Master\Authority $authority = null)
         {
             $this->Authority = $authority;
 
@@ -176,7 +186,7 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         /**
          * Get authority.
          *
-         * @return \Eccube\Entity\Master\Authority|null
+         * @return Master\Authority|null
          */
         public function getAuthority()
         {
@@ -186,11 +196,11 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return AuthorityRole
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -200,7 +210,7 @@ if (!class_exists('\Eccube\Entity\AuthorityRole')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

@@ -42,14 +42,14 @@ class TwoFactorAuthType extends AbstractType
                         'maxlength' => 6,
                         'style' => 'width: 100px;',
                     ],
-            ])
+                ])
             ->add(
                 'auth_key', HiddenType::class, [
                     'required' => true,
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
-            ]);
+                ]);
     }
 
     /**

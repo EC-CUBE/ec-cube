@@ -1,14 +1,27 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\BlockType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class BlockTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class BlockTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */

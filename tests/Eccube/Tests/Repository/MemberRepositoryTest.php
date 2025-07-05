@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Security\PasswordHasher\PasswordHasher;
 use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * MemberRepository test cases.
@@ -38,10 +38,10 @@ class MemberRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $this->passwordHasher = static::getContainer()->get(PasswordHasher::class);
-        $this->memberRepo = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->memberRepo = $this->entityManager->getRepository(Member::class);
         $this->Member = $this->memberRepo->find(1);
         $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
-            ->find(\Eccube\Entity\Master\Work::ACTIVE);
+            ->find(Work::ACTIVE);
 
         for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
@@ -175,7 +175,7 @@ class MemberRepositoryTest extends EccubeTestCase
     /**
      * https://github.com/EC-CUBE/ec-cube/issues/5119
      */
-    public function testDeleteWithException_SelfForeignKey()
+    public function testDeleteWithExceptionSelfForeignKey()
     {
         $Member1 = $this->createMember();
         $Member1->setCreator($Member1);

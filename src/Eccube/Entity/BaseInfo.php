@@ -20,19 +20,26 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
      * BaseInfo
      *
      * @ORM\Table(name="dtb_base_info")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\BaseInfoRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class BaseInfo extends \Eccube\Entity\AbstractEntity
+    class BaseInfo extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -171,28 +178,28 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $delivery_free_quantity;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_mypage_order_status_display", type="boolean", options={"default":true})
          */
         private $option_mypage_order_status_display = true;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_nostock_hidden", type="boolean", options={"default":false})
          */
         private $option_nostock_hidden = false;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_favorite_product", type="boolean", options={"default":true})
          */
         private $option_favorite_product = true;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_product_delivery_fee", type="boolean", options={"default":false})
          */
@@ -206,28 +213,28 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $invoice_registration_number;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_product_tax_rule", type="boolean", options={"default":false})
          */
         private $option_product_tax_rule = false;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_customer_activate", type="boolean", options={"default":true})
          */
         private $option_customer_activate = true;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_remember_me", type="boolean", options={"default":true})
          */
         private $option_remember_me = true;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_mail_notifier", type="boolean", options={"default":false})
          */
@@ -250,7 +257,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $php_path;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="option_point", type="boolean", options={"default":true})
          */
@@ -271,23 +278,29 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         private $point_conversion_rate = '1';
 
         /**
-         * @var \Eccube\Entity\Master\Country
+         * @var Master\Country
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
          * })
+         *
          * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
          */
         private $Country;
 
         /**
-         * @var \Eccube\Entity\Master\Pref
+         * @var Master\Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
          * })
+         *
          * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
          */
         private $Pref;
@@ -768,7 +781,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionMypageOrderStatusDisplay.
          *
-         * @param boolean $optionMypageOrderStatusDisplay
+         * @param bool $optionMypageOrderStatusDisplay
          *
          * @return BaseInfo
          */
@@ -782,7 +795,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionMypageOrderStatusDisplay.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionMypageOrderStatusDisplay()
         {
@@ -792,7 +805,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionNostockHidden.
          *
-         * @param integer $optionNostockHidden
+         * @param int $optionNostockHidden
          *
          * @return BaseInfo
          */
@@ -806,7 +819,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionNostockHidden.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionNostockHidden()
         {
@@ -816,7 +829,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionFavoriteProduct.
          *
-         * @param boolean $optionFavoriteProduct
+         * @param bool $optionFavoriteProduct
          *
          * @return BaseInfo
          */
@@ -830,7 +843,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionFavoriteProduct.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionFavoriteProduct()
         {
@@ -840,7 +853,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionProductDeliveryFee.
          *
-         * @param boolean $optionProductDeliveryFee
+         * @param bool $optionProductDeliveryFee
          *
          * @return BaseInfo
          */
@@ -854,7 +867,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionProductDeliveryFee.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionProductDeliveryFee()
         {
@@ -888,7 +901,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionProductTaxRule.
          *
-         * @param boolean $optionProductTaxRule
+         * @param bool $optionProductTaxRule
          *
          * @return BaseInfo
          */
@@ -902,7 +915,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionProductTaxRule.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionProductTaxRule()
         {
@@ -912,7 +925,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionCustomerActivate.
          *
-         * @param boolean $optionCustomerActivate
+         * @param bool $optionCustomerActivate
          *
          * @return BaseInfo
          */
@@ -926,7 +939,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionCustomerActivate.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionCustomerActivate()
         {
@@ -936,7 +949,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionRememberMe.
          *
-         * @param boolean $optionRememberMe
+         * @param bool $optionRememberMe
          *
          * @return BaseInfo
          */
@@ -950,7 +963,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionRememberMe.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionRememberMe()
         {
@@ -960,7 +973,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionMailNotifier.
          *
-         * @param boolean $optionRememberMe
+         * @param bool $optionRememberMe
          *
          * @return BaseInfo
          */
@@ -974,13 +987,12 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionRememberMe.
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionMailNotifier()
         {
             return $this->option_mail_notifier;
         }
-
 
         /**
          * Set authenticationKey.
@@ -1009,11 +1021,11 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
+         * @param Master\Country|null $country
          *
          * @return BaseInfo
          */
-        public function setCountry(Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -1023,7 +1035,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get country.
          *
-         * @return \Eccube\Entity\Master\Country|null
+         * @return Master\Country|null
          */
         public function getCountry()
         {
@@ -1033,11 +1045,11 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
+         * @param Master\Pref|null $pref
          *
          * @return BaseInfo
          */
-        public function setPref(Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -1047,7 +1059,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get pref.
          *
-         * @return \Eccube\Entity\Master\Pref|null
+         * @return Master\Pref|null
          */
         public function getPref()
         {
@@ -1057,7 +1069,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Set optionPoint
          *
-         * @param boolean $optionPoint
+         * @param bool $optionPoint
          *
          * @return BaseInfo
          */
@@ -1071,7 +1083,7 @@ if (!class_exists('\Eccube\Entity\BaseInfo')) {
         /**
          * Get optionPoint
          *
-         * @return boolean
+         * @return bool
          */
         public function isOptionPoint()
         {

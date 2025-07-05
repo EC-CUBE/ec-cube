@@ -37,7 +37,7 @@ class Step4Type extends AbstractType
      * @param RequestStack $requestStack
      */
     public function __construct(
-        RequestStack $requestStack
+        RequestStack $requestStack,
     ) {
         $this->requestStack = $requestStack;
     }

@@ -76,7 +76,7 @@ class ShippingType extends AbstractType
         EccubeConfig $eccubeConfig,
         DeliveryRepository $deliveryRepository,
         DeliveryTimeRepository $deliveryTimeRepository,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->deliveryRepository = $deliveryRepository;
@@ -182,7 +182,7 @@ class ShippingType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -223,7 +223,7 @@ class ShippingType extends AbstractType
                 'data' => true,
             ])
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                /** @var \Eccube\Entity\Shipping $data */
+                /** @var Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();

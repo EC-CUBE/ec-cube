@@ -41,7 +41,9 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアノテーションを追加
  *
  * @CartFlow
+ *
  * @ShoppingFlow
+ *
  * @OrderFlow
  */
 class SaleLimitOneValidator extends ItemValidator

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Id;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Tests\EccubeTestCase;
@@ -119,7 +120,7 @@ class AbstractEntityTest extends EccubeTestCase
     public function testChildrens()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -147,7 +148,7 @@ class AbstractEntityTest extends EccubeTestCase
     public function testChildrensWithToNormalizedArray()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -180,7 +181,7 @@ class AbstractEntityTest extends EccubeTestCase
     public function testChildrensWithToJSON()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -214,7 +215,7 @@ class AbstractEntityTest extends EccubeTestCase
     public function testChildrensWithToXML()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -392,7 +393,7 @@ class TestChildEntity extends TestExtendsEntity
 
     public function __construct($arrProps = [])
     {
-        $this->TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->TestChildrens = new ArrayCollection();
         if (is_array($arrProps) && count($arrProps) > 0) {
             $this->setPropertiesFromArray($arrProps);
         }

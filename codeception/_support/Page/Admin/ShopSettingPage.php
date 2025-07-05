@@ -111,10 +111,11 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
             $this->登録();
             $this->tester->see('保存しました', ShopSettingPage::$登録完了メッセージ);
         }
-        $checked = $this->tester->grabAttributeFrom('#shop_master_option_nostock_hidden', 'checked');
+        $this->tester->grabAttributeFrom('#shop_master_option_nostock_hidden', 'checked');
 
         return $this;
     }
+
     public function 入力_GAタグ($value)
     {
         $this->tester->fillField(['id' => 'shop_master_ga_id'], $value);

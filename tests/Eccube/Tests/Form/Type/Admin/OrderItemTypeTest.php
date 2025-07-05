@@ -14,10 +14,12 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderItemType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class OrderItemTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
@@ -96,7 +98,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidQuantityOverMaxLength()
     {
-        $this->formData['quantity'] = '12345678910'; //Max 9
+        $this->formData['quantity'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

@@ -35,8 +35,10 @@ class TruncateHyphenListener implements EventSubscriberInterface
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        $data = str_replace('-', '', $data);
+        if (is_string($data)) {
+            $data = str_replace('-', '', $data);
 
-        $event->setData($data);
+            $event->setData($data);
+        }
     }
 }

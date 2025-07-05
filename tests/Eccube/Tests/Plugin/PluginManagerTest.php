@@ -1,18 +1,30 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Plugin;
 
 use Eccube\Plugin\AbstractPluginManager;
 use Eccube\Tests\EccubeTestCase;
+use Plugin\MigrationSample\PluginManager;
 
 /**
  * @group plugin-service
  */
-class PluginManagerTest  extends EccubeTestCase
+class PluginManagerTest extends EccubeTestCase
 {
     public function testMigration()
     {
-        $pluginManager = new \Plugin\MigrationSample\PluginManager();
+        $pluginManager = new PluginManager();
         $connection = $this->entityManager->getConnection();
         $pluginCode = 'MigrationSample';
         $version = null;

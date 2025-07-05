@@ -14,10 +14,12 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\DeliveryTimeType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class DeliveryTimeTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */

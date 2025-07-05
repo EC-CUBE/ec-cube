@@ -14,11 +14,12 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Category;
+use Eccube\Repository\CategoryRepository;
 
 class SearchProductControllerTest extends AbstractWebTestCase
 {
     /**
-     * @var \Eccube\Repository\CategoryRepository
+     * @var CategoryRepository
      */
     protected $categoryRepository;
 
@@ -27,7 +28,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
         parent::setUp();
         $this->remove();
         $this->createCategories();
-        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
+        $this->categoryRepository = $this->entityManager->getRepository(Category::class);
     }
 
     public function createCategories()

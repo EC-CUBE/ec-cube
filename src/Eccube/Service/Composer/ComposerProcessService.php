@@ -79,9 +79,9 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * Run command
      *
-     * @throws PluginException
-     *
      * @param string $command
+     *
+     * @throws PluginException
      */
     public function runCommand($commands, $output = null, $init = true)
     {
@@ -115,18 +115,18 @@ class ComposerProcessService implements ComposerServiceInterface
      */
     private function init($BaseInfo = null)
     {
-//        /**
-//         * Mysql lock in transaction
-//         *
-//         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-//         *
-//         * @var EntityManagerInterface
-//         */
-//        $em = $this->entityManager;
-//        if ($em->getConnection()->isTransactionActive()) {
-//            $em->getConnection()->commit();
-//            $em->getConnection()->beginTransaction();
-//        }
+        //        /**
+        //         * Mysql lock in transaction
+        //         *
+        //         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+        //         *
+        //         * @var EntityManagerInterface
+        //         */
+        //        $em = $this->entityManager;
+        //        if ($em->getConnection()->isTransactionActive()) {
+        //            $em->getConnection()->commit();
+        //            $em->getConnection()->beginTransaction();
+        //        }
 
         $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
         $this->composerApiService->configureRepository($BaseInfo);

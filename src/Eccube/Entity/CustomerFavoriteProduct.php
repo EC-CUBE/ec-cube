@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
      * CustomerFavoriteProduct
      *
      * @ORM\Table(name="dtb_customer_favorite_product")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerFavoriteProductRepository")
      */
-    class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
+    class CustomerFavoriteProduct extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -51,20 +57,24 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\Customer
+         * @var Customer
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
          * })
          */
         private $Customer;
 
         /**
-         * @var \Eccube\Entity\Product
+         * @var Product
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
          * })
          */
@@ -131,11 +141,11 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Set customer.
          *
-         * @param \Eccube\Entity\Customer|null $customer
+         * @param Customer|null $customer
          *
          * @return CustomerFavoriteProduct
          */
-        public function setCustomer(Customer $customer = null)
+        public function setCustomer(?Customer $customer = null)
         {
             $this->Customer = $customer;
 
@@ -145,7 +155,7 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Get customer.
          *
-         * @return \Eccube\Entity\Customer|null
+         * @return Customer|null
          */
         public function getCustomer()
         {
@@ -155,11 +165,11 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
+         * @param Product|null $product
          *
          * @return CustomerFavoriteProduct
          */
-        public function setProduct(Product $product = null)
+        public function setProduct(?Product $product = null)
         {
             $this->Product = $product;
 
@@ -169,7 +179,7 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Get product.
          *
-         * @return \Eccube\Entity\Product|null
+         * @return Product|null
          */
         public function getProduct()
         {

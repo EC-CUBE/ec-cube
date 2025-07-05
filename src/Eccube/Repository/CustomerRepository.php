@@ -71,7 +71,7 @@ class CustomerRepository extends AbstractRepository
         Queries $queries,
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Customer::class);
 
@@ -86,7 +86,7 @@ class CustomerRepository extends AbstractRepository
         $CustomerStatus = $this->getEntityManager()
             ->find(CustomerStatus::class, CustomerStatus::PROVISIONAL);
 
-        $Customer = new \Eccube\Entity\Customer();
+        $Customer = new Customer();
         $Customer
             ->setStatus($CustomerStatus)
             ->setSecretKey($this->getUniqueSecretKey())
@@ -125,6 +125,7 @@ class CustomerRepository extends AbstractRepository
      *         sortkey?:string,
      *         sorttype?:string
      *     } $searchData
+     *
      * @return QueryBuilder
      */
     public function getQueryBuilderBySearchData($searchData)

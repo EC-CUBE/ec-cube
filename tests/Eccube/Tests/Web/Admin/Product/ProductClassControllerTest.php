@@ -15,7 +15,9 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
@@ -57,9 +59,9 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         parent::setUp();
 
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
-        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
     }
 
     /**
@@ -614,18 +616,18 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      */
     public function testProductClassSortByRank()
     {
-        /** @var \Eccube\Entity\ClassCategory $ClassCategory */
-        //set チョコ rank
+        /** @var ClassCategory $ClassCategory */
+        // set チョコ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set 抹茶 rank
+        // set 抹茶 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set バニラ rank
+        // set バニラ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
@@ -635,7 +637,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $classCategories = [];
-        foreach ($crawler->filterXPath('//table/tr') as $i => $tr) {
+        foreach ($crawler->filterXPath('//table/tr') as $tr) {
             $crawler = new Crawler($tr);
             foreach ($crawler->filter('td') as $j => $td) {
                 if ($j === 1) {
@@ -644,7 +646,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             }
         }
 
-        //チョコ, 抹茶, バニラ sort by rank setup above.
+        // チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = 'チョコ';
         $this->actual = $classCategories[1];
         $this->assertStringContainsString($this->expected, $this->actual);
@@ -658,12 +660,13 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
     /**
      * 商品規格の初期化時は物理削除する.
+     *
      * @see https://github.com/EC-CUBE/ec-cube/pull/5853
      */
     public function testCopyAndInitializeProductClasses()
     {
         $Product = $this->createProduct(null, 3); // 3個の規格を持つ商品を作成
-        $AllProducts = $this->productRepository->findAll();
+        $this->productRepository->findAll();
         $params = [
             'id' => $Product->getId(),
             Constant::TOKEN_NAME => 'dummy',
@@ -671,13 +674,12 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
         $this->assertTrue($this->client->getResponse()->isRedirect(), '商品コピーが正常に完了しました');
 
-
         preg_match('|product/product/([0-9]+)/edit|', $this->client->getResponse()->headers->get('Location') ?? '', $matches);
-        list(,$product_id) = $matches;
+        list(, $product_id) = $matches;
         $ProductClasses = $this->entityManager->getRepository(ProductClass::class)->findBy(
             [
                 'Product' => $product_id,
-                'visible' => true
+                'visible' => true,
             ]
         );
         $this->assertCount(3, $ProductClasses, '規格の数が3個であること');
@@ -692,7 +694,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         $ProductClasses = $this->entityManager->getRepository(ProductClass::class)->findBy(
             [
-                'Product' => $product_id
+                'Product' => $product_id,
             ]
         );
 

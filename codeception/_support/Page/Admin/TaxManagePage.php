@@ -83,14 +83,10 @@ class TaxManagePage extends AbstractAdminPageStyleGuide
     public function 共通税率設定_登録()
     {
         $this->tester->click('table tbody tr:nth-child(1) button');
-
-        return;
     }
 
     public function 決定($row)
     {
         $this->tester->click('table tbody tr:nth-child('.$row.') > td > div.edit > button.btn.btn-ec-conversion');
-
-        return;
     }
 }

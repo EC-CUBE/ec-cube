@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -47,7 +58,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             '商品代金以外の必要料金',
             '引き渡し時期',
             'お支払方法',
-            '返品・交換について'
+            '返品・交換について',
         ];
 
         $loopId = 0;
@@ -62,13 +73,14 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
 
         // Ensure initial value descriptions are empty
         $inputFieldsDescription->each(function ($inputFieldName) {
-            $this->assertEquals("", $inputFieldName->attr('value'));
+            $this->assertEquals('', $inputFieldName->attr('value'));
         });
     }
 
     /**
      * 名称入力欄が255文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 255
+     *
      * @return void
      */
     public function testValidationNameMoreThan255Characters()
@@ -94,6 +106,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 説明入力欄が4000文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 4000
+     *
      * @return void
      */
     public function testValidationDescriptionMoreThan4000Characters()
@@ -149,7 +162,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertStringNotContainsString('is-invalid', $editedDescription->attr('class'));
         $this->assertEquals('UTテスト: 説明', $editedDescription->innerText());
 
-        $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: "");
+        $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: '');
         $this->assertEquals('1', $editedToggle->attr('value'));
 
         // Check save success message exists
@@ -163,64 +176,64 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             'TradeLaws' => [
                 0 => [
                     'name' => '販売業者',
-                    'description' => ''
+                    'description' => '',
                 ],
                 1 => [
                     'name' => '代表責任者',
-                    'description' => ''
+                    'description' => '',
                 ],
                 2 => [
                     'name' => '所在地',
-                    'description' => ''
+                    'description' => '',
                 ],
                 3 => [
                     'name' => '電話番号',
-                    'description' => ''
+                    'description' => '',
                 ],
                 4 => [
                     'name' => 'メールアドレス',
-                    'description' => ''
+                    'description' => '',
                 ],
                 5 => [
                     'name' => 'URL',
-                    'description' => ''
+                    'description' => '',
                 ],
                 6 => [
                     'name' => '商品代金以外の必要料金',
-                    'description' => ''
+                    'description' => '',
                 ],
                 7 => [
                     'name' => '引き渡し時期',
-                    'description' => ''
+                    'description' => '',
                 ], 8 => [
                     'name' => 'お支払方法',
-                    'description' => ''
+                    'description' => '',
                 ],
                 9 => [
                     'name' => '返品・交換について',
-                    'description' => ''
+                    'description' => '',
                 ],
                 10 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 11 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 12 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 13 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 14 => [
                     'name' => '',
-                    'description' => ''
-                ]
-            ]
+                    'description' => '',
+                ],
+            ],
         ];
     }
 }

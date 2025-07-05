@@ -39,7 +39,7 @@ class OrderRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
 
         $this->createProduct();
         $this->Customer = $this->createCustomer();
@@ -212,7 +212,7 @@ class OrderRepositoryTest extends EccubeTestCase
      *
      * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_testAndCondition
      */
-    public function testGetQueryBuilderBySearchDataForAdmin_testAndCondition(array $searchWord, int $expected)
+    public function testGetQueryBuilderBySearchDataForAdminTestAndCondition(array $searchWord, int $expected)
     {
         // 基本の検索条件に一致するデータを作成します
         $this->Order
@@ -244,7 +244,7 @@ class OrderRepositoryTest extends EccubeTestCase
             'multi' => '姓',
             'status' => [OrderStatus::NEW],
             'name' => '姓',
-            'kana' =>'セイ',
+            'kana' => 'セイ',
             'company_name' => '会社名',
             'email' => 'alice@example.com',
             'phone_number' => '00000000000',
@@ -300,14 +300,14 @@ class OrderRepositoryTest extends EccubeTestCase
             // 1 項目ずつ一致しない条件に置き換えると検索結果が返ってこないこと
             [['status' => [OrderStatus::CANCEL]], 0],
             [['multi' => '一致しないキーワード'], 0],
-            [['name' =>  '一致しないキーワード'], 0],
-            [['kana' =>  '一致しないキーワード'], 0],
-            [['company_name' =>  '一致しないキーワード'], 0],
-            [['email' =>  '一致しないキーワード'], 0],
-            [['phone_number' =>  '11111111111'], 0],
-            [['order_no' =>  '一致しないキーワード'], 0],
-            [['tracking_number' =>  '一致しないキーワード'], 0],
-            [['shipping_mail' =>  [Shipping::SHIPPING_MAIL_SENT]], 0],
+            [['name' => '一致しないキーワード'], 0],
+            [['kana' => '一致しないキーワード'], 0],
+            [['company_name' => '一致しないキーワード'], 0],
+            [['email' => '一致しないキーワード'], 0],
+            [['phone_number' => '11111111111'], 0],
+            [['order_no' => '一致しないキーワード'], 0],
+            [['tracking_number' => '一致しないキーワード'], 0],
+            [['shipping_mail' => [Shipping::SHIPPING_MAIL_SENT]], 0],
             [['payment' => [2]], 0],
             [['order_datetime_start' => new \DateTime('2022-01-01T10:00:01Z')], 0],
             [['order_datetime_end' => new \DateTime('2022-01-01T10:00:00Z')], 0],

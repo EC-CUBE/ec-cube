@@ -14,9 +14,12 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -24,8 +27,8 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Mime\Email;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
@@ -67,11 +70,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
 
         $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
-        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->sexRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
-        $this->csvTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\CsvType::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
+        $this->sexRepository = $this->entityManager->getRepository(Sex::class);
+        $this->csvTypeRepository = $this->entityManager->getRepository(CsvType::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
+        $this->customerRepository = $this->entityManager->getRepository(Customer::class);
 
         // FIXME: Should remove exist data before generate data for test
         $this->deleteAllRows(['dtb_order_item']);
@@ -141,10 +144,10 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_order'), [
-            'admin_search_order' => [
-                '_token' => 'dummy',
-                'multi' => $Order->getOrderNo(),
-            ],
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'multi' => $Order->getOrderNo(),
+                ],
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -177,10 +180,10 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_order'), [
-            'admin_search_order' => [
-                '_token' => 'dummy',
-                'multi' => $companyName,
-            ],
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'multi' => $companyName,
+                ],
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -266,7 +269,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             ['ids' => $orderIds]
         );
 
-        $Orders = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findBy(['id' => $orderIds]);
+        $Orders = $this->entityManager->getRepository(Order::class)->findBy(['id' => $orderIds]);
         $this->assertCount(0, $Orders);
     }
 
@@ -328,7 +331,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
-        /** @var \Eccube\Entity\Customer $customer */
+        /** @var Customer $customer */
         $customer = $this->customerRepository->findOneBy(['email' => 'user-1@example.com']);
 
         $this->assertStringContainsString($customer->getName01(), $crawler->filter('table#search_result')->html());
@@ -344,7 +347,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->markTestIncomplete('使用していないルーティングのためスキップ.');
         // case true
         $orderIds = [];
-        /** @var Order[] $Orders */
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
         foreach ($Orders as $Order) {
@@ -449,7 +451,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testSimpleUpdateOrderStatusWithSendMail()
     {
         $orderIds = [];
-        /** @var Order[] $Orders */
         $OrderStatusNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $OrderStatusDelivered = $this->orderStatusRepository->find(OrderStatus::DELIVERED);
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatusNew], [], 2);
@@ -500,7 +501,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->orderRepository->findOneBy([]);
         $Shipping = $Order->getShippings()->first();
-        $crawler = $this->client->request(
+        $this->client->request(
             'PUT',
             $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
             [
@@ -526,7 +527,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->orderRepository->findOneBy([]);
         $Shipping = $Order->getShippings()->first();
-        $crawler = $this->client->request(
+        $this->client->request(
             'PUT',
             $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
             [

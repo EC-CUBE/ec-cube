@@ -50,7 +50,7 @@ class TemplateController extends AbstractController
      */
     public function __construct(
         TemplateRepository $templateRepository,
-        DeviceTypeRepository $deviceTypeRepository
+        DeviceTypeRepository $deviceTypeRepository,
     ) {
         $this->templateRepository = $templateRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -60,6 +60,7 @@ class TemplateController extends AbstractController
      * テンプレート一覧画面
      *
      * @Route("/%eccube_admin_route%/store/template", name="admin_store_template", methods={"GET", "POST"})
+     *
      * @Template("@admin/Store/template.twig")
      *
      * @param Request $request
@@ -211,6 +212,7 @@ class TemplateController extends AbstractController
      * テンプレートの追加画面.
      *
      * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install", methods={"GET", "POST"})
+     *
      * @Template("@admin/Store/template_add.twig")
      *
      * @param Request $request

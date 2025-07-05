@@ -13,13 +13,15 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
+use Eccube\Entity\DeliveryDuration;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class DeliveryDurationTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var DeliveryDurationRepository */
@@ -28,7 +30,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->deliveryDurationRepo = $this->entityManager->getRepository(\Eccube\Entity\DeliveryDuration::class);
+        $this->deliveryDurationRepo = $this->entityManager->getRepository(DeliveryDuration::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

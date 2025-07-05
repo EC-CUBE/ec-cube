@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\Install\InstallController;
-use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormView;
@@ -140,10 +139,10 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testComplete()
     {
         $this->session->set('eccube.session.install',
-                            [
-                                'authmagic' => 'secret',
-                                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
-                            ]);
+            [
+                'authmagic' => 'secret',
+                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
+            ]);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
     }

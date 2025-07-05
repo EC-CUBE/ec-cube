@@ -34,7 +34,9 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
      * @var int
      *
      * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
+     *
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="NONE")
      */
     protected $id;

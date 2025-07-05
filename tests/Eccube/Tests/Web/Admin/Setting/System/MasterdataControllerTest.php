@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -284,7 +285,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][$id]['id'] = 0;
         $editForm['data'][$id]['name'] = '0削除テスト';
 
-        //$this->client->followRedirects(true);
+        // $this->client->followRedirects(true);
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('admin_setting_system_masterdata_edit'),
@@ -314,7 +315,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $entityName = str_replace('-', '\\', $this->entityTest);
 
         $id = $this->entityManager->getRepository($entityName)->findOneBy([], ['sort_no' => 'DESC'])->getSortNo() + 1;
-        $sex = new \Eccube\Entity\Master\Sex();
+        $sex = new Sex();
         $sex->setName('0削除テスト');
         $sex->setSortNo($id);
         $sex->setId(0);
@@ -405,12 +406,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     protected function createFormData($entity = 'Eccube-Entity-Master-Sex')
     {
-        $formData = [
+        return [
             '_token' => 'dummy',
             'masterdata' => $entity,
         ];
-
-        return $formData;
     }
 
     /**
@@ -435,12 +434,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $data[$sortNo]['id'] = $id + 1;
         $data[$sortNo]['name'] = 'TestName';
 
-        $editForm = [
+        return [
             '_token' => 'dummy',
             'data' => $data,
             'masterdata_name' => $entity,
         ];
-
-        return $editForm;
     }
 }

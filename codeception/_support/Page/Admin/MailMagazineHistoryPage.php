@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,18 +19,21 @@ class MailMagazineHistoryPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->goPage('/plugin/mail_magazine/history', '配信履歴メルマガ管理');
+
         return $page;
     }
 
     public function プレビュー($i)
     {
         $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[1]/a"]);
+
         return $this;
     }
 
     public function 配信条件($i)
     {
         $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[2]/a"]);
+
         return $this;
     }
 
@@ -43,6 +47,7 @@ class MailMagazineHistoryPage extends AbstractAdminPageStyleGuide
         $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[4]/a"]);
         $this->tester->waitForElementVisible(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[4]//button[contains(@class, 'btn-ec-delete')]"]);
         $this->tester->click(['xpath' => "//*[@id=\"form1\"]/div[2]/div/div/div[2]/div/table/tbody/tr[{$i}]/td[8]/div/div[4]//button[contains(@class, 'btn-ec-delete')]"]);
+
         return $this;
     }
 }

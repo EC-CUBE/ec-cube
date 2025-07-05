@@ -22,25 +22,30 @@ if (!class_exists(TaxDisplayType::class, false)) {
      * 税抜表示 / 税込表示
      *
      * @ORM\Table(name="mtb_tax_display_type")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\TaxDisplayTypeRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class TaxDisplayType extends \Eccube\Entity\Master\AbstractMasterEntity
+    class TaxDisplayType extends AbstractMasterEntity
     {
         /**
          * 税抜.
          *
-         * @var integer
+         * @var int
          */
         public const EXCLUDED = 1;
 
         /**
          * 税込.
          *
-         * @var integer
+         * @var int
          */
         public const INCLUDED = 2;
     }

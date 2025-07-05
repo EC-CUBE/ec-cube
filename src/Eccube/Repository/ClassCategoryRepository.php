@@ -32,7 +32,7 @@ class ClassCategoryRepository extends AbstractRepository
      * @param RegistryInterface $registry
      */
     public function __construct(
-        RegistryInterface $registry
+        RegistryInterface $registry,
     ) {
         parent::__construct($registry, ClassCategory::class);
     }
@@ -44,7 +44,7 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @return array 規格カテゴリの配列
      */
-    public function getList(\Eccube\Entity\ClassName $ClassName = null)
+    public function getList(?\Eccube\Entity\ClassName $ClassName = null)
     {
         $qb = $this->createQueryBuilder('cc')
             ->orderBy('cc.sort_no', 'DESC'); // TODO ClassName ごとにソートした方が良いかも

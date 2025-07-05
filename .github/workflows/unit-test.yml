@@ -1,17 +1,8 @@
 name: Unit test for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
 jobs:
   phpunit:
     name: PHPUnit
@@ -19,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1', '8.2', '8.3' ]
         db: [ mysql, pgsql, sqlite3 ]
         include:

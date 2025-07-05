@@ -20,25 +20,29 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
      * ProductStock
      *
      * @ORM\Table(name="dtb_product_stock")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductStockRepository")
      */
-    class ProductStock extends \Eccube\Entity\AbstractEntity
+    class ProductStock extends AbstractEntity
     {
         public const IN_STOCK = 1;
         public const OUT_OF_STOCK = 2;
 
         /**
-         * @var integer
+         * @var int
          */
         private $product_class_id;
 
         /**
          * Set product_class_id
          *
-         * @param integer $productClassId
+         * @param int $productClassId
          *
          * @return ProductStock
          */
@@ -52,7 +56,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Get product_class_id
          *
-         * @return integer
+         * @return int
          */
         public function getProductClassId()
         {
@@ -60,10 +64,12 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         }
 
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -90,20 +96,24 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\ProductClass
+         * @var ProductClass
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="ProductStock")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
          * })
          */
         private $ProductClass;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -194,11 +204,11 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Set productClass.
          *
-         * @param \Eccube\Entity\ProductClass|null $productClass
+         * @param ProductClass|null $productClass
          *
          * @return ProductStock
          */
-        public function setProductClass(ProductClass $productClass = null)
+        public function setProductClass(?ProductClass $productClass = null)
         {
             $this->ProductClass = $productClass;
 
@@ -208,7 +218,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Get productClass.
          *
-         * @return \Eccube\Entity\ProductClass|null
+         * @return ProductClass|null
          */
         public function getProductClass()
         {
@@ -218,11 +228,11 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return ProductStock
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -232,7 +242,7 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

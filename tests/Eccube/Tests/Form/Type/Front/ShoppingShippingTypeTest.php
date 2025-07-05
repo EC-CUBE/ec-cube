@@ -14,13 +14,15 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\ShoppingShippingType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * CustomerAddressTypeと同じものなので基本不要
  */
-class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class ShoppingShippingTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */

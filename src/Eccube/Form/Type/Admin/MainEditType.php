@@ -59,7 +59,7 @@ class MainEditType extends AbstractType
     public function __construct(
         EntityManagerInterface $entityManager,
         DeviceTypeRepository $deviceTypeRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->entityManager = $entityManager;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -145,7 +145,7 @@ class MainEditType extends AbstractType
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
-            ])->add('meta_tags', TextAreaType::class, [
+            ])->add('meta_tags', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([

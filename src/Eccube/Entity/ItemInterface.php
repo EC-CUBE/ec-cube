@@ -18,42 +18,42 @@ interface ItemInterface
     /**
      * 商品明細かどうか.
      *
-     * @return boolean 商品明細の場合 true
+     * @return bool 商品明細の場合 true
      */
     public function isProduct();
 
     /**
      * 送料明細かどうか.
      *
-     * @return boolean 送料明細の場合 true
+     * @return bool 送料明細の場合 true
      */
     public function isDeliveryFee();
 
     /**
      * 手数料明細かどうか.
      *
-     * @return boolean 手数料明細の場合 true
+     * @return bool 手数料明細の場合 true
      */
     public function isCharge();
 
     /**
      * 値引き明細かどうか.
      *
-     * @return boolean 値引き明細の場合 true
+     * @return bool 値引き明細の場合 true
      */
     public function isDiscount();
 
     /**
      * ポイント明細かどうか.
      *
-     * @return boolean ポイント明細の場合 true
+     * @return bool ポイント明細の場合 true
      */
     public function isPoint();
 
     /**
      * 税額明細かどうか.
      *
-     * @return boolean 税額明細の場合 true
+     * @return bool 税額明細の場合 true
      */
     public function isTax();
 

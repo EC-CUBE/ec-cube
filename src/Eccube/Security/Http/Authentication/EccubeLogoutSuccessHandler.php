@@ -17,7 +17,6 @@ use Eccube\Request\Context;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
-use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 
 class EccubeLogoutSuccessHandler implements EventSubscriberInterface
 {

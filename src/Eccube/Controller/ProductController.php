@@ -94,7 +94,7 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
         AuthenticationUtils $helper,
-        ProductListMaxRepository $productListMaxRepository
+        ProductListMaxRepository $productListMaxRepository,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
@@ -109,6 +109,7 @@ class ProductController extends AbstractController
      * 商品一覧画面.
      *
      * @Route("/products/list", name="product_list", methods={"GET"})
+     *
      * @Template("Product/list.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
@@ -207,7 +208,9 @@ class ProductController extends AbstractController
      * 商品詳細画面.
      *
      * @Route("/products/detail/{id}", name="product_detail", methods={"GET"}, requirements={"id" = "\d+"})
+     *
      * @Template("Product/detail.twig")
+     *
      * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      *
      * @param Request $request
@@ -430,7 +433,7 @@ class ProductController extends AbstractController
      *
      * @param  array|null $searchData
      *
-     * @return str
+     * @return string
      */
     protected function getPageTitle($searchData)
     {
@@ -448,7 +451,7 @@ class ProductController extends AbstractController
      *
      * @param Product $Product
      *
-     * @return boolean 閲覧可能な場合はtrue
+     * @return bool 閲覧可能な場合はtrue
      */
     protected function checkVisibility(Product $Product)
     {

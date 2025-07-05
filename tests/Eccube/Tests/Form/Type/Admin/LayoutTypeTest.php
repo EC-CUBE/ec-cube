@@ -16,10 +16,11 @@ namespace Eccube\Tests\Form\Type\Admin;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class LayoutTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
