@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
      * DeliveryFee
      *
      * @ORM\Table(name="dtb_delivery_fee")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryFeeRepository")
      */
-    class DeliveryFee extends \Eccube\Entity\AbstractEntity
+    class DeliveryFee extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -44,20 +50,24 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         private $fee;
 
         /**
-         * @var \Eccube\Entity\Delivery
+         * @var Delivery
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryFees")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
          * })
          */
         private $Delivery;
 
         /**
-         * @var \Eccube\Entity\Master\Pref
+         * @var Master\Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
          * })
          */
@@ -100,11 +110,11 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
+         * @param Delivery|null $delivery
          *
          * @return DeliveryFee
          */
-        public function setDelivery(Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -114,7 +124,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Get delivery.
          *
-         * @return \Eccube\Entity\Delivery|null
+         * @return Delivery|null
          */
         public function getDelivery()
         {
@@ -124,11 +134,11 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
+         * @param Master\Pref|null $pref
          *
          * @return DeliveryFee
          */
-        public function setPref(Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -138,7 +148,7 @@ if (!class_exists('\Eccube\Entity\DeliveryFee')) {
         /**
          * Get pref.
          *
-         * @return \Eccube\Entity\Master\Pref|null
+         * @return Master\Pref|null
          */
         public function getPref()
         {

@@ -83,7 +83,7 @@ class MypageController extends AbstractController
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
         BaseInfoRepository $baseInfoRepository,
-        PurchaseFlow $purchaseFlow
+        PurchaseFlow $purchaseFlow,
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
@@ -96,6 +96,7 @@ class MypageController extends AbstractController
      * ログイン画面.
      *
      * @Route("/mypage/login", name="mypage_login", methods={"GET", "POST"})
+     *
      * @Template("Mypage/login.twig")
      */
     public function login(Request $request, AuthenticationUtils $utils)
@@ -106,7 +107,6 @@ class MypageController extends AbstractController
             return $this->redirectToRoute('mypage');
         }
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
         $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 
@@ -140,6 +140,7 @@ class MypageController extends AbstractController
      * マイページ.
      *
      * @Route("/mypage/", name="mypage", methods={"GET"})
+     *
      * @Template("Mypage/index.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
@@ -178,6 +179,7 @@ class MypageController extends AbstractController
      * 購入履歴詳細を表示する.
      *
      * @Route("/mypage/history/{order_no}", name="mypage_history", methods={"GET"})
+     *
      * @Template("Mypage/history.twig")
      */
     public function history(Request $request, $order_no)
@@ -233,7 +235,7 @@ class MypageController extends AbstractController
 
         $Customer = $this->getUser();
 
-        /** @var \Eccube\Entity\Order $Order */
+        /** @var Order $Order */
         $Order = $this->orderRepository->findOneBy(
             [
                 'order_no' => $order_no,
@@ -313,6 +315,7 @@ class MypageController extends AbstractController
      * お気に入り商品を表示する.
      *
      * @Route("/mypage/favorite", name="mypage_favorite", methods={"GET"})
+     *
      * @Template("Mypage/favorite.twig")
      */
     public function favorite(Request $request, PaginatorInterface $paginator)

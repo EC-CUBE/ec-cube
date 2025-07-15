@@ -20,8 +20,11 @@ if (!class_exists('\Eccube\Entity\OrderPdf')) {
      * OrderPdf
      *
      * @ORM\Table(name="dtb_order_pdf")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\OrderPdfRepository")
      */
     class OrderPdf extends AbstractEntity
@@ -36,6 +39,7 @@ if (!class_exists('\Eccube\Entity\OrderPdf')) {
          * @var int
          *
          * @ORM\Column(name="member_id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
          */
         private $member_id;
@@ -104,7 +108,7 @@ if (!class_exists('\Eccube\Entity\OrderPdf')) {
         private $update_date;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
@@ -313,7 +317,7 @@ if (!class_exists('\Eccube\Entity\OrderPdf')) {
         /**
          * Set visible
          *
-         * @param boolean $visible
+         * @param bool $visible
          *
          * @return Delivery
          */
@@ -327,7 +331,7 @@ if (!class_exists('\Eccube\Entity\OrderPdf')) {
         /**
          * Is the visibility visible?
          *
-         * @return boolean
+         * @return bool
          */
         public function isVisible()
         {

@@ -66,7 +66,7 @@ function log_debug($message, array $context = [])
  *
  * @param string $channel 設定されたchannel名
  *
- * @return \Symfony\Bridge\Monolog\Logger
+ * @return Symfony\Bridge\Monolog\Logger
  */
 function logs($channel)
 {

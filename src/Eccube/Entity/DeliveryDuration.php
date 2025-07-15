@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\DeliveryDuration')) {
      * DeliveryDuration
      *
      * @ORM\Table(name="dtb_delivery_duration")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDurationRepository")
      */
-    class DeliveryDuration extends \Eccube\Entity\AbstractEntity
+    class DeliveryDuration extends AbstractEntity
     {
         /**
          * @return string
@@ -39,7 +43,9 @@ if (!class_exists('\Eccube\Entity\DeliveryDuration')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;

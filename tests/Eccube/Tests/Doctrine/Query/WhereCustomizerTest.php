@@ -43,9 +43,9 @@ class WhereCustomizerTest extends EccubeTestCase
         $builder = $this->createQueryBuilder();
         $customizer = new WhereCustomizerTest_Customizer(function () {
             return [
-            WhereClause::eq('name', ':Name', 'hoge'),
-            WhereClause::eq('delFlg', ':DelFlg', 0),
-        ];
+                WhereClause::eq('name', ':Name', 'hoge'),
+                WhereClause::eq('delFlg', ':DelFlg', 0),
+            ];
         });
         $customizer->customize($builder, null, '');
 

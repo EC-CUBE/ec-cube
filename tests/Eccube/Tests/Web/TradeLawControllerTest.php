@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Page;
 use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
@@ -40,12 +39,14 @@ class TradeLawControllerTest extends AbstractWebTestCase
     /**
      * Ensure that the line with both the name/description registered appears on the specific transaction law page.
      * 名称/説明の両方が登録されている行が、特定商取引法ページに表示されることを確認する。
+     *
      * @return void
      */
-    public function testTradeLawsNotEmpty() {
+    public function testTradeLawsNotEmpty()
+    {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
-        foreach($tradeLaws as $tradeLaw) {
+        foreach ($tradeLaws as $tradeLaw) {
             $tradeLaw->setName(sprintf('Trade名称_%s', $id));
             $tradeLaw->setDescription(sprintf('Trade説明_%s', $id));
             $id++;
@@ -63,12 +64,14 @@ class TradeLawControllerTest extends AbstractWebTestCase
     /**
      * Ensure that lines that do not have both a name/description registered do not appear on the specific transaction law page.
      * 名称/説明の両方が登録されていない行は、特定商取引法ページに表示されないことを確認する。
+     *
      * @return void
      */
-    public function testTradeLawsEmpty() {
+    public function testTradeLawsEmpty()
+    {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
-        foreach($tradeLaws as $tradeLaw) {
+        foreach ($tradeLaws as $tradeLaw) {
             $tradeLaw->setName(sprintf('Trade名称_%s', $id));
             $tradeLaw->setDescription('');
             $id++;

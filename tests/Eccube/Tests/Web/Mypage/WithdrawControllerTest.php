@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
@@ -73,7 +74,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('mypage_withdraw'),
             [
@@ -90,7 +91,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -104,7 +105,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->client->enableProfiler();
         $this->logInTo($this->Customer);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('mypage_withdraw'),
             [
@@ -121,7 +122,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->getSubject();
         $this->verify();

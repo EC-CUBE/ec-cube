@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\Template')) {
      * Template
      *
      * @ORM\Table(name="dtb_template")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TemplateRepository")
      */
-    class Template extends \Eccube\Entity\AbstractEntity
+    class Template extends AbstractEntity
     {
         /**
          *  初期テンプレートコード
@@ -52,7 +56,9 @@ if (!class_exists('\Eccube\Entity\Template')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -86,10 +92,12 @@ if (!class_exists('\Eccube\Entity\Template')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\Master\DeviceType
+         * @var Master\DeviceType
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
          * })
          */
@@ -204,11 +212,11 @@ if (!class_exists('\Eccube\Entity\Template')) {
         /**
          * Set deviceType.
          *
-         * @param \Eccube\Entity\Master\DeviceType|null $deviceType
+         * @param Master\DeviceType|null $deviceType
          *
          * @return Template
          */
-        public function setDeviceType(Master\DeviceType $deviceType = null)
+        public function setDeviceType(?Master\DeviceType $deviceType = null)
         {
             $this->DeviceType = $deviceType;
 
@@ -218,7 +226,7 @@ if (!class_exists('\Eccube\Entity\Template')) {
         /**
          * Get deviceType.
          *
-         * @return \Eccube\Entity\Master\DeviceType|null
+         * @return Master\DeviceType|null
          */
         public function getDeviceType()
         {

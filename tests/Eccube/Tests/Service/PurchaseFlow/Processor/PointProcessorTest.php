@@ -24,6 +24,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\AddPointProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
@@ -196,7 +197,7 @@ class PointProcessorTest extends EccubeTestCase
     }
 
     /**
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     public function testReduceCustomerPoint()
     {
@@ -321,7 +322,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @param $pointConversionRate int 商品の値段
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     public function testPointConversionRate($pointConversionRate)
     {
@@ -415,7 +416,7 @@ class PointProcessorTest extends EccubeTestCase
         $OrderItem->setProductClass($ProductClass);
         $OrderItem->setPrice($price);
         $OrderItem->setQuantity($quantity);
-        $ProductType = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderItemType::class)->find(OrderItemType::PRODUCT);
+        $ProductType = $this->entityManager->getRepository(OrderItemType::class)->find(OrderItemType::PRODUCT);
         $OrderItem->setOrderItemType($ProductType);
 
         return $OrderItem;

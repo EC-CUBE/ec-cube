@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\ProductClassType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class ProductClassTypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 
@@ -74,7 +75,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidSaleLimitOverMaxLength()
     {
-        $this->formData['sale_limit'] = '12345678910'; //Max 10
+        $this->formData['sale_limit'] = '12345678910'; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -98,7 +99,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPrice01OverMaxLength()
     {
-        $this->formData['price01'] = '12345678910'; //Max 10
+        $this->formData['price01'] = '12345678910'; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -122,7 +123,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPrice02Blank()
     {
-        $this->formData['price02'] = ''; //Max 10
+        $this->formData['price02'] = ''; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -130,7 +131,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPrice02OverMaxLength()
     {
-        $this->formData['price02'] = '12345678910'; //Max 10
+        $this->formData['price02'] = '12345678910'; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

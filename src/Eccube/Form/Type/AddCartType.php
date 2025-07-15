@@ -48,7 +48,7 @@ class AddCartType extends AbstractType
     /**
      * @var \Eccube\Entity\Product
      */
-    protected $Product = null;
+    protected $Product;
 
     /**
      * @var ProductClassRepository

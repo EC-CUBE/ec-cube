@@ -91,7 +91,7 @@ class MasterdataType extends AbstractType
                     new Assert\NotBlank(),
                 ],
             ])
-            ;
+        ;
     }
 
     /**

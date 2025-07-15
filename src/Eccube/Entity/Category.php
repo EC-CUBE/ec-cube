@@ -21,12 +21,16 @@ if (!class_exists('\Eccube\Entity\Category')) {
      * Category
      *
      * @ORM\Table(name="dtb_category")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CategoryRepository")
      */
-    class Category extends \Eccube\Entity\AbstractEntity
+    class Category extends AbstractEntity
     {
         /**
          * @return string
@@ -37,7 +41,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         }
 
         /**
-         * @return integer
+         * @return int
          */
         public function countBranches()
         {
@@ -52,9 +56,9 @@ if (!class_exists('\Eccube\Entity\Category')) {
 
         /**
          * @param  \Doctrine\ORM\EntityManager $em
-         * @param  integer                     $sortNo
+         * @param  int                     $sortNo
          *
-         * @return \Eccube\Entity\Category
+         * @return Category
          */
         public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
         {
@@ -144,7 +148,9 @@ if (!class_exists('\Eccube\Entity\Category')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -195,6 +201,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
          * @var \Doctrine\Common\Collections\Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\Category", mappedBy="Parent")
+         *
          * @ORM\OrderBy({
          *     "sort_no"="DESC"
          * })
@@ -202,20 +209,24 @@ if (!class_exists('\Eccube\Entity\Category')) {
         private $Children;
 
         /**
-         * @var \Eccube\Entity\Category
+         * @var Category
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Children")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id")
          * })
          */
         private $Parent;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -363,7 +374,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Add productCategory.
          *
-         * @param \Eccube\Entity\ProductCategory $productCategory
+         * @param ProductCategory $productCategory
          *
          * @return Category
          */
@@ -377,9 +388,9 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Remove productCategory.
          *
-         * @param \Eccube\Entity\ProductCategory $productCategory
+         * @param ProductCategory $productCategory
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeProductCategory(ProductCategory $productCategory)
         {
@@ -399,7 +410,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Add child.
          *
-         * @param \Eccube\Entity\Category $child
+         * @param Category $child
          *
          * @return Category
          */
@@ -413,9 +424,9 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Remove child.
          *
-         * @param \Eccube\Entity\Category $child
+         * @param Category $child
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeChild(Category $child)
         {
@@ -435,11 +446,11 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Set parent.
          *
-         * @param \Eccube\Entity\Category|null $parent
+         * @param Category|null $parent
          *
          * @return Category
          */
-        public function setParent(Category $parent = null)
+        public function setParent(?Category $parent = null)
         {
             $this->Parent = $parent;
 
@@ -449,7 +460,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Get parent.
          *
-         * @return \Eccube\Entity\Category|null
+         * @return Category|null
          */
         public function getParent()
         {
@@ -459,11 +470,11 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return Category
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -473,7 +484,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

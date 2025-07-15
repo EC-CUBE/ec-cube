@@ -20,18 +20,22 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
      * ProductTag
      *
      * @ORM\Table(name="dtb_product_tag")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductTagRepository")
      */
-    class ProductTag extends \Eccube\Entity\AbstractEntity
+    class ProductTag extends AbstractEntity
     {
         /**
          * Get tag_id
          * use csv export
          *
-         * @return integer
+         * @return int
          */
         public function getTagId()
         {
@@ -43,10 +47,12 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         }
 
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -59,30 +65,36 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         private $create_date;
 
         /**
-         * @var \Eccube\Entity\Product
+         * @var Product
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductTag")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
          * })
          */
         private $Product;
 
         /**
-         * @var \Eccube\Entity\Tag
+         * @var Tag
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Tag", inversedBy="ProductTag")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
          * })
          */
         private $Tag;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -125,11 +137,11 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set product.
          *
-         * @param \Eccube\Entity\Product|null $product
+         * @param Product|null $product
          *
          * @return ProductTag
          */
-        public function setProduct(Product $product = null)
+        public function setProduct(?Product $product = null)
         {
             $this->Product = $product;
 
@@ -139,7 +151,7 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Get product.
          *
-         * @return \Eccube\Entity\Product|null
+         * @return Product|null
          */
         public function getProduct()
         {
@@ -149,11 +161,11 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set tag.
          *
-         * @param \Eccube\Entity\Tag|null $tag
+         * @param Tag|null $tag
          *
          * @return ProductTag
          */
-        public function setTag(Tag $tag = null)
+        public function setTag(?Tag $tag = null)
         {
             $this->Tag = $tag;
 
@@ -163,7 +175,7 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Get tag.
          *
-         * @return \Eccube\Entity\Tag|null
+         * @return Tag|null
          */
         public function getTag()
         {
@@ -173,11 +185,11 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return ProductTag
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -187,7 +199,7 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

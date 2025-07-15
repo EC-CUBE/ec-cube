@@ -49,6 +49,7 @@ class MailSettingsPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
     public function 入力_新規テンプレート名(string $value)
     {
         $this->tester->fillField(['id' => 'mail_name'], $value);
@@ -68,7 +69,6 @@ class MailSettingsPage extends AbstractAdminPageStyleGuide
         $this->tester->fillField('#editor > textarea', $value);
 
         return $this;
-
     }
 
     public function 入力_HTML(string $value)
@@ -86,6 +86,4 @@ class MailSettingsPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
-
-
 }

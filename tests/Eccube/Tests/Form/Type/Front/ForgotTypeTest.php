@@ -14,10 +14,12 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\ForgotType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class ForgotTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     protected $formData;

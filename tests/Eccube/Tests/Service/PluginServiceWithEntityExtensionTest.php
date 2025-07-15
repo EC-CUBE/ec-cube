@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
@@ -57,7 +58,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->mockSchemaService);
 
-        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
     protected function tearDown(): void

@@ -203,7 +203,7 @@ class PluginApiService
      * @param string $pluginVersion
      * @param string $remoteVersion
      *
-     * @return boolean
+     * @return bool
      */
     private function isUpdate($pluginVersion, $remoteVersion)
     {

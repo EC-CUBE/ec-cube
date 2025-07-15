@@ -78,7 +78,7 @@ class AbstractMasterEntityTest extends EccubeTestCase
 class TestSexDecorator extends Sex
 {
     use TestSexTrait;
-    const TEST_MALE = 1;
+    public const TEST_MALE = 1;
 }
 
 trait TestSexTrait

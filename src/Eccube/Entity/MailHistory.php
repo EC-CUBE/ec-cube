@@ -20,9 +20,13 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
      * MailHistory
      *
      * @ORM\Table(name="dtb_mail_history")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
      */
     class MailHistory extends AbstractEntity
@@ -39,7 +43,9 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -73,20 +79,24 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         private $mail_html_body;
 
         /**
-         * @var \Eccube\Entity\Order
+         * @var Order
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
          * })
          */
         private $Order;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id", nullable=true)
          * })
          */
@@ -201,11 +211,11 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Set order.
          *
-         * @param \Eccube\Entity\Order|null $order
+         * @param Order|null $order
          *
          * @return MailHistory
          */
-        public function setOrder(Order $order = null)
+        public function setOrder(?Order $order = null)
         {
             $this->Order = $order;
 
@@ -215,7 +225,7 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Get order.
          *
-         * @return \Eccube\Entity\Order|null
+         * @return Order|null
          */
         public function getOrder()
         {
@@ -225,11 +235,11 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return MailHistory
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -239,7 +249,7 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

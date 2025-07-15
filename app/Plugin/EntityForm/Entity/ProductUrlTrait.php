@@ -24,6 +24,7 @@ trait ProductUrlTrait
 {
     /**
      * @ORM\Column(type="string", nullable=true, options={ "eccube_form_options": { "auto_render": true, "form_theme": "EntityForm/Form/product_url.twig" } })
+     *
      * @Assert\Url(message="外部の商品ページURLを入力してください。")
      */
     public $url;

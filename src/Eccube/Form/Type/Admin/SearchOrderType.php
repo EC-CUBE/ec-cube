@@ -17,18 +17,18 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\PhoneNumberType;
+use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchOrderType extends AbstractType
@@ -78,7 +78,7 @@ class SearchOrderType extends AbstractType
                     ],
                 ])
                 ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV')
-            ))
+                ))
             ->add('company_name', TextType::class, [
                 'label' => 'admin.order.orderer_company_name',
                 'required' => false,
@@ -123,7 +123,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -140,7 +140,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -158,7 +158,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -175,7 +175,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -193,7 +193,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -210,7 +210,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -228,7 +228,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -245,7 +245,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -263,7 +263,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -280,7 +280,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -298,7 +298,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -315,7 +315,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -333,7 +333,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -350,7 +350,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -368,7 +368,7 @@ class SearchOrderType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -385,7 +385,7 @@ class SearchOrderType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -419,7 +419,7 @@ class SearchOrderType extends AbstractType
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
 
-                # 注文日
+                // 注文日
                 $order_datetime_start = $form['order_datetime_start']->getData();
                 $order_datetime_end = $form['order_datetime_end']->getData();
 
@@ -429,7 +429,7 @@ class SearchOrderType extends AbstractType
                     }
                 }
 
-                # 入金日
+                // 入金日
                 $payment_datetime_start = $form['payment_datetime_start']->getData();
                 $payment_datetime_end = $form['payment_datetime_end']->getData();
 
@@ -439,7 +439,7 @@ class SearchOrderType extends AbstractType
                     }
                 }
 
-                # 更新日
+                // 更新日
                 $update_datetime_start = $form['update_datetime_start']->getData();
                 $update_datetime_end = $form['update_datetime_end']->getData();
 
@@ -449,7 +449,7 @@ class SearchOrderType extends AbstractType
                     }
                 }
 
-                # お届け日
+                // お届け日
                 $shipping_delivery_datetime_start = $form['shipping_delivery_datetime_start']->getData();
                 $shipping_delivery_datetime_end = $form['shipping_delivery_datetime_end']->getData();
 

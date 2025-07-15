@@ -50,7 +50,7 @@ class MemberType extends AbstractType
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        MemberRepository $memberRepository
+        MemberRepository $memberRepository,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->memberRepository = $memberRepository;
@@ -86,9 +86,9 @@ class MemberType extends AbstractType
                             'pattern' => $this->eccubeConfig['eccube_password_pattern'],
                             'message' => 'form_error.password_pattern_invalid',
                         ]),
-                        new Assert\NotBlank()
+                        new Assert\NotBlank(),
                     ],
-                ]
+                ],
             ])
             ->add('Authority', EntityType::class, [
                 'class' => 'Eccube\Entity\Master\Authority',

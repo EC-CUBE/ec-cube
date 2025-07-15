@@ -20,13 +20,18 @@ if (!class_exists(ProductListOrderBy::class, false)) {
      * ProductListOrderBy
      *
      * @ORM\Table(name="mtb_product_list_order_by")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductListOrderByRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class ProductListOrderBy extends \Eccube\Entity\Master\AbstractMasterEntity
+    class ProductListOrderBy extends AbstractMasterEntity
     {
     }
 }

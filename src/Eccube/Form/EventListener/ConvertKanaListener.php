@@ -48,10 +48,14 @@ class ConvertKanaListener implements EventSubscriberInterface
 
         if (is_array($data)) {
             foreach ($data as &$value) {
-                $value = mb_convert_kana($value, $this->option, $this->encoding);
+                if (is_string($value)) {
+                    $value = mb_convert_kana($value, $this->option, $this->encoding);
+                }
             }
         } else {
-            $data = mb_convert_kana($data, $this->option, $this->encoding);
+            if (is_string($data)) {
+                $data = mb_convert_kana($data, $this->option, $this->encoding);
+            }
         }
 
         $event->setData($data);

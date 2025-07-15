@@ -58,7 +58,6 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
         try {
             return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
         } catch (SecurityError $e) {
-
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
             if ($appEnv === 'dev') {

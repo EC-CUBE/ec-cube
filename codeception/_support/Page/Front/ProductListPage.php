@@ -18,6 +18,7 @@ class ProductListPage extends AbstractFrontPage
     public static function at($I)
     {
         $page = new self($I);
+        $page->tester->wait(1);
         $page->tester->seeInCurrentUrl('/products/list');
 
         return $page;
@@ -63,6 +64,7 @@ class ProductListPage extends AbstractFrontPage
             }
         }
         $this->tester->click(['class' => 'add-cart']);
+        $this->tester->wait(1);
         $this->tester->waitForElementVisible(['css' => 'div.ec-modal-box']);
 
         return $this;

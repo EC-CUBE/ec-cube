@@ -13,13 +13,15 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
+use Eccube\Entity\Master\Pref;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class PrefTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var PrefRepository */
@@ -28,7 +30,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->prefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
+        $this->prefRepo = $this->entityManager->getRepository(Pref::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

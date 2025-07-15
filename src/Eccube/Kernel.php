@@ -50,7 +50,6 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class Kernel extends BaseKernel
 {
@@ -144,7 +143,7 @@ class Kernel extends BaseKernel
         date_default_timezone_set($timezone);
 
         $Logger = $container->get('eccube.logger');
-        if ($Logger !== null && $Logger instanceof \Eccube\Log\Logger) {
+        if ($Logger !== null && $Logger instanceof Log\Logger) {
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
@@ -211,7 +210,7 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
-                $builder = $routes->import($dir,'annotation');
+                $builder = $routes->import($dir, 'annotation');
                 $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {

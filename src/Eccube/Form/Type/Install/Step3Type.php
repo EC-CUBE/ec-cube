@@ -144,15 +144,18 @@ class Step3Type extends AbstractType
                 $form = $event->getForm();
                 $data = $form->getData();
 
-                $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
+                $adminAllowHosts = $data['admin_allow_hosts'] ?? '';
+                if ($adminAllowHosts !== '') {
+                    $ips = preg_split("/\R/", $adminAllowHosts, -1, PREG_SPLIT_NO_EMPTY);
 
-                foreach ($ips as $ip) {
-                    $errors = $this->validator->validate($ip, [
+                    foreach ($ips as $ip) {
+                        $errors = $this->validator->validate($ip, [
                             new Assert\Ip(),
                         ]
-                    );
-                    if ($errors->count() != 0) {
-                        $form['admin_allow_hosts']->addError(new FormError(trans('install.ip_is_invalid', ['%ip%' => $ip])));
+                        );
+                        if ($errors->count() != 0) {
+                            $form['admin_allow_hosts']->addError(new FormError(trans('install.ip_is_invalid', ['%ip%' => $ip])));
+                        }
                     }
                 }
             })

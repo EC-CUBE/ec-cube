@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,24 +19,28 @@ class ApiWebHookEditPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->atPage('WebHook登録API管理');
+
         return $page;
     }
 
     public function 入力_PayloadURL($value)
     {
         $this->tester->fillField(['id' => 'web_hook_payload_url'], $value);
+
         return $this;
     }
 
     public function 入力_シークレット($value)
     {
         $this->tester->fillField(['id' => 'web_hook_secret'], $value);
+
         return $this;
     }
 
     public function 登録()
     {
         $this->tester->click(['css' => '#ex-conversion-action > div > button']);
+
         return $this;
     }
 }

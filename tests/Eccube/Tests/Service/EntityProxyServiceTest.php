@@ -169,7 +169,7 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 {
 }
 EOT
-);
+        );
         $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
         $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');

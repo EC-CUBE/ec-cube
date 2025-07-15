@@ -157,7 +157,7 @@ class EditController extends AbstractController
         OrderItemTypeRepository $orderItemTypeRepository,
         OrderStatusRepository $orderStatusRepository,
         OrderStateMachine $orderStateMachine,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -180,6 +180,7 @@ class EditController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/new", name="admin_order_new", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/edit.twig")
      */
     public function index(Request $request, RouterInterface $router, $id = null)
@@ -412,10 +413,11 @@ class EditController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_customer_html_page", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/search_customer.twig")
      *
      * @param Request $request
-     * @param integer $page_no
+     * @param int $page_no
      *
      * @return array
      */
@@ -573,6 +575,7 @@ class EditController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/order/search/product", name="admin_order_search_product", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/search_product.twig")
      */
     public function searchProduct(Request $request, PaginatorInterface $paginator, $page_no = null)
@@ -664,6 +667,7 @@ class EditController extends AbstractController
      * その他明細情報を取得
      *
      * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type", methods={"POST"})
+     *
      * @Template("@admin/Order/order_item_type.twig")
      *
      * @param Request $request

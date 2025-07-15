@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
      * Plugin
      *
      * @ORM\Table(name="dtb_plugin")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PluginRepository")
      */
-    class Plugin extends \Eccube\Entity\AbstractEntity
+    class Plugin extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -51,7 +57,7 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         private $code;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="enabled", type="boolean", options={"default":false})
          */
@@ -72,7 +78,8 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         private $source;
 
         /**
-         * @var boolean
+         * @var bool
+         *
          * @ORM\Column(name="initialized", type="boolean", options={"default":false})
          */
         private $initialized = false;
@@ -152,7 +159,7 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         /**
          * Set enabled.
          *
-         * @param boolean $enabled
+         * @param bool $enabled
          *
          * @return Plugin
          */
@@ -166,7 +173,7 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         /**
          * Get enabled.
          *
-         * @return boolean
+         * @return bool
          */
         public function isEnabled()
         {

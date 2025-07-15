@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Store;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -46,7 +47,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->expected = $form['php_path'];
-        $this->actual = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get()->getPhpPath();
+        $this->actual = $this->entityManager->getRepository(BaseInfo::class)->get()->getPhpPath();
         $this->verify();
     }
 
@@ -54,7 +55,6 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      * 異常系を確認。正常系のインストールはE2Eテストの方で実施
      *
      * @dataProvider OwnerStoreInstallParam
-     * 
      */
     public function testFailureInstall($param1, $param2, $message)
     {
@@ -63,7 +63,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             'version' => $param2,
         ];
 
-        $crawler = $this->client->request('POST',
+        $this->client->request('POST',
             $this->generateUrl('admin_store_plugin_api_install', $form),
             [],
             [],
@@ -77,12 +77,11 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         //　ログを確認
         $this->assertContains($message, json_decode($this->client->getResponse()->getContent())->log);
     }
-    
+
     /**
      * 異常系を確認。正常系のアップデートはE2Eテストの方で実施
      *
      * @dataProvider OwnerStoreUpgradeParam
-     * 
      */
     public function testFailureUpgrade($param1, $param2, $message)
     {
@@ -91,7 +90,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             'version' => $param2,
         ];
 
-        $crawler = $this->client->request('POST',
+        $this->client->request('POST',
             $this->generateUrl('admin_store_plugin_api_upgrade', $form),
             [],
             [],
@@ -114,7 +113,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     {
         return [
             ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'],
-            ['', '4.3.0','入力されていません。'],
+            ['', '4.3.0', '入力されていません。'],
         ];
     }
 
@@ -126,8 +125,8 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         return [
             ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'],
             ['api42', '4.3.0 symfony/yaml:5.3', '有効な値ではありません。'],
-            ['api42', '','入力されていません。'],
-            ['', '4.3.0','入力されていません。'],
+            ['api42', '', '入力されていません。'],
+            ['', '4.3.0', '入力されていません。'],
         ];
     }
 }

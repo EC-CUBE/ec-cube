@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
      * ClassCategory
      *
      * @ORM\Table(name="dtb_class_category")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ClassCategoryRepository")
      */
-    class ClassCategory extends \Eccube\Entity\AbstractEntity
+    class ClassCategory extends AbstractEntity
     {
         /**
          * @return string
@@ -39,7 +43,9 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -66,7 +72,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         private $sort_no;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
@@ -87,20 +93,24 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\ClassName
+         * @var ClassName
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassName", inversedBy="ClassCategories")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="class_name_id", referencedColumnName="id")
          * })
          */
         private $ClassName;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -239,11 +249,11 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Set className.
          *
-         * @param \Eccube\Entity\ClassName|null $className
+         * @param ClassName|null $className
          *
          * @return ClassCategory
          */
-        public function setClassName(ClassName $className = null)
+        public function setClassName(?ClassName $className = null)
         {
             $this->ClassName = $className;
 
@@ -253,7 +263,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Get className.
          *
-         * @return \Eccube\Entity\ClassName|null
+         * @return ClassName|null
          */
         public function getClassName()
         {
@@ -263,11 +273,11 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return ClassCategory
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -277,7 +287,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {
@@ -287,7 +297,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Set visible
          *
-         * @param boolean $visible
+         * @param bool $visible
          *
          * @return ClassCategory
          */
@@ -301,7 +311,7 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Is the visibility visible?
          *
-         * @return boolean
+         * @return bool
          */
         public function isVisible()
         {

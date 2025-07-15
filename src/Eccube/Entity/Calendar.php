@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\Calendar')) {
      * Calendar
      *
      * @ORM\Table(name="dtb_calendar")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CalendarRepository")
      */
-    class Calendar extends \Eccube\Entity\AbstractEntity
+    class Calendar extends AbstractEntity
     {
         /**
          * @var int
@@ -46,7 +50,9 @@ if (!class_exists('\Eccube\Entity\Calendar')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;

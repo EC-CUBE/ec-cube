@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class JsControllerTest extends AbstractAdminWebTestCase
 {
-    const JS_FILE = 'customize.js';
+    public const JS_FILE = 'customize.js';
 
     /**
      * @var string
@@ -64,8 +64,8 @@ __JS_CONTENTS__;
             'POST',
             $this->generateUrl('admin_content_js'),
             ['form' => [
-                 'js' => $js,
-             ],
+                'js' => $js,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -92,8 +92,8 @@ __JS_CONTENTS__;
             'POST',
             $this->generateUrl('admin_content_js'),
             ['form' => [
-                 'js' => $js,
-             ],
+                'js' => $js,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -117,8 +117,8 @@ __JS_CONTENTS__;
             'POST',
             $this->generateUrl('admin_content_js'),
             ['form' => [
-                 'js' => $js,
-             ],
+                'js' => $js,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();

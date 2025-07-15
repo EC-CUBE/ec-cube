@@ -22,22 +22,27 @@ if (!class_exists(TaxType::class, false)) {
      * 消費税の課税区分
      *
      * @ORM\Table(name="mtb_tax_type")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\TaxTypeRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      *
      * @see https://www.nta.go.jp/taxanswer/shohi/6209.htm
      */
-    class TaxType extends \Eccube\Entity\Master\AbstractMasterEntity
+    class TaxType extends AbstractMasterEntity
     {
         /**
          * 課税.
          *
          * 消費税は、国内において事業者が事業として対価を得て行う取引を課税の対象としています。
          *
-         * @var integer
+         * @var int
          */
         public const TAXATION = 1;
 
@@ -48,7 +53,7 @@ if (!class_exists(TaxType::class, false)) {
          * これに当たらない取引には消費税はかかりません。
          * 例えば、国外取引、対価を得て行うことに当たらない寄附や単なる贈与、出資に対する配当などがこれに当たります。
          *
-         * @var integer
+         * @var int
          */
         public const NON_TAXABLE = 2;
 
@@ -59,7 +64,7 @@ if (!class_exists(TaxType::class, false)) {
          * これを非課税取引といいます。
          * 例えば、土地、有価証券、商品券などの譲渡、預貯金の利子や社会保険医療などがこれに当たります。
          *
-         * @var integer
+         * @var int
          */
         public const TAX_EXEMPT = 3;
     }

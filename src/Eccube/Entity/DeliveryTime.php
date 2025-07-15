@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
      * DeliveryTime
      *
      * @ORM\Table(name="dtb_delivery_time")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryTimeRepository")
      */
-    class DeliveryTime extends \Eccube\Entity\AbstractEntity
+    class DeliveryTime extends AbstractEntity
     {
         public function __toString()
         {
@@ -36,7 +40,9 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -49,10 +55,12 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         private $delivery_time;
 
         /**
-         * @var \Eccube\Entity\Delivery
+         * @var Delivery
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryTimes")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
          * })
          */
@@ -66,7 +74,7 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         protected $sort_no;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
@@ -123,11 +131,11 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         /**
          * Set delivery.
          *
-         * @param \Eccube\Entity\Delivery|null $delivery
+         * @param Delivery|null $delivery
          *
          * @return DeliveryTime
          */
-        public function setDelivery(Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null)
         {
             $this->Delivery = $delivery;
 
@@ -137,7 +145,7 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         /**
          * Get delivery.
          *
-         * @return \Eccube\Entity\Delivery|null
+         * @return Delivery|null
          */
         public function getDelivery()
         {
@@ -171,7 +179,7 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         /**
          * Set visible
          *
-         * @param boolean $visible
+         * @param bool $visible
          *
          * @return DeliveryTime
          */
@@ -185,7 +193,7 @@ if (!class_exists('\Eccube\Entity\DeliveryTime')) {
         /**
          * Is the visibility visible?
          *
-         * @return boolean
+         * @return bool
          */
         public function isVisible()
         {

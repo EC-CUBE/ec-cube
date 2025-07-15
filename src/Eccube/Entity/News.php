@@ -20,10 +20,15 @@ if (!class_exists('\Eccube\Entity\News')) {
      * News
      *
      * @ORM\Table(name="dtb_news")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\NewsRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
     class News extends AbstractEntity
@@ -40,7 +45,9 @@ if (!class_exists('\Eccube\Entity\News')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -74,7 +81,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         private $url;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="link_method", type="boolean", options={"default":false})
          */
@@ -95,17 +102,19 @@ if (!class_exists('\Eccube\Entity\News')) {
         private $update_date;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
         private $visible;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -220,7 +229,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         /**
          * Set linkMethod.
          *
-         * @param boolean $linkMethod
+         * @param bool $linkMethod
          *
          * @return News
          */
@@ -234,7 +243,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         /**
          * Get linkMethod.
          *
-         * @return boolean
+         * @return bool
          */
         public function isLinkMethod()
         {
@@ -290,7 +299,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         }
 
         /**
-         * @return integer
+         * @return int
          */
         public function isVisible()
         {
@@ -298,7 +307,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         }
 
         /**
-         * @param boolean $visible
+         * @param bool $visible
          *
          * @return News
          */
@@ -312,11 +321,11 @@ if (!class_exists('\Eccube\Entity\News')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return News
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -326,7 +335,7 @@ if (!class_exists('\Eccube\Entity\News')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

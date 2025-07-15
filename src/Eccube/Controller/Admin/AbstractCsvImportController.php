@@ -66,7 +66,7 @@ class AbstractCsvImportController extends AbstractController
             }
 
             $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
+            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
             fclose($fp);
         });
 

@@ -62,7 +62,7 @@ class TaxRuleRepository extends AbstractRepository
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         BaseInfoRepository $baseInfoRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, TaxRule::class);
         $this->tokenStorage = $tokenStorage;
@@ -104,7 +104,7 @@ class TaxRuleRepository extends AbstractRepository
      * @param  int|\Eccube\Entity\Master\Pref|null    $Pref         都道府県
      * @param  int|\Eccube\Entity\Master\Country|null $Country      国
      *
-     * @return \Eccube\Entity\TaxRule                 税設定情報
+     * @return TaxRule                 税設定情報
      *
      * @throws NoResultException
      */
@@ -112,7 +112,7 @@ class TaxRuleRepository extends AbstractRepository
     {
         // Pref Country 設定
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
-            /** @var \Eccube\Entity\Customer $Customer */
+            /** @var Customer $Customer */
             $Customer = $this->tokenStorage->getToken()->getUser();
             // FIXME なぜか管理画面でも実行されている.
             if ($Customer instanceof Customer) {
@@ -265,13 +265,13 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * 税規約の削除.
      *
-     * @param  int|\Eccube\Entity\TaxRule $TaxRule 税規約
+     * @param  int|TaxRule $TaxRule 税規約
      *
      * @throws NoResultException
      */
     public function delete($TaxRule)
     {
-        if (!$TaxRule instanceof \Eccube\Entity\TaxRule) {
+        if (!$TaxRule instanceof TaxRule) {
             $TaxRule = $this->find($TaxRule);
         }
         if (!$TaxRule) {

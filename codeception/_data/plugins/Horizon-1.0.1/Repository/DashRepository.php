@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -12,10 +13,9 @@
 
 namespace Plugin\Horizon\Repository;
 
-
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Repository\AbstractRepository;
 use Plugin\Horizon\Entity\Dash;
-use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 
 class DashRepository extends AbstractRepository
 {

@@ -34,7 +34,7 @@ final class Version20201218044542 extends AbstractMigration
             ) VALUES (
                 2, null, ?, 'point', 'ポイント', $sortNo, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'csv'
             )",
-            ['Eccube\\\\Entity\\\\Customer']);
+                ['Eccube\\\\Entity\\\\Customer']);
         }
     }
 

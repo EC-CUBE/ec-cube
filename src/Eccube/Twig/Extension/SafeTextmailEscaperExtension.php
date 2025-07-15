@@ -22,7 +22,7 @@ class SafeTextmailEscaperExtension extends AbstractExtension
     {
         $twig->getExtension(EscaperExtension::class)->setEscaper(
             'safe_textmail', function ($twig, $string, $charset) {
-                return str_replace(['<', '>'], ['＜', '＞'], $string);
+                return str_replace(['<', '>'], ['＜', '＞'], $string ?? '');
             }
         );
     }

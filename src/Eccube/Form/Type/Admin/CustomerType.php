@@ -115,7 +115,7 @@ class CustomerType extends AbstractType
                         'message' => 'form_error.select_is_future_or_now_date',
                     ]),
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -135,8 +135,8 @@ class CustomerType extends AbstractType
                     'constraints' => [
                         new Assert\NotBlank(),
                         new Assert\Range([
-                            'min' => "-".$this->eccubeConfig['eccube_price_max'],
-                            'max' => $this->eccubeConfig['eccube_price_max']])
+                            'min' => '-'.$this->eccubeConfig['eccube_price_max'],
+                            'max' => $this->eccubeConfig['eccube_price_max']]),
                     ],
                 ]
             )

@@ -114,7 +114,7 @@ class PointHelper
      * 明細追加処理.
      *
      * @param ItemHolderInterface $itemHolder
-     * @param integer $discount
+     * @param int $discount
      */
     public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
     {

@@ -20,9 +20,13 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
      * CustomerAddress
      *
      * @ORM\Table(name="dtb_customer_address")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerAddressRepository")
      */
     class CustomerAddress extends AbstractEntity
@@ -40,9 +44,9 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set from customer.
          *
-         * @param \Eccube\Entity\Customer $Customer
+         * @param Customer $Customer
          *
-         * @return \Eccube\Entity\CustomerAddress
+         * @return CustomerAddress
          */
         public function setFromCustomer(Customer $Customer)
         {
@@ -65,9 +69,9 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set from Shipping.
          *
-         * @param \Eccube\Entity\Shipping $Shipping
+         * @param Shipping $Shipping
          *
-         * @return \Eccube\Entity\CustomerAddress
+         * @return CustomerAddress
          */
         public function setFromShipping(Shipping $Shipping)
         {
@@ -90,7 +94,9 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -173,30 +179,36 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\Customer
+         * @var Customer
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerAddresses")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
          * })
          */
         private $Customer;
 
         /**
-         * @var \Eccube\Entity\Master\Country
+         * @var Master\Country
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
          * })
          */
         private $Country;
 
         /**
-         * @var \Eccube\Entity\Master\Pref
+         * @var Master\Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
          * })
          */
@@ -479,11 +491,11 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set customer.
          *
-         * @param \Eccube\Entity\Customer|null $customer
+         * @param Customer|null $customer
          *
          * @return CustomerAddress
          */
-        public function setCustomer(Customer $customer = null)
+        public function setCustomer(?Customer $customer = null)
         {
             $this->Customer = $customer;
 
@@ -493,7 +505,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Get customer.
          *
-         * @return \Eccube\Entity\Customer|null
+         * @return Customer|null
          */
         public function getCustomer()
         {
@@ -503,11 +515,11 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
+         * @param Master\Country|null $country
          *
          * @return CustomerAddress
          */
-        public function setCountry(Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -517,7 +529,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Get country.
          *
-         * @return \Eccube\Entity\Master\Country|null
+         * @return Master\Country|null
          */
         public function getCountry()
         {
@@ -527,11 +539,11 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
+         * @param Master\Pref|null $pref
          *
          * @return CustomerAddress
          */
-        public function setPref(Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -541,7 +553,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
         /**
          * Get pref.
          *
-         * @return \Eccube\Entity\Master\Pref|null
+         * @return Master\Pref|null
          */
         public function getPref()
         {

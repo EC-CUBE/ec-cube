@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class SecurityTypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 
@@ -344,7 +345,6 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertSame($valid, $this->form['front_deny_hosts']->isValid());
     }
-
 
     /**
      * @dataProvider ipAddressParams

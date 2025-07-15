@@ -54,7 +54,7 @@ class CalendarTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidTitle_Blank()
+    public function testInValidTitleBlank()
     {
         $this->formData['title'] = '';
 
@@ -62,7 +62,7 @@ class CalendarTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidHoliday_Blank()
+    public function testInValidHolidayBlank()
     {
         $this->formData['holiday'] = [];
 

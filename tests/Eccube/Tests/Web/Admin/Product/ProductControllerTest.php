@@ -32,7 +32,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -73,11 +72,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
-        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
-        $this->productTagRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductTag::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
+        $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
@@ -113,7 +112,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $price02 = number_format($price02);
         }
 
-        $form = [
+        return [
             'class' => [
                 'sale_type' => 1,
                 'price01' => $price01,
@@ -140,8 +139,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'delete_images' => [],
             Constant::TOKEN_NAME => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testRoutingAdminProductProduct()
@@ -491,6 +488,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $taxRate
      * @param $expected
+     *
      * @dataProvider dataNewProductProvider
      */
     public function testNewWithPostTaxRate($taxRate, $expected)
@@ -694,7 +692,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $expectedIds = [];
         for ($i = 1; $i <= 10; $i++) {
-            $productName = 'Product name ' . $i;
+            $productName = 'Product name '.$i;
             $Product = $this->createProduct($productName, 0);
             array_unshift($expectedIds, $Product->getId());
         }
@@ -735,9 +733,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // unset header
         unset($arr[0]);
         $actualIds = [];
-        foreach ($arr as $v){
-            if(!empty($v)){
-                $data = explode(",", $v);
+        foreach ($arr as $v) {
+            if (!empty($v)) {
+                $data = explode(',', $v);
                 $actualIds[] = (int) $data[0];
             }
         }
@@ -833,8 +831,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // Give
         $this->baseInfo->setOptionProductTaxRule(true);
         $Product = $this->createProduct(null, 0);
-        $ProductClasses = $Product->getProductClasses();
-        $ProductClass = $ProductClasses[0];
         $formData = $this->createFormData();
 
         if ($tax_rate !== null) {
@@ -1117,7 +1113,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     private function createSearchForm()
     {
-        $post = [
+        return [
             Constant::TOKEN_NAME => 'dummy',
             'id' => '',
             'category_id' => '',
@@ -1126,8 +1122,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'update_date_start' => '',
             'update_date_end' => '',
         ];
-
-        return $post;
     }
 
     /**
@@ -1238,6 +1232,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * ・ <script> スクリプトインジェクション
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
+     *
      * @dataProvider purifyTarget
      */
     public function testPurifyXssInput($formName, $methodName): void

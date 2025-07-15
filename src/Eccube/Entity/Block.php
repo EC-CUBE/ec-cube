@@ -20,15 +20,19 @@ if (!class_exists('\Eccube\Entity\Block')) {
      * Block
      *
      * @ORM\Table(name="dtb_block", uniqueConstraints={@ORM\UniqueConstraint(name="device_type_id", columns={"device_type_id", "file_name"})})
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\BlockRepository")
      */
-    class Block extends \Eccube\Entity\AbstractEntity
+    class Block extends AbstractEntity
     {
         /**
-         * @var integer
+         * @var int
          */
         public const UNUSED_BLOCK_ID = 0;
 
@@ -36,7 +40,9 @@ if (!class_exists('\Eccube\Entity\Block')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -56,14 +62,14 @@ if (!class_exists('\Eccube\Entity\Block')) {
         private $file_name;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="use_controller", type="boolean", options={"default":false})
          */
         private $use_controller = false;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="deletable", type="boolean", options={"default":true})
          */
@@ -91,10 +97,12 @@ if (!class_exists('\Eccube\Entity\Block')) {
         private $BlockPositions;
 
         /**
-         * @var \Eccube\Entity\Master\DeviceType
+         * @var Master\DeviceType
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
          * })
          */
@@ -111,7 +119,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Set id
          *
-         * @param integer $id
+         * @param int $id
          *
          * @return Block
          */
@@ -125,7 +133,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Get id
          *
-         * @return integer
+         * @return int
          */
         public function getId()
         {
@@ -183,7 +191,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Set useController
          *
-         * @param boolean $useController
+         * @param bool $useController
          *
          * @return Block
          */
@@ -197,7 +205,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Get useController
          *
-         * @return boolean
+         * @return bool
          */
         public function isUseController()
         {
@@ -207,7 +215,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Set deletable
          *
-         * @param boolean $deletable
+         * @param bool $deletable
          *
          * @return Block
          */
@@ -221,7 +229,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Get deletable
          *
-         * @return boolean
+         * @return bool
          */
         public function isDeletable()
         {
@@ -279,7 +287,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Add blockPosition
          *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
+         * @param BlockPosition $blockPosition
          *
          * @return Block
          */
@@ -293,7 +301,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Remove blockPosition
          *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
+         * @param BlockPosition $blockPosition
          */
         public function removeBlockPosition(BlockPosition $blockPosition)
         {
@@ -313,11 +321,11 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Set deviceType
          *
-         * @param \Eccube\Entity\Master\DeviceType $deviceType
+         * @param Master\DeviceType $deviceType
          *
          * @return Block
          */
-        public function setDeviceType(Master\DeviceType $deviceType = null)
+        public function setDeviceType(?Master\DeviceType $deviceType = null)
         {
             $this->DeviceType = $deviceType;
 
@@ -327,7 +335,7 @@ if (!class_exists('\Eccube\Entity\Block')) {
         /**
          * Get deviceType
          *
-         * @return \Eccube\Entity\Master\DeviceType
+         * @return Master\DeviceType
          */
         public function getDeviceType()
         {

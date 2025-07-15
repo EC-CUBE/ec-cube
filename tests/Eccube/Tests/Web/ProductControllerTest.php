@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
@@ -42,9 +44,9 @@ class ProductControllerTest extends AbstractWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
     }
 
     public function testRoutingList()
@@ -101,18 +103,18 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductClassSortByRank()
     {
-        /** @var \Eccube\Entity\ClassCategory $ClassCategory */
-        //set チョコ rank
+        /** @var ClassCategory $ClassCategory */
+        // set チョコ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set 抹茶 rank
+        // set 抹茶 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set バニラ rank
+        // set バニラ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
@@ -121,7 +123,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $classCategory = $crawler->filter('#classcategory_id1')->text();
-        //選択してください, チョコ, 抹茶, バニラ sort by rank setup above.
+        // 選択してください, チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = '選択してくださいチョコ抹茶バニラ';
         $this->actual = $classCategory;
         $this->verify();
@@ -315,7 +317,6 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testMetaTagsInDetailPage()
     {
         $product = $this->productRepository->find(2);
-        /** @var Product $product */
         $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
         $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
 

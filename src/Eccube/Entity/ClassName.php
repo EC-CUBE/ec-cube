@@ -20,12 +20,16 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
      * ClassName
      *
      * @ORM\Table(name="dtb_class_name")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ClassNameRepository")
      */
-    class ClassName extends \Eccube\Entity\AbstractEntity
+    class ClassName extends AbstractEntity
     {
         /**
          * @return string
@@ -39,7 +43,9 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -83,6 +89,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
          * @var \Doctrine\Common\Collections\Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\ClassCategory", mappedBy="ClassName")
+         *
          * @ORM\OrderBy({
          *     "sort_no"="DESC"
          * })
@@ -90,10 +97,12 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         private $ClassCategories;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -240,7 +249,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         /**
          * Add classCategory.
          *
-         * @param \Eccube\Entity\ClassCategory $classCategory
+         * @param ClassCategory $classCategory
          *
          * @return ClassName
          */
@@ -254,9 +263,9 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         /**
          * Remove classCategory.
          *
-         * @param \Eccube\Entity\ClassCategory $classCategory
+         * @param ClassCategory $classCategory
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeClassCategory(ClassCategory $classCategory)
         {
@@ -276,11 +285,11 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return ClassName
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -290,7 +299,7 @@ if (!class_exists('\Eccube\Entity\ClassName')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {

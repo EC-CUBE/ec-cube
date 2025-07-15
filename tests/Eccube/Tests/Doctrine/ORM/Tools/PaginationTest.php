@@ -13,9 +13,15 @@
 
 namespace Eccube\Tests\Doctrine\ORM\Tools;
 
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Eccube\Entity\Member;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Eccube\Repository\MemberRepository;
@@ -54,18 +60,18 @@ class PaginationTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ConnectionException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->paginator = static::getContainer()->get(PaginatorInterface::class);
-        $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->tagRepository = $this->entityManager->getRepository(Tag::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
 
         // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
         // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている
@@ -118,14 +124,14 @@ class PaginationTest extends EccubeTestCase
         parent::tearDown();
     }
 
-    protected function createTable(\Doctrine\DBAL\Driver\Connection $conn)
+    protected function createTable(Connection $conn)
     {
         $sql = 'CREATE TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
     }
 
-    protected function dropTable(\Doctrine\DBAL\Driver\Connection $conn)
+    protected function dropTable(Connection $conn)
     {
         $sql = 'DROP TABLE IF EXISTS test_entity;';
         $stmt = $conn->prepare($sql);
@@ -340,13 +346,16 @@ class PaginationTest extends EccubeTestCase
  * テスト用のエンティティ
  *
  * @ORM\Entity(repositoryClass="Eccube\Tests\Doctrine\ORM\Tools\TestRepository")
+ *
  * @ORM\Table(name="test_entity")
  */
 class TestEntity
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="integer")
+     *
      * @ORM\GeneratedValue(strategy="NONE")
      */
     public $id;

@@ -15,7 +15,6 @@ namespace Eccube\Log\Processor;
 
 use Eccube\Session\Session;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class SessionProcessor
 {

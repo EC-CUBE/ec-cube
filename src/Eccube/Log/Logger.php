@@ -43,7 +43,7 @@ class Logger extends AbstractLogger
         Context $context,
         LoggerInterface $logger,
         LoggerInterface $frontLogger,
-        LoggerInterface $adminLogger
+        LoggerInterface $adminLogger,
     ) {
         $this->context = $context;
         $this->logger = $logger;

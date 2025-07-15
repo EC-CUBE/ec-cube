@@ -36,7 +36,7 @@ class ProductDetailPage extends AbstractFrontPage
     public function カテゴリ選択($categories)
     {
         $xpath = "//*[@class='ec-layoutRole__header']/";
-        foreach ($categories as $i => $category) {
+        foreach ($categories as $category) {
             $xpath .= "/ul/li/a[contains(text(), '$category')]/parent::node()";
             $this->tester->waitForElement(['xpath' => $xpath]);
             $this->tester->moveMouseOver(['xpath' => $xpath]);

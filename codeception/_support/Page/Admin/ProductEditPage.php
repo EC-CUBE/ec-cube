@@ -138,6 +138,7 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
 
     public function プレビュー()
     {
+        $this->tester->wait(3);
         $this->tester->click(['xpath' => "//*[@id='preview']/div/div/a[text()='商品を確認']"]);
     }
 }

@@ -47,6 +47,7 @@ class CartPage extends AbstractFrontPage
     {
         $selector = ['xpath' => "//div[@class='ec-cartRole']//ul[@class='ec-cartRow'][position()={$index}]//div[@class='ec-cartRow__amount']"];
         $this->tester->waitForElement($selector);
+
         return $this->tester->grabTextFrom($selector);
     }
 

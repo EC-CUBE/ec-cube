@@ -15,6 +15,9 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\DeliveryDuration;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Member;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
@@ -57,9 +60,9 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->faker = $this->getFaker();
-        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
-        $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
-        $this->deliveryDurationRepository = $this->entityManager->getRepository(\Eccube\Entity\DeliveryDuration::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
+        $this->saleTypeRepository = $this->entityManager->getRepository(SaleType::class);
+        $this->deliveryDurationRepository = $this->entityManager->getRepository(DeliveryDuration::class);
     }
 
     /**
@@ -67,7 +70,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @return Product
      */
-    protected function createTestProduct(Member $TestCreator = null)
+    protected function createTestProduct(?Member $TestCreator = null)
     {
         if (!$TestCreator) {
             $TestCreator = $this->createMember();
@@ -118,7 +121,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @return ClassName
      */
-    protected function createClassName(Member $Creator = null)
+    protected function createClassName(?Member $Creator = null)
     {
         if (!$Creator) {
             $Creator = $this->createMember();
@@ -177,7 +180,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         Member $Creator,
         Product &$TestProduct,
         ClassCategory $TestClassCategory1,
-        ClassCategory $TestClassCategory2
+        ClassCategory $TestClassCategory2,
     ) {
         if (!$Creator) {
             $Creator = $this->createMember();

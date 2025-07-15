@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,6 +19,7 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->goPage('/plugin/sales_report/term', '売上管理期間別集計');
+
         return $page;
     }
 
@@ -25,6 +27,7 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->goPage('/plugin/sales_report/product', '売上管理商品別集計');
+
         return $page;
     }
 
@@ -32,30 +35,35 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->goPage('/plugin/sales_report/age', '売上管理年代別集計');
+
         return $page;
     }
 
     public function 選択_日別()
     {
         $this->tester->click(['id' => 'sales_report_unit_0']);
+
         return $this;
     }
 
     public function 選択_月別()
     {
         $this->tester->click(['id' => 'sales_report_unit_0']);
+
         return $this;
     }
 
     public function 選択_曜日別()
     {
         $this->tester->click(['id' => 'sales_report_unit_0']);
+
         return $this;
     }
 
     public function 選択_時間別()
     {
         $this->tester->click(['id' => 'sales_report_unit_0']);
+
         return $this;
     }
 
@@ -64,6 +72,7 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
         $this->tester->selectOption(['id' => 'sales_report_monthly_year'], intval(substr($yyyyMm, 0, 4)));
         $this->tester->selectOption(['id' => 'sales_report_monthly_month'], intval(substr($yyyyMm, 4, 2)));
         $this->tester->click(['id' => 'btn-monthly']);
+
         return $this;
     }
 
@@ -74,12 +83,14 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
         $this->tester->executeJS("$('#sales_report_term_end').val('{$end}')");
         $this->tester->wait(1);
         $this->tester->click(['id' => 'btn-term']);
+
         return $this;
     }
 
     public function CSVダウンロード()
     {
         $this->tester->click(['id' => 'export-csv']);
+
         return $this;
     }
 }

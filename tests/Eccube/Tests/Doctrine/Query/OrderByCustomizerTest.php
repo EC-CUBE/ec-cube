@@ -45,8 +45,8 @@ class OrderByCustomizerTest extends EccubeTestCase
             ->orderBy('name', 'desc');
         $customizer = new OrderByCustomizerTest_Customizer(function () {
             return [
-            new OrderByClause('productId'),
-        ];
+                new OrderByClause('productId'),
+            ];
         });
         $customizer->customize($builder, null, '');
 
@@ -59,9 +59,9 @@ class OrderByCustomizerTest extends EccubeTestCase
             ->orderBy('name', 'desc');
         $customizer = new OrderByCustomizerTest_Customizer(function () {
             return [
-            new OrderByClause('productId'),
-            new OrderByClause('name', 'desc'),
-        ];
+                new OrderByClause('productId'),
+                new OrderByClause('name', 'desc'),
+            ];
         });
         $customizer->customize($builder, null, '');
 

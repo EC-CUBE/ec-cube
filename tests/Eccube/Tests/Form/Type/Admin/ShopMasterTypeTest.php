@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class ShopMasterTypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 
@@ -156,12 +157,14 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
     public function testInValidGoodTradedMaxLength()
     {
         $this->formData['good_traded'] = str_repeat('1', $this->eccubeConfig['eccube_ltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
     public function testInValidMessageMaxLength()
     {
         $this->formData['message'] = str_repeat('1', $this->eccubeConfig['eccube_ltext_len'] + 1);

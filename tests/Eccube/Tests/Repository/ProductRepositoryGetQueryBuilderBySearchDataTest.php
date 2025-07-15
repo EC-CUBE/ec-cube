@@ -18,6 +18,7 @@ use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\Paginator;
 
 /**
@@ -69,8 +70,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     {
         parent::setUp();
 
-        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
-        $this->productListOrderByRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductListOrderBy::class);
+        $this->categoryRepository = $this->entityManager->getRepository(Category::class);
+        $this->productListOrderByRepository = $this->entityManager->getRepository(ProductListOrderBy::class);
         $this->paginator = static::getContainer()->get('knp_paginator');
 
         $this->ProductListMax = new ProductListMax();
@@ -165,8 +166,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->expected = ['りんご', 'アイス', 'お鍋'];
         $this->actual = [$this->Results[0]->getName(),
-                              $this->Results[1]->getName(),
-                              $this->Results[2]->getName(), ];
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName(), ];
         $this->verify();
     }
 
@@ -228,8 +229,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->expected = ['りんご', 'アイス', 'お鍋'];
         $this->actual = [$this->Results[0]->getName(),
-                              $this->Results[1]->getName(),
-                              $this->Results[2]->getName(), ];
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName(), ];
 
         $this->verify();
     }
@@ -303,7 +304,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         ];
         $this->scenario();
 
-        /** @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination $pagination */
+        /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate(
             $this->Results,
             $this->searchData['pageno'],
@@ -335,7 +336,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         ];
         $this->scenario();
 
-        /** @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination $pagination */
+        /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate(
             $this->Results,
             $this->searchData['pageno'],

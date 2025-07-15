@@ -58,11 +58,11 @@ class EA09ShippingCest
         /* 編集 */
         $OrderListPage->一覧_編集(1);
 
-        $OrderRegisterPage = OrderEditPage::at($I)
+        OrderEditPage::at($I)
             ->お届け先の追加();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
+        $TargetShippings();
 
         $ShippingRegisterPage = ShippingEditPage::at($I)
             ->入力_姓('')
@@ -118,11 +118,11 @@ class EA09ShippingCest
         /* 編集 */
         $OrderListPage->一覧_編集(1);
 
-        $OrderRegisterPage = OrderEditPage::at($I)
+        OrderEditPage::at($I)
             ->お届け先の追加();
 
         $TargetShippings = Fixtures::get('findShippings'); // Closure
-        $Shippings = $TargetShippings();
+        $TargetShippings();
 
         $ShippingRegisterPage = ShippingEditPage::at($I);
         $ShippingRegisterPage
@@ -299,11 +299,11 @@ class EA09ShippingCest
                 ->CSVアップロード();
 
             $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[0]->getShippings()[0]->getId(), '注文取消し', '発送済み'),
-                    '#upload-form > div:nth-child(4)');
+                '#upload-form > div:nth-child(4)');
             $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[1]->getShippings()[0]->getId(), '注文取消し', '発送済み'),
-                    '#upload-form > div:nth-child(5)');
+                '#upload-form > div:nth-child(5)');
             $I->see(sprintf('%s: %s から %s にはステータス変更できません', $Orders[2]->getShippings()[0]->getId(), '注文取消し', '発送済み'),
-                    '#upload-form > div:nth-child(6)');
+                '#upload-form > div:nth-child(6)');
         } finally {
             if (file_exists($csvFileName)) {
                 unlink($csvFileName);

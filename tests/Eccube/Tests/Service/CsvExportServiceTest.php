@@ -13,7 +13,9 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Order;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
@@ -49,10 +51,10 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         parent::setUp();
 
         $this->csvExportService = static::getContainer()->get(CsvExportService::class);
-        $this->csvRepository = $this->entityManager->getRepository(\Eccube\Entity\Csv::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->csvRepository = $this->entityManager->getRepository(Csv::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
 
-        $root = vfsStream::setup('rootDir');
+        vfsStream::setup('rootDir');
         $this->url = vfsStream::url('rootDir/test.csv');
 
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
@@ -98,7 +100,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
             // jeftJoin した QueryBuilder で iterate() を実行すると QueryException が発生してしまう
             // ->select(array('o','d'))
             // ->addOrderBy('o.update_date', 'DESC')
-;
+        ;
 
         $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
         $this->csvExportService->setExportQueryBuilder($qb);
@@ -106,7 +108,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->csvExportService->exportData(function ($entity, $csvService) {
             $Csvs = $csvService->getCsvs();
 
-            /** @var \Eccube\Entity\Order $Order */
+            /** @var Order $Order */
             $Order = $entity;
             $row = [];
             // CSV出力項目と合致するデータを取得.

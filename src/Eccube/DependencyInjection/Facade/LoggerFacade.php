@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class LoggerFacade
 {
     /** @var self|null */
-    private static $instance = null;
+    private static $instance;
 
     /** @var ContainerInterface */
     private static $Container;

@@ -341,7 +341,7 @@ class MailService
     /**
      * Send order mail.
      *
-     * @param \Eccube\Entity\Order $Order 受注情報
+     * @param Order $Order 受注情報
      *
      * @return Email
      */
@@ -423,7 +423,7 @@ class MailService
     {
         log_info('仮会員登録再送メール送信開始');
 
-        /** @var \Eccube\Entity\MailTemplate $MailTemplate */
+        /** @var MailTemplate $MailTemplate */
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
@@ -710,7 +710,7 @@ class MailService
      * @param Shipping $Shipping
      * @param Order $Order
      * @param string|null $templateName
-     * @param boolean $is_html
+     * @param bool $is_html
      *
      * @return string
      *
@@ -879,7 +879,6 @@ class MailService
 
         $dot_atom_loose = "$atext+(?:[.]|$atext)*";
         $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
-        $addr_spec_loose = "{$local_part_loose}[@]$domain";
 
         $regexp = "/\A{$addr_spec}\z/";
         if (!preg_match($regexp, $email)) {

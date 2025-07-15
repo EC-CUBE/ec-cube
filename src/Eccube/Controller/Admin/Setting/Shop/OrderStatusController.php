@@ -43,7 +43,7 @@ class OrderStatusController extends AbstractController
     public function __construct(
         OrderStatusRepository $orderStatusRepository,
         OrderStatusColorRepository $orderStatusColorRepository,
-        CustomerOrderStatusRepository $customerOrderStatusRepository
+        CustomerOrderStatusRepository $customerOrderStatusRepository,
     ) {
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderStatusColorRepository = $orderStatusColorRepository;
@@ -54,6 +54,7 @@ class OrderStatusController extends AbstractController
      * 受注ステータス編集画面.
      *
      * @Route("/%eccube_admin_route%/setting/shop/order_status", name="admin_setting_shop_order_status", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/Shop/order_status.twig")
      */
     public function index(Request $request)

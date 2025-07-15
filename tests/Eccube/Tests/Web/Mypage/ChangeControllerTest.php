@@ -36,7 +36,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $password = $faker->lexify('????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -70,8 +70,6 @@ class ChangeControllerTest extends AbstractWebTestCase
             'job' => 1,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testIndex()
@@ -90,7 +88,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
@@ -112,7 +110,7 @@ class ChangeControllerTest extends AbstractWebTestCase
             'first' => $this->eccubeConfig['eccube_default_password'],
             'second' => $this->eccubeConfig['eccube_default_password'],
         ];
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('mypage_change'),
             ['entry' => $form]

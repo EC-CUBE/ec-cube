@@ -20,9 +20,13 @@ if (!class_exists('\Eccube\Entity\Layout')) {
      * Layout
      *
      * @ORM\Table(name="dtb_layout")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\LayoutRepository")
      */
     class Layout extends AbstractEntity
@@ -85,7 +89,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         }
 
         /**
-         * @param integer|null $targetId
+         * @param int|null $targetId
          *
          * @return Block[]
          */
@@ -120,7 +124,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         }
 
         /**
-         * @param integer $targetId
+         * @param int $targetId
          *
          * @return BlockPosition[]
          */
@@ -201,7 +205,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Get ColumnNum
          *
-         * @return integer
+         * @return int
          */
         public function getColumnNum()
         {
@@ -213,10 +217,12 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         // -----------------------
 
         /**
-         * @var integer
+         * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -253,15 +259,18 @@ if (!class_exists('\Eccube\Entity\Layout')) {
          * @var \Doctrine\Common\Collections\Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
+         *
          * @ORM\OrderBy({"sort_no" = "ASC"})
          */
         private $PageLayouts;
 
         /**
-         * @var \Eccube\Entity\Master\DeviceType
+         * @var Master\DeviceType
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
          * })
          */
@@ -279,7 +288,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Get id
          *
-         * @return integer
+         * @return int
          */
         public function getId()
         {
@@ -361,7 +370,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Add blockPosition
          *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
+         * @param BlockPosition $blockPosition
          *
          * @return Layout
          */
@@ -375,7 +384,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Remove blockPosition
          *
-         * @param \Eccube\Entity\BlockPosition $blockPosition
+         * @param BlockPosition $blockPosition
          */
         public function removeBlockPosition(BlockPosition $blockPosition)
         {
@@ -395,7 +404,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Add pageLayoutLayout
          *
-         * @param \Eccube\Entity\PageLayout $PageLayout
+         * @param PageLayout $PageLayout
          *
          * @return Layout
          */
@@ -409,7 +418,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Remove pageLayoutLayout
          *
-         * @param \Eccube\Entity\PageLayout $PageLayout
+         * @param PageLayout $PageLayout
          */
         public function removePageLayout(PageLayout $PageLayout)
         {
@@ -429,11 +438,11 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Set deviceType
          *
-         * @param \Eccube\Entity\Master\DeviceType $deviceType
+         * @param Master\DeviceType $deviceType
          *
          * @return Layout
          */
-        public function setDeviceType(Master\DeviceType $deviceType = null)
+        public function setDeviceType(?Master\DeviceType $deviceType = null)
         {
             $this->DeviceType = $deviceType;
 
@@ -443,7 +452,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Get deviceType
          *
-         * @return \Eccube\Entity\Master\DeviceType
+         * @return Master\DeviceType
          */
         public function getDeviceType()
         {
@@ -453,7 +462,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Check layout can delete or not
          *
-         * @return boolean
+         * @return bool
          */
         public function isDeletable()
         {

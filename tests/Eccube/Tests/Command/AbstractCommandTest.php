@@ -13,25 +13,30 @@
 
 namespace Eccube\Tests\Command;
 
+use Dbtlr\MigrationProvider\Provider\MigrationServiceProvider;
 use Eccube\Application;
 use Eccube\Command\GeneratorCommand\AbstractPluginGenerator;
+use Eccube\Common\Constant;
 use Eccube\Tests\EccubeTestCase;
 use Knp\Command\Command;
+use Knp\Provider\ConsoleServiceProvider;
+use Symfony\Bridge\Twig\Command\DebugCommand;
+use Symfony\Bridge\Twig\Command\LintCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class AbstractCommandTest extends EccubeTestCase
 {
-    const LOOP_MAX_LIMIT = 5;
+    public const LOOP_MAX_LIMIT = 5;
 
     /**
      * @var Command
      */
-    protected $command = null;
+    protected $command;
 
     /**
      * @var CommandTester
      */
-    protected $tester = null;
+    protected $tester;
 
     /**
      * $contentCnt
@@ -132,9 +137,7 @@ abstract class AbstractCommandTest extends EccubeTestCase
     protected function addCommand($command)
     {
         $this->assertInstanceOf('\Knp\Command\Command', $command);
-        if ($command instanceof Command) {
-            $this->app['console']->add($command);
-        }
+        $this->app['console']->add($command);
     }
 
     /**
@@ -172,29 +175,28 @@ abstract class AbstractCommandTest extends EccubeTestCase
         // Console
         if (!$app->offsetExists('console')) {
             $app->register(
-                new \Knp\Provider\ConsoleServiceProvider(), [
+                new ConsoleServiceProvider(), [
                     'console.name' => 'EC-CUBE',
-                    'console.version' => \Eccube\Common\Constant::VERSION,
+                    'console.version' => Constant::VERSION,
                     'console.project_directory' => __DIR__.'/..',
                 ]
             );
             $app->extend('console.command.twig.debug', function ($command, $app) {
-                return new \Symfony\Bridge\Twig\Command\DebugCommand($app['twig']);
+                return new DebugCommand($app['twig']);
             });
 
             $app->extend('console.command.twig.lint', function ($command, $app) {
-                return new \Symfony\Bridge\Twig\Command\LintCommand($app['twig']);
+                return new LintCommand($app['twig']);
             });
         }
 
         // Migration
         if (!$app->offsetExists('db.migrations.path')) {
-            $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), [
+            $app->register(new MigrationServiceProvider(), [
                 'db.migrations.path' => __DIR__.'/../../../../src/Eccube/Resource/doctrine/migration',
             ]);
         }
         $app->boot();
-        $app['console'];
 
         return $app;
     }

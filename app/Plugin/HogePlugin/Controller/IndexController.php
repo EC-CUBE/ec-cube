@@ -21,6 +21,7 @@ class IndexController
 {
     /**
      * @Route("/hogeplugin/hello")
+     *
      * @Template("HogePlugin/Resource/template/index.twig")
      */
     public function index(Request $request)

@@ -91,7 +91,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @param integer $rowNum
+     * @param int $rowNum
      */
     public function 一覧_編集($rowNum)
     {
@@ -101,7 +101,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @param integer $rowNum
+     * @param int $rowNum
      */
     public function 一覧_削除($rowNum, $execute = true)
     {
@@ -117,7 +117,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @param integer $rowNum
+     * @param int $rowNum
      */
     public function 一覧_仮会員メール再送($rowNum, $execute = true)
     {
@@ -128,13 +128,6 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         } else {
             $this->tester->click('キャンセル');
         }
-
-        return $this;
-    }
-
-    private function 一覧_メニュー($rowNum)
-    {
-        $this->tester->click("#search_form > div.row > div > div > div.box-body > div.table_list > div > table > tbody > tr:nth-child({$rowNum}) > td.icon_edit > div > a");
 
         return $this;
     }
@@ -152,7 +145,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @param integer $rowNum
+     * @param int $rowNum
      */
     public function 一覧_会員ID($rowNum)
     {

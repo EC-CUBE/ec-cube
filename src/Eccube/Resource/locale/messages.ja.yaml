@@ -774,7 +774,7 @@ admin.product.category_csv.category_id_description: 新規登録の場合は空�
 admin.product.category_csv.category_name_col: カテゴリ名
 admin.product.category_csv.category_name_description: ""
 admin.product.category_csv.parent_category_id_col: 親カテゴリID
-admin.product.category_csv.parent_category_id_description: ""
+admin.product.category_csv.parent_category_id_description: 登録済みのカテゴリIDを数字で指定してください
 admin.product.category_csv.delete_flag_col: カテゴリ削除フラグ
 admin.product.category_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 

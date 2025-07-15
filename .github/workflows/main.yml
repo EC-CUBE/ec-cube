@@ -1,0 +1,42 @@
+name: CI/CD for EC-CUBE
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+jobs:
+  phpstan:
+    uses: ./.github/workflows/phpstan.yml
+  unit-test:
+    needs: [ phpstan ]
+    uses: ./.github/workflows/unit-test.yml
+  e2e-test:
+    needs: [ unit-test ]
+    uses: ./.github/workflows/e2e-test.yml
+  plugin-test:
+    needs: [ e2e-test ]
+    uses: ./.github/workflows/plugin-test.yml
+  e2e-test-throttling:
+    needs: [ plugin-test ]
+    uses: ./.github/workflows/e2e-test-throttling.yml
+  deny-test:
+    needs: [ plugin-test ]
+    uses: ./.github/workflows/deny-test.yml
+  success:
+    needs: [ e2e-test-throttling, deny-test ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: success
+        run: echo "::notice::success!"
+  coverage:
+    needs: [ e2e-test-throttling, deny-test ]
+    uses: ./.github/workflows/coverage.yml

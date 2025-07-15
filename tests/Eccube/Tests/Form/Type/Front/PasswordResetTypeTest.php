@@ -14,10 +14,12 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\PasswordResetType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class PasswordResetTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class PasswordResetTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array */

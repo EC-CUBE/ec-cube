@@ -20,18 +20,24 @@ if (!class_exists('\Eccube\Entity\Csv')) {
      * Csv
      *
      * @ORM\Table(name="dtb_csv")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CsvRepository")
      */
-    class Csv extends \Eccube\Entity\AbstractEntity
+    class Csv extends AbstractEntity
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -72,7 +78,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         private $sort_no;
 
         /**
-         * @var boolean
+         * @var bool
          *
          * @ORM\Column(name="enabled", type="boolean", options={"default":true})
          */
@@ -93,20 +99,24 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         private $update_date;
 
         /**
-         * @var \Eccube\Entity\Master\CsvType
+         * @var Master\CsvType
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="csv_type_id", referencedColumnName="id")
          * })
          */
         private $CsvType;
 
         /**
-         * @var \Eccube\Entity\Member
+         * @var Member
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
          * })
          */
@@ -245,7 +255,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Set enabled.
          *
-         * @param boolean $enabled
+         * @param bool $enabled
          *
          * @return Csv
          */
@@ -259,7 +269,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Get enabled.
          *
-         * @return boolean
+         * @return bool
          */
         public function isEnabled()
         {
@@ -317,11 +327,11 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Set csvType.
          *
-         * @param \Eccube\Entity\Master\CsvType|null $csvType
+         * @param Master\CsvType|null $csvType
          *
          * @return Csv
          */
-        public function setCsvType(Master\CsvType $csvType = null)
+        public function setCsvType(?Master\CsvType $csvType = null)
         {
             $this->CsvType = $csvType;
 
@@ -331,7 +341,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Get csvType.
          *
-         * @return \Eccube\Entity\Master\CsvType|null
+         * @return Master\CsvType|null
          */
         public function getCsvType()
         {
@@ -341,11 +351,11 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Set creator.
          *
-         * @param \Eccube\Entity\Member|null $creator
+         * @param Member|null $creator
          *
          * @return Csv
          */
-        public function setCreator(Member $creator = null)
+        public function setCreator(?Member $creator = null)
         {
             $this->Creator = $creator;
 
@@ -355,7 +365,7 @@ if (!class_exists('\Eccube\Entity\Csv')) {
         /**
          * Get creator.
          *
-         * @return \Eccube\Entity\Member|null
+         * @return Member|null
          */
         public function getCreator()
         {
