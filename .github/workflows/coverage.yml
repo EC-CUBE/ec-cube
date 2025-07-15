@@ -2,19 +2,13 @@ name: Coverage
 
 on:
   workflow_call:
-    inputs:
-      CODECOV_TOKEN:
-        description: 'Codecov upload token'
-        type: string
-        required: true
 
 jobs:
   phpunit:
     name: PHPUnit
     runs-on: ubuntu-24.04
     env:
-    # inputs で渡された値を環境変数に
-      CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
