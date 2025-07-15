@@ -2,11 +2,18 @@ name: Coverage
 
 on:
   workflow_call:
-
+    inputs:
+      CODECOV_TOKEN:
+        description: 'Codecov upload token'
+        type: string
+        required: true
 jobs:
   phpunit:
     name: PHPUnit
     runs-on: ubuntu-24.04
+    env:
+    # inputs で渡された値を環境変数に
+      CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -227,13 +234,11 @@ jobs:
           files: ./reports/phpunit-reports/coverage1.xml
           flags: Unit
           fail_ci_if_error: true
-        env:
-            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
       - name: Upload E2E coverage
         uses: codecov/codecov-action@v5
         with:
           files: ./reports/acceptance.admin01.coverage.xml,./reports/acceptance.admin02.coverage.xml,./reports/acceptance.admin03.coverage.xml,./reports/acceptance.front.coverage.xml,./reports/acceptance.installer.coverage.xml
           flags: E2E
           fail_ci_if_error: true
-        env:
-            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}

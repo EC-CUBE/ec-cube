@@ -40,3 +40,5 @@ jobs:
   coverage:
     needs: [ e2e-test-throttling, deny-test ]
     uses: ./.github/workflows/coverage.yml
+    with:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
