@@ -76,7 +76,6 @@ class PaymentResult
     /**
      * 決済が失敗した場合のエラーの配列を設定します.
      *
-     * @param array $errors
      *
      * @return PaymentResult
      */
@@ -92,7 +91,6 @@ class PaymentResult
      *
      * 3Dセキュアなど, 決済中に他のサイトへリダイレクトが必要な特殊な用途に使用します.
      *
-     * @param Response $response
      *
      * @return PaymentResult
      */

@@ -32,8 +32,6 @@ class PostalType extends AbstractType
 
     /**
      * ZipType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

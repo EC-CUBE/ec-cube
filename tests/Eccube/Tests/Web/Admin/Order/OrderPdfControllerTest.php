@@ -405,8 +405,6 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param Crawler $crawler
-     *
      * @return Form
      */
     private function getForm(Crawler $crawler)

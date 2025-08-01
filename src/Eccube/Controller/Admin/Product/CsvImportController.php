@@ -105,11 +105,6 @@ class CsvImportController extends AbstractCsvImportController
     protected $productRepository;
 
     /**
-     * @var TaxRuleRepository
-     */
-    private $taxRuleRepository;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -127,24 +122,9 @@ class CsvImportController extends AbstractCsvImportController
 
     protected $currentLineNo = 1;
 
-    private \HTMLPurifier $purifier;
-
     /**
      * CsvImportController constructor.
      *
-     * @param DeliveryDurationRepository $deliveryDurationRepository
-     * @param SaleTypeRepository $saleTypeRepository
-     * @param TagRepository $tagRepository
-     * @param CategoryRepository $categoryRepository
-     * @param ClassNameRepository $classNameRepository
-     * @param ClassCategoryRepository $classCategoryRepository
-     * @param ProductImageRepository $productImageRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param ProductRepository $productRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param ValidatorInterface $validator
-     * @param \HTMLPurifier $purifier
      *
      * @throws \Exception
      */
@@ -158,10 +138,10 @@ class CsvImportController extends AbstractCsvImportController
         ProductImageRepository $productImageRepository,
         ProductStatusRepository $productStatusRepository,
         ProductRepository $productRepository,
-        TaxRuleRepository $taxRuleRepository,
+        private readonly TaxRuleRepository $taxRuleRepository,
         BaseInfoRepository $baseInfoRepository,
         ValidatorInterface $validator,
-        \HTMLPurifier $purifier,
+        private readonly \HTMLPurifier $purifier,
     ) {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
@@ -172,10 +152,8 @@ class CsvImportController extends AbstractCsvImportController
         $this->productImageRepository = $productImageRepository;
         $this->productStatusRepository = $productStatusRepository;
         $this->productRepository = $productRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->validator = $validator;
-        $this->purifier = $purifier;
     }
 
     /**
@@ -209,12 +187,8 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = fn($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
 
                     $columnHeaders = $data->getColumnHeaders();
 
@@ -253,7 +227,7 @@ class CsvImportController extends AbstractCsvImportController
                             $Product = new Product();
                             $this->entityManager->persist($Product);
                         } else {
-                            if (preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                            if (preg_match('/^\d+$/', (string) $row[$headerByKey['id']])) {
                                 $Product = $this->productRepository->find($row[$headerByKey['id']]);
                                 if (!$Product) {
                                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['id']]);
@@ -278,7 +252,7 @@ class CsvImportController extends AbstractCsvImportController
                                         $this->entityManager->flush();
 
                                         continue;
-                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                    } catch (ForeignKeyConstraintViolationException) {
                                         $message = trans('admin.common.csv_invalid_foreign_key', ['%line%' => $line, '%name%' => $Product->getName()]);
                                         $this->addErrors($message);
 
@@ -292,7 +266,7 @@ class CsvImportController extends AbstractCsvImportController
                             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['status']]);
                             $this->addErrors($message);
                         } else {
-                            if (preg_match('/^\d+$/', $row[$headerByKey['status']])) {
+                            if (preg_match('/^\d+$/', (string) $row[$headerByKey['status']])) {
                                 $ProductStatus = $this->productStatusRepository->find($row[$headerByKey['status']]);
                                 if (!$ProductStatus) {
                                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['status']]);
@@ -333,7 +307,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         if (isset($row[$headerByKey['description_detail']])) {
                             if (StringUtil::isNotBlank($row[$headerByKey['description_detail']])) {
-                                if (mb_strlen($row[$headerByKey['description_detail']]) > $this->eccubeConfig['eccube_ltext_len']) {
+                                if (mb_strlen((string) $row[$headerByKey['description_detail']]) > $this->eccubeConfig['eccube_ltext_len']) {
                                     $message = trans('admin.common.csv_invalid_description_detail_upper_limit', [
                                         '%line%' => $line,
                                         '%name%' => $headerByKey['description_detail'],
@@ -446,7 +420,7 @@ class CsvImportController extends AbstractCsvImportController
 
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
-                                    if (preg_match('/^\d+$/', $row[$headerByKey['class_category1']])) {
+                                    if (preg_match('/^\d+$/', (string) $row[$headerByKey['class_category1']])) {
                                         $ClassCategory1 = $this->classCategoryRepository->find($row[$headerByKey['class_category1']]);
                                         if (!$ClassCategory1) {
                                             $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['class_category1']]);
@@ -460,7 +434,7 @@ class CsvImportController extends AbstractCsvImportController
                                     }
 
                                     if (isset($row[$headerByKey['class_category2']]) && StringUtil::isNotBlank($row[$headerByKey['class_category2']])) {
-                                        if (preg_match('/^\d+$/', $row[$headerByKey['class_category2']])) {
+                                        if (preg_match('/^\d+$/', (string) $row[$headerByKey['class_category2']])) {
                                             $ClassCategory2 = $this->classCategoryRepository->find($row[$headerByKey['class_category2']]);
                                             if (!$ClassCategory2) {
                                                 $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['class_category2']]);
@@ -579,7 +553,7 @@ class CsvImportController extends AbstractCsvImportController
                                     // 必ず規格分類1がセットされている
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
-                                    if (preg_match('/^\d+$/', $classCategoryId1)) {
+                                    if (preg_match('/^\d+$/', (string) $classCategoryId1)) {
                                         $ClassCategory1 = $this->classCategoryRepository->find($classCategoryId1);
                                         if (!$ClassCategory1) {
                                             $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['class_category1']]);
@@ -596,7 +570,7 @@ class CsvImportController extends AbstractCsvImportController
                                             $message = trans('admin.common.csv_invalid_can_not', ['%line%' => $line, '%name%' => $headerByKey['class_category2']]);
                                             $this->addErrors($message);
                                         } else {
-                                            if (preg_match('/^\d+$/', $classCategoryId2)) {
+                                            if (preg_match('/^\d+$/', (string) $classCategoryId2)) {
                                                 $ClassCategory2 = $this->classCategoryRepository->find($classCategoryId2);
                                                 if (!$ClassCategory2) {
                                                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['class_category2']]);
@@ -680,7 +654,7 @@ class CsvImportController extends AbstractCsvImportController
                             try {
                                 $fs = new Filesystem();
                                 $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$image);
-                            } catch (\Exception $e) {
+                            } catch (\Exception) {
                                 // エラーが発生しても無視する
                             }
                         }
@@ -725,12 +699,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = fn($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -753,8 +723,8 @@ class CsvImportController extends AbstractCsvImportController
                     foreach ($data as $row) {
                         /** @var Category $Category */
                         $Category = new Category();
-                        if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
-                            if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                        if (isset($row[$headerByKey['id']]) && strlen((string) $row[$headerByKey['id']]) > 0) {
+                            if (!preg_match('/^\d+$/', (string) $row[$headerByKey['id']])) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
@@ -802,7 +772,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         $ParentCategory = null;
                         if (isset($row[$headerByKey['parent_category_id']]) && StringUtil::isNotBlank($row[$headerByKey['parent_category_id']])) {
-                            if (!preg_match('/^\d+$/', $row[$headerByKey['parent_category_id']])) {
+                            if (!preg_match('/^\d+$/', (string) $row[$headerByKey['parent_category_id']])) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDは数字で入力してください。');
 
                                 return $this->renderWithError($form, $headers);
@@ -886,12 +856,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = fn($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -915,8 +881,8 @@ class CsvImportController extends AbstractCsvImportController
                         // dump($row,$headerByKey);exit;
                         /** @var $ClassName ClassName */
                         $ClassName = new ClassName();
-                        if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
-                            if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                        if (isset($row[$headerByKey['id']]) && strlen((string) $row[$headerByKey['id']]) > 0) {
+                            if (!preg_match('/^\d+$/', (string) $row[$headerByKey['id']])) {
                                 $this->addErrors(($data->key() + 1).'行目の規格IDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
@@ -1006,12 +972,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = fn($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -1036,8 +998,8 @@ class CsvImportController extends AbstractCsvImportController
                         /** @var $ClassCategory ClassCategory */
                         $ClassCategory = new ClassCategory();
 
-                        if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
-                            if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
+                        if (isset($row[$headerByKey['id']]) && strlen((string) $row[$headerByKey['id']]) > 0) {
+                            if (!preg_match('/^\d+$/', (string) $row[$headerByKey['id']])) {
                                 $this->addErrors(($data->key() + 1).'行目の規格分類IDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
@@ -1050,8 +1012,8 @@ class CsvImportController extends AbstractCsvImportController
                             }
                         }
 
-                        if (isset($row[$headerByKey['class_name_id']]) && strlen($row[$headerByKey['class_name_id']]) > 0) {
-                            if (!preg_match('/^\d+$/', $row[$headerByKey['class_name_id']])) {
+                        if (isset($row[$headerByKey['class_name_id']]) && strlen((string) $row[$headerByKey['class_name_id']]) > 0) {
+                            if (!preg_match('/^\d+$/', (string) $row[$headerByKey['class_name_id']])) {
                                 $this->addErrors(($data->key() + 1).'行目の規格IDが存在しません。');
 
                                 return $this->renderWithError($form, $headers);
@@ -1191,7 +1153,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品画像の削除、登録
      *
      * @param $row
-     * @param Product $Product
      * @param CsvImportService $data
      * @param $headerByKey
      */
@@ -1209,7 +1170,7 @@ class CsvImportController extends AbstractCsvImportController
             }
 
             // 画像の登録
-            $images = explode(',', $row[$headerByKey['product_image']]);
+            $images = explode(',', (string) $row[$headerByKey['product_image']]);
 
             $sortNo = 1;
 
@@ -1242,7 +1203,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品カテゴリの削除、登録
      *
      * @param $row
-     * @param Product $Product
      * @param CsvImportService $data
      * @param $headerByKey
      */
@@ -1261,7 +1221,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (StringUtil::isNotBlank($row[$headerByKey['product_category']])) {
             // カテゴリの登録
-            $categories = explode(',', $row[$headerByKey['product_category']]);
+            $categories = explode(',', (string) $row[$headerByKey['product_category']]);
             $sortNo = 1;
             $categoriesIdList = [];
             foreach ($categories as $category) {
@@ -1310,7 +1270,6 @@ class CsvImportController extends AbstractCsvImportController
      * タグの登録
      *
      * @param array $row
-     * @param Product $Product
      * @param CsvImportService $data
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
@@ -1327,7 +1286,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (StringUtil::isNotBlank($row[$headerByKey['product_tag']])) {
             // タグの登録
-            $tags = explode(',', $row[$headerByKey['product_tag']]);
+            $tags = explode(',', (string) $row[$headerByKey['product_tag']]);
             foreach ($tags as $tag_id) {
                 $Tag = null;
                 if (preg_match('/^\d+$/', $tag_id)) {
@@ -1360,12 +1319,10 @@ class CsvImportController extends AbstractCsvImportController
      * 商品規格分類1、商品規格分類2がnullとなる商品規格情報を作成
      *
      * @param $row
-     * @param Product $Product
      * @param CsvImportService $data
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
-     *
      * @return ProductClass
      */
     protected function createProductClass($row, Product $Product, $data, $headerByKey, $ClassCategory1 = null, $ClassCategory2 = null)
@@ -1377,7 +1334,7 @@ class CsvImportController extends AbstractCsvImportController
 
         $line = $data->key() + 1;
         if (isset($row[$headerByKey['sale_type']]) && StringUtil::isNotBlank($row[$headerByKey['sale_type']])) {
-            if (preg_match('/^\d+$/', $row[$headerByKey['sale_type']])) {
+            if (preg_match('/^\d+$/', (string) $row[$headerByKey['sale_type']])) {
                 $SaleType = $this->saleTypeRepository->find($row[$headerByKey['sale_type']]);
                 if (!$SaleType) {
                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
@@ -1398,7 +1355,7 @@ class CsvImportController extends AbstractCsvImportController
         $ProductClass->setClassCategory2($ClassCategory2);
 
         if (isset($row[$headerByKey['delivery_date']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_date']])) {
-            if (preg_match('/^\d+$/', $row[$headerByKey['delivery_date']])) {
+            if (preg_match('/^\d+$/', (string) $row[$headerByKey['delivery_date']])) {
                 $DeliveryDuration = $this->deliveryDurationRepository->find($row[$headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['delivery_date']]);
@@ -1517,8 +1474,6 @@ class CsvImportController extends AbstractCsvImportController
      * 商品規格情報を更新
      *
      * @param $row
-     * @param Product $Product
-     * @param ProductClass $ProductClass
      * @param CsvImportService $data
      *
      * @return ProductClass
@@ -1532,7 +1487,7 @@ class CsvImportController extends AbstractCsvImportController
             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
             $this->addErrors($message);
         } else {
-            if (preg_match('/^\d+$/', $row[$headerByKey['sale_type']])) {
+            if (preg_match('/^\d+$/', (string) $row[$headerByKey['sale_type']])) {
                 $SaleType = $this->saleTypeRepository->find($row[$headerByKey['sale_type']]);
                 if (!$SaleType) {
                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
@@ -1548,7 +1503,7 @@ class CsvImportController extends AbstractCsvImportController
 
         // 規格分類1、2をそれぞれセットし作成
         if (isset($row[$headerByKey['class_category1']]) && $row[$headerByKey['class_category1']] != '') {
-            if (preg_match('/^\d+$/', $row[$headerByKey['class_category1']])) {
+            if (preg_match('/^\d+$/', (string) $row[$headerByKey['class_category1']])) {
                 $ClassCategory = $this->classCategoryRepository->find($row[$headerByKey['class_category1']]);
                 if (!$ClassCategory) {
                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['class_category1']]);
@@ -1563,7 +1518,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         if (isset($row[$headerByKey['class_category2']]) && $row[$headerByKey['class_category2']] != '') {
-            if (preg_match('/^\d+$/', $row[$headerByKey['class_category2']])) {
+            if (preg_match('/^\d+$/', (string) $row[$headerByKey['class_category2']])) {
                 $ClassCategory = $this->classCategoryRepository->find($row[$headerByKey['class_category2']]);
                 if (!$ClassCategory) {
                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['class_category2']]);
@@ -1578,7 +1533,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         if (isset($row[$headerByKey['delivery_date']]) && $row[$headerByKey['delivery_date']] != '') {
-            if (preg_match('/^\d+$/', $row[$headerByKey['delivery_date']])) {
+            if (preg_match('/^\d+$/', (string) $row[$headerByKey['delivery_date']])) {
                 $DeliveryDuration = $this->deliveryDurationRepository->find($row[$headerByKey['delivery_date']]);
                 if (!$DeliveryDuration) {
                     $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['delivery_date']]);
@@ -1968,7 +1923,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -2035,7 +1989,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -2076,7 +2029,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */

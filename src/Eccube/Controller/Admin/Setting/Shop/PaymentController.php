@@ -42,8 +42,6 @@ class PaymentController extends AbstractController
 
     /**
      * PaymentController constructor.
-     *
-     * @param PaymentRepository $paymentRepository
      */
     public function __construct(PaymentRepository $paymentRepository)
     {
@@ -125,7 +123,7 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && strpos($file, '..') === false && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && !str_contains((string) $file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -184,13 +182,13 @@ class PaymentController extends AbstractController
 
             // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
-            if (0 !== strpos($mimeType, 'image')) {
+            if (!str_starts_with((string) $mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 
             // 拡張子
             $extension = $image->getClientOriginalExtension();
-            if (!in_array(strtolower($extension), $allowExtensions)) {
+            if (!in_array(strtolower((string) $extension), $allowExtensions)) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 
@@ -256,7 +254,7 @@ class PaymentController extends AbstractController
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+        if (is_file($tempFile) && stripos(realpath($tempFile), (string) $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 
@@ -269,8 +267,6 @@ class PaymentController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
      *
-     * @param Request $request
-     * @param Payment $TargetPayment
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -297,7 +293,7 @@ class PaymentController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             $this->entityManager->rollback();
 
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
@@ -330,7 +326,6 @@ class PaymentController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return Response
      */

@@ -17,15 +17,9 @@ use Eccube\Entity\ProductClass;
 
 class InvalidItemException extends \Exception
 {
-    private $messageArgs;
-
-    private $warning;
-
-    public function __construct($message = null, $messageArgs = [], $warning = false)
+    public function __construct($message = null, private $messageArgs = [], private $warning = false)
     {
         parent::__construct($message);
-        $this->messageArgs = $messageArgs;
-        $this->warning = $warning;
     }
 
     /**

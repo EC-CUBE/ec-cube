@@ -35,9 +35,6 @@ class SystemController
 
     /**
      * SystemController constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param SystemService $systemService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,

@@ -16,7 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Product')) {
+if (!class_exists(\Eccube\Entity\Product::class)) {
     /**
      * Product
      *
@@ -30,7 +30,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
      */
-    class Product extends AbstractEntity
+    class Product extends AbstractEntity implements \Stringable
     {
         private $_calc = false;
         private $stockFinds = [];
@@ -49,7 +49,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -185,7 +185,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
         {
             $this->_calc();
 
-            return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : [];
+            return $this->classCategories2[$class_category1] ?? [];
         }
 
         public function getClassCategories2AsFlip($class_category1)
@@ -839,7 +839,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productCategory.
          *
-         * @param ProductCategory $productCategory
          *
          * @return Product
          */
@@ -853,7 +852,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productCategory.
          *
-         * @param ProductCategory $productCategory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -875,7 +873,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productClass.
          *
-         * @param ProductClass $productClass
          *
          * @return Product
          */
@@ -889,7 +886,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productClass.
          *
-         * @param ProductClass $productClass
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -911,7 +907,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productImage.
          *
-         * @param ProductImage $productImage
          *
          * @return Product
          */
@@ -925,7 +920,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productImage.
          *
-         * @param ProductImage $productImage
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -947,7 +941,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add productTag.
          *
-         * @param ProductTag $productTag
          *
          * @return Product
          */
@@ -961,7 +954,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove productTag.
          *
-         * @param ProductTag $productTag
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -994,9 +986,7 @@ if (!class_exists('\Eccube\Entity\Product')) {
                 $tags[] = $productTag->getTag();
             }
 
-            usort($tags, function (Tag $tag1, Tag $tag2) {
-                return $tag1->getSortNo() <=> $tag2->getSortNo();
-            });
+            usort($tags, fn(Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
 
             return $tags;
         }
@@ -1004,7 +994,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return Product
          */
@@ -1018,7 +1007,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Remove customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1040,7 +1028,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return Product
          */
@@ -1064,7 +1051,6 @@ if (!class_exists('\Eccube\Entity\Product')) {
         /**
          * Set status.
          *
-         * @param Master\ProductStatus|null $status
          *
          * @return Product
          */

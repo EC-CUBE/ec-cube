@@ -126,18 +126,6 @@ class OrderController extends AbstractController
     /**
      * OrderController constructor.
      *
-     * @param PurchaseFlow $orderPurchaseFlow
-     * @param CsvExportService $csvExportService
-     * @param CustomerRepository $customerRepository
-     * @param PaymentRepository $paymentRepository
-     * @param SexRepository $sexRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param PageMaxRepository $pageMaxRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param ProductStockRepository $productStockRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderPdfRepository $orderPdfRepository
-     * @param ValidatorInterface $validator
      * @param OrderStateMachine $orderStateMachine ;
      */
     public function __construct(
@@ -357,7 +345,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return StreamedResponse
      */
@@ -375,7 +362,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return StreamedResponse
      */
@@ -389,10 +375,8 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param $csvTypeId
      * @param string $fileName
-     *
      * @return StreamedResponse
      */
     protected function exportCsv(Request $request, $csvTypeId, $fileName)
@@ -472,8 +456,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status", methods={"PUT"})
      *
-     * @param Request $request
-     * @param Shipping $Shipping
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -571,8 +553,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number", methods={"PUT"})
      *
-     * @param Request $request
-     * @param Shipping $shipping
      *
      * @return Response
      */
@@ -583,7 +563,7 @@ class OrderController extends AbstractController
         }
 
         $trackingNumber = $request->get('tracking_number') ?? '';
-        $trackingNumber = mb_convert_kana($trackingNumber, 'a', 'utf-8');
+        $trackingNumber = mb_convert_kana((string) $trackingNumber, 'a', 'utf-8');
 
         /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate(
@@ -627,7 +607,6 @@ class OrderController extends AbstractController
      *
      * @Template("@admin/Order/order_pdf.twig")
      *
-     * @param Request $request
      *
      * @return array|RedirectResponse
      */
@@ -676,7 +655,6 @@ class OrderController extends AbstractController
      *
      * @Template("@admin/Order/order_pdf.twig")
      *
-     * @param Request $request
      *
      * @return Response
      */
@@ -736,7 +714,7 @@ class OrderController extends AbstractController
 
         log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);
 
-        $isDefault = isset($arrData['default']) ? $arrData['default'] : false;
+        $isDefault = $arrData['default'] ?? false;
         if ($isDefault) {
             // Save input to DB
             $arrData['admin'] = $this->getUser();

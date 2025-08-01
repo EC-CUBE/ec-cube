@@ -54,11 +54,6 @@ class ClassCategoryController extends AbstractController
 
     /**
      * ClassCategoryController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
-     * @param ClassNameRepository $classNameRepository
-     * @param CsvExportService $csvExportService
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
@@ -283,7 +278,6 @@ class ClassCategoryController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/class_category/export/{class_name_id}", name="admin_product_class_category_export", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

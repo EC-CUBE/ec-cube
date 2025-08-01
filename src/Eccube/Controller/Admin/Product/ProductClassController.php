@@ -62,9 +62,6 @@ class ProductClassController extends AbstractController
 
     /**
      * ProductClassController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
      */
     public function __construct(
         ProductRepository $productRepository,
@@ -100,9 +97,7 @@ class ProductClassController extends AbstractController
         if ($Product->hasProductClass()) {
             // 規格ありの商品は編集画面を表示する.
             $ProductClasses = $Product->getProductClasses()
-                ->filter(function ($pc) {
-                    return $pc->getClassCategory1() !== null;
-                });
+                ->filter(fn($pc) => $pc->getClassCategory1() !== null);
 
             // 設定されている規格名1, 2を取得(商品規格の規格分類には必ず同じ値がセットされている)
             $FirstProductClass = $ProductClasses->first();
@@ -248,8 +243,6 @@ class ProductClassController extends AbstractController
     /**
      * 規格名1/2から, 商品規格の組み合わせを生成する.
      *
-     * @param ClassName $ClassName1
-     * @param ClassName|null $ClassName2
      *
      * @return array|ProductClass[]
      */
@@ -320,7 +313,6 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を登録, 更新する.
      *
-     * @param Product $Product
      * @param array|ProductClass[] $ProductClasses
      */
     protected function saveProductClasses(Product $Product, $ProductClasses = [])
@@ -413,9 +405,6 @@ class ProductClassController extends AbstractController
      * 商品規格登録フォームを生成する.
      *
      * @param array $ProductClasses
-     * @param ClassName|null $ClassName1
-     * @param ClassName|null $ClassName2
-     * @param array $options
      *
      * @return \Symfony\Component\Form\FormInterface
      */
@@ -461,7 +450,7 @@ class ProductClassController extends AbstractController
 
         try {
             return $qb->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             return null;
         }
     }

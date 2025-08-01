@@ -36,7 +36,7 @@ class AuthorityRoleType extends AbstractType
     {
         $builder
             ->add('Authority', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\Authority',
+                'class' => \Eccube\Entity\Master\Authority::class,
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
@@ -72,7 +72,7 @@ class AuthorityRoleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\AuthorityRole',
+            'data_class' => \Eccube\Entity\AuthorityRole::class,
         ]);
     }
 

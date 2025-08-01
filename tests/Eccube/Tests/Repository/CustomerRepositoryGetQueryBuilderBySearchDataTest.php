@@ -602,10 +602,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     /**
      * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
      */
     public function testDate(string $formName, string $time, int $expected)
     {
@@ -653,10 +649,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     /**
      * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
      */
     public function testDateTime(string $formName, string $time, int $expected)
     {
@@ -699,8 +691,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testStatus()
     {
-        $Active = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
-        $NonActive = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Active = $this->entityManager->getRepository(\Eccube\Entity\Master\CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+        $NonActive = $this->entityManager->getRepository(\Eccube\Entity\Master\CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($Active);
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();
@@ -717,7 +709,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testStatusWithNonActive()
     {
-        $NonActive = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $NonActive = $this->entityManager->getRepository(\Eccube\Entity\Master\CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($NonActive);
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();

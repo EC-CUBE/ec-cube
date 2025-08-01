@@ -47,44 +47,19 @@ class WithdrawController extends AbstractController
     protected $tokenStorage;
 
     /**
-     * @var CartService
-     */
-    private $cartService;
-
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
      * WithdrawController constructor.
-     *
-     * @param MailService $mailService
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param TokenStorageInterface $tokenStorage
-     * @param CartService $cartService
-     * @param OrderHelper $orderHelper
-     * @param PageRepository $pageRepository
      */
     public function __construct(
         MailService $mailService,
         CustomerStatusRepository $customerStatusRepository,
         TokenStorageInterface $tokenStorage,
-        CartService $cartService,
-        OrderHelper $orderHelper,
-        PageRepository $pageRepository,
+        private readonly CartService $cartService,
+        private readonly OrderHelper $orderHelper,
+        private readonly PageRepository $pageRepository,
     ) {
         $this->mailService = $mailService;
         $this->customerStatusRepository = $customerStatusRepository;
         $this->tokenStorage = $tokenStorage;
-        $this->cartService = $cartService;
-        $this->orderHelper = $orderHelper;
-        $this->pageRepository = $pageRepository;
     }
 
     /**

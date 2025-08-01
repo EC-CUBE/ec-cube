@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-if (!class_exists('\Eccube\Entity\Member')) {
+if (!class_exists(\Eccube\Entity\Member::class)) {
     /**
      * Member
      *
@@ -35,7 +35,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
      */
-    class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
@@ -48,7 +48,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -528,7 +528,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set authority.
          *
-         * @param Master\Authority|null $authority
          *
          * @return Member
          */
@@ -552,7 +551,6 @@ if (!class_exists('\Eccube\Entity\Member')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return Member
          */
@@ -609,11 +607,7 @@ if (!class_exists('\Eccube\Entity\Member')) {
          */
         public function unserialize($serialized)
         {
-            list(
-                $this->id,
-                $this->login_id,
-                $this->password,
-                $this->salt) = unserialize($serialized);
+            [$this->id, $this->login_id, $this->password, $this->salt] = unserialize($serialized);
         }
 
         public function getUserIdentifier(): string

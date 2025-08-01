@@ -35,8 +35,6 @@ class NewsController extends AbstractController
 
     /**
      * NewsController constructor.
-     *
-     * @param NewsRepository $newsRepository
      */
     public function __construct(NewsRepository $newsRepository)
     {
@@ -51,9 +49,7 @@ class NewsController extends AbstractController
      *
      * @Template("@admin/Content/news.twig")
      *
-     * @param Request $request
      * @param int $page_no
-     * @param PaginatorInterface $paginator
      *
      * @return array
      */
@@ -88,9 +84,7 @@ class NewsController extends AbstractController
      *
      * @Template("@admin/Content/news_edit.twig")
      *
-     * @param Request $request
      * @param null $id
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
@@ -154,8 +148,6 @@ class NewsController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete", methods={"DELETE"})
      *
-     * @param Request $request
-     * @param News $News
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

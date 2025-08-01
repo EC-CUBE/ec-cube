@@ -479,9 +479,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
 
         // 税金計算
-        $taxableItem = array_filter($EditedOrder->getOrderItems()->toArray(), function ($OrderItem) {
-            return !is_null($OrderItem->getTaxType()) && $OrderItem->getTaxType()->getId() === TaxType::TAXATION;
-        });
+        $taxableItem = array_filter($EditedOrder->getOrderItems()->toArray(), fn($OrderItem) => !is_null($OrderItem->getTaxType()) && $OrderItem->getTaxType()->getId() === TaxType::TAXATION);
         $totalTaxByTaxRate = [];
         $totalByTaxRate = [];
         foreach ($taxableItem as $OrderItem) {
@@ -496,9 +494,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 ->roundByRoundingType($price * ($rate / (100 + $rate)), RoundingType::ROUND);
             $totalTaxByTaxRate[$rate] = $tax;
         }
-        $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
-            return $sum + $tax;
-        }, 0);
+        $totalTax = array_reduce($totalTaxByTaxRate, fn($sum, $tax) => $sum + $tax, 0);
 
         // 確認する「トータル税金」
         $this->expected = $totalTax;

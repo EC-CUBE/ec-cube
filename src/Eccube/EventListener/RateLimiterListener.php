@@ -25,15 +25,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class RateLimiterListener implements EventSubscriberInterface
 {
-    private ContainerInterface $locator;
-    private EccubeConfig $eccubeConfig;
-    private Context $requestContext;
-
-    public function __construct(ContainerInterface $locator, EccubeConfig $eccubeConfig, Context $requestContext)
+    public function __construct(private readonly ContainerInterface $locator, private EccubeConfig $eccubeConfig, private readonly Context $requestContext)
     {
-        $this->locator = $locator;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
     }
 
     public function onController(ControllerEvent $event)
@@ -59,9 +52,7 @@ class RateLimiterListener implements EventSubscriberInterface
             }
 
             if (!empty($config['params'])) {
-                $matchParams = array_filter($config['params'], function ($value, $key) use ($request) {
-                    return $request->get($key) === $value;
-                }, ARRAY_FILTER_USE_BOTH);
+                $matchParams = array_filter($config['params'], fn($value, $key) => $request->get($key) === $value, ARRAY_FILTER_USE_BOTH);
 
                 if (count($config['params']) !== count($matchParams)) {
                     // パラメータが不一致であればスキップ

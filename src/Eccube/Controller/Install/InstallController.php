@@ -187,13 +187,9 @@ class InstallController extends AbstractController
 
         $projectDir = $this->getParameter('kernel.project_dir');
 
-        $eccubeDirs = array_map(function ($dir) use ($projectDir) {
-            return $projectDir.'/'.$dir;
-        }, $this->eccubeDirs);
+        $eccubeDirs = array_map(fn($dir) => $projectDir.'/'.$dir, $this->eccubeDirs);
 
-        $eccubeFiles = array_map(function ($file) use ($projectDir) {
-            return $projectDir.'/'.$file;
-        }, $this->eccubeFiles);
+        $eccubeFiles = array_map(fn($file) => $projectDir.'/'.$file, $this->eccubeFiles);
 
         // ルートディレクトリの書き込み権限をチェック
         if (!is_writable($projectDir)) {
@@ -281,7 +277,7 @@ class InstallController extends AbstractController
             $sessionData['admin_dir'] = $this->getParameter('eccube_admin_route');
 
             // 管理画面許可IP
-            $sessionData['admin_allow_hosts'] = implode($this->getParameter('eccube_admin_allow_hosts'));
+            $sessionData['admin_allow_hosts'] = implode('', $this->getParameter('eccube_admin_allow_hosts'));
 
             // 強制SSL
             $sessionData['admin_force_ssl'] = $this->getParameter('eccube_force_ssl');
@@ -480,11 +476,11 @@ class InstallController extends AbstractController
             'DATABASE_URL' => $databaseUrl,
             'MAILER_DSN' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
-            'DATABASE_SERVER_VERSION' => isset($sessionData['database_version']) ? $sessionData['database_version'] : '3',
+            'DATABASE_SERVER_VERSION' => $sessionData['database_version'] ?? '3',
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
             'ECCUBE_FORCE_SSL' => $forceSSL,
-            'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
-            'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
+            'ECCUBE_ADMIN_ROUTE' => $sessionData['admin_dir'] ?? 'admin',
+            'ECCUBE_COOKIE_PATH' => $request->getBasePath() ?: '/',
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
             'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
@@ -510,7 +506,7 @@ class InstallController extends AbstractController
 
         return [
             'admin_url' => $adminUrl,
-            'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
+            'is_sqlite' => str_contains($databaseUrl, 'sqlite'),
             'token' => $token,
         ];
     }
@@ -555,22 +551,22 @@ class InstallController extends AbstractController
                 $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apc']), 'install');
             }
         }
-        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false) {
+        if (isset($_SERVER['SERVER_SOFTWARE']) && str_contains((string) $_SERVER['SERVER_SOFTWARE'], 'Apache')) {
             if (!function_exists('apache_get_modules')) {
                 $this->addWarning(trans('install.mod_rewrite_unknown'), 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
                 $this->addDanger(trans('install.mod_rewrite_disabled'), 'install');
             }
-        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false) {
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && str_contains((string) $_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS')) {
             // iis
-        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false) {
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && str_contains((string) $_SERVER['SERVER_SOFTWARE'], 'nginx')) {
             // nginx
         }
     }
 
     protected function createConnection(array $params)
     {
-        if (strpos($params['url'], 'mysql') !== false) {
+        if (str_contains((string) $params['url'], 'mysql')) {
             $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
                 'charset' => 'utf8mb4',
@@ -629,7 +625,7 @@ class InstallController extends AbstractController
                 if (isset($params['database_user'])) {
                     $url .= $params['database_user'];
                     if (isset($params['database_password'])) {
-                        $url .= ':'.\rawurlencode($params['database_password']);
+                        $url .= ':'.\rawurlencode((string) $params['database_password']);
                     }
                     $url .= '@';
                 }
@@ -671,9 +667,9 @@ class InstallController extends AbstractController
             'database' => 'pdo_'.$parsed['scheme'],
             'database_name' => ltrim($parsed['path'], '/'),
             'database_host' => $parsed['host'],
-            'database_port' => isset($parsed['port']) ? $parsed['port'] : null,
-            'database_user' => isset($parsed['user']) ? $parsed['user'] : null,
-            'database_password' => isset($parsed['pass']) ? $parsed['pass'] : null,
+            'database_port' => $parsed['port'] ?? null,
+            'database_user' => $parsed['user'] ?? null,
+            'database_password' => $parsed['pass'] ?? null,
         ];
     }
 
@@ -981,19 +977,11 @@ class InstallController extends AbstractController
         $rsm->addScalarResult('server_version', 'server_version');
 
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
-        }
+        $sql = match ($platform) {
+            'sqlite' => 'SELECT sqlite_version() AS server_version',
+            'mysql' => 'SELECT version() AS server_version',
+            default => 'SHOW server_version',
+        };
 
         $version = $em->createNativeQuery($sql, $rsm)
             ->getSingleScalarResult();

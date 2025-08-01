@@ -32,8 +32,6 @@ class AuthorityController extends AbstractController
 
     /**
      * AuthorityController constructor.
-     *
-     * @param AuthorityRoleRepository $authorityRoleRepository
      */
     public function __construct(AuthorityRoleRepository $authorityRoleRepository)
     {

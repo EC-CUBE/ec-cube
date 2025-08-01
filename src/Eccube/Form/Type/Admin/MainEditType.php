@@ -51,10 +51,6 @@ class MainEditType extends AbstractType
 
     /**
      * MainEditType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -210,7 +206,7 @@ class MainEditType extends AbstractType
                 // urlの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
-                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->from(\Eccube\Entity\Page::class, 'p')
                     ->where('p.url = :url')
                     ->setParameter('url', $Page->getUrl());
 
@@ -236,7 +232,7 @@ class MainEditType extends AbstractType
                 // Page::EDIT_TYPE_USER ファイルの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
-                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->from(\Eccube\Entity\Page::class, 'p')
                     ->where('p.file_name = :file_name')
                     ->andWhere('p.edit_type = :edit_type')
                     ->setParameter('file_name', $Page->getFileName())
@@ -258,7 +254,7 @@ class MainEditType extends AbstractType
                 if (Page::EDIT_TYPE_USER === $Page->getEditType()) {
                     $qb = $this->entityManager->createQueryBuilder();
                     $qb->select('count(p)')
-                        ->from('Eccube\\Entity\\Page', 'p')
+                        ->from(\Eccube\Entity\Page::class, 'p')
                         ->where('p.file_name = :file_name')
                         ->andWhere('p.edit_type >= :edit_type')
                         ->setParameter('file_name', $Page->getFileName())

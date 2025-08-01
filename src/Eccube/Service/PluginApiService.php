@@ -31,42 +31,14 @@ class PluginApiService
     private $apiUrl;
 
     /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
-
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
-
-    /**
      * PluginApiService constructor.
      *
-     * @param EccubeConfig $eccubeConfig
-     * @param RequestStack $requestStack
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginRepository $pluginRepository
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
+    public function __construct(private readonly EccubeConfig $eccubeConfig, private readonly RequestStack $requestStack, private readonly BaseInfoRepository $baseInfoRepository, private readonly PluginRepository $pluginRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestStack = $requestStack;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->pluginRepository = $pluginRepository;
     }
 
     /**
@@ -81,10 +53,7 @@ class PluginApiService
         return $this->apiUrl;
     }
 
-    /**
-     * @param mixed $apiUrl
-     */
-    public function setApiUrl($apiUrl)
+    public function setApiUrl(mixed $apiUrl)
     {
         $this->apiUrl = $apiUrl;
     }
@@ -100,7 +69,7 @@ class PluginApiService
             $urlCategory = $this->getApiUrl().'/category';
 
             return $this->requestApi($urlCategory);
-        } catch (PluginApiException $e) {
+        } catch (PluginApiException) {
             return [];
         }
     }
@@ -254,7 +223,7 @@ class PluginApiService
         if ($Plugin->getSource()) {
             try {
                 $this->requestApi($this->getApiUrl().$url, ['id' => $Plugin->getSource()], true);
-            } catch (PluginApiException $ignore) {
+            } catch (PluginApiException) {
             }
         }
     }

@@ -51,9 +51,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     protected $twoFactorAuthService;
 
     /**
-     * @param EccubeConfig $eccubeConfig
      * @param Context $context,
-     * @param UrlGeneratorInterface $router
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -67,9 +65,6 @@ class TwoFactorAuthListener implements EventSubscriberInterface
         $this->twoFactorAuthService = $twoFactorAuthService;
     }
 
-    /**
-     * @param ControllerArgumentsEvent $event
-     */
     public function onKernelController(ControllerArgumentsEvent $event)
     {
         if (!$event->isMainRequest()) {
@@ -104,9 +99,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
             else {
                 $url = $this->router->generate('admin_two_factor_auth_set', [], UrlGeneratorInterface::ABSOLUTE_PATH);
             }
-            $event->setController(function () use ($url) {
-                return new RedirectResponse($url, $status = 302);
-            });
+            $event->setController(fn() => new RedirectResponse($url, $status = 302));
         }
     }
 

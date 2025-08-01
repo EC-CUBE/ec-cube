@@ -51,9 +51,6 @@ class ProductType extends AbstractType
 
     /**
      * ProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -104,18 +101,14 @@ class ProductType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (?Category $Category = null) {
-                    return $Category ? $Category->getId() : null;
-                },
+                'choice_value' => fn(?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
-                'class' => 'Eccube\Entity\Tag',
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.sort_no', 'DESC');
-                },
+                'class' => \Eccube\Entity\Tag::class,
+                'query_builder' => fn($er) => $er->createQueryBuilder('t')
+                ->orderBy('t.sort_no', 'DESC'),
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
@@ -204,7 +197,7 @@ class ProductType extends AbstractType
     private function validateFilePath($form, $dirs)
     {
         foreach ($form->getData() as $fileName) {
-            if (strpos($fileName, '..') !== false) {
+            if (str_contains((string) $fileName, '..')) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
                 break;
             }
@@ -212,7 +205,7 @@ class ProductType extends AbstractType
                 $filePath = realpath($dir.'/'.$fileName);
                 $topDirPath = realpath($dir);
 
-                return strpos($filePath, $topDirPath) === 0 && $filePath !== $topDirPath;
+                return str_starts_with($filePath, $topDirPath) && $filePath !== $topDirPath;
             });
             if (!$fileInDir) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));

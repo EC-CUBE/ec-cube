@@ -23,8 +23,6 @@ abstract class ItemHolderPostValidator
     use ValidatorTrait;
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      *
      * @return ProcessResult
      */
@@ -42,8 +40,6 @@ abstract class ItemHolderPostValidator
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      *
      * @throws InvalidItemException
      */

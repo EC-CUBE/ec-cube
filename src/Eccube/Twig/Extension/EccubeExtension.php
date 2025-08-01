@@ -34,20 +34,11 @@ class EccubeExtension extends AbstractExtension
     protected $eccubeConfig;
 
     /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
-    /**
      * EccubeExtension constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param ProductRepository $productRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
+    public function __construct(EccubeConfig $eccubeConfig, private readonly ProductRepository $productRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
-        $this->productRepository = $productRepository;
     }
 
     /**
@@ -58,11 +49,11 @@ class EccubeExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('has_errors', [$this, 'hasErrors']),
-            new TwigFunction('active_menus', [$this, 'getActiveMenus']),
-            new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
-            new TwigFunction('product', [$this, 'getProduct']),
-            new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
+            new TwigFunction('has_errors', $this->hasErrors(...)),
+            new TwigFunction('active_menus', $this->getActiveMenus(...)),
+            new TwigFunction('class_categories_as_json', $this->getClassCategoriesAsJson(...)),
+            new TwigFunction('product', $this->getProduct(...)),
+            new TwigFunction('currency_symbol', $this->getCurrencySymbol(...)),
         ];
     }
 
@@ -74,12 +65,12 @@ class EccubeExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('no_image_product', [$this, 'getNoImageProduct']),
-            new TwigFilter('date_format', [$this, 'getDateFormatFilter']),
-            new TwigFilter('price', [$this, 'getPriceFilter']),
-            new TwigFilter('ellipsis', [$this, 'getEllipsis']),
-            new TwigFilter('time_ago', [$this, 'getTimeAgo']),
-            new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
+            new TwigFilter('no_image_product', $this->getNoImageProduct(...)),
+            new TwigFilter('date_format', $this->getDateFormatFilter(...)),
+            new TwigFilter('price', $this->getPriceFilter(...)),
+            new TwigFilter('ellipsis', $this->getEllipsis(...)),
+            new TwigFilter('time_ago', $this->getTimeAgo(...)),
+            new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
         ];
     }
 
@@ -91,7 +82,7 @@ class EccubeExtension extends AbstractExtension
     public function getTests()
     {
         return [
-            new TwigTest('integer', function ($value) { return is_integer($value); }),
+            new TwigTest('integer', fn($value) => is_integer($value)),
         ];
     }
 
@@ -220,7 +211,7 @@ class EccubeExtension extends AbstractExtension
             if ($Product->getStatus()->getId() == ProductStatus::DISPLAY_SHOW) {
                 return $Product;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
 
@@ -230,7 +221,6 @@ class EccubeExtension extends AbstractExtension
     /**
      * Get the ClassCategories as JSON.
      *
-     * @param Product $Product
      *
      * @return string
      */
@@ -278,7 +268,7 @@ class EccubeExtension extends AbstractExtension
                 'price01_inc_tax_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01IncTax()),
                 'price02_inc_tax_with_currency' => $this->getPriceFilter($ProductClass->getPrice02IncTax()),
                 'product_class_id' => (string) $ProductClass->getId(),
-                'product_code' => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
+                'product_code' => $ProductClass->getCode() ?? '',
                 'sale_type' => (string) $ProductClass->getSaleType()->getId(),
             ];
         }
@@ -326,9 +316,9 @@ class EccubeExtension extends AbstractExtension
             'mov' => 'fa-file-video-o',
             'mkv' => 'fa-file-video-o',
         ];
-        $ext = strtolower($ext);
+        $ext = strtolower((string) $ext);
 
-        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file-o';
+        $class = $classes[$ext] ?? 'fa-file-o';
 
         if ($iconOnly) {
             return $class;

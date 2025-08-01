@@ -31,16 +31,10 @@ class Context
      */
     protected $eccubeConfig;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorageInterface $tokenStorage)
+    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, private readonly TokenStorageInterface $tokenStorage)
     {
         $this->requestStack = $requestStack;
         $this->eccubeConfig = $eccubeConfig;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -58,9 +52,9 @@ class Context
 
         $pathInfo = \rawurldecode($request->getPathInfo());
         $adminPath = $this->eccubeConfig->get('eccube_admin_route');
-        $adminPath = '/'.\trim($adminPath, '/').'/';
+        $adminPath = '/'.\trim((string) $adminPath, '/').'/';
 
-        return \strpos($pathInfo, $adminPath) === 0;
+        return str_starts_with($pathInfo, $adminPath);
     }
 
     /**

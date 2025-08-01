@@ -37,9 +37,6 @@ class LogType extends AbstractType
 
     /**
      * LogType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param KernelInterface $kernel
      */
     public function __construct(EccubeConfig $eccubeConfig, KernelInterface $kernel)
     {
@@ -56,9 +53,7 @@ class LogType extends AbstractType
         $finder = new Finder();
         $finder->name('*.log')
             ->depth('== 0')
-            ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
-                return strcmp($b->getMTime(), $a->getMTime());
-            });
+            ->sort(fn(\SplFileInfo $a, \SplFileInfo $b) => strcmp($b->getMTime(), $a->getMTime()));
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
         foreach ($finder->in($dirs) as $file) {
             $files[$file->getFilename()] = $file->getFilename();

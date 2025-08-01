@@ -26,31 +26,8 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
 {
-    /**
-     * @var StateMachine
-     */
-    private $machine;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    private $orderStatusRepository;
-
-    /**
-     * @var PointProcessor
-     */
-    private $pointProcessor;
-    /**
-     * @var StockReduceProcessor
-     */
-    private $stockReduceProcessor;
-
-    public function __construct(WorkflowInterface $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
+    public function __construct(private readonly WorkflowInterface $machine, private readonly OrderStatusRepository $orderStatusRepository, private readonly PointProcessor $pointProcessor, private readonly StockReduceProcessor $stockReduceProcessor)
     {
-        $this->machine = $_orderStateMachine;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->pointProcessor = $pointProcessor;
-        $this->stockReduceProcessor = $stockReduceProcessor;
     }
 
     /**
@@ -114,11 +91,8 @@ class OrderStateMachine implements EventSubscriberInterface
     /*
      * Event handlers.
      */
-
     /**
      * 入金日を更新する.
-     *
-     * @param Event $event
      */
     public function updatePaymentDate(Event $event)
     {
@@ -130,7 +104,6 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * 会員の保有ポイントを減らす.
      *
-     * @param Event $event
      *
      * @throws PurchaseFlow\PurchaseException
      */
@@ -143,8 +116,6 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 利用ポイントを会員に戻す.
-     *
-     * @param Event $event
      */
     public function rollbackUsePoint(Event $event)
     {
@@ -156,7 +127,6 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * 在庫を減らす.
      *
-     * @param Event $event
      *
      * @throws PurchaseFlow\PurchaseException
      */
@@ -169,8 +139,6 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 在庫を戻す.
-     *
-     * @param Event $event
      */
     public function rollbackStock(Event $event)
     {
@@ -181,8 +149,6 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 会員に加算ポイントを付与する.
-     *
-     * @param Event $event
      */
     public function commitAddPoint(Event $event)
     {
@@ -196,8 +162,6 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 会員に付与した加算ポイントを取り消す.
-     *
-     * @param Event $event
      */
     public function rollbackAddPoint(Event $event)
     {
@@ -212,8 +176,6 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * 受注ステータスを再設定.
      * {@link StateMachine}によって遷移が終了したときには{@link Order#OrderStatus}のidが変更されるだけなのでOrderStatusを設定し直す.
-     *
-     * @param Event $event
      */
     public function onCompleted(Event $event)
     {
@@ -232,22 +194,13 @@ class OrderStateMachine implements EventSubscriberInterface
 
 class OrderStateMachineContext
 {
-    /** @var string */
-    private $status;
-
-    /** @var Order */
-    private $Order;
-
     /**
      * OrderStateMachineContext constructor.
      *
      * @param string $status
-     * @param Order $Order
      */
-    public function __construct($status, Order $Order)
+    public function __construct(private $status, private readonly Order $Order)
     {
-        $this->status = $status;
-        $this->Order = $Order;
     }
 
     /**

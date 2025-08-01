@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-if (!class_exists('\Eccube\Entity\Cart')) {
+if (!class_exists(\Eccube\Entity\Cart::class)) {
     /**
      * Cart
      *
@@ -160,9 +160,6 @@ if (!class_exists('\Eccube\Entity\Cart')) {
             return $this->cart_key;
         }
 
-        /**
-         * @param string $cartKey
-         */
         public function setCartKey(string $cartKey)
         {
             $this->cart_key = $cartKey;
@@ -215,8 +212,6 @@ if (!class_exists('\Eccube\Entity\Cart')) {
         }
 
         /**
-         * @param  CartItem            $CartItem
-         *
          * @return Cart
          */
         public function addCartItem(CartItem $CartItem)
@@ -327,9 +322,6 @@ if (!class_exists('\Eccube\Entity\Cart')) {
             $this->CartItems->add($item);
         }
 
-        /**
-         * @param ItemInterface $item
-         */
         public function removeItem(ItemInterface $item)
         {
             $this->CartItems->removeElement($item);

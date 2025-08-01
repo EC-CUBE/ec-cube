@@ -30,8 +30,6 @@ class CsvImportType extends AbstractType
 
     /**
      * CsvImportType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

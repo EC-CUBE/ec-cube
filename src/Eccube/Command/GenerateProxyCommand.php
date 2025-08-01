@@ -23,21 +23,9 @@ class GenerateProxyCommand extends Command
 {
     protected static $defaultName = 'eccube:generate:proxies';
 
-    /**
-     * @var EntityProxyService
-     */
-    private $entityProxyService;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    public function __construct(EntityProxyService $entityProxyService, EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EntityProxyService $entityProxyService, private readonly EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->entityProxyService = $entityProxyService;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     protected function configure()

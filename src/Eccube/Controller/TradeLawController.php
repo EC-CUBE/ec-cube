@@ -22,9 +22,6 @@ class TradeLawController extends AbstractController
     /** @var TradeLawRepository */
     protected $tradeLawRepository;
 
-    /**
-     * @param TradeLawRepository $tradeLawRepository
-     */
     public function __construct(
         TradeLawRepository $tradeLawRepository,
     ) {

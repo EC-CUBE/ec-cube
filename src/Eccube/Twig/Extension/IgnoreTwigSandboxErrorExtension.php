@@ -31,7 +31,7 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('include', [$this, 'twig_include'], ['needs_environment' => true, 'needs_context' => true, 'is_safe' => ['all']]),
+            new TwigFunction('include', $this->twig_include(...), ['needs_environment' => true, 'needs_context' => true, 'is_safe' => ['all']]),
         ];
     }
 
@@ -40,7 +40,6 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * app_env = devの場合、エラーを表示する
      * app_env = prodの場合、エラーを表示しない
      *
-     * @param Environment $env
      * @param $context
      * @param $template
      * @param $variables

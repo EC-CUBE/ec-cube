@@ -80,9 +80,7 @@ class IpAddrListener implements EventSubscriberInterface
     {
         log_debug('Host List: '.implode(',', $hostList));
         if ($hostList) {
-            $isInList = array_filter($hostList, function ($host) use ($clientIp) {
-                return IpUtils::checkIp($clientIp, $host);
-            });
+            $isInList = array_filter($hostList, fn($host) => IpUtils::checkIp($clientIp, $host));
 
             return count($isInList) > 0;
         }

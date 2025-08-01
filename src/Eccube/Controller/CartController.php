@@ -52,11 +52,6 @@ class CartController extends AbstractController
 
     /**
      * CartController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         ProductClassRepository $productClassRepository,

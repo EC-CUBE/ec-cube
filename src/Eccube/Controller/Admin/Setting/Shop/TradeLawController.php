@@ -25,15 +25,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TradeLawController extends AbstractController
 {
-    protected TradeLawRepository $tradeLawRepository;
-
-    /**
-     * @param TradeLawRepository $tradeLawRepository
-     */
-    public function __construct(
-        TradeLawRepository $tradeLawRepository,
-    ) {
-        $this->tradeLawRepository = $tradeLawRepository;
+    public function __construct(protected TradeLawRepository $tradeLawRepository)
+    {
     }
 
     /**
@@ -42,8 +35,6 @@ class TradeLawController extends AbstractController
      * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw", methods={"GET", "POST"})
      *
      * @Template("@admin/Setting/Shop/tradelaw.twig")
-     *
-     * @param Request $request
      */
     public function index(Request $request)
     {

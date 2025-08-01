@@ -50,11 +50,6 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * NonMemberShoppingController constructor.
-     *
-     * @param ValidatorInterface $validator
-     * @param PrefRepository $prefRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
      */
     public function __construct(
         ValidatorInterface $validator,

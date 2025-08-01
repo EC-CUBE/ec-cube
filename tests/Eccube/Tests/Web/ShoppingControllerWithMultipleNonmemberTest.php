@@ -82,12 +82,10 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         // 複数配送設定
@@ -107,8 +105,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // 確認画面
         $this->scenarioComplete(
-            null,
             $this->generateUrl('shopping_confirm'),
+            null,
             [
                 // 配送先1
                 [
@@ -942,14 +940,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
         $this->scenarioCartIn($client);
 
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->createNonmemberFormData();
+        $this->scenarioInput($client);
 
         $crawler = $this->scenarioConfirm($client);
 
         // お届け先設定画面への遷移前チェック
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $this->scenarioComplete($client, $shipping_edit_change_url);
+        $this->scenarioComplete($shipping_edit_change_url, $client);
 
         // add multi shipping
         $multiForm = [
@@ -1290,12 +1288,10 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
 
         $shipping = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         // add multi shipping
@@ -1416,9 +1412,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->assertStringContainsString('× 3', $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
-            function ($node, $i) {
-                return $node->text();
-            }
+            fn($node, $i) => $node->text()
         );
 
         $this->expected = 'サンプル業者';
@@ -1427,8 +1421,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // 完了画面
         $this->scenarioComplete(
-            null,
             $this->generateUrl('shopping_confirm'),
+            null,
             [
                 // 配送先1
                 [

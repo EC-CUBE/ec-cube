@@ -71,12 +71,6 @@ class MypageController extends AbstractController
 
     /**
      * MypageController constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PurchaseFlow $purchaseFlow
      */
     public function __construct(
         OrderRepository $orderRepository,

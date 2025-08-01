@@ -53,7 +53,7 @@ class TagType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Tag',
+            'data_class' => \Eccube\Entity\Tag::class,
         ]);
     }
 

@@ -37,27 +37,12 @@ class ComposerProcessService implements ComposerServiceInterface
     protected $entityManager;
 
     /**
-     * @var ComposerApiService
-     */
-    private $composerApiService;
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
-
-    /**
      * ComposerProcessService constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
-     * @param ComposerApiService $composerApiService
      */
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, ComposerApiService $composerApiService, BaseInfoRepository $baseInfoRepository)
+    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, private readonly ComposerApiService $composerApiService, private readonly BaseInfoRepository $baseInfoRepository)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
-        $this->composerApiService = $composerApiService;
-        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     public function execRequire($packageName, $output = null)

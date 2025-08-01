@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Payment')) {
+if (!class_exists(\Eccube\Entity\Payment::class)) {
     /**
      * Payment
      *
@@ -29,12 +29,12 @@ if (!class_exists('\Eccube\Entity\Payment')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentRepository")
      */
-    class Payment extends AbstractEntity
+    class Payment extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getMethod();
         }
@@ -427,7 +427,6 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Add paymentOption.
          *
-         * @param PaymentOption $paymentOption
          *
          * @return Payment
          */
@@ -441,7 +440,6 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Remove paymentOption.
          *
-         * @param PaymentOption $paymentOption
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -463,7 +461,6 @@ if (!class_exists('\Eccube\Entity\Payment')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return Payment
          */

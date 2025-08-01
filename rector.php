@@ -52,7 +52,7 @@ return RectorConfig::configure()
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
-               // LevelSetList::UP_TO_PHP_80, // PHPバージョンに合わせる
+               LevelSetList::UP_TO_PHP_81, // PHPバージョンに合わせる
                // SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,

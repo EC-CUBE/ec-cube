@@ -31,8 +31,6 @@ interface DiscountProcessor
     /**
      * 値引き明細の削除処理を実装します.
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      *
      * @return void
      */
@@ -44,8 +42,6 @@ interface DiscountProcessor
      * かならず合計金額等のチェックを行い, 超える場合は利用できる金額まで丸めるか、もしくは明細の追加処理をスキップしてください.
      * 正常に追加できない場合は, ProcessResult::warnを返却してください.
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      *
      * @return ProcessResult|null
      */

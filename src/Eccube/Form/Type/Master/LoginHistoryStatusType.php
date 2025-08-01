@@ -25,7 +25,7 @@ class LoginHistoryStatusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\LoginHistoryStatus',
+            'class' => \Eccube\Entity\Master\LoginHistoryStatus::class,
             'expanded' => false,
         ]);
     }

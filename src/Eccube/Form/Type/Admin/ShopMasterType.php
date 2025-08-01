@@ -43,8 +43,6 @@ class ShopMasterType extends AbstractType
 
     /**
      * ShopMasterType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

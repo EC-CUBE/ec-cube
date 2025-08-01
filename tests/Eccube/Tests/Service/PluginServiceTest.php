@@ -226,7 +226,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (PluginException $e) {
+        } catch (PluginException) {
         }
 
         // 長さのチェック
@@ -238,7 +238,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile, Yaml::dump($config));
             $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail('testConfigYmlFormat dont throw exception.');
-        } catch (PluginException $e) {
+        } catch (PluginException) {
         }
 
         $this->expectException(PluginException::class);
@@ -332,7 +332,7 @@ EOD;
         $this->assertEquals(Constant::DISABLED, $plugin->isEnabled()); // インストール直後にプラグインがdisableになっているか
         try {
             $this->assertTrue($this->service->enable($plugin)); // enableにしようとするが、例外発生
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
         $this->entityManager->detach($plugin);
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));

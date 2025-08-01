@@ -40,8 +40,6 @@ class SearchProductType extends AbstractType
 
     /**
      * SearchProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
      */
     public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
     {
@@ -61,7 +59,7 @@ class SearchProductType extends AbstractType
             'data' => 'search',
         ]);
         $builder->add('category_id', EntityType::class, [
-            'class' => 'Eccube\Entity\Category',
+            'class' => \Eccube\Entity\Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',

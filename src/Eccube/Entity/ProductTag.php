@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\ProductTag')) {
+if (!class_exists(\Eccube\Entity\ProductTag::class)) {
     /**
      * ProductTag
      *
@@ -137,7 +137,6 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return ProductTag
          */
@@ -161,7 +160,6 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set tag.
          *
-         * @param Tag|null $tag
          *
          * @return ProductTag
          */
@@ -185,7 +183,6 @@ if (!class_exists('\Eccube\Entity\ProductTag')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return ProductTag
          */

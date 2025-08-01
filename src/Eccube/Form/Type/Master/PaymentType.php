@@ -26,14 +26,12 @@ class PaymentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Payment',
+            'class' => \Eccube\Entity\Payment::class,
             'choice_label' => 'method',
             'placeholder' => '-',
             // fixme 何故かここはDESC
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('m')
-                    ->orderBy('m.sort_no', 'DESC');
-            },
+            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('m')
+                ->orderBy('m.sort_no', 'DESC'),
         ]);
     }
 

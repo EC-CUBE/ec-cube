@@ -48,44 +48,34 @@ class EccubeConfig implements \ArrayAccess
     }
 
     /**
-     * @param mixed $offset
-     *
      * @return bool
      */
     #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset)
     {
         return $this->has($offset);
     }
 
     /**
-     * @param mixed $offset
-     *
      * @return mixed
      */
     #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset)
     {
         return $this->get($offset);
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value)
     {
         throw new \LogicException();
     }
 
     /**
-     * @param mixed $offset
-     *
      * @throws \LogicException
      */
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset)
     {
         throw new \LogicException();
     }

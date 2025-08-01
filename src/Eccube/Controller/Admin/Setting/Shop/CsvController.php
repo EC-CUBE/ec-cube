@@ -42,9 +42,6 @@ class CsvController extends AbstractController
 
     /**
      * CsvController constructor.
-     *
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
      */
     public function __construct(CsvRepository $csvRepository, CsvTypeRepository $csvTypeRepository)
     {
@@ -88,7 +85,7 @@ class CsvController extends AbstractController
             'csv_not_output',
             EntityType::class,
             [
-                'class' => 'Eccube\Entity\Csv',
+                'class' => \Eccube\Entity\Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
@@ -106,7 +103,7 @@ class CsvController extends AbstractController
             'csv_output',
             EntityType::class,
             [
-                'class' => 'Eccube\Entity\Csv',
+                'class' => \Eccube\Entity\Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,

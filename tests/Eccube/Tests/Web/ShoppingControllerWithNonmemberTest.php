@@ -92,7 +92,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $crawler = $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'));
+        $crawler = $this->scenarioComplete($this->generateUrl('shopping_confirm'), null);
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -169,8 +169,8 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $client = $this->client;
 
         $this->scenarioCartIn($client);
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->createNonmemberFormData();
+        $this->scenarioInput($client);
         $crawler = $this->scenarioConfirm($client);
 
         $this->expected = 'ご注文内容のご確認';
@@ -178,7 +178,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->verify();
 
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
+        preg_match('/\/(\d)$/', (string) $shipping_edit_change_url, $matches);
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
@@ -227,7 +227,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->scenarioCartIn($client);
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($client);
         $crawler = $this->scenarioConfirm($client);
 
         $this->expected = 'ご注文内容のご確認';
@@ -235,7 +235,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->verify();
 
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
+        preg_match('/\/(\d)$/', (string) $shipping_edit_change_url, $matches);
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
@@ -283,7 +283,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($this->app->path('shopping_confirm'), $client);
 
         $this->app['eccube.repository.base_info']->get();
         $Messages = $this->getMailCatcherMessages();

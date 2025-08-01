@@ -314,7 +314,6 @@ class EF09ThrottlingCest
      * checkoutでのスロットリングのテスト
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
      *
-     * @param AcceptanceTester $I
      *
      * @return void
      */
@@ -359,7 +358,6 @@ class EF09ThrottlingCest
      * checkoutでのスロットリングのテスト
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
      *
-     * @param AcceptanceTester $I
      *
      * @return void
      */
@@ -397,8 +395,6 @@ class EF09ThrottlingCest
     }
 
     /**
-     * @param AcceptanceTester $I
-     *
      * @return void
      */
     public function 会員情報編集(AcceptanceTester $I)
@@ -431,8 +427,6 @@ class EF09ThrottlingCest
     }
 
     /**
-     * @param AcceptanceTester $I
-     *
      * @return void
      */
     public function 配送先情報_追加(AcceptanceTester $I)
@@ -490,8 +484,6 @@ class EF09ThrottlingCest
     }
 
     /**
-     * @param AcceptanceTester $I
-     *
      * @return void
      */
     public function 配送先情報_編集(AcceptanceTester $I)
@@ -570,7 +562,6 @@ class EF09ThrottlingCest
      * customer_delivery_deleteでのスロットリングのテスト
      * customer_delivery_newでの制限に引っかかるため、customer_delivery_newのlimiter上限値を変更してから実施してください。
      *
-     * @param AcceptanceTester $I
      *
      * @return void
      */
@@ -635,8 +626,6 @@ class EF09ThrottlingCest
     }
 
     /**
-     * @param AcceptanceTester $I
-     *
      * @return void
      */
     public function order_お届け先追加(AcceptanceTester $I)
@@ -701,8 +690,6 @@ class EF09ThrottlingCest
     }
 
     /**
-     * @param AcceptanceTester $I
-     *
      * @return void
      */
     public function order_お届け先変更(AcceptanceTester $I)

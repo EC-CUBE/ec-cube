@@ -122,7 +122,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $commandTester->execute(
@@ -143,9 +143,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, function (Column $column) {
-            return $column->getName() == 'test_update_schema_command';
-        }), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
@@ -163,7 +161,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $commandTester->execute(
@@ -179,9 +177,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, function (Column $column) {
-            return $column->getName() == 'test_update_schema_command';
-        }), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
 
@@ -201,7 +197,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         $this->pluginService->install($fileA);
 
@@ -223,9 +219,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, function (Column $column) {
-            return $column->getName() == 'test_update_schema_command';
-        }), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
@@ -242,7 +236,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     public function testEnablePluginWithProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
@@ -261,9 +255,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, function (Column $column) {
-            return $column->getName() == 'test_update_schema_command';
-        }), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
@@ -282,7 +274,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
@@ -308,9 +300,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, function (Column $column) {
-            return $column->getName() == 'test_update_schema_command';
-        }), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
@@ -327,7 +317,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
@@ -349,9 +339,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, function (Column $column) {
-            return $column->getName() == 'test_update_schema_command';
-        }), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
@@ -489,7 +477,7 @@ EOT
             $process->mustRun();
 
             return $process->getOutput();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // ignore Fatal error: Cannot declare class
             // $this->fail($e->getMessage());
         }
@@ -499,9 +487,7 @@ EOT
     {
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
-        if (empty(array_filter($columns, function ($column) {
-            return $column->getName() == 'test_update_schema_command';
-        }))) {
+        if (empty(array_filter($columns, fn($column) => $column->getName() == 'test_update_schema_command'))) {
             $conn = $this->entityManager->getConnection();
             $conn->executeUpdate('ALTER TABLE dtb_customer ADD test_update_schema_command text');
         }

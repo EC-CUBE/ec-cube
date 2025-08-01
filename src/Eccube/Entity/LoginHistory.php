@@ -16,7 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\LoginHistoryStatus;
 
-if (!class_exists('\Eccube\Entity\LoginHistory')) {
+if (!class_exists(\Eccube\Entity\LoginHistory::class)) {
     /**
      * LoginHistory
      *

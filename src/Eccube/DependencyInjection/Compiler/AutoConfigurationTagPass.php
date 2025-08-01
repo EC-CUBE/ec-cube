@@ -56,7 +56,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
 
     protected function configureRateLimiterTag($id, Definition $definition)
     {
-        if (\str_starts_with($id, 'limiter')
+        if (\str_starts_with((string) $id, 'limiter')
             && $definition instanceof ChildDefinition
             && $definition->getParent() === 'limiter'
             && !$definition->hasTag('eccube_rate_limiter')) {

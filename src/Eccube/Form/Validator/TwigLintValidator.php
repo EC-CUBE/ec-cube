@@ -28,8 +28,6 @@ class TwigLintValidator extends ConstraintValidator
 
     /**
      * TwigLintValidator constructor.
-     *
-     * @param \Twig\Environment $twig
      */
     public function __construct(\Twig\Environment $twig)
     {

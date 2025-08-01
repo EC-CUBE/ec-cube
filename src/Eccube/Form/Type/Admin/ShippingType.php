@@ -66,11 +66,6 @@ class ShippingType extends AbstractType
 
     /**
      * ShippingType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param DeliveryRepository $deliveryRepository
-     * @param DeliveryTimeRepository $deliveryTimeRepository
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -159,17 +154,13 @@ class ShippingType extends AbstractType
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,
-                'class' => 'Eccube\Entity\Delivery',
-                'choice_label' => function (Delivery $Delivery) {
-                    return $Delivery->isVisible()
-                        ? $Delivery->getServiceName()
-                        : $Delivery->getServiceName().trans('admin.common.hidden_label');
-                },
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('d')
-                        ->orderBy('d.visible', 'DESC') // 非表示は下に配置
-                        ->addOrderBy('d.sort_no', 'ASC');
-                },
+                'class' => \Eccube\Entity\Delivery::class,
+                'choice_label' => fn(Delivery $Delivery) => $Delivery->isVisible()
+                    ? $Delivery->getServiceName()
+                    : $Delivery->getServiceName().trans('admin.common.hidden_label'),
+                'query_builder' => fn($er) => $er->createQueryBuilder('d')
+                    ->orderBy('d.visible', 'DESC') // 非表示は下に配置
+                    ->addOrderBy('d.sort_no', 'ASC'),
                 'placeholder' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -241,12 +232,10 @@ class ShippingType extends AbstractType
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, [
-                    'class' => 'Eccube\Entity\DeliveryTime',
-                    'choice_label' => function (DeliveryTime $DeliveryTime) {
-                        return $DeliveryTime->isVisible()
-                            ? $DeliveryTime->getDeliveryTime()
-                            : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label');
-                    },
+                    'class' => \Eccube\Entity\DeliveryTime::class,
+                    'choice_label' => fn(DeliveryTime $DeliveryTime) => $DeliveryTime->isVisible()
+                        ? $DeliveryTime->getDeliveryTime()
+                        : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label'),
                     'placeholder' => 'common.select__unspecified',
                     'required' => false,
                     'data' => $DeliveryTime,
@@ -282,7 +271,7 @@ class ShippingType extends AbstractType
                 // お届け時間を配送業者で絞り込み
                 $form->remove('DeliveryTime');
                 $form->add('DeliveryTime', EntityType::class, [
-                    'class' => 'Eccube\Entity\DeliveryTime',
+                    'class' => \Eccube\Entity\DeliveryTime::class,
                     'choice_label' => 'delivery_time',
                     'placeholder' => 'common.select__unspecified',
                     'required' => false,
@@ -344,7 +333,7 @@ class ShippingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => \Eccube\Entity\Shipping::class,
         ]);
     }
 

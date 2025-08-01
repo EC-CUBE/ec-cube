@@ -53,9 +53,6 @@ class ForgotController extends AbstractController
     /**
      * ForgotController constructor.
      *
-     * @param ValidatorInterface $validator
-     * @param MailService $mailService
-     * @param CustomerRepository $customerRepository
      * @param UserPasswordHasherInterface $encoderFactory
      */
     public function __construct(

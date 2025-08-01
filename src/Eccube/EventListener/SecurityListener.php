@@ -49,9 +49,6 @@ class SecurityListener implements EventSubscriberInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param InteractiveLoginEvent $event
-     */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event

@@ -34,8 +34,6 @@ class NonMemberType extends AbstractType
 
     /**
      * NonMemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

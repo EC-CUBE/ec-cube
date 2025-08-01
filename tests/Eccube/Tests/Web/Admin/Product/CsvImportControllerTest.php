@@ -170,10 +170,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // ProductCategoryTest
         // カテゴリーIDs
         foreach ($csv as $csvRow) {
-            $csvCat[md5($csvRow[2])] = $csvRow[10];
+            $csvCat[md5((string) $csvRow[2])] = $csvRow[10];
         }
         foreach ($Products as $Product) {
-            $nameHash = md5($Product->getName());
+            $nameHash = md5((string) $Product->getName());
             if (!isset($csvCat[$nameHash])) {
                 continue;
             }
@@ -344,7 +344,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // ProductCategoryTest
         // カテゴリーIDs
         foreach ($csv as $csvRow) {
-            $csvCat[md5($csvRow[2])] = $csvRow[10];
+            $csvCat[md5((string) $csvRow[2])] = $csvRow[10];
         }
         /** @var Product $Product */
         foreach ($Products as $Product) {
@@ -634,10 +634,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // ProductCategoryTest
         // カテゴリーIDs
         foreach ($csv as $csvRow) {
-            $csvCat[md5($csvRow[2])] = $csvRow[10];
+            $csvCat[md5((string) $csvRow[2])] = $csvRow[10];
         }
         foreach ($Products as $Product) {
-            $nameHash = md5($Product->getName());
+            $nameHash = md5((string) $Product->getName());
             if (!isset($csvCat[$nameHash])) {
                 continue;
             }
@@ -839,7 +839,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     private function getExpectedCategoriesIdList($categoriesStr)
     {
         $catIds = [];
-        $tmp = explode(',', $categoriesStr);
+        $tmp = explode(',', (string) $categoriesStr);
         foreach ($tmp as $id) {
             $id = trim($id);
             if (is_numeric($id)) {
@@ -949,9 +949,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->filter(
-            function (ProductClass $ProductClass) {
-                return $ProductClass->getClassCategory1() !== null;
-            })[0];
+            fn(ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null)[0];
         /** @var Generator $faker */
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
@@ -981,9 +979,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->filter(
-            function (ProductClass $ProductClass) {
-                return $ProductClass->getClassCategory1() !== null;
-            })[0];
+            fn(ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null)[0];
         /** @var Generator $faker */
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
@@ -1074,7 +1070,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testSplitCsv($lineNo, $expecedFileNo)
     {
-        list($header, $row) = $this->createCsvAsArray();
+        [$header, $row] = $this->createCsvAsArray();
         $csv = [$header];
         for ($i = 0; $i < $lineNo; $i++) {
             $csv[] = $row;

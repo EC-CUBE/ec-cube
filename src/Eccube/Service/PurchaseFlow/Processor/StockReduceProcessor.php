@@ -39,9 +39,6 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
 
     /**
      * StockReduceProcessor constructor.
-     *
-     * @param ProductStockRepository $productStockRepository
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(ProductStockRepository $productStockRepository, EntityManagerInterface $entityManager)
     {
@@ -55,9 +52,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 在庫を減らす
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock - $itemQuantity;
-        });
+        $this->eachProductOrderItems($itemHolder, fn($currentStock, $itemQuantity) => $currentStock - $itemQuantity);
     }
 
     /**
@@ -66,9 +61,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 在庫を戻す
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock + $itemQuantity;
-        });
+        $this->eachProductOrderItems($itemHolder, fn($currentStock, $itemQuantity) => $currentStock + $itemQuantity);
     }
 
     private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)

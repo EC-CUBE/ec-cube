@@ -80,13 +80,6 @@ class LayoutController extends AbstractController
 
     /**
      * LayoutController constructor.
-     *
-     * @param BlockRepository $blockRepository
-     * @param LayoutRepository $layoutRepository
-     * @param PageLayoutRepository $pageLayoutRepository
-     * @param PageRepository $pageRepository
-     * @param ProductRepository $productRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
     {
@@ -122,7 +115,6 @@ class LayoutController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete", methods={"DELETE"})
      *
-     * @param Layout $Layout
      *
      * @return RedirectResponse
      */
@@ -205,7 +197,7 @@ class LayoutController extends AbstractController
                 // プレビューする画面を取得
                 try {
                     $Page = $this->pageRepository->find($previewPageId);
-                } catch (NoResultException $e) {
+                } catch (NoResultException) {
                     throw new NotFoundHttpException();
                 }
 
@@ -240,8 +232,6 @@ class LayoutController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block", methods={"GET"})
      *
-     * @param Request $request
-     * @param Twig $twig
      *
      * @return JsonResponse
      */

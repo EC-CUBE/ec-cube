@@ -45,8 +45,6 @@ class ProductClassType extends AbstractType
 
     /**
      * ProductClassType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -153,7 +151,7 @@ class ProductClassType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\ProductClass',
+            'data_class' => \Eccube\Entity\ProductClass::class,
         ]);
     }
 

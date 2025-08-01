@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\PaymentOption')) {
+if (!class_exists(\Eccube\Entity\PaymentOption::class)) {
     /**
      * PaymentOption
      *
@@ -128,7 +128,6 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Set delivery.
          *
-         * @param Delivery|null $delivery
          *
          * @return PaymentOption
          */
@@ -152,7 +151,6 @@ if (!class_exists('\Eccube\Entity\PaymentOption')) {
         /**
          * Set payment.
          *
-         * @param Payment|null $payment
          *
          * @return PaymentOption
          */

@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\TaxRule')) {
+if (!class_exists(\Eccube\Entity\TaxRule::class)) {
     /**
      * TaxRule
      *
@@ -326,7 +326,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set productClass.
          *
-         * @param ProductClass|null $productClass
          *
          * @return TaxRule
          */
@@ -350,7 +349,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return TaxRule
          */
@@ -374,7 +372,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
          *
          * @return TaxRule
          */
@@ -398,7 +395,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
          *
          * @return TaxRule
          */
@@ -422,7 +418,6 @@ if (!class_exists('\Eccube\Entity\TaxRule')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return TaxRule
          */

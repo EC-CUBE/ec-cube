@@ -44,8 +44,6 @@ class EntryType extends AbstractType
 
     /**
      * EntryType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -130,7 +128,7 @@ class EntryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => \Eccube\Entity\Customer::class,
         ]);
     }
 

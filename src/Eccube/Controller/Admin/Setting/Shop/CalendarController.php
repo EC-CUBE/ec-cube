@@ -33,8 +33,6 @@ class CalendarController extends AbstractController
 
     /**
      * CalendarController constructor.
-     *
-     *  @param CalendarRepository $calendarRepository
      */
     public function __construct(CalendarRepository $calendarRepository)
     {

@@ -32,18 +32,12 @@ trait PluginCommandTrait
      */
     protected $pluginRepository;
 
-    /**
-     * @param PluginService $pluginService
-     */
     #[Required]
     public function setPluginService(PluginService $pluginService)
     {
         $this->pluginService = $pluginService;
     }
 
-    /**
-     * @param PluginRepository $pluginRepository
-     */
     #[Required]
     public function setPluginRepository(PluginRepository $pluginRepository)
     {

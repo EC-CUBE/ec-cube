@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\News')) {
+if (!class_exists(\Eccube\Entity\News::class)) {
     /**
      * News
      *
@@ -31,12 +31,12 @@ if (!class_exists('\Eccube\Entity\News')) {
      *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class News extends AbstractEntity
+    class News extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getTitle();
         }
@@ -321,7 +321,6 @@ if (!class_exists('\Eccube\Entity\News')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return News
          */

@@ -80,13 +80,6 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * ShippingMultipleController constructor.
-     *
-     * @param PrefRepository $prefRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
      */
     public function __construct(
         PrefRepository $prefRepository,

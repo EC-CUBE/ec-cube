@@ -33,8 +33,6 @@ class AddPointProcessor extends ItemHolderPostValidator
 
     /**
      * AddPointProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
@@ -59,7 +57,6 @@ class AddPointProcessor extends ItemHolderPostValidator
     /**
      * 付与ポイントを計算.
      *
-     * @param ItemHolderInterface $itemHolder
      *
      * @return int
      */
@@ -70,7 +67,7 @@ class AddPointProcessor extends ItemHolderPostValidator
         // 明細ごとのポイントを集計
         $totalPoint = array_reduce($itemHolder->getItems()->toArray(),
             function ($carry, ItemInterface $item) use ($basicPointRate) {
-                $pointRate = $item->getPointRate() ? $item->getPointRate() : null;
+                $pointRate = $item->getPointRate() ?: null;
 
                 if ($pointRate === null) {
                     $pointRate = $basicPointRate;
@@ -103,7 +100,6 @@ class AddPointProcessor extends ItemHolderPostValidator
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
      *
-     * @param ItemHolderInterface $itemHolder
      *
      * @return bool
      */

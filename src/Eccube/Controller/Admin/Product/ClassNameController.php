@@ -43,9 +43,6 @@ class ClassNameController extends AbstractController
 
     /**
      * ClassNameController constructor.
-     *
-     * @param ClassNameRepository $classNameRepository
-     * @param CsvExportService $csvExportService
      */
     public function __construct(
         ClassNameRepository $classNameRepository,
@@ -203,7 +200,6 @@ class ClassNameController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/class_name/export", name="admin_product_class_name_export", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

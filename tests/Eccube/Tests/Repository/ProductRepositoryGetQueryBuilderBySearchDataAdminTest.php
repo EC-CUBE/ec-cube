@@ -230,10 +230,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     /**
      * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
      */
     public function testDate(string $formName, string $time, int $expected)
     {
@@ -274,10 +270,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     /**
      * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
      */
     public function testDateTime(string $formName, string $time, int $expected)
     {

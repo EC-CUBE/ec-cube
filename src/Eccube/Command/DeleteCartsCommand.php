@@ -55,18 +55,13 @@ class DeleteCartsCommand extends Command
      * @var EntityManagerInterface
      */
     protected $entityManager;
-    /**
-     * @var CartRepository
-     */
-    private $cartRepository;
 
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, CartRepository $cartRepository)
+    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, private readonly CartRepository $cartRepository)
     {
         parent::__construct();
 
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
-        $this->cartRepository = $cartRepository;
     }
 
     protected function configure()
@@ -139,7 +134,7 @@ class DeleteCartsCommand extends Command
             $this->entityManager->commit();
 
             $this->io->comment("Deleted {$deleteRows} carts.");
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->io->error('Failed delete carts. Rollbacked.');
             $this->entityManager->rollback();
         }

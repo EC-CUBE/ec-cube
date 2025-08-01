@@ -22,26 +22,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 class TemplateEvent extends Event
 {
     /**
-     * @var string
-     */
-    private $view;
-
-    /**
-     * @var string
-     */
-    private $source;
-
-    /**
-     * @var array
-     */
-    private $parameters;
-
-    /**
-     * @var Response|null
-     */
-    private $response;
-
-    /**
      * @var array
      */
     private $assets = [];
@@ -56,15 +36,9 @@ class TemplateEvent extends Event
      *
      * @param string $view
      * @param string $source
-     * @param array $parameters
-     * @param Response|null $response
      */
-    public function __construct($view, $source, array $parameters = [], ?Response $response = null)
+    public function __construct(private $view, private $source, private array $parameters = [], private ?Response $response = null)
     {
-        $this->view = $view;
-        $this->source = $source;
-        $this->parameters = $parameters;
-        $this->response = $response;
     }
 
     /**

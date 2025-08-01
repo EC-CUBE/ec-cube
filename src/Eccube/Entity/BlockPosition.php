@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\BlockPosition')) {
+if (!class_exists(\Eccube\Entity\BlockPosition::class)) {
     /**
      * BlockPosition
      *
@@ -194,7 +194,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Set block.
          *
-         * @param Block|null $block
          *
          * @return BlockPosition
          */
@@ -218,7 +217,6 @@ if (!class_exists('\Eccube\Entity\BlockPosition')) {
         /**
          * Set layout.
          *
-         * @param Layout|null $Layout
          *
          * @return BlockPosition
          */

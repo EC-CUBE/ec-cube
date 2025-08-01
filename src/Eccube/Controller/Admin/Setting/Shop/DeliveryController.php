@@ -74,11 +74,6 @@ class DeliveryController extends AbstractController
 
     /**
      * DeliveryController constructor.
-     *
-     * @param PaymentOptionRepository $paymentOptionRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
-     * @param PrefRepository $prefRepository
-     * @param DeliveryRepository $deliveryRepository
      */
     public function __construct(PaymentOptionRepository $paymentOptionRepository, DeliveryFeeRepository $deliveryFeeRepository, PrefRepository $prefRepository, DeliveryRepository $deliveryRepository, DeliveryTimeRepository $deliveryTimeRepository, SaleTypeRepository $saleTypeRepository)
     {
@@ -301,7 +296,7 @@ class DeliveryController extends AbstractController
         try {
             $this->entityManager->remove($Delivery);
             $this->entityManager->flush();
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             $this->addError(trans('admin.common.delete_error_foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_delivery');
@@ -398,37 +393,27 @@ class DeliveryController extends AbstractController
     private function getMergeRules(array $PaymentsData)
     {
         // 手数料抜きの利用条件の一覧を作成
-        $rules = array_map(function (Payment $Payment) {
-            return [
-                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0,
-                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX,
-            ];
-        }, $PaymentsData);
+        $rules = array_map(fn(Payment $Payment) => [
+            'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0,
+            'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX,
+        ], $PaymentsData);
 
         $mergeRules = [];
 
         foreach ($rules as $rule) {
             // かぶる条件があれば抽出
-            $targetRules = array_filter($mergeRules, function ($mergeRule) use ($rule) {
-                return $rule['min'] <= $mergeRule['max'] && $mergeRule['min'] <= $rule['max'];
-            });
+            $targetRules = array_filter($mergeRules, fn($mergeRule) => $rule['min'] <= $mergeRule['max'] && $mergeRule['min'] <= $rule['max']);
 
             if (count($targetRules) === 0) {
                 $mergeRules[] = $rule;
             } else {
                 // 被らない条件を抽出
-                $mergeRules = array_filter($mergeRules, function ($mergeRule) use ($rule) {
-                    return $rule['min'] > $mergeRule['max'] || $mergeRule['min'] > $rule['max'];
-                });
+                $mergeRules = array_filter($mergeRules, fn($mergeRule) => $rule['min'] > $mergeRule['max'] || $mergeRule['min'] > $rule['max']);
 
                 $targetRules[] = $rule;
-                $min = min(array_map(function ($rule) {
-                    return $rule['min'];
-                }, $targetRules));
+                $min = min(array_map(fn($rule) => $rule['min'], $targetRules));
 
-                $max = max(array_map(function ($rule) {
-                    return $rule['max'];
-                }, $targetRules));
+                $max = max(array_map(fn($rule) => $rule['max'], $targetRules));
 
                 $mergeRules[] = ['min' => $min, 'max' => $max];
             }

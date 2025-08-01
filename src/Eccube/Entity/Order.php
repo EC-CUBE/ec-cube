@@ -22,7 +22,7 @@ use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Service\TaxRuleService;
 
-if (!class_exists('\Eccube\Entity\Order')) {
+if (!class_exists(\Eccube\Entity\Order::class)) {
     /**
      * Order
      *
@@ -171,9 +171,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         {
             $items = (new ItemCollection($this->getTaxableItems()))->sort()->toArray();
 
-            return array_filter($items, function (OrderItem $Item) {
-                return $Item->isDiscount();
-            });
+            return array_filter($items, fn(OrderItem $Item) => $Item->isDiscount());
         }
 
         /**
@@ -183,9 +181,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxableDiscount()
         {
-            return array_reduce($this->getTaxableDiscountItems(), function ($sum, OrderItem $Item) {
-                return $sum += $Item->getTotalPrice();
-            }, 0);
+            return array_reduce($this->getTaxableDiscountItems(), fn($sum, OrderItem $Item) => $sum += $Item->getTotalPrice(), 0);
         }
 
         /**
@@ -197,9 +193,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
         {
             $items = (new ItemCollection($this->getOrderItems()))->sort()->toArray();
 
-            return array_filter($items, function (OrderItem $Item) {
-                return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
-            });
+            return array_filter($items, fn(OrderItem $Item) => $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION));
         }
 
         /**
@@ -209,9 +203,7 @@ if (!class_exists('\Eccube\Entity\Order')) {
          */
         public function getTaxFreeDiscount()
         {
-            return array_reduce($this->getTaxFreeDiscountItems(), function ($sum, OrderItem $Item) {
-                return $sum += $Item->getTotalPrice();
-            }, 0);
+            return array_reduce($this->getTaxFreeDiscountItems(), fn($sum, OrderItem $Item) => $sum += $Item->getTotalPrice(), 0);
         }
 
         /**
@@ -1530,7 +1522,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Add orderItem.
          *
-         * @param OrderItem $OrderItem
          *
          * @return Order
          */
@@ -1544,7 +1535,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Remove orderItem.
          *
-         * @param OrderItem $OrderItem
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1576,7 +1566,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Add shipping.
          *
-         * @param Shipping $Shipping
          *
          * @return Order
          */
@@ -1590,7 +1579,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Remove shipping.
          *
-         * @param Shipping $Shipping
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1615,7 +1603,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Add mailHistory.
          *
-         * @param MailHistory $mailHistory
          *
          * @return Order
          */
@@ -1629,7 +1616,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Remove mailHistory.
          *
-         * @param MailHistory $mailHistory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1651,7 +1637,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set customer.
          *
-         * @param Customer|null $customer
          *
          * @return Order
          */
@@ -1675,7 +1660,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
          *
          * @return Order
          */
@@ -1699,7 +1683,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
          *
          * @return Order
          */
@@ -1723,7 +1706,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set sex.
          *
-         * @param Master\Sex|null $sex
          *
          * @return Order
          */
@@ -1747,7 +1729,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set job.
          *
-         * @param Master\Job|null $job
          *
          * @return Order
          */
@@ -1771,7 +1752,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set payment.
          *
-         * @param Payment|null $payment
          *
          * @return Order
          */
@@ -1795,7 +1775,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set deviceType.
          *
-         * @param Master\DeviceType|null $deviceType
          *
          * @return Order
          */
@@ -1819,7 +1798,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set customerOrderStatus.
          *
-         * @param Master\CustomerOrderStatus|null $customerOrderStatus
          *
          * @return Order
          */
@@ -1843,7 +1821,6 @@ if (!class_exists('\Eccube\Entity\Order')) {
         /**
          * Set orderStatusColor.
          *
-         * @param Master\OrderStatusColor|null $orderStatusColor
          *
          * @return Order
          */

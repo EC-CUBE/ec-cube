@@ -235,7 +235,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             if (!$conn->executeQuery('select 1')) {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
 

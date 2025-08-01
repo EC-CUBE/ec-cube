@@ -21,10 +21,6 @@ use Eccube\Entity\ItemHolderInterface;
  */
 class PurchaseContext extends \SplObjectStorage
 {
-    private $user;
-
-    private $originHolder;
-
     private $flowType;
 
     public const ORDER_FLOW = 'order';
@@ -33,10 +29,8 @@ class PurchaseContext extends \SplObjectStorage
 
     public const CART_FLOW = 'cart';
 
-    public function __construct(?ItemHolderInterface $originHolder = null, ?Customer $user = null)
+    public function __construct(private readonly ?ItemHolderInterface $originHolder = null, private readonly ?Customer $user = null)
     {
-        $this->originHolder = $originHolder;
-        $this->user = $user;
     }
 
     /**

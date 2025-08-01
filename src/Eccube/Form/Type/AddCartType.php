@@ -193,7 +193,6 @@ class AddCartType extends AbstractType
      * validate
      *
      * @param type $data
-     * @param ExecutionContext $context
      */
     public function validate($data, ExecutionContext $context)
     {

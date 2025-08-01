@@ -35,9 +35,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -55,9 +53,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -74,9 +70,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -93,9 +87,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -112,9 +104,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -123,8 +113,6 @@ class TaxRuleTest extends EccubeTestCase
     /**
      * @param string $taxRate
      * @param int $sortNo
-     * @param \DateTime|null $applyDate
-     * @param ProductClass|null $ProductClass
      * @param Product|null $Product;
      *
      * @return TaxRule

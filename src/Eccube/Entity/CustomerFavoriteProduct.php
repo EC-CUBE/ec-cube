@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
+if (!class_exists(\Eccube\Entity\CustomerFavoriteProduct::class)) {
     /**
      * CustomerFavoriteProduct
      *
@@ -141,7 +141,6 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Set customer.
          *
-         * @param Customer|null $customer
          *
          * @return CustomerFavoriteProduct
          */
@@ -165,7 +164,6 @@ if (!class_exists('\Eccube\Entity\CustomerFavoriteProduct')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return CustomerFavoriteProduct
          */

@@ -144,7 +144,7 @@ class InstallerCommand extends Command
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
         // DATABASE_CHARSET
-        $this->envFileUpdater->databaseCharset = \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
+        $this->envFileUpdater->databaseCharset = \str_starts_with((string) $databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
 
         // MAILER_DSN
         $mailerDsn = $this->eccubeConfig->get('eccube_mailer_dsn');
@@ -265,13 +265,13 @@ class InstallerCommand extends Command
 
     protected function getDatabaseName($databaseUrl)
     {
-        if (0 === strpos($databaseUrl, 'sqlite')) {
+        if (str_starts_with((string) $databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (0 === strpos($databaseUrl, 'postgres') || 0 === strpos($databaseUrl, 'pgsql')) {
+        if (str_starts_with((string) $databaseUrl, 'postgres') || str_starts_with((string) $databaseUrl, 'pgsql')) {
             return 'postgres';
         }
-        if (0 === strpos($databaseUrl, 'mysql')) {
+        if (str_starts_with((string) $databaseUrl, 'mysql')) {
             return 'mysql';
         }
 
@@ -284,26 +284,20 @@ class InstallerCommand extends Command
             $conn = DriverManager::getConnection([
                 'url' => $databaseUrl,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }
         $platform = $conn->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
-        }
+        $sql = match ($platform) {
+            'sqlite' => 'SELECT sqlite_version() AS server_version',
+            'mysql' => 'SELECT version() AS server_version',
+            default => 'SHOW server_version',
+        };
         $stmt = $conn->executeQuery($sql);
         $version = $stmt->fetchOne();
 
         if ($platform === 'postgresql') {
-            preg_match('/\A([\d+\.]+)/', $version, $matches);
+            preg_match('/\A([\d+\.]+)/', (string) $version, $matches);
             $version = $matches[1];
         }
 

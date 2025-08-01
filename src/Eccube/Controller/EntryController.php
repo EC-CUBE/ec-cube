@@ -84,14 +84,7 @@ class EntryController extends AbstractController
     /**
      * EntryController constructor.
      *
-     * @param CartService $cartService
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param MailService $mailService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param CustomerRepository $customerRepository
      * @param PasswordHasher $passwordHasher
-     * @param ValidatorInterface $validatorInterface
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         CartService $cartService,
@@ -275,9 +268,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録処理を行う
      *
-     * @param Request $request
      * @param $secret_key
-     *
      * @return \Eccube\Entity\Cart|mixed
      */
     private function entryActivate(Request $request, $secret_key)

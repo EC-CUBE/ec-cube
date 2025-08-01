@@ -56,7 +56,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * @param int $orderId
-     * @param OrderStatus $Status
      */
     public function changeStatus($orderId, OrderStatus $Status)
     {
@@ -151,7 +150,7 @@ class OrderRepository extends AbstractRepository
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $multi = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            $multi = preg_match('/^\d{0,10}$/', (string) $clean_key_multi) ? $clean_key_multi : null;
             if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
                 $multi = null;
             }
@@ -410,8 +409,6 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param  Customer $Customer
-     *
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(Customer $Customer)
@@ -448,9 +445,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
-     *
-     * @param Customer $Customer
-     * @param array $OrderStatuses
      */
     public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
     {
@@ -464,7 +458,7 @@ class OrderRepository extends AbstractRepository
                 ->groupBy('o.Customer')
                 ->getQuery()
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 受注データが存在しなければ初期化
             $Customer->setFirstBuyDate(null);
             $Customer->setLastBuyDate(null);

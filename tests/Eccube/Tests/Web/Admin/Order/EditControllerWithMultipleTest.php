@@ -29,7 +29,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(static::class.' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
@@ -458,9 +458,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * createFormData() との違いは、 $Shipping[N]['OrderItems'] がフォームに追加されている.
      * OrderItems は、 $Shippings[N]['OrderItems] から生成される.
      *
-     * @param Customer $Customer
      * @param array $Shippings お届け先情報の配列
-     *
      * @return array
      */
     public function createFormDataForMultiple(Customer $Customer, array $Shippings)

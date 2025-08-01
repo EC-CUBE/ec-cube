@@ -30,8 +30,6 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
 
     /**
      * PaymentTotalLimitValidator constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

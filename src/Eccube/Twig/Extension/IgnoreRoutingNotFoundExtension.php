@@ -27,12 +27,8 @@ use Twig\TwigFunction;
  */
 class IgnoreRoutingNotFoundExtension extends AbstractExtension
 {
-    /** @var UrlGeneratorInterface */
-    private $generator;
-
-    public function __construct(UrlGeneratorInterface $generator)
+    public function __construct(private readonly UrlGeneratorInterface $generator)
     {
-        $this->generator = $generator;
     }
 
     /**
@@ -41,8 +37,8 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('url', [$this, 'getUrl'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
-            new TwigFunction('path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
+            new TwigFunction('url', $this->getUrl(...), ['is_safe_callback' => $this->isUrlGenerationSafe(...)]),
+            new TwigFunction('path', $this->getPath(...), ['is_safe_callback' => $this->isUrlGenerationSafe(...)]),
         ];
     }
 

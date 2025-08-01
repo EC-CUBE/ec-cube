@@ -78,30 +78,17 @@ class ShoppingController extends AbstractShoppingController
      */
     protected $baseInfoRepository;
 
-    /**
-     * @var TradeLawRepository
-     */
-    protected TradeLawRepository $tradeLawRepository;
-
-    protected RateLimiterFactory $shoppingConfirmIpLimiter;
-
-    protected RateLimiterFactory $shoppingConfirmCustomerLimiter;
-
-    protected RateLimiterFactory $shoppingCheckoutIpLimiter;
-
-    protected RateLimiterFactory $shoppingCheckoutCustomerLimiter;
-
     public function __construct(
         CartService $cartService,
         MailService $mailService,
         OrderRepository $orderRepository,
         OrderHelper $orderHelper,
         ContainerInterface $serviceContainer,
-        TradeLawRepository $tradeLawRepository,
-        RateLimiterFactory $shoppingConfirmIpLimiter,
-        RateLimiterFactory $shoppingConfirmCustomerLimiter,
-        RateLimiterFactory $shoppingCheckoutIpLimiter,
-        RateLimiterFactory $shoppingCheckoutCustomerLimiter,
+        protected TradeLawRepository $tradeLawRepository,
+        protected RateLimiterFactory $shoppingConfirmIpLimiter,
+        protected RateLimiterFactory $shoppingConfirmCustomerLimiter,
+        protected RateLimiterFactory $shoppingCheckoutIpLimiter,
+        protected RateLimiterFactory $shoppingCheckoutCustomerLimiter,
         BaseInfoRepository $baseInfoRepository,
     ) {
         $this->cartService = $cartService;
@@ -109,11 +96,6 @@ class ShoppingController extends AbstractShoppingController
         $this->orderRepository = $orderRepository;
         $this->orderHelper = $orderHelper;
         $this->serviceContainer = $serviceContainer;
-        $this->tradeLawRepository = $tradeLawRepository;
-        $this->shoppingConfirmIpLimiter = $shoppingConfirmIpLimiter;
-        $this->shoppingConfirmCustomerLimiter = $shoppingConfirmCustomerLimiter;
-        $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
-        $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
         $this->baseInfoRepository = $baseInfoRepository;
     }
 
@@ -151,7 +133,7 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注の初期化.
         log_info('[注文手続] 受注の初期化処理を開始します.');
-        $Customer = $this->getUser() ? $this->getUser() : $this->orderHelper->getNonMember();
+        $Customer = $this->getUser() ?: $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
 
         // 集計処理.
@@ -256,9 +238,7 @@ class ShoppingController extends AbstractShoppingController
                 $redirectTo = preg_replace($pattern, '', $redirectTo);
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
-                $params = array_filter($result, function ($key) {
-                    return 0 !== \strpos($key, '_');
-                }, ARRAY_FILTER_USE_KEY);
+                $params = array_filter($result, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
                 log_info('[リダイレクト] リダイレクトを実行します.', [$result['_route'], $params]);
 
@@ -381,7 +361,7 @@ class ShoppingController extends AbstractShoppingController
         log_info('[注文確認] フォームエラーのため, 注文手続画面を表示します.', [$Order->getId()]);
 
         $template = new Template([
-            'owner' => [$this, 'confirm'],
+            'owner' => $this->confirm(...),
             'template' => 'Shopping/index.twig',
         ]);
         $request->attributes->set('_template', $template);
@@ -831,8 +811,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * PaymentMethodをコンテナから取得する.
      *
-     * @param Order $Order
-     * @param FormInterface $form
      *
      * @return PaymentMethodInterface
      */
@@ -848,7 +826,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * PaymentMethod::applyを実行する.
      *
-     * @param PaymentMethodInterface $paymentMethod
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -888,7 +865,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * PaymentMethod::checkoutを実行する.
      *
-     * @param PaymentMethodInterface $paymentMethod
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
      */

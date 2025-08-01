@@ -48,10 +48,6 @@ class ShippingType extends AbstractType
 
     /**
      * ShippingType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param DeliveryRepository $deliveryRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
      */
     public function __construct(EccubeConfig $eccubeConfig, DeliveryRepository $deliveryRepository, DeliveryFeeRepository $deliveryFeeRepository)
     {
@@ -104,7 +100,7 @@ class ShippingType extends AbstractType
                     [
                         'required' => false,
                         'label' => 'shipping.label.delivery_hour',
-                        'class' => 'Eccube\Entity\Delivery',
+                        'class' => \Eccube\Entity\Delivery::class,
                         'choice_label' => 'name',
                         'choices' => $Deliveries,
                         'placeholder' => false,
@@ -208,9 +204,7 @@ class ShippingType extends AbstractType
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
-                    $DeliveryTimes = $DeliveryTimes->filter(function (DeliveryTime $DeliveryTime) {
-                        return $DeliveryTime->isVisible();
-                    });
+                    $DeliveryTimes = $DeliveryTimes->filter(fn(DeliveryTime $DeliveryTime) => $DeliveryTime->isVisible());
 
                     foreach ($DeliveryTimes as $deliveryTime) {
                         if ($deliveryTime->getId() == $Shipping->getTimeId()) {
@@ -226,7 +220,7 @@ class ShippingType extends AbstractType
                     EntityType::class,
                     [
                         'label' => 'front.shopping.delivery_time',
-                        'class' => 'Eccube\Entity\DeliveryTime',
+                        'class' => \Eccube\Entity\DeliveryTime::class,
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
                         'required' => false,
@@ -273,7 +267,7 @@ class ShippingType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Eccube\Entity\Shipping',
+                'data_class' => \Eccube\Entity\Shipping::class,
             ]
         );
     }

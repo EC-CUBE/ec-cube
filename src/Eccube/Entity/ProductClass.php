@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\ProductClass')) {
+if (!class_exists(\Eccube\Entity\ProductClass::class)) {
     /**
      * ProductClass
      *
@@ -628,7 +628,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set productStock.
          *
-         * @param ProductStock|null $productStock
          *
          * @return ProductClass
          */
@@ -652,7 +651,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set taxRule.
          *
-         * @param TaxRule|null $taxRule
          *
          * @return ProductClass
          */
@@ -676,7 +674,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return ProductClass
          */
@@ -700,7 +697,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set saleType.
          *
-         * @param Master\SaleType|null $saleType
          *
          * @return ProductClass
          */
@@ -724,7 +720,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set classCategory1.
          *
-         * @param ClassCategory|null $classCategory1
          *
          * @return ProductClass
          */
@@ -748,7 +743,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set classCategory2.
          *
-         * @param ClassCategory|null $classCategory2
          *
          * @return ProductClass
          */
@@ -772,7 +766,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set deliveryDuration.
          *
-         * @param DeliveryDuration|null $deliveryDuration
          *
          * @return ProductClass
          */
@@ -796,7 +789,6 @@ if (!class_exists('\Eccube\Entity\ProductClass')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return ProductClass
          */

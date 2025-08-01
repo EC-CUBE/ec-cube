@@ -148,7 +148,6 @@ class PaymentDispatcher
      *
      * 外部のサイトへリダイレクトする等, 特殊な用途に使用してください.
      *
-     * @param Response $response
      *
      * @return PaymentResult
      */

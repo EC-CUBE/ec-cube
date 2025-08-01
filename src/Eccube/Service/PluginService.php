@@ -93,34 +93,7 @@ class PluginService
     protected $cacheUtil;
 
     /**
-     * @var PluginApiService
-     */
-    private $pluginApiService;
-
-    /**
-     * @var SystemService
-     */
-    private $systemService;
-
-    /**
-     * @var PluginContext
-     */
-    private $pluginContext;
-
-    /**
      * PluginService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PluginRepository $pluginRepository
-     * @param EntityProxyService $entityProxyService
-     * @param SchemaService $schemaService
-     * @param EccubeConfig $eccubeConfig
-     * @param ContainerInterface $container
-     * @param CacheUtil $cacheUtil
-     * @param ComposerServiceInterface $composerService
-     * @param PluginApiService $pluginApiService
-     * @param SystemService $systemService
-     * @param PluginContext $pluginContext
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -131,9 +104,8 @@ class PluginService
         ContainerInterface $container,
         CacheUtil $cacheUtil,
         ComposerServiceInterface $composerService,
-        PluginApiService $pluginApiService,
-        SystemService $systemService,
-        PluginContext $pluginContext,
+        private readonly PluginApiService $pluginApiService,
+        private readonly PluginContext $pluginContext,
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -145,9 +117,6 @@ class PluginService
         $this->container = $container;
         $this->cacheUtil = $cacheUtil;
         $this->composerService = $composerService;
-        $this->pluginApiService = $pluginApiService;
-        $this->systemService = $systemService;
-        $this->pluginContext = $pluginContext;
     }
 
     /**
@@ -236,7 +205,7 @@ class PluginService
             });
 
             if (!empty($notInstalledOrDisabled)) {
-                $names = array_map(function ($p) { return $p['name']; }, $notInstalledOrDisabled);
+                $names = array_map(fn($p) => $p['name'], $notInstalledOrDisabled);
                 throw new PluginException(implode(', ', $names).'を有効化してください。');
             }
         }
@@ -334,9 +303,9 @@ class PluginService
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
-            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ?: $this->projectRoot.'/app/proxy/entity');
 
-            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ?: $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
@@ -418,14 +387,13 @@ class PluginService
                 $phar = new \PharData($archive);
                 $phar->extractTo($dir, null, true);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new PluginException(trans('pluginservice.text.error.upload_failure'));
         }
     }
 
     /**
      * @param $dir
-     * @param array $config_cache
      *
      * @throws PluginException
      */
@@ -486,15 +454,15 @@ class PluginService
 
         return [
             'code' => $json['extra']['code'],
-            'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
+            'name' => $json['description'] ?? $json['extra']['code'],
             'version' => $json['version'],
-            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : 0,
+            'source' => $json['extra']['id'] ?? 0,
         ];
     }
 
     public function checkSymbolName($string)
     {
-        return strlen($string) < 256 && preg_match('/^\w+$/', $string);
+        return strlen((string) $string) < 256 && preg_match('/^\w+$/', (string) $string);
         // plugin_nameやplugin_codeに使える文字のチェック
         // a-z A-Z 0-9 _
         // ディレクトリ名などに使われれるので厳しめ
@@ -582,11 +550,9 @@ class PluginService
     }
 
     /**
-     * @param Plugin $plugin
      * @param bool $force
      *
      * @return bool
-     *
      * @throws \Exception
      */
     public function uninstall(Plugin $plugin, $force = true)
@@ -612,8 +578,8 @@ class PluginService
             // プラグインのネームスペースに含まれるEntityのテーブルを削除する
             $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
             $this->schemaService->dropTable($namespace);
-        } catch (PersistenceMappingException $e) {
-        } catch (ORMMappingException $e) {
+        } catch (PersistenceMappingException) {
+        } catch (ORMMappingException) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
         }
 
@@ -656,7 +622,7 @@ class PluginService
         @mkdir($outputDir);
 
         $enabledPluginCodes = array_map(
-            function ($p) { return $p->getCode(); },
+            fn($p) => $p->getCode(),
             $temporary ? $this->pluginRepository->findAll() : $this->pluginRepository->findAllEnabled()
         );
 
@@ -671,9 +637,7 @@ class PluginService
             }
         }
 
-        $enabledPluginEntityDirs = array_map(function ($code) {
-            return $this->projectRoot."/app/Plugin/{$code}/Entity";
-        }, $enabledPluginCodes);
+        $enabledPluginEntityDirs = array_map(fn($code) => $this->projectRoot."/app/Plugin/{$code}/Entity", $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
             array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
@@ -717,7 +681,6 @@ class PluginService
     /**
      * Update plugin
      *
-     * @param Plugin $plugin
      * @param string $path
      *
      * @return bool
@@ -762,9 +725,7 @@ class PluginService
     /**
      * Update plugin
      *
-     * @param Plugin $plugin
      * @param array  $meta     Config data
-     *
      * @throws \Exception
      */
     public function updatePlugin(Plugin $plugin, $meta)
@@ -814,7 +775,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.strtolower((string) $pluginCode), $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -901,19 +862,11 @@ class PluginService
         $dependents = [];
         if (isset($json['require'])) {
             $require = $json['require'];
-            switch ($libraryType) {
-                case self::ECCUBE_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
-                    break;
-
-                case self::OTHER_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
-                    break;
-
-                default:
-                    $dependents = $json['require'];
-                    break;
-            }
+            $dependents = match ($libraryType) {
+                self::ECCUBE_LIBRARY => array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require)))),
+                self::OTHER_LIBRARY => array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT))),
+                default => $json['require'],
+            };
         }
 
         return $dependents;
@@ -932,9 +885,7 @@ class PluginService
     {
         $result = array_keys($packages);
         if ($getVersion) {
-            $result = array_map(function ($package, $version) {
-                return $package.':'.$version;
-            }, array_keys($packages), array_values($packages));
+            $result = array_map(fn($package, $version) => $package.':'.$version, array_keys($packages), array_values($packages));
         }
 
         return implode(' ', $result);
@@ -985,7 +936,7 @@ class PluginService
      */
     public function checkPluginExist($plugins, $pluginCode)
     {
-        if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
+        if (str_contains($pluginCode, self::VENDOR_NAME.'/')) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array

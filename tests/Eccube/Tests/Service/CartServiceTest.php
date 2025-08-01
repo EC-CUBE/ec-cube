@@ -130,9 +130,7 @@ class CartServiceTest extends AbstractServiceTestCase
     {
         $this->cartService->addProduct(1);
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            return $q + $item->getQuantity();
-        });
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn($q, $item) => $q + $item->getQuantity());
         $this->assertEquals(1, $quantity);
     }
 
@@ -140,9 +138,7 @@ class CartServiceTest extends AbstractServiceTestCase
     {
         $this->cartService->addProduct(10, 6);
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            return $q + $item->getQuantity();
-        });
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn($q, $item) => $q + $item->getQuantity());
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
         $this->assertEquals(6, $quantity);
     }
@@ -160,9 +156,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            return $q + $item->getQuantity();
-        });
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn($q, $item) => $q + $item->getQuantity());
         $this->assertEquals(5, $quantity);
     }
 
@@ -212,9 +206,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            return $q + $item->getQuantity();
-        });
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn($q, $item) => $q + $item->getQuantity());
         $this->assertEquals(2, $quantity);
     }
 
@@ -230,9 +222,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            return $q + $item->getQuantity();
-        });
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn($q, $item) => $q + $item->getQuantity());
         $this->assertEquals(1, $quantity);
     }
 

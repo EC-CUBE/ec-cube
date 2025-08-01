@@ -238,7 +238,7 @@ class CategoryRepositoryTest extends EccubeTestCase
             // 紐付いた商品が存在している場合は削除できない.
             $this->categoryRepository->delete($Category);
             $this->fail();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addToAssertionCount(1);
         }
     }

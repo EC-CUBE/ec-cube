@@ -68,10 +68,6 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderStateMachine $orderStateMachine
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -206,17 +202,13 @@ class OrderType extends AbstractType
             ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => Payment::class,
-                'choice_label' => function (Payment $Payment) {
-                    return $Payment->isVisible()
-                        ? $Payment->getMethod()
-                        : $Payment->getMethod().trans('admin.common.hidden_label');
-                },
+                'choice_label' => fn(Payment $Payment) => $Payment->isVisible()
+                    ? $Payment->getMethod()
+                    : $Payment->getMethod().trans('admin.common.hidden_label'),
                 'placeholder' => false,
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('p')
-                        ->orderBy('p.visible', 'DESC')  // 非表示は下に配置
-                        ->addOrderBy('p.sort_no', 'ASC');
-                },
+                'query_builder' => fn($er) => $er->createQueryBuilder('p')
+                    ->orderBy('p.visible', 'DESC')  // 非表示は下に配置
+                    ->addOrderBy('p.sort_no', 'ASC'),
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -238,16 +230,16 @@ class OrderType extends AbstractType
             ->add($builder->create('Customer', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
-                    '\Eccube\Entity\Customer'
+                    \Eccube\Entity\Customer::class
                 )));
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addOrderStatusForm']);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addShippingForm']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'copyFields']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderStatus']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'associateOrderAndShipping']);
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->sortOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addOrderStatusForm(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addShippingForm(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->copyFields(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOrderStatus(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->associateOrderAndShipping(...));
     }
 
     /**
@@ -270,8 +262,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注明細をソートする.
-     *
-     * @param FormEvent $event
      */
     public function sortOrderItems(FormEvent $event)
     {
@@ -291,8 +281,6 @@ class OrderType extends AbstractType
      * 新規登録の際は, ユーザ編集不可のため追加しない.
      *
      * ステータスのプルダウンは, ステートマシンで遷移可能なステータスのみ表示する.
-     *
-     * @param FormEvent $event
      */
     public function addOrderStatusForm(FormEvent $event)
     {
@@ -334,8 +322,6 @@ class OrderType extends AbstractType
     /**
      * 単一配送時に, Shippingのフォームを追加する.
      * 複数配送時はShippingの編集は行わない.
-     *
-     * @param FormEvent $event
      */
     public function addShippingForm(FormEvent $event)
     {
@@ -361,8 +347,6 @@ class OrderType extends AbstractType
      * - 支払方法の名称
      * - 会員の性別/職業/誕生日
      * - 受注ステータス(新規登録時)
-     *
-     * @param FormEvent $event
      */
     public function copyFields(FormEvent $event)
     {
@@ -397,8 +381,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注ステータスのバリデーションを行う.
-     *
-     * @param FormEvent $event
      */
     public function validateOrderStatus(FormEvent $event)
     {
@@ -432,8 +414,6 @@ class OrderType extends AbstractType
     /**
      * 受注明細のバリデーションを行う.
      * 商品明細が1件も登録されていない場合はエラーとする.
-     *
-     * @param FormEvent $event
      */
     public function validateOrderItems(FormEvent $event)
     {
@@ -457,8 +437,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注明細と, Order/Shippingの紐付けを行う.
-     *
-     * @param FormEvent $event
      */
     public function associateOrderAndShipping(FormEvent $event)
     {

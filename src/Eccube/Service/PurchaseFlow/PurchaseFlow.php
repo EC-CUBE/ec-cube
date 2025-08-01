@@ -18,7 +18,7 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
 
-class PurchaseFlow
+class PurchaseFlow implements \Stringable
 {
     /**
      * @var string
@@ -179,8 +179,6 @@ class PurchaseFlow
     /**
      * 購入フロー仮確定処理.
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
@@ -196,8 +194,6 @@ class PurchaseFlow
     /**
      * 購入フロー確定処理.
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
@@ -212,9 +208,6 @@ class PurchaseFlow
 
     /**
      * 購入フロー仮確定取り消し処理.
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      */
     public function rollback(ItemHolderInterface $target, PurchaseContext $context)
     {
@@ -260,9 +253,6 @@ class PurchaseFlow
         $this->discountProcessors[] = $discountProcessor;
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
         $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
@@ -294,9 +284,6 @@ class PurchaseFlow
         }
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateDeliveryFeeTotal(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -309,9 +296,6 @@ class PurchaseFlow
         $itemHolder->setDeliveryFeeTotal($total);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateDiscount(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -325,9 +309,6 @@ class PurchaseFlow
         $itemHolder->setDiscount($total * -1);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateCharge(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -340,15 +321,10 @@ class PurchaseFlow
         $itemHolder->setCharge($total);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
         if ($itemHolder instanceof Order) {
-            $total = array_reduce($itemHolder->getTaxByTaxRate(), function ($sum, $tax) {
-                return $sum + $tax;
-            }, 0);
+            $total = array_reduce($itemHolder->getTaxByTaxRate(), fn($sum, $tax) => $sum + $tax, 0);
         } else {
             $total = $itemHolder->getItems()
                 ->reduce(function ($sum, ItemInterface $item) {
@@ -360,9 +336,6 @@ class PurchaseFlow
         $itemHolder->setTax($total);
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     */
     protected function calculateAll(ItemHolderInterface $itemHolder)
     {
         $this->calculateDeliveryFeeTotal($itemHolder);
@@ -380,9 +353,7 @@ class PurchaseFlow
      */
     public function dump()
     {
-        $callback = function ($processor) {
-            return get_class($processor);
-        };
+        $callback = fn($processor) => $processor::class;
         $flows = [
             0 => $this->flowType.' flow',
             'ItemValidator' => $this->itemValidators->map($callback)->toArray(),
@@ -413,7 +384,7 @@ class PurchaseFlow
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->dump();
     }

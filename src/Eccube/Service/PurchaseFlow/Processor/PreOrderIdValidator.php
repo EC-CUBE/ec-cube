@@ -24,18 +24,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class PreOrderIdValidator implements PurchaseProcessor
 {
     /**
-     * @var CartService
-     */
-    private $cartService;
-
-    /**
      * PreOrderIdValidator constructor.
-     *
-     * @param CartService $cartService
      */
-    public function __construct(CartService $cartService)
+    public function __construct(private readonly CartService $cartService)
     {
-        $this->cartService = $cartService;
     }
 
     /**

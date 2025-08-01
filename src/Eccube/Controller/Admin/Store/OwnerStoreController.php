@@ -51,11 +51,6 @@ class OwnerStoreController extends AbstractController
     protected $pluginService;
 
     /**
-     * @var ValidatorInterface
-     */
-    protected ValidatorInterface $validator;
-
-    /**
      * @var ComposerServiceInterface
      */
     protected $composerService;
@@ -75,20 +70,9 @@ class OwnerStoreController extends AbstractController
     /** @var BaseInfo */
     private $BaseInfo;
 
-    /** @var CacheUtil */
-    private $cacheUtil;
-
     /**
      * OwnerStoreController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param ComposerServiceInterface $composerService
-     * @param SystemService $systemService
-     * @param PluginApiService $pluginApiService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param CacheUtil $cacheUtil
-     * @param ValidatorInterface $validatorInterface
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -100,16 +84,14 @@ class OwnerStoreController extends AbstractController
         SystemService $systemService,
         PluginApiService $pluginApiService,
         BaseInfoRepository $baseInfoRepository,
-        CacheUtil $cacheUtil,
-        ValidatorInterface $validatorInterface,
+        private readonly CacheUtil $cacheUtil,
+        protected ValidatorInterface $validator,
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->systemService = $systemService;
         $this->pluginApiService = $pluginApiService;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->cacheUtil = $cacheUtil;
-        $this->validator = $validatorInterface;
 
         // TODO: Check the flow of the composer service below
         $this->composerService = $composerService;
@@ -123,9 +105,7 @@ class OwnerStoreController extends AbstractController
      *
      * @Template("@admin/Store/plugin_search.twig")
      *
-     * @param Request     $request
      * @param int $page_no
-     * @param PaginatorInterface $paginator
      *
      * @return array
      */
@@ -230,10 +210,8 @@ class OwnerStoreController extends AbstractController
      *
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Request $request
      *
      * @return array
-     *
      * @throws \Eccube\Exception\PluginException
      */
     public function doConfirm(Request $request, $id)
@@ -260,7 +238,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -311,7 +288,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
      *
-     * @param Plugin $Plugin
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -361,7 +337,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -431,7 +406,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -482,7 +456,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -524,7 +497,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     * @param Plugin $Plugin
      *
      * @return array
      */

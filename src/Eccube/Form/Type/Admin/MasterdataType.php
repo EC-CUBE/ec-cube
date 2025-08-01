@@ -37,8 +37,6 @@ class MasterdataType extends AbstractType
 
     /**
      * MasterdataType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -70,7 +68,7 @@ class MasterdataType extends AbstractType
                         continue;
                     }
 
-                    if (strpos($meta->rootEntityName, 'Master') !== false
+                    if (str_contains($meta->rootEntityName, 'Master')
                         && $meta->hasField('id')
                         && $meta->hasField('name')
                         && $meta->hasField('sort_no')

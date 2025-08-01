@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\TradeLaw')) {
+if (!class_exists(\Eccube\Entity\TradeLaw::class)) {
     /**
      * TradeLaw
      *
@@ -29,7 +29,7 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TradeLawRepository")
      */
-    class TradeLaw extends AbstractEntity
+    class TradeLaw extends AbstractEntity implements \Stringable
     {
         /**
          * @var int
@@ -47,14 +47,14 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
          *
          * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
-        private ?string $name;
+        private ?string $name = null;
 
         /**
          * @var ?string
          *
          * @ORM\Column(name="description", type="string", length=4000, nullable=true)
          */
-        private ?string $description;
+        private ?string $description = null;
 
         /**
          * @var int
@@ -73,14 +73,12 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
-            return $this->getName();
+            return (string) $this->getName();
         }
 
         /**
-         * @param int $id
-         *
          * @return TradeLaw
          */
         public function setId(int $id): TradeLaw
@@ -139,8 +137,6 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         }
 
         /**
-         * @param int $sortNo
-         *
          * @return TradeLaw
          */
         public function setSortNo(int $sortNo): TradeLaw
@@ -159,8 +155,6 @@ if (!class_exists('\Eccube\Entity\TradeLaw')) {
         }
 
         /**
-         * @param bool $displayOrderScreen
-         *
          * @return TradeLaw
          */
         public function setDisplayOrderScreen(bool $displayOrderScreen): TradeLaw

@@ -41,8 +41,6 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
      *
      * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
      */
     public function testDateSearch(string $formName)
     {
@@ -58,8 +56,6 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
      *
      * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
      */
     public function testOutOfRangeSearch(string $formName)
     {
@@ -94,8 +90,6 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm:ss のフォーマットでの検索機能を追加
      *
      * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
      */
     public function testDateTimeSearch(string $formName)
     {

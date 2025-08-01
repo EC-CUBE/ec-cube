@@ -2527,8 +2527,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param Customer $Customer
-     * @param ProductClass $ProductClass
      * @param int $num
      *
      * @return mixed
@@ -2615,8 +2613,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param Customer $Customer
-     * @param ProductClass $ProductClass
      *
      * @return Crawler
      */
@@ -2631,9 +2627,7 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param Product $Product
      * @param int     $display
-     *
      * @return Product
      */
     protected function changeStatus(Product $Product, $display = ProductStatus::DISPLAY_SHOW)
@@ -2649,9 +2643,7 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param ProductClass $ProductClass
      * @param int          $stock
-     *
      * @return ProductClass
      */
     protected function changeStock(ProductClass $ProductClass, $stock = 0)
@@ -2707,7 +2699,6 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * エラーに表示する商品名を取得
      *
-     * @param ProductClass $ProductClass
      *
      * @return string
      */

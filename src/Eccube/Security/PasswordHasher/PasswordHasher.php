@@ -19,20 +19,13 @@ class PasswordHasher implements LegacyPasswordHasherInterface
 {
     public const AUTH_TYPE_PLAIN = 'PLAIN';
 
-    protected string $auth_magic;
-    protected string $auth_type;
-    protected string $password_hash_algos;
-
-    public function __construct(string $auth_magic, string $auth_type, string $password_hash_algos)
+    public function __construct(protected string $auth_magic, protected string $auth_type, protected string $password_hash_algos)
     {
-        $this->auth_magic = $auth_magic;
-        $this->auth_type = $auth_type;
-        $this->password_hash_algos = $password_hash_algos;
     }
 
     public function hash(string $plainPassword, ?string $salt = null): string
     {
-        $salt = $salt ?? '';
+        $salt ??= '';
         if ($salt === '') {
             $salt = $this->auth_magic;
         }

@@ -67,7 +67,7 @@ class Extract extends FunctionNode
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
 
-        $upperField = strtoupper($lexer->lookahead['value']);
+        $upperField = strtoupper((string) $lexer->lookahead['value']);
         if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !isset($this->formats[$upperField])) {
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
@@ -78,7 +78,7 @@ class Extract extends FunctionNode
 
         $next = $lexer->glimpse();
         if (isset($next['type']) && $next['type'] === Lexer::T_STRING) {
-            $upperType = strtoupper($lexer->lookahead['value']);
+            $upperType = strtoupper((string) $lexer->lookahead['value']);
             if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }
@@ -98,27 +98,22 @@ class Extract extends FunctionNode
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
-        switch ($driver) {
-            case 'sqlite':
-                $sql = sprintf(
-                    "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
-                    $this->formats[$this->field],
-                    $this->source->dispatch($sqlWalker));
-                break;
-            case 'postgresql':
-                $sql = sprintf(
-                    "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
-                    $this->field,
-                    (string) $this->type,
-                    $this->source->dispatch($sqlWalker));
-                break;
-            default:
-                $sql = sprintf(
-                    "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
-                    $this->field,
-                    (string) $this->type,
-                    $this->source->dispatch($sqlWalker));
-        }
+        $sql = match ($driver) {
+            'sqlite' => sprintf(
+                "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
+                $this->formats[$this->field],
+                $this->source->dispatch($sqlWalker)),
+            'postgresql' => sprintf(
+                "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
+                $this->field,
+                (string) $this->type,
+                $this->source->dispatch($sqlWalker)),
+            default => sprintf(
+                "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
+                $this->field,
+                (string) $this->type,
+                $this->source->dispatch($sqlWalker)),
+        };
 
         return $sql;
     }

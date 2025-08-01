@@ -26,13 +26,11 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Category',
+            'class' => \Eccube\Entity\Category::class,
             'choice_label' => 'NameWithLevel',
             // なぜかDESC
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('c')
-                    ->orderBy('c.sort_no', 'DESC');
-            },
+            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('c')
+                ->orderBy('c.sort_no', 'DESC'),
         ]);
     }
 

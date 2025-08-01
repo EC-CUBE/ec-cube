@@ -22,14 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BoomerangController extends AbstractController
 {
-    /**
-     * @var CartRepository
-     */
-    private $cartRepository;
-
-    public function __construct(CartRepository $cartRepository)
+    public function __construct(private readonly CartRepository $cartRepository)
     {
-        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -41,7 +35,7 @@ class BoomerangController extends AbstractController
     {
         /** @var Cart[] $list */
         $list = $this->cartRepository->findAll();
-        $ids = array_map(function (Cart $c) { return $c->getId(); }, $list);
+        $ids = array_map(fn(Cart $c) => $c->getId(), $list);
 
         return $this->json($ids);
     }

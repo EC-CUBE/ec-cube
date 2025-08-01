@@ -66,12 +66,6 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param PaymentRepository $paymentRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param Context $requestContext
      */
     public function __construct(
         OrderRepository $orderRepository,
@@ -183,7 +177,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Eccube\Entity\Order',
+                'data_class' => \Eccube\Entity\Order::class,
                 'skip_add_form' => false,
             ]
         );
@@ -220,7 +214,6 @@ class OrderType extends AbstractType
     /**
      * 出荷に紐づく配送方法を取得する.
      *
-     * @param Order $Order
      *
      * @return Delivery[]
      */
@@ -280,9 +273,7 @@ class OrderType extends AbstractType
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param ArrayCollection $Payments
      * @param $total
-     *
      * @return Payment[]
      */
     private function filterPayments(ArrayCollection $Payments, $total)
@@ -302,9 +293,7 @@ class OrderType extends AbstractType
 
             return true;
         })->toArray();
-        usort($PaymentArrays, function (Payment $a, Payment $b) {
-            return $a->getSortNo() < $b->getSortNo() ? 1 : -1;
-        });
+        usort($PaymentArrays, fn(Payment $a, Payment $b) => $a->getSortNo() < $b->getSortNo() ? 1 : -1);
 
         return $PaymentArrays;
     }

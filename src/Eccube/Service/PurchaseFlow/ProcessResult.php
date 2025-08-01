@@ -19,22 +19,15 @@ class ProcessResult
     public const WARNING = 'WARNING';
     public const SUCCESS = 'SUCCESS';
 
-    protected $type;
-
     protected $message;
-
-    protected $class;
 
     /**
      * @param string $type
-     * @param string|null $message
      * @param string|null $class 呼び出し元クラス
      */
-    private function __construct($type, ?string $message = null, $class = null)
+    private function __construct(protected $type, ?string $message = null, protected $class = null)
     {
-        $this->type = $type;
         $this->message = $message;
-        $this->class = $class;
     }
 
     /**

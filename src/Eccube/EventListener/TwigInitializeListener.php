@@ -80,31 +80,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     protected $requestContext;
 
     /**
-     * @var AuthorityRoleRepository
-     */
-    private $authorityRoleRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @var MobileDetect
-     */
-    private $mobileDetector;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
-     * @var LayoutRepository
-     */
-    private $layoutRepository;
-
-    /**
      * @var SystemService
      */
     protected $systemService;
@@ -119,12 +94,12 @@ class TwigInitializeListener implements EventSubscriberInterface
         PageLayoutRepository $pageLayoutRepository,
         BlockPositionRepository $blockPositionRepository,
         DeviceTypeRepository $deviceTypeRepository,
-        AuthorityRoleRepository $authorityRoleRepository,
-        EccubeConfig $eccubeConfig,
+        private readonly AuthorityRoleRepository $authorityRoleRepository,
+        private EccubeConfig $eccubeConfig,
         Context $context,
-        MobileDetect $mobileDetector,
-        UrlGeneratorInterface $router,
-        LayoutRepository $layoutRepository,
+        private readonly MobileDetect $mobileDetector,
+        private readonly UrlGeneratorInterface $router,
+        private readonly LayoutRepository $layoutRepository,
         SystemService $systemService,
     ) {
         $this->twig = $twig;
@@ -133,12 +108,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->pageLayoutRepository = $pageLayoutRepository;
         $this->blockPositionRepository = $blockPositionRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->authorityRoleRepository = $authorityRoleRepository;
-        $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $context;
-        $this->mobileDetector = $mobileDetector;
-        $this->router = $router;
-        $this->layoutRepository = $layoutRepository;
         $this->systemService = $systemService;
     }
 
@@ -174,7 +144,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
             $routeParams = $attributes->get('_route_params', []);
-            $route = isset($routeParams['route']) ? $routeParams['route'] : $attributes->get('route', '');
+            $route = $routeParams['route'] ?? $attributes->get('route', '');
         }
 
         $type = DeviceType::DEVICE_TYPE_PC;

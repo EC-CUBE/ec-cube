@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-if (!class_exists('\Eccube\Entity\Shipping')) {
+if (!class_exists(\Eccube\Entity\Shipping::class)) {
     /**
      * Shipping
      *
@@ -287,7 +287,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * CustomerAddress から個人情報を設定.
          *
-         * @param CustomerAddress $CustomerAddress
          *
          * @return Shipping
          */
@@ -751,7 +750,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Add orderItem.
          *
-         * @param OrderItem $OrderItem
          *
          * @return Shipping
          */
@@ -765,7 +763,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Remove orderItem.
          *
-         * @param OrderItem $OrderItem
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -799,7 +796,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
          *
          * @return Shipping
          */
@@ -823,7 +819,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
          *
          * @return Shipping
          */
@@ -847,7 +842,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set delivery.
          *
-         * @param Delivery|null $delivery
          *
          * @return Shipping
          */
@@ -881,7 +875,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Product class of shipment item (temp)
          *
-         * @param ProductClass $ProductClassOfTemp
          *
          * @return $this
          */
@@ -895,7 +888,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set order.
          *
-         * @param Order $Order
          *
          * @return $this
          */
@@ -1001,7 +993,6 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return Shipping
          */

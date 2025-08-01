@@ -27,20 +27,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class CsvImportController extends AbstractCsvImportController
 {
     /**
-     * @var ShippingRepository
-     */
-    private $shippingRepository;
-
-    /**
      * @var OrderStateMachine
      */
     protected $orderStateMachine;
 
     public function __construct(
-        ShippingRepository $shippingRepository,
+        private readonly ShippingRepository $shippingRepository,
         OrderStateMachine $orderStateMachine,
     ) {
-        $this->shippingRepository = $shippingRepository;
         $this->orderStateMachine = $orderStateMachine;
     }
 
@@ -104,11 +98,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         // 必須カラムの確認
-        $requiredColumns = array_map(function ($value) {
-            return $value['name'];
-        }, array_filter($columnConfig, function ($value) {
-            return $value['required'];
-        }));
+        $requiredColumns = array_map(fn($value) => $value['name'], array_filter($columnConfig, fn($value) => $value['required']));
         $csvColumns = $csv->getColumnHeaders();
         if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
             $errors[] = trans('admin.common.csv_invalid_format');
@@ -144,7 +134,7 @@ class CsvImportController extends AbstractCsvImportController
 
             if (isset($row[$columnNames['tracking_number']])) {
                 // 半角英数字ハイフン以外エラー
-                if (!preg_match('/^[0-9a-zA-Z-]*$/u', $row[$columnNames['tracking_number']])) {
+                if (!preg_match('/^[0-9a-zA-Z-]*$/u', (string) $row[$columnNames['tracking_number']])) {
                     $errors[] = trans('admin.common.csv_invalid_format_line_name', ['%line%' => $line + 1, '%name%' => $columnNames['tracking_number']]);
                     continue;
                 }

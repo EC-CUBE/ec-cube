@@ -35,9 +35,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
 
     public function setNewProxyFiles($newProxyFiles)
     {
-        $this->newProxyFiles = array_map(function ($file) {
-            return realpath($file);
-        }, $newProxyFiles);
+        $this->newProxyFiles = array_map(fn($file) => realpath($file), $newProxyFiles);
     }
 
     /**
@@ -78,7 +76,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
             foreach ($iterator as $file) {
                 $sourceFile = $file[0];
 
-                if (!preg_match('(^phar:)i', $sourceFile)) {
+                if (!preg_match('(^phar:)i', (string) $sourceFile)) {
                     $sourceFile = realpath($sourceFile);
                 }
 
@@ -86,7 +84,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     $exclude = str_replace('\\', '/', realpath($excludePath));
                     $current = str_replace('\\', '/', $sourceFile);
 
-                    if (strpos($current, $exclude) !== false) {
+                    if (str_contains($current, $exclude)) {
                         continue 2;
                     }
                 }
@@ -100,7 +98,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                 }
 
                 // Replace /path/to/ec-cube to proxies path
-                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename((string) $sourceFile);
                 if (file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
                 }

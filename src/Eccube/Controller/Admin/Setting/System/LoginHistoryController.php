@@ -95,7 +95,7 @@ class LoginHistoryController extends AbstractController
                     'searchForm' => $searchForm->createView(),
                     'pagination' => [],
                     'pageMaxis' => $pageMaxis,
-                    'page_no' => $pageNo ? $pageNo : 1,
+                    'page_no' => $pageNo ?: 1,
                     'page_count' => $pageCount,
                     'has_errors' => true,
                 ];

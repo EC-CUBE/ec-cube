@@ -43,7 +43,7 @@ class PluginRepositoryTest extends EccubeTestCase
 
         $Plugins = $this->pluginRepository->findAllEnabled();
         $this->assertCount(2, $Plugins);
-        $this->assertEmpty(array_filter($Plugins, function ($Plugin) { return $Plugin->isEnabled() === false; }));
+        $this->assertEmpty(array_filter($Plugins, fn($Plugin) => $Plugin->isEnabled() === false));
     }
 
     /**

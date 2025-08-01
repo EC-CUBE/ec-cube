@@ -33,10 +33,10 @@ class CartServiceExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('get_cart', [$this, 'get_cart'], ['is_safe' => ['all']]),
-            new TwigFunction('get_all_carts', [$this, 'get_all_carts'], ['is_safe' => ['all']]),
-            new TwigFunction('get_carts_total_price', [$this, 'get_carts_total_price'], ['is_safe' => ['all']]),
-            new TwigFunction('get_carts_total_quantity', [$this, 'get_carts_total_quantity'], ['is_safe' => ['all']]),
+            new TwigFunction('get_cart', $this->get_cart(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_all_carts', $this->get_all_carts(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_carts_total_price', $this->get_carts_total_price(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_carts_total_quantity', $this->get_carts_total_quantity(...), ['is_safe' => ['all']]),
         ];
     }
 

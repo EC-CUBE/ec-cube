@@ -54,7 +54,7 @@ class ShippingRepository extends AbstractRepository
         }
         // multi
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
+            $multi = preg_match('/^\d{0,10}$/', (string) $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('s.id = :multi OR s.name01 LIKE :likemulti OR s.name02 LIKE :likemulti OR '.
                             's.kana01 LIKE :likemulti OR s.kana02 LIKE :likemulti OR s.company_name LIKE :likemulti')
@@ -245,7 +245,7 @@ class ShippingRepository extends AbstractRepository
     public function findShippingsProduct($Order, $productClass)
     {
         $shippings = $this->createQueryBuilder('s')
-            ->innerJoin('Eccube\Entity\OrderItem', 'si', 'WITH', 'si.Shipping = s.id')
+            ->innerJoin(\Eccube\Entity\OrderItem::class, 'si', 'WITH', 'si.Shipping = s.id')
             ->where('si.Order = (:order)')
             ->andWhere('si.ProductClass = (:productClass)')
             ->setParameter('order', $Order)

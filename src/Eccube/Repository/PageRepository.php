@@ -86,7 +86,7 @@ class PageRepository extends AbstractRepository
                 ->getQuery()
                 ->useResultCache(true, $this->getCacheLifetime())
                 ->getSingleResult();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return $this->newPage();
         }
 

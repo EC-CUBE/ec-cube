@@ -62,10 +62,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * ProductClassEditType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ValidatorInterface $validator
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -160,8 +156,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の個別税率設定の制御.
-     *
-     * @param FormBuilderInterface $builder
      */
     protected function setTaxRate(FormBuilderInterface $builder)
     {
@@ -182,8 +176,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の登録チェックボックスの制御.
-     *
-     * @param FormBuilderInterface $builder
      */
     protected function setCheckbox(FormBuilderInterface $builder)
     {

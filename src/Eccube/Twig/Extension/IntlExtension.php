@@ -25,10 +25,10 @@ class IntlExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('date_day', [$this, 'date_day'], ['needs_environment' => true]),
-            new TwigFilter('date_min', [$this, 'date_min'], ['needs_environment' => true]),
-            new TwigFilter('date_sec', [$this, 'date_sec'], ['needs_environment' => true]),
-            new TwigFilter('date_day_with_weekday', [$this, 'date_day_with_weekday'], ['needs_environment' => true]),
+            new TwigFilter('date_day', $this->date_day(...), ['needs_environment' => true]),
+            new TwigFilter('date_min', $this->date_min(...), ['needs_environment' => true]),
+            new TwigFilter('date_sec', $this->date_sec(...), ['needs_environment' => true]),
+            new TwigFilter('date_day_with_weekday', $this->date_day_with_weekday(...), ['needs_environment' => true]),
         ];
     }
 
@@ -38,9 +38,7 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28のように、日までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
      * @param $date
-     *
      * @return bool|string
      */
     public function date_day(Environment $env, $date)
@@ -58,9 +56,7 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13のように、分までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
      * @param $date
-     *
      * @return bool|string
      */
     public function date_min(Environment $env, $date)
@@ -78,9 +74,7 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13:05(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
      * @param $date
-     *
      * @return bool|string
      */
     public function date_sec(Environment $env, $date)
@@ -93,9 +87,7 @@ class IntlExtension extends AbstractExtension
     }
 
     /**
-     * @param Environment $env
      * @param $date
-     *
      * @return bool|string
      */
     public function date_day_with_weekday(Environment $env, $date)

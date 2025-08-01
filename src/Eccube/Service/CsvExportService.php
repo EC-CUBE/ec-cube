@@ -115,17 +115,6 @@ class CsvExportService
 
     /**
      * CsvExportService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
-     * @param OrderRepository $orderRepository
-     * @param ShippingRepository $shippingRepository
-     * @param CustomerRepository $customerRepository
-     * @param ProductRepository $productRepository
-     * @param EccubeConfig $eccubeConfig
-     * @param FormFactoryInterface $formFactory
-     * @param PaginatorInterface $paginator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -159,49 +148,31 @@ class CsvExportService
         $this->eccubeConfig = $config;
     }
 
-    /**
-     * @param CsvRepository $csvRepository
-     */
     public function setCsvRepository(CsvRepository $csvRepository)
     {
         $this->csvRepository = $csvRepository;
     }
 
-    /**
-     * @param CsvTypeRepository $csvTypeRepository
-     */
     public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository)
     {
         $this->csvTypeRepository = $csvTypeRepository;
     }
 
-    /**
-     * @param OrderRepository $orderRepository
-     */
     public function setOrderRepository(OrderRepository $orderRepository)
     {
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @param CustomerRepository $customerRepository
-     */
     public function setCustomerRepository(CustomerRepository $customerRepository)
     {
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * @param ProductRepository $productRepository
-     */
     public function setProductRepository(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function setEntityManager(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -215,9 +186,6 @@ class CsvExportService
         return $this->entityManager;
     }
 
-    /**
-     * @param QueryBuilder $qb
-     */
     public function setExportQueryBuilder(QueryBuilder $qb)
     {
         $this->qb = $qb;
@@ -277,8 +245,6 @@ class CsvExportService
     /**
      * クエリビルダにもとづいてデータ行を出力する.
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
-     *
-     * @param \Closure $closure
      */
     public function exportData(\Closure $closure)
     {
@@ -310,9 +276,7 @@ class CsvExportService
     /**
      * CSV出力項目と比較し, 合致するデータを返す.
      *
-     * @param Csv $Csv
      * @param $entity
-     *
      * @return string|null
      */
     public function getData(Csv $Csv, $entity)
@@ -364,11 +328,9 @@ class CsvExportService
     {
         $config = $this->eccubeConfig;
 
-        return function ($value) use ($config) {
-            return mb_convert_encoding(
-                (string) $value, $config['eccube_csv_export_encoding'], 'UTF-8'
-            );
-        };
+        return fn($value) => mb_convert_encoding(
+            (string) $value, $config['eccube_csv_export_encoding'], 'UTF-8'
+        );
     }
 
     public function fopen()
@@ -401,7 +363,6 @@ class CsvExportService
     /**
      * 受注検索用のクエリビルダを返す.
      *
-     * @param Request $request
      *
      * @return QueryBuilder
      */
@@ -425,7 +386,6 @@ class CsvExportService
     /**
      * 会員検索用のクエリビルダを返す.
      *
-     * @param Request $request
      *
      * @return QueryBuilder
      */
@@ -449,7 +409,6 @@ class CsvExportService
     /**
      * 商品検索用のクエリビルダを返す.
      *
-     * @param Request $request
      *
      * @return QueryBuilder
      */

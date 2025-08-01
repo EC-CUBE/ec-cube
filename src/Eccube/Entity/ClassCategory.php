@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\ClassCategory')) {
+if (!class_exists(\Eccube\Entity\ClassCategory::class)) {
     /**
      * ClassCategory
      *
@@ -29,12 +29,12 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ClassCategoryRepository")
      */
-    class ClassCategory extends AbstractEntity
+    class ClassCategory extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -249,7 +249,6 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Set className.
          *
-         * @param ClassName|null $className
          *
          * @return ClassCategory
          */
@@ -273,7 +272,6 @@ if (!class_exists('\Eccube\Entity\ClassCategory')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return ClassCategory
          */

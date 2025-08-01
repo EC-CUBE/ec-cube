@@ -33,8 +33,6 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
 
     /**
      * DeliveryFeeProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {

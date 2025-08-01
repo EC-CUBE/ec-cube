@@ -188,7 +188,7 @@ class OrderPdfService extends Fpdi
         }
 
         // 出荷番号をStringからarrayに変換
-        $ids = explode(',', $formData['ids']);
+        $ids = explode(',', (string) $formData['ids']);
 
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
@@ -317,7 +317,7 @@ class OrderPdfService extends Fpdi
         $this->lfText(125, 72, $text, 8); // TEL・FAX
 
         // メールアドレス
-        if (strlen($this->baseInfoRepository->getEmail01()) > 0) {
+        if (strlen((string) $this->baseInfoRepository->getEmail01()) > 0) {
             $text = 'Email: '.$this->baseInfoRepository->getEmail01();
             $this->lfText(125, 75, $text, 8); // Email
         }
@@ -340,8 +340,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * メッセージを設定する.
-     *
-     * @param array $formData
      */
     protected function renderMessageData(array $formData)
     {
@@ -352,8 +350,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * PDFに備考を設定数.
-     *
-     * @param array $formData
      */
     protected function renderEtcData(array $formData)
     {
@@ -405,8 +401,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入者情報を設定する.
-     *
-     * @param Shipping $Shipping
      */
     protected function renderOrderData(Shipping $Shipping)
     {
@@ -480,8 +474,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入商品詳細情報を設定する.
-     *
-     * @param Shipping $Shipping
      */
     protected function renderOrderDetailData(Shipping $Shipping)
     {
@@ -621,9 +613,7 @@ class OrderPdfService extends Fpdi
         if (270 <= $this->GetY()) {
             $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
         }
-        $width = array_reduce($this->widthCell, function ($n, $w) {
-            return $n + $w;
-        });
+        $width = array_reduce($this->widthCell, fn($n, $w) => $n + $w);
         $this->SetX(20);
         $message = '';
         foreach ($Order->getTotalByTaxRate() as $rate => $total) {

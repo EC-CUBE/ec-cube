@@ -54,9 +54,7 @@ class InstallPluginController extends InstallController
      *
      * @Route("/install/plugins", name="install_plugins",  methods={"GET"})
      *
-     * @param Request $request
      * @param string $code
-     *
      * @return JsonResponse
      */
     public function plugins(Request $request)
@@ -81,11 +79,7 @@ class InstallPluginController extends InstallController
      *
      * @Route("/install/plugin/{code}/enable", requirements={"code" = "\w+"}, name="install_plugin_enable",  methods={"PUT"})
      *
-     * @param Request $request
-     * @param SystemService $systemService
-     * @param PluginService $pluginService
      * @param string $code
-     * @param EventDispatcherInterface $dispatcher
      *
      * @return JsonResponse
      *
@@ -182,7 +176,7 @@ class InstallPluginController extends InstallController
         }
 
         $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
-        list($expire, $validToken) = explode(':', $transaction_checker);
+        [$expire, $validToken] = explode(':', $transaction_checker);
         if ($token !== $validToken) {
             return false;
         }

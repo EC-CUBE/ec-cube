@@ -47,8 +47,6 @@ class CustomerType extends AbstractType
 
     /**
      * CustomerType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -174,7 +172,7 @@ class CustomerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => \Eccube\Entity\Customer::class,
         ]);
     }
 

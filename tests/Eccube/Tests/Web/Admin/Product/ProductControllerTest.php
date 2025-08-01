@@ -508,7 +508,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // Then
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp) - 2];
         $Product = $this->productRepository->find($productId);
 
@@ -861,7 +861,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // Then
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp) - 2];
         $EditProduct = $this->productRepository->find($productId);
 
@@ -1151,9 +1151,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $data = $this->createFormData();
-        $data['delete_images'] = $Product1->getProductImage()->map(static function (ProductImage $ProductImage) {
-            return $ProductImage->getFileName();
-        })->toArray();
+        $data['delete_images'] = $Product1->getProductImage()->map(static fn(ProductImage $ProductImage) => $ProductImage->getFileName())->toArray();
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_product_edit', ['id' => $Product1->getId()]),

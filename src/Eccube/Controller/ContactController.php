@@ -31,22 +31,13 @@ class ContactController extends AbstractController
     protected $mailService;
 
     /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
      * ContactController constructor.
-     *
-     * @param MailService $mailService
-     * @param PageRepository $pageRepository
      */
     public function __construct(
         MailService $mailService,
-        PageRepository $pageRepository)
+        private readonly PageRepository $pageRepository)
     {
         $this->mailService = $mailService;
-        $this->pageRepository = $pageRepository;
     }
 
     /**

@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\ProductStock')) {
+if (!class_exists(\Eccube\Entity\ProductStock::class)) {
     /**
      * ProductStock
      *
@@ -204,7 +204,6 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Set productClass.
          *
-         * @param ProductClass|null $productClass
          *
          * @return ProductStock
          */
@@ -228,7 +227,6 @@ if (!class_exists('\Eccube\Entity\ProductStock')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return ProductStock
          */

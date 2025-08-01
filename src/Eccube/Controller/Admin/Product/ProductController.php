@@ -111,17 +111,6 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     *
-     * @param CsvExportService $csvExportService
-     * @param ProductClassRepository $productClassRepository
-     * @param ProductImageRepository $productImageRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param CategoryRepository $categoryRepository
-     * @param ProductRepository $productRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PageMaxRepository $pageMaxRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param TagRepository $tagRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -337,13 +326,13 @@ class ProductController extends AbstractController
                 foreach ($img as $image) {
                     // ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
-                    if (0 !== strpos($mimeType, 'image')) {
+                    if (!str_starts_with((string) $mimeType, 'image')) {
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
                     // 拡張子
                     $extension = $image->getClientOriginalExtension();
-                    if (!in_array(strtolower($extension), $allowExtensions)) {
+                    if (!in_array(strtolower((string) $extension), $allowExtensions)) {
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
@@ -386,7 +375,7 @@ class ProductController extends AbstractController
         ];
 
         foreach ($dirs as $dir) {
-            if (strpos($request->query->get('source'), '..') !== false) {
+            if (str_contains($request->query->get('source'), '..')) {
                 throw new NotFoundHttpException();
             }
             $image = \realpath($dir.'/'.$request->query->get('source'));
@@ -416,7 +405,7 @@ class ProductController extends AbstractController
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+        if (is_file($tempFile) && stripos(realpath($tempFile), (string) $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 
@@ -642,7 +631,7 @@ class ProductController extends AbstractController
                     foreach ($product_image as $sortNo => $filename) {
                         $ProductImage = $this->productImageRepository
                             ->findOneBy([
-                                'file_name' => pathinfo($filename, PATHINFO_BASENAME),
+                                'file_name' => pathinfo((string) $filename, PATHINFO_BASENAME),
                                 'Product' => $Product,
                             ]);
                         if ($ProductImage !== null) {
@@ -695,13 +684,11 @@ class ProductController extends AbstractController
                         $returnLink = preg_replace($pattern, '', $returnLink);
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
-                        $params = array_filter($result, function ($key) {
-                            return 0 !== \strpos($key, '_');
-                        }, ARRAY_FILTER_USE_KEY);
+                        $params = array_filter($result, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
                         // pathからurlを再構築してリダイレクト.
                         return $this->redirectToRoute($result['_route'], $params);
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // マッチしない場合はログ出力してスキップ.
                         log_warning('URLの形式が不正です。');
                     }
@@ -737,9 +724,7 @@ class ProductController extends AbstractController
 
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
-        $ChoicedCategoryIds = array_map(function ($Category) {
-            return $Category->getId();
-        }, $form->get('Category')->getData());
+        $ChoicedCategoryIds = array_map(fn($Category) => $Category->getId(), $form->get('Category')->getData());
 
         return [
             'Product' => $Product,
@@ -762,7 +747,7 @@ class ProductController extends AbstractController
         $this->isTokenValid();
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
-        $page_no = $page_no ? $page_no : Constant::ENABLED;
+        $page_no = $page_no ?: Constant::ENABLED;
         $success = false;
 
         if (!is_null($id)) {
@@ -811,7 +796,7 @@ class ProductController extends AbstractController
                         try {
                             $fs = new Filesystem();
                             $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);
-                        } catch (\Exception $e) {
+                        } catch (\Exception) {
                             // エラーが発生しても無視する
                         }
                     }
@@ -822,7 +807,7 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_complete');
 
                     $cacheUtil->clearDoctrineCache();
-                } catch (ForeignKeyConstraintViolationException $e) {
+                } catch (ForeignKeyConstraintViolationException) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
                 }
@@ -902,12 +887,12 @@ class ProductController extends AbstractController
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
                     // 画像ファイルを新規作成
-                    $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
+                    $extension = pathinfo((string) $Image->getFileName(), PATHINFO_EXTENSION);
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     try {
                         $fs = new Filesystem();
                         $fs->copy($this->eccubeConfig['eccube_save_image_dir'].'/'.$Image->getFileName(), $this->eccubeConfig['eccube_save_image_dir'].'/'.$filename);
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // エラーが発生しても無視する
                     }
                     $Image->setFileName($filename);
@@ -955,7 +940,6 @@ class ProductController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/export", name="admin_product_export", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return StreamedResponse
      */
@@ -1083,8 +1067,6 @@ class ProductController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status", methods={"POST"})
      *
-     * @param Request $request
-     * @param ProductStatus $ProductStatus
      *
      * @return RedirectResponse
      */

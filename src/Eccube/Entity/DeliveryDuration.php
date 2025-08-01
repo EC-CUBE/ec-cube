@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\DeliveryDuration')) {
+if (!class_exists(\Eccube\Entity\DeliveryDuration::class)) {
     /**
      * DeliveryDuration
      *
@@ -29,14 +29,14 @@ if (!class_exists('\Eccube\Entity\DeliveryDuration')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDurationRepository")
      */
-    class DeliveryDuration extends AbstractEntity
+    class DeliveryDuration extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
-            return $this->getName();
+            return (string) $this->getName();
         }
 
         /**

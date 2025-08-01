@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\CartItem')) {
+if (!class_exists(\Eccube\Entity\CartItem::class)) {
     /**
      * CartItem
      *
@@ -219,8 +219,6 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
         }
 
         /**
-         * @param ProductClass $ProductClass
-         *
          * @return $this
          */
         public function setProductClass(ProductClass $ProductClass)
@@ -263,9 +261,6 @@ if (!class_exists('\Eccube\Entity\CartItem')) {
             return $this->Cart;
         }
 
-        /**
-         * @param Cart $Cart
-         */
         public function setCart(Cart $Cart)
         {
             $this->Cart = $Cart;

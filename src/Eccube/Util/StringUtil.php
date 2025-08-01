@@ -221,7 +221,7 @@ class StringUtil
      *
      * @return bool $value が空白と判断された場合 true
      */
-    public static function isBlank($value, $greedy = false)
+    public static function isBlank(mixed $value, $greedy = false)
     {
         $deprecated = '\Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください';
         // テストカバレッジを上げるために return の前で trigger_error をスローしている
@@ -315,7 +315,6 @@ class StringUtil
      * envファイルのコンテンツを更新または追加する.
      *
      * @param string $env
-     * @param array $replacement
      *
      * @return string
      */
@@ -323,7 +322,7 @@ class StringUtil
     {
         foreach ($replacement as $key => $value) {
             $pattern = '/^('.$key.')=(.*)/m';
-            if (preg_match($pattern, $env)) {
+            if (preg_match($pattern, (string) $env)) {
                 $env = preg_replace($pattern, '$1='.$value, $env);
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     // The m modifier of the preg functions converts the end-of-line to '\n'

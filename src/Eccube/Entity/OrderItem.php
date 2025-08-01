@@ -18,7 +18,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
 
-if (!class_exists('\Eccube\Entity\OrderItem')) {
+if (!class_exists(\Eccube\Entity\OrderItem::class)) {
     /**
      * OrderItem
      *
@@ -685,7 +685,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set order.
          *
-         * @param Order|null $order
          *
          * @return OrderItem
          */
@@ -718,7 +717,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return OrderItem
          */
@@ -742,7 +740,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set productClass.
          *
-         * @param ProductClass|null $productClass
          *
          * @return OrderItem
          */
@@ -766,7 +763,6 @@ if (!class_exists('\Eccube\Entity\OrderItem')) {
         /**
          * Set shipping.
          *
-         * @param Shipping|null $shipping
          *
          * @return OrderItem
          */

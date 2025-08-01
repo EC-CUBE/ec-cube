@@ -29,15 +29,13 @@ class DeliveryDurationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\DeliveryDuration',
+            'class' => \Eccube\Entity\DeliveryDuration::class,
             'placeholder' => 'common.select__unspecified',
             'multiple' => false,
             'expanded' => false,
             'required' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('m')
-                    ->orderBy('m.sort_no', 'ASC');
-            },
+            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('m')
+                ->orderBy('m.sort_no', 'ASC'),
         ]);
     }
 

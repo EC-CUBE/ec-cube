@@ -121,27 +121,7 @@ class EditController extends AbstractController
     protected $orderStatusRepository;
 
     /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
      * EditController constructor.
-     *
-     * @param TaxRuleService $taxRuleService
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param ProductRepository $productRepository
-     * @param CategoryRepository $categoryRepository
-     * @param CustomerRepository $customerRepository
-     * @param SerializerInterface $serializer
-     * @param DeliveryRepository $deliveryRepository
-     * @param PurchaseFlow $orderPurchaseFlow
-     * @param OrderRepository $orderRepository
-     * @param OrderNoProcessor $orderNoProcessor
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param OrderStateMachine $orderStateMachine
-     * @param OrderHelper $orderHelper
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -157,7 +137,7 @@ class EditController extends AbstractController
         OrderItemTypeRepository $orderItemTypeRepository,
         OrderStatusRepository $orderStatusRepository,
         OrderStateMachine $orderStateMachine,
-        OrderHelper $orderHelper,
+        private readonly OrderHelper $orderHelper,
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -172,7 +152,6 @@ class EditController extends AbstractController
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderStateMachine = $orderStateMachine;
-        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -335,13 +314,11 @@ class EditController extends AbstractController
                                 $returnLink = preg_replace($pattern, '', $returnLink);
                                 $result = $router->match($returnLink);
                                 // パラメータのみ抽出
-                                $params = array_filter($result, function ($key) {
-                                    return 0 !== \strpos($key, '_');
-                                }, ARRAY_FILTER_USE_KEY);
+                                $params = array_filter($result, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);
-                            } catch (\Exception $e) {
+                            } catch (\Exception) {
                                 // マッチしない場合はログ出力してスキップ.
                                 log_warning('URLの形式が不正です。');
                             }
@@ -416,9 +393,7 @@ class EditController extends AbstractController
      *
      * @Template("@admin/Order/search_customer.twig")
      *
-     * @param Request $request
      * @param int $page_no
-     *
      * @return array
      */
     public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, $page_no = null)
@@ -512,7 +487,6 @@ class EditController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id", methods={"POST"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -670,7 +644,6 @@ class EditController extends AbstractController
      *
      * @Template("@admin/Order/order_item_type.twig")
      *
-     * @param Request $request
      *
      * @return array
      */

@@ -94,7 +94,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     protected $duplicateHeadersFlag;
 
     /**
-     * @param \SplFileObject $file
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
@@ -174,8 +173,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
     /**
      * Set column headers
-     *
-     * @param array $columnHeaders
      */
     public function setColumnHeaders(array $columnHeaders)
     {
@@ -384,7 +381,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => 'first', $duplicate1 => 'second', $duplicate2 => 'third'
      *
-     * @param array $headers
      *
      * @return array
      */
@@ -415,7 +411,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => ['first', 'second', 'third']
      *
-     * @param array $line
      *
      * @return array
      */

@@ -24,15 +24,9 @@ class ComposerRequireCommand extends Command
 {
     protected static $defaultName = 'eccube:composer:require';
 
-    /**
-     * @var ComposerApiService
-     */
-    private $composerService;
-
-    public function __construct(ComposerApiService $composerService)
+    public function __construct(private readonly ComposerApiService $composerService)
     {
         parent::__construct();
-        $this->composerService = $composerService;
     }
 
     protected function configure()

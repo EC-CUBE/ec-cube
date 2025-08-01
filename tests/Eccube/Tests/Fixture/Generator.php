@@ -75,8 +75,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  */
 class Generator
 {
-    protected $locale;
-
     /**
      * @var EntityManagerInterface
      */
@@ -91,11 +89,6 @@ class Generator
      * @var MemberRepository
      */
     protected $memberRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
 
     /**
      * @var CustomerRepository
@@ -128,11 +121,6 @@ class Generator
     protected $paymentRepository;
 
     /**
-     * @var TagRepository
-     */
-    private $tagRepository;
-
-    /**
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
@@ -146,11 +134,6 @@ class Generator
      * @var PrefRepository
      */
     protected $PrefRepository;
-
-    /**
-     * @var PrefRepository
-     */
-    private $prefRepository;
 
     /**
      * @var SessionInterface
@@ -171,7 +154,7 @@ class Generator
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
-        CategoryRepository $categoryRepository,
+        private readonly CategoryRepository $categoryRepository,
         CustomerRepository $customerRepository,
         ClassNameRepository $classNameRepository,
         ClassCategoryRepository $classCategoryRepository,
@@ -179,18 +162,16 @@ class Generator
         DeliveryFeeRepository $deliveryFeeRepository,
         PaymentRepository $paymentRepository,
         PageRepository $pageRepository,
-        PrefRepository $prefRepository,
-        TagRepository $tagRepository,
+        private readonly PrefRepository $prefRepository,
+        private readonly TagRepository $tagRepository,
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
         RequestStack $requestStack,
-        $locale = 'ja_JP',
+        protected $locale = 'ja_JP',
     ) {
-        $this->locale = $locale;
         $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
-        $this->categoryRepository = $categoryRepository;
         $this->customerRepository = $customerRepository;
         $this->classNameRepository = $classNameRepository;
         $this->classCategoryRepository = $classCategoryRepository;
@@ -198,8 +179,6 @@ class Generator
         $this->deliveryFeeRepository = $deliveryFeeRepository;
         $this->paymentRepository = $paymentRepository;
         $this->pageRepository = $pageRepository;
-        $this->prefRepository = $prefRepository;
-        $this->tagRepository = $tagRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->orderPurchaseFlow = $orderPurchaseFlow;
         $this->requestStack = $requestStack;

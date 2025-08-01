@@ -30,26 +30,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class SitemapController extends AbstractController
 {
     /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-
-    /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
-     * @var ProductListOrderByRepository
-     */
-    private $productListOrderByRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -58,16 +38,12 @@ class SitemapController extends AbstractController
      * SitemapController constructor.
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
-        PageRepository $pageRepository,
-        ProductListOrderByRepository $productListOrderByRepository,
-        ProductRepository $productRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly PageRepository $pageRepository,
+        private readonly ProductListOrderByRepository $productListOrderByRepository,
+        private readonly ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->pageRepository = $pageRepository;
-        $this->productListOrderByRepository = $productListOrderByRepository;
-        $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
@@ -186,9 +162,7 @@ class SitemapController extends AbstractController
         });
 
         // 管理画面から作成されたページ
-        $UserPages = array_filter($Pages, function (Page $Page) {
-            return $Page->getEditType() === Page::EDIT_TYPE_USER;
-        });
+        $UserPages = array_filter($Pages, fn(Page $Page) => $Page->getEditType() === Page::EDIT_TYPE_USER);
 
         return $this->outputXml([
             'DefaultPages' => $DefaultPages,
@@ -199,9 +173,7 @@ class SitemapController extends AbstractController
     /**
      * Output XML response by data.
      *
-     * @param array $data
      * @param string $template_name
-     *
      * @return Response
      */
     private function outputXml(array $data, $template_name = 'sitemap.xml.twig')

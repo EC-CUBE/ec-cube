@@ -29,13 +29,11 @@ class MailTemplateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\MailTemplate',
+            'class' => \Eccube\Entity\MailTemplate::class,
             'placeholder' => 'common.select',
             // なぜかsortNoを持っていない
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('mt')
-                    ->orderBy('mt.id', 'ASC');
-            },
+            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('mt')
+                ->orderBy('mt.id', 'ASC'),
         ]);
     }
 

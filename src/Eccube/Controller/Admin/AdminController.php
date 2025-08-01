@@ -92,16 +92,6 @@ class AdminController extends AbstractController
 
     /**
      * AdminController constructor.
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param AuthenticationUtils $helper
-     * @param MemberRepository $memberRepository
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param OrderRepository $orderRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param CustomerRepository $custmerRepository
-     * @param ProductRepository $productRepository
-     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -157,7 +147,6 @@ class AdminController extends AbstractController
     /**
      * 管理画面ホーム
      *
-     * @param Request $request
      *
      * @return array
      *
@@ -165,7 +154,6 @@ class AdminController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @Route("/%eccube_admin_route%/", name="admin_homepage", methods={"GET"})
-     *
      * @Template("@admin/index.twig")
      */
     public function index(Request $request)
@@ -254,7 +242,7 @@ class AdminController extends AbstractController
         $recommendedPlugins = [];
         try {
             $recommendedPlugins = $this->pluginApiService->getRecommended();
-        } catch (PluginApiException $ignore) {
+        } catch (PluginApiException) {
         }
 
         return [
@@ -274,10 +262,8 @@ class AdminController extends AbstractController
     /**
      * 売上状況の取得
      *
-     * @param Request $request
      *
      * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale", methods={"GET"})
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function sale(Request $request)
@@ -320,7 +306,6 @@ class AdminController extends AbstractController
      *
      * @Template("@admin/change_password.twig")
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
@@ -376,7 +361,6 @@ class AdminController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -398,7 +382,6 @@ class AdminController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -416,7 +399,6 @@ class AdminController extends AbstractController
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param array $excludes
      *
      * @return Request|null
      */
@@ -477,7 +459,7 @@ class AdminController extends AbstractController
         $result = [];
         try {
             $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 結果がない場合は空の配列を返す.
         }
 
@@ -516,7 +498,7 @@ class AdminController extends AbstractController
         $result = [];
         try {
             $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 結果がない場合は空の配列を返す.
         }
 
@@ -580,8 +562,6 @@ class AdminController extends AbstractController
     /**
      * 期間指定のデータを取得
      *
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
      * @param $format
      *
      * @return array
@@ -606,8 +586,6 @@ class AdminController extends AbstractController
      * 期間毎にデータをまとめる
      *
      * @param $result
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
      * @param $format
      *
      * @return array

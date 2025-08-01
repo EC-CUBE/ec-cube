@@ -32,9 +32,6 @@ class CustomerAddressType extends AbstractType
      */
     protected $eccubeConfig;
 
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
@@ -73,7 +70,7 @@ class CustomerAddressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\CustomerAddress',
+            'data_class' => \Eccube\Entity\CustomerAddress::class,
         ]);
     }
 

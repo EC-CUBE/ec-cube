@@ -35,8 +35,6 @@ class PaymentRegisterType extends AbstractType
 
     /**
      * PaymentRegisterType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -109,7 +107,7 @@ class PaymentRegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Payment',
+            'data_class' => \Eccube\Entity\Payment::class,
         ]);
     }
 

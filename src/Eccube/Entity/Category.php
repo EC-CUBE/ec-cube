@@ -16,7 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Category')) {
+if (!class_exists(\Eccube\Entity\Category::class)) {
     /**
      * Category
      *
@@ -30,12 +30,12 @@ if (!class_exists('\Eccube\Entity\Category')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CategoryRepository")
      */
-    class Category extends AbstractEntity
+    class Category extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -55,9 +55,7 @@ if (!class_exists('\Eccube\Entity\Category')) {
         }
 
         /**
-         * @param  \Doctrine\ORM\EntityManager $em
          * @param  int                     $sortNo
-         *
          * @return Category
          */
         public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
@@ -374,7 +372,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Add productCategory.
          *
-         * @param ProductCategory $productCategory
          *
          * @return Category
          */
@@ -388,7 +385,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Remove productCategory.
          *
-         * @param ProductCategory $productCategory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -410,7 +406,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Add child.
          *
-         * @param Category $child
          *
          * @return Category
          */
@@ -424,7 +419,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Remove child.
          *
-         * @param Category $child
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -446,7 +440,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Set parent.
          *
-         * @param Category|null $parent
          *
          * @return Category
          */
@@ -470,7 +463,6 @@ if (!class_exists('\Eccube\Entity\Category')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return Category
          */

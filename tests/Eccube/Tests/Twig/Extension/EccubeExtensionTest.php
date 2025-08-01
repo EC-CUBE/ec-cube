@@ -59,9 +59,7 @@ class EccubeExtensionTest extends EccubeTestCase
                 $ProductClass = $Product
                     ->getProductClasses()
                     ->filter(
-                        function ($ProductClass) use ($actual) {
-                            return $ProductClass->getId() == $actual['product_class_id'];
-                        })
+                        fn($ProductClass) => $ProductClass->getId() == $actual['product_class_id'])
                     ->first();
 
                 if ($ProductClass->getPrice01IncTax()) {

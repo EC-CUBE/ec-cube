@@ -65,23 +65,8 @@ class PluginController extends AbstractController
     protected $pluginApiService;
 
     /**
-     * @var ComposerServiceInterface
-     */
-    private $composerService;
-
-    /**
-     * @var SystemService
-     */
-    private $systemService;
-
-    /**
      * PluginController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginApiService $pluginApiService
-     * @param ComposerServiceInterface $composerService
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -91,15 +76,13 @@ class PluginController extends AbstractController
         PluginService $pluginService,
         BaseInfoRepository $baseInfoRepository,
         PluginApiService $pluginApiService,
-        ComposerServiceInterface $composerService,
-        SystemService $systemService,
+        private readonly ComposerServiceInterface $composerService,
+        private readonly SystemService $systemService,
     ) {
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->pluginApiService = $pluginApiService;
-        $this->composerService = $composerService;
-        $this->systemService = $systemService;
     }
 
     /**
@@ -127,7 +110,7 @@ class PluginController extends AbstractController
                 $code = $unregisteredPlugin['code'];
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
                 $unregisteredPluginsConfigPages[$code] = $this->generateUrl('plugin_'.$code.'_config');
-            } catch (RouteNotFoundException $e) {
+            } catch (RouteNotFoundException) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
         }
@@ -151,7 +134,7 @@ class PluginController extends AbstractController
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
                 $configPages[$Plugin->getCode()] = $this->generateUrl(Container::underscore($Plugin->getCode()).'_admin_config');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
             if ($Plugin->getSource() == 0) {
@@ -198,9 +181,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update", methods={"POST"})
      *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      */
@@ -265,10 +245,8 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable", methods={"POST"})
      *
-     * @param Plugin $Plugin
      *
      * @return RedirectResponse|JsonResponse
-     *
      * @throws PluginException
      */
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
@@ -302,9 +280,7 @@ class PluginController extends AbstractController
                     return $DependPlugin->isEnabled() == false;
                 });
                 if (!empty($requires)) {
-                    $names = array_map(function ($req) {
-                        return "「{$req['description']}」";
-                    }, $requires);
+                    $names = array_map(fn($req) => "「{$req['description']}」", $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
 
                     if ($request->isXmlHttpRequest()) {
@@ -351,9 +327,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable", methods={"POST"})
      *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
      *
      * @return JsonResponse|RedirectResponse
      */
@@ -431,8 +404,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall", methods={"DELETE"})
      *
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      *
@@ -478,8 +449,6 @@ class PluginController extends AbstractController
      *
      * @Template("@admin/Store/plugin_install.twig")
      *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      *
      * @return array|RedirectResponse
      */
@@ -546,7 +515,6 @@ class PluginController extends AbstractController
      *
      * @Template("@admin/Store/authentication_setting.twig")
      *
-     * @param Request $request
      *
      * @return array
      */
@@ -582,10 +550,8 @@ class PluginController extends AbstractController
     /**
      * フォルダ設置のみのプラグインを取得する.
      *
-     * @param array $plugins
      *
      * @return array
-     *
      * @throws PluginException
      */
     protected function getUnregisteredPlugins(array $plugins)
@@ -615,11 +581,11 @@ class PluginController extends AbstractController
                 continue;
             }
             $config = $this->pluginService->readConfig($dir->getRealPath());
-            $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
-            $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
-            $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
+            $unregisteredPlugins[$pluginCode]['name'] = $config['name'] ?? null;
+            $unregisteredPlugins[$pluginCode]['event'] = $config['event'] ?? null;
+            $unregisteredPlugins[$pluginCode]['version'] = $config['version'] ?? null;
             $unregisteredPlugins[$pluginCode]['enabled'] = Constant::DISABLED;
-            $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
+            $unregisteredPlugins[$pluginCode]['code'] = $config['code'] ?? null;
         }
 
         return $unregisteredPlugins;

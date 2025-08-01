@@ -31,22 +31,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class OrderPdfType extends AbstractType
 {
-    /** @var EccubeConfig */
-    private $eccubeConfig;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     /**
      * OrderPdfType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager)
+    public function __construct(private EccubeConfig $eccubeConfig, private readonly EntityManagerInterface $entityManager)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -164,7 +153,7 @@ class OrderPdfType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(s.id)')
-                    ->from('Eccube\\Entity\\Shipping', 's')
+                    ->from(\Eccube\Entity\Shipping::class, 's')
                     ->where($qb->expr()->in('s.id', ':ids'))
                     ->setParameter('ids', $ids);
                 $actual = $qb->getQuery()->getSingleScalarResult();

@@ -168,10 +168,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     public function assertSortedNameList($order)
     {
-        $values = array_map(function ($s) {
+        $values = array_map(fn($s) =>
             // 一覧の会員名の文字列から姓だけを抽出
-            return preg_replace('/ .*$/', '', $s);
-        }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));
+            preg_replace('/ .*$/', '', $s), $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));
 
         $expect = $values;
         if ($order === 'asc') {

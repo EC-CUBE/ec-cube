@@ -23,8 +23,6 @@ abstract class ItemValidator
     use ValidatorTrait;
 
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
      *
      * @return ProcessResult
      */
@@ -43,17 +41,11 @@ abstract class ItemValidator
 
     /**
      * 妥当性検証を行う.
-     *
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
      */
     abstract protected function validate(ItemInterface $item, PurchaseContext $context);
 
     /**
      * 検証エラー時に後処理を行う.
-     *
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
      */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {

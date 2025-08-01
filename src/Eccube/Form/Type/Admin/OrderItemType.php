@@ -87,14 +87,6 @@ class OrderItemType extends AbstractType
     /**
      * OrderItemType constructor.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param ProductClassRepository $productClassRepository
-     * @param OrderItemRepository $orderItemRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param ValidatorInterface $validator
      *
      * @throws \Exception
      */
@@ -315,10 +307,6 @@ class OrderItemType extends AbstractType
         return 'order_item';
     }
 
-    /**
-     * @param FormInterface $form
-     * @param ConstraintViolationListInterface $errors
-     */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
     {
         if (count($errors) < 1) {

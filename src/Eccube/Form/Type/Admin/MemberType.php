@@ -44,9 +44,6 @@ class MemberType extends AbstractType
 
     /**
      * MemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param MemberRepository $memberRepository
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -91,7 +88,7 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('Authority', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\Authority',
+                'class' => \Eccube\Entity\Master\Authority::class,
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => 'admin.common.select',
@@ -100,7 +97,7 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('Work', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\Work',
+                'class' => \Eccube\Entity\Master\Work::class,
                 'expanded' => true,
                 'multiple' => false,
                 'constraints' => [
@@ -174,7 +171,7 @@ class MemberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Member',
+            'data_class' => \Eccube\Entity\Member::class,
         ]);
     }
 

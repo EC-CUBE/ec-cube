@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\ProductImage')) {
+if (!class_exists(\Eccube\Entity\ProductImage::class)) {
     /**
      * ProductImage
      *
@@ -29,12 +29,12 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductImageRepository")
      */
-    class ProductImage extends AbstractEntity
+    class ProductImage extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getFileName();
         }
@@ -180,7 +180,6 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return ProductImage
          */
@@ -204,7 +203,6 @@ if (!class_exists('\Eccube\Entity\ProductImage')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return ProductImage
          */

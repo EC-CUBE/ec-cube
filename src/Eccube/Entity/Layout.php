@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Layout')) {
+if (!class_exists(\Eccube\Entity\Layout::class)) {
     /**
      * Layout
      *
@@ -29,7 +29,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\LayoutRepository")
      */
-    class Layout extends AbstractEntity
+    class Layout extends AbstractEntity implements \Stringable
     {
         // 配置ID
         /** 配置ID: 未使用 */
@@ -65,7 +65,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->name;
         }
@@ -110,9 +110,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
             }
 
             // blockRow順にsort
-            uasort($TargetBlockPositions, function (BlockPosition $a, BlockPosition $b) {
-                return ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1;
-            });
+            uasort($TargetBlockPositions, fn(BlockPosition $a, BlockPosition $b) => ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1);
 
             // Blockの配列を作成
             $TargetBlocks = [];
@@ -131,9 +129,7 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         public function getBlockPositionsByTargetId($targetId)
         {
             return $this->BlockPositions->filter(
-                function ($BlockPosition) use ($targetId) {
-                    return $BlockPosition->getSection() == $targetId;
-                }
+                fn($BlockPosition) => $BlockPosition->getSection() == $targetId
             );
         }
 
@@ -370,7 +366,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Add blockPosition
          *
-         * @param BlockPosition $blockPosition
          *
          * @return Layout
          */
@@ -383,8 +378,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
 
         /**
          * Remove blockPosition
-         *
-         * @param BlockPosition $blockPosition
          */
         public function removeBlockPosition(BlockPosition $blockPosition)
         {
@@ -404,7 +397,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
         /**
          * Add pageLayoutLayout
          *
-         * @param PageLayout $PageLayout
          *
          * @return Layout
          */
@@ -417,8 +409,6 @@ if (!class_exists('\Eccube\Entity\Layout')) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
          */
         public function removePageLayout(PageLayout $PageLayout)
         {

@@ -39,21 +39,13 @@ class CacheUtil implements EventSubscriberInterface
      * @var KernelInterface
      */
     protected $kernel;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * CacheUtil constructor.
-     *
-     * @param KernelInterface $kernel
-     * @param ContainerInterface $container
      */
-    public function __construct(KernelInterface $kernel, ContainerInterface $container)
+    public function __construct(KernelInterface $kernel, private readonly ContainerInterface $container)
     {
         $this->kernel = $kernel;
-        $this->container = $container;
     }
 
     /**

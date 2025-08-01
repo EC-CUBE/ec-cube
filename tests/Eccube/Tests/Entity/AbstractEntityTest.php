@@ -209,7 +209,7 @@ class AbstractEntityTest extends EccubeTestCase
         ];
         $actual = $this->objEntity->toJSON();
 
-        $this->assertEquals($expected, json_decode($actual, true));
+        $this->assertEquals($expected, json_decode((string) $actual, true));
     }
 
     public function testChildrensWithToXML()
@@ -421,14 +421,13 @@ class TestChildEntity extends TestExtendsEntity
 
 class TestChildren extends AbstractEntity
 {
-    /**
-     * @Id
-     */
-    private $childField;
-
-    public function __construct($childField)
+    public function __construct(
+        /**
+         * @Id
+         */
+        private $childField
+    )
     {
-        $this->childField = $childField;
     }
 
     public function getChildField()

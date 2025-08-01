@@ -42,9 +42,6 @@ class TwoFactorAuthController extends AbstractController
 
     /**
      * TwoFactorAuthController constructor.
-     *
-     * @param MemberRepository $memberRepository
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         MemberRepository $memberRepository,
@@ -156,7 +153,7 @@ class TwoFactorAuthController extends AbstractController
             $auth_key = $form->get('auth_key')->getData();
             $device_token = $form->get('device_token')->getData();
             if ($form->isSubmitted() && $form->isValid()) {
-                if ($this->twoFactorAuthService->verifyCode($auth_key, $device_token, 2)) {
+                if ($this->twoFactorAuthService->verifyCode($auth_key, $device_token)) {
                     $Member->setTwoFactorAuthKey($auth_key);
                     $this->memberRepository->save($Member);
                     $this->addSuccess('admin.setting.system.two_factor_auth.complete_message', 'admin');

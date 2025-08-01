@@ -76,14 +76,6 @@ class MailService
 
     /**
      * MailService constructor.
-     *
-     * @param MailerInterface $mailer
-     * @param MailTemplateRepository $mailTemplateRepository
-     * @param MailHistoryRepository $mailHistoryRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param \Twig\Environment $twig
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         MailerInterface $mailer,
@@ -649,7 +641,6 @@ class MailService
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
-     * @param Shipping $Shipping
      *
      * @throws \Twig_Error
      */
@@ -707,8 +698,6 @@ class MailService
     }
 
     /**
-     * @param Shipping $Shipping
-     * @param Order $Order
      * @param string|null $templateName
      * @param bool $is_html
      *
@@ -718,9 +707,7 @@ class MailService
      */
     public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false)
     {
-        $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function (OrderItem $OrderItem) use ($Order) {
-            return $OrderItem->getOrderId() === $Order->getId();
-        });
+        $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), fn(OrderItem $OrderItem) => $OrderItem->getOrderId() === $Order->getId());
 
         if (is_null($templateName)) {
             /** @var MailTemplate $MailTemplate */
@@ -745,12 +732,10 @@ class MailService
     /**
      * 会員情報変更時にメール通知
      *
-     * @param Customer $Customer
      * @param array $userData
      *  - userAgent
      *  - ipAddress
      *  - preEmail
-     * @param string $eventName
      *
      * @return void
      *
@@ -854,7 +839,6 @@ class MailService
      *
      * パラメータ eccube_rfc_email_check == true の場合は変換しない
      *
-     * @param string $email
      *
      * @return Address
      */
@@ -876,9 +860,6 @@ class MailService
         $local_part = "(?:$dot_atom|$quoted_string)";
         $domain = $dot_atom;
         $addr_spec = "{$local_part}[@]$domain";
-
-        $dot_atom_loose = "$atext+(?:[.]|$atext)*";
-        $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
 
         $regexp = "/\A{$addr_spec}\z/";
         if (!preg_match($regexp, $email)) {

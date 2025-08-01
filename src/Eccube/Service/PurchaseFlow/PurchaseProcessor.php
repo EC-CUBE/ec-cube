@@ -25,8 +25,6 @@ interface PurchaseProcessor
     /**
      * 受注の仮確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @throws PurchaseException
      */
@@ -35,8 +33,6 @@ interface PurchaseProcessor
     /**
      * 受注の確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext     $context
      *
      * @throws PurchaseException
      */
@@ -44,9 +40,6 @@ interface PurchaseProcessor
 
     /**
      * 仮確定した受注データの取り消し処理を行います。
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }

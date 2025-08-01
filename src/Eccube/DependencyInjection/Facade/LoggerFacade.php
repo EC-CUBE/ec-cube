@@ -27,9 +27,6 @@ class LoggerFacade
     /** @var Logger */
     private static $Logger;
 
-    /**
-     * @param ContainerInterface $container
-     */
     private function __construct(ContainerInterface $container, Logger $Logger)
     {
         self::$Container = $container;
@@ -37,8 +34,6 @@ class LoggerFacade
     }
 
     /**
-     * @param ContainerInterface $container
-     *
      * @return LoggerFacade|null
      */
     public static function init(ContainerInterface $container, Logger $Logger)

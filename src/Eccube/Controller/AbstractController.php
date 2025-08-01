@@ -64,54 +64,36 @@ class AbstractController extends Controller
      */
     protected $router;
 
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
     #[Required]
     public function setEccubeConfig(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     #[Required]
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @param Session $session
-     */
     #[Required]
     public function setSession(Session $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * @param FormFactoryInterface $formFactory
-     */
     #[Required]
     public function setFormFactory(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     #[Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -119,8 +101,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param RouterInterface $router
-     *
      * @return void
      */
     #[Required]
@@ -219,7 +199,7 @@ class AbstractController extends Controller
     {
         try {
             parent::addFlash($type, $message);
-        } catch (\LogicException $e) {
+        } catch (\LogicException) {
             // fallback session
             $this->session->getFlashBag()->add($type, $message);
         }
@@ -269,9 +249,7 @@ class AbstractController extends Controller
     {
         /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $token = $request->get(Constant::TOKEN_NAME)
-            ? $request->get(Constant::TOKEN_NAME)
-            : $request->headers->get('ECCUBE-CSRF-TOKEN');
+        $token = $request->get(Constant::TOKEN_NAME) ?: $request->headers->get('ECCUBE-CSRF-TOKEN');
 
         if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $token)) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');

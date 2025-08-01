@@ -20,18 +20,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class JoinClause
 {
-    private $join;
-
-    private $alias;
-
-    private $conditionType;
-
-    private $condition;
-
-    private $indexBy;
-
-    private $leftJoin;
-
     /**
      * @var JoinClauseWhereCustomizer
      */
@@ -45,21 +33,14 @@ class JoinClause
     /**
      * JoinClause constructor.
      *
-     * @param bool $leftJoin
      * @param $join
      * @param $alias
      * @param $conditionType
      * @param $condition
      * @param $indexBy
      */
-    private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    private function __construct(private readonly bool $leftJoin, private $join, private $alias, private $conditionType = null, private $condition = null, private $indexBy = null)
     {
-        $this->leftJoin = $leftJoin;
-        $this->join = $join;
-        $this->alias = $alias;
-        $this->conditionType = $conditionType;
-        $this->condition = $condition;
-        $this->indexBy = $indexBy;
         $this->whereCustomizer = new JoinClauseWhereCustomizer();
         $this->orderByCustomizer = new JoinClauseOrderByCustomizer();
     }
@@ -103,7 +84,6 @@ class JoinClause
     /**
      * WHERE句を追加します。
      *
-     * @param WhereClause $whereClause
      *
      * @return $this
      */
@@ -117,7 +97,6 @@ class JoinClause
     /**
      * ORDER BY句を追加します。
      *
-     * @param OrderByClause $orderByClause
      *
      * @return $this
      */

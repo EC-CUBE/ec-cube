@@ -233,7 +233,7 @@ class CustomerController extends AbstractController
         log_info('会員削除開始', [$id]);
 
         $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
-        $page_no = $page_no ? $page_no : Constant::ENABLED;
+        $page_no = $page_no ?: Constant::ENABLED;
 
         $Customer = $this->customerRepository
             ->find($id);
@@ -275,7 +275,6 @@ class CustomerController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export", methods={"GET"})
      *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

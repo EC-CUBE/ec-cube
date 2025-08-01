@@ -23,7 +23,7 @@ class OrderByCustomizerTest extends EccubeTestCase
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
+        $customizer = new OrderByCustomizerTest_Customizer(fn() => []);
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p', $builder->getDQL());
@@ -33,7 +33,7 @@ class OrderByCustomizerTest extends EccubeTestCase
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
+        $customizer = new OrderByCustomizerTest_Customizer(fn() => []);
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
@@ -43,11 +43,9 @@ class OrderByCustomizerTest extends EccubeTestCase
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function () {
-            return [
-                new OrderByClause('productId'),
-            ];
-        });
+        $customizer = new OrderByCustomizerTest_Customizer(fn() => [
+            new OrderByClause('productId'),
+        ]);
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
@@ -57,12 +55,10 @@ class OrderByCustomizerTest extends EccubeTestCase
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function () {
-            return [
-                new OrderByClause('productId'),
-                new OrderByClause('name', 'desc'),
-            ];
-        });
+        $customizer = new OrderByCustomizerTest_Customizer(fn() => [
+            new OrderByClause('productId'),
+            new OrderByClause('name', 'desc'),
+        ]);
         $customizer->customize($builder, null, '');
 
         self::assertEquals('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());

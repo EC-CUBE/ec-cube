@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Tag')) {
+if (!class_exists(\Eccube\Entity\Tag::class)) {
     /**
      * Tag
      *
@@ -31,12 +31,12 @@ if (!class_exists('\Eccube\Entity\Tag')) {
      *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class Tag extends AbstractEntity
+    class Tag extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -156,7 +156,6 @@ if (!class_exists('\Eccube\Entity\Tag')) {
         /**
          * Add productTag.
          *
-         * @param ProductTag $productTag
          *
          * @return Tag
          */
@@ -170,7 +169,6 @@ if (!class_exists('\Eccube\Entity\Tag')) {
         /**
          * Remove productTag.
          *
-         * @param ProductTag $productTag
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */

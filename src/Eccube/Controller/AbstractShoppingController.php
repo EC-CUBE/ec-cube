@@ -27,9 +27,6 @@ class AbstractShoppingController extends AbstractController
      */
     protected $purchaseFlow;
 
-    /**
-     * @param PurchaseFlow $shoppingPurchaseFlow
-     */
     #[Required]
     public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow)
     {
@@ -37,9 +34,7 @@ class AbstractShoppingController extends AbstractController
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
-     *
      * @return PurchaseFlowResult|RedirectResponse|null
      */
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)

@@ -39,9 +39,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
 
     /**
      * PointProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PointHelper $pointHelper
      */
     public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
     {
@@ -159,7 +156,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /*
      * Helper methods
      */
-
     /**
      * Processorが実行出来るかどうかを返す.
      *
@@ -169,7 +165,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
      *
-     * @param ItemHolderInterface $itemHolder
      *
      * @return bool
      */

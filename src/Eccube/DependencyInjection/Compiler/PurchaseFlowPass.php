@@ -59,7 +59,7 @@ class PurchaseFlowPass implements CompilerPassInterface
                     if (isset($attributes['flow_type'])) {
                         $attributes['id'] = $id;
                         $attributes['index'] = ++$i;
-                        $attributes['priority'] = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                        $attributes['priority'] ??= 0;
                         $allMethod[$attributes['flow_type']][] = $attributes;
                     }
                 }
@@ -69,7 +69,7 @@ class PurchaseFlowPass implements CompilerPassInterface
              * @var Definition $purchaseFlowDef
              */
             foreach ($allMethod as $flowType => $flowMethod) {
-                $purchaseFlowDef = isset($flowTypes[$flowType]) ? $flowTypes[$flowType] : null;
+                $purchaseFlowDef = $flowTypes[$flowType] ?? null;
                 if (!is_null($purchaseFlowDef) && count($flowMethod) > 0) {
                     // flow_typeごとにソートをしてセットする
                     uasort($flowMethod, static fn ($a, $b) => $b['priority'] <=> $a['priority'] ?: $a['index'] <=> $b['index']);

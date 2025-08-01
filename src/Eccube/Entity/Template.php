@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Template')) {
+if (!class_exists(\Eccube\Entity\Template::class)) {
     /**
      * Template
      *
@@ -29,7 +29,7 @@ if (!class_exists('\Eccube\Entity\Template')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TemplateRepository")
      */
-    class Template extends AbstractEntity
+    class Template extends AbstractEntity implements \Stringable
     {
         /**
          *  初期テンプレートコード
@@ -47,7 +47,7 @@ if (!class_exists('\Eccube\Entity\Template')) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -212,7 +212,6 @@ if (!class_exists('\Eccube\Entity\Template')) {
         /**
          * Set deviceType.
          *
-         * @param Master\DeviceType|null $deviceType
          *
          * @return Template
          */

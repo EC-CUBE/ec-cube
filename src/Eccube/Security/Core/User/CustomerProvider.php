@@ -31,15 +31,9 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      */
     protected $customerRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $entityManager)
+    public function __construct(CustomerRepository $customerRepository, private readonly EntityManagerInterface $entityManager)
     {
         $this->customerRepository = $customerRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -69,7 +63,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof Customer) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         return $this->loadUserByUsername($user->getUsername());

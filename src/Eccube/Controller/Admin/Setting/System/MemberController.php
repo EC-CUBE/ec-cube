@@ -45,10 +45,6 @@ class MemberController extends AbstractController
 
     /**
      * MemberController constructor.
-     *
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param MemberRepository $memberRepository
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
@@ -251,7 +247,7 @@ class MemberController extends AbstractController
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             log_info('メンバー削除エラー', [$Member->getId()]);
 
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Member->getName()]);

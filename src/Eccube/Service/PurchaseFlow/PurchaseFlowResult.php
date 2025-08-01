@@ -17,21 +17,8 @@ use Eccube\Entity\ItemHolderInterface;
 
 class PurchaseFlowResult
 {
-    /** @var ItemHolderInterface */
-    private $itemHolder;
-
     /** @var ProcessResult[] */
     private $processResults = [];
-
-    /**
-     * PurchaseFlowResult constructor.
-     *
-     * @param ItemHolderInterface $itemHolder
-     */
-    public function __construct(ItemHolderInterface $itemHolder)
-    {
-        $this->itemHolder = $itemHolder;
-    }
 
     public function addProcessResult(ProcessResult $processResult)
     {
@@ -43,9 +30,7 @@ class PurchaseFlowResult
      */
     public function getErrors()
     {
-        return array_filter($this->processResults, function (ProcessResult $processResult) {
-            return $processResult->isError();
-        });
+        return array_filter($this->processResults, fn(ProcessResult $processResult) => $processResult->isError());
     }
 
     /**
@@ -53,9 +38,7 @@ class PurchaseFlowResult
      */
     public function getWarning()
     {
-        return array_filter($this->processResults, function (ProcessResult $processResult) {
-            return $processResult->isWarning();
-        });
+        return array_filter($this->processResults, fn(ProcessResult $processResult) => $processResult->isWarning());
     }
 
     public function hasError()

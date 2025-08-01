@@ -20,12 +20,12 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\MappedSuperclass
  */
-abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
+abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implements \Stringable
 {
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getName();
     }

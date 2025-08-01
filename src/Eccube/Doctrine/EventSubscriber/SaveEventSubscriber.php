@@ -32,9 +32,6 @@ class SaveEventSubscriber implements EventSubscriber
      */
     protected $eccubeConfig;
 
-    /**
-     * @param Context $requestContext
-     */
     public function __construct(Context $requestContext, EccubeConfig $eccubeConfig)
     {
         $this->requestContext = $requestContext;
@@ -52,9 +49,6 @@ class SaveEventSubscriber implements EventSubscriber
         ];
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
@@ -77,9 +71,6 @@ class SaveEventSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();

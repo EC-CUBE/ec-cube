@@ -78,14 +78,6 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     *
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param ProductRepository $productRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param AuthenticationUtils $helper
-     * @param ProductListMaxRepository $productListMaxRepository
      */
     public function __construct(
         PurchaseFlow $cartPurchaseFlow,
@@ -165,7 +157,7 @@ class ProductController extends AbstractController
         /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
             $query,
-            !empty($searchData['pageno']) && preg_match('/^\d+$/', $searchData['pageno']) ? $searchData['pageno'] : 1,
+            !empty($searchData['pageno']) && preg_match('/^\d+$/', (string) $searchData['pageno']) ? $searchData['pageno'] : 1,
             !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
         );
 
@@ -213,8 +205,6 @@ class ProductController extends AbstractController
      *
      * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      *
-     * @param Request $request
-     * @param Product $Product
      *
      * @return array
      */
@@ -449,7 +439,6 @@ class ProductController extends AbstractController
     /**
      * 閲覧可能な商品かどうかを判定
      *
-     * @param Product $Product
      *
      * @return bool 閲覧可能な場合はtrue
      */

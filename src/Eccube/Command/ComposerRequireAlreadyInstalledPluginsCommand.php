@@ -29,34 +29,16 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
     protected static $defaultName = 'eccube:composer:require-already-installed';
 
     /**
-     * @var ComposerApiService
-     */
-    private $composerService;
-
-    /**
-     * @var PluginApiService
-     */
-    private $pluginApiService;
-
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
-
-    /**
      * @var SymfonyStyle
      */
     private $io;
 
     public function __construct(
-        ComposerApiService $composerService,
-        PluginRepository $pluginRepository,
-        PluginApiService $pluginApiService,
+        private readonly ComposerApiService $composerService,
+        private readonly PluginRepository $pluginRepository,
+        private readonly PluginApiService $pluginApiService,
     ) {
         parent::__construct();
-        $this->composerService = $composerService;
-        $this->pluginApiService = $pluginApiService;
-        $this->pluginRepository = $pluginRepository;
     }
 
     public function initialize(InputInterface $input, OutputInterface $output)
@@ -75,7 +57,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $Plugins = $this->pluginRepository->matching($criteria);
 
         foreach ($Plugins as $Plugin) {
-            $packageNames[] = 'ec-cube/'.strtolower($Plugin->getCode()).':'.$Plugin->getVersion();
+            $packageNames[] = 'ec-cube/'.strtolower((string) $Plugin->getCode()).':'.$Plugin->getVersion();
             $data = $this->pluginApiService->getPlugin($Plugin->getCode());
             if (isset($data['version_check']) && !$data['version_check']) {
                 $unSupportedPlugins[] = $Plugin;

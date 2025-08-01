@@ -71,7 +71,6 @@ class TwoFactorAuthService
     /**
      * constructor.
      *
-     * @param EccubeConfig $eccubeConfig
      * @param UserPasswordHasherInterface $passwordHasher
      */
     public function __construct(

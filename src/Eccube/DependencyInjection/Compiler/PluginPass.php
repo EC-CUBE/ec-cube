@@ -53,7 +53,7 @@ class PluginPass implements CompilerPassInterface
             foreach ($plugins as $plugin) {
                 $namespace = 'Plugin\\'.$plugin.'\\';
 
-                if (false !== \strpos($class, $namespace)) {
+                if (str_contains($class, $namespace)) {
                     foreach ($definition->getTags() as $tag => $attr) {
                         // PluginManagerからレポジトリを取得する場合があるため,
                         // doctrine.repository_serviceタグはスキップする.

@@ -23,17 +23,12 @@ class AnnotationReaderFacade
     /** @var Reader */
     private static $Reader;
 
-    /**
-     * @param Reader $Reader
-     */
     public function __construct(Reader $Reader)
     {
         self::$Reader = $Reader;
     }
 
     /**
-     * @param Reader $Reader
-     *
      * @return AnnotationReaderFacade|null
      */
     public static function init(Reader $Reader)

@@ -34,7 +34,7 @@ class OrderItemType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Eccube\Entity\OrderItem',
+                'data_class' => \Eccube\Entity\OrderItem::class,
             ]
         );
     }

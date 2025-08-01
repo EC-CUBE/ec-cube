@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\MailTemplate')) {
+if (!class_exists(\Eccube\Entity\MailTemplate::class)) {
     /**
      * MailTemplate
      *
@@ -29,14 +29,14 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MailTemplateRepository")
      */
-    class MailTemplate extends AbstractEntity
+    class MailTemplate extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
-            return $this->getName() ? $this->getName() : '';
+            return $this->getName() ?: '';
         }
 
         /**
@@ -239,7 +239,6 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return MailTemplate
          */
@@ -269,8 +268,6 @@ if (!class_exists('\Eccube\Entity\MailTemplate')) {
         }
 
         /**
-         * @param bool $deletable
-         *
          * @return $this
          */
         public function setDeletable(bool $deletable): self

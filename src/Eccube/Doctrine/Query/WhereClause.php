@@ -21,23 +21,14 @@ use Doctrine\ORM\QueryBuilder;
  */
 class WhereClause
 {
-    private $expr;
-
-    /**
-     * @var array
-     */
-    private $params;
-
     /**
      * WhereClause constructor.
      *
      * @param $expr
      * @param array $params
      */
-    private function __construct($expr, $params = null)
+    private function __construct(private $expr, private $params = null)
     {
-        $this->expr = $expr;
-        $this->params = $params;
     }
 
     /**

@@ -29,8 +29,6 @@ class EmptyItemsValidator extends ItemHolderValidator
 
     /**
      * EmptyItemsProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

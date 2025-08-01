@@ -61,9 +61,6 @@ class LogListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RequestEvent $event
-     */
     public function onKernelRequestEarly(RequestEvent $event)
     {
         if (!$event->isMainRequest()) {
@@ -98,9 +95,6 @@ class LogListener implements EventSubscriberInterface
         return $request->attributes->get('_route');
     }
 
-    /**
-     * @param ControllerEvent $event
-     */
     public function onKernelController(ControllerEvent $event)
     {
         if (!$event->isMainRequest()) {
@@ -133,9 +127,6 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('PROCESS END', [$route]);
     }
 
-    /**
-     * @param ExceptionEvent $event
-     */
     public function onKernelException(ExceptionEvent $event)
     {
         $e = $event->getThrowable();
@@ -144,7 +135,7 @@ class LogListener implements EventSubscriberInterface
         } else {
             $message = sprintf(
                 '%s: %s (uncaught exception) at %s line %s',
-                get_class($e),
+                $e::class,
                 $e->getMessage(),
                 $e->getFile(),
                 $e->getLine()

@@ -18,12 +18,8 @@ use Twig\Sandbox\SecurityPolicyInterface;
 
 class SecurityPolicyDecorator implements SecurityPolicyInterface
 {
-    /** @var BasePolicy */
-    private $securityPolicy;
-
-    public function __construct(BasePolicy $securityPolicy)
+    public function __construct(private readonly BasePolicy $securityPolicy)
     {
-        $this->securityPolicy = $securityPolicy;
     }
 
     public function checkSecurity($tags, $filters, $functions): void

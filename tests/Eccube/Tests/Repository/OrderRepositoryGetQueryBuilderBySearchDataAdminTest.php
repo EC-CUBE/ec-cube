@@ -400,9 +400,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /**
      * @dataProvider dataFormDateProvider
      *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
      * @param int $OrderStatusId
      */
     public function testDate(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
@@ -453,11 +450,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     /**
      * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     * @param int|null $OrderStatusId
      */
     public function testDateTime(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
@@ -559,8 +551,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @param array $searchPaymentNos
-     * @param int $expected
      *
      * @dataProvider dataPaymentProvider
      */
@@ -579,9 +569,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // Paymentの検索リストを作成
-        $Payments = array_filter($Payments, function ($Payment) use ($searchPaymentNos) {
-            return in_array($Payment->getId(), $searchPaymentNos);
-        });
+        $Payments = array_filter($Payments, fn($Payment) => in_array($Payment->getId(), $searchPaymentNos));
 
         // 検索
         $this->searchData = [
@@ -656,8 +644,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @param array $checks
-     * @param int $expected
      *
      * @dataProvider dataShippingMailProvider
      */

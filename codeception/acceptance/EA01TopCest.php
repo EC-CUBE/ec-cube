@@ -56,9 +56,7 @@ class EA01TopCest
 
         // TOP画面に表示される新規受付数が、実際の新規受付数と一致することを確認
         $findOrders = Fixtures::get('findOrders');
-        $NewOrders = array_filter($findOrders(), function ($Order) {
-            return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
-        });
+        $NewOrders = array_filter($findOrders(), fn($Order) => $Order->getOrderStatus()->getId() == OrderStatus::NEW);
         $I->see((string) count($NewOrders), TopPage::$受付状況_新規受付数);
 
         // 新規受付をクリックすると「受注管理＞新規受付」のページに遷移することを確認

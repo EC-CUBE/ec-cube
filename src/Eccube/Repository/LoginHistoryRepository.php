@@ -27,19 +27,13 @@ use Eccube\Util\StringUtil;
 class LoginHistoryRepository extends AbstractRepository
 {
     /**
-     * @var Queries
-     */
-    private $queries;
-
-    /**
      * LoginHistoryRepository constructor.
      */
     public function __construct(
         RegistryInterface $registry,
-        Queries $queries,
+        private readonly Queries $queries,
     ) {
         parent::__construct($registry, LoginHistory::class);
-        $this->queries = $queries;
     }
 
     /**

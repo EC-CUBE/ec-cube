@@ -30,10 +30,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
         parent::__construct($registry, CustomerFavoriteProduct::class);
     }
 
-    /**
-     * @param \Eccube\Entity\Customer $Customer
-     * @param \Eccube\Entity\Product  $Product
-     */
     public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
     {
         if ($this->isFavorite($Customer, $Product)) {
@@ -50,8 +46,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  \Eccube\Entity\Product  $Product
      *
      * @return bool
      */
@@ -72,8 +66,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
-     *
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)

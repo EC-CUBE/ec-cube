@@ -31,8 +31,6 @@ class PriceType extends AbstractType
 
     /**
      * PriceType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {

@@ -45,10 +45,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * PaymentChargePreprocessor constructor.
-     *
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxDisplayTypeRepository $taxDisplayTypeRepository
-     * @param TaxTypeRepository $taxTypeRepository
      */
     public function __construct(
         OrderItemTypeRepository $orderItemTypeRepository,
@@ -88,8 +84,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * Add charge item to item holder
-     *
-     * @param ItemHolderInterface $itemHolder
      */
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {

@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-if (!class_exists('\Eccube\Entity\Customer')) {
+if (!class_exists(\Eccube\Entity\Customer::class)) {
     /**
      * Customer
      *
@@ -35,7 +35,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
-    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         /**
          * @var int
@@ -324,7 +324,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return $this->getName01().' '.$this->getName02();
         }
@@ -637,8 +637,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         }
 
         /**
-         * @param string|null $password
-         *
          * @return $this
          */
         public function setPlainPassword(?string $password): self
@@ -947,7 +945,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return Customer
          */
@@ -961,7 +958,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Remove customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -983,7 +979,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add customerAddress.
          *
-         * @param CustomerAddress $customerAddress
          *
          * @return Customer
          */
@@ -997,7 +992,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Remove customerAddress.
          *
-         * @param CustomerAddress $customerAddress
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1019,7 +1013,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add order.
          *
-         * @param Order $order
          *
          * @return Customer
          */
@@ -1033,7 +1026,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Remove order.
          *
-         * @param Order $order
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1055,7 +1047,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set status.
          *
-         * @param Master\CustomerStatus|null $status
          *
          * @return Customer
          */
@@ -1079,7 +1070,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set sex.
          *
-         * @param Master\Sex|null $sex
          *
          * @return Customer
          */
@@ -1103,7 +1093,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set job.
          *
-         * @param Master\Job|null $job
          *
          * @return Customer
          */
@@ -1127,7 +1116,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
          *
          * @return Customer
          */
@@ -1151,7 +1139,6 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
          *
          * @return Customer
          */
@@ -1232,11 +1219,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          */
         public function unserialize($serialized)
         {
-            list(
-                $this->id,
-                $this->email,
-                $this->password,
-                $this->salt) = unserialize($serialized);
+            [$this->id, $this->email, $this->password, $this->salt] = unserialize($serialized);
         }
 
         public function getUserIdentifier(): string

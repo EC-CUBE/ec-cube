@@ -33,7 +33,6 @@ class AbstractCsvImportController extends AbstractController
     /**
      * アップロードされたCSVファイルの行ごとの処理
      *
-     * @param UploadedFile $formFile
      *
      * @return CsvImportService|bool
      */
@@ -85,7 +84,7 @@ class AbstractCsvImportController extends AbstractController
             try {
                 $fs = new Filesystem();
                 $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // エラーが発生しても無視する
             }
         }

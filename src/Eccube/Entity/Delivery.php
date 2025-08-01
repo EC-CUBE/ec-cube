@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Delivery')) {
+if (!class_exists(\Eccube\Entity\Delivery::class)) {
     /**
      * Delivery
      *
@@ -29,12 +29,12 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryRepository")
      */
-    class Delivery extends AbstractEntity
+    class Delivery extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->name;
         }
@@ -346,7 +346,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Add paymentOption.
          *
-         * @param PaymentOption $paymentOption
          *
          * @return Delivery
          */
@@ -360,7 +359,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Remove paymentOption.
          *
-         * @param PaymentOption $paymentOption
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -382,7 +380,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Add deliveryFee.
          *
-         * @param DeliveryFee $deliveryFee
          *
          * @return Delivery
          */
@@ -396,7 +393,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Remove deliveryFee.
          *
-         * @param DeliveryFee $deliveryFee
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -418,7 +414,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Add deliveryTime.
          *
-         * @param DeliveryTime $deliveryTime
          *
          * @return Delivery
          */
@@ -432,7 +427,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Remove deliveryTime.
          *
-         * @param DeliveryTime $deliveryTime
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -454,7 +448,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return Delivery
          */
@@ -478,7 +471,6 @@ if (!class_exists('\Eccube\Entity\Delivery')) {
         /**
          * Set saleType.
          *
-         * @param Master\SaleType|null $saleType
          *
          * @return Delivery
          */

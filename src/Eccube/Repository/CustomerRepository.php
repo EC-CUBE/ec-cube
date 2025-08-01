@@ -136,7 +136,7 @@ class CustomerRepository extends AbstractRepository
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            $id = preg_match('/^\d{0,10}$/', (string) $clean_key_multi) ? $clean_key_multi : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
@@ -427,7 +427,6 @@ class CustomerRepository extends AbstractRepository
      * 仮会員, 本会員の会員を返す.
      * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
      *
-     * @param array $criteria
      *
      * @return Customer[]
      */

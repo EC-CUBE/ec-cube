@@ -167,19 +167,16 @@ class PurchaseFlowTest_ItemPreprocessor implements ItemPreprocessor
 
 class PurchaseFlowTest_FailValidator extends ItemValidator
 {
-    private $errorMessage;
-
     /**
      * PurchaseFlowTest_FailProcessor constructor.
      *
      * @param $errorMessage
      */
-    public function __construct($errorMessage)
+    public function __construct(private $errorMessage)
     {
-        $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): never
     {
         throw new InvalidItemException($this->errorMessage);
     }
@@ -187,19 +184,16 @@ class PurchaseFlowTest_FailValidator extends ItemValidator
 
 class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
 {
-    private $errorMessage;
-
     /**
      * PurchaseFlowTest_FailProcessor constructor.
      *
      * @param $errorMessage
      */
-    public function __construct($errorMessage)
+    public function __construct(private $errorMessage)
     {
-        $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context): never
     {
         // TODO ItemHolerValidateException が必要か検討
         throw new InvalidItemException($this->errorMessage);

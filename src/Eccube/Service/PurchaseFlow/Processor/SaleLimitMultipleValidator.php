@@ -27,8 +27,6 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
 
     /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
     public function __construct(ProductClassRepository $productClassRepository)
     {

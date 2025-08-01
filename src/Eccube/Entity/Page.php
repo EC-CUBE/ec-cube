@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Page')) {
+if (!class_exists(\Eccube\Entity\Page::class)) {
     /**
      * Page
      *
@@ -467,7 +467,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Add pageLayoutLayout
          *
-         * @param PageLayout $PageLayout
          *
          * @return Page
          */
@@ -480,8 +479,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
          */
         public function removePageLayout(PageLayout $PageLayout)
         {
@@ -491,7 +488,6 @@ if (!class_exists('\Eccube\Entity\Page')) {
         /**
          * Set MasterPage.
          *
-         * @param Page|null $page
          *
          * @return Page
          */

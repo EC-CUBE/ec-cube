@@ -40,8 +40,6 @@ class MailController extends AbstractController
 
     /**
      * MailController constructor.
-     *
-     * @param MailTemplateRepository $mailTemplateRepository
      */
     public function __construct(MailTemplateRepository $mailTemplateRepository)
     {
@@ -56,7 +54,7 @@ class MailController extends AbstractController
      */
     public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null)
     {
-        $Mail = $Mail ?? new MailTemplate();
+        $Mail ??= new MailTemplate();
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 

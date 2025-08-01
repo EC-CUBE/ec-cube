@@ -29,8 +29,6 @@ class CategoryType extends AbstractType
 
     /**
      * CategoryType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -60,7 +58,7 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Category',
+            'data_class' => \Eccube\Entity\Category::class,
         ]);
     }
 

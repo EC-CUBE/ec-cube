@@ -370,7 +370,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         // 商品作成時間同じにする
         $QueryBuilder = $this->entityManager->createQueryBuilder();
-        $QueryBuilder->update('Eccube\Entity\Product', 'p');
+        $QueryBuilder->update(\Eccube\Entity\Product::class, 'p');
         $QueryBuilder->set('p.create_date', ':createDate');
         $QueryBuilder->setParameter(':createDate', new \DateTime());
         $QueryBuilder->getQuery()->execute();

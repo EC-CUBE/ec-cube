@@ -44,7 +44,6 @@ class BlockType extends AbstractType
      * BlockType constructor.
      *
      * @param $entityManager
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
     {
@@ -91,7 +90,7 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('DeviceType', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\DeviceType',
+                'class' => \Eccube\Entity\Master\DeviceType::class,
                 'choice_label' => 'id',
             ])
             ->add('id', HiddenType::class)
@@ -103,7 +102,7 @@ class BlockType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('b')
-                    ->from('Eccube\\Entity\\Block', 'b')
+                    ->from(\Eccube\Entity\Block::class, 'b')
                     ->where('b.file_name = :file_name')
                     ->setParameter('file_name', $file_name)
                     ->andWhere('b.DeviceType = :DeviceType')

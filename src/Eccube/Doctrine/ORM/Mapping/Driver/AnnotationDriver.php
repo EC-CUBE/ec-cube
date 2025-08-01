@@ -57,7 +57,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
             foreach ($iterator as $file) {
                 $sourceFile = $file[0];
 
-                if (!preg_match('(^phar:)i', $sourceFile)) {
+                if (!preg_match('(^phar:)i', (string) $sourceFile)) {
                     $sourceFile = realpath($sourceFile);
                 }
 
@@ -65,7 +65,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                     $exclude = str_replace('\\', '/', realpath($excludePath));
                     $current = str_replace('\\', '/', $sourceFile);
 
-                    if (strpos($current, $exclude) !== false) {
+                    if (str_contains($current, $exclude)) {
                         continue 2;
                     }
                 }
@@ -77,7 +77,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                     $projectDir = str_replace('\\', '/', $projectDir);
                 }
                 // Replace /path/to/ec-cube to proxies path
-                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename((string) $sourceFile);
                 if (file_exists($proxyFile)) {
                     require_once $proxyFile;
 

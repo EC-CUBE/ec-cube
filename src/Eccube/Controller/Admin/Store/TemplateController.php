@@ -44,9 +44,6 @@ class TemplateController extends AbstractController
 
     /**
      * TemplateController constructor.
-     *
-     * @param TemplateRepository $templateRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         TemplateRepository $templateRepository,
@@ -63,7 +60,6 @@ class TemplateController extends AbstractController
      *
      * @Template("@admin/Store/template.twig")
      *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -108,8 +104,6 @@ class TemplateController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"}, methods={"GET"})
      *
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
      *
      * @return BinaryFileResponse
      */
@@ -215,7 +209,6 @@ class TemplateController extends AbstractController
      *
      * @Template("@admin/Store/template_add.twig")
      *
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -263,7 +256,7 @@ class TemplateController extends AbstractController
 
             // 一時ディレクトリへ解凍する.
             try {
-                if (strtolower($formFile->getClientOriginalExtension()) === 'zip') {
+                if (strtolower((string) $formFile->getClientOriginalExtension()) === 'zip') {
                     $zip = new \ZipArchive();
                     $zip->open($tmpDir.'/'.$archive);
                     $zip->extractTo($tmpDir);
@@ -272,7 +265,7 @@ class TemplateController extends AbstractController
                     $phar = new \PharData($tmpDir.'/'.$archive);
                     $phar->extractTo($tmpDir, null, true);
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $form['file']->addError(new FormError(trans('admin.common.upload_error')));
 
                 return [

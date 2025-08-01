@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\MailHistory')) {
+if (!class_exists(\Eccube\Entity\MailHistory::class)) {
     /**
      * MailHistory
      *
@@ -29,12 +29,12 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
      */
-    class MailHistory extends AbstractEntity
+    class MailHistory extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getMailSubject();
         }
@@ -211,7 +211,6 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Set order.
          *
-         * @param Order|null $order
          *
          * @return MailHistory
          */
@@ -235,7 +234,6 @@ if (!class_exists('\Eccube\Entity\MailHistory')) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
          *
          * @return MailHistory
          */

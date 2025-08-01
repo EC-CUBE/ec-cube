@@ -68,7 +68,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPageInvalid()
     {
-        $PageLayout = $this->entityManager->getRepository('Eccube\Entity\PageLayout')
+        $PageLayout = $this->entityManager->getRepository(\Eccube\Entity\PageLayout::class)
             ->findOneBy([], ['page_id' => 'DESC']);
         $id = $PageLayout->getPageId() + 1;
 

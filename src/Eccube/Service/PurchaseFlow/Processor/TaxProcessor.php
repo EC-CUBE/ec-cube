@@ -49,11 +49,6 @@ class TaxProcessor implements ItemHolderPreprocessor
 
     /**
      * TaxProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param TaxRuleService $taxRuleService
-     * @param OrderHelper $orderHelper
      */
     public function __construct(
         EntityManagerInterface $entityManager,

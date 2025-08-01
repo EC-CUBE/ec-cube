@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\Plugin')) {
+if (!class_exists(\Eccube\Entity\Plugin::class)) {
     /**
      * Plugin
      *
@@ -241,7 +241,6 @@ if (!class_exists('\Eccube\Entity\Plugin')) {
         /**
          * Set initialized.
          *
-         * @param bool $initialized
          *
          * @return Plugin
          */

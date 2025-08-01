@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\ProductCategory')) {
+if (!class_exists(\Eccube\Entity\ProductCategory::class)) {
     /**
      * ProductCategory
      *
@@ -128,7 +128,6 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
         /**
          * Set product.
          *
-         * @param Product|null $product
          *
          * @return ProductCategory
          */
@@ -152,7 +151,6 @@ if (!class_exists('\Eccube\Entity\ProductCategory')) {
         /**
          * Set category.
          *
-         * @param Category|null $category
          *
          * @return ProductCategory
          */

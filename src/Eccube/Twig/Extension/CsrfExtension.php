@@ -27,8 +27,6 @@ class CsrfExtension extends AbstractExtension
 
     /**
      * CsrfExtension constructor.
-     *
-     * @param CsrfTokenManagerInterface $tokenManager
      */
     public function __construct(CsrfTokenManagerInterface $tokenManager)
     {
@@ -41,7 +39,7 @@ class CsrfExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('csrf_token_for_anchor', [$this, 'getCsrfTokenForAnchor'], ['is_safe' => ['all']]),
+            new TwigFunction('csrf_token_for_anchor', $this->getCsrfTokenForAnchor(...), ['is_safe' => ['all']]),
         ];
     }
 
