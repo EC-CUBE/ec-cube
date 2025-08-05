@@ -13,10 +13,21 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
+use Eccube\Entity\ItemHolderInterface;
+
 class PurchaseFlowResult
 {
     /** @var ProcessResult[] */
     private $processResults = [];
+
+    /**
+     * PurchaseFlowResult constructor.
+     *
+     * @param ItemHolderInterface $itemHolder
+     */
+    public function __construct(private readonly ItemHolderInterface $itemHolder)
+    {
+    }
 
     public function addProcessResult(ProcessResult $processResult)
     {
