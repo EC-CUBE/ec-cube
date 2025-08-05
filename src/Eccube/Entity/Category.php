@@ -16,7 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Category::class)) {
+if (!class_exists(Category::class)) {
     /**
      * Category
      *
@@ -56,6 +56,7 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
 
         /**
          * @param  int                     $sortNo
+         *
          * @return Category
          */
         public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
@@ -372,7 +373,6 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
         /**
          * Add productCategory.
          *
-         *
          * @return Category
          */
         public function addProductCategory(ProductCategory $productCategory)
@@ -384,7 +384,6 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
 
         /**
          * Remove productCategory.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -406,7 +405,6 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
         /**
          * Add child.
          *
-         *
          * @return Category
          */
         public function addChild(Category $child)
@@ -418,7 +416,6 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
 
         /**
          * Remove child.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -439,7 +436,6 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
 
         /**
          * Set parent.
-         *
          *
          * @return Category
          */
@@ -462,7 +458,6 @@ if (!class_exists(\Eccube\Entity\Category::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return Category
          */

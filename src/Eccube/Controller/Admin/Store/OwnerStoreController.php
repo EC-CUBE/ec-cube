@@ -73,7 +73,6 @@ class OwnerStoreController extends AbstractController
     /**
      * OwnerStoreController constructor.
      *
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -210,8 +209,8 @@ class OwnerStoreController extends AbstractController
      *
      * @Template("@admin/Store/plugin_confirm.twig")
      *
-     *
      * @return array
+     *
      * @throws \Eccube\Exception\PluginException
      */
     public function doConfirm(Request $request, $id)
@@ -237,7 +236,6 @@ class OwnerStoreController extends AbstractController
      * Api Install plugin by composer connect with package repo
      *
      * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -288,7 +286,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUninstall(Plugin $Plugin)
@@ -336,7 +333,6 @@ class OwnerStoreController extends AbstractController
      * オーナーズブラグインインストール、アップデート
      *
      * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -406,7 +402,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiSchemaUpdate(Request $request)
@@ -456,7 +451,6 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function apiUpdate(Request $request)
@@ -496,7 +490,6 @@ class OwnerStoreController extends AbstractController
      * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm", methods={"GET"})
      *
      * @Template("@admin/Store/plugin_confirm.twig")
-     *
      *
      * @return array
      */

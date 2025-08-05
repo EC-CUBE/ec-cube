@@ -177,7 +177,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => \Eccube\Entity\Order::class,
+                'data_class' => Order::class,
                 'skip_add_form' => false,
             ]
         );
@@ -213,7 +213,6 @@ class OrderType extends AbstractType
 
     /**
      * 出荷に紐づく配送方法を取得する.
-     *
      *
      * @return Delivery[]
      */
@@ -274,6 +273,7 @@ class OrderType extends AbstractType
      * 支払い方法の利用条件でフィルタをかける.
      *
      * @param $total
+     *
      * @return Payment[]
      */
     private function filterPayments(ArrayCollection $Payments, $total)
@@ -293,7 +293,7 @@ class OrderType extends AbstractType
 
             return true;
         })->toArray();
-        usort($PaymentArrays, fn(Payment $a, Payment $b) => $a->getSortNo() < $b->getSortNo() ? 1 : -1);
+        usort($PaymentArrays, fn (Payment $a, Payment $b) => $a->getSortNo() < $b->getSortNo() ? 1 : -1);
 
         return $PaymentArrays;
     }

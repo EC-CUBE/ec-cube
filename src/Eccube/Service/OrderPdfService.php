@@ -613,7 +613,7 @@ class OrderPdfService extends Fpdi
         if (270 <= $this->GetY()) {
             $this->Cell(0, 0, '', 0, 1, 'C', 0, '');
         }
-        $width = array_reduce($this->widthCell, fn($n, $w) => $n + $w);
+        $width = array_reduce($this->widthCell, fn ($n, $w) => $n + $w);
         $this->SetX(20);
         $message = '';
         foreach ($Order->getTotalByTaxRate() as $rate => $total) {

@@ -66,8 +66,8 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
             $stock = $ProductClass->getStock();
             $Items = $To->getProductOrderItems();
-            $Items = array_filter($Items, fn($Item) => $Item->getProductClass()->getId() == $id);
-            $toQuantity = array_reduce($Items, fn($quantity, $Item) => $quantity += $Item->getQuantity(), 0);
+            $Items = array_filter($Items, fn ($Item) => $Item->getProductClass()->getId() == $id);
+            $toQuantity = array_reduce($Items, fn ($quantity, $Item) => $quantity += $Item->getQuantity(), 0);
 
             // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL

@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\ProductImage::class)) {
+if (!class_exists(ProductImage::class)) {
     /**
      * ProductImage
      *
@@ -180,7 +180,6 @@ if (!class_exists(\Eccube\Entity\ProductImage::class)) {
         /**
          * Set product.
          *
-         *
          * @return ProductImage
          */
         public function setProduct(?Product $product = null)
@@ -202,7 +201,6 @@ if (!class_exists(\Eccube\Entity\ProductImage::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return ProductImage
          */

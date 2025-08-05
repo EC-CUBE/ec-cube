@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;

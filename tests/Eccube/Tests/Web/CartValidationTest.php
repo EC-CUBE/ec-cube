@@ -2613,7 +2613,6 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     *
      * @return Crawler
      */
     protected function scenarioCartDown(Customer $Customer, ProductClass $ProductClass)
@@ -2628,6 +2627,7 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * @param int     $display
+     *
      * @return Product
      */
     protected function changeStatus(Product $Product, $display = ProductStatus::DISPLAY_SHOW)
@@ -2644,6 +2644,7 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * @param int          $stock
+     *
      * @return ProductClass
      */
     protected function changeStock(ProductClass $ProductClass, $stock = 0)
@@ -2698,7 +2699,6 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * エラーに表示する商品名を取得
-     *
      *
      * @return string
      */

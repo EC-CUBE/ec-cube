@@ -101,13 +101,13 @@ class ProductType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => fn(?Category $Category = null) => $Category ? $Category->getId() : null,
+                'choice_value' => fn (?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
                 'class' => \Eccube\Entity\Tag::class,
-                'query_builder' => fn($er) => $er->createQueryBuilder('t')
+                'query_builder' => fn ($er) => $er->createQueryBuilder('t')
                 ->orderBy('t.sort_no', 'DESC'),
                 'required' => false,
                 'multiple' => true,

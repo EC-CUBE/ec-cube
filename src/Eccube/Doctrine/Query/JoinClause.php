@@ -84,7 +84,6 @@ class JoinClause
     /**
      * WHERE句を追加します。
      *
-     *
      * @return $this
      */
     public function addWhere(WhereClause $whereClause): self
@@ -96,7 +95,6 @@ class JoinClause
 
     /**
      * ORDER BY句を追加します。
-     *
      *
      * @return $this
      */

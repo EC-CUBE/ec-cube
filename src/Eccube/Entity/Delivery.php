@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Delivery::class)) {
+if (!class_exists(Delivery::class)) {
     /**
      * Delivery
      *
@@ -346,7 +346,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
         /**
          * Add paymentOption.
          *
-         *
          * @return Delivery
          */
         public function addPaymentOption(PaymentOption $paymentOption)
@@ -358,7 +357,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
 
         /**
          * Remove paymentOption.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -380,7 +378,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
         /**
          * Add deliveryFee.
          *
-         *
          * @return Delivery
          */
         public function addDeliveryFee(DeliveryFee $deliveryFee)
@@ -392,7 +389,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
 
         /**
          * Remove deliveryFee.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -414,7 +410,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
         /**
          * Add deliveryTime.
          *
-         *
          * @return Delivery
          */
         public function addDeliveryTime(DeliveryTime $deliveryTime)
@@ -426,7 +421,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
 
         /**
          * Remove deliveryTime.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -447,7 +441,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return Delivery
          */
@@ -470,7 +463,6 @@ if (!class_exists(\Eccube\Entity\Delivery::class)) {
 
         /**
          * Set saleType.
-         *
          *
          * @return Delivery
          */

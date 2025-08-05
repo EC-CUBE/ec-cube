@@ -47,6 +47,7 @@ class OrderStatusRepository extends AbstractRepository
      * @param int $offset
      *
      * @return array
+     *
      * @see EntityRepository::findBy()
      */
     public function findNotContainsBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)

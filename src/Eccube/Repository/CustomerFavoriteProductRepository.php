@@ -46,7 +46,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     *
      * @return bool
      */
     public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)

@@ -388,7 +388,7 @@ class ComposerApiService implements ComposerServiceInterface
         if (array_key_exists('eccube', $config['repositories'])
             && array_key_exists('exclude', $config['repositories']['eccube'])) {
             $exclude = array_map(
-                fn($package) => trim($package),
+                fn ($package) => trim($package),
                 explode(',', str_replace(['[', ']'], '', $config['repositories']['eccube']['exclude']))
             );
         }

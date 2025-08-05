@@ -691,8 +691,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testStatus()
     {
-        $Active = $this->entityManager->getRepository(\Eccube\Entity\Master\CustomerStatus::class)->find(CustomerStatus::ACTIVE);
-        $NonActive = $this->entityManager->getRepository(\Eccube\Entity\Master\CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Active = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+        $NonActive = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($Active);
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();
@@ -709,7 +709,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testStatusWithNonActive()
     {
-        $NonActive = $this->entityManager->getRepository(\Eccube\Entity\Master\CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $NonActive = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($NonActive);
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();

@@ -187,9 +187,9 @@ class InstallController extends AbstractController
 
         $projectDir = $this->getParameter('kernel.project_dir');
 
-        $eccubeDirs = array_map(fn($dir) => $projectDir.'/'.$dir, $this->eccubeDirs);
+        $eccubeDirs = array_map(fn ($dir) => $projectDir.'/'.$dir, $this->eccubeDirs);
 
-        $eccubeFiles = array_map(fn($file) => $projectDir.'/'.$file, $this->eccubeFiles);
+        $eccubeFiles = array_map(fn ($file) => $projectDir.'/'.$file, $this->eccubeFiles);
 
         // ルートディレクトリの書き込み権限をチェック
         if (!is_writable($projectDir)) {

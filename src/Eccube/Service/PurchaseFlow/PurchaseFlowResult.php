@@ -13,8 +13,6 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-use Eccube\Entity\ItemHolderInterface;
-
 class PurchaseFlowResult
 {
     /** @var ProcessResult[] */
@@ -30,7 +28,7 @@ class PurchaseFlowResult
      */
     public function getErrors()
     {
-        return array_filter($this->processResults, fn(ProcessResult $processResult) => $processResult->isError());
+        return array_filter($this->processResults, fn (ProcessResult $processResult) => $processResult->isError());
     }
 
     /**
@@ -38,7 +36,7 @@ class PurchaseFlowResult
      */
     public function getWarning()
     {
-        return array_filter($this->processResults, fn(ProcessResult $processResult) => $processResult->isWarning());
+        return array_filter($this->processResults, fn (ProcessResult $processResult) => $processResult->isWarning());
     }
 
     public function hasError()

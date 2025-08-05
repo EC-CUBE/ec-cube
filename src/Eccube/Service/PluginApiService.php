@@ -33,7 +33,6 @@ class PluginApiService
     /**
      * PluginApiService constructor.
      *
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

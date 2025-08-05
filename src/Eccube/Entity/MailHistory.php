@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\MailHistory::class)) {
+if (!class_exists(MailHistory::class)) {
     /**
      * MailHistory
      *
@@ -211,7 +211,6 @@ if (!class_exists(\Eccube\Entity\MailHistory::class)) {
         /**
          * Set order.
          *
-         *
          * @return MailHistory
          */
         public function setOrder(?Order $order = null)
@@ -233,7 +232,6 @@ if (!class_exists(\Eccube\Entity\MailHistory::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return MailHistory
          */

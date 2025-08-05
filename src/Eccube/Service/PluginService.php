@@ -205,7 +205,7 @@ class PluginService
             });
 
             if (!empty($notInstalledOrDisabled)) {
-                $names = array_map(fn($p) => $p['name'], $notInstalledOrDisabled);
+                $names = array_map(fn ($p) => $p['name'], $notInstalledOrDisabled);
                 throw new PluginException(implode(', ', $names).'を有効化してください。');
             }
         }
@@ -553,6 +553,7 @@ class PluginService
      * @param bool $force
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function uninstall(Plugin $plugin, $force = true)
@@ -622,7 +623,7 @@ class PluginService
         @mkdir($outputDir);
 
         $enabledPluginCodes = array_map(
-            fn($p) => $p->getCode(),
+            fn ($p) => $p->getCode(),
             $temporary ? $this->pluginRepository->findAll() : $this->pluginRepository->findAllEnabled()
         );
 
@@ -637,7 +638,7 @@ class PluginService
             }
         }
 
-        $enabledPluginEntityDirs = array_map(fn($code) => $this->projectRoot."/app/Plugin/{$code}/Entity", $enabledPluginCodes);
+        $enabledPluginEntityDirs = array_map(fn ($code) => $this->projectRoot."/app/Plugin/{$code}/Entity", $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
             array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
@@ -726,6 +727,7 @@ class PluginService
      * Update plugin
      *
      * @param array  $meta     Config data
+     *
      * @throws \Exception
      */
     public function updatePlugin(Plugin $plugin, $meta)
@@ -885,7 +887,7 @@ class PluginService
     {
         $result = array_keys($packages);
         if ($getVersion) {
-            $result = array_map(fn($package, $version) => $package.':'.$version, array_keys($packages), array_values($packages));
+            $result = array_map(fn ($package, $version) => $package.':'.$version, array_keys($packages), array_values($packages));
         }
 
         return implode(' ', $result);

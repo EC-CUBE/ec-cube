@@ -33,7 +33,6 @@ class AbstractCsvImportController extends AbstractController
     /**
      * アップロードされたCSVファイルの行ごとの処理
      *
-     *
      * @return CsvImportService|bool
      */
     protected function getImportData(UploadedFile $formFile)

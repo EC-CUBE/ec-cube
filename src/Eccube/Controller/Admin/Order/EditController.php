@@ -314,7 +314,7 @@ class EditController extends AbstractController
                                 $returnLink = preg_replace($pattern, '', $returnLink);
                                 $result = $router->match($returnLink);
                                 // パラメータのみ抽出
-                                $params = array_filter($result, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
+                                $params = array_filter($result, fn ($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);
@@ -394,6 +394,7 @@ class EditController extends AbstractController
      * @Template("@admin/Order/search_customer.twig")
      *
      * @param int $page_no
+     *
      * @return array
      */
     public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, $page_no = null)
@@ -486,7 +487,6 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id", methods={"POST"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -643,7 +643,6 @@ class EditController extends AbstractController
      * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type", methods={"POST"})
      *
      * @Template("@admin/Order/order_item_type.twig")
-     *
      *
      * @return array
      */

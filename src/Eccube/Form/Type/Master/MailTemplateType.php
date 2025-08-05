@@ -32,7 +32,7 @@ class MailTemplateType extends AbstractType
             'class' => \Eccube\Entity\MailTemplate::class,
             'placeholder' => 'common.select',
             // なぜかsortNoを持っていない
-            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('mt')
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('mt')
                 ->orderBy('mt.id', 'ASC'),
         ]);
     }

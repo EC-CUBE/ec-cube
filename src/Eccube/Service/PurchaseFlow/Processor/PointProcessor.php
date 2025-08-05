@@ -165,7 +165,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
      *
-     *
      * @return bool
      */
     private function supports(ItemHolderInterface $itemHolder)

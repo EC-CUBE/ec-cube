@@ -67,7 +67,7 @@ class RepeatedEmailType extends AbstractType
             ],
             'error_bubbling' => false,
             'trim' => true,
-            'error_mapping' => fn(Options $options) => ['.' => $options['second_name']],
+            'error_mapping' => fn (Options $options) => ['.' => $options['second_name']],
         ]);
     }
 

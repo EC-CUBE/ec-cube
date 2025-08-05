@@ -60,7 +60,6 @@ class TemplateController extends AbstractController
      *
      * @Template("@admin/Store/template.twig")
      *
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Request $request, CacheUtil $cacheUtil)
@@ -103,7 +102,6 @@ class TemplateController extends AbstractController
      * テンプレート一覧からのダウンロード
      *
      * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"}, methods={"GET"})
-     *
      *
      * @return BinaryFileResponse
      */
@@ -208,7 +206,6 @@ class TemplateController extends AbstractController
      * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install", methods={"GET", "POST"})
      *
      * @Template("@admin/Store/template_add.twig")
-     *
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */

@@ -30,7 +30,7 @@ class PageType extends AbstractType
                 'label' => false,
                 'class' => \Eccube\Entity\Page::class,
                 'choice_label' => 'name',
-                'query_builder' => fn(EntityRepository $er) => $er
+                'query_builder' => fn (EntityRepository $er) => $er
                     ->createQueryBuilder('l')
                     ->where('l.id <> 0')
                     ->orderBy('l.id', 'ASC'),

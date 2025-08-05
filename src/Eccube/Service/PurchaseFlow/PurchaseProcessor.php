@@ -25,14 +25,12 @@ interface PurchaseProcessor
     /**
      * 受注の仮確定処理を行います。
      *
-     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context);
 
     /**
      * 受注の確定処理を行います。
-     *
      *
      * @throws PurchaseException
      */

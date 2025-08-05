@@ -42,7 +42,6 @@ class TagController extends AbstractController
      *
      * @Template("@admin/Product/tag.twig")
      *
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Request $request)

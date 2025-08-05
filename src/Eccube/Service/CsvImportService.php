@@ -381,7 +381,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => 'first', $duplicate1 => 'second', $duplicate2 => 'third'
      *
-     *
      * @return array
      */
     protected function incrementHeaders(array $headers)
@@ -410,7 +409,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * Yields value:
      * $duplicate => ['first', 'second', 'third']
-     *
      *
      * @return array
      */

@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\ProductClass::class)) {
+if (!class_exists(ProductClass::class)) {
     /**
      * ProductClass
      *
@@ -628,7 +628,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
         /**
          * Set productStock.
          *
-         *
          * @return ProductClass
          */
         public function setProductStock(?ProductStock $productStock = null)
@@ -650,7 +649,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
 
         /**
          * Set taxRule.
-         *
          *
          * @return ProductClass
          */
@@ -674,7 +672,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
         /**
          * Set product.
          *
-         *
          * @return ProductClass
          */
         public function setProduct(?Product $product = null)
@@ -696,7 +693,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
 
         /**
          * Set saleType.
-         *
          *
          * @return ProductClass
          */
@@ -720,7 +716,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
         /**
          * Set classCategory1.
          *
-         *
          * @return ProductClass
          */
         public function setClassCategory1(?ClassCategory $classCategory1 = null)
@@ -742,7 +737,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
 
         /**
          * Set classCategory2.
-         *
          *
          * @return ProductClass
          */
@@ -766,7 +760,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
         /**
          * Set deliveryDuration.
          *
-         *
          * @return ProductClass
          */
         public function setDeliveryDuration(?DeliveryDuration $deliveryDuration = null)
@@ -788,7 +781,6 @@ if (!class_exists(\Eccube\Entity\ProductClass::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return ProductClass
          */

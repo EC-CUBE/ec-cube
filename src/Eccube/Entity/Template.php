@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Template::class)) {
+if (!class_exists(Template::class)) {
     /**
      * Template
      *
@@ -211,7 +211,6 @@ if (!class_exists(\Eccube\Entity\Template::class)) {
 
         /**
          * Set deviceType.
-         *
          *
          * @return Template
          */

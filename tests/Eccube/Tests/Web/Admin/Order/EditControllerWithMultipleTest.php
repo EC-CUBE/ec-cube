@@ -459,6 +459,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * OrderItems は、 $Shippings[N]['OrderItems] から生成される.
      *
      * @param array $Shippings お届け先情報の配列
+     *
      * @return array
      */
     public function createFormDataForMultiple(Customer $Customer, array $Shippings)

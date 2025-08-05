@@ -39,6 +39,7 @@ class IntlExtension extends AbstractExtension
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param $date
+     *
      * @return bool|string
      */
     public function date_day(Environment $env, $date)
@@ -57,6 +58,7 @@ class IntlExtension extends AbstractExtension
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param $date
+     *
      * @return bool|string
      */
     public function date_min(Environment $env, $date)
@@ -75,6 +77,7 @@ class IntlExtension extends AbstractExtension
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
      * @param $date
+     *
      * @return bool|string
      */
     public function date_sec(Environment $env, $date)
@@ -88,6 +91,7 @@ class IntlExtension extends AbstractExtension
 
     /**
      * @param $date
+     *
      * @return bool|string
      */
     public function date_day_with_weekday(Environment $env, $date)

@@ -641,7 +641,6 @@ class MailService
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
-     *
      * @throws \Twig_Error
      */
     public function sendShippingNotifyMail(Shipping $Shipping)
@@ -707,7 +706,7 @@ class MailService
      */
     public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false)
     {
-        $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), fn(OrderItem $OrderItem) => $OrderItem->getOrderId() === $Order->getId());
+        $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), fn (OrderItem $OrderItem) => $OrderItem->getOrderId() === $Order->getId());
 
         if (is_null($templateName)) {
             /** @var MailTemplate $MailTemplate */
@@ -838,7 +837,6 @@ class MailService
      * RFC違反のメールの local part を "" で囲む.
      *
      * パラメータ eccube_rfc_email_check == true の場合は変換しない
-     *
      *
      * @return Address
      */

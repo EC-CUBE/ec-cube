@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\ClassName::class)) {
+if (!class_exists(ClassName::class)) {
     /**
      * ClassName
      *
@@ -249,7 +249,6 @@ if (!class_exists(\Eccube\Entity\ClassName::class)) {
         /**
          * Add classCategory.
          *
-         *
          * @return ClassName
          */
         public function addClassCategory(ClassCategory $classCategory)
@@ -261,7 +260,6 @@ if (!class_exists(\Eccube\Entity\ClassName::class)) {
 
         /**
          * Remove classCategory.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -282,7 +280,6 @@ if (!class_exists(\Eccube\Entity\ClassName::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return ClassName
          */

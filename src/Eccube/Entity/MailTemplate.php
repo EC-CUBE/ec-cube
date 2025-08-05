@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\MailTemplate::class)) {
+if (!class_exists(MailTemplate::class)) {
     /**
      * MailTemplate
      *
@@ -238,7 +238,6 @@ if (!class_exists(\Eccube\Entity\MailTemplate::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return MailTemplate
          */

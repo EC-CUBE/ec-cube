@@ -205,7 +205,6 @@ class ProductController extends AbstractController
      *
      * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      *
-     *
      * @return array
      */
     public function detail(Request $request, Product $Product)
@@ -438,7 +437,6 @@ class ProductController extends AbstractController
 
     /**
      * 閲覧可能な商品かどうかを判定
-     *
      *
      * @return bool 閲覧可能な場合はtrue
      */

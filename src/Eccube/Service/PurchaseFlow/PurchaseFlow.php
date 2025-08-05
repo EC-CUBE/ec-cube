@@ -179,7 +179,6 @@ class PurchaseFlow implements \Stringable
     /**
      * 購入フロー仮確定処理.
      *
-     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
@@ -193,7 +192,6 @@ class PurchaseFlow implements \Stringable
 
     /**
      * 購入フロー確定処理.
-     *
      *
      * @throws PurchaseException
      */
@@ -324,7 +322,7 @@ class PurchaseFlow implements \Stringable
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
         if ($itemHolder instanceof Order) {
-            $total = array_reduce($itemHolder->getTaxByTaxRate(), fn($sum, $tax) => $sum + $tax, 0);
+            $total = array_reduce($itemHolder->getTaxByTaxRate(), fn ($sum, $tax) => $sum + $tax, 0);
         } else {
             $total = $itemHolder->getItems()
                 ->reduce(function ($sum, ItemInterface $item) {
@@ -353,7 +351,7 @@ class PurchaseFlow implements \Stringable
      */
     public function dump()
     {
-        $callback = fn($processor) => $processor::class;
+        $callback = fn ($processor) => $processor::class;
         $flows = [
             0 => $this->flowType.' flow',
             'ItemValidator' => $this->itemValidators->map($callback)->toArray(),

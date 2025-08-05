@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\DeliveryTime::class)) {
+if (!class_exists(DeliveryTime::class)) {
     /**
      * DeliveryTime
      *
@@ -130,7 +130,6 @@ if (!class_exists(\Eccube\Entity\DeliveryTime::class)) {
 
         /**
          * Set delivery.
-         *
          *
          * @return DeliveryTime
          */

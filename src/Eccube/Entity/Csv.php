@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Csv::class)) {
+if (!class_exists(Csv::class)) {
     /**
      * Csv
      *
@@ -327,7 +327,6 @@ if (!class_exists(\Eccube\Entity\Csv::class)) {
         /**
          * Set csvType.
          *
-         *
          * @return Csv
          */
         public function setCsvType(?Master\CsvType $csvType = null)
@@ -349,7 +348,6 @@ if (!class_exists(\Eccube\Entity\Csv::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return Csv
          */

@@ -34,7 +34,7 @@ class DeliveryDurationType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'required' => false,
-            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('m')
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('m')
                 ->orderBy('m.sort_no', 'ASC'),
         ]);
     }

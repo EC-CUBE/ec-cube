@@ -97,7 +97,7 @@ class ProductClassController extends AbstractController
         if ($Product->hasProductClass()) {
             // 規格ありの商品は編集画面を表示する.
             $ProductClasses = $Product->getProductClasses()
-                ->filter(fn($pc) => $pc->getClassCategory1() !== null);
+                ->filter(fn ($pc) => $pc->getClassCategory1() !== null);
 
             // 設定されている規格名1, 2を取得(商品規格の規格分類には必ず同じ値がセットされている)
             $FirstProductClass = $ProductClasses->first();
@@ -242,7 +242,6 @@ class ProductClassController extends AbstractController
 
     /**
      * 規格名1/2から, 商品規格の組み合わせを生成する.
-     *
      *
      * @return array|ProductClass[]
      */

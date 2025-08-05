@@ -312,7 +312,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function assertSortedPriceList($order)
     {
-        $values = array_map(fn($s) =>
+        $values = array_map(fn ($s) =>
             // 一覧の購入金額の文字列から金額だけを抽出
             (int) preg_replace('/(\n.*|\D)/', '', $s), $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(5)'));
 

@@ -427,7 +427,6 @@ class CustomerRepository extends AbstractRepository
      * 仮会員, 本会員の会員を返す.
      * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
      *
-     *
      * @return Customer[]
      */
     public function getNonWithdrawingCustomers(array $criteria = [])

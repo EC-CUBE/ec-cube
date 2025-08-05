@@ -125,7 +125,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * CsvImportController constructor.
      *
-     *
      * @throws \Exception
      */
     public function __construct(
@@ -187,8 +186,8 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $getId = fn($item) => $item['id'];
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
+                    $getId = fn ($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $columnHeaders = $data->getColumnHeaders();
 
@@ -699,8 +698,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = fn($item) => $item['id'];
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
+                    $getId = fn ($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -856,8 +855,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = fn($item) => $item['id'];
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
+                    $getId = fn ($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -972,8 +971,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = fn($item) => $item['id'];
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn($value) => $value['required'])));
+                    $getId = fn ($item) => $item['id'];
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -1323,6 +1322,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
+     *
      * @return ProductClass
      */
     protected function createProductClass($row, Product $Product, $data, $headerByKey, $ClassCategory1 = null, $ClassCategory2 = null)
@@ -1923,7 +1923,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split", methods={"POST"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function splitCsv(Request $request)
@@ -1989,7 +1988,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import", methods={"POST"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)
@@ -2028,7 +2026,6 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup", methods={"POST"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */

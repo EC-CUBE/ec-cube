@@ -88,7 +88,7 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('Authority', EntityType::class, [
-                'class' => \Eccube\Entity\Master\Authority::class,
+                'class' => Authority::class,
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => 'admin.common.select',
@@ -97,7 +97,7 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('Work', EntityType::class, [
-                'class' => \Eccube\Entity\Master\Work::class,
+                'class' => Work::class,
                 'expanded' => true,
                 'multiple' => false,
                 'constraints' => [
@@ -171,7 +171,7 @@ class MemberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \Eccube\Entity\Member::class,
+            'data_class' => Member::class,
         ]);
     }
 

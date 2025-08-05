@@ -85,6 +85,7 @@ class NewsController extends AbstractController
      * @Template("@admin/Content/news_edit.twig")
      *
      * @param null $id
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
@@ -147,7 +148,6 @@ class NewsController extends AbstractController
      * 指定した新着情報を削除する。
      *
      * @Route("/%eccube_admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete", methods={"DELETE"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

@@ -269,6 +269,7 @@ class EntryController extends AbstractController
      * 会員登録処理を行う
      *
      * @param $secret_key
+     *
      * @return \Eccube\Entity\Cart|mixed
      */
     private function entryActivate(Request $request, $secret_key)

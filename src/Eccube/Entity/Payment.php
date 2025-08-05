@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Payment::class)) {
+if (!class_exists(Payment::class)) {
     /**
      * Payment
      *
@@ -427,7 +427,6 @@ if (!class_exists(\Eccube\Entity\Payment::class)) {
         /**
          * Add paymentOption.
          *
-         *
          * @return Payment
          */
         public function addPaymentOption(PaymentOption $paymentOption)
@@ -439,7 +438,6 @@ if (!class_exists(\Eccube\Entity\Payment::class)) {
 
         /**
          * Remove paymentOption.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -460,7 +458,6 @@ if (!class_exists(\Eccube\Entity\Payment::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return Payment
          */

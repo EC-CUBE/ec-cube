@@ -181,9 +181,9 @@ abstract class AbstractCommandTest extends EccubeTestCase
                     'console.project_directory' => __DIR__.'/..',
                 ]
             );
-            $app->extend('console.command.twig.debug', fn($command, $app) => new DebugCommand($app['twig']));
+            $app->extend('console.command.twig.debug', fn ($command, $app) => new DebugCommand($app['twig']));
 
-            $app->extend('console.command.twig.lint', fn($command, $app) => new LintCommand($app['twig']));
+            $app->extend('console.command.twig.lint', fn ($command, $app) => new LintCommand($app['twig']));
         }
 
         // Migration

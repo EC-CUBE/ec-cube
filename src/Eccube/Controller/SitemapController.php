@@ -162,7 +162,7 @@ class SitemapController extends AbstractController
         });
 
         // 管理画面から作成されたページ
-        $UserPages = array_filter($Pages, fn(Page $Page) => $Page->getEditType() === Page::EDIT_TYPE_USER);
+        $UserPages = array_filter($Pages, fn (Page $Page) => $Page->getEditType() === Page::EDIT_TYPE_USER);
 
         return $this->outputXml([
             'DefaultPages' => $DefaultPages,
@@ -174,6 +174,7 @@ class SitemapController extends AbstractController
      * Output XML response by data.
      *
      * @param string $template_name
+     *
      * @return Response
      */
     private function outputXml(array $data, $template_name = 'sitemap.xml.twig')

@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\AuthorityRole::class)) {
+if (!class_exists(AuthorityRole::class)) {
     /**
      * AuthorityRole
      *
@@ -172,7 +172,6 @@ if (!class_exists(\Eccube\Entity\AuthorityRole::class)) {
         /**
          * Set authority.
          *
-         *
          * @return AuthorityRole
          */
         public function setAuthority(?Master\Authority $authority = null)
@@ -194,7 +193,6 @@ if (!class_exists(\Eccube\Entity\AuthorityRole::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return AuthorityRole
          */

@@ -117,7 +117,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     /**
      * Create class name
      *
-     *
      * @return ClassName
      */
     protected function createClassName(?Member $Creator = null)
@@ -139,7 +138,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create class category
-     *
      *
      * @return ClassCategory
      */
@@ -165,7 +163,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create product class
-     *
      *
      * @return ProductClass
      */
@@ -214,7 +211,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create product stock
-     *
      *
      * @return ProductStock
      */

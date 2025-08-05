@@ -286,8 +286,8 @@ class ShippingController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail", methods={"GET"})
      *
-     *
      * @return Response
+     *
      * @throws \Twig_Error
      */
     public function previewShippingNotifyMail(Shipping $Shipping)
@@ -298,8 +298,8 @@ class ShippingController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail", methods={"PUT"})
      *
-     *
      * @return JsonResponse
+     *
      * @throws \Twig_Error
      */
     public function notifyMail(Shipping $Shipping)

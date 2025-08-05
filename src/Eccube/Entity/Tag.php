@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Tag::class)) {
+if (!class_exists(Tag::class)) {
     /**
      * Tag
      *
@@ -156,7 +156,6 @@ if (!class_exists(\Eccube\Entity\Tag::class)) {
         /**
          * Add productTag.
          *
-         *
          * @return Tag
          */
         public function addProductTag(ProductTag $productTag)
@@ -168,7 +167,6 @@ if (!class_exists(\Eccube\Entity\Tag::class)) {
 
         /**
          * Remove productTag.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */

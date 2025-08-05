@@ -104,8 +104,7 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * 会員の保有ポイントを減らす.
      *
-     *
-     * @throws PurchaseFlow\PurchaseException
+     * s     * @throws PurchaseFlow\PurchaseException
      */
     public function commitUsePoint(Event $event)
     {
@@ -126,7 +125,6 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 在庫を減らす.
-     *
      *
      * @throws PurchaseFlow\PurchaseException
      */

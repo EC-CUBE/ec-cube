@@ -147,13 +147,13 @@ class AdminController extends AbstractController
     /**
      * 管理画面ホーム
      *
-     *
      * @return array
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @Route("/%eccube_admin_route%/", name="admin_homepage", methods={"GET"})
+     *
      * @Template("@admin/index.twig")
      */
     public function index(Request $request)
@@ -262,8 +262,8 @@ class AdminController extends AbstractController
     /**
      * 売上状況の取得
      *
-     *
      * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale", methods={"GET"})
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function sale(Request $request)
@@ -305,7 +305,6 @@ class AdminController extends AbstractController
      * @Route("/%eccube_admin_route%/change_password", name="admin_change_password", methods={"GET", "POST"})
      *
      * @Template("@admin/change_password.twig")
-     *
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
@@ -361,7 +360,6 @@ class AdminController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock", methods={"GET"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function searchNonStockProducts(Request $request)
@@ -381,7 +379,6 @@ class AdminController extends AbstractController
      * 本会員の検索結果を表示する.
      *
      * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer", methods={"GET"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\CustomerAddress::class)) {
+if (!class_exists(CustomerAddress::class)) {
     /**
      * CustomerAddress
      *
@@ -44,7 +44,6 @@ if (!class_exists(\Eccube\Entity\CustomerAddress::class)) {
         /**
          * Set from customer.
          *
-         *
          * @return CustomerAddress
          */
         public function setFromCustomer(Customer $Customer)
@@ -67,7 +66,6 @@ if (!class_exists(\Eccube\Entity\CustomerAddress::class)) {
 
         /**
          * Set from Shipping.
-         *
          *
          * @return CustomerAddress
          */
@@ -489,7 +487,6 @@ if (!class_exists(\Eccube\Entity\CustomerAddress::class)) {
         /**
          * Set customer.
          *
-         *
          * @return CustomerAddress
          */
         public function setCustomer(?Customer $customer = null)
@@ -512,7 +509,6 @@ if (!class_exists(\Eccube\Entity\CustomerAddress::class)) {
         /**
          * Set country.
          *
-         *
          * @return CustomerAddress
          */
         public function setCountry(?Master\Country $country = null)
@@ -534,7 +530,6 @@ if (!class_exists(\Eccube\Entity\CustomerAddress::class)) {
 
         /**
          * Set pref.
-         *
          *
          * @return CustomerAddress
          */

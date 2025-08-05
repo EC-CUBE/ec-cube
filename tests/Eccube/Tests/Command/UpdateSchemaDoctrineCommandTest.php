@@ -143,7 +143,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn (Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
@@ -177,7 +177,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn (Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
 
@@ -219,7 +219,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn (Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
@@ -255,7 +255,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn (Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
@@ -300,7 +300,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn (Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
@@ -339,7 +339,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
-        $this->assertCount(1, array_filter($columns, fn(Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
+        $this->assertCount(1, array_filter($columns, fn (Column $column) => $column->getName() == 'test_update_schema_command'), 'test_update_schema_command is exists');
 
         $this->executeExternalProcess('bin/console eccube:plugin:uninstall --code='.$configA['code']);
 
@@ -487,7 +487,7 @@ EOT
     {
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
-        if (empty(array_filter($columns, fn($column) => $column->getName() == 'test_update_schema_command'))) {
+        if (empty(array_filter($columns, fn ($column) => $column->getName() == 'test_update_schema_command'))) {
             $conn = $this->entityManager->getConnection();
             $conn->executeUpdate('ALTER TABLE dtb_customer ADD test_update_schema_command text');
         }

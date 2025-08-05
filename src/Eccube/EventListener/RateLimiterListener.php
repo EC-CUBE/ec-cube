@@ -52,7 +52,7 @@ class RateLimiterListener implements EventSubscriberInterface
             }
 
             if (!empty($config['params'])) {
-                $matchParams = array_filter($config['params'], fn($value, $key) => $request->get($key) === $value, ARRAY_FILTER_USE_BOTH);
+                $matchParams = array_filter($config['params'], fn ($value, $key) => $request->get($key) === $value, ARRAY_FILTER_USE_BOTH);
 
                 if (count($config['params']) !== count($matchParams)) {
                     // パラメータが不一致であればスキップ

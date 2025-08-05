@@ -87,7 +87,6 @@ class OrderItemType extends AbstractType
     /**
      * OrderItemType constructor.
      *
-     *
      * @throws \Exception
      */
     public function __construct(

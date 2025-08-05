@@ -238,7 +238,7 @@ class ShoppingController extends AbstractShoppingController
                 $redirectTo = preg_replace($pattern, '', $redirectTo);
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
-                $params = array_filter($result, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
+                $params = array_filter($result, fn ($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
                 log_info('[リダイレクト] リダイレクトを実行します.', [$result['_route'], $params]);
 
@@ -811,7 +811,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * PaymentMethodをコンテナから取得する.
      *
-     *
      * @return PaymentMethodInterface
      */
     private function createPaymentMethod(Order $Order, FormInterface $form)
@@ -825,7 +824,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::applyを実行する.
-     *
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -864,7 +862,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::checkoutを実行する.
-     *
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
      */

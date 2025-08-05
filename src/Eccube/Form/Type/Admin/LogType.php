@@ -53,7 +53,7 @@ class LogType extends AbstractType
         $finder = new Finder();
         $finder->name('*.log')
             ->depth('== 0')
-            ->sort(fn(\SplFileInfo $a, \SplFileInfo $b) => strcmp($b->getMTime(), $a->getMTime()));
+            ->sort(fn (\SplFileInfo $a, \SplFileInfo $b) => strcmp($b->getMTime(), $a->getMTime()));
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
         foreach ($finder->in($dirs) as $file) {
             $files[$file->getFilename()] = $file->getFilename();

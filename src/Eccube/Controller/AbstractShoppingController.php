@@ -35,6 +35,7 @@ class AbstractShoppingController extends AbstractController
 
     /**
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
+     *
      * @return PurchaseFlowResult|RedirectResponse|null
      */
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)

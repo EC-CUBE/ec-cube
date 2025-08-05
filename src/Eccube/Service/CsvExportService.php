@@ -277,6 +277,7 @@ class CsvExportService
      * CSV出力項目と比較し, 合致するデータを返す.
      *
      * @param $entity
+     *
      * @return string|null
      */
     public function getData(Csv $Csv, $entity)
@@ -328,7 +329,7 @@ class CsvExportService
     {
         $config = $this->eccubeConfig;
 
-        return fn($value) => mb_convert_encoding(
+        return fn ($value) => mb_convert_encoding(
             (string) $value, $config['eccube_csv_export_encoding'], 'UTF-8'
         );
     }
@@ -363,7 +364,6 @@ class CsvExportService
     /**
      * 受注検索用のクエリビルダを返す.
      *
-     *
      * @return QueryBuilder
      */
     public function getOrderQueryBuilder(Request $request)
@@ -386,7 +386,6 @@ class CsvExportService
     /**
      * 会員検索用のクエリビルダを返す.
      *
-     *
      * @return QueryBuilder
      */
     public function getCustomerQueryBuilder(Request $request)
@@ -408,7 +407,6 @@ class CsvExportService
 
     /**
      * 商品検索用のクエリビルダを返す.
-     *
      *
      * @return QueryBuilder
      */

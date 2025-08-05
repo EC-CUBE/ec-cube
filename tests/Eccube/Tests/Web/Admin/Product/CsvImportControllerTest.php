@@ -949,7 +949,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->filter(
-            fn(ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null)[0];
+            fn (ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null)[0];
         /** @var Generator $faker */
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
@@ -979,7 +979,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->filter(
-            fn(ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null)[0];
+            fn (ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null)[0];
         /** @var Generator $faker */
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];

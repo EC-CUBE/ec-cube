@@ -37,25 +37,25 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     public function getProductClasses()
     {
         return $this->filter(
-            fn(ItemInterface $OrderItem) => $OrderItem->isProduct());
+            fn (ItemInterface $OrderItem) => $OrderItem->isProduct());
     }
 
     public function getDeliveryFees()
     {
         return $this->filter(
-            fn(ItemInterface $OrderItem) => $OrderItem->isDeliveryFee());
+            fn (ItemInterface $OrderItem) => $OrderItem->isDeliveryFee());
     }
 
     public function getCharges()
     {
         return $this->filter(
-            fn(ItemInterface $OrderItem) => $OrderItem->isCharge());
+            fn (ItemInterface $OrderItem) => $OrderItem->isCharge());
     }
 
     public function getDiscounts()
     {
         return $this->filter(
-            fn(ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint());
+            fn (ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint());
     }
 
     /**
@@ -66,7 +66,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     public function hasProductByName($productName)
     {
         $OrderItems = $this->filter(
-            fn(ItemInterface $OrderItem) =>
+            fn (ItemInterface $OrderItem) =>
                 /* @var OrderItem $OrderItem */
                 $OrderItem->getProductName() == $productName);
 
@@ -82,7 +82,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
-        $filteredItems = $this->filter(fn(ItemInterface $OrderItem) =>
+        $filteredItems = $this->filter(fn (ItemInterface $OrderItem) =>
             /* @var OrderItem $OrderItem */
             $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId());
 

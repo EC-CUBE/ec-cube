@@ -314,7 +314,6 @@ class EF09ThrottlingCest
      * checkoutでのスロットリングのテスト
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
      *
-     *
      * @return void
      */
     public function 注文完了_非会員購入(AcceptanceTester $I)
@@ -357,7 +356,6 @@ class EF09ThrottlingCest
     /**
      * checkoutでのスロットリングのテスト
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
-     *
      *
      * @return void
      */
@@ -561,7 +559,6 @@ class EF09ThrottlingCest
     /**
      * customer_delivery_deleteでのスロットリングのテスト
      * customer_delivery_newでの制限に引っかかるため、customer_delivery_newのlimiter上限値を変更してから実施してください。
-     *
      *
      * @return void
      */

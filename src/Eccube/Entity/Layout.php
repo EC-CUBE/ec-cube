@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Layout::class)) {
+if (!class_exists(Layout::class)) {
     /**
      * Layout
      *
@@ -110,7 +110,7 @@ if (!class_exists(\Eccube\Entity\Layout::class)) {
             }
 
             // blockRow順にsort
-            uasort($TargetBlockPositions, fn(BlockPosition $a, BlockPosition $b) => ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1);
+            uasort($TargetBlockPositions, fn (BlockPosition $a, BlockPosition $b) => ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1);
 
             // Blockの配列を作成
             $TargetBlocks = [];
@@ -129,7 +129,7 @@ if (!class_exists(\Eccube\Entity\Layout::class)) {
         public function getBlockPositionsByTargetId($targetId)
         {
             return $this->BlockPositions->filter(
-                fn($BlockPosition) => $BlockPosition->getSection() == $targetId
+                fn ($BlockPosition) => $BlockPosition->getSection() == $targetId
             );
         }
 
@@ -366,7 +366,6 @@ if (!class_exists(\Eccube\Entity\Layout::class)) {
         /**
          * Add blockPosition
          *
-         *
          * @return Layout
          */
         public function addBlockPosition(BlockPosition $blockPosition)
@@ -396,7 +395,6 @@ if (!class_exists(\Eccube\Entity\Layout::class)) {
 
         /**
          * Add pageLayoutLayout
-         *
          *
          * @return Layout
          */

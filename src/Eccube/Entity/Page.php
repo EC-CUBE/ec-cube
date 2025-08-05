@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Page::class)) {
+if (!class_exists(Page::class)) {
     /**
      * Page
      *
@@ -467,7 +467,6 @@ if (!class_exists(\Eccube\Entity\Page::class)) {
         /**
          * Add pageLayoutLayout
          *
-         *
          * @return Page
          */
         public function addPageLayout(PageLayout $PageLayout)
@@ -487,7 +486,6 @@ if (!class_exists(\Eccube\Entity\Page::class)) {
 
         /**
          * Set MasterPage.
-         *
          *
          * @return Page
          */

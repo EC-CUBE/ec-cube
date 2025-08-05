@@ -115,7 +115,6 @@ class LayoutController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete", methods={"DELETE"})
      *
-     *
      * @return RedirectResponse
      */
     public function delete(Layout $Layout, CacheUtil $cacheUtil)
@@ -231,7 +230,6 @@ class LayoutController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block", methods={"GET"})
-     *
      *
      * @return JsonResponse
      */

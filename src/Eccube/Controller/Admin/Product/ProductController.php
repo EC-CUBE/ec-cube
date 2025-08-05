@@ -684,7 +684,7 @@ class ProductController extends AbstractController
                         $returnLink = preg_replace($pattern, '', $returnLink);
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
-                        $params = array_filter($result, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
+                        $params = array_filter($result, fn ($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
                         // pathからurlを再構築してリダイレクト.
                         return $this->redirectToRoute($result['_route'], $params);
@@ -724,7 +724,7 @@ class ProductController extends AbstractController
 
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
-        $ChoicedCategoryIds = array_map(fn($Category) => $Category->getId(), $form->get('Category')->getData());
+        $ChoicedCategoryIds = array_map(fn ($Category) => $Category->getId(), $form->get('Category')->getData());
 
         return [
             'Product' => $Product,
@@ -940,7 +940,6 @@ class ProductController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/export", name="admin_product_export", methods={"GET"})
      *
-     *
      * @return StreamedResponse
      */
     public function export(Request $request)
@@ -1066,7 +1065,6 @@ class ProductController extends AbstractController
      * Bulk public action
      *
      * @Route("/%eccube_admin_route%/product/bulk/product-status/{id}", requirements={"id" = "\d+"}, name="admin_product_bulk_product_status", methods={"POST"})
-     *
      *
      * @return RedirectResponse
      */

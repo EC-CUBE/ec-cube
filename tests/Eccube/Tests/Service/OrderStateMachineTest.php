@@ -299,12 +299,11 @@ class OrderStateMachineTest extends EccubeTestCase
     }
 
     /**
-     *
      * @return OrderItem
      */
     private function getProductOrderItem(Order $Order, ProductClass $ProductClass)
     {
-        return (new ArrayCollection($Order->getProductOrderItems()))->filter(fn(OrderItem $item) => $item->getProductClass()->getId() == $ProductClass->getId())->first();
+        return (new ArrayCollection($Order->getProductOrderItems()))->filter(fn (OrderItem $item) => $item->getProductClass()->getId() == $ProductClass->getId())->first();
     }
 
     /**

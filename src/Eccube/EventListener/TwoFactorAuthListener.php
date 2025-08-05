@@ -99,7 +99,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
             else {
                 $url = $this->router->generate('admin_two_factor_auth_set', [], UrlGeneratorInterface::ABSOLUTE_PATH);
             }
-            $event->setController(fn() => new RedirectResponse($url, $status = 302));
+            $event->setController(fn () => new RedirectResponse($url, $status = 302));
         }
     }
 

@@ -345,7 +345,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order", methods={"GET"})
      *
-     *
      * @return StreamedResponse
      */
     public function exportOrder(Request $request)
@@ -362,7 +361,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping", methods={"GET"})
      *
-     *
      * @return StreamedResponse
      */
     public function exportShipping(Request $request)
@@ -377,6 +375,7 @@ class OrderController extends AbstractController
     /**
      * @param $csvTypeId
      * @param string $fileName
+     *
      * @return StreamedResponse
      */
     protected function exportCsv(Request $request, $csvTypeId, $fileName)
@@ -455,7 +454,6 @@ class OrderController extends AbstractController
      * Update to order status
      *
      * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status", methods={"PUT"})
-     *
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -553,7 +551,6 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number", methods={"PUT"})
      *
-     *
      * @return Response
      */
     public function updateTrackingNumber(Request $request, Shipping $shipping)
@@ -607,7 +604,6 @@ class OrderController extends AbstractController
      *
      * @Template("@admin/Order/order_pdf.twig")
      *
-     *
      * @return array|RedirectResponse
      */
     public function exportPdf(Request $request)
@@ -654,7 +650,6 @@ class OrderController extends AbstractController
      * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download", methods={"POST"})
      *
      * @Template("@admin/Order/order_pdf.twig")
-     *
      *
      * @return Response
      */

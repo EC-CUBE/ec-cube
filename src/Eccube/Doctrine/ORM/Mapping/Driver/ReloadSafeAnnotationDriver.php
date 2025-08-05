@@ -35,7 +35,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
 
     public function setNewProxyFiles($newProxyFiles)
     {
-        $this->newProxyFiles = array_map(fn($file) => realpath($file), $newProxyFiles);
+        $this->newProxyFiles = array_map(fn ($file) => realpath($file), $newProxyFiles);
     }
 
     /**

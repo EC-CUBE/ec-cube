@@ -287,7 +287,6 @@ class CategoryController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export", methods={"GET"})
      *
-     *
      * @return StreamedResponse
      */
     public function export(Request $request)

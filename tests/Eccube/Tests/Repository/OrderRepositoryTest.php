@@ -269,7 +269,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
         // dataProvider 内で直接指定することが難しい値を変換します
         if (isset($searchData['payment'])) {
-            $searchData['payment'] = \array_map(fn($item) => $this->entityManager->getReference(Payment::class, $item), $searchData['payment']);
+            $searchData['payment'] = \array_map(fn ($item) => $this->entityManager->getReference(Payment::class, $item), $searchData['payment']);
         }
         if (isset($searchData['update_datetime_start'])) {
             $searchData['update_datetime_start'] = $this->Order->getUpdateDate()

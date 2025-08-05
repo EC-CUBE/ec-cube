@@ -31,7 +31,6 @@ class AutoNewItemController extends AbstractController
      *
      * @Template("Block/auto_new_item.twig")
      *
-     *
      * @return array
      */
     public function index(Request $request)

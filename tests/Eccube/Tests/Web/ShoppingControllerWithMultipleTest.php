@@ -97,7 +97,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            fn($node, $i) => [
+            fn ($node, $i) => [
                 'customer_address' => $node->attr('value'),
                 'quantity' => 1,
             ]
@@ -173,7 +173,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            fn($node, $i) => [
+            fn ($node, $i) => [
                 'customer_address' => $node->html(),
                 'quantity' => 1,
             ]
@@ -1235,7 +1235,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertStringContainsString('× 3', $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
-            fn($node, $i) => $node->text()
+            fn ($node, $i) => $node->text()
         );
 
         $this->expected = 'サンプル業者';

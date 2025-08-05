@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\News::class)) {
+if (!class_exists(News::class)) {
     /**
      * News
      *
@@ -320,7 +320,6 @@ if (!class_exists(\Eccube\Entity\News::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return News
          */

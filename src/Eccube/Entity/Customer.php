@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-if (!class_exists(\Eccube\Entity\Customer::class)) {
+if (!class_exists(Customer::class)) {
     /**
      * Customer
      *
@@ -945,7 +945,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
         /**
          * Add customerFavoriteProduct.
          *
-         *
          * @return Customer
          */
         public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
@@ -957,7 +956,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
 
         /**
          * Remove customerFavoriteProduct.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -979,7 +977,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
         /**
          * Add customerAddress.
          *
-         *
          * @return Customer
          */
         public function addCustomerAddress(CustomerAddress $customerAddress)
@@ -991,7 +988,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
 
         /**
          * Remove customerAddress.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1013,7 +1009,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
         /**
          * Add order.
          *
-         *
          * @return Customer
          */
         public function addOrder(Order $order)
@@ -1025,7 +1020,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
 
         /**
          * Remove order.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1046,7 +1040,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
 
         /**
          * Set status.
-         *
          *
          * @return Customer
          */
@@ -1070,7 +1063,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
         /**
          * Set sex.
          *
-         *
          * @return Customer
          */
         public function setSex(?Master\Sex $sex = null)
@@ -1092,7 +1084,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
 
         /**
          * Set job.
-         *
          *
          * @return Customer
          */
@@ -1116,7 +1107,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
         /**
          * Set country.
          *
-         *
          * @return Customer
          */
         public function setCountry(?Master\Country $country = null)
@@ -1138,7 +1128,6 @@ if (!class_exists(\Eccube\Entity\Customer::class)) {
 
         /**
          * Set pref.
-         *
          *
          * @return Customer
          */

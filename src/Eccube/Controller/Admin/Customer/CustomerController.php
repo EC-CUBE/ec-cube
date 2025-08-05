@@ -275,7 +275,6 @@ class CustomerController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export", methods={"GET"})
      *
-     *
      * @return StreamedResponse
      */
     public function export(Request $request)

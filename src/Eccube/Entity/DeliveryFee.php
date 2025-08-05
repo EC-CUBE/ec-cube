@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\DeliveryFee::class)) {
+if (!class_exists(DeliveryFee::class)) {
     /**
      * DeliveryFee
      *
@@ -110,7 +110,6 @@ if (!class_exists(\Eccube\Entity\DeliveryFee::class)) {
         /**
          * Set delivery.
          *
-         *
          * @return DeliveryFee
          */
         public function setDelivery(?Delivery $delivery = null)
@@ -132,7 +131,6 @@ if (!class_exists(\Eccube\Entity\DeliveryFee::class)) {
 
         /**
          * Set pref.
-         *
          *
          * @return DeliveryFee
          */

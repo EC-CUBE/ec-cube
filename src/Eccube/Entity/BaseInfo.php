@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\BaseInfo::class)) {
+if (!class_exists(BaseInfo::class)) {
     /**
      * BaseInfo
      *
@@ -1021,7 +1021,6 @@ if (!class_exists(\Eccube\Entity\BaseInfo::class)) {
         /**
          * Set country.
          *
-         *
          * @return BaseInfo
          */
         public function setCountry(?Master\Country $country = null)
@@ -1043,7 +1042,6 @@ if (!class_exists(\Eccube\Entity\BaseInfo::class)) {
 
         /**
          * Set pref.
-         *
          *
          * @return BaseInfo
          */

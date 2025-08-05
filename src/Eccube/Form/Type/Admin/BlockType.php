@@ -102,7 +102,7 @@ class BlockType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('b')
-                    ->from(\Eccube\Entity\Block::class, 'b')
+                    ->from(Block::class, 'b')
                     ->where('b.file_name = :file_name')
                     ->setParameter('file_name', $file_name)
                     ->andWhere('b.DeviceType = :DeviceType')

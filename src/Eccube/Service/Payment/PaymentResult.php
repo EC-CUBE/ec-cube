@@ -76,7 +76,6 @@ class PaymentResult
     /**
      * 決済が失敗した場合のエラーの配列を設定します.
      *
-     *
      * @return PaymentResult
      */
     public function setErrors(array $errors)
@@ -90,7 +89,6 @@ class PaymentResult
      * Response を設定します.
      *
      * 3Dセキュアなど, 決済中に他のサイトへリダイレクトが必要な特殊な用途に使用します.
-     *
      *
      * @return PaymentResult
      */

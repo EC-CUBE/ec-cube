@@ -136,7 +136,7 @@ class MasterdataController extends AbstractController
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $sortNo = 0;
                 $ids = array_filter(array_map(
-                    fn($v) => $v['id'],
+                    fn ($v) => $v['id'],
                     $data['data']
                 ));
 

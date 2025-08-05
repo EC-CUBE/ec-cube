@@ -425,9 +425,8 @@ class TestChildren extends AbstractEntity
         /**
          * @Id
          */
-        private $childField
-    )
-    {
+        private $childField,
+    ) {
     }
 
     public function getChildField()

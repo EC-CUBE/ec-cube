@@ -84,7 +84,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id' => 'DESC']);
         $this->actual = implode(', ', array_map(
-            fn($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
 
         $orderStatuses = [
             OrderStatus::RETURNED,
@@ -105,7 +105,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id']);
         $this->actual = implode(', ', array_map(
-            fn($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
 
         $orderStatuses = [
             OrderStatus::NEW,
@@ -126,7 +126,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id'], 1);
         $this->actual = implode(', ', array_map(
-            fn($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
         $this->expected = OrderStatus::NEW;
         $this->verify();
     }
@@ -135,7 +135,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id'], 2, 2);
         $this->actual = implode(', ', array_map(
-            fn($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
         $this->expected = OrderStatus::IN_PROGRESS.', '.OrderStatus::DELIVERED;
         $this->verify();
     }

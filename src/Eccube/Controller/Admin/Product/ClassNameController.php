@@ -200,7 +200,6 @@ class ClassNameController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/product/class_name/export", name="admin_product_class_name_export", methods={"GET"})
      *
-     *
      * @return StreamedResponse
      */
     public function export(Request $request)

@@ -60,7 +60,7 @@ class PointProcessorTest extends EccubeTestCase
 
         /** @var OrderItem $OrderItem */
         $OrderItem = $Order->getOrderItems()->filter(
-            fn(OrderItem $OrderItem) => $OrderItem->isPoint()
+            fn (OrderItem $OrderItem) => $OrderItem->isPoint()
         )->first();
 
         self::assertNotNull($OrderItem);
@@ -350,7 +350,7 @@ class PointProcessorTest extends EccubeTestCase
 
         /** @var OrderItem $OrderItem */
         $OrderItem = $Order->getOrderItems()->filter(
-            fn(OrderItem $OrderItem) => $OrderItem->isPoint()
+            fn (OrderItem $OrderItem) => $OrderItem->isPoint()
         )->first();
 
         $discountPrice = $usePoint * $pointConversionRate * -1;

@@ -60,7 +60,7 @@ class ItemCollectionTest extends EccubeTestCase
 
     public function testReduce()
     {
-        $reducer = fn($sum, ItemInterface $item) => $sum + $item->getPrice() * $item->getQuantity();
+        $reducer = fn ($sum, ItemInterface $item) => $sum + $item->getPrice() * $item->getQuantity();
 
         $this->expected = array_reduce($this->Items, $reducer, 0);
         $this->actual = (new ItemCollection($this->Items))->reduce($reducer, 0);
@@ -138,7 +138,7 @@ class ItemCollectionTest extends EccubeTestCase
 
         $ids = (new ItemCollection($this->Items))
             ->getProductClasses()
-            ->map(fn(ItemInterface $Item) => $Item->getId())->toArray();
+            ->map(fn (ItemInterface $Item) => $Item->getId())->toArray();
         sort($ids);
 
         $this->expected = $ids;

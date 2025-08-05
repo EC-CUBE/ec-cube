@@ -267,7 +267,6 @@ class PaymentController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
      *
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Request $request, Payment $TargetPayment)
@@ -325,7 +324,6 @@ class PaymentController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move", methods={"POST"})
-     *
      *
      * @return Response
      */

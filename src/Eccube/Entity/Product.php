@@ -16,7 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Product::class)) {
+if (!class_exists(Product::class)) {
     /**
      * Product
      *
@@ -839,7 +839,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
         /**
          * Add productCategory.
          *
-         *
          * @return Product
          */
         public function addProductCategory(ProductCategory $productCategory)
@@ -851,7 +850,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Remove productCategory.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -873,7 +871,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
         /**
          * Add productClass.
          *
-         *
          * @return Product
          */
         public function addProductClass(ProductClass $productClass)
@@ -885,7 +882,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Remove productClass.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -907,7 +903,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
         /**
          * Add productImage.
          *
-         *
          * @return Product
          */
         public function addProductImage(ProductImage $productImage)
@@ -919,7 +914,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Remove productImage.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -941,7 +935,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
         /**
          * Add productTag.
          *
-         *
          * @return Product
          */
         public function addProductTag(ProductTag $productTag)
@@ -953,7 +946,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Remove productTag.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -986,14 +978,13 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
                 $tags[] = $productTag->getTag();
             }
 
-            usort($tags, fn(Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
+            usort($tags, fn (Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
 
             return $tags;
         }
 
         /**
          * Add customerFavoriteProduct.
-         *
          *
          * @return Product
          */
@@ -1006,7 +997,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Remove customerFavoriteProduct.
-         *
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1027,7 +1017,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Set creator.
-         *
          *
          * @return Product
          */
@@ -1050,7 +1039,6 @@ if (!class_exists(\Eccube\Entity\Product::class)) {
 
         /**
          * Set status.
-         *
          *
          * @return Product
          */

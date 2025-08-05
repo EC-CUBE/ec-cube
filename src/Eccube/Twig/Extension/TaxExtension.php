@@ -44,7 +44,6 @@ class TaxExtension extends AbstractExtension
      *
      * 受注作成時点での標準税率と比較し, 異なれば軽減税率として判定する.
      *
-     *
      * @return bool
      */
     public function isReducedTaxRate(OrderItem $OrderItem)

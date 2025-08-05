@@ -157,6 +157,7 @@ class OrderHelper
      * 購入処理中の受注を生成する.
      *
      * @param $CartItems
+     *
      * @return Order
      */
     public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer)
@@ -300,7 +301,6 @@ class OrderHelper
     }
 
     /**
-     *
      * @return Order|null
      */
     public function initializeOrder(Cart $Cart, Customer $Customer)

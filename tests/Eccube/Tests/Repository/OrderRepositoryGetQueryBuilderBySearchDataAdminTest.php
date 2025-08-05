@@ -551,7 +551,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     *
      * @dataProvider dataPaymentProvider
      */
     public function testPayment(array $searchPaymentNos, int $expected)
@@ -569,7 +568,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // Paymentの検索リストを作成
-        $Payments = array_filter($Payments, fn($Payment) => in_array($Payment->getId(), $searchPaymentNos));
+        $Payments = array_filter($Payments, fn ($Payment) => in_array($Payment->getId(), $searchPaymentNos));
 
         // 検索
         $this->searchData = [
@@ -644,7 +643,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     *
      * @dataProvider dataShippingMailProvider
      */
     public function testShippingMail(array $checks, int $expected)

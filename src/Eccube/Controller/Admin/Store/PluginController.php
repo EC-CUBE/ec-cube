@@ -67,7 +67,6 @@ class PluginController extends AbstractController
     /**
      * PluginController constructor.
      *
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -181,7 +180,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update", methods={"POST"})
      *
-     *
      * @return RedirectResponse
      */
     public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
@@ -245,8 +243,8 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable", methods={"POST"})
      *
-     *
      * @return RedirectResponse|JsonResponse
+     *
      * @throws PluginException
      */
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
@@ -280,7 +278,7 @@ class PluginController extends AbstractController
                     return $DependPlugin->isEnabled() == false;
                 });
                 if (!empty($requires)) {
-                    $names = array_map(fn($req) => "「{$req['description']}」", $requires);
+                    $names = array_map(fn ($req) => "「{$req['description']}」", $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
 
                     if ($request->isXmlHttpRequest()) {
@@ -326,7 +324,6 @@ class PluginController extends AbstractController
      * 対象のプラグインを無効にします。
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable", methods={"POST"})
-     *
      *
      * @return JsonResponse|RedirectResponse
      */
@@ -404,7 +401,6 @@ class PluginController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall", methods={"DELETE"})
      *
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -448,7 +444,6 @@ class PluginController extends AbstractController
      * @Route("/%eccube_admin_route%/store/plugin/install", name="admin_store_plugin_install", methods={"GET", "POST"})
      *
      * @Template("@admin/Store/plugin_install.twig")
-     *
      *
      * @return array|RedirectResponse
      */
@@ -515,7 +510,6 @@ class PluginController extends AbstractController
      *
      * @Template("@admin/Store/authentication_setting.twig")
      *
-     *
      * @return array
      */
     public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
@@ -550,8 +544,8 @@ class PluginController extends AbstractController
     /**
      * フォルダ設置のみのプラグインを取得する.
      *
-     *
      * @return array
+     *
      * @throws PluginException
      */
     protected function getUnregisteredPlugins(array $plugins)

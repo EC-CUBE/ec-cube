@@ -23,7 +23,6 @@ abstract class ItemValidator
     use ValidatorTrait;
 
     /**
-     *
      * @return ProcessResult
      */
     final public function execute(ItemInterface $item, PurchaseContext $context)

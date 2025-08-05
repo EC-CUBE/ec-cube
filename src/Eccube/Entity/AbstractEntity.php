@@ -230,7 +230,6 @@ abstract class AbstractEntity implements \ArrayAccess
     /**
      * Convert to Entity of Identity value to associative array.
      *
-     *
      * @return array associative array of [[id => value], [id => value], ...]
      */
     public function getEntityIdentifierAsArray(AbstractEntity $Entity)

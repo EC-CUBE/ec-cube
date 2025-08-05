@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists(\Eccube\Entity\Calendar::class)) {
+if (!class_exists(Calendar::class)) {
     /**
      * Calendar
      *

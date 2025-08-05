@@ -29,7 +29,7 @@ class CategoryType extends AbstractType
             'class' => \Eccube\Entity\Category::class,
             'choice_label' => 'NameWithLevel',
             // なぜかDESC
-            'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('c')
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('c')
                 ->orderBy('c.sort_no', 'DESC'),
         ]);
     }

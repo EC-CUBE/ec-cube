@@ -167,7 +167,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
-        $ProductName = $Order->getOrderItems()->filter(fn($OrderItems) => $OrderItems->isProduct())->first()->getProductName();
+        $ProductName = $Order->getOrderItems()->filter(fn ($OrderItems) => $OrderItems->isProduct())->first()->getProductName();
 
         $crawler = $this->client->request(
             'POST', $this->generateUrl('admin_customer'),

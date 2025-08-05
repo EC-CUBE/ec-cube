@@ -27,7 +27,7 @@ class OrderStatusFilter extends SQLFilter
         }
 
         // 決済処理中/購入処理中を除く.
-        if ($targetEntity->reflClass->getName() === \Eccube\Entity\Master\OrderStatus::class) {
+        if ($targetEntity->reflClass->getName() === OrderStatus::class) {
             return $targetTableAlias.'.id <> '.OrderStatus::PENDING.' AND '.$targetTableAlias.'.id <> '.OrderStatus::PROCESSING;
         }
 

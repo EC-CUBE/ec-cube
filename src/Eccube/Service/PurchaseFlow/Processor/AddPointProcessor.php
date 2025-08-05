@@ -57,7 +57,6 @@ class AddPointProcessor extends ItemHolderPostValidator
     /**
      * 付与ポイントを計算.
      *
-     *
      * @return int
      */
     private function calculateAddPoint(ItemHolderInterface $itemHolder)
@@ -99,7 +98,6 @@ class AddPointProcessor extends ItemHolderPostValidator
      * - ポイント設定が有効であること.
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
-     *
      *
      * @return bool
      */
