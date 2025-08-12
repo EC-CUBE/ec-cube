@@ -29,12 +29,12 @@ if (!class_exists(MailHistory::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
      */
-    class MailHistory extends AbstractEntity
+    class MailHistory extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getMailSubject();
         }

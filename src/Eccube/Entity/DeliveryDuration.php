@@ -29,14 +29,14 @@ if (!class_exists(DeliveryDuration::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDurationRepository")
      */
-    class DeliveryDuration extends AbstractEntity
+    class DeliveryDuration extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
-            return $this->getName();
+            return (string) $this->getName();
         }
 
         /**

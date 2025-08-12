@@ -29,12 +29,12 @@ if (!class_exists(Payment::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentRepository")
      */
-    class Payment extends AbstractEntity
+    class Payment extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getMethod();
         }

@@ -29,7 +29,7 @@ if (!class_exists(TradeLaw::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TradeLawRepository")
      */
-    class TradeLaw extends AbstractEntity
+    class TradeLaw extends AbstractEntity implements \Stringable
     {
         /**
          * @var int
@@ -73,9 +73,9 @@ if (!class_exists(TradeLaw::class)) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
-            return $this->getName();
+            return (string) $this->getName();
         }
 
         /**

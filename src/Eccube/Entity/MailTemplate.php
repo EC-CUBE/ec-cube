@@ -29,12 +29,12 @@ if (!class_exists(MailTemplate::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\MailTemplateRepository")
      */
-    class MailTemplate extends AbstractEntity
+    class MailTemplate extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return $this->getName() ? $this->getName() : '';
         }

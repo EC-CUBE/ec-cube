@@ -35,7 +35,7 @@ if (!class_exists(Customer::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
-    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         /**
          * @var int
@@ -324,7 +324,7 @@ if (!class_exists(Customer::class)) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return $this->getName01().' '.$this->getName02();
         }
