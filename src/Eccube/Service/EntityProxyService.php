@@ -78,7 +78,7 @@ class EntityProxyService
             $baseName = basename($fileName);
             $entityTokens = Tokens::fromCode(file_get_contents($fileName));
 
-            if (strpos($fileName, 'app/proxy/entity') === false) {
+            if (!str_contains($fileName, 'app/proxy/entity')) {
                 $this->removeClassExistsBlock($entityTokens); // remove class_exists block
             } else {
                 // Remove to duplicate path of /app/proxy/entity

@@ -510,7 +510,7 @@ class InstallController extends AbstractController
 
         return [
             'admin_url' => $adminUrl,
-            'is_sqlite' => strpos($databaseUrl, 'sqlite') !== false,
+            'is_sqlite' => str_contains($databaseUrl, 'sqlite'),
             'token' => $token,
         ];
     }
@@ -555,22 +555,22 @@ class InstallController extends AbstractController
                 $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apc']), 'install');
             }
         }
-        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false) {
+        if (isset($_SERVER['SERVER_SOFTWARE']) && str_contains($_SERVER['SERVER_SOFTWARE'], 'Apache')) {
             if (!function_exists('apache_get_modules')) {
                 $this->addWarning(trans('install.mod_rewrite_unknown'), 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
                 $this->addDanger(trans('install.mod_rewrite_disabled'), 'install');
             }
-        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false) {
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && str_contains($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS')) {
             // iis
-        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false) {
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && str_contains($_SERVER['SERVER_SOFTWARE'], 'nginx')) {
             // nginx
         }
     }
 
     protected function createConnection(array $params)
     {
-        if (strpos($params['url'], 'mysql') !== false) {
+        if (str_contains($params['url'], 'mysql')) {
             $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
                 'charset' => 'utf8mb4',

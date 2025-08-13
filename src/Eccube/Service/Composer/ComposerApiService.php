@@ -236,7 +236,7 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
-        if (strpos($packageName, '/') === false) {
+        if (!str_contains($packageName, '/')) {
             return;
         }
         $info = $this->execInfo($packageName, $version);

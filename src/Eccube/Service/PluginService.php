@@ -977,7 +977,7 @@ class PluginService
      */
     public function checkPluginExist($plugins, $pluginCode)
     {
-        if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
+        if (str_contains($pluginCode, self::VENDOR_NAME.'/')) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array

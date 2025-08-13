@@ -204,7 +204,7 @@ class ProductType extends AbstractType
     private function validateFilePath($form, $dirs)
     {
         foreach ($form->getData() as $fileName) {
-            if (strpos($fileName, '..') !== false) {
+            if (str_contains($fileName, '..')) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
                 break;
             }
