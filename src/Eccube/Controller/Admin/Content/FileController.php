@@ -419,7 +419,7 @@ class FileController extends AbstractController
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
 
-            return strpos($targetPath, $acceptPath) === 0;
+            return strpos($targetPath, (string) $acceptPath) === 0;
         };
 
         $finder = Finder::create()
@@ -496,7 +496,7 @@ class FileController extends AbstractController
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 
-        return strpos($targetDir, $topDir) === 0;
+        return strpos($targetDir, (string) $topDir) === 0;
     }
 
     /**
