@@ -80,7 +80,7 @@ return RectorConfig::configure()
                //TernaryToElvisRector::class, // 三項演算子をエルビス演算子に変換する
                //PowToExpRector::class, // pow()関数を指数演算子に変換する
                //RemoveUnusedVariableAssignRector::class, // 未使用の変数代入を削除する
-               LongArrayToShortArrayRector::class, // 長い配列構文を短い配列構文に変換する
+               //LongArrayToShortArrayRector::class, // 長い配列構文を短い配列構文に変換する
                ListToArrayDestructRector::class, // list()構文を配列分割に変換する
                StringifyStrNeedlesRector::class, // strpos()のneedleを文字列に変換する
                NullCoalescingOperatorRector::class, // null合体演算子を使用する
