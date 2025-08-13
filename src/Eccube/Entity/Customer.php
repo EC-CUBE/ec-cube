@@ -1232,11 +1232,7 @@ if (!class_exists(Customer::class)) {
          */
         public function unserialize($serialized)
         {
-            list(
-                $this->id,
-                $this->email,
-                $this->password,
-                $this->salt) = unserialize($serialized);
+            [$this->id, $this->email, $this->password, $this->salt] = unserialize($serialized);
         }
 
         public function getUserIdentifier(): string

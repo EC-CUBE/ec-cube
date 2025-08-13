@@ -68,7 +68,7 @@ class EntityProxyService
 
         $generatedFiles = [];
 
-        list($addTraits, $removeTrails) = $this->scanTraits([$includesDirs, $excludeDirs]);
+        [$addTraits, $removeTrails] = $this->scanTraits([$includesDirs, $excludeDirs]);
         $targetEntities = array_unique(array_merge(array_keys($addTraits), array_keys($removeTrails)));
 
         // プロキシファイルの生成

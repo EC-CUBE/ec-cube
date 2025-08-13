@@ -609,11 +609,7 @@ if (!class_exists(Member::class)) {
          */
         public function unserialize($serialized)
         {
-            list(
-                $this->id,
-                $this->login_id,
-                $this->password,
-                $this->salt) = unserialize($serialized);
+            [$this->id, $this->login_id, $this->password, $this->salt] = unserialize($serialized);
         }
 
         public function getUserIdentifier(): string
