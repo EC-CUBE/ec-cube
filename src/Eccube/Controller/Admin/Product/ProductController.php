@@ -337,7 +337,7 @@ class ProductController extends AbstractController
                 foreach ($img as $image) {
                     // ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
-                    if (0 !== strpos($mimeType, 'image')) {
+                    if (!str_starts_with($mimeType, 'image')) {
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
@@ -696,7 +696,7 @@ class ProductController extends AbstractController
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
                         $params = array_filter($result, function ($key) {
-                            return 0 !== \strpos($key, '_');
+                            return !str_starts_with($key, '_');
                         }, ARRAY_FILTER_USE_KEY);
 
                         // pathからurlを再構築してリダイレクト.

@@ -265,13 +265,13 @@ class InstallerCommand extends Command
 
     protected function getDatabaseName($databaseUrl)
     {
-        if (0 === strpos($databaseUrl, 'sqlite')) {
+        if (str_starts_with($databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (0 === strpos($databaseUrl, 'postgres') || 0 === strpos($databaseUrl, 'pgsql')) {
+        if (str_starts_with($databaseUrl, 'postgres') || str_starts_with($databaseUrl, 'pgsql')) {
             return 'postgres';
         }
-        if (0 === strpos($databaseUrl, 'mysql')) {
+        if (str_starts_with($databaseUrl, 'mysql')) {
             return 'mysql';
         }
 

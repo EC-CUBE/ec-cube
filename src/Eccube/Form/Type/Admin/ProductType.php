@@ -212,7 +212,7 @@ class ProductType extends AbstractType
                 $filePath = realpath($dir.'/'.$fileName);
                 $topDirPath = realpath($dir);
 
-                return strpos($filePath, (string) $topDirPath) === 0 && $filePath !== $topDirPath;
+                return str_starts_with($filePath, (string) $topDirPath) && $filePath !== $topDirPath;
             });
             if (!$fileInDir) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));

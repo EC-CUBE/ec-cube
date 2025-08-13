@@ -168,7 +168,7 @@ class EntityProxyService
 
         $declaredTraits = array_map(function ($fqcn) {
             // FQCNが'\'で始まるように正規化
-            return strpos($fqcn, '\\') === 0 ? $fqcn : '\\'.$fqcn;
+            return str_starts_with($fqcn, '\\') ? $fqcn : '\\'.$fqcn;
         }, get_declared_traits());
 
         // ディレクトリセットに含まれるTraitの一覧を作成

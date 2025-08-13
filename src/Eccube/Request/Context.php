@@ -60,7 +60,7 @@ class Context
         $adminPath = $this->eccubeConfig->get('eccube_admin_route');
         $adminPath = '/'.\trim($adminPath, '/').'/';
 
-        return \strpos($pathInfo, $adminPath) === 0;
+        return str_starts_with($pathInfo, $adminPath);
     }
 
     /**

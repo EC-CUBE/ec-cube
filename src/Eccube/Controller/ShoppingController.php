@@ -257,7 +257,7 @@ class ShoppingController extends AbstractShoppingController
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
                 $params = array_filter($result, function ($key) {
-                    return 0 !== \strpos($key, '_');
+                    return !str_starts_with($key, '_');
                 }, ARRAY_FILTER_USE_KEY);
 
                 log_info('[リダイレクト] リダイレクトを実行します.', [$result['_route'], $params]);

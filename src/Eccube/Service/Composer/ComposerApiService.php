@@ -425,7 +425,7 @@ class ComposerApiService implements ComposerServiceInterface
         $this->execConfig('platform.php', [PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION]);
         $this->execConfig('repositories.eccube', [json_encode($eccube_repository)]);
 
-        if (strpos($url, 'http://') === 0) {
+        if (str_starts_with($url, 'http://')) {
             $this->execConfig('secure-http', ['false']);
         }
         $this->initConsole();

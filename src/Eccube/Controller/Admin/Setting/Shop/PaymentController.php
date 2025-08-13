@@ -184,7 +184,7 @@ class PaymentController extends AbstractController
 
             // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
-            if (0 !== strpos($mimeType, 'image')) {
+            if (!str_starts_with($mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 

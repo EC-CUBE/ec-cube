@@ -336,7 +336,7 @@ class EditController extends AbstractController
                                 $result = $router->match($returnLink);
                                 // パラメータのみ抽出
                                 $params = array_filter($result, function ($key) {
-                                    return 0 !== \strpos($key, '_');
+                                    return !str_starts_with($key, '_');
                                 }, ARRAY_FILTER_USE_KEY);
 
                                 // pathからurlを再構築してリダイレクト.

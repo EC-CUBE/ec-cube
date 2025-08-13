@@ -88,7 +88,7 @@ return RectorConfig::configure()
                //RestoreDefaultNullToNullableTypePropertyRector::class, // nullをデフォルト値に設定する
                //ChangeSwitchToMatchRector::class, // switch文をmatch式に変換する
                //ConsistentImplodeRector::class, // implode()の引数を一貫性のある形式に変換する
-               StrStartsWithRector::class, // str_starts_with()を使用する
+               //StrStartsWithRector::class, // str_starts_with()を使用する
                StrContainsRector::class, // str_contains()を使用する
                RemoveUnusedVariableInCatchRector::class, // catchブロック内の未使用変数を削除する
                ClassOnThisVariableObjectRector::class, // `$this::class` を `static::class`／`self::class` に書き換え

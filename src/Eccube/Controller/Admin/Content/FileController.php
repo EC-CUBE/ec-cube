@@ -311,7 +311,7 @@ class FileController extends AbstractController
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
                 }
                 // dotファイルはアップロード不可
-                if (strpos($filename, '.') === 0) {
+                if (str_starts_with($filename, '.')) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
                 // 許可した拡張子以外アップロード不可
@@ -419,7 +419,7 @@ class FileController extends AbstractController
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
 
-            return strpos($targetPath, (string) $acceptPath) === 0;
+            return str_starts_with($targetPath, (string) $acceptPath);
         };
 
         $finder = Finder::create()
@@ -496,7 +496,7 @@ class FileController extends AbstractController
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 
-        return strpos($targetDir, (string) $topDir) === 0;
+        return str_starts_with($targetDir, (string) $topDir);
     }
 
     /**
