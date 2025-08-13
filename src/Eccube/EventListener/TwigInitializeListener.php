@@ -174,7 +174,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
             $routeParams = $attributes->get('_route_params', []);
-            $route = isset($routeParams['route']) ? $routeParams['route'] : $attributes->get('route', '');
+            $route = $routeParams['route'] ?? $attributes->get('route', '');
         }
 
         $type = DeviceType::DEVICE_TYPE_PC;

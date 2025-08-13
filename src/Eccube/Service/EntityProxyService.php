@@ -73,7 +73,7 @@ class EntityProxyService
 
         // プロキシファイルの生成
         foreach ($targetEntities as $targetEntity) {
-            $traits = isset($addTraits[$targetEntity]) ? $addTraits[$targetEntity] : [];
+            $traits = $addTraits[$targetEntity] ?? [];
             $fileName = $this->originalEntityPath($targetEntity);
             $baseName = basename($fileName);
             $entityTokens = Tokens::fromCode(file_get_contents($fileName));

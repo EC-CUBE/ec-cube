@@ -736,7 +736,7 @@ class OrderController extends AbstractController
 
         log_info('OrderPdf download success!', ['Order ID' => implode(',', $request->get('ids', []))]);
 
-        $isDefault = isset($arrData['default']) ? $arrData['default'] : false;
+        $isDefault = $arrData['default'] ?? false;
         if ($isDefault) {
             // Save input to DB
             $arrData['admin'] = $this->getUser();

@@ -278,7 +278,7 @@ class EccubeExtension extends AbstractExtension
                 'price01_inc_tax_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01IncTax()),
                 'price02_inc_tax_with_currency' => $this->getPriceFilter($ProductClass->getPrice02IncTax()),
                 'product_class_id' => (string) $ProductClass->getId(),
-                'product_code' => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
+                'product_code' => $ProductClass->getCode() ?? '',
                 'sale_type' => (string) $ProductClass->getSaleType()->getId(),
             ];
         }
@@ -328,7 +328,7 @@ class EccubeExtension extends AbstractExtension
         ];
         $ext = strtolower($ext);
 
-        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file-o';
+        $class = $classes[$ext] ?? 'fa-file-o';
 
         if ($iconOnly) {
             return $class;

@@ -185,7 +185,7 @@ if (!class_exists(Product::class)) {
         {
             $this->_calc();
 
-            return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : [];
+            return $this->classCategories2[$class_category1] ?? [];
         }
 
         public function getClassCategories2AsFlip($class_category1)

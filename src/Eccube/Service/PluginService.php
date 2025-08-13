@@ -486,9 +486,9 @@ class PluginService
 
         return [
             'code' => $json['extra']['code'],
-            'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
+            'name' => $json['description'] ?? $json['extra']['code'],
             'version' => $json['version'],
-            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : 0,
+            'source' => $json['extra']['id'] ?? 0,
         ];
     }
 

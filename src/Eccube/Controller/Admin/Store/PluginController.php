@@ -615,11 +615,11 @@ class PluginController extends AbstractController
                 continue;
             }
             $config = $this->pluginService->readConfig($dir->getRealPath());
-            $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
-            $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
-            $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
+            $unregisteredPlugins[$pluginCode]['name'] = $config['name'] ?? null;
+            $unregisteredPlugins[$pluginCode]['event'] = $config['event'] ?? null;
+            $unregisteredPlugins[$pluginCode]['version'] = $config['version'] ?? null;
             $unregisteredPlugins[$pluginCode]['enabled'] = Constant::DISABLED;
-            $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
+            $unregisteredPlugins[$pluginCode]['code'] = $config['code'] ?? null;
         }
 
         return $unregisteredPlugins;

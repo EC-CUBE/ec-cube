@@ -480,10 +480,10 @@ class InstallController extends AbstractController
             'DATABASE_URL' => $databaseUrl,
             'MAILER_DSN' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
-            'DATABASE_SERVER_VERSION' => isset($sessionData['database_version']) ? $sessionData['database_version'] : '3',
+            'DATABASE_SERVER_VERSION' => $sessionData['database_version'] ?? '3',
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
             'ECCUBE_FORCE_SSL' => $forceSSL,
-            'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin',
+            'ECCUBE_ADMIN_ROUTE' => $sessionData['admin_dir'] ?? 'admin',
             'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
@@ -671,9 +671,9 @@ class InstallController extends AbstractController
             'database' => 'pdo_'.$parsed['scheme'],
             'database_name' => ltrim($parsed['path'], '/'),
             'database_host' => $parsed['host'],
-            'database_port' => isset($parsed['port']) ? $parsed['port'] : null,
-            'database_user' => isset($parsed['user']) ? $parsed['user'] : null,
-            'database_password' => isset($parsed['pass']) ? $parsed['pass'] : null,
+            'database_port' => $parsed['port'] ?? null,
+            'database_user' => $parsed['user'] ?? null,
+            'database_password' => $parsed['pass'] ?? null,
         ];
     }
 
