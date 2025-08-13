@@ -47,14 +47,14 @@ if (!class_exists(TradeLaw::class)) {
          *
          * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
-        private ?string $name;
+        private ?string $name = null;
 
         /**
          * @var ?string
          *
          * @ORM\Column(name="description", type="string", length=4000, nullable=true)
          */
-        private ?string $description;
+        private ?string $description = null;
 
         /**
          * @var int
