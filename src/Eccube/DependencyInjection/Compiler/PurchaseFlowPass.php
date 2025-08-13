@@ -59,7 +59,7 @@ class PurchaseFlowPass implements CompilerPassInterface
                     if (isset($attributes['flow_type'])) {
                         $attributes['id'] = $id;
                         $attributes['index'] = ++$i;
-                        $attributes['priority'] = $attributes['priority'] ?? 0;
+                        $attributes['priority'] ??= 0;
                         $allMethod[$attributes['flow_type']][] = $attributes;
                     }
                 }

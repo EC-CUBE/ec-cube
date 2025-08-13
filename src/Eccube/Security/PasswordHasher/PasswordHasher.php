@@ -32,7 +32,7 @@ class PasswordHasher implements LegacyPasswordHasherInterface
 
     public function hash(string $plainPassword, ?string $salt = null): string
     {
-        $salt = $salt ?? '';
+        $salt ??= '';
         if ($salt === '') {
             $salt = $this->auth_magic;
         }
