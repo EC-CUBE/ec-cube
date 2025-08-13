@@ -255,7 +255,7 @@ class EntityProxyService
             $traitsTokens = array_slice($entityTokens->toArray(), $useTraitIndex + 1, $useTraitEndIndex - $useTraitIndex - 1);
 
             // Trait名の配列に変換
-            $traitNames = explode(',', implode(array_map(function ($token) {
+            $traitNames = explode(',', implode('', array_map(function ($token) {
                 return $token->getContent();
             }, array_filter($traitsTokens, function ($token) {
                 return $token->getId() != T_WHITESPACE;

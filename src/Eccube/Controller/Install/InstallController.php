@@ -281,7 +281,7 @@ class InstallController extends AbstractController
             $sessionData['admin_dir'] = $this->getParameter('eccube_admin_route');
 
             // 管理画面許可IP
-            $sessionData['admin_allow_hosts'] = implode($this->getParameter('eccube_admin_allow_hosts'));
+            $sessionData['admin_allow_hosts'] = implode('', $this->getParameter('eccube_admin_allow_hosts'));
 
             // 強制SSL
             $sessionData['admin_force_ssl'] = $this->getParameter('eccube_force_ssl');
