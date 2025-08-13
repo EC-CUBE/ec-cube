@@ -981,19 +981,11 @@ class InstallController extends AbstractController
         $rsm->addScalarResult('server_version', 'server_version');
 
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
-        }
+        $sql = match ($platform) {
+            'sqlite' => 'SELECT sqlite_version() AS server_version',
+            'mysql' => 'SELECT version() AS server_version',
+            default => 'SHOW server_version',
+        };
 
         $version = $em->createNativeQuery($sql, $rsm)
             ->getSingleScalarResult();

@@ -34,17 +34,11 @@ class Normalize extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
-        switch ($sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-                $sql = sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
-                break;
-            case 'mysql':
-                $sql = sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
-                break;
-            default:
-                $sql = sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker));
-                break;
-        }
+        $sql = match ($sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
+            'postgresql' => sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO),
+            'mysql' => sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker)),
+            default => sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker)),
+        };
 
         return $sql;
     }

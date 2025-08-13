@@ -901,19 +901,11 @@ class PluginService
         $dependents = [];
         if (isset($json['require'])) {
             $require = $json['require'];
-            switch ($libraryType) {
-                case self::ECCUBE_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
-                    break;
-
-                case self::OTHER_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
-                    break;
-
-                default:
-                    $dependents = $json['require'];
-                    break;
-            }
+            $dependents = match ($libraryType) {
+                self::ECCUBE_LIBRARY => array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require)))),
+                self::OTHER_LIBRARY => array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT))),
+                default => $json['require'],
+            };
         }
 
         return $dependents;
