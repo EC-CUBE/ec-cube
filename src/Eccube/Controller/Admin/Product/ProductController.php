@@ -762,7 +762,7 @@ class ProductController extends AbstractController
         $this->isTokenValid();
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
-        $page_no = $page_no ? $page_no : Constant::ENABLED;
+        $page_no = $page_no ?: Constant::ENABLED;
         $success = false;
 
         if (!is_null($id)) {

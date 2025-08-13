@@ -151,7 +151,7 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注の初期化.
         log_info('[注文手続] 受注の初期化処理を開始します.');
-        $Customer = $this->getUser() ? $this->getUser() : $this->orderHelper->getNonMember();
+        $Customer = $this->getUser() ?: $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
 
         // 集計処理.

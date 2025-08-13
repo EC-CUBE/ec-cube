@@ -269,9 +269,7 @@ class AbstractController extends Controller
     {
         /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $token = $request->get(Constant::TOKEN_NAME)
-            ? $request->get(Constant::TOKEN_NAME)
-            : $request->headers->get('ECCUBE-CSRF-TOKEN');
+        $token = $request->get(Constant::TOKEN_NAME) ?: $request->headers->get('ECCUBE-CSRF-TOKEN');
 
         if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $token)) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');

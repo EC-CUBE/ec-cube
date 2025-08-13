@@ -387,7 +387,7 @@ class ComposerApiService implements ComposerServiceInterface
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $this->initConsole();
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
+        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
         $url = $this->eccubeConfig['eccube_package_api_url'];
         $config = $this->getConfig();
         $eccube_repository = [

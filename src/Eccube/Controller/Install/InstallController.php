@@ -484,7 +484,7 @@ class InstallController extends AbstractController
             'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
             'ECCUBE_FORCE_SSL' => $forceSSL,
             'ECCUBE_ADMIN_ROUTE' => $sessionData['admin_dir'] ?? 'admin',
-            'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
+            'ECCUBE_COOKIE_PATH' => $request->getBasePath() ?: '/',
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
             'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',

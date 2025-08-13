@@ -36,7 +36,7 @@ if (!class_exists(MailTemplate::class)) {
          */
         public function __toString(): string
         {
-            return $this->getName() ? $this->getName() : '';
+            return $this->getName() ?: '';
         }
 
         /**

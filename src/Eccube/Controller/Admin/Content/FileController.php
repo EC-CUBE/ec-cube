@@ -530,6 +530,6 @@ class FileController extends AbstractController
         $realpath = realpath($path);
         $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
 
-        return $jailPath ? $jailPath : '/';
+        return $jailPath ?: '/';
     }
 }
