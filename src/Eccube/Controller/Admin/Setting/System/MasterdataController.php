@@ -85,7 +85,7 @@ class MasterdataController extends AbstractController
                         'id' => '',
                         'name' => '',
                     ];
-                } catch (MappingException $e) {
+                } catch (MappingException) {
                 }
             }
         }
@@ -178,7 +178,7 @@ class MasterdataController extends AbstractController
                     );
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
                     $this->addError('admin.common.save_error', 'admin');
                 }

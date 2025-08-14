@@ -464,7 +464,7 @@ class OrderRepository extends AbstractRepository
                 ->groupBy('o.Customer')
                 ->getQuery()
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 受注データが存在しなければ初期化
             $Customer->setFirstBuyDate(null);
             $Customer->setLastBuyDate(null);

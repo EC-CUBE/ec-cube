@@ -284,7 +284,7 @@ class InstallerCommand extends Command
             $conn = DriverManager::getConnection([
                 'url' => $databaseUrl,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }
         $platform = $conn->getDatabasePlatform()->getName();

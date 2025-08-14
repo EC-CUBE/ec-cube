@@ -220,7 +220,7 @@ class EccubeExtension extends AbstractExtension
             if ($Product->getStatus()->getId() == ProductStatus::DISPLAY_SHOW) {
                 return $Product;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
 

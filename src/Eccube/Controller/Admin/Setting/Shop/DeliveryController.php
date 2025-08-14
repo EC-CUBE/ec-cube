@@ -301,7 +301,7 @@ class DeliveryController extends AbstractController
         try {
             $this->entityManager->remove($Delivery);
             $this->entityManager->flush();
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             $this->addError(trans('admin.common.delete_error_foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_delivery');

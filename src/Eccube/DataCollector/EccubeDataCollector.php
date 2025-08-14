@@ -140,7 +140,7 @@ class EccubeDataCollector extends DataCollector
                 }
                 $this->data['plugins'][$code] = $Plugin->toArray();
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
         }
     }
 

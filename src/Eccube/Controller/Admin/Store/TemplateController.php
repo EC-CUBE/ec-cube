@@ -272,7 +272,7 @@ class TemplateController extends AbstractController
                     $phar = new \PharData($tmpDir.'/'.$archive);
                     $phar->extractTo($tmpDir, null, true);
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $form['file']->addError(new FormError(trans('admin.common.upload_error')));
 
                 return [

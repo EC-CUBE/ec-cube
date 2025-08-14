@@ -438,7 +438,7 @@ class FileController extends AbstractController
         $fileFinder = $finder->files();
         try {
             $files = $fileFinder->getIterator();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $files = [];
         }
 

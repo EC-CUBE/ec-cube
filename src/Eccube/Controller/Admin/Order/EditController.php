@@ -341,7 +341,7 @@ class EditController extends AbstractController
 
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);
-                            } catch (\Exception $e) {
+                            } catch (\Exception) {
                                 // マッチしない場合はログ出力してスキップ.
                                 log_warning('URLの形式が不正です。');
                             }

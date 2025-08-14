@@ -418,7 +418,7 @@ class PluginService
                 $phar = new \PharData($archive);
                 $phar->extractTo($dir, null, true);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new PluginException(trans('pluginservice.text.error.upload_failure'));
         }
     }
@@ -612,8 +612,8 @@ class PluginService
             // プラグインのネームスペースに含まれるEntityのテーブルを削除する
             $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
             $this->schemaService->dropTable($namespace);
-        } catch (PersistenceMappingException $e) {
-        } catch (ORMMappingException $e) {
+        } catch (PersistenceMappingException) {
+        } catch (ORMMappingException) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
         }
 

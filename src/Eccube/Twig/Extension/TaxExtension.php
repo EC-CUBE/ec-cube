@@ -69,7 +69,7 @@ class TaxExtension extends AbstractExtension
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
 

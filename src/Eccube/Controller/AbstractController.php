@@ -219,7 +219,7 @@ class AbstractController extends Controller
     {
         try {
             parent::addFlash($type, $message);
-        } catch (\LogicException $e) {
+        } catch (\LogicException) {
             // fallback session
             $this->session->getFlashBag()->add($type, $message);
         }

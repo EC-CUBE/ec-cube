@@ -701,7 +701,7 @@ class ProductController extends AbstractController
 
                         // pathからurlを再構築してリダイレクト.
                         return $this->redirectToRoute($result['_route'], $params);
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // マッチしない場合はログ出力してスキップ.
                         log_warning('URLの形式が不正です。');
                     }
@@ -811,7 +811,7 @@ class ProductController extends AbstractController
                         try {
                             $fs = new Filesystem();
                             $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);
-                        } catch (\Exception $e) {
+                        } catch (\Exception) {
                             // エラーが発生しても無視する
                         }
                     }
@@ -822,7 +822,7 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_complete');
 
                     $cacheUtil->clearDoctrineCache();
-                } catch (ForeignKeyConstraintViolationException $e) {
+                } catch (ForeignKeyConstraintViolationException) {
                     log_info('商品削除エラー', [$id]);
                     $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
                 }
@@ -907,7 +907,7 @@ class ProductController extends AbstractController
                     try {
                         $fs = new Filesystem();
                         $fs->copy($this->eccubeConfig['eccube_save_image_dir'].'/'.$Image->getFileName(), $this->eccubeConfig['eccube_save_image_dir'].'/'.$filename);
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // エラーが発生しても無視する
                     }
                     $Image->setFileName($filename);

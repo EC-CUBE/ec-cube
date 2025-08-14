@@ -67,7 +67,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 // メタデータの取得
                 try {
                     $meta = $this->em->getClassMetadata($class);
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     return;
                 }
 

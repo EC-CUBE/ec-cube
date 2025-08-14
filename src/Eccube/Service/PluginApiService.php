@@ -100,7 +100,7 @@ class PluginApiService
             $urlCategory = $this->getApiUrl().'/category';
 
             return $this->requestApi($urlCategory);
-        } catch (PluginApiException $e) {
+        } catch (PluginApiException) {
             return [];
         }
     }
@@ -254,7 +254,7 @@ class PluginApiService
         if ($Plugin->getSource()) {
             try {
                 $this->requestApi($this->getApiUrl().$url, ['id' => $Plugin->getSource()], true);
-            } catch (PluginApiException $ignore) {
+            } catch (PluginApiException) {
             }
         }
     }
