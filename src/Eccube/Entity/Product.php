@@ -30,7 +30,7 @@ if (!class_exists(Product::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
      */
-    class Product extends AbstractEntity
+    class Product extends AbstractEntity implements \Stringable
     {
         private $_calc = false;
         private $stockFinds = [];
@@ -49,7 +49,7 @@ if (!class_exists(Product::class)) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -185,7 +185,7 @@ if (!class_exists(Product::class)) {
         {
             $this->_calc();
 
-            return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : [];
+            return $this->classCategories2[$class_category1] ?? [];
         }
 
         public function getClassCategories2AsFlip($class_category1)

@@ -36,7 +36,7 @@ class SessionProcessor
             if (!$this->session->isStarted()) {
                 return $records;
             }
-        } catch (SessionNotFoundException $e) {
+        } catch (SessionNotFoundException) {
             return $records;
         }
 

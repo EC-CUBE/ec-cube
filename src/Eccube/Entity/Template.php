@@ -29,7 +29,7 @@ if (!class_exists(Template::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\TemplateRepository")
      */
-    class Template extends AbstractEntity
+    class Template extends AbstractEntity implements \Stringable
     {
         /**
          *  初期テンプレートコード
@@ -47,7 +47,7 @@ if (!class_exists(Template::class)) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }

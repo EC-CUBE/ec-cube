@@ -127,7 +127,7 @@ class PluginController extends AbstractController
                 $code = $unregisteredPlugin['code'];
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
                 $unregisteredPluginsConfigPages[$code] = $this->generateUrl('plugin_'.$code.'_config');
-            } catch (RouteNotFoundException $e) {
+            } catch (RouteNotFoundException) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
         }
@@ -151,7 +151,7 @@ class PluginController extends AbstractController
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
                 $configPages[$Plugin->getCode()] = $this->generateUrl(Container::underscore($Plugin->getCode()).'_admin_config');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
             if ($Plugin->getSource() == 0) {
@@ -615,11 +615,11 @@ class PluginController extends AbstractController
                 continue;
             }
             $config = $this->pluginService->readConfig($dir->getRealPath());
-            $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
-            $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
-            $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
+            $unregisteredPlugins[$pluginCode]['name'] = $config['name'] ?? null;
+            $unregisteredPlugins[$pluginCode]['event'] = $config['event'] ?? null;
+            $unregisteredPlugins[$pluginCode]['version'] = $config['version'] ?? null;
             $unregisteredPlugins[$pluginCode]['enabled'] = Constant::DISABLED;
-            $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
+            $unregisteredPlugins[$pluginCode]['code'] = $config['code'] ?? null;
         }
 
         return $unregisteredPlugins;

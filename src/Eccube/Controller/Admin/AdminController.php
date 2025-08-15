@@ -254,7 +254,7 @@ class AdminController extends AbstractController
         $recommendedPlugins = [];
         try {
             $recommendedPlugins = $this->pluginApiService->getRecommended();
-        } catch (PluginApiException $ignore) {
+        } catch (PluginApiException) {
         }
 
         return [
@@ -477,7 +477,7 @@ class AdminController extends AbstractController
         $result = [];
         try {
             $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 結果がない場合は空の配列を返す.
         }
 
@@ -516,7 +516,7 @@ class AdminController extends AbstractController
         $result = [];
         try {
             $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 結果がない場合は空の配列を返す.
         }
 

@@ -125,7 +125,7 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && strpos($file, '..') === false && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && !str_contains($file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -184,7 +184,7 @@ class PaymentController extends AbstractController
 
             // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
-            if (0 !== strpos($mimeType, 'image')) {
+            if (!str_starts_with($mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 
@@ -256,7 +256,7 @@ class PaymentController extends AbstractController
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+        if (is_file($tempFile) && stripos(realpath($tempFile), (string) $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 
@@ -297,7 +297,7 @@ class PaymentController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             $this->entityManager->rollback();
 
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);

@@ -53,7 +53,7 @@ class AuthorityVoter implements VoterInterface
 
         try {
             $request = $this->requestStack->getMainRequest();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             // requestが取得できない場合、棄権する(テストプログラムで不要なため)
             return VoterInterface::ACCESS_ABSTAIN;
         }
@@ -76,7 +76,7 @@ class AuthorityVoter implements VoterInterface
                     if (preg_match("/^(\/{$adminRoute}{$denyUrl})/i", $path)) {
                         return VoterInterface::ACCESS_DENIED;
                     }
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     // 拒否URLの指定に誤りがある場合、エスケープさせてチェック
                     $denyUrl = preg_quote($AuthorityRole->getDenyUrl(), '/');
                     if (preg_match("/^(\/{$adminRoute}{$denyUrl})/i", $path)) {

@@ -101,7 +101,7 @@ class ExceptionListener implements EventSubscriberInterface
                 'error_title' => $title,
                 'error_message' => $message,
             ]);
-        } catch (\Exception $ignore) {
+        } catch (\Exception) {
             $content = $title;
         }
 

@@ -98,27 +98,22 @@ class Extract extends FunctionNode
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
-        switch ($driver) {
-            case 'sqlite':
-                $sql = sprintf(
-                    "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
-                    $this->formats[$this->field],
-                    $this->source->dispatch($sqlWalker));
-                break;
-            case 'postgresql':
-                $sql = sprintf(
-                    "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
-                    $this->field,
-                    (string) $this->type,
-                    $this->source->dispatch($sqlWalker));
-                break;
-            default:
-                $sql = sprintf(
-                    "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
-                    $this->field,
-                    (string) $this->type,
-                    $this->source->dispatch($sqlWalker));
-        }
+        $sql = match ($driver) {
+            'sqlite' => sprintf(
+                "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
+                $this->formats[$this->field],
+                $this->source->dispatch($sqlWalker)),
+            'postgresql' => sprintf(
+                "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
+                $this->field,
+                (string) $this->type,
+                $this->source->dispatch($sqlWalker)),
+            default => sprintf(
+                "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
+                $this->field,
+                (string) $this->type,
+                $this->source->dispatch($sqlWalker)),
+        };
 
         return $sql;
     }

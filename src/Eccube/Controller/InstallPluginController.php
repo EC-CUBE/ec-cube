@@ -182,7 +182,7 @@ class InstallPluginController extends InstallController
         }
 
         $transaction_checker = file_get_contents($projectDir.parent::TRANSACTION_CHECK_FILE);
-        list($expire, $validToken) = explode(':', $transaction_checker);
+        [$expire, $validToken] = explode(':', $transaction_checker);
         if ($token !== $validToken) {
             return false;
         }

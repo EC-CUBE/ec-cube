@@ -65,7 +65,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                     $exclude = str_replace('\\', '/', realpath($excludePath));
                     $current = str_replace('\\', '/', $sourceFile);
 
-                    if (strpos($current, $exclude) !== false) {
+                    if (str_contains($current, $exclude)) {
                         continue 2;
                     }
                 }

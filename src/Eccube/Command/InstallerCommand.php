@@ -265,13 +265,13 @@ class InstallerCommand extends Command
 
     protected function getDatabaseName($databaseUrl)
     {
-        if (0 === strpos($databaseUrl, 'sqlite')) {
+        if (str_starts_with($databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (0 === strpos($databaseUrl, 'postgres') || 0 === strpos($databaseUrl, 'pgsql')) {
+        if (str_starts_with($databaseUrl, 'postgres') || str_starts_with($databaseUrl, 'pgsql')) {
             return 'postgres';
         }
-        if (0 === strpos($databaseUrl, 'mysql')) {
+        if (str_starts_with($databaseUrl, 'mysql')) {
             return 'mysql';
         }
 
@@ -284,21 +284,15 @@ class InstallerCommand extends Command
             $conn = DriverManager::getConnection([
                 'url' => $databaseUrl,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }
         $platform = $conn->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
-        }
+        $sql = match ($platform) {
+            'sqlite' => 'SELECT sqlite_version() AS server_version',
+            'mysql' => 'SELECT version() AS server_version',
+            default => 'SHOW server_version',
+        };
         $stmt = $conn->executeQuery($sql);
         $version = $stmt->fetchOne();
 

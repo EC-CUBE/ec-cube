@@ -236,7 +236,7 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
-        if (strpos($packageName, '/') === false) {
+        if (!str_contains($packageName, '/')) {
             return;
         }
         $info = $this->execInfo($packageName, $version);
@@ -387,7 +387,7 @@ class ComposerApiService implements ComposerServiceInterface
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $this->initConsole();
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
+        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
         $url = $this->eccubeConfig['eccube_package_api_url'];
         $config = $this->getConfig();
         $eccube_repository = [
@@ -425,7 +425,7 @@ class ComposerApiService implements ComposerServiceInterface
         $this->execConfig('platform.php', [PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION]);
         $this->execConfig('repositories.eccube', [json_encode($eccube_repository)]);
 
-        if (strpos($url, 'http://') === 0) {
+        if (str_starts_with($url, 'http://')) {
             $this->execConfig('secure-http', ['false']);
         }
         $this->initConsole();

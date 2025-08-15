@@ -557,19 +557,13 @@ class OrderHelper
             $OrderItemType = $OrderItemType->getId();
         }
 
-        switch ($OrderItemType) {
-            case OrderItemType::PRODUCT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::DELIVERY_FEE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::DISCOUNT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::CHARGE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::POINT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            default:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-        }
+        return match ($OrderItemType) {
+            OrderItemType::PRODUCT => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED),
+            OrderItemType::DELIVERY_FEE => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED),
+            OrderItemType::DISCOUNT => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED),
+            OrderItemType::CHARGE => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED),
+            OrderItemType::POINT => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED),
+            default => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED),
+        };
     }
 }

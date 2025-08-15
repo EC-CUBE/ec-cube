@@ -30,12 +30,12 @@ if (!class_exists(Category::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CategoryRepository")
      */
-    class Category extends AbstractEntity
+    class Category extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->getName();
         }

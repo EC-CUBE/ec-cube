@@ -311,7 +311,7 @@ class FileController extends AbstractController
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
                 }
                 // dotファイルはアップロード不可
-                if (strpos($filename, '.') === 0) {
+                if (str_starts_with($filename, '.')) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
                 // 許可した拡張子以外アップロード不可
@@ -419,7 +419,7 @@ class FileController extends AbstractController
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
 
-            return strpos($targetPath, $acceptPath) === 0;
+            return str_starts_with($targetPath, (string) $acceptPath);
         };
 
         $finder = Finder::create()
@@ -431,14 +431,14 @@ class FileController extends AbstractController
         $dirFinder = $finder->directories();
         try {
             $dirs = $dirFinder->getIterator();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $dirs = [];
         }
 
         $fileFinder = $finder->files();
         try {
             $files = $fileFinder->getIterator();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $files = [];
         }
 
@@ -490,13 +490,13 @@ class FileController extends AbstractController
      */
     protected function checkDir($targetDir, $topDir)
     {
-        if (strpos($targetDir, '..') !== false) {
+        if (str_contains($targetDir, '..')) {
             return false;
         }
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
 
-        return strpos($targetDir, $topDir) === 0;
+        return str_starts_with($targetDir, (string) $topDir);
     }
 
     /**
@@ -530,6 +530,6 @@ class FileController extends AbstractController
         $realpath = realpath($path);
         $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
 
-        return $jailPath ? $jailPath : '/';
+        return $jailPath ?: '/';
     }
 }

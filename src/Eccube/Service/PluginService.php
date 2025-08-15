@@ -334,9 +334,9 @@ class PluginService
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
-            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ?: $this->projectRoot.'/app/proxy/entity');
 
-            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ?: $this->projectRoot.'/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
@@ -418,7 +418,7 @@ class PluginService
                 $phar = new \PharData($archive);
                 $phar->extractTo($dir, null, true);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new PluginException(trans('pluginservice.text.error.upload_failure'));
         }
     }
@@ -486,9 +486,9 @@ class PluginService
 
         return [
             'code' => $json['extra']['code'],
-            'name' => isset($json['description']) ? $json['description'] : $json['extra']['code'],
+            'name' => $json['description'] ?? $json['extra']['code'],
             'version' => $json['version'],
-            'source' => isset($json['extra']['id']) ? $json['extra']['id'] : 0,
+            'source' => $json['extra']['id'] ?? 0,
         ];
     }
 
@@ -612,8 +612,8 @@ class PluginService
             // プラグインのネームスペースに含まれるEntityのテーブルを削除する
             $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
             $this->schemaService->dropTable($namespace);
-        } catch (PersistenceMappingException $e) {
-        } catch (ORMMappingException $e) {
+        } catch (PersistenceMappingException) {
+        } catch (ORMMappingException) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
         }
 
@@ -901,19 +901,11 @@ class PluginService
         $dependents = [];
         if (isset($json['require'])) {
             $require = $json['require'];
-            switch ($libraryType) {
-                case self::ECCUBE_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
-                    break;
-
-                case self::OTHER_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
-                    break;
-
-                default:
-                    $dependents = $json['require'];
-                    break;
-            }
+            $dependents = match ($libraryType) {
+                self::ECCUBE_LIBRARY => array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require)))),
+                self::OTHER_LIBRARY => array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT))),
+                default => $json['require'],
+            };
         }
 
         return $dependents;
@@ -985,7 +977,7 @@ class PluginService
      */
     public function checkPluginExist($plugins, $pluginCode)
     {
-        if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
+        if (str_contains($pluginCode, self::VENDOR_NAME.'/')) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array

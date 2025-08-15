@@ -151,7 +151,7 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注の初期化.
         log_info('[注文手続] 受注の初期化処理を開始します.');
-        $Customer = $this->getUser() ? $this->getUser() : $this->orderHelper->getNonMember();
+        $Customer = $this->getUser() ?: $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
 
         // 集計処理.
@@ -257,7 +257,7 @@ class ShoppingController extends AbstractShoppingController
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
                 $params = array_filter($result, function ($key) {
-                    return 0 !== \strpos($key, '_');
+                    return !str_starts_with($key, '_');
                 }, ARRAY_FILTER_USE_KEY);
 
                 log_info('[リダイレクト] リダイレクトを実行します.', [$result['_route'], $params]);

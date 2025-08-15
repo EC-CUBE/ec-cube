@@ -86,7 +86,7 @@ class TaxRuleRepository extends AbstractRepository
         try {
             $CurrentRule = $this->getByRule();
             $RoundingType = $CurrentRule->getRoundingType();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // quiet
         }
         $TaxRule = new TaxRule();

@@ -278,7 +278,7 @@ class CsvImportController extends AbstractCsvImportController
                                         $this->entityManager->flush();
 
                                         continue;
-                                    } catch (ForeignKeyConstraintViolationException $e) {
+                                    } catch (ForeignKeyConstraintViolationException) {
                                         $message = trans('admin.common.csv_invalid_foreign_key', ['%line%' => $line, '%name%' => $Product->getName()]);
                                         $this->addErrors($message);
 
@@ -680,7 +680,7 @@ class CsvImportController extends AbstractCsvImportController
                             try {
                                 $fs = new Filesystem();
                                 $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$image);
-                            } catch (\Exception $e) {
+                            } catch (\Exception) {
                                 // エラーが発生しても無視する
                             }
                         }

@@ -129,24 +129,16 @@ class TaxRuleService
      */
     public static function roundByRoundingType($value, $RoundingType)
     {
-        switch ($RoundingType) {
+        $ret = match ($RoundingType) {
             // 四捨五入
-            case \Eccube\Entity\Master\RoundingType::ROUND:
-                $ret = round($value);
-                break;
-                // 切り捨て
-            case \Eccube\Entity\Master\RoundingType::FLOOR:
-                $ret = floor($value);
-                break;
-                // 切り上げ
-            case \Eccube\Entity\Master\RoundingType::CEIL:
-                $ret = ceil($value);
-                break;
-                // デフォルト:切り上げ
-            default:
-                $ret = ceil($value);
-                break;
-        }
+            \Eccube\Entity\Master\RoundingType::ROUND => round($value),
+            // 切り捨て
+            \Eccube\Entity\Master\RoundingType::FLOOR => floor($value),
+            // 切り上げ
+            \Eccube\Entity\Master\RoundingType::CEIL => ceil($value),
+            // デフォルト:切り上げ
+            default => ceil($value),
+        };
 
         return $ret;
     }

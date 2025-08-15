@@ -29,12 +29,12 @@ if (!class_exists(Delivery::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryRepository")
      */
-    class Delivery extends AbstractEntity
+    class Delivery extends AbstractEntity implements \Stringable
     {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->name;
         }

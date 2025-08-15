@@ -35,7 +35,7 @@ if (!class_exists(Customer::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
-    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         /**
          * @var int
@@ -324,7 +324,7 @@ if (!class_exists(Customer::class)) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return $this->getName01().' '.$this->getName02();
         }
@@ -1232,11 +1232,7 @@ if (!class_exists(Customer::class)) {
          */
         public function unserialize($serialized)
         {
-            list(
-                $this->id,
-                $this->email,
-                $this->password,
-                $this->salt) = unserialize($serialized);
+            [$this->id, $this->email, $this->password, $this->salt] = unserialize($serialized);
         }
 
         public function getUserIdentifier(): string

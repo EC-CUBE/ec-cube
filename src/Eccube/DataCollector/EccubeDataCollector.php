@@ -113,7 +113,7 @@ class EccubeDataCollector extends DataCollector
 
         try {
             $this->data['locale_code'] = $this->eccubeConfig->get('locale');
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
         }
 
         try {
@@ -140,7 +140,7 @@ class EccubeDataCollector extends DataCollector
                 }
                 $this->data['plugins'][$code] = $Plugin->toArray();
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
         }
     }
 

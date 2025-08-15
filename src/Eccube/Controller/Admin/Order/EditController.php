@@ -336,12 +336,12 @@ class EditController extends AbstractController
                                 $result = $router->match($returnLink);
                                 // パラメータのみ抽出
                                 $params = array_filter($result, function ($key) {
-                                    return 0 !== \strpos($key, '_');
+                                    return !str_starts_with($key, '_');
                                 }, ARRAY_FILTER_USE_KEY);
 
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);
-                            } catch (\Exception $e) {
+                            } catch (\Exception) {
                                 // マッチしない場合はログ出力してスキップ.
                                 log_warning('URLの形式が不正です。');
                             }

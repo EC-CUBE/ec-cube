@@ -461,7 +461,7 @@ class ProductClassController extends AbstractController
 
         try {
             return $qb->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             return null;
         }
     }

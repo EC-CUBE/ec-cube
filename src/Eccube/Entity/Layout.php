@@ -29,7 +29,7 @@ if (!class_exists(Layout::class)) {
      *
      * @ORM\Entity(repositoryClass="Eccube\Repository\LayoutRepository")
      */
-    class Layout extends AbstractEntity
+    class Layout extends AbstractEntity implements \Stringable
     {
         // 配置ID
         /** 配置ID: 未使用 */
@@ -65,7 +65,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return string
          */
-        public function __toString()
+        public function __toString(): string
         {
             return (string) $this->name;
         }

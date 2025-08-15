@@ -73,26 +73,6 @@ return RectorConfig::configure()
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
-               // TODO:こちらを段々と適応します
-               //StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
-               StringableForToStringRector::class, // __toString() メソッドを返り値の型付き（: string）にする
-               TernaryToNullCoalescingRector::class, // 三項演算子をnull合体演算子に変換する
-               TernaryToElvisRector::class, // 三項演算子をエルビス演算子に変換する
-               PowToExpRector::class, // pow()関数を指数演算子に変換する
-               RemoveUnusedVariableAssignRector::class, // 未使用の変数代入を削除する
-               LongArrayToShortArrayRector::class, // 長い配列構文を短い配列構文に変換する
-               ListToArrayDestructRector::class, // list()構文を配列分割に変換する
-               StringifyStrNeedlesRector::class, // strpos()のneedleを文字列に変換する
-               NullCoalescingOperatorRector::class, // null合体演算子を使用する
-               RemoveExtraParametersRector::class, // 不要なパラメータを削除する
-               RestoreDefaultNullToNullableTypePropertyRector::class, // nullをデフォルト値に設定する
-               ChangeSwitchToMatchRector::class, // switch文をmatch式に変換する
-               ConsistentImplodeRector::class, // implode()の引数を一貫性のある形式に変換する
-               StrStartsWithRector::class, // str_starts_with()を使用する
-               StrContainsRector::class, // str_contains()を使用する
-               RemoveUnusedVariableInCatchRector::class, // catchブロック内の未使用変数を削除する
-               ClassOnThisVariableObjectRector::class, // `$this::class` を `static::class`／`self::class` に書き換え
-               ClassOnObjectRector::class,  // `get_class($obj)` を `$obj::class` に書き換え
            ])
            // よく使われるルールセットを有効化
            ->withSets([
