@@ -92,7 +92,7 @@ return RectorConfig::configure()
                //StrContainsRector::class, // str_contains()を使用する
                //RemoveUnusedVariableInCatchRector::class, // catchブロック内の未使用変数を削除する
                //ClassOnThisVariableObjectRector::class, // `$this::class` を `static::class`／`self::class` に書き換え
-               ClassOnObjectRector::class,  // `get_class($obj)` を `$obj::class` に書き換え
+               //ClassOnObjectRector::class,  // `get_class($obj)` を `$obj::class` に書き換え
            ])
            // よく使われるルールセットを有効化
            ->withSets([

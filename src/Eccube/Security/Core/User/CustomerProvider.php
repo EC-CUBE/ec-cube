@@ -69,7 +69,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof Customer) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         return $this->loadUserByUsername($user->getUsername());

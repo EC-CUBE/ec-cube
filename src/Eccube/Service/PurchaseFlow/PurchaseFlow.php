@@ -381,7 +381,7 @@ class PurchaseFlow implements \Stringable
     public function dump()
     {
         $callback = function ($processor) {
-            return get_class($processor);
+            return $processor::class;
         };
         $flows = [
             0 => $this->flowType.' flow',
