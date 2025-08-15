@@ -43,7 +43,7 @@ class TaxExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('is_reduced_tax_rate', [$this, 'isReducedTaxRate']),
+            new TwigFunction('is_reduced_tax_rate', $this->isReducedTaxRate(...)),
         ];
     }
 

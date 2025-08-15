@@ -28,7 +28,7 @@ class TwigIncludeExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('include_dispatch', [$this, 'include_dispatch'],
+            new TwigFunction('include_dispatch', $this->include_dispatch(...),
                 ['needs_context' => true, 'is_safe' => ['all']]),
         ];
     }

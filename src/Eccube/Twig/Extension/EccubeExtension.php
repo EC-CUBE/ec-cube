@@ -58,11 +58,11 @@ class EccubeExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('has_errors', [$this, 'hasErrors']),
-            new TwigFunction('active_menus', [$this, 'getActiveMenus']),
-            new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
-            new TwigFunction('product', [$this, 'getProduct']),
-            new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
+            new TwigFunction('has_errors', $this->hasErrors(...)),
+            new TwigFunction('active_menus', $this->getActiveMenus(...)),
+            new TwigFunction('class_categories_as_json', $this->getClassCategoriesAsJson(...)),
+            new TwigFunction('product', $this->getProduct(...)),
+            new TwigFunction('currency_symbol', $this->getCurrencySymbol(...)),
         ];
     }
 
@@ -74,12 +74,12 @@ class EccubeExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('no_image_product', [$this, 'getNoImageProduct']),
-            new TwigFilter('date_format', [$this, 'getDateFormatFilter']),
-            new TwigFilter('price', [$this, 'getPriceFilter']),
-            new TwigFilter('ellipsis', [$this, 'getEllipsis']),
-            new TwigFilter('time_ago', [$this, 'getTimeAgo']),
-            new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
+            new TwigFilter('no_image_product', $this->getNoImageProduct(...)),
+            new TwigFilter('date_format', $this->getDateFormatFilter(...)),
+            new TwigFilter('price', $this->getPriceFilter(...)),
+            new TwigFilter('ellipsis', $this->getEllipsis(...)),
+            new TwigFilter('time_ago', $this->getTimeAgo(...)),
+            new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
         ];
     }
 

@@ -85,7 +85,7 @@ class PluginGenerateCommand extends Command
         if (null !== $code) {
             $this->io->text(' > <info>code</info>: '.$code);
         } else {
-            $code = $this->io->ask('code', 'Sample', [$this, 'validateCode']);
+            $code = $this->io->ask('code', 'Sample', $this->validateCode(...));
             $input->setArgument('code', $code);
         }
 
@@ -94,7 +94,7 @@ class PluginGenerateCommand extends Command
         if (null !== $version) {
             $this->io->text(' > <info>ver</info>: '.$version);
         } else {
-            $version = $this->io->ask('ver', '1.0.0', [$this, 'validateVersion']);
+            $version = $this->io->ask('ver', '1.0.0', $this->validateVersion(...));
             $input->setArgument('ver', $version);
         }
     }
