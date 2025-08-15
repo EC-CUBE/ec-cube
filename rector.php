@@ -78,7 +78,7 @@ return RectorConfig::configure()
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // TODO: 以下を順番に適用する
                //NullToStrictStringFuncCallArgRector:: class, // 文字列を受け取る関数にnullが渡っていたら、空文字に置き換える。またstringへのキャストも行う
-               ReadOnlyPropertyRector::class, //プロパティに readonly を付ける
+               //ReadOnlyPropertyRector::class, //プロパティに readonly を付ける
                FirstClassCallableRector::class, //[$this, 'method'] を $this->method(...) に置換
            ])
            // よく使われるルールセットを有効化

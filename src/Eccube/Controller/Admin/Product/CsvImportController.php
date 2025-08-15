@@ -127,7 +127,7 @@ class CsvImportController extends AbstractCsvImportController
 
     protected $currentLineNo = 1;
 
-    private \HTMLPurifier $purifier;
+    private readonly \HTMLPurifier $purifier;
 
     /**
      * CsvImportController constructor.
