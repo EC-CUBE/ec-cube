@@ -36,6 +36,9 @@ use Rector\Php80\Rector\FunctionLike\MixedTypeRector;
 use Rector\Php80\Rector\Identical\StrStartsWithRector;
 use Rector\Php80\Rector\NotIdentical\StrContainsRector;
 use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
+use Rector\Php81\Rector\Array_\FirstClassCallableRector;
+use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -74,7 +77,7 @@ return RectorConfig::configure()
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // TODO: 以下を順番に適用する
-               NullToStrictStringFuncCallArgRector:: class, // 文字列を受け取る関数にnullが渡っていたら、空文字に置き換える。またstringへのキャストも行う
+               //NullToStrictStringFuncCallArgRector:: class, // 文字列を受け取る関数にnullが渡っていたら、空文字に置き換える。またstringへのキャストも行う
                ReadOnlyPropertyRector::class, //プロパティに readonly を付ける
                FirstClassCallableRector::class, //[$this, 'method'] を $this->method(...) に置換
            ])

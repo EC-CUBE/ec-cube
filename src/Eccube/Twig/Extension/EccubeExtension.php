@@ -326,7 +326,7 @@ class EccubeExtension extends AbstractExtension
             'mov' => 'fa-file-video-o',
             'mkv' => 'fa-file-video-o',
         ];
-        $ext = strtolower($ext);
+        $ext = strtolower((string) $ext);
 
         $class = $classes[$ext] ?? 'fa-file-o';
 

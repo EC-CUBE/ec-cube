@@ -130,10 +130,10 @@ class PluginGenerateCommand extends Command
         if (empty($code)) {
             throw new InvalidArgumentException('The code can not be empty.');
         }
-        if (strlen($code) > 255) {
+        if (strlen((string) $code) > 255) {
             throw new InvalidArgumentException('The code can enter up to 255 characters');
         }
-        if (1 !== preg_match('/^\w+$/', $code)) {
+        if (1 !== preg_match('/^\w+$/', (string) $code)) {
             throw new InvalidArgumentException('The code [a-zA-Z_] is available.');
         }
 
@@ -178,7 +178,7 @@ class PluginGenerateCommand extends Command
      */
     protected function createConfig($pluginDir, $name, $code, $version)
     {
-        $lowerCode = mb_strtolower($code);
+        $lowerCode = mb_strtolower((string) $code);
         $source = <<<EOL
 {
   "name": "ec-cube/$lowerCode",

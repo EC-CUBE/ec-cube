@@ -138,7 +138,7 @@ class OutputParser
                 if (empty($line)) {
                     break;
                 }
-                $parts = explode(' ', $line);
+                $parts = explode(' ', (string) $line);
                 $result[$parts[0]] = $parts[1];
             }
         }

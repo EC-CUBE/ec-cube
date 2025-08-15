@@ -323,7 +323,7 @@ class StringUtil
     {
         foreach ($replacement as $key => $value) {
             $pattern = '/^('.$key.')=(.*)/m';
-            if (preg_match($pattern, $env)) {
+            if (preg_match($pattern, (string) $env)) {
                 $env = preg_replace($pattern, '$1='.$value, $env);
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     // The m modifier of the preg functions converts the end-of-line to '\n'

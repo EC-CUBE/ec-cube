@@ -263,7 +263,7 @@ class TemplateController extends AbstractController
 
             // 一時ディレクトリへ解凍する.
             try {
-                if (strtolower($formFile->getClientOriginalExtension()) === 'zip') {
+                if (strtolower((string) $formFile->getClientOriginalExtension()) === 'zip') {
                     $zip = new \ZipArchive();
                     $zip->open($tmpDir.'/'.$archive);
                     $zip->extractTo($tmpDir);

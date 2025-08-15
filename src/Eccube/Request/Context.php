@@ -58,7 +58,7 @@ class Context
 
         $pathInfo = \rawurldecode($request->getPathInfo());
         $adminPath = $this->eccubeConfig->get('eccube_admin_route');
-        $adminPath = '/'.\trim($adminPath, '/').'/';
+        $adminPath = '/'.\trim((string) $adminPath, '/').'/';
 
         return str_starts_with($pathInfo, $adminPath);
     }

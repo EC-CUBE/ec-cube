@@ -425,7 +425,7 @@ class ComposerApiService implements ComposerServiceInterface
         $this->execConfig('platform.php', [PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION]);
         $this->execConfig('repositories.eccube', [json_encode($eccube_repository)]);
 
-        if (str_starts_with($url, 'http://')) {
+        if (str_starts_with((string) $url, 'http://')) {
             $this->execConfig('secure-http', ['false']);
         }
         $this->initConsole();
@@ -457,7 +457,7 @@ class ComposerApiService implements ComposerServiceInterface
     {
         $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
 
-        foreach (explode(' ', trim($packageNames)) as $packageName) {
+        foreach (explode(' ', trim((string) $packageNames)) as $packageName) {
             $pluginCode = null;
             // 大文字小文字を区別するファイルシステムを考慮して, ディレクトリ名からプラグインコードを取得する
             foreach (glob($projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
