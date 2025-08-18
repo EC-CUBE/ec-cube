@@ -47,7 +47,7 @@ use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
-           ->withPhpVersion(PhpVersion::PHP_81)
+           ->withPhpVersion(PhpVersion::PHP_82)
 
            // Rectorが解析するパスを指定
            ->withPaths([
@@ -76,15 +76,11 @@ return RectorConfig::configure()
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
-               // TODO: 以下を順番に適用する
-               //NullToStrictStringFuncCallArgRector:: class, // 文字列を受け取る関数にnullが渡っていたら、空文字に置き換える。またstringへのキャストも行う
-               //ReadOnlyPropertyRector::class, //プロパティに readonly を付ける
-               //FirstClassCallableRector::class, //[$this, 'method'] を $this->method(...) に置換
-           ])
+               ])
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
-               LevelSetList::UP_TO_PHP_81, // PHPバージョンに合わせる
+               LevelSetList::UP_TO_PHP_82, // PHPバージョンに合わせる
                // SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
