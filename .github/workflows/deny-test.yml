@@ -24,7 +24,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '8.1'
+          php-version: '8.3'
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
