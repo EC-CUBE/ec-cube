@@ -39,6 +39,8 @@ use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
+use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -47,7 +49,7 @@ use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
-           ->withPhpVersion(PhpVersion::PHP_82)
+           ->withPhpVersion(PhpVersion::PHP_83)
 
            // Rectorが解析するパスを指定
            ->withPaths([
@@ -76,11 +78,14 @@ return RectorConfig::configure()
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
+               // TODO:以下を適用する
+               AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
+               AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
                ])
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
-               LevelSetList::UP_TO_PHP_82, // PHPバージョンに合わせる
+               LevelSetList::UP_TO_PHP_83, // PHPバージョンに合わせる
                // SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
