@@ -43,6 +43,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
@@ -52,6 +53,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setNormalizer('constraints', function ($options, $value) {
@@ -86,6 +88,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return TelType::class;
@@ -94,6 +97,7 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'postal';

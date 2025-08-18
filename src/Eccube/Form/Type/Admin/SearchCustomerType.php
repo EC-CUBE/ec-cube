@@ -64,6 +64,7 @@ class SearchCustomerType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $months = range(1, 12);
@@ -438,6 +439,7 @@ class SearchCustomerType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'admin_search_customer';

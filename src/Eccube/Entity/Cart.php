@@ -249,6 +249,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return ItemCollection
          */
+        #[\Override]
         public function getItems()
         {
             return (new ItemCollection($this->getCartItems()))->sort();
@@ -291,6 +292,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Alias of setTotalPrice.
          */
+        #[\Override]
         public function setTotal($total)
         {
             return $this->setTotalPrice($total);
@@ -301,6 +303,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return string
          */
+        #[\Override]
         public function getTotal()
         {
             return $this->getTotalPrice();
@@ -322,6 +325,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @param ItemInterface $item
          */
+        #[\Override]
         public function addItem(ItemInterface $item)
         {
             $this->CartItems->add($item);
@@ -340,6 +344,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return int
          */
+        #[\Override]
         public function getQuantity()
         {
             return $this->getTotalQuantity();
@@ -348,6 +353,7 @@ if (!class_exists(Cart::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function setDeliveryFeeTotal($total)
         {
             $this->delivery_fee_total = $total;
@@ -358,6 +364,7 @@ if (!class_exists(Cart::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function getDeliveryFeeTotal()
         {
             return $this->delivery_fee_total;
@@ -456,6 +463,7 @@ if (!class_exists(Cart::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function setDiscount($total)
         {
             // TODO quiet
@@ -464,6 +472,7 @@ if (!class_exists(Cart::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function setCharge($total)
         {
             // TODO quiet
@@ -474,6 +483,7 @@ if (!class_exists(Cart::class)) {
          *
          * @deprecated
          */
+        #[\Override]
         public function setTax($total)
         {
             // TODO quiet

@@ -32,6 +32,7 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
         $this->context = $context;
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         if ($this->context->isFront()) {
@@ -50,11 +51,13 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
     /**
      * @return iterable
      */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         yield TextType::class;
     }
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($this->context->isFront() && $options['purify_html']) {

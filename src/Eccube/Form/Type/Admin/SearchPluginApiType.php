@@ -26,6 +26,7 @@ class SearchPluginApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $category = $options['category'];
@@ -79,6 +80,7 @@ class SearchPluginApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -89,6 +91,7 @@ class SearchPluginApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'search_plugin';

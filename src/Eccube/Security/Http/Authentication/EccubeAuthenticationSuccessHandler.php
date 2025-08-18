@@ -25,6 +25,7 @@ class EccubeAuthenticationSuccessHandler extends DefaultAuthenticationSuccessHan
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         try {

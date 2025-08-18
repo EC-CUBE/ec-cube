@@ -56,6 +56,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {
@@ -68,6 +69,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {
@@ -125,6 +127,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {
@@ -138,6 +141,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 何もしない
@@ -146,6 +150,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 利用したポイントをユーザに戻す.

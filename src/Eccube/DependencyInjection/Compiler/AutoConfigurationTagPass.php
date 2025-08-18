@@ -31,6 +31,7 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class AutoConfigurationTagPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         foreach ($container->getDefinitions() as $id => $definition) {

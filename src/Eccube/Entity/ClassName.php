@@ -34,6 +34,7 @@ if (!class_exists(ClassName::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return $this->getName();

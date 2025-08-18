@@ -22,6 +22,7 @@ class LoginHistoryStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -33,6 +34,7 @@ class LoginHistoryStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return MasterType::class;
@@ -41,6 +43,7 @@ class LoginHistoryStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'login_history_status';

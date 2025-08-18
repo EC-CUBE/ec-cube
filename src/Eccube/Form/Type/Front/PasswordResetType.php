@@ -44,6 +44,7 @@ class PasswordResetType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('login_email', EmailType::class, [
@@ -67,6 +68,7 @@ class PasswordResetType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'forgot_reset';

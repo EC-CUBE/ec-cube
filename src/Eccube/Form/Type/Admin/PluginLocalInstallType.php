@@ -23,6 +23,7 @@ class PluginLocalInstallType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -43,6 +44,7 @@ class PluginLocalInstallType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'plugin_local_install';

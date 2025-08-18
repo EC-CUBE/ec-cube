@@ -66,6 +66,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      */
+    #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$itemHolder instanceof Order) {

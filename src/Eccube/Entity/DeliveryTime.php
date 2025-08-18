@@ -31,6 +31,7 @@ if (!class_exists(DeliveryTime::class)) {
      */
     class DeliveryTime extends AbstractEntity implements \Stringable
     {
+        #[\Override]
         public function __toString(): string
         {
             return (string) $this->delivery_time;

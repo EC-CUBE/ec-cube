@@ -34,6 +34,7 @@ class TagRepository extends AbstractRepository
      *
      * @param  Tag $tag タグ
      */
+    #[\Override]
     public function save($tag)
     {
         if (!$tag->getId()) {
@@ -68,6 +69,7 @@ class TagRepository extends AbstractRepository
      *
      * @param  Tag $Tag 削除対象のタグ
      */
+    #[\Override]
     public function delete($Tag)
     {
         $em = $this->getEntityManager();

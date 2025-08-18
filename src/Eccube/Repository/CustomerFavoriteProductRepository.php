@@ -95,6 +95,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      *
      * @param CustomerFavoriteProduct $CustomerFavoriteProduct
      */
+    #[\Override]
     public function delete($CustomerFavoriteProduct)
     {
         $em = $this->getEntityManager();

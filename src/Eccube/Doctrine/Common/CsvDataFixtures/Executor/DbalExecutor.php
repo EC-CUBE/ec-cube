@@ -42,6 +42,7 @@ class DbalExecutor extends AbstractExecutor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function execute(array $fixtures, $append = false)
     {
         if ($append) {

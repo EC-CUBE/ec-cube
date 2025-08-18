@@ -117,6 +117,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function getPrice()
         {
             return $this->price;
@@ -127,6 +128,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return CartItem
          */
+        #[\Override]
         public function setQuantity($quantity)
         {
             $this->quantity = $quantity;
@@ -137,6 +139,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function getQuantity()
         {
             return $this->quantity;
@@ -155,6 +158,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return bool 商品明細の場合 true
          */
+        #[\Override]
         public function isProduct()
         {
             return true;
@@ -165,6 +169,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return bool 送料明細の場合 true
          */
+        #[\Override]
         public function isDeliveryFee()
         {
             return false;
@@ -175,6 +180,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return bool 手数料明細の場合 true
          */
+        #[\Override]
         public function isCharge()
         {
             return false;
@@ -185,6 +191,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return bool 値引き明細の場合 true
          */
+        #[\Override]
         public function isDiscount()
         {
             return false;
@@ -195,6 +202,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return bool 税額明細の場合 true
          */
+        #[\Override]
         public function isTax()
         {
             return false;
@@ -205,11 +213,13 @@ if (!class_exists(CartItem::class)) {
          *
          * @return bool ポイント明細の場合 true
          */
+        #[\Override]
         public function isPoint()
         {
             return false;
         }
 
+        #[\Override]
         public function getOrderItemType()
         {
             // TODO OrderItemType::PRODUCT
@@ -236,6 +246,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return ProductClass
          */
+        #[\Override]
         public function getProductClass()
         {
             return $this->ProductClass;

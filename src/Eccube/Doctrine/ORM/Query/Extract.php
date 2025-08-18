@@ -61,6 +61,7 @@ class Extract extends FunctionNode
         'TIME',
     ];
 
+    #[\Override]
     public function parse(Parser $parser)
     {
         $lexer = $parser->getLexer();
@@ -90,6 +91,7 @@ class Extract extends FunctionNode
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 
+    #[\Override]
     public function getSql(SqlWalker $sqlWalker)
     {
         $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();

@@ -55,6 +55,7 @@ class OrderPdfType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->eccubeConfig;

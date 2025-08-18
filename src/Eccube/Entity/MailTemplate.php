@@ -34,6 +34,7 @@ if (!class_exists(MailTemplate::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return $this->getName() ?: '';

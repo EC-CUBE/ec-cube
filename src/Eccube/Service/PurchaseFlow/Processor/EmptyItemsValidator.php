@@ -43,6 +43,7 @@ class EmptyItemsValidator extends ItemHolderValidator
      *
      * @throws InvalidItemException
      */
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         foreach ($itemHolder->getItems() as $item) {

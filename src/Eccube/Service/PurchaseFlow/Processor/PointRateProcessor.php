@@ -35,6 +35,7 @@ class PointRateProcessor extends ItemHolderPostValidator
         $this->baseInfoRepository = $baseInfoRepository;
     }
 
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$itemHolder instanceof Order) {

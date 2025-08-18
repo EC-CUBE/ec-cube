@@ -35,6 +35,7 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -57,6 +58,7 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -67,6 +69,7 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'page_max';
@@ -75,6 +78,7 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return MasterType::class;

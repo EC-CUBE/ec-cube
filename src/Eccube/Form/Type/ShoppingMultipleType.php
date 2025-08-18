@@ -24,6 +24,7 @@ class ShoppingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $deliveries = $options['deliveries'];
@@ -51,6 +52,7 @@ class ShoppingMultipleType extends AbstractType
             ]);
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -63,6 +65,7 @@ class ShoppingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'shopping_multiple';

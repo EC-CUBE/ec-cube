@@ -41,6 +41,7 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
+    #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $OrderItemsByProductClass = [];

@@ -49,6 +49,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
+    #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (is_null($context->getOriginHolder())) {
@@ -147,6 +148,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @throws PurchaseException
      */
+    #[\Override]
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
     {
         if (is_null($context->getOriginHolder())) {
@@ -182,6 +184,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @throws PurchaseException
      */
+    #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
     }
@@ -192,6 +195,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      */
+    #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
     }

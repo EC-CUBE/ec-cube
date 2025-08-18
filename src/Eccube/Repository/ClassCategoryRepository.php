@@ -62,6 +62,7 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @param $ClassCategory
      */
+    #[\Override]
     public function save($ClassCategory)
     {
         if (!$ClassCategory->getId()) {
@@ -90,6 +91,7 @@ class ClassCategoryRepository extends AbstractRepository
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
+    #[\Override]
     public function delete($ClassCategory)
     {
         $this->createQueryBuilder('cc')

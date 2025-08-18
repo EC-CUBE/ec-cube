@@ -21,12 +21,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ToggleSwitchType extends AbstractType
 {
+    #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['label_on'] = $options['label_on'];
         $view->vars['label_off'] = $options['label_off'];
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -36,6 +38,7 @@ class ToggleSwitchType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getParent()
     {
         return CheckboxType::class;

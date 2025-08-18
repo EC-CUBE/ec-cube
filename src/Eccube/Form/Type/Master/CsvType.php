@@ -22,6 +22,7 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -35,6 +36,7 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'csv_type';
@@ -43,6 +45,7 @@ class CsvType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return MasterType::class;

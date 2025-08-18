@@ -32,26 +32,31 @@ abstract class CreditCard implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     abstract public function verify();
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     abstract public function checkout();
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     abstract public function apply();
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     abstract public function setFormType(FormInterface $form);
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function setOrder(Order $Order)
     {
         $this->Order = $Order;

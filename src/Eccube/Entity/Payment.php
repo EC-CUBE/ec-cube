@@ -34,6 +34,7 @@ if (!class_exists(Payment::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return (string) $this->getMethod();

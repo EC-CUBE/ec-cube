@@ -268,6 +268,7 @@ class OrderPdfService extends Fpdi
     /**
      * フッターに発行日を出力する.
      */
+    #[\Override]
     public function Footer()
     {
         $this->Cell(0, 0, $this->issueDate, 0, 0, 'R');

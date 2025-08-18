@@ -23,12 +23,14 @@ class CustomerStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // todo ???
         $options['sex_options']['required'] = $options['required'];
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -37,11 +39,13 @@ class CustomerStatusType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getParent()
     {
         return MasterType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'customer_status';

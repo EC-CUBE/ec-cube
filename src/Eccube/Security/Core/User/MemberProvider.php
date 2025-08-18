@@ -66,6 +66,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
      *
      * @throws UnsupportedUserException if the user is not supported
      */
+    #[\Override]
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof Member) {
@@ -82,11 +83,13 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
      *
      * @return bool
      */
+    #[\Override]
     public function supportsClass($class)
     {
         return Member::class === $class || is_subclass_of($class, Member::class);
     }
 
+    #[\Override]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $Member = $this->memberRepository->findOneBy(['login_id' => $identifier, 'Work' => Work::ACTIVE]);
@@ -98,6 +101,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
         return $Member;
     }
 
+    #[\Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         $user->setPassword($newHashedPassword);

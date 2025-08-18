@@ -29,6 +29,7 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('help', $options['help']);
@@ -37,6 +38,7 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['help'] = $form->getConfig()->getAttribute('help');
@@ -45,6 +47,7 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -60,6 +63,7 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * Return the class of the type being extended.
      */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         // return FormType::class to modify (nearly) every field in the system

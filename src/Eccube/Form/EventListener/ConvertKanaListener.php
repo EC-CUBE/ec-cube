@@ -35,6 +35,7 @@ class ConvertKanaListener implements EventSubscriberInterface
         $this->encoding = $encoding;
     }
 
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

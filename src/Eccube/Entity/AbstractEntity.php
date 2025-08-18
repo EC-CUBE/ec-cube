@@ -29,6 +29,7 @@ use Symfony\Component\Serializer\Serializer;
 abstract class AbstractEntity implements \ArrayAccess
 {
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetExists($offset)
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
@@ -41,11 +42,13 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetSet($offset, $value)
     {
     }
 
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetGet($offset)
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
@@ -63,6 +66,7 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetUnset($offset)
     {
     }

@@ -29,6 +29,7 @@ class PaymentTotalNegativeValidator extends ItemHolderPostValidator
      *
      * @throws InvalidItemException
      */
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if ($itemHolder->getTotal() < 0) {

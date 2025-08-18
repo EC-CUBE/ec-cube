@@ -43,6 +43,7 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $options['lastname_options']['required'] = $options['required'];
@@ -82,6 +83,7 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $builder = $form->getConfig();
@@ -92,6 +94,7 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -135,6 +138,7 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'name';

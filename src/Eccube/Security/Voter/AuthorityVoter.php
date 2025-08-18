@@ -47,6 +47,7 @@ class AuthorityVoter implements VoterInterface
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    #[\Override]
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $path = null;

@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EccubeBundle extends Bundle
 {
+    #[\Override]
     public function getContainerExtension(): ?ExtensionInterface
     {
         return $this->extension = $this->createContainerExtension();

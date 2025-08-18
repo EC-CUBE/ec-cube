@@ -39,6 +39,7 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
         $this->orderStatusRepository = $orderStatusRepository;
     }
 
+    #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         if (!$target instanceof Order) {

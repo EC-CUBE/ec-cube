@@ -35,6 +35,7 @@ class MaintenanceListener implements EventSubscriberInterface
         $this->systemService = $systemService;
     }
 
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

@@ -35,6 +35,7 @@ class ComposerRequireCommand extends Command
         $this->composerService = $composerService;
     }
 
+    #[\Override]
     protected function configure()
     {
         $this->addArgument('package', InputArgument::REQUIRED)
@@ -42,6 +43,7 @@ class ComposerRequireCommand extends Command
             ->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Path of composer repository');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $packageName = $input->getArgument('package');

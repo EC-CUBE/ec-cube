@@ -38,6 +38,7 @@ class NewsRepository extends AbstractRepository
      *
      * @param $News
      */
+    #[\Override]
     public function save($News)
     {
         $em = $this->getEntityManager();
@@ -53,6 +54,7 @@ class NewsRepository extends AbstractRepository
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
+    #[\Override]
     public function delete($News)
     {
         $em = $this->getEntityManager();

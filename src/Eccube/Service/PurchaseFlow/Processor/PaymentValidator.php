@@ -43,6 +43,7 @@ class PaymentValidator extends ItemHolderPostValidator
         $this->deliveryRepository = $deliveryRepository;
     }
 
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 明細の個数が1以下の場合はOK

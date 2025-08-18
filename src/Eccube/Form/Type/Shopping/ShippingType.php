@@ -63,6 +63,7 @@ class ShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -269,6 +270,7 @@ class ShippingType extends AbstractType
         });
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -278,6 +280,7 @@ class ShippingType extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix()
     {
         return '_shopping_shipping';

@@ -57,6 +57,7 @@ class GenerateDummyDataCommand extends Command
         $this->productRepository = $productRepository;
     }
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -81,6 +82,7 @@ EOF
             );
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $locale = $input->getOption('with-locale');

@@ -25,6 +25,7 @@ class PluginUpdateCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:update';
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -32,6 +33,7 @@ class PluginUpdateCommand extends Command
             ->setDescription('Execute plugin update process.');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

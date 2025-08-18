@@ -26,6 +26,7 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -44,6 +45,7 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'delivery_duration';
@@ -52,6 +54,7 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return EntityType::class;

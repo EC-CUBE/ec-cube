@@ -40,6 +40,7 @@ class TwigLintValidator extends ConstraintValidator
      * @param mixed $value
      * @param Constraint $constraint
      */
+    #[\Override]
     public function validate($value, Constraint $constraint)
     {
         // valueがnullの場合は "Template is not defined"のエラーが投げられるので, 空文字でチェックする.

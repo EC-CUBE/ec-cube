@@ -62,6 +62,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     protected function configure(): void
     {
         parent::configure();
@@ -75,6 +76,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));

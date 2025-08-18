@@ -49,6 +49,7 @@ class Cash implements PaymentMethodInterface
      *
      * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
+    #[\Override]
     public function checkout()
     {
         $this->purchaseFlow->commit($this->Order, new PurchaseContext());
@@ -64,6 +65,7 @@ class Cash implements PaymentMethodInterface
      *
      * @throws \Eccube\Service\PurchaseFlow\PurchaseException
      */
+    #[\Override]
     public function apply()
     {
         $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
@@ -74,6 +76,7 @@ class Cash implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function setFormType(FormInterface $form)
     {
         $this->form = $form;
@@ -84,6 +87,7 @@ class Cash implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function verify()
     {
         return false;
@@ -92,6 +96,7 @@ class Cash implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function setOrder(Order $Order)
     {
         $this->Order = $Order;

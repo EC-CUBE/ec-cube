@@ -102,6 +102,7 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @return array The event names to listen to
      */
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

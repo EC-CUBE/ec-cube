@@ -90,6 +90,7 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
@@ -179,6 +180,7 @@ class OrderType extends AbstractType
         });
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -189,6 +191,7 @@ class OrderType extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix()
     {
         return '_shopping_order';

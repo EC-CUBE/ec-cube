@@ -52,6 +52,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 在庫を減らす
@@ -63,6 +64,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 在庫を戻す

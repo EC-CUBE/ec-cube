@@ -53,6 +53,7 @@ class EccubeConfig implements \ArrayAccess
      * @return bool
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetExists($offset)
     {
         return $this->has($offset);
@@ -64,6 +65,7 @@ class EccubeConfig implements \ArrayAccess
      * @return mixed
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -74,6 +76,7 @@ class EccubeConfig implements \ArrayAccess
      * @param mixed $value
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetSet($offset, $value)
     {
         throw new \LogicException();
@@ -85,6 +88,7 @@ class EccubeConfig implements \ArrayAccess
      * @throws \LogicException
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function offsetUnset($offset)
     {
         throw new \LogicException();

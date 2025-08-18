@@ -29,6 +29,7 @@ class PriceChangeValidator extends ItemValidator
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
+    #[\Override]
     public function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {

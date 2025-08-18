@@ -73,6 +73,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      *
      * @throws \Doctrine\ORM\NoResultException
      */
+    #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$itemHolder instanceof Order) {

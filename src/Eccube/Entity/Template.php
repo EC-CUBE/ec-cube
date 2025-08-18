@@ -47,6 +47,7 @@ if (!class_exists(Template::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return (string) $this->getName();

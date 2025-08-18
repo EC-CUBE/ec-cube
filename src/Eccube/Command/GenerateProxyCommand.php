@@ -40,12 +40,14 @@ class GenerateProxyCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    #[\Override]
     protected function configure()
     {
         $this
             ->setDescription('Generate entity proxies');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $projectDir = $this->eccubeConfig->get('kernel.project_dir');

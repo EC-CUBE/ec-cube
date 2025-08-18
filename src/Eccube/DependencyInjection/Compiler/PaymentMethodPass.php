@@ -21,6 +21,7 @@ class PaymentMethodPass implements CompilerPassInterface
 {
     public const PAYMENT_METHOD_TAG = 'eccube.payment.method';
 
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         $ids = $container->findTaggedServiceIds(self::PAYMENT_METHOD_TAG);

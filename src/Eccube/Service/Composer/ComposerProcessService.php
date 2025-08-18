@@ -60,6 +60,7 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->baseInfoRepository = $baseInfoRepository;
     }
 
+    #[\Override]
     public function execRequire($packageName, $output = null)
     {
         return $this->runCommand([
@@ -68,6 +69,7 @@ class ComposerProcessService implements ComposerServiceInterface
         ], $output);
     }
 
+    #[\Override]
     public function execRemove($packageName, $output = null)
     {
         return $this->runCommand([
@@ -132,16 +134,19 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
+    #[\Override]
     public function execConfig($key, $value = null)
     {
         return $this->composerApiService->execConfig($key, $value);
     }
 
+    #[\Override]
     public function configureRepository(BaseInfo $BaseInfo): void
     {
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
+    #[\Override]
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
         $this->composerApiService->foreachRequires($packageName, $version, $callback, $typeFilter, $level);

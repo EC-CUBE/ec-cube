@@ -48,6 +48,7 @@ class MasterdataType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $masterdata = [];
@@ -97,6 +98,7 @@ class MasterdataType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'admin_system_masterdata';

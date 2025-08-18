@@ -90,6 +90,7 @@ class IpAddrListener implements EventSubscriberInterface
         return true;
     }
 
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

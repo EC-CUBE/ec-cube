@@ -45,6 +45,7 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $database = [];
@@ -126,6 +127,7 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'install_step4';

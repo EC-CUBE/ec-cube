@@ -29,6 +29,7 @@ class RepositoryExtension extends AbstractExtension
         $this->em = $em;
     }
 
+    #[\Override]
     public function getFunctions()
     {
         return [

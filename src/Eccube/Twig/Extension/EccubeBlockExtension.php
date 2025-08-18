@@ -29,6 +29,7 @@ class EccubeBlockExtension extends AbstractExtension
         $this->blockTemplates = $blockTemplates;
     }
 
+    #[\Override]
     public function getFunctions()
     {
         return [

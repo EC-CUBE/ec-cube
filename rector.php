@@ -79,7 +79,7 @@ return RectorConfig::configure()
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // TODO:以下を適用する
-               AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
+               //AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
                ])
            // よく使われるルールセットを有効化

@@ -25,6 +25,7 @@ class Template extends \Twig\Template
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\SyntaxError
      */
+    #[\Override]
     public function display(array $context, array $blocks = [])
     {
         $globals = $this->env->getGlobals();
@@ -45,6 +46,7 @@ class Template extends \Twig\Template
         }
     }
 
+    #[\Override]
     public function getTemplateName()
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
@@ -53,17 +55,20 @@ class Template extends \Twig\Template
         return '';
     }
 
+    #[\Override]
     public function getDebugInfo()
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         return [];
     }
 
+    #[\Override]
     protected function doDisplay(array $context, array $blocks = [])
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
     }
 
+    #[\Override]
     public function getSourceContext()
     {
         // FIXME Twig\Loader\FilesystemLoader の実装を持ってきたが,これで問題ないか要確認

@@ -38,6 +38,7 @@ class CsrfExtension extends AbstractExtension
     /**
      * @return array
      */
+    #[\Override]
     public function getFunctions()
     {
         return [

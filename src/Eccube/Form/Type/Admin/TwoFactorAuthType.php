@@ -24,6 +24,7 @@ class TwoFactorAuthType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -55,6 +56,7 @@ class TwoFactorAuthType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'admin_two_factor_auth';

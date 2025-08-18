@@ -39,6 +39,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
         return $this->taxRuleService;
     }
 
+    #[\Override]
     public function getSubscribedEvents()
     {
         return [
