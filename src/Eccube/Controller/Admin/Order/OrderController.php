@@ -583,7 +583,7 @@ class OrderController extends AbstractController
         }
 
         $trackingNumber = $request->get('tracking_number') ?? '';
-        $trackingNumber = mb_convert_kana($trackingNumber, 'a', 'utf-8');
+        $trackingNumber = mb_convert_kana((string) $trackingNumber, 'a', 'utf-8');
 
         /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate(

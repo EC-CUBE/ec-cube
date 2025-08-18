@@ -125,7 +125,7 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && !str_contains($file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && !str_contains((string) $file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -184,13 +184,13 @@ class PaymentController extends AbstractController
 
             // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
-            if (!str_starts_with($mimeType, 'image')) {
+            if (!str_starts_with((string) $mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 
             // 拡張子
             $extension = $image->getClientOriginalExtension();
-            if (!in_array(strtolower($extension), $allowExtensions)) {
+            if (!in_array(strtolower((string) $extension), $allowExtensions)) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 

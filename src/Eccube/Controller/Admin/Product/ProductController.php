@@ -337,13 +337,13 @@ class ProductController extends AbstractController
                 foreach ($img as $image) {
                     // ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
-                    if (!str_starts_with($mimeType, 'image')) {
+                    if (!str_starts_with((string) $mimeType, 'image')) {
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
                     // 拡張子
                     $extension = $image->getClientOriginalExtension();
-                    if (!in_array(strtolower($extension), $allowExtensions)) {
+                    if (!in_array(strtolower((string) $extension), $allowExtensions)) {
                         throw new UnsupportedMediaTypeHttpException();
                     }
 
@@ -642,7 +642,7 @@ class ProductController extends AbstractController
                     foreach ($product_image as $sortNo => $filename) {
                         $ProductImage = $this->productImageRepository
                             ->findOneBy([
-                                'file_name' => pathinfo($filename, PATHINFO_BASENAME),
+                                'file_name' => pathinfo((string) $filename, PATHINFO_BASENAME),
                                 'Product' => $Product,
                             ]);
                         if ($ProductImage !== null) {
@@ -902,7 +902,7 @@ class ProductController extends AbstractController
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
                     // 画像ファイルを新規作成
-                    $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
+                    $extension = pathinfo((string) $Image->getFileName(), PATHINFO_EXTENSION);
                     $filename = date('mdHis').uniqid('_').'.'.$extension;
                     try {
                         $fs = new Filesystem();

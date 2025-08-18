@@ -38,7 +38,7 @@ class TemplateEventNodeVisiror implements NodeVisitorInterface
     public function leaveNode(Node $node, Environment $env): Node
     {
         if ($node instanceof ModuleNode) {
-            if (\str_starts_with($node->getTemplateName(), '__string_template__')) {
+            if (\str_starts_with((string) $node->getTemplateName(), '__string_template__')) {
                 return $node;
             }
             $node->setNode('display_start', new Node([new TemplateEventNode(), $node->getNode('display_start')]));

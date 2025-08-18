@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 
 class Session implements SessionInterface, FlashBagAwareSessionInterface
 {
-    private RequestStack $requestStack;
+    private readonly RequestStack $requestStack;
 
     public function __construct(RequestStack $requestStack)
     {

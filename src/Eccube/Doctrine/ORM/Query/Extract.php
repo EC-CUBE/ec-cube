@@ -67,7 +67,7 @@ class Extract extends FunctionNode
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
 
-        $upperField = strtoupper($lexer->lookahead['value']);
+        $upperField = strtoupper((string) $lexer->lookahead['value']);
         if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !isset($this->formats[$upperField])) {
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
@@ -78,7 +78,7 @@ class Extract extends FunctionNode
 
         $next = $lexer->glimpse();
         if (isset($next['type']) && $next['type'] === Lexer::T_STRING) {
-            $upperType = strtoupper($lexer->lookahead['value']);
+            $upperType = strtoupper((string) $lexer->lookahead['value']);
             if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }

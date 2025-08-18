@@ -494,7 +494,7 @@ class PluginService
 
     public function checkSymbolName($string)
     {
-        return strlen($string) < 256 && preg_match('/^\w+$/', $string);
+        return strlen((string) $string) < 256 && preg_match('/^\w+$/', (string) $string);
         // plugin_nameやplugin_codeに使える文字のチェック
         // a-z A-Z 0-9 _
         // ディレクトリ名などに使われれるので厳しめ
@@ -814,7 +814,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.strtolower((string) $pluginCode), $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 

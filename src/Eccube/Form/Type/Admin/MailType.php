@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MailType extends AbstractType
 {
-    private MailTemplateRepository $mailTemplateRepository;
+    private readonly MailTemplateRepository $mailTemplateRepository;
 
     private EccubeConfig $eccubeConfig;
 

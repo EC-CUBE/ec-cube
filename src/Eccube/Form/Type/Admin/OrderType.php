@@ -241,13 +241,13 @@ class OrderType extends AbstractType
                     \Eccube\Entity\Customer::class
                 )));
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addOrderStatusForm']);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addShippingForm']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'copyFields']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderStatus']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'associateOrderAndShipping']);
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->sortOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addOrderStatusForm(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addShippingForm(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->copyFields(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOrderStatus(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->associateOrderAndShipping(...));
     }
 
     /**

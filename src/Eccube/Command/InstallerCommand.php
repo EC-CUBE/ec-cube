@@ -144,7 +144,7 @@ class InstallerCommand extends Command
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
         // DATABASE_CHARSET
-        $this->envFileUpdater->databaseCharset = \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
+        $this->envFileUpdater->databaseCharset = \str_starts_with((string) $databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
 
         // MAILER_DSN
         $mailerDsn = $this->eccubeConfig->get('eccube_mailer_dsn');
@@ -265,13 +265,13 @@ class InstallerCommand extends Command
 
     protected function getDatabaseName($databaseUrl)
     {
-        if (str_starts_with($databaseUrl, 'sqlite')) {
+        if (str_starts_with((string) $databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (str_starts_with($databaseUrl, 'postgres') || str_starts_with($databaseUrl, 'pgsql')) {
+        if (str_starts_with((string) $databaseUrl, 'postgres') || str_starts_with((string) $databaseUrl, 'pgsql')) {
             return 'postgres';
         }
-        if (str_starts_with($databaseUrl, 'mysql')) {
+        if (str_starts_with((string) $databaseUrl, 'mysql')) {
             return 'mysql';
         }
 
@@ -297,7 +297,7 @@ class InstallerCommand extends Command
         $version = $stmt->fetchOne();
 
         if ($platform === 'postgresql') {
-            preg_match('/\A([\d+\.]+)/', $version, $matches);
+            preg_match('/\A([\d+\.]+)/', (string) $version, $matches);
             $version = $matches[1];
         }
 

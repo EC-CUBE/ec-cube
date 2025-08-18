@@ -293,7 +293,7 @@ class EntityProxyService
     {
         $result = [];
         $i = 0;
-        foreach (explode('\\', $name) as $part) {
+        foreach (explode('\\', (string) $name) as $part) {
             // プラグインのtraitの場合は、0番目は空文字
             // 本体でuseされているtraitは0番目にtrait名がくる
             if ($part) {
