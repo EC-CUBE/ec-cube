@@ -80,7 +80,7 @@ return RectorConfig::configure()
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // TODO:以下を適用する
                //AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
-               AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
+               //AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
                ])
            // よく使われるルールセットを有効化
            ->withSets([

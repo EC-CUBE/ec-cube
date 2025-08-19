@@ -15,13 +15,13 @@ namespace Eccube\Repository;
 
 final class QueryKey
 {
-    public const PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
-    public const PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
+    public const string PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
+    public const string PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
 
-    public const CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
+    public const string CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
 
-    public const ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
-    public const ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
+    public const string ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
+    public const string ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
 
-    public const LOGIN_HISTORY_SEARCH_ADMIN = 'LoginHistory.getQueryBuilderBySearchDataForAdmin';
+    public const string LOGIN_HISTORY_SEARCH_ADMIN = 'LoginHistory.getQueryBuilderBySearchDataForAdmin';
 }
