@@ -55,6 +55,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigFunction[] An array of functions
      */
+    #[\Override]
     public function getFunctions()
     {
         return [
@@ -71,6 +72,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigFilter[]
      */
+    #[\Override]
     public function getFilters()
     {
         return [
@@ -88,6 +90,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigTest[]
      */
+    #[\Override]
     public function getTests()
     {
         return [

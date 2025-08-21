@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class TwigExtensionPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         // 本番時はtwigのurl(), path()を差し替える.

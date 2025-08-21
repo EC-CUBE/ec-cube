@@ -37,6 +37,7 @@ class OrderPdfRepository extends AbstractRepository
      *
      * @return bool
      */
+    #[\Override]
     public function save($arrData)
     {
         /**

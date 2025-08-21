@@ -305,6 +305,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

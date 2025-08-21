@@ -65,6 +65,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return (string) $this->name;

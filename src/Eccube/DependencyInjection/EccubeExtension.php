@@ -29,17 +29,20 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
     }
 
+    #[\Override]
     public function getAlias(): string
     {
         return 'eccube';
     }
 
+    #[\Override]
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
         return parent::getConfiguration($config, $container);
@@ -48,6 +51,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     /**
      * Allow an extension to prepend the extension configurations.
      */
+    #[\Override]
     public function prepend(ContainerBuilder $container)
     {
         // FrameworkBundleの設定を動的に変更する.

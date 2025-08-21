@@ -39,6 +39,7 @@ class CustomerAddressRepository extends AbstractRepository
      *
      * @param CustomerAddress $CustomerAddress
      */
+    #[\Override]
     public function delete($CustomerAddress)
     {
         $em = $this->getEntityManager();

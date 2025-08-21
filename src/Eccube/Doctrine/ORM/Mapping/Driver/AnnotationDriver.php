@@ -27,6 +27,7 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getAllClassNames()
     {
         if ($this->classNames !== null) {

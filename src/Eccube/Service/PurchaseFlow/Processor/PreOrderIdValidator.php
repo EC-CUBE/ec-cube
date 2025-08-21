@@ -46,6 +46,7 @@ class PreOrderIdValidator implements PurchaseProcessor
      *
      * @throws PurchaseException
      */
+    #[\Override]
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 処理なし
@@ -59,6 +60,7 @@ class PreOrderIdValidator implements PurchaseProcessor
      *
      * @throws PurchaseException
      */
+    #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 処理なし
@@ -73,6 +75,7 @@ class PreOrderIdValidator implements PurchaseProcessor
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      */
+    #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // $itemHolderが受注の場合のみチェック

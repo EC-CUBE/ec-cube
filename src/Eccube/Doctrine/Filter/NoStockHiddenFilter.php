@@ -18,6 +18,7 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class NoStockHiddenFilter extends SQLFilter
 {
+    #[\Override]
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         if ($targetEntity->reflClass->getName() === \Eccube\Entity\ProductClass::class) {

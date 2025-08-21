@@ -23,6 +23,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class TaxRateChangeValidator extends ItemHolderPostValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$itemHolder instanceof Order) {

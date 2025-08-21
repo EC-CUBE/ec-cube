@@ -40,6 +40,7 @@ class SearchLoginHistoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -111,6 +112,7 @@ class SearchLoginHistoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'admin_search_login_history';

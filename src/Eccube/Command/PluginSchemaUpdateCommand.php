@@ -26,6 +26,7 @@ class PluginSchemaUpdateCommand extends Command
 
     protected static $defaultName = 'eccube:plugin:schema-update';
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -33,6 +34,7 @@ class PluginSchemaUpdateCommand extends Command
             ->setDescription('Execute plugin schema update.');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

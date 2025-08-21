@@ -105,12 +105,14 @@ class InstallerCommand extends Command
         };
     }
 
+    #[\Override]
     protected function configure()
     {
         $this
             ->setDescription('Install EC-CUBE');
     }
 
+    #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output)
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
@@ -209,11 +211,13 @@ class InstallerCommand extends Command
         $this->envFileUpdater->updateEnvFile();
     }
 
+    #[\Override]
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,

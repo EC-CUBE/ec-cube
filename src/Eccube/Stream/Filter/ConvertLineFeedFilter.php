@@ -23,6 +23,7 @@ class ConvertLineFeedFilter extends \php_user_filter
      * @param int $consumed
      * @param bool $closing
      */
+    #[\Override]
     public function filter($in, $out, &$consumed, $closing): int
     {
         while ($bucket = \stream_bucket_make_writeable($in)) {

@@ -24,12 +24,14 @@ class PluginEnableCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:enable';
 
+    #[\Override]
     protected function configure()
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

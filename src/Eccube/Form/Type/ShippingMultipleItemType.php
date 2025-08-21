@@ -96,6 +96,7 @@ class ShippingMultipleItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -183,6 +184,7 @@ class ShippingMultipleItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'shipping_multiple_item';

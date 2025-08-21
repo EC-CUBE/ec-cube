@@ -48,6 +48,7 @@ class PluginGenerateCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -57,12 +58,14 @@ class PluginGenerateCommand extends Command
             ->setDescription('Generate plugin skeleton.');
     }
 
+    #[\Override]
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->fs = new Filesystem();
     }
 
+    #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output)
     {
         if (null !== $input->getArgument('name') && null !== $input->getArgument('code') && null !== $input->getArgument('ver')) {
@@ -99,6 +102,7 @@ class PluginGenerateCommand extends Command
         }
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');

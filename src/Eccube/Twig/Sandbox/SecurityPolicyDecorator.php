@@ -26,11 +26,13 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
         $this->securityPolicy = $securityPolicy;
     }
 
+    #[\Override]
     public function checkSecurity($tags, $filters, $functions): void
     {
         $this->securityPolicy->checkSecurity($tags, $filters, $functions);
     }
 
+    #[\Override]
     public function checkMethodAllowed($obj, $method): void
     {
         // __toStringの場合はチェックをスキップする
@@ -40,6 +42,7 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
         $this->securityPolicy->checkMethodAllowed($obj, $method);
     }
 
+    #[\Override]
     public function checkPropertyAllowed($obj, $method): void
     {
         $this->securityPolicy->checkPropertyAllowed($obj, $method);

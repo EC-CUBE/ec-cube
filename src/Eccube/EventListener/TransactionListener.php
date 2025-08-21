@@ -143,6 +143,7 @@ class TransactionListener implements EventSubscriberInterface
      *
      * @return array
      */
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

@@ -64,11 +64,13 @@ class Kernel extends BaseKernel
         $this->loadEntityProxies();
     }
 
+    #[\Override]
     public function getCacheDir(): string
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
+    #[\Override]
     public function getLogDir(): string
     {
         return $this->getProjectDir().'/var/log';
@@ -79,6 +81,7 @@ class Kernel extends BaseKernel
         return $this->getProjectDir().'/app/config/eccube';
     }
 
+    #[\Override]
     public function registerBundles(): iterable
     {
         $contents = require $this->getProjectDir().'/app/config/eccube/bundles.php';
@@ -126,6 +129,7 @@ class Kernel extends BaseKernel
      *
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
      */
+    #[\Override]
     public function boot()
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
@@ -220,6 +224,7 @@ class Kernel extends BaseKernel
         }
     }
 
+    #[\Override]
     protected function build(ContainerBuilder $container)
     {
         $this->addEntityExtensionPass($container);

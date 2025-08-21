@@ -41,6 +41,7 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         /** @var OrderStatus[] $OrderStatuses */
@@ -61,6 +62,7 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -71,6 +73,7 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'order_status';
@@ -79,6 +82,7 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return MasterType::class;

@@ -43,6 +43,7 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
      */
+    #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $isDeliveryFree = false;

@@ -101,6 +101,7 @@ class CalendarRepository extends AbstractRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[\Override]
     public function delete($Calendar)
     {
         if (!$Calendar instanceof Calendar) {

@@ -45,6 +45,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      */
+    #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {

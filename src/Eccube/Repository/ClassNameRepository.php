@@ -56,6 +56,7 @@ class ClassNameRepository extends AbstractRepository
      *
      * @param ClassName $ClassName
      */
+    #[\Override]
     public function save($ClassName)
     {
         if (!$ClassName->getId()) {
@@ -79,6 +80,7 @@ class ClassNameRepository extends AbstractRepository
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
+    #[\Override]
     public function delete($ClassName)
     {
         $sortNo = $ClassName->getSortNo();

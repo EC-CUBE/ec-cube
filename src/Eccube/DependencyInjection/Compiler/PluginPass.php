@@ -31,6 +31,7 @@ class PluginPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         // 無効状態のプラグインコード一覧を取得.

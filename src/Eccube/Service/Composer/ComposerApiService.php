@@ -102,6 +102,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    #[\Override]
     public function execRequire($packageName, $output = null, $from = null)
     {
         $packageName = explode(' ', trim($packageName));
@@ -137,6 +138,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    #[\Override]
     public function execRemove($packageName, $output = null)
     {
         $this->dropTableToExtra($packageName);
@@ -234,6 +236,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    #[\Override]
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
         if (!str_contains($packageName, '/')) {
@@ -267,6 +270,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    #[\Override]
     public function execConfig($key, $value = null)
     {
         $commands = [
@@ -448,6 +452,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    #[\Override]
     public function configureRepository(BaseInfo $BaseInfo): void
     {
         $this->init($BaseInfo);

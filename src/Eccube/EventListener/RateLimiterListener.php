@@ -96,6 +96,7 @@ class RateLimiterListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

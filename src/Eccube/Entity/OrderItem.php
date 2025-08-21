@@ -76,6 +76,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return bool 商品明細の場合 true
          */
+        #[\Override]
         public function isProduct()
         {
             return $this->getOrderItemTypeId() === OrderItemType::PRODUCT;
@@ -86,6 +87,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return bool 送料明細の場合 true
          */
+        #[\Override]
         public function isDeliveryFee()
         {
             return $this->getOrderItemTypeId() === OrderItemType::DELIVERY_FEE;
@@ -96,6 +98,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return bool 手数料明細の場合 true
          */
+        #[\Override]
         public function isCharge()
         {
             return $this->getOrderItemTypeId() === OrderItemType::CHARGE;
@@ -106,6 +109,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return bool 値引き明細の場合 true
          */
+        #[\Override]
         public function isDiscount()
         {
             return $this->getOrderItemTypeId() === OrderItemType::DISCOUNT;
@@ -116,6 +120,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return bool 税額明細の場合 true
          */
+        #[\Override]
         public function isTax()
         {
             return $this->getOrderItemTypeId() === OrderItemType::TAX;
@@ -126,6 +131,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return bool ポイント明細の場合 true
          */
+        #[\Override]
         public function isPoint()
         {
             return $this->getOrderItemTypeId() === OrderItemType::POINT;
@@ -509,6 +515,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string
          */
+        #[\Override]
         public function getPrice()
         {
             return $this->price;
@@ -521,6 +528,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
+        #[\Override]
         public function setQuantity($quantity)
         {
             $this->quantity = $quantity;
@@ -533,6 +541,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string
          */
+        #[\Override]
         public function getQuantity()
         {
             return $this->quantity;
@@ -758,6 +767,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return ProductClass|null
          */
+        #[\Override]
         public function getProductClass()
         {
             return $this->ProductClass;
@@ -872,6 +882,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItemType
          */
+        #[\Override]
         public function getOrderItemType()
         {
             return $this->OrderItemType;

@@ -42,6 +42,7 @@ class CsvFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         // 日本語windowsの場合はインストール時にエラーとなるので英語のロケールをセット

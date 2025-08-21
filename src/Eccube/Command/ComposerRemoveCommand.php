@@ -36,11 +36,13 @@ class ComposerRemoveCommand extends Command
         $this->composerService = $composerService;
     }
 
+    #[\Override]
     protected function configure()
     {
         $this->addArgument('package', InputArgument::REQUIRED);
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->composerService->execRemove($input->getArgument('package'), $output);

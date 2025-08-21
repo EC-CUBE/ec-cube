@@ -106,6 +106,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
         $this->data['base_currency_code'] = $this->eccubeConfig->get('currency');
@@ -144,6 +145,7 @@ class EccubeDataCollector extends DataCollector
         }
     }
 
+    #[\Override]
     public function reset()
     {
         $this->data = [];
@@ -152,6 +154,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getName()
     {
         return 'eccube_core';

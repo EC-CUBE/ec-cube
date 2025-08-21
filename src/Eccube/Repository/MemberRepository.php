@@ -86,6 +86,7 @@ class MemberRepository extends AbstractRepository
      *
      * @param Member $Member
      */
+    #[\Override]
     public function save($Member)
     {
         if (!$Member->getId()) {
@@ -110,6 +111,7 @@ class MemberRepository extends AbstractRepository
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
+    #[\Override]
     public function delete($Member)
     {
         $this->createQueryBuilder('m')

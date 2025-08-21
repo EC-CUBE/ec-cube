@@ -43,6 +43,7 @@ class RepeatedPasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -83,6 +84,7 @@ class RepeatedPasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return RepeatedType::class;
@@ -91,6 +93,7 @@ class RepeatedPasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'repeated_password';

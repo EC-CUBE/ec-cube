@@ -49,6 +49,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function open($savePath, $sessionName): bool
     {
         $this->sessionName = $sessionName;
@@ -63,6 +64,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function doRead($sessionId): string
     {
         return $this->handler->read($sessionId);
@@ -72,6 +74,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function updateTimestamp($sessionId, $data): bool
     {
         return $this->write($sessionId, $data);
@@ -80,6 +83,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function doWrite($sessionId, $data): bool
     {
         return $this->handler->write($sessionId, $data);
@@ -91,6 +95,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * @see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L126-L167
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function destroy($sessionId): bool
     {
         if (!headers_sent() && filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN)) {
@@ -140,6 +145,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function doDestroy($sessionId): bool
     {
         $this->doDestroy = false;
@@ -150,6 +156,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function close(): bool
     {
         return $this->handler->close();
@@ -159,6 +166,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
+    #[\Override]
     public function gc($maxlifetime): int|false
     {
         return $this->handler->gc($maxlifetime);

@@ -30,6 +30,7 @@ class NoRFCEmailValidator extends EmailValidator
      *
      * @return bool
      */
+    #[\Override]
     public function isValid($email, ?EmailValidation $emailValidation = null)
     {
         $wsp = '[\x20\x09]';

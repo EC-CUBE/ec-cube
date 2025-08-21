@@ -28,6 +28,7 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return [

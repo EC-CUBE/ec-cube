@@ -22,6 +22,7 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     }
@@ -29,6 +30,7 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -39,6 +41,7 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return CustomerAddressType::class;
@@ -47,6 +50,7 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'shopping_shipping';

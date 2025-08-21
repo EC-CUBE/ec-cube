@@ -25,6 +25,7 @@ class EccubeAuthenticationFailureHandler extends DefaultAuthenticationFailureHan
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         try {

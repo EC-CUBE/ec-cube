@@ -49,6 +49,7 @@ if (!class_exists(Product::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return (string) $this->getName();

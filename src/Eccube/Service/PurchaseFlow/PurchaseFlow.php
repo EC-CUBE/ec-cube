@@ -413,6 +413,7 @@ class PurchaseFlow implements \Stringable
     /**
      * @return string
      */
+    #[\Override]
     public function __toString(): string
     {
         return $this->dump();

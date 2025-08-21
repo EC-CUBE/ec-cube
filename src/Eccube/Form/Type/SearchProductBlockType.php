@@ -35,6 +35,7 @@ class SearchProductBlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $Categories = $this->categoryRepository
@@ -59,6 +60,7 @@ class SearchProductBlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -70,6 +72,7 @@ class SearchProductBlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'search_product_block';

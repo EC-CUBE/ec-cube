@@ -158,6 +158,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
      *
      * @return WhereClause[]
      */
+    #[\Override]
     protected function createStatements($params, $queryKey): array
     {
         return $this->whereClauses;
@@ -168,6 +169,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
      *
      * @return string
      */
+    #[\Override]
     public function getQueryKey(): string
     {
         return '';
@@ -192,6 +194,7 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      *
      * @return OrderByClause[]
      */
+    #[\Override]
     protected function createStatements($params, $queryKey): array
     {
         return $this->orderByClauses;
@@ -202,6 +205,7 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      *
      * @return string
      */
+    #[\Override]
     public function getQueryKey(): string
     {
         return '';

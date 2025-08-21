@@ -24,6 +24,7 @@ class PluginInstallCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:install';
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -33,6 +34,7 @@ class PluginInstallCommand extends Command
             ->setDescription('Install plugin from local.');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

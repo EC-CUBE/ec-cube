@@ -269,6 +269,7 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @throws NoResultException
      */
+    #[\Override]
     public function delete($TaxRule)
     {
         if (!$TaxRule instanceof TaxRule) {

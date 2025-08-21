@@ -43,6 +43,7 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
         $this->passwordHasher = $passwordHasher;
     }
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -55,6 +56,7 @@ EOF
             );
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getEntityManager(null);

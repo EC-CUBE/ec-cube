@@ -30,6 +30,7 @@ class PaymentChargeChangeValidator extends ItemHolderPostValidator
      *
      * @throws InvalidItemException
      */
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$itemHolder instanceof Order) {

@@ -54,6 +54,7 @@ class DeliverySettingValidator extends ItemValidator
      *
      * @throws InvalidItemException
      */
+    #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
@@ -74,6 +75,7 @@ class DeliverySettingValidator extends ItemValidator
      * @param ItemInterface $item
      * @param PurchaseContext $context
      */
+    #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $item->setQuantity(0);

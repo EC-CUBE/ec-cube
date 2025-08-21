@@ -52,6 +52,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(
@@ -91,6 +92,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         );
     }
 
+    #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $options = $form->getConfig()->getOption('eccube_form_options');
@@ -110,6 +112,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         $view->vars['eccube_form_options'] = $options;
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault(
@@ -125,6 +128,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     /**
      * Return the class of the type being extended.
      */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         // return FormType::class to modify (nearly) every field in the system

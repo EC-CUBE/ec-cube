@@ -39,6 +39,7 @@ class EntityToIdTransformer implements DataTransformerInterface
         $this->className = $className;
     }
 
+    #[\Override]
     public function transform($entity)
     {
         if (null === $entity) {
@@ -48,6 +49,7 @@ class EntityToIdTransformer implements DataTransformerInterface
         return $entity->getId();
     }
 
+    #[\Override]
     public function reverseTransform($id)
     {
         if ('' === $id || null === $id) {

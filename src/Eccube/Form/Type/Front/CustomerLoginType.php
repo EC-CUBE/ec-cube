@@ -44,6 +44,7 @@ class CustomerLoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('login_email', EmailType::class, [
@@ -72,6 +73,7 @@ class CustomerLoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'customer_login';

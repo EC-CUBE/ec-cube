@@ -54,6 +54,7 @@ class RestrictFileUploadListener implements EventSubscriberInterface
         }
     }
 
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

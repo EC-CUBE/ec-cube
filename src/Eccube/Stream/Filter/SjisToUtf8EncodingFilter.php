@@ -63,6 +63,7 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
      * @param int $consumed
      * @param bool $closing
      */
+    #[\Override]
     public function filter($in, $out, &$consumed, $closing): int
     {
         $isBucketAppended = false;

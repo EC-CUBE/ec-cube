@@ -36,6 +36,7 @@ class UTCDateTimeTzType extends DateTimeTzType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof \DateTime) {
@@ -48,6 +49,7 @@ class UTCDateTimeTzType extends DateTimeTzType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof \DateTime) {
@@ -101,6 +103,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         self::$timezone = new \DateTimeZone($timezone);
     }
 
+    #[\Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;

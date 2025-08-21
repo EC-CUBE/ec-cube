@@ -24,6 +24,7 @@ abstract class WhereCustomizer implements QueryCustomizer
      *
      * @return void
      */
+    #[\Override]
     final public function customize(QueryBuilder $builder, $params, $queryKey)
     {
         foreach ($this->createStatements($params, $queryKey) as $whereClause) {

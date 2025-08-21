@@ -30,6 +30,7 @@ class ClassCategoryValidator extends ItemValidator
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
+    #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
@@ -55,6 +56,7 @@ class ClassCategoryValidator extends ItemValidator
      *
      * @return void
      */
+    #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $item->setQuantity(0);

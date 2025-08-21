@@ -58,6 +58,7 @@ class Logger extends AbstractLogger
      * @param string $message
      * @param array $context
      */
+    #[\Override]
     public function log($level, $message, array $context = [])
     {
         if ($this->context->isAdmin()) {

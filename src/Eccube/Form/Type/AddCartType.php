@@ -66,6 +66,7 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /** @var \Eccube\Entity\Product $Product */
@@ -157,6 +158,7 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('product');
@@ -172,6 +174,7 @@ class AddCartType extends AbstractType
     /*
      * {@inheritdoc}
      */
+    #[\Override]
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         if ($options['id_add_product_id']) {
@@ -184,6 +187,7 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'add_cart';

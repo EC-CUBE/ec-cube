@@ -44,6 +44,7 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $totalPrice = $itemHolder->getTotal();

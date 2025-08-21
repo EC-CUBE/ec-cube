@@ -23,11 +23,13 @@ class SexType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $options['sex_options']['required'] = $options['required'];
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -37,11 +39,13 @@ class SexType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getParent()
     {
         return MasterType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'sex';

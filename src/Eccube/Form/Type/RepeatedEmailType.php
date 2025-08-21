@@ -42,6 +42,7 @@ class RepeatedEmailType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -78,6 +79,7 @@ class RepeatedEmailType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return RepeatedType::class;
@@ -86,6 +88,7 @@ class RepeatedEmailType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'repeated_email';

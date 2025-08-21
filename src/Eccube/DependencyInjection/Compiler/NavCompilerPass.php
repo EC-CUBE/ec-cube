@@ -21,6 +21,7 @@ class NavCompilerPass implements CompilerPassInterface
 {
     public const NAV_TAG = 'eccube.nav';
 
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         $ids = $container->findTaggedServiceIds(self::NAV_TAG);

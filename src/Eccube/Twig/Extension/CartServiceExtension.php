@@ -30,6 +30,7 @@ class CartServiceExtension extends AbstractExtension
         $this->cartService = $cartService;
     }
 
+    #[\Override]
     public function getFunctions()
     {
         return [

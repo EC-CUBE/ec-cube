@@ -43,6 +43,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // 全角英数を事前に半角にする
@@ -53,6 +54,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setNormalizer('constraints', function ($options, $value) {
@@ -85,6 +87,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
         return TelType::class;
@@ -93,6 +96,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'phone_number';

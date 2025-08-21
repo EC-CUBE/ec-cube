@@ -30,6 +30,7 @@ class PasswordHasher implements LegacyPasswordHasherInterface
         $this->password_hash_algos = $password_hash_algos;
     }
 
+    #[\Override]
     public function hash(string $plainPassword, ?string $salt = null): string
     {
         $salt ??= '';
@@ -45,6 +46,7 @@ class PasswordHasher implements LegacyPasswordHasherInterface
         return $res;
     }
 
+    #[\Override]
     public function verify(string $hashedPassword, string $plainPassword, ?string $salt = null): bool
     {
         if ($hashedPassword === '') {
@@ -71,6 +73,7 @@ class PasswordHasher implements LegacyPasswordHasherInterface
         return false;
     }
 
+    #[\Override]
     public function needsRehash(string $hashedPassword): bool
     {
         return true;

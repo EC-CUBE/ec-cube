@@ -38,6 +38,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return [

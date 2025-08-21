@@ -83,6 +83,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
         $this->twig->setLoader($loader);
     }
 
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [

@@ -25,6 +25,7 @@ class TwigIncludeExtension extends AbstractExtension
         $this->twig = $twig;
     }
 
+    #[\Override]
     public function getFunctions()
     {
         return [

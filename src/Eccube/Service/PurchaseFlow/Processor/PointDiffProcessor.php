@@ -56,6 +56,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder, $context)) {
@@ -78,6 +79,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder, $context)) {
@@ -93,6 +95,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 何もしない
@@ -101,6 +104,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder, $context)) {

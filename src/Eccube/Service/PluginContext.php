@@ -18,8 +18,8 @@ use Eccube\Exception\PluginException;
 
 class PluginContext
 {
-    private const MODE_INSTALL = 'install';
-    private const MODE_UNINSTALL = 'uninstall';
+    private const string MODE_INSTALL = 'install';
+    private const string MODE_UNINSTALL = 'uninstall';
 
     private $mode;
 

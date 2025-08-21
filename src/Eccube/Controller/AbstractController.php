@@ -215,6 +215,7 @@ class AbstractController extends Controller
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function addFlash(string $type, $message): void
     {
         try {

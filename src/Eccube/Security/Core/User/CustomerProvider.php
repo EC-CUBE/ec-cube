@@ -66,6 +66,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      *
      * @throws UnsupportedUserException if the user is not supported
      */
+    #[\Override]
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof Customer) {
@@ -82,11 +83,13 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      *
      * @return bool
      */
+    #[\Override]
     public function supportsClass($class)
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
     }
 
+    #[\Override]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $Customer = $this->customerRepository->findOneBy([
@@ -101,6 +104,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
         return $Customer;
     }
 
+    #[\Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         $user->setPassword($newHashedPassword);

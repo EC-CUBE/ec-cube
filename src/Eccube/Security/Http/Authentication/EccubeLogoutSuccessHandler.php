@@ -36,6 +36,7 @@ class EccubeLogoutSuccessHandler implements EventSubscriberInterface
         }
     }
 
+    #[\Override]
     public static function getSubscribedEvents()
     {
         return [LogoutEvent::class => 'onLogout'];

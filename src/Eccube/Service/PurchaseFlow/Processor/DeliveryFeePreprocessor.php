@@ -78,6 +78,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      *
      * @throws \Doctrine\ORM\NoResultException
      */
+    #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $this->removeDeliveryFeeItem($itemHolder);

@@ -324,6 +324,7 @@ if (!class_exists(Customer::class)) {
         /**
          * @return string
          */
+        #[\Override]
         public function __toString(): string
         {
             return $this->getName01().' '.$this->getName02();
@@ -332,6 +333,7 @@ if (!class_exists(Customer::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function getRoles(): array
         {
             return ['ROLE_USER'];
@@ -348,6 +350,7 @@ if (!class_exists(Customer::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function eraseCredentials()
         {
         }
@@ -675,6 +678,7 @@ if (!class_exists(Customer::class)) {
          *
          * @return string|null
          */
+        #[\Override]
         public function getPassword(): ?string
         {
             return $this->password;
@@ -699,6 +703,7 @@ if (!class_exists(Customer::class)) {
          *
          * @return string|null
          */
+        #[\Override]
         public function getSalt(): ?string
         {
             return $this->salt;
@@ -1205,6 +1210,7 @@ if (!class_exists(Customer::class)) {
          *
          * @since 5.1.0
          */
+        #[\Override]
         public function serialize()
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
@@ -1230,11 +1236,13 @@ if (!class_exists(Customer::class)) {
          *
          * @since 5.1.0
          */
+        #[\Override]
         public function unserialize($serialized)
         {
             [$this->id, $this->email, $this->password, $this->salt] = unserialize($serialized);
         }
 
+        #[\Override]
         public function getUserIdentifier(): string
         {
             return $this->email;
