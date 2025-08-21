@@ -161,7 +161,7 @@ class DummyCustomer implements UserInterface
         return 'user';
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 

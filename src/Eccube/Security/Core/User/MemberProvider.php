@@ -67,7 +67,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
      * @throws UnsupportedUserException if the user is not supported
      */
     #[\Override]
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof Member) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
@@ -84,7 +84,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
      * @return bool
      */
     #[\Override]
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return Member::class === $class || is_subclass_of($class, Member::class);
     }
