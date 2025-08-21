@@ -26,7 +26,7 @@ class Template extends \Twig\Template
      * @throws \Twig\Error\SyntaxError
      */
     #[\Override]
-    public function display(array $context, array $blocks = [])
+    public function display(array $context, array $blocks = []): void
     {
         $globals = $this->env->getGlobals();
         if (isset($globals['event_dispatcher']) && !str_starts_with($this->getTemplateName(), '__string_template__')) {
@@ -47,7 +47,7 @@ class Template extends \Twig\Template
     }
 
     #[\Override]
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         // デバッグツールバーでエラーが発生するため空文字を返しておく。
@@ -56,20 +56,20 @@ class Template extends \Twig\Template
     }
 
     #[\Override]
-    public function getDebugInfo()
+    public function getDebugInfo(): array
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         return [];
     }
 
     #[\Override]
-    protected function doDisplay(array $context, array $blocks = [])
+    protected function doDisplay(array $context, array $blocks = []): iterable
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
     }
 
     #[\Override]
-    public function getSourceContext()
+    public function getSourceContext(): Source
     {
         // FIXME Twig\Loader\FilesystemLoader の実装を持ってきたが,これで問題ないか要確認
         return new Source('', $this->getTemplateName(), '');
