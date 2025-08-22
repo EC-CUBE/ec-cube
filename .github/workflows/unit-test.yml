@@ -75,7 +75,11 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.11025'
-        run: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
+        run: |
+          vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
+          vendor/bin/phpunit --testdox --filter=testFreeArea
+          vendor/bin/phpunit --testdox --filter=testMetatags
+
       - name: PHPUnit
         env:
           APP_ENV: 'test'
