@@ -913,7 +913,7 @@ class CsvImportController extends AbstractCsvImportController
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         // dump($row,$headerByKey);exit;
-                        /** @var $ClassName ClassName */
+                        /** @var ClassName $ClassName */
                         $ClassName = new ClassName();
                         if (isset($row[$headerByKey['id']]) && strlen((string) $row[$headerByKey['id']]) > 0) {
                             if (!preg_match('/^\d+$/', (string) $row[$headerByKey['id']])) {
@@ -1033,7 +1033,7 @@ class CsvImportController extends AbstractCsvImportController
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         // dump($row,$headerByKey);exit;
-                        /** @var $ClassCategory ClassCategory */
+                        /** @var ClassCategory $ClassCategory */
                         $ClassCategory = new ClassCategory();
 
                         if (isset($row[$headerByKey['id']]) && strlen((string) $row[$headerByKey['id']]) > 0) {

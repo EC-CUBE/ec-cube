@@ -14,7 +14,6 @@
 namespace Eccube\Twig\Extension;
 
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityError;
@@ -51,10 +50,9 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      *
      * @return string|null
      *
-     * @throws LoaderError
      * @throws SecurityError
      */
-    public function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false)
+    public function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false): ?string
     {
         try {
             return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);

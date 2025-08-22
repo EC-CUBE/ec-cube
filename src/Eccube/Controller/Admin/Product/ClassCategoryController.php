@@ -314,7 +314,7 @@ class ClassCategoryController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $ClassCategory \Eccube\Entity\ClassCategory */
+                /** @var \Eccube\Entity\ClassCategory $ClassCategory */
                 $ClassCategory = $entity;
 
                 // CSV出力項目と合致するデータを取得.

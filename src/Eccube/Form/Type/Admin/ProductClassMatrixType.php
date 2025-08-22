@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class ProductClassMatrixType extends AbstractType
 {
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('class_name1', EntityType::class, [
@@ -59,8 +59,8 @@ class ProductClassMatrixType extends AbstractType
                 },
                 'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (
-                    ?ClassName $ClassName2 = null,
                     ExecutionContextInterface $context,
+                    ?ClassName $ClassName2 = null,
                 ) {
                     $ClassName1 = $context->getRoot()->get('class_name1')->getData();
                     if ($ClassName1 && $ClassName2) {
