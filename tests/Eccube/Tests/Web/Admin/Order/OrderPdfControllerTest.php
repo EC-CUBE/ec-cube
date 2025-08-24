@@ -40,12 +40,16 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     /** @var OrderPdfRepository */
     protected $orderPdfRepository;
 
+    /** @var array */
+    protected $config;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
         $this->orderRepo = $this->entityManager->getRepository(Order::class);
         $this->orderPdfRepository = $this->entityManager->getRepository(OrderPdf::class);
+        $this->config = $this->eccubeConfig;
     }
 
     /**
@@ -243,13 +247,13 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     public function dataDownloadMaxLengthProvider()
     {
         return [
-            ['order_pdf[title]', '値が長すぎます。255文字以内でなければなりません。'],
-            ['order_pdf[message1]', '値が長すぎます。30文字以内でなければなりません。'],
-            ['order_pdf[message2]', '値が長すぎます。30文字以内でなければなりません。'],
-            ['order_pdf[message3]', '値が長すぎます。30文字以内でなければなりません。'],
-            ['order_pdf[note1]', '値が長すぎます。255文字以内でなければなりません。'],
-            ['order_pdf[note2]', '値が長すぎます。255文字以内でなければなりません。'],
-            ['order_pdf[note3]', '値が長すぎます。255文字以内でなければなりません。'],
+            ['order_pdf[title]', 'この値は、255文字以内で入力してください。'],
+            ['order_pdf[message1]', 'この値は、30文字以内で入力してください。'],
+            ['order_pdf[message2]', 'この値は、30文字以内で入力してください。'],
+            ['order_pdf[message3]', 'この値は、30文字以内で入力してください。'],
+            ['order_pdf[note1]', 'この値は、255文字以内で入力してください。'],
+            ['order_pdf[note2]', 'この値は、255文字以内で入力してください。'],
+            ['order_pdf[note3]', 'この値は、255文字以内で入力してください。'],
         ];
     }
 
