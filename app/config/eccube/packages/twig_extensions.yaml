@@ -170,4 +170,6 @@ parameters:
     eccube.twig_sandbox.allowed_methods:
         'Symfony\Bridge\Twig\AppVariable': [ 'getrequest' ]
         'Symfony\Component\HttpFoundation\Request': [ 'geturi' ]
-    eccube.twig_sandbox.allowed_properties: []
+    eccube.twig_sandbox.allowed_properties:
+        'Eccube\Entity\Product': [ 'name', 'main_list_image' ]
+        'Eccube\Entity\BaseInfo': [ 'shop_name' ]
