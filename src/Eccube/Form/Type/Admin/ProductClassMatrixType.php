@@ -59,8 +59,8 @@ class ProductClassMatrixType extends AbstractType
                 },
                 'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (
+                    ?ClassName $ClassName2,
                     ExecutionContextInterface $context,
-                    ?ClassName $ClassName2 = null,
                 ) {
                     $ClassName1 = $context->getRoot()->get('class_name1')->getData();
                     if ($ClassName1 && $ClassName2) {
