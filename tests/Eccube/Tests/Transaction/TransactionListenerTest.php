@@ -39,7 +39,7 @@ class TransactionListenerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete($this::class.' は未実装です');
+        $this->markTestIncomplete(static::class.' は未実装です');
         parent::setUp();
 
         if ($this->isSqlite()) {

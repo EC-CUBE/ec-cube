@@ -29,7 +29,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete($this::class.' は未実装です');
+        $this->markTestIncomplete(static::class.' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
