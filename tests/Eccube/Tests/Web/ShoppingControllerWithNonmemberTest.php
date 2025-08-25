@@ -170,7 +170,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->scenarioCartIn($client);
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($client);
         $crawler = $this->scenarioConfirm($client);
 
         $this->expected = 'ご注文内容のご確認';
@@ -227,7 +227,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->scenarioCartIn($client);
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($client);
         $crawler = $this->scenarioConfirm($client);
 
         $this->expected = 'ご注文内容のご確認';

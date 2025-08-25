@@ -943,7 +943,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->scenarioCartIn($client);
 
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($client);
 
         $crawler = $this->scenarioConfirm($client);
 

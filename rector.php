@@ -93,7 +93,7 @@ return RectorConfig::configure()
                //RandomFunctionRector::class, // rand() を random_int() に置き換える
                ListToArrayDestructRector::class, // list()構文を配列分割に変換する
                RemoveUnusedVariableAssignRector::class, // 未使用の変数代入を削除する
-               RemoveExtraParametersRector::class, // 存在しないパラメータを削除する
+               //RemoveExtraParametersRector::class, // 存在しないパラメータを削除する
                OptionalParametersAfterRequiredRector::class, // 必須パラメータの後にオプションパラメータが来るようにする
                NullToStrictStringFuncCallArgRector::class, // nullを厳密なstring型の関数呼び出し引数に変換する
                ArrayKeyFirstLastRector::class, // array_key_first() と array_key_last() を使用する

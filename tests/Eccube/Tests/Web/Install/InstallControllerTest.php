@@ -101,7 +101,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testIndex()
     {
-        $this->assertInstanceOf(RedirectResponse::class, $this->controller->index($this->request));
+        $this->assertInstanceOf(RedirectResponse::class, $this->controller->index());
     }
 
     public function testStep1()
@@ -113,7 +113,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep2()
     {
-        $this->actual = $this->controller->step2($this->request);
+        $this->actual = $this->controller->step2();
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
 
         $this->assertFileExists(static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
