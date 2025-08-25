@@ -96,7 +96,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
             self::assertTrue(true);
-        } catch (InvalidItemException $e) {
+        } catch (InvalidItemException) {
             self::fail();
         }
     }
@@ -110,7 +110,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
             self::assertTrue(true);
-        } catch (InvalidItemException $e) {
+        } catch (InvalidItemException) {
             self::fail();
         }
     }

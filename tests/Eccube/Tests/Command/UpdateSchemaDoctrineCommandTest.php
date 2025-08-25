@@ -489,7 +489,7 @@ EOT
             $process->mustRun();
 
             return $process->getOutput();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // ignore Fatal error: Cannot declare class
             // $this->fail($e->getMessage());
         }

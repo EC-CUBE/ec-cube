@@ -196,7 +196,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
                 // 外部キー制約違反のため例外が発生するはず.
                 $this->classCategoryRepository->delete($ClassCategory1);
                 $this->fail();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $this->addToAssertionCount(1);
             }
         }
