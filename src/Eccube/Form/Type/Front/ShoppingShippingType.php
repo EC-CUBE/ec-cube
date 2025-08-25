@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Entity\CustomerAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +35,7 @@ class ShoppingShippingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Eccube\Entity\CustomerAddress::class,
+            'data_class' => CustomerAddress::class,
         ]);
     }
 

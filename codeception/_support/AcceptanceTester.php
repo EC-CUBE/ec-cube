@@ -145,7 +145,7 @@ class AcceptanceTester extends Actor
                 $pc->setStock($stock[$key]);
                 $pc->setStockUnlimited(Constant::DISABLED);
                 $pc->setSaleLimit(2);
-                $ps = $entityManager->getRepository(\Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
+                $ps = $entityManager->getRepository(Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
                 $ps->setStock($stock[$key]);
                 $entityManager->persist($pc);
                 $entityManager->persist($ps);
