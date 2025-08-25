@@ -126,16 +126,16 @@ class AcceptanceTester extends Actor
         $entityManager = Fixtures::get('entityManager');
 
         if (!is_array($stock)) {
-            $pc = $entityManager->getRepository(\Eccube\Entity\ProductClass::class)->findOneBy(['Product' => $pid]);
+            $pc = $entityManager->getRepository(Eccube\Entity\ProductClass::class)->findOneBy(['Product' => $pid]);
             $pc->setStock($stock);
             $pc->setStockUnlimited(Constant::DISABLED);
-            $ps = $entityManager->getRepository(\Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
+            $ps = $entityManager->getRepository(Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
             $ps->setStock($stock);
             $entityManager->persist($pc);
             $entityManager->persist($ps);
             $entityManager->flush();
         } else {
-            $pcs = $entityManager->getRepository(\Eccube\Entity\ProductClass::class)
+            $pcs = $entityManager->getRepository(Eccube\Entity\ProductClass::class)
                 ->createQueryBuilder('o')
                 ->where('o.Product = '.$pid)
                 ->andwhere('o.ClassCategory1 > 0')

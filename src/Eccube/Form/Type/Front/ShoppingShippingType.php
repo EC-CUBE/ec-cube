@@ -34,7 +34,7 @@ class ShoppingShippingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \Eccube\Entity\CustomerAddress::class,
+            'data_class' => Eccube\Entity\CustomerAddress::class,
         ]);
     }
 

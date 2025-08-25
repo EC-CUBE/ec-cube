@@ -63,7 +63,7 @@ $progress = (function () {
 })();
 
 if (!getenv('NO_FIXTURES')) {
-    $num = $entityManager->getRepository(\Eccube\Entity\Customer::class)
+    $num = $entityManager->getRepository(Eccube\Entity\Customer::class)
         ->createQueryBuilder('o')
         ->select('count(o.id)')
         ->getQuery()
@@ -96,11 +96,11 @@ if (!getenv('NO_FIXTURES')) {
         createProduct($container, '規格なし商品', 0);
     }
 
-    $Customers = $entityManager->getRepository(\Eccube\Entity\Customer::class)->findAll();
-    $Products = $entityManager->getRepository(\Eccube\Entity\Product::class)->findAll();
-    $Deliveries = $entityManager->getRepository(\Eccube\Entity\Delivery::class)->findAll();
+    $Customers = $entityManager->getRepository(Eccube\Entity\Customer::class)->findAll();
+    $Products = $entityManager->getRepository(Eccube\Entity\Product::class)->findAll();
+    $Deliveries = $entityManager->getRepository(Eccube\Entity\Delivery::class)->findAll();
 
-    $allOrderCount = $entityManager->getRepository(\Eccube\Entity\Order::class)
+    $allOrderCount = $entityManager->getRepository(Eccube\Entity\Order::class)
         ->createQueryBuilder('o')
         ->select('count(o.id)')
         ->getQuery()
@@ -336,7 +336,7 @@ $findPluginByCode = function ($code = null) use ($entityManager) {
 Fixtures::add('findPluginByCode', $findPluginByCode);
 
 $findCustomers = function () use ($entityManager) {
-    return $entityManager->getRepository(\Eccube\Entity\Customer::class)
+    return $entityManager->getRepository(Eccube\Entity\Customer::class)
         ->createQueryBuilder('c')
         ->getQuery()
         ->getResult();
