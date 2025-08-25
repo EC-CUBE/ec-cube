@@ -268,7 +268,7 @@ class StringUtil
         }
 
         if ($greedy) {
-            $value = preg_replace('/　/', '', $value);
+            $value = preg_replace('/　/', '', (string) $value);
         }
 
         $value = trim($value ?? '');
@@ -308,7 +308,7 @@ class StringUtil
             return null;
         }
 
-        return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
+        return preg_replace('/(^\s+)|(\s+$)/u', '', (string) $value);
     }
 
     /**
@@ -324,7 +324,7 @@ class StringUtil
         foreach ($replacement as $key => $value) {
             $pattern = '/^('.$key.')=(.*)/m';
             if (preg_match($pattern, (string) $env)) {
-                $env = preg_replace($pattern, '$1='.$value, $env);
+                $env = preg_replace($pattern, '$1='.$value, (string) $env);
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     // The m modifier of the preg functions converts the end-of-line to '\n'
                     $env = self::convertLineFeed($env, "\r\n");

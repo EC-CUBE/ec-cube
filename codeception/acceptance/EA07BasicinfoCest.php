@@ -574,7 +574,7 @@ class EA07BasicinfoCest
 
         $test_text = uniqid('テストテキスト');
         $before = PageEditPage::at($I)->出力_内容();
-        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", $before);
+        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", (string) $before);
         PageEditPage::at($I)
             ->入力_内容($after)
             ->登録();

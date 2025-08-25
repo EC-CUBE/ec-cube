@@ -641,7 +641,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             $crawler = new Crawler($tr);
             foreach ($crawler->filter('td') as $j => $td) {
                 if ($j === 1) {
-                    $classCategories[] = trim($td->nodeValue);
+                    $classCategories[] = trim((string) $td->nodeValue);
                 }
             }
         }

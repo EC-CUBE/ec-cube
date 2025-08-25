@@ -192,7 +192,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $nodes = $crawler->filterXPath('//div[@class="product_item"]/a[1]');
         foreach ($nodes as $node) {
             $href = $node->getAttribute('href');
-            if (preg_match('/detail\/([0-9]+)/', $href, $matched)) {
+            if (preg_match('/detail\/([0-9]+)/', (string) $href, $matched)) {
                 $actualIds[] = $matched[1];
             }
         }

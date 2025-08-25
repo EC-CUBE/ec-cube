@@ -170,10 +170,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // ProductCategoryTest
         // カテゴリーIDs
         foreach ($csv as $csvRow) {
-            $csvCat[md5($csvRow[2])] = $csvRow[10];
+            $csvCat[md5((string) $csvRow[2])] = $csvRow[10];
         }
         foreach ($Products as $Product) {
-            $nameHash = md5($Product->getName());
+            $nameHash = md5((string) $Product->getName());
             if (!isset($csvCat[$nameHash])) {
                 continue;
             }
@@ -344,7 +344,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // ProductCategoryTest
         // カテゴリーIDs
         foreach ($csv as $csvRow) {
-            $csvCat[md5($csvRow[2])] = $csvRow[10];
+            $csvCat[md5((string) $csvRow[2])] = $csvRow[10];
         }
         /** @var Product $Product */
         foreach ($Products as $Product) {
@@ -634,10 +634,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // ProductCategoryTest
         // カテゴリーIDs
         foreach ($csv as $csvRow) {
-            $csvCat[md5($csvRow[2])] = $csvRow[10];
+            $csvCat[md5((string) $csvRow[2])] = $csvRow[10];
         }
         foreach ($Products as $Product) {
-            $nameHash = md5($Product->getName());
+            $nameHash = md5((string) $Product->getName());
             if (!isset($csvCat[$nameHash])) {
                 continue;
             }
@@ -839,7 +839,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     private function getExpectedCategoriesIdList($categoriesStr)
     {
         $catIds = [];
-        $tmp = explode(',', $categoriesStr);
+        $tmp = explode(',', (string) $categoriesStr);
         foreach ($tmp as $id) {
             $id = trim($id);
             if (is_numeric($id)) {

@@ -102,7 +102,7 @@ class OrderNoProcessor implements ItemHolderPreprocessor
                         }
 
                         return $Order->getId();
-                    }, $format);
+                    }, (string) $format);
 
                     $tempOrder = $this->orderRepository->findOneBy([
                         'order_no' => $orderNo,

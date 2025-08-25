@@ -178,7 +178,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->verify();
 
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
+        preg_match('/\/(\d)$/', (string) $shipping_edit_change_url, $matches);
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
@@ -235,7 +235,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->verify();
 
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
+        preg_match('/\/(\d)$/', (string) $shipping_edit_change_url, $matches);
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
