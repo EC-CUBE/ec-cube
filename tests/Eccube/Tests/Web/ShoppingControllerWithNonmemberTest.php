@@ -169,7 +169,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $client = $this->client;
 
         $this->scenarioCartIn($client);
-        $formData = $this->createNonmemberFormData();
+        $this->createNonmemberFormData();
         $this->scenarioInput($client);
         $crawler = $this->scenarioConfirm($client);
 
