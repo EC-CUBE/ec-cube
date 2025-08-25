@@ -83,14 +83,14 @@ return RectorConfig::configure()
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
+               RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
                // TODO:以下を適用する
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
 
                // 8.3以下が対象のものを適用する
                //StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
-               RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
-               RandomFunctionRector::class, // rand() を random_int() に置き換える
+               //RandomFunctionRector::class, // rand() を random_int() に置き換える
                ListToArrayDestructRector::class, // list()構文を配列分割に変換する
                RemoveUnusedVariableAssignRector::class, // 未使用の変数代入を削除する
                RemoveExtraParametersRector::class, // 存在しないパラメータを削除する
