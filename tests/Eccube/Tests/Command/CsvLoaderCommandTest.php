@@ -28,7 +28,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete($this::class.' は未実装です');
         parent::setUp();
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');

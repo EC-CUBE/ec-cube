@@ -98,7 +98,7 @@ return RectorConfig::configure()
                NullToStrictStringFuncCallArgRector::class, // nullを厳密なstring型の関数呼び出し引数に変換する
                //ArrayKeyFirstLastRector::class, // array_key_first() と array_key_last() を使用する
                ClassOnThisVariableObjectRector::class, // $this->class を static::class に変換する
-               ClassOnObjectRector::class, // $obj->class を get_class($obj) に変換する
+               //ClassOnObjectRector::class, // $obj->class を get_class($obj) に変換する
                TernaryToElvisRector::class, // 三項演算子をエルビス演算子に変換する])
                ReturnNeverTypeRector::class, // void関数でのreturnをreturn neverに変換する
                ClassOnThisVariableObjectRector::class, // implode()の引数を一貫性のある形式に変換する
