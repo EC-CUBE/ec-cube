@@ -864,7 +864,7 @@ class Horizon_Local extends Local_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public function アップデート()
@@ -889,7 +889,7 @@ class Horizon_Store extends Store_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public function アップデート()
@@ -939,7 +939,7 @@ class Emperor_Store extends Store_Plugin
         parent::__construct($I, 'Emperor', $dependency);
         $this->tables[] = 'dtb_foo';
         $this->columns[] = 'dtb_cart.foo_id';
-        $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Emperor\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public static function start(AcceptanceTester $I, ?Store_Plugin $dependency = null)
@@ -951,7 +951,7 @@ class Emperor_Store extends Store_Plugin
     {
         $this->tables = ['dtb_bar'];
         $this->columns = ['dtb_cart.bar_id'];
-        $this->traits['\Plugin\Emperor\Entity\Cart2Trait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Emperor\Entity\Cart2Trait::class] = 'src/Eccube/Entity/Cart';
 
         return parent::アップデート();
     }
@@ -978,7 +978,7 @@ class Boomerang_Store extends Store_Plugin
         $this->tables[] = 'dtb_bar';
         $this->columns[] = 'dtb_cart.is_boomerang';
         $this->columns[] = 'dtb_cart.bar_id';
-        $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Boomerang\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public static function start(AcceptanceTester $I)
@@ -1021,7 +1021,7 @@ class Boomerang_Local extends Local_Plugin
         parent::__construct($I, 'Boomerang');
         $this->tables[] = 'dtb_bar';
         $this->columns[] = 'dtb_cart.is_boomerang';
-        $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Boomerang\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public static function start(AcceptanceTester $I)

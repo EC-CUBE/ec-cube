@@ -88,7 +88,7 @@ return RectorConfig::configure()
                AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
 
                // 8.3以下が対象のものを適用する
-               StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
+               //StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
                RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
                RandomFunctionRector::class, // rand() を random_int() に置き換える
                ListToArrayDestructRector::class, // list()構文を配列分割に変換する
