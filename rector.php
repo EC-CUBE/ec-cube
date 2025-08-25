@@ -100,7 +100,7 @@ return RectorConfig::configure()
                ClassOnThisVariableObjectRector::class, // $this->class を static::class に変換する
                //ClassOnObjectRector::class, // $obj->class を get_class($obj) に変換する
                //TernaryToElvisRector::class, // 三項演算子をエルビス演算子に変換する])
-               ReturnNeverTypeRector::class, // void関数でのreturnをreturn neverに変換する
+               //ReturnNeverTypeRector::class, // void関数でのreturnをreturn neverに変換する
                ClassOnThisVariableObjectRector::class, // implode()の引数を一貫性のある形式に変換する
                //RemoveUnusedVariableInCatchRector::class, // catchブロック内の未使用変数を削除する
                //StrStartsWithRector::class, // str_starts_with()を使用する

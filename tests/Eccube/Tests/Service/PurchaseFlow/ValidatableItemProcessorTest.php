@@ -91,7 +91,7 @@ class ItemValidatorTest_FailValidator extends ItemValidator
 {
     public $handleCalled = false;
 
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): never
     {
         throw new InvalidItemException();
     }

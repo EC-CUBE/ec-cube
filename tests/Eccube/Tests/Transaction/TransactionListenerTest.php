@@ -337,7 +337,7 @@ class TransactionControllerMock
         return $app->render('index.twig');
     }
 
-    public function tran2(Application $app)
+    public function tran2(Application $app): never
     {
         // update 1
         $BaseInfo = $app['eccube.repository.base_info']->get();
