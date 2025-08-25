@@ -186,7 +186,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.3.24"
+            "php": "8.4.11"
         },
         "preferred-install": {
             "*": "dist"
