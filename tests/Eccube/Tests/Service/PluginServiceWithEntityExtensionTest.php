@@ -99,7 +99,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testInstallPlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // スキーマ更新されるはず
         $this->mockSchemaService->expects($this->once())->method('updateSchema');
@@ -116,7 +116,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testEnablePlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -138,7 +138,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testDisablePlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -163,7 +163,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testUninstallPlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -194,7 +194,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testImmediatelyUninstallPlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -222,8 +222,8 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testInstallWithEntityExtensionWithDisabledPlugin()
     {
-        list($configDisabled, $fileDisabled) = $this->createDummyPluginWithEntityExtension();
-        list($configEnabled, $fileEnabled) = $this->createDummyPluginWithEntityExtension();
+        [$configDisabled, $fileDisabled] = $this->createDummyPluginWithEntityExtension();
+        [$configEnabled, $fileEnabled] = $this->createDummyPluginWithEntityExtension();
 
         // スキーマ更新は2回行われるはず
         $this->mockSchemaService->expects($this->exactly(2))->method('updateSchema');

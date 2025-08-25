@@ -86,7 +86,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
             self::assertTrue(true);
-        } catch (InvalidItemException $e) {
+        } catch (InvalidItemException) {
             self::fail();
         }
     }
@@ -101,7 +101,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
             self::assertTrue(true);
-        } catch (InvalidItemException $e) {
+        } catch (InvalidItemException) {
             self::fail();
         }
     }

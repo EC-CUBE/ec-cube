@@ -88,7 +88,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
         $actual = true;
         try {
             $ipAddrListerner->onKernelRequest($event);
-        } catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedHttpException) {
             $actual = false;
         }
 
@@ -128,7 +128,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
         $actual = true;
         try {
             $ipAddrListerner->onKernelRequest($event);
-        } catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedHttpException) {
             $actual = false;
         }
 

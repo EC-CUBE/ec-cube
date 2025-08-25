@@ -641,7 +641,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             $crawler = new Crawler($tr);
             foreach ($crawler->filter('td') as $j => $td) {
                 if ($j === 1) {
-                    $classCategories[] = trim($td->nodeValue);
+                    $classCategories[] = trim((string) $td->nodeValue);
                 }
             }
         }
@@ -675,7 +675,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect(), '商品コピーが正常に完了しました');
 
         preg_match('|product/product/([0-9]+)/edit|', $this->client->getResponse()->headers->get('Location') ?? '', $matches);
-        list(, $product_id) = $matches;
+        [, $product_id] = $matches;
         $ProductClasses = $this->entityManager->getRepository(ProductClass::class)->findBy(
             [
                 'Product' => $product_id,

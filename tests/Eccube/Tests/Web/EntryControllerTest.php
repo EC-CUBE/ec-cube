@@ -209,7 +209,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
@@ -231,7 +231,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $Customer->setName01('<Sanitize&>');
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 

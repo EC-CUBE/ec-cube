@@ -508,7 +508,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // Then
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp) - 2];
         $Product = $this->productRepository->find($productId);
 
@@ -861,7 +861,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // Then
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp) - 2];
         $EditProduct = $this->productRepository->find($productId);
 

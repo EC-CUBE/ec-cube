@@ -358,7 +358,7 @@ class EF05MypageCest
         // 受注に紐づくidに直接アクセスしても登録されないことを確認
         // URLから受注に紐づくIDを抽出 /shopping/shipping/{id}
         $redirectUrl = $I->grabFromCurrentUrl();
-        $shipping_id = preg_replace('/\/shopping\/shipping\/(\d+)/', '$1', $redirectUrl);
+        $shipping_id = preg_replace('/\/shopping\/shipping\/(\d+)/', '$1', (string) $redirectUrl);
 
         // URLに直接アクセス /shopping/shipping_edit/{id}
         $I->amOnPage('/shopping/shipping_edit/'.$shipping_id);

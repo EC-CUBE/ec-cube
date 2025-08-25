@@ -69,8 +69,8 @@ class SalesReportPage extends AbstractAdminPageStyleGuide
 
     public function 月度で集計($yyyyMm)
     {
-        $this->tester->selectOption(['id' => 'sales_report_monthly_year'], intval(substr($yyyyMm, 0, 4)));
-        $this->tester->selectOption(['id' => 'sales_report_monthly_month'], intval(substr($yyyyMm, 4, 2)));
+        $this->tester->selectOption(['id' => 'sales_report_monthly_year'], intval(substr((string) $yyyyMm, 0, 4)));
+        $this->tester->selectOption(['id' => 'sales_report_monthly_month'], intval(substr((string) $yyyyMm, 4, 2)));
         $this->tester->click(['id' => 'btn-monthly']);
 
         return $this;

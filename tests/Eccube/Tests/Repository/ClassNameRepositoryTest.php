@@ -172,7 +172,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
         try {
             $this->classNameRepository->delete($ClassName);
             $this->fail();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addToAssertionCount(1);
         }
     }

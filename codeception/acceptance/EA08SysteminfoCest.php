@@ -481,7 +481,7 @@ class EA08SysteminfoCest
         $I->wait(1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->waitForElement(['css' => '.c-contentsArea textarea']);
         $logs = $I->grabTextFrom(['css' => '.c-contentsArea textarea']);
-        $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), 'ログ件数を確認');
+        $I->assertLessThanOrEqual(10, count(explode("\n", (string) $logs)), 'ログ件数を確認');
         $I->seeInField(['id' => 'admin_system_log_line_max'], '10');
     }
 

@@ -29,7 +29,7 @@ class Template extends \Twig\Template
     public function display(array $context, array $blocks = [])
     {
         $globals = $this->env->getGlobals();
-        if (isset($globals['event_dispatcher']) && !str_starts_with($this->getTemplateName(), '__string_template__')) {
+        if (isset($globals['event_dispatcher']) && !str_starts_with((string) $this->getTemplateName(), '__string_template__')) {
             /** @var EventDispatcherInterface $eventDispatcher */
             $eventDispatcher = $globals['event_dispatcher'];
             $originCode = $this->env->getLoader()->getSourceContext($this->getTemplateName())->getCode();

@@ -50,7 +50,7 @@ class BlockEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_データ($value)
     {
-        $value = preg_replace("/([^\\\])'/", "$1\\'", $value);
+        $value = preg_replace("/([^\\\])'/", "$1\\'", (string) $value);
         $this->tester->executeJS("ace.edit('editor').setValue('$value')");
 
         return $this;

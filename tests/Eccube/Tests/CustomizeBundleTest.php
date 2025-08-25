@@ -38,7 +38,7 @@ class CustomizeBundleTest extends KernelTestCase
         $kernel = static::bootKernel();
         $bundleNames = [];
         foreach ($kernel->getBundles() as $bundle) {
-            $bundleNames[] = get_class($bundle);
+            $bundleNames[] = $bundle::class;
         }
 
         self::assertContains(CustomizeBundle::class, $bundleNames);
@@ -49,7 +49,7 @@ class CustomizeBundleTest extends KernelTestCase
         $kernel = static::bootKernel();
         $bundleNames = [];
         foreach ($kernel->getBundles() as $bundle) {
-            $bundleNames[] = get_class($bundle);
+            $bundleNames[] = $bundle::class;
         }
 
         self::assertNotContains(CustomizeBundle::class, $bundleNames);

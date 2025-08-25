@@ -107,8 +107,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // 確認画面
         $this->scenarioComplete(
-            null,
             $this->generateUrl('shopping_confirm'),
+            null,
             [
                 // 配送先1
                 [
@@ -942,14 +942,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
         $this->scenarioCartIn($client);
 
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->createNonmemberFormData();
+        $this->scenarioInput($client);
 
         $crawler = $this->scenarioConfirm($client);
 
         // お届け先設定画面への遷移前チェック
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $this->scenarioComplete($client, $shipping_edit_change_url);
+        $this->scenarioComplete($shipping_edit_change_url, $client);
 
         // add multi shipping
         $multiForm = [
@@ -1427,8 +1427,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // 完了画面
         $this->scenarioComplete(
-            null,
             $this->generateUrl('shopping_confirm'),
+            null,
             [
                 // 配送先1
                 [

@@ -59,7 +59,7 @@ class Step1TypeTest extends AbstractTypeTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(static::class.' は未実装です');
         parent::setUp();
 
         $this->form = $this->formFactory
