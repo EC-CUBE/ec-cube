@@ -1074,7 +1074,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testSplitCsv($lineNo, $expecedFileNo)
     {
-        list($header, $row) = $this->createCsvAsArray();
+        [$header, $row] = $this->createCsvAsArray();
         $csv = [$header];
         for ($i = 0; $i < $lineNo; $i++) {
             $csv[] = $row;

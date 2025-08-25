@@ -537,7 +537,7 @@ abstract class Abstract_Plugin
     public function columnExists()
     {
         foreach ($this->columns as $column) {
-            list($tableName, $columnName) = explode('.', $column);
+            [$tableName, $columnName] = explode('.', $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
             $this->I->assertTrue($exists, 'カラムがあるはず '.$column);
         }
@@ -546,7 +546,7 @@ abstract class Abstract_Plugin
     public function columnNotExists()
     {
         foreach ($this->columns as $column) {
-            list($tableName, $columnName) = explode('.', $column);
+            [$tableName, $columnName] = explode('.', $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
             $this->I->assertFalse($exists, 'カラムがないはず '.$column);
         }

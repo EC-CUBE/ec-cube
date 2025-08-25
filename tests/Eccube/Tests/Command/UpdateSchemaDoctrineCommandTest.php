@@ -122,7 +122,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $commandTester->execute(
@@ -163,7 +163,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $commandTester->execute(
@@ -201,7 +201,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         $this->pluginService->install($fileA);
 
@@ -242,7 +242,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     public function testEnablePluginWithProxy()
     {
         $commandTester = $this->getCommandTester(self::NAME);
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
@@ -282,7 +282,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
@@ -327,7 +327,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $commandTester = $this->getCommandTester(self::NAME);
 
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
