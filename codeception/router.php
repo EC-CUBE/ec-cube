@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-if (preg_match('/\.xml$/', $_SERVER['REQUEST_URI'])) {
+if (preg_match('/\.xml$/', (string) $_SERVER['REQUEST_URI'])) {
     return require 'index.php';
 }
 

@@ -40,7 +40,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->passwordHasher = static::getContainer()->get(PasswordHasher::class);
         $this->memberRepo = $this->entityManager->getRepository(Member::class);
         $this->Member = $this->memberRepo->find(1);
-        $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
+        $Work = $this->entityManager->getRepository(Work::class)
             ->find(Work::ACTIVE);
 
         for ($i = 0; $i < 3; $i++) {

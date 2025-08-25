@@ -179,7 +179,7 @@ class PurchaseFlowTest_FailValidator extends ItemValidator
         $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): never
     {
         throw new InvalidItemException($this->errorMessage);
     }
@@ -199,7 +199,7 @@ class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
         $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context): never
     {
         // TODO ItemHolerValidateException が必要か検討
         throw new InvalidItemException($this->errorMessage);

@@ -132,6 +132,8 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public function 検索結果_規格設定($rowNum)
     {
         $this->tester->click("#main #result_list__list > div > div:nth-child({$rowNum}) > div:nth-child(4) > div > ul > li:nth-child(1) > a");
+
+        return $this;
     }
 
     /**

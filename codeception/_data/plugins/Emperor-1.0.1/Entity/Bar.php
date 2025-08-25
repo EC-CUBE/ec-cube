@@ -15,7 +15,7 @@ namespace Plugin\Emperor\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('Plugin\Emperor\Entity\Bar')) {
+if (!class_exists(Bar::class)) {
     /**
      * Plugin
      *

@@ -84,7 +84,7 @@ EOD;
         try {
             $this->assertTrue($this->pluginService->install($tmpfile));
             $this->fail('BrokenManager dont throw exception.');
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか

@@ -54,7 +54,7 @@ class LoginHistoryRepository extends AbstractRepository
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', (string) $searchData['multi']);
             $qb
                 ->andWhere('lh.user_name LIKE :multi_key OR lh.client_ip LIKE :multi_key')
                 ->setParameter('multi_key', '%'.$clean_key_multi.'%')

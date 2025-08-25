@@ -30,7 +30,7 @@ class Acceptance extends Module
         if (file_exists($downloadDir)) {
             $files = scandir($downloadDir);
             $files = array_filter($files, function ($fileName) use ($downloadDir) {
-                return is_file($downloadDir.$fileName) && (strpos($fileName, '.') != 0);
+                return is_file($downloadDir.$fileName) && (!str_starts_with($fileName, '.'));
             });
             foreach ($files as $f) {
                 unlink($downloadDir.$f);

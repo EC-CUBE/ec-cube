@@ -39,7 +39,7 @@ class TransactionListenerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(static::class.' は未実装です');
         parent::setUp();
 
         if ($this->isSqlite()) {
@@ -337,7 +337,7 @@ class TransactionControllerMock
         return $app->render('index.twig');
     }
 
-    public function tran2(Application $app)
+    public function tran2(Application $app): never
     {
         // update 1
         $BaseInfo = $app['eccube.repository.base_info']->get();
@@ -361,7 +361,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran3');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -381,7 +381,7 @@ class TransactionControllerMock
 
             // update 1 は rollback
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -398,7 +398,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran5-1');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -410,7 +410,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran5-2');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -428,7 +428,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran6-1');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -457,7 +457,7 @@ class TransactionControllerMock
 
             // update 1がrollback
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // update 1がrollback
             $app['orm.em']->rollback();
         }
@@ -487,7 +487,7 @@ class TransactionControllerMock
 
             // update 1がrollback
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // update 1がrollback
             $app['orm.em']->rollback();
         }
@@ -522,7 +522,7 @@ class TransactionControllerMock
 
             // プラグイン内部でエラー
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // update 1 / update 2 がrollbackされる.
             $app['orm.em']->rollback();
         }

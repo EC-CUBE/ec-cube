@@ -505,9 +505,9 @@ class EF03OrderCest
         ;
 
         // 名前を比較してお届け先が上下どちらに表示されるか判断
-        $compared = strnatcmp($customer->getName01(), $nameSei);
+        $compared = strnatcmp((string) $customer->getName01(), $nameSei);
         if ($compared === 0) {
-            $compared = strnatcmp($customer->getName02(), $nameMei);
+            $compared = strnatcmp((string) $customer->getName02(), $nameMei);
         }
         // 上下それぞれで名前、商品個数を設定
         if ($compared < 0) {
@@ -702,9 +702,9 @@ class EF03OrderCest
         ;
 
         // 名前を比較してお届け先が上下どちらに表示されるか判断
-        $compared = strnatcmp($customer->getName01(), $nameSei);
+        $compared = strnatcmp((string) $customer->getName01(), $nameSei);
         if ($compared === 0) {
-            $compared = strnatcmp($customer->getName02(), $nameMei);
+            $compared = strnatcmp((string) $customer->getName02(), $nameMei);
         }
         // 上下それぞれで名前、商品個数を設定
         if ($compared < 0) {
@@ -860,9 +860,9 @@ class EF03OrderCest
         ;
 
         // 名前を比較してお届け先が上下どちらに表示されるか判断
-        $compared = strnatcmp($customer->getName01(), $nameSei);
+        $compared = strnatcmp((string) $customer->getName01(), $nameSei);
         if ($compared === 0) {
-            $compared = strnatcmp($customer->getName02(), $nameMei);
+            $compared = strnatcmp((string) $customer->getName02(), $nameMei);
         }
         // 上下それぞれで名前、商品個数を設定
         if ($compared < 0) {

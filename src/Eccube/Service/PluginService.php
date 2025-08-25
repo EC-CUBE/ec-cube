@@ -228,7 +228,7 @@ class PluginService
             // 依存プラグインが有効になっていない場合はエラー
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
-                $code = preg_replace('/^ec-cube\//i', '', $req['name']);
+                $code = preg_replace('/^ec-cube\//i', '', (string) $req['name']);
                 /** @var Plugin $DependPlugin */
                 $DependPlugin = $this->pluginRepository->findByCode($code);
 

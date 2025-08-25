@@ -137,7 +137,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($client->getResponse()->isRedirection());
-        preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
+        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
         $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
 
         $this->expected = $name;
@@ -216,7 +216,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($client->getResponse()->isRedirection());
-        preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
+        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
         $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
 
         $this->expected = $name;

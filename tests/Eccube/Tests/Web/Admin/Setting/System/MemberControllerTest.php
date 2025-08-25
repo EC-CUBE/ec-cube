@@ -378,8 +378,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
                 'first' => 'password1234',
                 'second' => 'password1234',
             ],
-            'Authority' => rand(0, 1),
-            'Work' => rand(0, 1),
+            'Authority' => random_int(0, 1),
+            'Work' => random_int(0, 1),
         ];
     }
 }

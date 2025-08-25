@@ -692,7 +692,7 @@ class ProductController extends AbstractController
                     try {
                         // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
                         $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
-                        $returnLink = preg_replace($pattern, '', $returnLink);
+                        $returnLink = preg_replace($pattern, '', (string) $returnLink);
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
                         $params = array_filter($result, function ($key) {

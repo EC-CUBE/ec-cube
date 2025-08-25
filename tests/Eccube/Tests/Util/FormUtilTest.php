@@ -81,7 +81,7 @@ class FormUtilTest extends EccubeTestCase
         $this->assertTrue($this->form->isSubmitted());
 
         // prefはPrefエンティティに変換されている.
-        $this->assertInstanceOf('\Eccube\Entity\Master\Pref', $data['pref']);
+        $this->assertInstanceOf(\Eccube\Entity\Master\Pref::class, $data['pref']);
         $this->assertEquals(28, $data['pref']->getId());
         $this->assertEquals('兵庫県', $data['pref']->getName());
 

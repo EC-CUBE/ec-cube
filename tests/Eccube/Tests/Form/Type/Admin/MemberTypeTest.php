@@ -156,7 +156,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidAuthorityInvalid()
     {
-        $Authority = $this->entityManager->getRepository('Eccube\Entity\Master\Authority')
+        $Authority = $this->entityManager->getRepository(\Eccube\Entity\Master\Authority::class)
             ->findOneBy([], ['id' => 'DESC']);
         $id = $Authority->getId() + 1;
 
@@ -176,7 +176,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidWorkInvalid()
     {
-        $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
+        $Work = $this->entityManager->getRepository(\Eccube\Entity\Master\Work::class)
             ->findOneBy([], ['id' => 'DESC']);
         $id = $Work->getId() + 1;
 
