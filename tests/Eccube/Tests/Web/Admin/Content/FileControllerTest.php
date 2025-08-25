@@ -338,7 +338,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $realpath = realpath($path);
         $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
 
-        return $jailPath ? $jailPath : '/';
+        return $jailPath ?: '/';
     }
 
     protected function tearDown(): void
