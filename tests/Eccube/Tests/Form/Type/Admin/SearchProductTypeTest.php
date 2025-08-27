@@ -14,9 +14,10 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class SearchProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class SearchProductTypeTest extends AbstractTypeTestCase
 {
     /**
      * @var FormInterface

@@ -21,16 +21,13 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Service\CartService;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 
 class CartValidationTest extends AbstractWebTestCase
 {
     /** @var ProductStatusRepository */
     private $productStatusRepository;
-
-    /** @var CartService */
-    private $cartService;
 
     /** @var BaseInfo */
     private $BaseInfo;
@@ -41,8 +38,7 @@ class CartValidationTest extends AbstractWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->productStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductStatus::class);
-        $this->cartService = static::getContainer()->get(CartService::class);
+        $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
@@ -449,7 +445,7 @@ class CartValidationTest extends AbstractWebTestCase
         $productName = $this->getFaker()->word;
         /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
-        $SaleType = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class)->find(2);
+        $SaleType = $this->entityManager->getRepository(SaleType::class)->find(2);
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setSaleType($SaleType);
         $productClassId = $ProductClass->getId();
@@ -715,7 +711,6 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $Customer = $this->createCustomer();
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, 1, 10);
         /** @var ProductClass $ProductClass */
@@ -748,7 +743,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -789,7 +783,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productClassNum = 1;
         $limit = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -880,7 +873,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -915,7 +907,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -953,7 +944,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -993,7 +983,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1033,7 +1022,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1079,7 +1067,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         /** @var ProductClass $ProductClass */
@@ -1135,7 +1122,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1183,7 +1169,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1218,7 +1203,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1253,7 +1237,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1290,7 +1273,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1327,7 +1309,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         /** @var ProductClass $ProductClass */
@@ -1373,7 +1354,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1428,7 +1408,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1476,7 +1455,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1512,7 +1490,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1545,7 +1522,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1579,7 +1555,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1614,7 +1589,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1655,7 +1629,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1692,7 +1665,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1730,7 +1702,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1770,7 +1741,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1810,7 +1780,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1853,7 +1822,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1898,7 +1866,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1945,7 +1912,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -1993,7 +1959,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2041,7 +2006,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2094,7 +2058,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2160,7 +2123,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2228,7 +2190,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2295,7 +2256,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2362,7 +2322,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2434,7 +2393,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2509,7 +2467,6 @@ class CartValidationTest extends AbstractWebTestCase
         $productStock = 10;
         $productClassNum = 1;
 
-        /** @var Product $Product */
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2601,9 +2558,8 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->loginTo($Customer);
         $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();
-        $crawler = $this->client->request('GET', $this->generateUrl('cart_buystep', ['cart_key' => $cart_key]));
 
-        return $crawler;
+        return $this->client->request('GET', $this->generateUrl('cart_buystep', ['cart_key' => $cart_key]));
     }
 
     /**
@@ -2623,24 +2579,23 @@ class CartValidationTest extends AbstractWebTestCase
         if (count($arrShopping) == 0) {
             $arrShopping = [
                 'Shippings' => [
-                        [
-                            'Delivery' => 1,
-                            'DeliveryTime' => 1,
-                        ],
+                    [
+                        'Delivery' => 1,
+                        'DeliveryTime' => 1,
                     ],
+                ],
                 'Payment' => 3,
                 'message' => $faker->realText(),
                 '_token' => 'dummy',
             ];
         }
         $this->loginTo($Customer);
-        $crawler = $this->client->request(
+
+        return $this->client->request(
             'POST',
             $confirmUrl,
             ['_shopping_order' => $arrShopping]
         );
-
-        return $crawler;
     }
 
     /**
@@ -2663,7 +2618,7 @@ class CartValidationTest extends AbstractWebTestCase
      * @param Customer $Customer
      * @param ProductClass $ProductClass
      *
-     * @return \Symfony\Component\DomCrawler\Crawler
+     * @return Crawler
      */
     protected function scenarioCartDown(Customer $Customer, ProductClass $ProductClass)
     {
@@ -2737,7 +2692,7 @@ class CartValidationTest extends AbstractWebTestCase
      * @param int  $productClassNum
      * @param int  $stock
      *
-     * @return \Eccube\Entity\Product
+     * @return Product
      */
     public function createProduct($productName = null, $productClassNum = 3, $stock = 0)
     {

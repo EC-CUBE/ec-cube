@@ -125,7 +125,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         MobileDetect $mobileDetector,
         UrlGeneratorInterface $router,
         LayoutRepository $layoutRepository,
-        SystemService $systemService
+        SystemService $systemService,
     ) {
         $this->twig = $twig;
         $this->baseInfoRepository = $baseInfoRepository;
@@ -256,7 +256,6 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
-
     }
 
     /**

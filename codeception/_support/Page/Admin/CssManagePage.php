@@ -34,9 +34,13 @@ class CssManagePage extends AbstractAdminPageStyleGuide
 
     public function 入力($value)
     {
+        $this->tester->wait(3); // XXX 確実に画面遷移してから入力するため wait を入れる
         $this->tester->click('.ace_content');
+        $this->tester->wait(0.5); // XXX 入力エリアにフォーカスするまで待つ
         $this->tester->sendKeys([WebDriverKeys::CONTROL, 'a']);
+        $this->tester->wait(0.5); // XXX 全選択するまで待つ
         $this->tester->sendKeys(WebDriverKeys::DELETE);
+        $this->tester->wait(0.5); // XXX 削除するまで待つ
         $this->tester->sendKeys($value);
 
         return $this;

@@ -249,7 +249,6 @@ class AddNav2 implements EccubeNav
                         'name' => 'default-add',
                         'url' => 'admin_homepage',
                     ],
-
                 ],
             ],
         ];
@@ -331,7 +330,7 @@ class UpdateNav implements EccubeNav
         ];
     }
 
-        public static function getExpect()
+    public static function getExpect()
     {
         return [
             'default' => [

@@ -38,7 +38,7 @@ class DeliveryFeeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\DeliveryFee',
+            'data_class' => \Eccube\Entity\DeliveryFee::class,
         ]);
     }
 

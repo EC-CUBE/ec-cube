@@ -15,11 +15,11 @@ namespace Page\Front;
 
 class MyPage extends AbstractFrontPage
 {
-    const ORDER_HISTORY = 'ul.ec-navlistRole__navlist li:nth-child(1) a';
-    const FAVORITE = 'ul.ec-navlistRole__navlist li:nth-child(2) a';
-    const USER_INFO = 'ul.ec-navlistRole__navlist li:nth-child(3) a';
-    const ADDRESS = 'ul.ec-navlistRole__navlist li:nth-child(4) a';
-    const WITHDRAW = 'ul.ec-navlistRole__navlist li:nth-child(5) a';
+    public const ORDER_HISTORY = 'ul.ec-navlistRole__navlist li:nth-child(1) a';
+    public const FAVORITE = 'ul.ec-navlistRole__navlist li:nth-child(2) a';
+    public const USER_INFO = 'ul.ec-navlistRole__navlist li:nth-child(3) a';
+    public const ADDRESS = 'ul.ec-navlistRole__navlist li:nth-child(4) a';
+    public const WITHDRAW = 'ul.ec-navlistRole__navlist li:nth-child(5) a';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -56,7 +56,7 @@ class MyPage extends AbstractFrontPage
     public function 注文履歴詳細($num)
     {
         $num += 2;
-        $this->tester->click(".ec-layoutRole__main div:nth-child(${num}) p.ec-historyListHeader__action a");
+        $this->tester->click(".ec-layoutRole__main div:nth-child({$num}) p.ec-historyListHeader__action a");
     }
 
     public function お気に入り一覧()

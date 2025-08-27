@@ -16,10 +16,11 @@ namespace Eccube\Tests\Form\Type\Admin;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class MemberTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */

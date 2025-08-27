@@ -13,6 +13,8 @@
 
 use Codeception\Util\Fixtures;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\SaleType;
 use Page\Front\CartPage;
 use Page\Front\CustomerAddressAddPage;
 use Page\Front\MultipleShippingPage;
@@ -345,6 +347,7 @@ class EF03OrderCest
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/3133
+     *
      * @group vaddy
      */
     public function order_ログインしてカートをマージ(AcceptanceTester $I)
@@ -429,7 +432,7 @@ class EF03OrderCest
         $I->wantTo('EF0305-UC05-T01 お届け先の追加');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
-        /** @var \Eccube\Entity\CustomerAddress $customer */
+        /** @var CustomerAddress $customer */
         $customer = $createCustomer();
         $BaseInfo = Fixtures::get('baseinfo');
 
@@ -581,7 +584,7 @@ class EF03OrderCest
 
         $entityManager = Fixtures::get('entityManager');
         $ProductClass = $Product->getProductClasses()[0];
-        $SaleType = $entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
+        $SaleType = $entityManager->find(SaleType::class, 2);
         $ProductClass->setSaleType($SaleType);
         $entityManager->persist($ProductClass);
         $entityManager->flush();
@@ -626,7 +629,7 @@ class EF03OrderCest
         $I->wantTo('EF0305-UC08-T01 購入確認画面からカートに戻る');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
-        /** @var \Eccube\Entity\CustomerAddress $customer */
+        /** @var CustomerAddress $customer */
         $customer = $createCustomer();
         $BaseInfo = Fixtures::get('baseinfo');
 
@@ -784,7 +787,7 @@ class EF03OrderCest
         $I->wantTo('EF0305-UC08-T02 購入確認画面からカートに戻る(お届け先初期化)');
         $I->logoutAsMember();
         $createCustomer = Fixtures::get('createCustomer');
-        /** @var \Eccube\Entity\CustomerAddress $customer */
+        /** @var CustomerAddress $customer */
         $customer = $createCustomer();
         $BaseInfo = Fixtures::get('baseinfo');
 

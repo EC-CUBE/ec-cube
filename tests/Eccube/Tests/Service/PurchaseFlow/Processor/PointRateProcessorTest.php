@@ -39,7 +39,7 @@ class PointRateProcessorTest extends EccubeTestCase
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
 
         $this->Order = $this->createOrder($this->createCustomer());
-        foreach($this->Order->getOrderItems() as $OrderItem) {
+        foreach ($this->Order->getOrderItems() as $OrderItem) {
             $OrderItem->setPointRate(null);
         }
     }
@@ -77,6 +77,6 @@ class PointRateProcessorTest extends EccubeTestCase
     {
         $Cart = new Cart();
         $result = $this->processor->execute($Cart, new PurchaseContext());
-        $this->assertInstanceOf( ProcessResult::class, $result);
+        $this->assertInstanceOf(ProcessResult::class, $result);
     }
 }

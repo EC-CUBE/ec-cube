@@ -25,7 +25,7 @@ interface PurchaseInterface
     /**
      * 合計金額を返す。
      *
-     * @return int
+     * @return string
      */
     public function getTotal();
 

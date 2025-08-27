@@ -49,9 +49,9 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
-        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
-        $this->classNameRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
+        $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
+        $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
         $this->removeClass();
 
         for ($i = 0; $i < 3; $i++) {

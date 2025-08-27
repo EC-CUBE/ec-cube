@@ -14,11 +14,13 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class OrderTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
@@ -92,7 +94,8 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form['phone_number']->isValid());
     }
 
-    public function testInvalidPhoneNumberTooLong() {
+    public function testInvalidPhoneNumberTooLong()
+    {
         $this->formData['phone_number'] = '0123456789012345';
 
         $this->form->submit($this->formData);
@@ -101,7 +104,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDiscountOverMaxLength()
     {
-        $this->formData['discount'] = '12345678910'; //Max 9
+        $this->formData['discount'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['discount']->isValid());
@@ -125,7 +128,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDeliveryFeeTotalOverMaxLength()
     {
-        $this->formData['delivery_fee_total'] = '12345678910'; //Max 9
+        $this->formData['delivery_fee_total'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['delivery_fee_total']->isValid());
@@ -149,7 +152,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidChargeOverMaxLength()
     {
-        $this->formData['charge'] = '12345678910'; //Max 9
+        $this->formData['charge'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['charge']->isValid());
@@ -177,7 +180,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['postal_code']->isValid());
     }
-
 
     public function testInValidUsePointHasMinus()
     {

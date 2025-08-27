@@ -47,7 +47,7 @@ class OrderStatusSettingType extends AbstractType
     public function __construct(
         EccubeConfig $eccubeConfig,
         OrderStatusColorRepository $orderStatusColorRepository,
-        CustomerOrderStatusRepository $customerOrderStatusRepository
+        CustomerOrderStatusRepository $customerOrderStatusRepository,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->orderStatusColorRepository = $orderStatusColorRepository;

@@ -14,10 +14,12 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\CustomerType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class CustomerTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
@@ -293,7 +295,6 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
-
 
     public function testInvalidPointPlus()
     {

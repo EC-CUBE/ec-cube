@@ -59,6 +59,7 @@ class CsvController extends AbstractController
      *     name="admin_setting_shop_csv",
      *     methods={"GET", "POST"}
      * )
+     *
      * @Template("@admin/Setting/Shop/csv.twig")
      */
     public function index(Request $request, CsvType $CsvType)
@@ -87,7 +88,7 @@ class CsvController extends AbstractController
             'csv_not_output',
             EntityType::class,
             [
-                'class' => 'Eccube\Entity\Csv',
+                'class' => \Eccube\Entity\Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
@@ -105,7 +106,7 @@ class CsvController extends AbstractController
             'csv_output',
             EntityType::class,
             [
-                'class' => 'Eccube\Entity\Csv',
+                'class' => \Eccube\Entity\Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,

@@ -29,7 +29,7 @@ class DeliveryDurationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\DeliveryDuration',
+            'class' => \Eccube\Entity\DeliveryDuration::class,
             'placeholder' => 'common.select__unspecified',
             'multiple' => false,
             'expanded' => false,

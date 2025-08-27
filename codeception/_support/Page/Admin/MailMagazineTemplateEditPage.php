@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,24 +19,28 @@ class MailMagazineTemplateEditPage extends AbstractAdminPageStyleGuide
     {
         $page = new MailMagazineTemplateEditPage($I);
         $page->tester->see('テンプレート設定', 'body > div > div.c-contentsArea > div.c-pageTitle > div > h2');
+
         return $page;
     }
 
     public function 入力_件名($value)
     {
         $this->tester->fillField(['id' => 'mail_magazine_template_edit_subject'], $value);
+
         return $this;
     }
 
     public function 入力_本文テキスト($value)
     {
         $this->tester->fillField(['id' => 'mail_magazine_template_edit_body'], $value);
+
         return $this;
     }
 
     public function 入力_本文HTML($value)
     {
         $this->tester->fillField(['id' => 'mail_magazine_template_edit_htmlBody'], $value);
+
         return $this;
     }
 

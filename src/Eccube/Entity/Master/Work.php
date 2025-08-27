@@ -20,13 +20,18 @@ if (!class_exists(Work::class, false)) {
      * Work
      *
      * @ORM\Table(name="mtb_work")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\WorkRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class Work extends \Eccube\Entity\Master\AbstractMasterEntity
+    class Work extends AbstractMasterEntity
     {
         /**
          * 非稼働

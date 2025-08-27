@@ -22,13 +22,18 @@ if (!class_exists(ProductStatus::class, false)) {
      * 商品の公開ステータス
      *
      * @ORM\Table(name="mtb_product_status")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductStatusRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class ProductStatus extends \Eccube\Entity\Master\AbstractMasterEntity
+    class ProductStatus extends AbstractMasterEntity
     {
         /**
          * 公開
@@ -36,7 +41,7 @@ if (!class_exists(ProductStatus::class, false)) {
          * フロント画面: 表示されます。
          * 管理画面商品一覧: デフォルトで検索対象となります。
          *
-         * @var integer
+         * @var int
          */
         public const DISPLAY_SHOW = 1;
 
@@ -46,7 +51,7 @@ if (!class_exists(ProductStatus::class, false)) {
          * フロント画面: 表示されません。
          * 管理画面商品一覧: デフォルトで検索対象となります。
          *
-         * @var integer
+         * @var int
          */
         public const DISPLAY_HIDE = 2;
 
@@ -58,7 +63,7 @@ if (!class_exists(ProductStatus::class, false)) {
          * フロント画面: 表示されません。
          * 管理画面商品一覧: デフォルトで検索対象外となり、廃止の公開ステータスを指定して検索可能です。
          *
-         * @var integer
+         * @var int
          */
         public const DISPLAY_ABOLISHED = 3;
     }

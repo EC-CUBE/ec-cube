@@ -49,7 +49,7 @@ class ClassNameController extends AbstractController
      */
     public function __construct(
         ClassNameRepository $classNameRepository,
-        CsvExportService $csvExportService
+        CsvExportService $csvExportService,
     ) {
         $this->classNameRepository = $classNameRepository;
         $this->csvExportService = $csvExportService;
@@ -58,6 +58,7 @@ class ClassNameController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Product/class_name.twig")
      */
     public function index(Request $request, $id = null)
@@ -68,7 +69,7 @@ class ClassNameController extends AbstractController
                 throw new NotFoundHttpException();
             }
         } else {
-            $TargetClassName = new \Eccube\Entity\ClassName();
+            $TargetClassName = new ClassName();
         }
 
         $builder = $this->formFactory
@@ -253,7 +254,7 @@ class ClassNameController extends AbstractController
 
                     $ExportCsvRow->pushData();
                 }
-                //$row[] = number_format(memory_get_usage(true));
+                // $row[] = number_format(memory_get_usage(true));
                 // 出力.
                 $csvService->fputcsv($ExportCsvRow->getRow());
             });

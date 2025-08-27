@@ -79,7 +79,7 @@ class TemplateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Template',
+            'data_class' => \Eccube\Entity\Template::class,
         ]);
     }
 

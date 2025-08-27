@@ -29,6 +29,7 @@ class HelpController extends AbstractController
      * ご利用ガイド.
      *
      * @Route("/guide", name="help_guide", methods={"GET"})
+     *
      * @Template("Help/guide.twig")
      */
     public function guide()
@@ -40,6 +41,7 @@ class HelpController extends AbstractController
      * 当サイトについて.
      *
      * @Route("/help/about", name="help_about", methods={"GET"})
+     *
      * @Template("Help/about.twig")
      */
     public function about()
@@ -51,6 +53,7 @@ class HelpController extends AbstractController
      * プライバシーポリシー.
      *
      * @Route("/help/privacy", name="help_privacy", methods={"GET"})
+     *
      * @Template("Help/privacy.twig")
      */
     public function privacy()
@@ -62,6 +65,7 @@ class HelpController extends AbstractController
      * 利用規約.
      *
      * @Route("/help/agreement", name="help_agreement", methods={"GET"})
+     *
      * @Template("Help/agreement.twig")
      */
     public function agreement()

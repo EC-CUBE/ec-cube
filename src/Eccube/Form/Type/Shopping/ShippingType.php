@@ -104,7 +104,7 @@ class ShippingType extends AbstractType
                     [
                         'required' => false,
                         'label' => 'shipping.label.delivery_hour',
-                        'class' => 'Eccube\Entity\Delivery',
+                        'class' => Delivery::class,
                         'choice_label' => 'name',
                         'choices' => $Deliveries,
                         'placeholder' => false,
@@ -226,7 +226,7 @@ class ShippingType extends AbstractType
                     EntityType::class,
                     [
                         'label' => 'front.shopping.delivery_time',
-                        'class' => 'Eccube\Entity\DeliveryTime',
+                        'class' => DeliveryTime::class,
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
                         'required' => false,
@@ -273,7 +273,7 @@ class ShippingType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Eccube\Entity\Shipping',
+                'data_class' => Shipping::class,
             ]
         );
     }

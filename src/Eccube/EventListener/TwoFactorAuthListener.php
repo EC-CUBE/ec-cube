@@ -59,7 +59,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
         EccubeConfig $eccubeConfig,
         Context $requestContext,
         UrlGeneratorInterface $router,
-        TwoFactorAuthService $twoFactorAuthService
+        TwoFactorAuthService $twoFactorAuthService,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $requestContext;

@@ -123,12 +123,12 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
             } else {
                 setcookie($this->sessionName, '',
                     [
-                      'expires' => 0,
-                      'path' => $this->getCookiePath(),
-                      'domain' => ini_get('session.cookie_domain'),
-                      'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
-                      'httponly' => filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN),
-                      'samesite' => $this->getCookieSameSite(),
+                        'expires' => 0,
+                        'path' => $this->getCookiePath(),
+                        'domain' => ini_get('session.cookie_domain'),
+                        'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
+                        'httponly' => filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN),
+                        'samesite' => $this->getCookieSameSite(),
                     ]
                 );
             }

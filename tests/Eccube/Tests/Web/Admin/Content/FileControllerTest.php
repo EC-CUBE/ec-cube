@@ -48,7 +48,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $contents = '<html><body><h1>test</h1></body></html>';
         file_put_contents($filepath, $contents);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'GET',
             $this->generateUrl('admin_content_file_view').'?file=/../user_data/aaa.html'
         );
@@ -184,7 +184,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             null,               // error
             true                // test mode
         );
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_content_file'),
             [
@@ -241,6 +241,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ['test.json', 'application/json', 'アップロードできないファイル拡張子です', false],
         ];
     }
+
     /**
      * @dataProvider dataProviderUploadIgnoreFiles
      */

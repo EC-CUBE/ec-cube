@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class Step1TypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 

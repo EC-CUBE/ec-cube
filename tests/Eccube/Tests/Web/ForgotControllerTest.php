@@ -14,6 +14,8 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
@@ -37,8 +39,8 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->client->enableProfiler();
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
-        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
+        $this->customerRepository = $this->entityManager->getRepository(Customer::class);
         $this->client->disableReboot();
     }
 
@@ -97,7 +99,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         // パスワード再設定リクエスト
         $password = 'password_Changed';
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('forgot_reset'),
             [
@@ -128,8 +130,8 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $client->request(
-           'GET',
-           '/forgot/reset/aaaa'
+            'GET',
+            '/forgot/reset/aaaa'
         );
         $this->expected = 404;
         $this->actual = $client->getResponse()->getStatusCode();

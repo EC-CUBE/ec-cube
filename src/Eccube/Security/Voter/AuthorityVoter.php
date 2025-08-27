@@ -40,7 +40,7 @@ class AuthorityVoter implements VoterInterface
     public function __construct(
         AuthorityRoleRepository $authorityRoleRepository,
         RequestStack $requestStack,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->authorityRoleRepository = $authorityRoleRepository;
         $this->requestStack = $requestStack;

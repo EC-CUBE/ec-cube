@@ -20,13 +20,18 @@ if (!class_exists(PageMax::class, false)) {
      * PageMax
      *
      * @ORM\Table(name="mtb_page_max")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\PageMaxRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class PageMax extends \Eccube\Entity\Master\AbstractMasterEntity
+    class PageMax extends AbstractMasterEntity
     {
     }
 }

@@ -14,7 +14,11 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Member;
+use Eccube\Entity\Product;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\Master\CountryRepository;
 use Eccube\Repository\Master\PrefRepository;
@@ -35,7 +39,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     protected $DateTimeNow;
 
     /**
-     * @var \Eccube\Entity\Product
+     * @var Product
      */
     protected $Product;
 
@@ -89,10 +93,10 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         parent::setUp();
 
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
-        $this->prefRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
-        $this->countryRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Country::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
+        $this->prefRepository = $this->entityManager->getRepository(Pref::class);
+        $this->countryRepository = $this->entityManager->getRepository(Country::class);
 
         $this->BaseInfo->setOptionProductTaxRule(0);
         $this->Product = $this->createProduct('生活必需品');

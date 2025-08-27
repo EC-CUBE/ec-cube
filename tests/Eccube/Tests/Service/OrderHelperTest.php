@@ -14,12 +14,11 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\OrderItemType;
-
 
 class OrderHelperTest extends EccubeTestCase
 {
@@ -46,10 +45,10 @@ class OrderHelperTest extends EccubeTestCase
     public function testUpdateCustomerInfoOldCustomer()
     {
         $Order = new Order();
-        $Order->setCreateDate((new \DateTime('today')));
+        $Order->setCreateDate(new \DateTime('today'));
 
         $Customer = new Customer();
-        $Customer->setUpdateDate((new \DateTime('yesterday')));
+        $Customer->setUpdateDate(new \DateTime('yesterday'));
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
@@ -62,10 +61,10 @@ class OrderHelperTest extends EccubeTestCase
     public function testUpdateCustomerInfoNewCustomer()
     {
         $Order = new Order();
-        $Order->setCreateDate((new \DateTime('yesterday')));
+        $Order->setCreateDate(new \DateTime('yesterday'));
 
         $Customer = new Customer();
-        $Customer->setUpdateDate((new \DateTime('today')));
+        $Customer->setUpdateDate(new \DateTime('today'));
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
@@ -75,6 +74,7 @@ class OrderHelperTest extends EccubeTestCase
 
     /**
      * 税表示区分が問題ないかを確認する
+     *
      * @dataProvider taxDisplayTypeProvider
      */
     public function testTaxDisplayType($OrderItemType, $TaxDisplayType)

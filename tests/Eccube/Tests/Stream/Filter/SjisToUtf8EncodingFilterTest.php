@@ -32,7 +32,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
     /**
      * @test
      */
-    public function encode_small_data(): void
+    public function encodeSmallData(): void
     {
         $utf8Value = 'あ,い,う';
         $sjisValue = $this->getSjisValue($utf8Value);
@@ -43,7 +43,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
     /**
      * @test
      */
-    public function encode_big_data_that_exceeds_stream_chunk_size(): void
+    public function encodeBigDataThatExceedsStreamChunkSize(): void
     {
         $utf8Value = 'かきくけこ,さしすせそ';
         $sjisValue = $this->getSjisValue($utf8Value);
@@ -58,7 +58,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
     /**
      * @test
      */
-    public function fgetcsv_doesnt_occur_5c_problem(): void
+    public function fgetcsvDoesntOccur5cProblem(): void
     {
         $utf8Value = '"表"';
         $sjisValue = $this->getSjisValue($utf8Value);
@@ -73,7 +73,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
     /**
      * @test
      */
-    public function buffer_size_should_not_be_too_large(): void
+    public function bufferSizeShouldNotBeTooLarge(): void
     {
         SjisToUtf8EncodingFilter::setBufferSizeLimit(1);
         $utf8Value = 'あ あ あ あ '; // 82 a0 20 * 4 (12 bytes)
@@ -100,8 +100,9 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         $fp = \tmpfile();
         \fwrite($fp, $content);
         \rewind($fp);
-        /** @noinspection UnusedFunctionResultInspection */
+        /* @noinspection UnusedFunctionResultInspection */
         \stream_filter_append($fp, self::FILTER_NAME);
+
         return $fp;
     }
 

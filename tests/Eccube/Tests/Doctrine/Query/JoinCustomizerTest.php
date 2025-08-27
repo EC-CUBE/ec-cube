@@ -33,8 +33,8 @@ class JoinCustomizerTest extends EccubeTestCase
         $builder = $this->createQueryBuilder();
         $customizer = new JoinCustomizerTest_Customizer(function () {
             return [
-            JoinClause::innerJoin('p.ProductCategories', 'pct'),
-        ];
+                JoinClause::innerJoin('p.ProductCategories', 'pct'),
+            ];
         });
         $customizer->customize($builder, null, '');
         self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct');
@@ -45,9 +45,9 @@ class JoinCustomizerTest extends EccubeTestCase
         $builder = $this->createQueryBuilder();
         $customizer = new JoinCustomizerTest_Customizer(function () {
             return [
-            JoinClause::innerJoin('p.ProductCategories', 'pct'),
-            JoinClause::innerJoin('pct.Category', 'c'),
-        ];
+                JoinClause::innerJoin('p.ProductCategories', 'pct'),
+                JoinClause::innerJoin('pct.Category', 'c'),
+            ];
         });
         $customizer->customize($builder, null, '');
         self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c');

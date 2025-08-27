@@ -48,7 +48,7 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * @param $ignoreMissing
      * @param $sandboxed
      *
-     * @return string|void
+     * @return string|null
      *
      * @throws LoaderError
      * @throws SecurityError
@@ -58,7 +58,6 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
         try {
             return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
         } catch (SecurityError $e) {
-
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
             if ($appEnv === 'dev') {
@@ -72,6 +71,8 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
                 if (!$sandbox->isSandboxedGlobally()) {
                     $sandbox->disableSandbox();
                 }
+
+                return null;
             }
         }
     }

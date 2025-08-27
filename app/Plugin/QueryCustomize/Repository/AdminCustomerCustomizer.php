@@ -31,7 +31,7 @@ class AdminCustomerCustomizer extends WhereCustomizer
     {
         // travis-ciのテストが通らないため、コメントアウト
         // 試してみるにはコメントアウトを解除してください.
-        //return [WhereClause::gte('c.buy_times', ':buy_times', ['buy_times' => 1])];
+        // return [WhereClause::gte('c.buy_times', ':buy_times', ['buy_times' => 1])];
 
         return [];
     }

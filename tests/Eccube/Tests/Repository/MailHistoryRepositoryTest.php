@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
@@ -60,9 +61,9 @@ class MailHistoryRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $faker = $this->getFaker();
-        $this->mailHistoryRepo = $this->entityManager->getRepository(\Eccube\Entity\MailHistory::class);
+        $this->mailHistoryRepo = $this->entityManager->getRepository(MailHistory::class);
 
-        $this->Member = $this->entityManager->getRepository(\Eccube\Entity\Member::class)->find(2);
+        $this->Member = $this->entityManager->getRepository(Member::class)->find(2);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $MailTemplate = new MailTemplate();
@@ -94,7 +95,7 @@ class MailHistoryRepositoryTest extends EccubeTestCase
 
             $this->expected = 'mail_subject-0';
             $this->actual = $MailHistory->getMailSubject();
-        } catch (\Doctrine\ORM\NoResultException $e) {
+        } catch (NoResultException $e) {
             $this->fail($e->getMessage());
         }
         $this->verify();
@@ -105,7 +106,7 @@ class MailHistoryRepositoryTest extends EccubeTestCase
         try {
             $this->mailHistoryRepo->getByCustomerAndId($this->Customer, 99999);
             $this->fail();
-        } catch (\Doctrine\ORM\NoResultException $e) {
+        } catch (NoResultException $e) {
             $this->expected = 'No result was found for query although at least one row was expected.';
             $this->actual = $e->getMessage();
         }

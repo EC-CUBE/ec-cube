@@ -38,7 +38,7 @@ class BlockRepository extends AbstractRepository
      */
     public function __construct(
         RegistryInterface $registry,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Block::class);
         $this->eccubeConfig = $eccubeConfig;
@@ -46,7 +46,7 @@ class BlockRepository extends AbstractRepository
 
     public function newBlock($DeviceType)
     {
-        $Block = new \Eccube\Entity\Block();
+        $Block = new Block();
         $Block
             ->setDeviceType($DeviceType)
             ->setUseController(false)

@@ -44,6 +44,7 @@ class NewItemTest extends AbstractWebTestCase
 
         $this->entityManager->getConnection()->exec($sql);
     }
+
     public function testNewItemBlock()
     {
         // 新着商品が表示されている

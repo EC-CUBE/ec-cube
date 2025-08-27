@@ -58,7 +58,7 @@ class LoginHistoryListener implements EventSubscriberInterface
         RequestStack $requestStack,
         Context $requestContext,
         MemberRepository $memberRepository,
-        LoginHistoryStatusRepository $loginHistoryStatusRepository
+        LoginHistoryStatusRepository $loginHistoryStatusRepository,
     ) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;

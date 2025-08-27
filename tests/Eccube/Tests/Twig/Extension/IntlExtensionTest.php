@@ -16,6 +16,7 @@ namespace Eccube\Tests\Twig\Extension;
 use Eccube\Twig\Extension\IntlExtension;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
+use Twig\Extension\CoreExtension;
 use Twig\Loader\ArrayLoader;
 
 class IntlExtensionTest extends TestCase
@@ -32,7 +33,7 @@ class IntlExtensionTest extends TestCase
         $loader->setTemplate('date_min_template', '{{ date|date_min }}');
 
         $this->twig = new Environment($loader);
-        $this->twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone('Asia/Tokyo');
+        $this->twig->getExtension(CoreExtension::class)->setTimezone('Asia/Tokyo');
         $this->twig->addExtension(new IntlExtension());
     }
 

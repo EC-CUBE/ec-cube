@@ -16,7 +16,6 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Repository\PaymentRepository;
 use Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -37,11 +36,6 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
      * @var Order
      */
     private $Order;
-
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
 
     protected function setUp(): void
     {

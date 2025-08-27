@@ -16,7 +16,9 @@ namespace Eccube\Tests\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SexRepository;
@@ -58,10 +60,10 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         parent::setUp();
         $this->createProduct();
 
-        $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
-        $this->paymentRepo = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->orderRepo = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->sexRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
+        $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
+        $this->paymentRepo = $this->entityManager->getRepository(Payment::class);
+        $this->orderRepo = $this->entityManager->getRepository(Order::class);
+        $this->sexRepo = $this->entityManager->getRepository(Sex::class);
         $this->Customer = $this->createCustomer();
         $this->entityManager->persist($this->Customer);
         $this->entityManager->flush();
@@ -403,7 +405,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      * @param int $expected
      * @param int $OrderStatusId
      */
-    public function testDate(string $formName, string $time, int $expected, int $OrderStatusId = null)
+    public function testDate(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
         if (!is_null($OrderStatusId)) {
             $Status = $this->orderStatusRepo->find($OrderStatusId);
@@ -457,7 +459,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      * @param int $expected
      * @param int|null $OrderStatusId
      */
-    public function testDateTime(string $formName, string $time, int $expected, int $OrderStatusId = null)
+    public function testDateTime(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
         if (!is_null($OrderStatusId)) {
             $Status = $this->orderStatusRepo->find($OrderStatusId);

@@ -78,7 +78,7 @@ DirectoryIndex index.php index.html .ht
     RewriteRule "^zap/" - [F]
 
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg|map|webp|avif|bmp)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 <IfModule mod_mime.c>

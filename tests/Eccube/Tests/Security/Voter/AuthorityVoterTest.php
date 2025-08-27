@@ -38,7 +38,7 @@ class AuthorityVoterTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->authorityRoleRepository = $this->entityManager->getRepository(\Eccube\Entity\AuthorityRole::class);
+        $this->authorityRoleRepository = $this->entityManager->getRepository(AuthorityRole::class);
         $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
     }
 

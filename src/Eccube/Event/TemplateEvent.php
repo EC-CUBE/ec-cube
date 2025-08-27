@@ -59,7 +59,7 @@ class TemplateEvent extends Event
      * @param array $parameters
      * @param Response|null $response
      */
-    public function __construct($view, $source, array $parameters = [], Response $response = null)
+    public function __construct($view, $source, array $parameters = [], ?Response $response = null)
     {
         $this->view = $view;
         $this->source = $source;

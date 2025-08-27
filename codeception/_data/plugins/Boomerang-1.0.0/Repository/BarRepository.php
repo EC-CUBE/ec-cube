@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -12,10 +13,9 @@
 
 namespace Plugin\Boomerang\Repository;
 
-
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Repository\AbstractRepository;
 use Plugin\Boomerang\Entity\Bar;
-use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 
 class BarRepository extends AbstractRepository
 {

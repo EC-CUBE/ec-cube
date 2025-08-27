@@ -21,23 +21,29 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-if (!class_exists('\Eccube\Entity\Customer')) {
+if (!class_exists(Customer::class)) {
     /**
      * Customer
      *
      * @ORM\Table(name="dtb_customer", uniqueConstraints={@ORM\UniqueConstraint(name="secret_key", columns={"secret_key"})}, indexes={@ORM\Index(name="dtb_customer_buy_times_idx", columns={"buy_times"}), @ORM\Index(name="dtb_customer_buy_total_idx", columns={"buy_total"}), @ORM\Index(name="dtb_customer_create_date_idx", columns={"create_date"}), @ORM\Index(name="dtb_customer_update_date_idx", columns={"update_date"}), @ORM\Index(name="dtb_customer_last_buy_date_idx", columns={"last_buy_date"}), @ORM\Index(name="dtb_customer_email_idx", columns={"email"})})
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
-    class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
     {
         /**
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         private $id;
@@ -121,6 +127,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
 
         /**
          * @Assert\NotBlank()
+         *
          * @Assert\Length(max=4096)
          */
         private $plain_password;
@@ -227,6 +234,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          * @var \Doctrine\Common\Collections\Collection
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerAddress", mappedBy="Customer", cascade={"remove"})
+         *
          * @ORM\OrderBy({
          *     "id"="ASC"
          * })
@@ -241,50 +249,60 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         private $Orders;
 
         /**
-         * @var \Eccube\Entity\Master\CustomerStatus
+         * @var Master\CustomerStatus
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerStatus")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="customer_status_id", referencedColumnName="id")
          * })
          */
         private $Status;
 
         /**
-         * @var \Eccube\Entity\Master\Sex
+         * @var Master\Sex
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="sex_id", referencedColumnName="id")
          * })
          */
         private $Sex;
 
         /**
-         * @var \Eccube\Entity\Master\Job
+         * @var Master\Job
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="job_id", referencedColumnName="id")
          * })
          */
         private $Job;
 
         /**
-         * @var \Eccube\Entity\Master\Country
+         * @var Master\Country
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
          * })
          */
         private $Country;
 
         /**
-         * @var \Eccube\Entity\Master\Pref
+         * @var Master\Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+         *
          * @ORM\JoinColumns({
+         *
          *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
          * })
          */
@@ -308,7 +326,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          */
         public function __toString()
         {
-            return (string) ($this->getName01().' '.$this->getName02());
+            return $this->getName01().' '.$this->getName02();
         }
 
         /**
@@ -929,7 +947,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return Customer
          */
@@ -943,9 +961,9 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Remove customerFavoriteProduct.
          *
-         * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
         {
@@ -965,7 +983,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add customerAddress.
          *
-         * @param \Eccube\Entity\CustomerAddress $customerAddress
+         * @param CustomerAddress $customerAddress
          *
          * @return Customer
          */
@@ -979,9 +997,9 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Remove customerAddress.
          *
-         * @param \Eccube\Entity\CustomerAddress $customerAddress
+         * @param CustomerAddress $customerAddress
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeCustomerAddress(CustomerAddress $customerAddress)
         {
@@ -1001,7 +1019,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Add order.
          *
-         * @param \Eccube\Entity\Order $order
+         * @param Order $order
          *
          * @return Customer
          */
@@ -1015,9 +1033,9 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Remove order.
          *
-         * @param \Eccube\Entity\Order $order
+         * @param Order $order
          *
-         * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
         public function removeOrder(Order $order)
         {
@@ -1037,11 +1055,11 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set status.
          *
-         * @param \Eccube\Entity\Master\CustomerStatus|null $status
+         * @param Master\CustomerStatus|null $status
          *
          * @return Customer
          */
-        public function setStatus(Master\CustomerStatus $status = null)
+        public function setStatus(?Master\CustomerStatus $status = null)
         {
             $this->Status = $status;
 
@@ -1051,7 +1069,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Get status.
          *
-         * @return \Eccube\Entity\Master\CustomerStatus|null
+         * @return Master\CustomerStatus|null
          */
         public function getStatus()
         {
@@ -1061,11 +1079,11 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set sex.
          *
-         * @param \Eccube\Entity\Master\Sex|null $sex
+         * @param Master\Sex|null $sex
          *
          * @return Customer
          */
-        public function setSex(Master\Sex $sex = null)
+        public function setSex(?Master\Sex $sex = null)
         {
             $this->Sex = $sex;
 
@@ -1075,7 +1093,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Get sex.
          *
-         * @return \Eccube\Entity\Master\Sex|null
+         * @return Master\Sex|null
          */
         public function getSex()
         {
@@ -1085,11 +1103,11 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set job.
          *
-         * @param \Eccube\Entity\Master\Job|null $job
+         * @param Master\Job|null $job
          *
          * @return Customer
          */
-        public function setJob(Master\Job $job = null)
+        public function setJob(?Master\Job $job = null)
         {
             $this->Job = $job;
 
@@ -1099,7 +1117,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Get job.
          *
-         * @return \Eccube\Entity\Master\Job|null
+         * @return Master\Job|null
          */
         public function getJob()
         {
@@ -1109,11 +1127,11 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set country.
          *
-         * @param \Eccube\Entity\Master\Country|null $country
+         * @param Master\Country|null $country
          *
          * @return Customer
          */
-        public function setCountry(Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null)
         {
             $this->Country = $country;
 
@@ -1123,7 +1141,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Get country.
          *
-         * @return \Eccube\Entity\Master\Country|null
+         * @return Master\Country|null
          */
         public function getCountry()
         {
@@ -1133,11 +1151,11 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Set pref.
          *
-         * @param \Eccube\Entity\Master\Pref|null $pref
+         * @param Master\Pref|null $pref
          *
          * @return Customer
          */
-        public function setPref(Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null)
         {
             $this->Pref = $pref;
 
@@ -1147,7 +1165,7 @@ if (!class_exists('\Eccube\Entity\Customer')) {
         /**
          * Get pref.
          *
-         * @return \Eccube\Entity\Master\Pref|null
+         * @return Master\Pref|null
          */
         public function getPref()
         {

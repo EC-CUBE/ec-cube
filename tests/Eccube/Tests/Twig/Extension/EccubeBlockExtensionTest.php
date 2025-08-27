@@ -16,6 +16,8 @@ namespace Eccube\Tests\Twig\Extension;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\EccubeBlockExtension;
 use org\bovigo\vfs\vfsStream;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class EccubeBlockExtensionTest extends EccubeTestCase
 {
@@ -27,7 +29,7 @@ class EccubeBlockExtensionTest extends EccubeTestCase
     ];
 
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -43,10 +45,10 @@ class EccubeBlockExtensionTest extends EccubeTestCase
             file_put_contents($this->templateDir.'/'.$twig_file, '');
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader([
+        $loader = new FilesystemLoader([
             $this->templateDir,
         ]);
-        $this->twig = new \Twig\Environment($loader);
+        $this->twig = new Environment($loader);
         $this->twig->addExtension(new EccubeBlockExtension($this->twig, $this->blockTwigs));
     }
 

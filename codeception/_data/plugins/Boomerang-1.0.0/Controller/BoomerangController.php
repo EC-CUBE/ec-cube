@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -11,7 +12,6 @@
  */
 
 namespace Plugin\Boomerang\Controller;
-
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
@@ -34,6 +34,7 @@ class BoomerangController extends AbstractController
 
     /**
      * @Route("/boomerang", name="boomerang")
+     *
      * @return JsonResponse
      */
     public function index()

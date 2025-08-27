@@ -218,6 +218,8 @@ class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
     public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
+
+        return null;
     }
 }
 

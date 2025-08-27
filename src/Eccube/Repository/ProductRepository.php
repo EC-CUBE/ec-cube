@@ -58,7 +58,7 @@ class ProductRepository extends AbstractRepository
     public function __construct(
         RegistryInterface $registry,
         Queries $queries,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Product::class);
         $this->queries = $queries;
@@ -68,7 +68,7 @@ class ProductRepository extends AbstractRepository
     /**
      * Find the Product with sorted ClassCategories.
      *
-     * @param integer $productId
+     * @param int $productId
      *
      * @return Product
      */

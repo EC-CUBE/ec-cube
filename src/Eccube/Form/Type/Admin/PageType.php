@@ -28,7 +28,7 @@ class PageType extends AbstractType
         $builder
             ->add('layout', EntityType::class, [
                 'label' => false,
-                'class' => 'Eccube\Entity\Page',
+                'class' => \Eccube\Entity\Page::class,
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er

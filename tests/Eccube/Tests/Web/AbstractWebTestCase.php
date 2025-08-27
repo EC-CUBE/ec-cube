@@ -68,7 +68,6 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      * https://github.com/symfony/symfony/discussions/46961
      *
      * @param KernelBrowser $client
-     * @return Session
      */
     public function createSession(KernelBrowser $client): Session
     {

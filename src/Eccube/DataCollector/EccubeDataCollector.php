@@ -106,7 +106,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
         $this->data['base_currency_code'] = $this->eccubeConfig->get('currency');
         $this->data['currency_code'] = $this->eccubeConfig->get('currency');

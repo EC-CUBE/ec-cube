@@ -14,6 +14,8 @@
 namespace Eccube\Tests\Transaction;
 
 use Eccube\Application;
+use Eccube\Tests\ServiceProvider\CsrfMockServiceProvider;
+use Eccube\Tests\ServiceProvider\FixtureServiceProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -72,7 +74,7 @@ class TransactionListenerTest extends WebTestCase
     public function testTran1()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran1');
+        $client->request('GET', '/tran1');
 
         $this->verify('tran1');
     }
@@ -86,7 +88,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran2');
+        $client->request('GET', '/tran2');
 
         $this->verify($companyName);
     }
@@ -103,7 +105,7 @@ class TransactionListenerTest extends WebTestCase
         }
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran3');
+        $client->request('GET', '/tran3');
 
         $this->verify('tran3');
     }
@@ -126,7 +128,7 @@ class TransactionListenerTest extends WebTestCase
         $companyName = $BaseInfo->getCompanyName();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran4');
+        $client->request('GET', '/tran4');
 
         $this->verify($companyName);
     }
@@ -151,7 +153,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran5');
+        $client->request('GET', '/tran5');
 
         $this->verify($companyName);
     }
@@ -175,7 +177,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran6');
+        $client->request('GET', '/tran6');
 
         $this->verify($companyName);
     }
@@ -202,7 +204,7 @@ class TransactionListenerTest extends WebTestCase
         }
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran7');
+        $client->request('GET', '/tran7');
 
         $this->verify('tran7-3');
     }
@@ -231,7 +233,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran8');
+        $client->request('GET', '/tran8');
 
         $this->verify($companyName);
     }
@@ -253,7 +255,7 @@ class TransactionListenerTest extends WebTestCase
     public function testTran9()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/tran9');
+        $client->request('GET', '/tran9');
 
         $this->verify('tran9-3');
     }
@@ -303,13 +305,13 @@ class TransactionListenerTest extends WebTestCase
         $app->initializePlugin();
 
         $app['session.test'] = true;
-        //$app->offsetUnset('exception_handler');
+        // $app->offsetUnset('exception_handler');
 
         $app->offsetUnset('csrf.token_manager');
-        $app->register(new \Eccube\Tests\ServiceProvider\CsrfMockServiceProvider());
+        $app->register(new CsrfMockServiceProvider());
 
         if (!$app->offsetExists('eccube.fixture.generator')) {
-            $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
+            $app->register(new FixtureServiceProvider());
         }
         $app->boot();
         $app->flush();
@@ -348,8 +350,6 @@ class TransactionControllerMock
 
         // 1/2 は rollback.
         throw new \Exception();
-
-        return $app->render('index.twig');
     }
 
     public function tran3(Application $app)
@@ -416,8 +416,6 @@ class TransactionControllerMock
 
         // update1/2はrollback
         throw new \Exception();
-
-        return $app->render('index.twig');
     }
 
     public function tran6(Application $app)
@@ -444,8 +442,6 @@ class TransactionControllerMock
 
         // update1/2/3 すべてrollback
         throw new \Exception();
-
-        return $app->render('index.twig');
     }
 
     public function tran7(Application $app)
@@ -506,8 +502,6 @@ class TransactionControllerMock
 
         // update2/3 は 暗黙のtransaction block内のため、2/3はrollbackされる
         throw new \Exception();
-
-        return $app->render('index.twig');
     }
 
     public function tran9(Application $app)

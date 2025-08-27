@@ -71,7 +71,7 @@ class ClassCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\ClassCategory',
+            'data_class' => \Eccube\Entity\ClassCategory::class,
         ]);
     }
 

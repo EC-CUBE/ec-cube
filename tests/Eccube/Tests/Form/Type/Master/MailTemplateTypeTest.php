@@ -13,13 +13,15 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
+use Eccube\Entity\MailTemplate;
 use Eccube\Form\Type\Master\MailTemplateType;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class MailTemplateTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var MailTemplateRepository */
@@ -28,7 +30,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mailTemplateRepo = $this->entityManager->getRepository(\Eccube\Entity\MailTemplate::class);
+        $this->mailTemplateRepo = $this->entityManager->getRepository(MailTemplate::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

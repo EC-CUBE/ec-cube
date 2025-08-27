@@ -1,0 +1,26 @@
+name: PHP CS Fixer
+
+on:
+  workflow_call:
+
+jobs:
+  php-cs-fixer:
+    name: Run PHP CS Fixer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: '8.1'
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Run php-cs-fixer (dry-run)
+        # ─── 差分があるとステップごと失敗させる ───
+        run: |
+          PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes

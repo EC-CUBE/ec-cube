@@ -20,13 +20,18 @@ if (!class_exists(ProductListMax::class, false)) {
      * ProductListMax
      *
      * @ORM\Table(name="mtb_product_list_max")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductListMaxRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class ProductListMax extends \Eccube\Entity\Master\AbstractMasterEntity
+    class ProductListMax extends AbstractMasterEntity
     {
     }
 }

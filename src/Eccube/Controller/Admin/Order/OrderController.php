@@ -154,7 +154,7 @@ class OrderController extends AbstractController
         OrderPdfRepository $orderPdfRepository,
         ValidatorInterface $validator,
         OrderStateMachine $orderStateMachine,
-        MailService $mailService
+        MailService $mailService,
     ) {
         $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
@@ -191,6 +191,7 @@ class OrderController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/order", name="admin_order", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/index.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
@@ -581,7 +582,9 @@ class OrderController extends AbstractController
             return $this->json(['status' => 'NG'], 400);
         }
 
-        $trackingNumber = mb_convert_kana($request->get('tracking_number'), 'a', 'utf-8');
+        $trackingNumber = $request->get('tracking_number') ?? '';
+        $trackingNumber = mb_convert_kana($trackingNumber, 'a', 'utf-8');
+
         /** @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate(
             $trackingNumber,
@@ -621,6 +624,7 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request
@@ -669,6 +673,7 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download", methods={"POST"})
+     *
      * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request

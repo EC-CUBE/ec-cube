@@ -55,7 +55,7 @@ class PhoneNumberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setNormalizer('constraints', function($options, $value) {
+        $resolver->setNormalizer('constraints', function ($options, $value) {
             $constraints = [];
             // requiredがtrueに指定されている場合, NotBlankを追加
             if (isset($options['required']) && true === $options['required']) {

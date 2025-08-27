@@ -75,7 +75,7 @@ class ContactType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_lltext_len'],
-                    ])
+                    ]),
                 ],
             ]);
     }

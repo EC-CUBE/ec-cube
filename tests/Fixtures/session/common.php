@@ -31,7 +31,7 @@ while (!@file_exists($parent.'/vendor/autoload.php')) {
 
 require $parent.'/vendor/autoload.php';
 if (file_exists($parent.'/.env')) {
-    (Dotenv::createUnsafeMutable($parent, '.env'))->load();
+    Dotenv::createUnsafeMutable($parent, '.env')->load();
 }
 
 Request::setTrustedProxies(
@@ -74,15 +74,13 @@ register_shutdown_function(function () {
 });
 ob_start();
 
-class MockSessionHandler extends \SessionHandler
+class MockSessionHandler extends SessionHandler
 {
     private $data;
-    private $sessionId;
 
-    public function __construct($data = '', $sessionId = null)
+    public function __construct($data = '')
     {
         $this->data = $data;
-        $this->sessionId = $sessionId;
     }
 
     public function getData()
@@ -90,7 +88,7 @@ class MockSessionHandler extends \SessionHandler
         return $this->data;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function open($path, $name)
     {
         return parent::open($path, $name);
@@ -98,7 +96,6 @@ class MockSessionHandler extends \SessionHandler
 }
 class TestSessionHandler extends SameSiteNoneCompatSessionHandler
 {
-    private $handler;
     private $data;
     private $sessionId;
 
@@ -108,7 +105,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         $this->data = $handler->getData();
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function open($path, $name): bool
     {
         echo __FUNCTION__, "\n";
@@ -119,7 +116,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function validateId($sessionId): bool
     {
         echo __FUNCTION__, "\n";
@@ -130,7 +127,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function read($sessionId): string
     {
         echo __FUNCTION__, "\n";
@@ -141,7 +138,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
@@ -152,7 +149,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function write($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
@@ -163,8 +160,8 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
-    public function destroy($sessionId):bool
+    #[ReturnTypeWillChange]
+    public function destroy($sessionId): bool
     {
         echo __FUNCTION__, "\n";
 
@@ -174,7 +171,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function close(): bool
     {
         echo __FUNCTION__, "\n";
@@ -185,7 +182,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function gc($maxLifetime): int|false
     {
         echo __FUNCTION__, "\n";
@@ -196,7 +193,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     protected function doRead($sessionId): string
     {
         if (isset($this->sessionId) && $sessionId !== $this->sessionId) {
-            echo __FUNCTION__ . ": invalid sessionId\n";
+            echo __FUNCTION__.": invalid sessionId\n";
 
             return '';
         }

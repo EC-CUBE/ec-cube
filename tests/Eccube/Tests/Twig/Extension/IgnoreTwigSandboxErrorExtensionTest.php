@@ -56,7 +56,6 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         }
         // 入力可能ではない値の場合は、システムエラーが発生する
         self::assertStringNotContainsString('システムエラーが発生しました', $text);
-
     }
 
     public function twigSnippetsProvider()

@@ -12,16 +12,17 @@
  */
 
 use Codeception\Util\Fixtures;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
+use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\CustomerAddressRepository;
+use Page\Front\CartPage;
 use Page\Front\CustomerAddressEditPage;
 use Page\Front\CustomerAddressListPage;
 use Page\Front\HistoryPage;
 use Page\Front\MyPage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ShoppingPage;
-use Page\Front\CartPage;
-use Eccube\Repository\CustomerAddressRepository;
 
 /**
  * @group front
@@ -30,21 +31,10 @@ use Eccube\Repository\CustomerAddressRepository;
  */
 class EF05MypageCest
 {
-    /** @var EntityManager */
-    private EntityManager $em;
-
-    /** @var Connection */
-    private Connection $conn;
-
-    /**
-     * @var CustomerAddressRepository
-     */
     protected CustomerAddressRepository $customerAddressRepository;
 
     public function _before(AcceptanceTester $I)
     {
-        $this->em = Fixtures::get('entityManager');
-        $this->conn = $this->em->getConnection();
     }
 
     public function _after(AcceptanceTester $I)
@@ -68,7 +58,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $Orders = $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
+        $createOrders($customer, 5, [], OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -90,7 +80,7 @@ class EF05MypageCest
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $createOrders = Fixtures::get('createOrders');
-        $createOrders($customer, 5, [], \Eccube\Entity\Master\OrderStatus::NEW);
+        $createOrders($customer, 5, [], OrderStatus::NEW);
 
         $I->loginAsMember($customer->getEmail(), 'password');
 
@@ -319,13 +309,13 @@ class EF05MypageCest
         $I->loginAsMember($customer->getEmail(), 'password');
 
         // 19件のお届け先を登録
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var EntityManager $em */
         $em = Fixtures::get('entityManager');
-        
-        $this->customerAddressRepository = $em->getRepository(\Eccube\Entity\CustomerAddress::class);
-        
+
+        $this->customerAddressRepository = $em->getRepository(CustomerAddress::class);
+
         for ($i = 0; $i < $max; $i++) {
-            $customerAddress = new \Eccube\Entity\CustomerAddress();
+            $customerAddress = new CustomerAddress();
             $customerAddress
                 ->setCustomer($customer)
                 ->setName01($customer->getName01())
@@ -341,7 +331,7 @@ class EF05MypageCest
 
             $em->persist($customerAddress);
         }
-        
+
         $em->flush();
 
         // TOPページ>マイページ>お届け先一覧で上限に達していることを確認
@@ -362,7 +352,7 @@ class EF05MypageCest
         ShoppingPage::at($I)->お届け先変更();
 
         $I->wait(1);
-        
+
         $I->see(sprintf('お届け先登録の上限の%s件に達しています。お届け先を入力したい場合は、削除か変更を行ってください。', 20), 'div.ec-registerRole > div > div > div ');
 
         // 受注に紐づくidに直接アクセスしても登録されないことを確認
@@ -390,7 +380,7 @@ class EF05MypageCest
 
         // 会員退会手続きへ
         $I->click('div.ec-withdrawRole form button');
-
+        $I->wait(1);
         // 未実施
         $I->click('div.ec-withdrawConfirmRole form a.ec-withdrawConfirmRole__cancel');
 

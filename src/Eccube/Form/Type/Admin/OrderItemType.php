@@ -106,7 +106,7 @@ class OrderItemType extends AbstractType
         OrderItemRepository $orderItemRepository,
         OrderItemTypeRepository $orderItemTypeRepository,
         TaxRuleRepository $taxRuleRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
@@ -164,7 +164,7 @@ class OrderItemType extends AbstractType
                     ]),
                 ],
             ])
-            ;
+        ;
 
         $builder
             ->add($builder->create('order_item_type', HiddenType::class)
@@ -272,7 +272,7 @@ class OrderItemType extends AbstractType
                     $this->addErrorsIfExists($form['price'], $errors);
                     break;
 
-                // 値引き明細: 金額 -> 負, 個数 -> 正
+                    // 値引き明細: 金額 -> 負, 個数 -> 正
                 case OrderItemTypeMaster::DISCOUNT:
                     $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\LessThanOrEqual(0)]);
                     $this->addErrorsIfExists($form['price'], $errors);
@@ -281,7 +281,7 @@ class OrderItemType extends AbstractType
 
                     break;
 
-                // 送料, 手数料: 金額 -> 正, 個数 -> 正
+                    // 送料, 手数料: 金額 -> 正, 個数 -> 正
                 case OrderItemTypeMaster::DELIVERY_FEE:
                 case OrderItemTypeMaster::CHARGE:
                     $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\GreaterThanOrEqual(0)]);

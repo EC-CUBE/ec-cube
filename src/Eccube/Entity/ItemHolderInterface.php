@@ -13,24 +13,26 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Service\PurchaseFlow\ItemCollection;
+
 interface ItemHolderInterface
 {
     /**
-     * @return ItemInterface[]
+     * @return ItemCollection
      */
     public function getItems();
 
     /**
      * 合計金額を返します。
      *
-     * @return int
+     * @return string
      */
     public function getTotal();
 
     /**
      * 合計金額を設定します。
      *
-     * @param $total|int
+     * @param string $total
      */
     public function setTotal($total);
 
@@ -44,14 +46,14 @@ interface ItemHolderInterface
     /**
      * 送料合計を設定します。
      *
-     * @param $total|int
+     * @param string $total
      */
     public function setDeliveryFeeTotal($total);
 
     /**
      * 送料合計を返します。
      *
-     * @return int
+     * @return string
      */
     public function getDeliveryFeeTotal();
 
@@ -88,7 +90,7 @@ interface ItemHolderInterface
     /**
      * 加算ポイントを返します.
      *
-     * @return int
+     * @return string
      */
     public function getAddPoint();
 
@@ -102,7 +104,7 @@ interface ItemHolderInterface
     /**
      * 利用ポイントを返します.
      *
-     * @return int
+     * @return string
      */
     public function getUsePoint();
 

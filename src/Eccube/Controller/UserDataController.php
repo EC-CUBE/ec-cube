@@ -42,7 +42,7 @@ class UserDataController extends AbstractController
      */
     public function __construct(
         PageRepository $pageRepository,
-        DeviceTypeRepository $deviceTypeRepository
+        DeviceTypeRepository $deviceTypeRepository,
     ) {
         $this->pageRepository = $pageRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;

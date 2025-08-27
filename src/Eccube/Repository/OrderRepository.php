@@ -410,7 +410,7 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
+     * @param  Customer $Customer
      *
      * @return QueryBuilder
      */
@@ -429,11 +429,11 @@ class OrderRepository extends AbstractRepository
     /**
      * ステータスごとの受注件数を取得する.
      *
-     * @param integer $OrderStatusOrId
+     * @param int $OrderStatusOrId
      *
      * @return int
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function countByOrderStatus($OrderStatusOrId)

@@ -35,7 +35,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
     {
         parent::tearDown();
 
-        if (file_exists($this->maintenance_file_path)) {
+        if (isset($this->maintenance_file_path) && file_exists($this->maintenance_file_path)) {
             unlink($this->maintenance_file_path);
         }
     }

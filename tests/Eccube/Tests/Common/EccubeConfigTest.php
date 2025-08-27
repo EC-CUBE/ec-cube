@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class EccubeConfigTest extends TestCase
 {

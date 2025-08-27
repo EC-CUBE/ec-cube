@@ -59,7 +59,7 @@ class TaxProcessor implements ItemHolderPreprocessor
         EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         TaxRuleService $taxRuleService,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
     ) {
         $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;

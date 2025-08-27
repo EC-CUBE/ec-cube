@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Page\Admin\SalesReportPage;
 
 /**
@@ -22,12 +21,12 @@ use Page\Admin\SalesReportPage;
  */
 class PL04SalesReportCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function 集計(AcceptanceTester $I)
+    public function 集計(\AcceptanceTester $I)
     {
         $yesterday = new DateTime('-1 day');
         $lastMonth = new DateTime('-1 month');

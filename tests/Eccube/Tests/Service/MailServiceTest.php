@@ -15,8 +15,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Shipping;
-use Eccube\Repository\MailHistoryRepository;
+use Eccube\Entity\Master\Pref;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -167,7 +166,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $kana02 = $faker->firstName;
         $email = $faker->email;
         $postCode = $faker->postCode;
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, 1);
+        $Pref = $this->entityManager->find(Pref::class, 1);
         $addr01 = $faker->city;
         $addr02 = $faker->streetAddress;
 
@@ -414,12 +413,11 @@ class MailServiceTest extends AbstractServiceTestCase
         }
     }
 
-
     public function testCustomerChangeNotifyMailByDeliveryAddressChange()
     {
         $userData = [
             'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
-            'ipAddress' => '192.168.0.100'
+            'ipAddress' => '192.168.0.100',
         ];
         $eventName = 'お届け先情報編集';
 
@@ -454,6 +452,5 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->assertEmailTextBodyContains($Message, $userData['ipAddress']);
         $this->assertEmailHtmlBodyContains($Message, $userData['ipAddress']);
-
     }
 }

@@ -14,8 +14,10 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Member;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
@@ -46,10 +48,10 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->productClassRepo = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
-        $this->classCategoryRepo = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
-        $this->classNameRepo = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
-        $this->Member = $this->entityManager->getRepository(\Eccube\Entity\Member::class)->find(1);
+        $this->productClassRepo = $this->entityManager->getRepository(ProductClass::class);
+        $this->classCategoryRepo = $this->entityManager->getRepository(ClassCategory::class);
+        $this->classNameRepo = $this->entityManager->getRepository(ClassName::class);
+        $this->Member = $this->entityManager->getRepository(Member::class)->find(1);
         $this->removeClass();
 
         for ($i = 0; $i < 3; $i++) {
@@ -59,7 +61,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
                 ->setBackendName('class-'.$i)
                 ->setCreator($this->Member)
                 ->setSortNo($i)
-                ;
+            ;
             $this->entityManager->persist($ClassName);
         }
         $this->entityManager->flush();
@@ -99,9 +101,9 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_class_name'),
             [
                 'admin_class_name' => [
-                'name' => '規格1',
-                Constant::TOKEN_NAME => 'dummy',
-            ], ]
+                    'name' => '規格1',
+                    Constant::TOKEN_NAME => 'dummy',
+                ], ]
         );
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
@@ -209,7 +211,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     private function newTestClassName($TestCreator)
     {
-        $TestClassName = new \Eccube\Entity\ClassName();
+        $TestClassName = new ClassName();
         $TestClassName->setBackendName('形状')
             ->setName('表示形状')
             ->setSortNo(100)

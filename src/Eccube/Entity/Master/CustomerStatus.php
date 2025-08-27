@@ -20,13 +20,18 @@ if (!class_exists(CustomerStatus::class, false)) {
      * CustomerStatus
      *
      * @ORM\Table(name="mtb_customer_status")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\CustomerStatusRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class CustomerStatus extends \Eccube\Entity\Master\AbstractMasterEntity
+    class CustomerStatus extends AbstractMasterEntity
     {
         /**
          * 仮会員.

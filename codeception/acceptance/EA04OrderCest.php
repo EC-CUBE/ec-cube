@@ -50,6 +50,7 @@ class EA04OrderCest
 
         $TargetOrder = array_values($TargetOrders)[0];
         OrderManagePage::go($I)->検索($TargetOrder->getName01());
+        $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->dontSee('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         OrderManagePage::go($I)->検索('gege@gege.com');

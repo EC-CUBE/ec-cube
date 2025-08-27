@@ -20,13 +20,18 @@ if (!class_exists(Sex::class, false)) {
      * Sex
      *
      * @ORM\Table(name="mtb_sex")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\SexRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class Sex extends \Eccube\Entity\Master\AbstractMasterEntity
+    class Sex extends AbstractMasterEntity
     {
     }
 }

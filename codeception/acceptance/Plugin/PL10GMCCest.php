@@ -13,15 +13,13 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
-
 /**
  * @group plugin
  * @group vaddy
  */
 class PL10GMCCest
 {
-    public function gmc(AcceptanceTester $I)
+    public function gmc(\AcceptanceTester $I)
     {
         $I->amOnPage('/admin/gmc/config');
     }

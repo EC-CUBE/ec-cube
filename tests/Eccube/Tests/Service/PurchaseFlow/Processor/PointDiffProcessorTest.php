@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
@@ -23,6 +22,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
@@ -37,16 +37,12 @@ class PointDiffProcessorTest extends EccubeTestCase
     /** @var OrderStatusRepository */
     private $OrderStatusRepository;
 
-    /** @var BaseInfo */
-    private $BaseInfo;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->processor = static::getContainer()->get(PointDiffProcessor::class);
         $this->pointProcessor = static::getContainer()->get(PointProcessor::class);
-        $this->OrderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
-        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->OrderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
     }
 
     /**
@@ -188,7 +184,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      * @param $afterUsePoint int 編集後の利用ポイント
      * @param $userUsePoint int 期待する会員のポイント
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     public function testReduceCustomerPoint($beforeUsePoint, $afterUsePoint, $userUsePoint)
     {
@@ -241,7 +237,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      * @param $orderStatusId int 受注ステータス
      * @param $isChange boolean 変更されたかどうか
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     public function testUsePointEachOrderStatus($orderStatusId, $isChange)
     {

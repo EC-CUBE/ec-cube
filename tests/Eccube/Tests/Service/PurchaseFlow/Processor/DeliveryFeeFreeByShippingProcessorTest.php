@@ -39,7 +39,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         parent::setUp();
         $this->ProductType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
         $this->DeliveryFeeType = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
     }
 
     /**
@@ -212,7 +212,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $prop = $rc->getProperty('id');
         $prop->setAccessible(true);
         $prop->setValue($Shipping, $id);
-        $Shipping->setName01("name_${id}");
+        $Shipping->setName01("name_{$id}");
 
         return $Shipping;
     }

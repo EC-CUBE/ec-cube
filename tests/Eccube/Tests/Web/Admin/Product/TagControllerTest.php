@@ -28,7 +28,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->TagRepo = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
+        $this->TagRepo = $this->entityManager->getRepository(Tag::class);
     }
 
     public function testRouting()
@@ -64,6 +64,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testAddNew($isSuccess, $expected)
@@ -154,12 +155,10 @@ class TagControllerTest extends AbstractAdminWebTestCase
 
     public function createFormData()
     {
-        $form = [
+        return [
             '_token' => 'dummy',
             'name' => 'Tag-101',
         ];
-
-        return $form;
     }
 
     public function dataSubmitProvider()
