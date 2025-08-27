@@ -40,7 +40,7 @@ class EntityUtilTest extends EccubeTestCase
 
         $entity = new TestEntity($arrProps);
 
-        $arrProps['testField4'] = 'Doctrine\Common\Collections\ArrayCollection';
+        $arrProps['testField4'] = ArrayCollection::class;
         $this->expected = $arrProps;
         $this->actual = EntityUtil::dumpToArray($entity);
         $this->verify();

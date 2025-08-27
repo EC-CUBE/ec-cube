@@ -127,7 +127,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         );
     }
 
-    protected function scenarioComplete(?Customer $Customer = null, $confirm_url, array $shippings = [], $doComplete = false)
+    protected function scenarioComplete(?Customer $Customer = null, $confirm_url = null, array $shippings = [], $doComplete = false)
     {
         if ($Customer) {
             $this->loginTo($Customer);

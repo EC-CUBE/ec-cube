@@ -89,7 +89,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = 'Eccube\Entity\Product', $ref = null)
+    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = \Eccube\Entity\Product::class, $ref = null)
     {
         $CsvType = $this->entityManager->getRepository(CsvType::class)->find($csvType);
         $Creator = $this->createMember();

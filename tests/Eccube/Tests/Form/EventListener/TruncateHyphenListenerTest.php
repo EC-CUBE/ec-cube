@@ -22,7 +22,7 @@ class TruncateHyphenListenerTest extends TestCase
     public function testTruncateHyphen()
     {
         $data = '0123-456-789';
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->getMockBuilder(\Symfony\Component\Form\Test\FormInterface::class)->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new TruncateHyphenListener();
