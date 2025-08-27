@@ -51,6 +51,13 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     public const NAME = 'eccube:schema:update';
 
+    /**
+     * 連続してテストを実行すると、プロキシ関係でテストが失敗する。
+     * １メソッドごとに実行すること。
+     *
+     * @return void
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -81,7 +88,16 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
                 $conn->executeUpdate('ALTER TABLE dtb_customer DROP test_update_schema_command');
             }
         }
-        parent::tearDown();
+        // プロパティをクリア
+        //parent::tearDown();
+    }
+
+    /**
+     * 中のプロパティをクリアしている
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
     }
 
     public function testHelpWithOriginalDoctrineCommand()
