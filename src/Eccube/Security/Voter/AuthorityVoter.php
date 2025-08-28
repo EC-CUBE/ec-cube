@@ -48,7 +48,7 @@ class AuthorityVoter implements VoterInterface
     }
 
     #[\Override]
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         $path = null;
 

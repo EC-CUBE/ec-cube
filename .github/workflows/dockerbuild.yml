@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3' ]
+        php: [ '8.3', '8.4' ]
         db: [ pgsql ]
         group: [ admin01 ]
         include:
@@ -31,6 +31,8 @@ jobs:
             app_env: 'codeception'
           - php: '8.3'
             tag: '8.3-apache'
+          - php: '8.4'
+            tag: '8.4-apache'
 
     steps:
       - name: downcase REPO

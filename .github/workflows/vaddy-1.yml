@@ -41,7 +41,7 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '8.3'
+          php-version: '8.4'
 
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master

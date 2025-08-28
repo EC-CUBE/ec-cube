@@ -75,7 +75,7 @@ if (!class_exists(Member::class)) {
          * {@inheritdoc}
          */
         #[\Override]
-        public function eraseCredentials()
+        public function eraseCredentials(): void
         {
         }
 

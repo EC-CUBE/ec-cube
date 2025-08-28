@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3 ]
+        php: [ 8.3, 8.4 ]
         db: [ pgsql ]
         group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'change-display-order', 'installer' ]
         include:
@@ -175,7 +175,7 @@ jobs:
       -   name: Upload ScreenShots
           uses: actions/upload-artifact@v4
           with:
-            name: screenshots-${{ matrix.group }}
+            name: screenshots-${{ matrix.php }}-${{ matrix.group }}
             path: |
               front_top.png
               admin_top.png

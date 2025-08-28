@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -90,7 +91,7 @@ class ClassCategoryController extends AbstractController
                 throw new NotFoundHttpException();
             }
         } else {
-            $TargetClassCategory = new \Eccube\Entity\ClassCategory();
+            $TargetClassCategory = new ClassCategory();
             $TargetClassCategory->setClassName($ClassName);
         }
 
@@ -314,7 +315,7 @@ class ClassCategoryController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $ClassCategory \Eccube\Entity\ClassCategory */
+                /** @var ClassCategory $ClassCategory */
                 $ClassCategory = $entity;
 
                 // CSV出力項目と合致するデータを取得.

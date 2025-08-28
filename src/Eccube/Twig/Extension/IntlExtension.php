@@ -44,7 +44,7 @@ class IntlExtension extends AbstractExtension
      *
      * @return bool|string
      */
-    public function date_day(Environment $env, $date)
+    public function date_day(Environment $env, $date): bool|string
     {
         if (!$date) {
             return '';
