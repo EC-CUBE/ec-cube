@@ -56,6 +56,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      * １メソッドごとに実行すること。
      *
      * @return void
+     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function setUp(): void
@@ -89,11 +90,12 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             }
         }
         // プロパティをクリア
-        //parent::tearDown();
+        // parent::tearDown();
     }
 
     /**
      * 中のプロパティをクリアしている
+     *
      * @return void
      */
     public static function tearDownAfterClass(): void
