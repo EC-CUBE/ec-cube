@@ -175,7 +175,7 @@ jobs:
       -   name: Upload ScreenShots
           uses: actions/upload-artifact@v4
           with:
-            name: screenshots-${{ matrix.group }}
+            name: screenshots-${{ matrix.php }}-${{ matrix.group }}
             path: |
               front_top.png
               admin_top.png
