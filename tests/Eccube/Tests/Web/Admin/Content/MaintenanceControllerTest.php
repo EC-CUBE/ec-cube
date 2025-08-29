@@ -19,6 +19,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
 {
     private $maintenance_file_path;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,6 +32,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

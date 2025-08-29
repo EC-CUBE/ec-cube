@@ -45,6 +45,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
      */
     private $classNameRepo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

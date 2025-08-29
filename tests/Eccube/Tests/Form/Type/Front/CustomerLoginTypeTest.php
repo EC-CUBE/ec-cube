@@ -29,6 +29,7 @@ class CustomerLoginTypeTest extends AbstractTypeTestCase
         'login_pass' => '111111111',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

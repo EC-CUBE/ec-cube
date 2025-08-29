@@ -56,6 +56,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     /**
      * Set up function
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

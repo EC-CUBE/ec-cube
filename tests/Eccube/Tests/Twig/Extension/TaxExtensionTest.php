@@ -30,6 +30,7 @@ class TaxExtensionTest extends EccubeTestCase
      */
     protected $taxRuleRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

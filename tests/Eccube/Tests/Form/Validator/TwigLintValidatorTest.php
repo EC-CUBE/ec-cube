@@ -22,6 +22,7 @@ class TwigLintValidatorTest extends AbstractTypeTestCase
     /** @var ValidatorInterface */
     protected $validator;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

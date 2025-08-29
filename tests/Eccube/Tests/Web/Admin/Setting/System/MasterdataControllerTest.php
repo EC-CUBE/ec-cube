@@ -22,6 +22,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

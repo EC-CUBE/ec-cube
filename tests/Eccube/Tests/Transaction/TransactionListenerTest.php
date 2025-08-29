@@ -37,6 +37,7 @@ class TransactionListenerTest extends WebTestCase
         return $this->app['db']->getDatabasePlatform()->getName() === 'sqlite';
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(static::class.' は未実装です');
@@ -60,6 +61,7 @@ class TransactionListenerTest extends WebTestCase
         $this->app->mount('', $c);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if ($this->app['orm.em']) {

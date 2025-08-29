@@ -35,6 +35,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     /** @var OrderRepository */
     private $orderRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,6 +43,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

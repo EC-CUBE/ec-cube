@@ -27,6 +27,7 @@ class PrefTypeTest extends AbstractTypeTestCase
     /** @var PrefRepository */
     protected $prefRepo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

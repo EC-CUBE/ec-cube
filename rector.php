@@ -85,7 +85,7 @@ return RectorConfig::configure()
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
                // TODO:以下を適用する
-               AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
+               //AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
 
                // 8.3以下が対象のものを適用する

@@ -77,10 +77,12 @@ class ItemValidatorTest_NormalValidator extends ItemValidator
 {
     public $handleCalled = false;
 
+    #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
     }
 
+    #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $this->handleCalled = true;
@@ -91,11 +93,13 @@ class ItemValidatorTest_FailValidator extends ItemValidator
 {
     public $handleCalled = false;
 
+    #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context): never
     {
         throw new InvalidItemException();
     }
 
+    #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $this->handleCalled = true;

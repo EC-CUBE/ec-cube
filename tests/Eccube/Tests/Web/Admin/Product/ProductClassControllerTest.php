@@ -54,6 +54,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

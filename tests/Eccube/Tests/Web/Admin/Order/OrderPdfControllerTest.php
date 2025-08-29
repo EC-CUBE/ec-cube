@@ -43,6 +43,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     /** @var array */
     protected $config;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

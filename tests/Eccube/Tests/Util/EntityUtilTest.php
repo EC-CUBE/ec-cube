@@ -25,6 +25,7 @@ use Eccube\Util\EntityUtil;
  */
 class EntityUtilTest extends EccubeTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

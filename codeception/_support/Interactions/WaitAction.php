@@ -30,6 +30,7 @@ class WaitAction implements WebDriverAction
         $this->timeout_in_second = $timeout_in_second;
     }
 
+    #[\Override]
     public function perform()
     {
         sleep($this->timeout_in_second);

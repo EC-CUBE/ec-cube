@@ -102,6 +102,7 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
      *
      * @return OrderByClause[]
      */
+    #[\Override]
     public function createStatements($params, $queryKey)
     {
         $callback = $this->closure;
@@ -114,6 +115,7 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
      *
      * @return string
      */
+    #[\Override]
     public function getQueryKey()
     {
         return '';

@@ -31,6 +31,7 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
      */
     protected $customerAddressRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

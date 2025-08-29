@@ -27,6 +27,7 @@ class MypageControllerTest extends AbstractWebTestCase
      */
     protected $Customer;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

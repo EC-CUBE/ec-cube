@@ -35,6 +35,7 @@ class AuthorityVoterTest extends EccubeTestCase
      */
     protected $eccubeConfig;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

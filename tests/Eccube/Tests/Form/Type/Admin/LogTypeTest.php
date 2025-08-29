@@ -29,6 +29,7 @@ class LogTypeTest extends AbstractTypeTestCase
 
     protected $logTest;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,6 +56,7 @@ class LogTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Delete the previously created file

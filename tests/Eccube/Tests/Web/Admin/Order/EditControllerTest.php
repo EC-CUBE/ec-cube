@@ -64,6 +64,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     protected $customerRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

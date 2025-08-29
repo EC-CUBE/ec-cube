@@ -57,6 +57,7 @@ class EntryTypeTest extends AbstractTypeTestCase
         'job' => 1,
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

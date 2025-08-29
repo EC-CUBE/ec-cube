@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class BundleBundle extends Bundle
 {
+    #[\Override]
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

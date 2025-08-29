@@ -27,6 +27,7 @@ class OrderStateMachineTest extends EccubeTestCase
     /** @var OrderStateMachine */
     private $stateMachine;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

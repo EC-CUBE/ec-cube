@@ -43,6 +43,7 @@ class ContactTypeTest extends AbstractTypeTestCase
         'contents' => 'ほげほげ',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

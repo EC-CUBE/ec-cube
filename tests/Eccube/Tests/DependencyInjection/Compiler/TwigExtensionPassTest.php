@@ -30,6 +30,7 @@ class TwigExtensionPassTest extends TestCase
     /** @var ContainerBuilder */
     protected $containerBuilder;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->containerBuilder = new ContainerBuilder();

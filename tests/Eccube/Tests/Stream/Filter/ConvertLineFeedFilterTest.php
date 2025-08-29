@@ -20,6 +20,7 @@ class ConvertLineFeedFilterTest extends TestCase
 {
     private const FILTER_NAME = 'convert_linefeed_filter';
 
+    #[\Override]
     protected function setUp(): void
     {
         \stream_filter_register(

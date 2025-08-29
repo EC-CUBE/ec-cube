@@ -42,6 +42,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     private $categoriesIdList = [];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,6 +56,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $fs->remove($this->getCsvTempFiles());
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if (file_exists($this->filepath)) {

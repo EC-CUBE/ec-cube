@@ -89,6 +89,7 @@ class MockSessionHandler extends SessionHandler
     }
 
     #[ReturnTypeWillChange]
+    #[\Override]
     public function open($path, $name)
     {
         return parent::open($path, $name);
@@ -106,6 +107,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     }
 
     #[ReturnTypeWillChange]
+    #[\Override]
     public function open($path, $name): bool
     {
         echo __FUNCTION__, "\n";
@@ -117,6 +119,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function validateId($sessionId): bool
     {
         echo __FUNCTION__, "\n";
@@ -128,6 +131,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function read($sessionId): string
     {
         echo __FUNCTION__, "\n";
@@ -139,6 +143,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function updateTimestamp($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
@@ -150,6 +155,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function write($sessionId, $data): bool
     {
         echo __FUNCTION__, "\n";
@@ -161,6 +167,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function destroy($sessionId): bool
     {
         echo __FUNCTION__, "\n";
@@ -172,6 +179,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function close(): bool
     {
         echo __FUNCTION__, "\n";
@@ -183,6 +191,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
      * {@inheritdoc}
      */
     #[ReturnTypeWillChange]
+    #[\Override]
     public function gc($maxLifetime): int|false
     {
         echo __FUNCTION__, "\n";
@@ -190,6 +199,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return true;
     }
 
+    #[\Override]
     protected function doRead($sessionId): string
     {
         if (isset($this->sessionId) && $sessionId !== $this->sessionId) {
@@ -203,6 +213,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return $this->data;
     }
 
+    #[\Override]
     protected function doWrite($sessionId, $data): bool
     {
         echo __FUNCTION__.': ', $data, "\n";
@@ -211,6 +222,7 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
         return true;
     }
 
+    #[\Override]
     protected function doDestroy($sessionId): bool
     {
         echo __FUNCTION__, "\n";

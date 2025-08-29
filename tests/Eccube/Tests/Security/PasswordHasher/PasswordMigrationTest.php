@@ -26,6 +26,7 @@ class PasswordMigrationTest extends EccubeTestCase
      */
     private $legacyPasswordHasher;
 
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();

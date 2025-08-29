@@ -25,6 +25,7 @@ class EccubeExtensionTest extends EccubeTestCase
      */
     protected $Extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

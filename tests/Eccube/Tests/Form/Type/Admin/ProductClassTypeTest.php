@@ -40,6 +40,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

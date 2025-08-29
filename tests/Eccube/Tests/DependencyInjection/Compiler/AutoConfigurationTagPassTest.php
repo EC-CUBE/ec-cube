@@ -56,6 +56,7 @@ class AutoConfigurationTagPassTest extends EccubeTestCase
 
 class Subscriber implements EventSubscriber
 {
+    #[\Override]
     public function getSubscribedEvents()
     {
     }

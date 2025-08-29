@@ -31,6 +31,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     protected $BaseInfo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

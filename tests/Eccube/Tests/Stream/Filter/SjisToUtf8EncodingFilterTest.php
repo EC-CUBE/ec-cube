@@ -20,6 +20,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
 {
     private const FILTER_NAME = 'sjis_to_utf8_encoding_filter';
 
+    #[\Override]
     protected function setUp(): void
     {
         \stream_filter_register(

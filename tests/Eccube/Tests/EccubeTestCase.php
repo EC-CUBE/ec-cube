@@ -62,6 +62,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Client を生成しトランザクションを開始する.
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -73,6 +74,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * トランザクションをロールバックする.
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

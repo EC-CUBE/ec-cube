@@ -26,6 +26,7 @@ abstract class AbstractAdminPage extends AbstractPage
      *
      * @return $this
      */
+    #[\Override]
     protected function goPage($url, $pageTitle = '')
     {
         $config = Fixtures::get('config');

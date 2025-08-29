@@ -27,6 +27,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     /**
      * @{@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -27,6 +27,7 @@ class StringUtilTest extends TestCase
     private $actual;
     private $expected;
 
+    #[\Override]
     protected function setUp(): void
     {
     }

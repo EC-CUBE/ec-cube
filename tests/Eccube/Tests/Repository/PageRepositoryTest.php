@@ -26,6 +26,7 @@ class PageRepositoryTest extends EccubeTestCase
     protected $templateRealDir;
     protected $templateDefaultRealDir;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

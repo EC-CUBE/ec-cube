@@ -25,6 +25,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
      */
     private $TagRepo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

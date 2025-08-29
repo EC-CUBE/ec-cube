@@ -36,6 +36,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      */
     protected $Order;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

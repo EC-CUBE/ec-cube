@@ -24,6 +24,7 @@ class TradeLawRepositoryTest extends EccubeTestCase
      */
     private $tradeLawRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

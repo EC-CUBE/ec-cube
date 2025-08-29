@@ -55,6 +55,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /** @var PaymentRepository */
     protected $paymentRepo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

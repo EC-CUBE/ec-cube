@@ -24,6 +24,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
      */
     private $tradeLawRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

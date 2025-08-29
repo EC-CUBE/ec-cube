@@ -25,6 +25,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
     private static $server;
     public const FIXTURES_DIR = __DIR__.'/../../../../../Fixtures/session';
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         $spec = [
@@ -37,6 +38,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         sleep(1);
     }
 
+    #[\Override]
     public static function tearDownAfterClass(): void
     {
         if (self::$server) {

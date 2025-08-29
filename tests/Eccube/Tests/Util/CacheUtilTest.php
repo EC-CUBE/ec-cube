@@ -29,6 +29,7 @@ class CacheUtilTest extends TestCase
     private $root;
     private $dirs;
 
+    #[\Override]
     protected function setUp(): void
     {
         // 仮想ファイルを生成

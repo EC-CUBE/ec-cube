@@ -46,6 +46,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

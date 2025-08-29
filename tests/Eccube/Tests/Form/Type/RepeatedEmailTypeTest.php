@@ -37,6 +37,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,6 +49,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

@@ -77,6 +77,7 @@ class CartServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -275,6 +276,7 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
      *
      * @return bool 同じ明細になる場合はtrue
      */
+    #[\Override]
     public function compare(CartItem $item1, CartItem $item2)
     {
         return $item1->getProductClassId() == $item2->getProductClassId()

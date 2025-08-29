@@ -24,6 +24,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
      */
     protected $categoryRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -33,6 +33,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +47,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();

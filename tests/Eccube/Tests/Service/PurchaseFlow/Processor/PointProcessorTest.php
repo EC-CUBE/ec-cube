@@ -39,6 +39,7 @@ class PointProcessorTest extends EccubeTestCase
     /** @var BaseInfo */
     private $BaseInfo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

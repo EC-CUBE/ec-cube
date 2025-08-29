@@ -24,6 +24,7 @@ class PluginRepositoryTest extends EccubeTestCase
      */
     protected $pluginRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

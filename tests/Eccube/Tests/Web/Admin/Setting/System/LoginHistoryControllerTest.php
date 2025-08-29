@@ -21,6 +21,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

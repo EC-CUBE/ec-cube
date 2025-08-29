@@ -52,6 +52,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     private $tradeLawRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

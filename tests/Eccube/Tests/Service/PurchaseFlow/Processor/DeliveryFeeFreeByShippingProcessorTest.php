@@ -34,6 +34,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     /** @var BaseInfoRepository */
     private $baseInfoRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

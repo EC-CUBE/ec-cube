@@ -59,6 +59,7 @@ class QueriesTest_Customizer implements QueryCustomizer
     /**
      * @return void
      */
+    #[\Override]
     public function customize(QueryBuilder $builder, $params, $queryKey)
     {
         $this->customized = true;
@@ -69,6 +70,7 @@ class QueriesTest_Customizer implements QueryCustomizer
      *
      * @return string
      */
+    #[\Override]
     public function getQueryKey()
     {
         return QueriesTest::class;
@@ -80,6 +82,7 @@ class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
     /**
      * @return void
      */
+    #[\Override]
     public function customize(QueryBuilder $builder, $params, $queryKey)
     {
     }
@@ -87,6 +90,7 @@ class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
     /**
      * @return string
      */
+    #[\Override]
     public function getQueryKey()
     {
         return '';

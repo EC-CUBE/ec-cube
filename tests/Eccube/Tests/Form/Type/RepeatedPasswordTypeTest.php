@@ -30,6 +30,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
         ],
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,6 +40,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

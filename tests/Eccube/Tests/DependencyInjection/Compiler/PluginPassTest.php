@@ -24,6 +24,7 @@ class PluginPassTest extends TestCase
      */
     private $containerBuilder;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->containerBuilder = new ContainerBuilder();

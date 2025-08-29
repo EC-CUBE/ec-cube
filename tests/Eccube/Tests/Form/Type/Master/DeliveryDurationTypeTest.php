@@ -27,6 +27,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     /** @var DeliveryDurationRepository */
     protected $deliveryDurationRepo;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

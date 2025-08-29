@@ -23,6 +23,7 @@ use Symfony\Component\Finder\Finder;
  */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');

@@ -57,6 +57,7 @@ class Step1TypeTest extends AbstractTypeTestCase
         ];
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(static::class.' は未実装です');

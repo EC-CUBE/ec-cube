@@ -27,6 +27,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     protected $Order;
     protected $Product;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(static::class.' は未実装です');

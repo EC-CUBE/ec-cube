@@ -38,6 +38,7 @@ class StockDiffProcessorTest extends EccubeTestCase
     /** @var OrderStatusRepository */
     private $OrderStatusRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

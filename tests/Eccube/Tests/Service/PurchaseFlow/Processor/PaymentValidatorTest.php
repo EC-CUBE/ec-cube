@@ -30,6 +30,7 @@ class PaymentValidatorTest extends EccubeTestCase
      */
     private $Order;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

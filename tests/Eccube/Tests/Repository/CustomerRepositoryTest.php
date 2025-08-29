@@ -51,6 +51,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -141,6 +142,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
 class DummyCustomer implements UserInterface
 {
+    #[\Override]
     public function getRoles(): array
     {
         return ['ROLE_USER'];
@@ -161,10 +163,12 @@ class DummyCustomer implements UserInterface
         return 'user';
     }
 
+    #[\Override]
     public function eraseCredentials(): void
     {
     }
 
+    #[\Override]
     public function getUserIdentifier(): string
     {
         // FIXME deprecated

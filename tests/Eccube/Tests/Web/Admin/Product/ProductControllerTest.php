@@ -68,6 +68,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -91,6 +92,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();

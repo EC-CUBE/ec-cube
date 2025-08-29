@@ -19,6 +19,7 @@ use Codeception\Module;
 // all public methods declared in helper class will be available in $I
 class Acceptance extends Module
 {
+    #[\Override]
     public function _initialize()
     {
         $this->clearDownloadDir();

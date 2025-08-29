@@ -32,6 +32,7 @@ class OrderItemTypeTest extends AbstractTypeTestCase
         'tax_rate' => '8',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

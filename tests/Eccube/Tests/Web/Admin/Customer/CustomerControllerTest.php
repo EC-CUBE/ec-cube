@@ -32,6 +32,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * Setup
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -53,6 +54,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * tearDown
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

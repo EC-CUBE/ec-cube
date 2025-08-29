@@ -30,6 +30,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
         'Page' => 2,
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

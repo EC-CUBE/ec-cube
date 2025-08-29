@@ -26,6 +26,7 @@ class IntlExtensionTest extends TestCase
      */
     protected $twig;
 
+    #[\Override]
     protected function setUp(): void
     {
         $loader = new ArrayLoader();

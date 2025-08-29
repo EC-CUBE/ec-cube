@@ -35,6 +35,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
 {
     public static $called = false;
 
+    #[\Override]
     protected function setUp(): void
     {
         self::$called = false;
@@ -106,6 +107,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
  */
 class PurchaseFlowPassTest_CartFlow extends ItemHolderValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -119,6 +121,7 @@ class PurchaseFlowPassTest_CartFlow extends ItemHolderValidator
  */
 class PurchaseFlowPassTest_ShoppingFlow extends ItemHolderValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -132,6 +135,7 @@ class PurchaseFlowPassTest_ShoppingFlow extends ItemHolderValidator
  */
 class PurchaseFlowPassTest_OrderFlow extends ItemHolderValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -145,6 +149,7 @@ class PurchaseFlowPassTest_OrderFlow extends ItemHolderValidator
  */
 class PurchaseFlowPassTest_ItemPreprocessor implements ItemPreprocessor
 {
+    #[\Override]
     public function process(ItemInterface $item, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -158,6 +163,7 @@ class PurchaseFlowPassTest_ItemPreprocessor implements ItemPreprocessor
  */
 class PurchaseFlowPassTest_ItemValidator extends ItemValidator
 {
+    #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -171,6 +177,7 @@ class PurchaseFlowPassTest_ItemValidator extends ItemValidator
  */
 class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
+    #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -184,6 +191,7 @@ class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreproces
  */
 class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -197,6 +205,7 @@ class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
  */
 class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -210,11 +219,13 @@ class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidat
  */
 class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
 {
+    #[\Override]
     public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
     }
 
+    #[\Override]
     public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
@@ -230,16 +241,19 @@ class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
  */
 class PurchaseFlowPassTest_PurchaseProcessor implements PurchaseProcessor
 {
+    #[\Override]
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
     }
 
+    #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;
     }
 
+    #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         PurchaseFlowPassTest::$called = true;

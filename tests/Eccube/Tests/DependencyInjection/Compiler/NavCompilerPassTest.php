@@ -117,6 +117,7 @@ class NavCompilerPassTest extends EccubeTestCase
  */
 class DefaultNav implements EccubeNav
 {
+    #[\Override]
     public static function getNav()
     {
         return [
@@ -154,6 +155,7 @@ class DefaultNav implements EccubeNav
  */
 class AddNav1 implements EccubeNav
 {
+    #[\Override]
     public static function getNav()
     {
         return [
@@ -207,6 +209,7 @@ class AddNav1 implements EccubeNav
  */
 class AddNav2 implements EccubeNav
 {
+    #[\Override]
     public static function getNav()
     {
         return [
@@ -262,6 +265,7 @@ class AddNav2 implements EccubeNav
  */
 class AddNav3 implements EccubeNav
 {
+    #[\Override]
     public static function getNav()
     {
         return [
@@ -321,6 +325,7 @@ class AddNav3 implements EccubeNav
  */
 class UpdateNav implements EccubeNav
 {
+    #[\Override]
     public static function getNav()
     {
         return [

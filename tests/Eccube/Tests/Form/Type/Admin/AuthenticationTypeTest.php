@@ -28,6 +28,7 @@ class AuthenticationTypeTest extends AbstractTypeTestCase
         'authentication_key' => 'abc123ABCZz',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

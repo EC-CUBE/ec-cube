@@ -17,6 +17,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,6 +27,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
     /**
      * @deprecated \Eccube\Tests\Web\AbstractWebTestCase::loginTo() を使用してください.
      */
+    #[\Override]
     public function logIn($user = null)
     {
         if (!is_object($user)) {

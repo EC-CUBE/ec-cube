@@ -38,6 +38,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     protected $Product;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -153,6 +154,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
 class PurchaseFlowTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
+    #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
     }
@@ -160,6 +162,7 @@ class PurchaseFlowTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 
 class PurchaseFlowTest_ItemPreprocessor implements ItemPreprocessor
 {
+    #[\Override]
     public function process(ItemInterface $item, PurchaseContext $context)
     {
     }
@@ -179,6 +182,7 @@ class PurchaseFlowTest_FailValidator extends ItemValidator
         $this->errorMessage = $errorMessage;
     }
 
+    #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context): never
     {
         throw new InvalidItemException($this->errorMessage);
@@ -199,6 +203,7 @@ class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
         $this->errorMessage = $errorMessage;
     }
 
+    #[\Override]
     protected function validate(ItemHolderInterface $item, PurchaseContext $context): never
     {
         // TODO ItemHolerValidateException が必要か検討
@@ -208,6 +213,7 @@ class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
 
 class PurchaseFlowTest_FlowTypeValidator extends ItemHolderValidator
 {
+    #[\Override]
     protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         if ($context->isCartFlow()) {

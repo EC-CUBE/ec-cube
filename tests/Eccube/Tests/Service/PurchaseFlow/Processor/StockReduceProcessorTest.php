@@ -22,6 +22,7 @@ class StockReduceProcessorTest extends EccubeTestCase
 {
     private $processor;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

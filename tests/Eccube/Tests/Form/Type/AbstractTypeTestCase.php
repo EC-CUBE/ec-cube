@@ -23,6 +23,7 @@ abstract class AbstractTypeTestCase extends EccubeTestCase
      */
     protected $formFactory;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

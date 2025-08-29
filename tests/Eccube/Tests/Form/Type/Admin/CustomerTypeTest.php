@@ -53,6 +53,7 @@ class CustomerTypeTest extends AbstractTypeTestCase
         'point' => '0',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -21,6 +21,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
     /** @var Entity\Customer */
     private $Customer;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

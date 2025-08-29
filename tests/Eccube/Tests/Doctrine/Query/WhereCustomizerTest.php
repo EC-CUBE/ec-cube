@@ -81,6 +81,7 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
      *
      * @return WhereClause[]
      */
+    #[\Override]
     protected function createStatements($params, $queryKey)
     {
         $callback = $this->callback;
@@ -93,6 +94,7 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
      *
      * @return string
      */
+    #[\Override]
     public function getQueryKey()
     {
         return '';

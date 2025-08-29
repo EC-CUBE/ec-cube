@@ -57,6 +57,7 @@ class Step5TypeTest extends AbstractTypeTestCase
         ];
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

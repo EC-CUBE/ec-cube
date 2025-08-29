@@ -47,6 +47,7 @@ class OrderTest extends EccubeTestCase
     /** @var TaxRuleService */
     protected $taxRuleService;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -38,6 +38,7 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
      */
     private $customerOrderStatusRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

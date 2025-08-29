@@ -33,6 +33,7 @@ class EccubeBlockExtensionTest extends EccubeTestCase
      */
     protected $twig;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

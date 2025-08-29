@@ -22,6 +22,7 @@ class RoundingTypeTypeTest extends AbstractTypeTestCase
     /** @var FormInterface */
     protected $form;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

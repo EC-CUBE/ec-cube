@@ -35,6 +35,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * setup mail
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,6 +46,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * tear down
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -2694,6 +2696,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return Product
      */
+    #[\Override]
     public function createProduct($productName = null, $productClassNum = 3, $stock = 0)
     {
         $Product = parent::createProduct($productName, $productClassNum);

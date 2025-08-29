@@ -43,6 +43,7 @@ class ProductStatusValidatorTest extends EccubeTestCase
      */
     protected $ProductClass;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -21,11 +21,13 @@ class CsvLoaderCommandTest extends AbstractCommandTest
     /** @var \SplFileObject */
     protected $file;
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         self::markTestIncomplete();
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(static::class.' は未実装です');
