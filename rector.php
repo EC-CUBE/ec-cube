@@ -86,28 +86,12 @@ return RectorConfig::configure()
                RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
                // TODO:以下を適用する
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
-               AddTypeToConstRector::class, // 定数に型を追加する PHP 8.3 以降で有効
-
-               // 8.3以下が対象のものを適用する
-               //StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
-               //RandomFunctionRector::class, // rand() を random_int() に置き換える
-               //ListToArrayDestructRector::class, // list()構文を配列分割に変換する
-               //RemoveUnusedVariableAssignRector::class, // 未使用の変数代入を削除する
-               //RemoveExtraParametersRector::class, // 存在しないパラメータを削除する
-               //OptionalParametersAfterRequiredRector::class, // 必須パラメータの後にオプションパラメータが来るようにする
-               //NullToStrictStringFuncCallArgRector::class, // nullを厳密なstring型の関数呼び出し引数に変換する
-               //ArrayKeyFirstLastRector::class, // array_key_first() と array_key_last() を使用する
-               //ClassOnThisVariableObjectRector::class, // $this->class を static::class に変換する
-               //ClassOnObjectRector::class, // $obj->class を get_class($obj) に変換する
-               //TernaryToElvisRector::class, // 三項演算子をエルビス演算子に変換する])
-               //ReturnNeverTypeRector::class, // void関数でのreturnをreturn neverに変換する
-               //RemoveUnusedVariableInCatchRector::class, // catchブロック内の未使用変数を削除する
-               //StrStartsWithRector::class, // str_starts_with()を使用する
+               AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                ])
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
-               LevelSetList::UP_TO_PHP_83, // PHPバージョンに合わせる
+               LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
                // SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
