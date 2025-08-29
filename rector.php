@@ -92,7 +92,7 @@ return RectorConfig::configure()
            ->withSets([
                SetList::DEAD_CODE,
                LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
-               // SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
+               SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
                // DoctrineSetList::DOCTRINE_CODE_QUALITY,
