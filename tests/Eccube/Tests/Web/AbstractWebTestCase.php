@@ -52,7 +52,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      *
      * @param UserInterface $User ログインさせる User
      *
-     * @return Symfony\Component\HttpKernel\Client
+     * @return KernelBrowser|\Symfony\Component\BrowserKit\AbstractBrowser
      *
      * @see EccubeTestCase::getCsrfToken()
      */

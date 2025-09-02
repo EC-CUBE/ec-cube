@@ -36,7 +36,8 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
                 'Status' => LoginHistoryStatus::SUCCESS,
             ]);
 
-        $this->assertNotNull($LoginHistory);
+        // $LoginHistoryの比較だと、RECURSIONが発生するため、IDの有無で確認
+        $this->assertNotNull($LoginHistory->getId());
     }
 
     public function testOnAuthenticationFailure()
