@@ -18,7 +18,7 @@ use Eccube\Form\Type\Admin\OrderStatusSettingType;
 use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,11 +52,9 @@ class OrderStatusController extends AbstractController
 
     /**
      * 受注ステータス編集画面.
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/order_status", name="admin_setting_shop_order_status", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/order_status.twig")
      */
+    #[Route('/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/Shop/order_status.twig')]
     public function index(Request $request)
     {
         $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);

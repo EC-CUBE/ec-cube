@@ -30,7 +30,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -94,11 +94,9 @@ class MypageController extends AbstractController
 
     /**
      * ログイン画面.
-     *
-     * @Route("/mypage/login", name="mypage_login", methods={"GET", "POST"})
-     *
-     * @Template("Mypage/login.twig")
      */
+    #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
+    #[Template('Mypage/login.twig')]
     public function login(Request $request, AuthenticationUtils $utils)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -138,11 +136,9 @@ class MypageController extends AbstractController
 
     /**
      * マイページ.
-     *
-     * @Route("/mypage/", name="mypage", methods={"GET"})
-     *
-     * @Template("Mypage/index.twig")
      */
+    #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
+    #[Template('Mypage/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator)
     {
         $Customer = $this->getUser();
@@ -177,11 +173,9 @@ class MypageController extends AbstractController
 
     /**
      * 購入履歴詳細を表示する.
-     *
-     * @Route("/mypage/history/{order_no}", name="mypage_history", methods={"GET"})
-     *
-     * @Template("Mypage/history.twig")
      */
+    #[Route('/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
+    #[Template('Mypage/history.twig')]
     public function history(Request $request, $order_no)
     {
         $this->entityManager->getFilters()
@@ -224,9 +218,8 @@ class MypageController extends AbstractController
 
     /**
      * 再購入を行う.
-     *
-     * @Route("/mypage/order/{order_no}", name="mypage_order", methods={"PUT"})
      */
+    #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
     public function order(Request $request, $order_no)
     {
         $this->isTokenValid();
@@ -313,11 +306,9 @@ class MypageController extends AbstractController
 
     /**
      * お気に入り商品を表示する.
-     *
-     * @Route("/mypage/favorite", name="mypage_favorite", methods={"GET"})
-     *
-     * @Template("Mypage/favorite.twig")
      */
+    #[Route('/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
+    #[Template('Mypage/favorite.twig')]
     public function favorite(Request $request, PaginatorInterface $paginator)
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
@@ -351,9 +342,8 @@ class MypageController extends AbstractController
 
     /**
      * お気に入り商品を削除する.
-     *
-     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", methods={"DELETE"}, requirements={"id" = "\d+"})
      */
+    #[Route('/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Product $Product)
     {
         $this->isTokenValid();

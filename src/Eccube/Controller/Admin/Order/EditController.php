@@ -44,7 +44,7 @@ use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -177,12 +177,10 @@ class EditController extends AbstractController
 
     /**
      * 受注登録/編集画面.
-     *
-     * @Route("/%eccube_admin_route%/order/new", name="admin_order_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/edit.twig")
      */
+    #[Route('/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Order/edit.twig')]
     public function index(Request $request, RouterInterface $router, $id = null)
     {
         if (null === $id) {
@@ -411,16 +409,14 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_customer_html_page", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/search_customer.twig")
-     *
      * @param Request $request
      * @param int $page_no
      *
      * @return array
      */
+    #[Route('/%eccube_admin_route%/order/search/customer/html', name: 'admin_order_search_customer_html', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/order/search/customer/html/page/{page_no}', name: 'admin_order_search_customer_html_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Order/search_customer.twig')]
     public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -510,12 +506,11 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id", methods={"POST"})
-     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
+    #[Route('/%eccube_admin_route%/order/search/customer/id', name: 'admin_order_search_customer_by_id', methods: ['POST'])]
     public function searchCustomerById(Request $request)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -572,12 +567,9 @@ class EditController extends AbstractController
         throw new BadRequestHttpException();
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/order/search/product", name="admin_order_search_product", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/search_product.twig")
-     */
+    #[Route('/%eccube_admin_route%/order/search/product', name: 'admin_order_search_product', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/order/search/product/page/{page_no}', name: 'admin_order_search_product_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Order/search_product.twig')]
     public function searchProduct(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -666,14 +658,12 @@ class EditController extends AbstractController
     /**
      * その他明細情報を取得
      *
-     * @Route("/%eccube_admin_route%/order/search/order_item_type", name="admin_order_search_order_item_type", methods={"POST"})
-     *
-     * @Template("@admin/Order/order_item_type.twig")
-     *
      * @param Request $request
      *
      * @return array
      */
+    #[Route('/%eccube_admin_route%/order/search/order_item_type', name: 'admin_order_search_order_item_type', methods: ['POST'])]
+    #[Template('@admin/Order/order_item_type.twig')]
     public function searchOrderItemType(Request $request)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {

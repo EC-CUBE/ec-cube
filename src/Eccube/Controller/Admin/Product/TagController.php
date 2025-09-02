@@ -19,7 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductTag;
 use Eccube\Repository\TagRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,14 +38,12 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/tag", name="admin_product_tag", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/tag.twig")
-     *
      * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/product/tag', name: 'admin_product_tag', methods: ['GET', 'POST'])]
+    #[Template('@admin/Product/tag.twig')]
     public function index(Request $request)
     {
         $Tag = new Tag();
@@ -124,9 +122,7 @@ class TagController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/product/tag/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_tag_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/product/tag/{id}/delete', name: 'admin_product_tag_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Tag $Tag)
     {
         $this->isTokenValid();
@@ -156,9 +152,7 @@ class TagController extends AbstractController
         return $this->redirectToRoute('admin_product_tag');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/product/tag/sort_no/move", name="admin_product_tag_sort_no_move", methods={"POST"})
-     */
+    #[Route('/%eccube_admin_route%/product/tag/sort_no/move', name: 'admin_product_tag_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {

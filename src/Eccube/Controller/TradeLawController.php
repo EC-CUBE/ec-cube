@@ -14,7 +14,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Repository\TradeLawRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TradeLawController extends AbstractController
@@ -31,11 +31,8 @@ class TradeLawController extends AbstractController
         $this->tradeLawRepository = $tradeLawRepository;
     }
 
-    /**
-     * @Route("/help/tradelaw", name="help_tradelaw", methods={"GET"})
-     *
-     * @Template("Help/tradelaw.twig")
-     */
+    #[Route('/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
+    #[Template('Help/tradelaw.twig')]
     public function index()
     {
         $tradelaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);

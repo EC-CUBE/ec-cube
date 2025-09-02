@@ -18,7 +18,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\AuthorityRoleType;
 use Eccube\Repository\AuthorityRoleRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,11 +40,8 @@ class AuthorityController extends AbstractController
         $this->authorityRoleRepository = $authorityRoleRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/authority", name="admin_setting_system_authority", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/authority.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/System/authority.twig')]
     public function index(Request $request)
     {
         $AuthorityRoles = $this->authorityRoleRepository->findAllSort();

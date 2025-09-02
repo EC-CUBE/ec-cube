@@ -1,9 +1,9 @@
 controllers:
     resource: ../../../src/Eccube/Controller
-    type: annotation
+    type: attribute
 customize_controllers:
     resource: ../../../app/Customize/Controller
-    type: annotation
+    type: attribute
 
 #    prefix: /{_locale}
     # prefix: /

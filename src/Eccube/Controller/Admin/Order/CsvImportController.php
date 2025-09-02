@@ -20,7 +20,7 @@ use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Service\OrderStateMachine;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,12 +47,10 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/csv_shipping.twig")
-     *
      * @throws \Doctrine\DBAL\ConnectionException
      */
+    #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
+    #[Template('@admin/Order/csv_shipping.twig')]
     public function csvShipping(Request $request)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -192,9 +190,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
-     *
-     * @Route("/%eccube_admin_route%/order/csv_template", name="admin_shipping_csv_template", methods={"GET"})
      */
+    #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
     public function csvTemplate(Request $request)
     {
         $columns = array_column($this->getColumnConfig(), 'name');

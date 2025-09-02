@@ -16,7 +16,7 @@ namespace Eccube\Controller\Block;
 use Carbon\Carbon;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\CalendarRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,11 +35,8 @@ class CalendarController extends AbstractController
         $this->calendarRepository = $calendarRepository;
     }
 
-    /**
-     * @Route("/block/calendar", name="block_calendar", methods={"GET"})
-     *
-     * @Template("Block/calendar.twig")
-     */
+    #[Route('/block/calendar', name: 'block_calendar', methods: ['GET'])]
+    #[Template('Block/calendar.twig')]
     public function index(Request $request)
     {
         $today = Carbon::now();

@@ -13,7 +13,7 @@
 
 namespace Eccube\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HelpController extends AbstractController
@@ -27,11 +27,9 @@ class HelpController extends AbstractController
 
     /**
      * ご利用ガイド.
-     *
-     * @Route("/guide", name="help_guide", methods={"GET"})
-     *
-     * @Template("Help/guide.twig")
      */
+    #[Route('/help/guide', name: 'help_guide', methods: ['GET'])]
+    #[Template('Help/guide.twig')]
     public function guide()
     {
         return [];
@@ -39,11 +37,9 @@ class HelpController extends AbstractController
 
     /**
      * 当サイトについて.
-     *
-     * @Route("/help/about", name="help_about", methods={"GET"})
-     *
-     * @Template("Help/about.twig")
      */
+    #[Route('/help/about', name: 'help_about', methods: ['GET'])]
+    #[Template('Help/about.twig')]
     public function about()
     {
         return [];
@@ -51,11 +47,9 @@ class HelpController extends AbstractController
 
     /**
      * プライバシーポリシー.
-     *
-     * @Route("/help/privacy", name="help_privacy", methods={"GET"})
-     *
-     * @Template("Help/privacy.twig")
      */
+    #[Route('/help/privacy', name: 'help_privacy', methods: ['GET'])]
+    #[Template('Help/privacy.twig')]
     public function privacy()
     {
         return [];
@@ -63,11 +57,9 @@ class HelpController extends AbstractController
 
     /**
      * 利用規約.
-     *
-     * @Route("/help/agreement", name="help_agreement", methods={"GET"})
-     *
-     * @Template("Help/agreement.twig")
      */
+    #[Route('/help/agreement', name: 'help_agreement', methods: ['GET'])]
+    #[Template('Help/agreement.twig')]
     public function agreement()
     {
         return [];

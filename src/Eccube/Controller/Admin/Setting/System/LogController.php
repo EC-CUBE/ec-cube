@@ -17,7 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,12 +25,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class LogController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/log.twig")
-     *
      * @return array|Symfony\Component\HttpFoundation\StreamedResponse
      */
+    #[Route('/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/System/log.twig')]
     public function index(Request $request)
     {
         $formData = [];

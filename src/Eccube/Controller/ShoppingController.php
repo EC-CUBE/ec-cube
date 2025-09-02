@@ -35,7 +35,7 @@ use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Psr\Container\ContainerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -127,11 +127,9 @@ class ShoppingController extends AbstractShoppingController
      * 既に受注が生成されている場合(pre_order_idで取得できる場合)は, 受注の生成を行わずに画面を表示する.
      *
      * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
-     *
-     * @Route("/shopping", name="shopping", methods={"GET"})
-     *
-     * @Template("Shopping/index.twig")
      */
+    #[Route('/shopping', name: 'shopping', methods: ['GET'])]
+    #[Template('Shopping/index.twig')]
     public function index(PurchaseFlow $cartPurchaseFlow)
     {
         // ログイン状態のチェック.
@@ -208,11 +206,9 @@ class ShoppingController extends AbstractShoppingController
      *
      * data-triggerは, click/change/blur等のイベント名を指定してください。
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
-     *
-     * @Route("/shopping/redirect_to", name="shopping_redirect_to", methods={"POST"})
-     *
-     * @Template("Shopping/index.twig")
      */
+    #[Route('/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
+    #[Template('Shopping/index.twig')]
     public function redirectTo(Request $request, RouterInterface $router)
     {
         // ログイン状態のチェック.
@@ -288,11 +284,9 @@ class ShoppingController extends AbstractShoppingController
      * ここではPaymentMethod::verifyがコールされます.
      * PaymentMethod::verifyではクレジットカードの有効性チェック等, 注文手続きを進められるかどうかのチェック処理を行う事を想定しています.
      * PaymentMethod::verifyでエラーが発生した場合は, 注文手続き画面へリダイレクトします.
-     *
-     * @Route("/shopping/confirm", name="shopping_confirm", methods={"POST"})
-     *
-     * @Template("Shopping/confirm.twig")
      */
+    #[Route('/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
+    #[Template('Shopping/confirm.twig')]
     public function confirm(Request $request)
     {
         // ログイン状態のチェック.
@@ -397,11 +391,9 @@ class ShoppingController extends AbstractShoppingController
      * 注文処理を行う.
      *
      * 決済プラグインによる決済処理および注文の確定処理を行います.
-     *
-     * @Route("/shopping/checkout", name="shopping_checkout", methods={"POST"})
-     *
-     * @Template("Shopping/confirm.twig")
      */
+    #[Route('/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
+    #[Template('Shopping/confirm.twig')]
     public function checkout(Request $request)
     {
         // ログイン状態のチェック.
@@ -525,11 +517,9 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * 購入完了画面を表示する.
-     *
-     * @Route("/shopping/complete", name="shopping_complete", methods={"GET"})
-     *
-     * @Template("Shopping/complete.twig")
      */
+    #[Route('/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
+    #[Template('Shopping/complete.twig')]
     public function complete(Request $request)
     {
         log_info('[注文完了] 注文完了画面を表示します.');
@@ -575,11 +565,9 @@ class ShoppingController extends AbstractShoppingController
      *
      * 会員ログイン時, お届け先を選択する画面を表示する
      * 非会員の場合はこの画面は使用しない。
-     *
-     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("Shopping/shipping.twig")
      */
+    #[Route('/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('Shopping/shipping.twig')]
     public function shipping(Request $request, Shipping $Shipping)
     {
         // ログイン状態のチェック.
@@ -650,11 +638,9 @@ class ShoppingController extends AbstractShoppingController
      *
      * 会員時は新しいお届け先を作成し, 作成したお届け先を選択状態にして注文手続き画面へ遷移する.
      * 非会員時は選択されたお届け先の編集を行う.
-     *
-     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("Shopping/shipping_edit.twig")
      */
+    #[Route('/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('Shopping/shipping_edit.twig')]
     public function shippingEdit(Request $request, Shipping $Shipping)
     {
         // ログイン状態のチェック.
@@ -756,11 +742,9 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * ログイン画面.
-     *
-     * @Route("/shopping/login", name="shopping_login", methods={"GET"})
-     *
-     * @Template("Shopping/login.twig")
      */
+    #[Route('/shopping/login', name: 'shopping_login', methods: ['GET'])]
+    #[Template('Shopping/login.twig')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -794,11 +778,9 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * 購入エラー画面.
-     *
-     * @Route("/shopping/error", name="shopping_error", methods={"GET"})
-     *
-     * @Template("Shopping/shopping_error.twig")
      */
+    #[Route('/shopping/error', name: 'shopping_error', methods: ['GET'])]
+    #[Template('Shopping/shopping_error.twig')]
     public function error(Request $request, PurchaseFlow $cartPurchaseFlow)
     {
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.

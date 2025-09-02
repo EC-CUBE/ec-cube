@@ -27,7 +27,7 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -82,11 +82,9 @@ class ProductClassController extends AbstractController
 
     /**
      * 商品規格が登録されていなければ新規登録, 登録されていれば更新画面を表示する
-     *
-     * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/product_class.twig")
      */
+    #[Route('/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Product/product_class.twig')]
     public function index(Request $request, $id, CacheUtil $cacheUtil)
     {
         $Product = $this->findProduct($id);
@@ -191,9 +189,8 @@ class ProductClassController extends AbstractController
 
     /**
      * 商品規格を初期化する.
-     *
-     * @Route("/%eccube_admin_route%/product/product/class/{id}/clear", requirements={"id" = "\d+"}, name="admin_product_product_class_clear", methods={"POST"})
      */
+    #[Route('/%eccube_admin_route%/product/product/class/{id}/clear', requirements: ['id' => '\d+'], name: 'admin_product_product_class_clear', methods: ['POST'])]
     public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
     {
         if (!$Product->hasProductClass()) {

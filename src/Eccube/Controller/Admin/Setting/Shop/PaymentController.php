@@ -21,7 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\Payment\Method\Cash;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,11 +50,8 @@ class PaymentController extends AbstractController
         $this->paymentRepository = $paymentRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment", methods={"GET"})
-     *
-     * @Template("@admin/Setting/Shop/payment.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
+    #[Template('@admin/Setting/Shop/payment.twig')]
     public function index(Request $request)
     {
         $Payments = $this->paymentRepository
@@ -76,12 +73,9 @@ class PaymentController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/payment_edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_payment_edit', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/Shop/payment_edit.twig')]
     public function edit(Request $request, ?Payment $Payment = null)
     {
         if (is_null($Payment)) {
@@ -165,9 +159,8 @@ class PaymentController extends AbstractController
      * 画像アップロード時にリクエストされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/process", name="admin_payment_image_process", methods={"POST"})
      */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
     public function imageProcess(Request $request)
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -214,9 +207,8 @@ class PaymentController extends AbstractController
      * アップロード画像を取得する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/load", name="admin_payment_image_load", methods={"GET"})
      */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
     public function imageLoad(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -246,9 +238,8 @@ class PaymentController extends AbstractController
      * アップロード画像をすぐ削除する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/revert", name="admin_payment_image_revert", methods={"DELETE"})
      */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
     public function imageRevert(Request $request)
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -267,13 +258,12 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
-     *
      * @param Request $request
      * @param Payment $TargetPayment
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Payment $TargetPayment)
     {
         $this->isTokenValid();
@@ -307,9 +297,7 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible", methods={"PUT"})
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visible(Payment $Payment)
     {
         $this->isTokenValid();
@@ -328,12 +316,11 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move", methods={"POST"})
-     *
      * @param Request $request
      *
      * @return Response
      */
+    #[Route('/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {

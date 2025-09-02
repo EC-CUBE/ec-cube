@@ -29,8 +29,8 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -107,11 +107,9 @@ class ProductController extends AbstractController
 
     /**
      * 商品一覧画面.
-     *
-     * @Route("/products/list", name="product_list", methods={"GET"})
-     *
-     * @Template("Product/list.twig")
      */
+    #[Route('/products/list', name: 'product_list', methods: ['GET'])]
+    #[Template('Product/list.twig')]
     public function index(Request $request, PaginatorInterface $paginator)
     {
         // Doctrine SQLFilter
@@ -207,18 +205,14 @@ class ProductController extends AbstractController
     /**
      * 商品詳細画面.
      *
-     * @Route("/products/detail/{id}", name="product_detail", methods={"GET"}, requirements={"id" = "\d+"})
-     *
-     * @Template("Product/detail.twig")
-     *
-     * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
-     *
      * @param Request $request
      * @param Product $Product
      *
      * @return array
      */
-    public function detail(Request $request, Product $Product)
+    #[Route('/products/detail/{id}', name: 'product_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template('Product/detail.twig')]
+    public function detail(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] Product $Product)
     {
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
@@ -260,9 +254,8 @@ class ProductController extends AbstractController
 
     /**
      * お気に入り追加.
-     *
-     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      */
+    #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addFavorite(Request $request, Product $Product)
     {
         $this->checkVisibility($Product);
@@ -309,9 +302,8 @@ class ProductController extends AbstractController
 
     /**
      * カートに追加.
-     *
-     * @Route("/products/add_cart/{id}", name="product_add_cart", methods={"POST"}, requirements={"id" = "\d+"})
      */
+    #[Route('/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function addCart(Request $request, Product $Product)
     {
         // エラーメッセージの配列

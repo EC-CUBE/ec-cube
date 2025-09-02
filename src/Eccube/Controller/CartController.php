@@ -24,7 +24,7 @@ use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -72,11 +72,9 @@ class CartController extends AbstractController
 
     /**
      * カート画面.
-     *
-     * @Route("/cart", name="cart", methods={"GET"})
-     *
-     * @Template("Cart/index.twig")
      */
+    #[Route('/cart', name: 'cart', methods: ['GET'])]
+    #[Template('Cart/index.twig')]
     public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行
@@ -185,17 +183,8 @@ class CartController extends AbstractController
      *      - 個数が0になる場合は、明細を削除する
      * - 削除
      *      - 明細を削除する
-     *
-     * @Route(
-     *     path="/cart/{operation}/{productClassId}",
-     *     name="cart_handle_item",
-     *     methods={"PUT"},
-     *     requirements={
-     *          "operation": "up|down|remove",
-     *          "productClassId": "\d+"
-     *     }
-     * )
      */
+    #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
     public function handleCartItem($operation, $productClassId)
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
@@ -235,9 +224,8 @@ class CartController extends AbstractController
 
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
-     *
-     * @Route("/cart/buystep/{cart_key}", name="cart_buystep", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"}, methods={"GET"})
      */
+    #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
     public function buystep(Request $request, $cart_key)
     {
         $Carts = $this->cartService->getCart();

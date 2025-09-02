@@ -20,7 +20,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,11 +60,8 @@ class MemberController extends AbstractController
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/member", name="admin_setting_system_member", methods={"GET", "PUT"})
-     *
-     * @Template("@admin/Setting/System/member.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/system/member', name: 'admin_setting_system_member', methods: ['GET', 'PUT'])]
+    #[Template('@admin/Setting/System/member.twig')]
     public function index(Request $request)
     {
         $Members = $this->memberRepository->findBy([], ['sort_no' => 'DESC']);
@@ -88,11 +85,8 @@ class MemberController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/member/new", name="admin_setting_system_member_new", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/member_edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/system/member/new', name: 'admin_setting_system_member_new', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/System/member_edit.twig')]
     public function create(Request $request)
     {
         $Member = new Member();
@@ -135,11 +129,8 @@ class MemberController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/member_edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/system/member/{id}/edit', name: 'admin_setting_system_member_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/System/member_edit.twig')]
     public function edit(Request $request, Member $Member)
     {
         $Member->setPlainPassword($this->eccubeConfig['eccube_default_password']);
@@ -188,9 +179,7 @@ class MemberController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up", methods={"PUT"})
-     */
+    #[Route('/%eccube_admin_route%/setting/system/member/{id}/up', name: 'admin_setting_system_member_up', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function up(Request $request, Member $Member)
     {
         $this->isTokenValid();
@@ -208,9 +197,7 @@ class MemberController extends AbstractController
         return $this->redirectToRoute('admin_setting_system_member');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down", methods={"PUT"})
-     */
+    #[Route('/%eccube_admin_route%/setting/system/member/{id}/down', name: 'admin_setting_system_member_down', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function down(Request $request, Member $Member)
     {
         $this->isTokenValid();
@@ -228,9 +215,7 @@ class MemberController extends AbstractController
         return $this->redirectToRoute('admin_setting_system_member');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/setting/system/member/{id}/delete', name: 'admin_setting_system_member_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Member $Member)
     {
         $this->isTokenValid();

@@ -21,7 +21,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\CustomerAddressRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,12 +41,10 @@ class CustomerDeliveryEditController extends AbstractController
 
     /**
      * お届け先編集画面.
-     *
-     * @Route("/%eccube_admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("@admin/Customer/delivery_edit.twig")
      */
+    #[Route('/%eccube_admin_route%/customer/{id}/delivery/new', name: 'admin_customer_delivery_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/edit', name: 'admin_customer_delivery_edit', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Customer/delivery_edit.twig')]
     public function edit(Request $request, Customer $Customer, $did = null)
     {
         // 配送先住所最大値判定
@@ -121,9 +119,7 @@ class CustomerDeliveryEditController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/delete', name: 'admin_customer_delivery_delete', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Customer $Customer, $did)
     {
         $this->isTokenValid();

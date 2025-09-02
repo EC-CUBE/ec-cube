@@ -29,7 +29,7 @@ use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
@@ -124,11 +124,9 @@ class ShippingController extends AbstractController
 
     /**
      * 出荷登録/編集画面.
-     *
-     * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/shipping.twig")
      */
+    #[Route('/%eccube_admin_route%/shipping/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_shipping_edit', methods: ['GET', 'POST'])]
+    #[Template('@admin/Order/shipping.twig')]
     public function index(Request $request, Order $Order)
     {
         $OriginOrder = clone $Order;
@@ -294,28 +292,26 @@ class ShippingController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail", methods={"GET"})
-     *
      * @param Shipping $Shipping
      *
      * @return Response
      *
      * @throws \Twig_Error
      */
+    #[Route('/%eccube_admin_route%/shipping/preview_notify_mail/{id}', requirements: ['id' => '\d+'], name: 'admin_shipping_preview_notify_mail', methods: ['GET'])]
     public function previewShippingNotifyMail(Shipping $Shipping)
     {
         return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder(), null, true));
     }
 
     /**
-     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail", methods={"PUT"})
-     *
      * @param Shipping $Shipping
      *
      * @return JsonResponse
      *
      * @throws \Twig_Error
      */
+    #[Route('/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function notifyMail(Shipping $Shipping)
     {
         $this->isTokenValid();

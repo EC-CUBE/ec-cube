@@ -19,7 +19,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -52,14 +52,12 @@ class ShopController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop", name="admin_setting_shop", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/shop_master.twig")
-     *
      * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/Shop/shop_master.twig')]
     public function index(Request $request, CacheUtil $cacheUtil)
     {
         $BaseInfo = $this->baseInfoRepository->get();

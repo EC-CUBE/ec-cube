@@ -19,7 +19,7 @@ use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Form\Type\Front\PasswordResetType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -72,11 +72,9 @@ class ForgotController extends AbstractController
 
     /**
      * パスワードリマインダ.
-     *
-     * @Route("/forgot", name="forgot", methods={"GET", "POST"})
-     *
-     * @Template("Forgot/index.twig")
      */
+    #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
+    #[Template('Forgot/index.twig')]
     public function index(Request $request)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -145,11 +143,9 @@ class ForgotController extends AbstractController
 
     /**
      * 再設定URL送信完了画面.
-     *
-     * @Route("/forgot/complete", name="forgot_complete", methods={"GET"})
-     *
-     * @Template("Forgot/complete.twig")
      */
+    #[Route('/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
+    #[Template('Forgot/complete.twig')]
     public function complete(Request $request)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -161,11 +157,9 @@ class ForgotController extends AbstractController
 
     /**
      * パスワード再発行実行画面.
-     *
-     * @Route("/forgot/reset/{reset_key}", name="forgot_reset", methods={"GET", "POST"})
-     *
-     * @Template("Forgot/reset.twig")
      */
+    #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
+    #[Template('Forgot/reset.twig')]
     public function reset(Request $request, $reset_key)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {

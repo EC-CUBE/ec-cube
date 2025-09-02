@@ -21,7 +21,7 @@ use Eccube\Form\Type\Front\EntryType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,11 +73,9 @@ class ChangeController extends AbstractController
 
     /**
      * 会員情報編集画面.
-     *
-     * @Route("/mypage/change", name="mypage_change", methods={"GET", "POST"})
-     *
-     * @Template("Mypage/change.twig")
      */
+    #[Route('/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
+    #[Template('Mypage/change.twig')]
     public function index(Request $request)
     {
         /** @var Customer $Customer */
@@ -151,11 +149,9 @@ class ChangeController extends AbstractController
 
     /**
      * 会員情報編集完了画面.
-     *
-     * @Route("/mypage/change_complete", name="mypage_change_complete", methods={"GET"})
-     *
-     * @Template("Mypage/change_complete.twig")
      */
+    #[Route('/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
+    #[Template('Mypage/change_complete.twig')]
     public function complete(Request $request)
     {
         return [];

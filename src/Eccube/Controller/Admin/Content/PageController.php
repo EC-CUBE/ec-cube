@@ -24,7 +24,7 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,11 +64,8 @@ class PageController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page", methods={"GET"})
-     *
-     * @Template("@admin/Content/page.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/page', name: 'admin_content_page', methods: ['GET'])]
+    #[Template('@admin/Content/page.twig')]
     public function index(Request $request, RouterInterface $router)
     {
         $Pages = $this->pageRepository->getPageList();
@@ -87,12 +84,9 @@ class PageController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/page_edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/page/new', name: 'admin_content_page_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/content/page/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_page_edit', methods: ['GET', 'POST'])]
+    #[Template('@admin/Content/page_edit.twig')]
     public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -255,9 +249,7 @@ class PageController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/content/page/{id}/delete', name: 'admin_content_page_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         $this->isTokenValid();

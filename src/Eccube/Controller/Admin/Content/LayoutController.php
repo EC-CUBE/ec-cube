@@ -26,7 +26,7 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,11 +99,8 @@ class LayoutController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/layout", name="admin_content_layout", methods={"GET"})
-     *
-     * @Template("@admin/Content/layout_list.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
+    #[Template('@admin/Content/layout_list.twig')]
     public function index()
     {
         $qb = $this->layoutRepository->createQueryBuilder('l');
@@ -120,12 +117,13 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete", methods={"DELETE"})
-     *
      * @param Layout $Layout
      *
      * @return RedirectResponse
+     *
+     * @throws Exception
      */
+    #[Route('/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Layout $Layout, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();
@@ -148,12 +146,9 @@ class LayoutController extends AbstractController
         return $this->redirectToRoute('admin_content_layout');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/layout/new", name="admin_content_layout_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/layout.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/layout/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_layout_edit', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/content/layout/new', name: 'admin_content_layout_new', methods: ['GET', 'POST'])]
+    #[Template('@admin/Content/layout.twig')]
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null, $previewPageId = null)
     {
         if (is_null($id)) {
@@ -238,13 +233,12 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block", methods={"GET"})
-     *
      * @param Request $request
      * @param Twig $twig
      *
      * @return JsonResponse
      */
+    #[Route('/%eccube_admin_route%/content/layout/view_block', name: 'admin_content_layout_view_block', methods: ['GET'])]
     public function viewBlock(Request $request, Twig $twig)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -273,9 +267,7 @@ class LayoutController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/layout/{id}/preview", requirements={"id" = "\d+"}, name="admin_content_layout_preview", methods={"POST"})
-     */
+    #[Route('/%eccube_admin_route%/content/layout/{id}/preview', requirements: ['id' => '\d+'], name: 'admin_content_layout_preview', methods: ['POST'])]
     public function preview(Request $request, $id, CacheUtil $cacheUtil)
     {
         $form = $request->get('admin_layout');
