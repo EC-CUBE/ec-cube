@@ -97,8 +97,8 @@ class TwoFactorAuthController extends AbstractController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/setting/system/two_factor_auth/set', name: 'admin_setting_system_two_factor_auth_set', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/two_factor_auth_set.twig')]
+    #[Route('/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
+    #[Template('@admin/two_factor_auth_set.twig')]
     public function set(Request $request)
     {
         $Member = $this->getUser();
