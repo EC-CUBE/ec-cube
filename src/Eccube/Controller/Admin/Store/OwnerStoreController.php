@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginApiException;
+use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
@@ -29,7 +30,9 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -226,21 +229,21 @@ class OwnerStoreController extends AbstractController
      *
      * @return array
      *
-     * @throws \Eccube\Exception\PluginException
+     * @throws PluginException
      */
-    #[Route('/install/{id}/confirm', requirements: ['id' => '\d+'], name: 'admin_store_plugin_install_confirm', methods: ['GET'])]
-    public function doConfirm(Request $request, $id)
+    #[Route('/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function doConfirm(Request $request, $id): Response
     {
         try {
             $item = $this->pluginApiService->getPlugin($id);
             // Todo: need define item's dependency mechanism
             $requires = $this->pluginService->getPluginRequired($item);
 
-            return [
+            return $this->render('@admin/Store/plugin_confirm.twig', [
                 'item' => $item,
                 'requires' => $requires,
                 'is_update' => false,
-            ];
+            ]);
         } catch (PluginApiException $e) {
             $this->addError($e->getMessage(), 'admin');
 
@@ -253,7 +256,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
     public function apiInstall(Request $request)
@@ -303,7 +306,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Plugin $Plugin
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/delete/{id}/uninstall', requirements: ['id' => '\d+'], name: 'admin_store_plugin_api_uninstall', methods: ['DELETE'])]
     public function apiUninstall(Plugin $Plugin)
@@ -352,7 +355,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
     public function apiUpgrade(Request $request)
@@ -421,7 +424,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
     public function apiSchemaUpdate(Request $request)
@@ -471,7 +474,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
     public function apiUpdate(Request $request)
@@ -512,7 +515,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return array
      */
-    #[Route('/upgrade/{id}/confirm', requirements: ['id' => '\d+'], name: 'admin_store_plugin_update_confirm', methods: ['GET'])]
+    #[Route('/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Store/plugin_confirm.twig')]
     public function doUpdateConfirm(Plugin $Plugin)
     {

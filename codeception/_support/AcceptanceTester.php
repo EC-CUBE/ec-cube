@@ -66,7 +66,7 @@ class AcceptanceTester extends Actor
             'password' => $password,
         ]);
 
-        $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles');
+        $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles > .c-pageTitle__title');
     }
 
     public function logoutAsAdmin()
