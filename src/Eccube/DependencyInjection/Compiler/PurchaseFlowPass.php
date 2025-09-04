@@ -87,26 +87,33 @@ class PurchaseFlowPass implements CompilerPassInterface
             OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
-        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
-        // AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__ . '/../../../../src');
-        $reader = new AnnotationReader();
-
         /*
-         * アノテーションで追加対象のフローを指定した場合の処理
+         * アトリビュートで追加対象のフローを指定した場合の処理
          */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             /** @var Reference $id */
             foreach ($this->findAndSortTaggedServices($tag, $container) as $id) {
                 $def = $container->getDefinition($id);
+                // %param% を含むことがあるため、解決してからReflectionする。
+                $class = $container->getParameterBag()->resolveValue($def->getClass());
+                // クラスが無い場合はスキップ
+                if (!\is_string($class) || !class_exists($class)) {
+                    continue;
+                }
+                $rc = new \ReflectionClass($class);
+
                 /**
-                 * @var string $annotationName
+                 * @var string     $attributeClass
                  * @var Definition $purchaseFlowDef
                  */
-                foreach ($flowDefs as $annotationName => $purchaseFlowDef) {
-                    $anno = $reader->getClassAnnotation(new \ReflectionClass($def->getClass()), $annotationName);
-                    if ($anno) {
-                        $purchaseFlowDef->addMethodCall($methodName, [$id]);
-                        $purchaseFlowDef->setPublic(true);
+                foreach ($flowDefs as $attributeClass => $purchaseFlowDef) {
+                    // IS_INSTANCEOFで継承した属性も拾う
+                    if (\count($rc->getAttributes($attributeClass, \ReflectionAttribute::IS_INSTANCEOF)) > 0) {
+                        // 既にYAML側で配線済みならスキップ（重複防止）
+                        if (!$this->alreadyWired($purchaseFlowDef, $methodName, $id)) {
+                            $purchaseFlowDef->addMethodCall($methodName, [$id]);
+                            $purchaseFlowDef->setPublic(true);
+                        }
                     }
                 }
             }
@@ -127,5 +134,29 @@ class PurchaseFlowPass implements CompilerPassInterface
             self::DISCOUNT_PROCESSOR_TAG => 'addDiscountProcessor',
             self::PURCHASE_PROCESSOR_TAG => 'addPurchaseProcessor',
         ];
+    }
+
+    /**
+     * 既に同一メソッド・同一サービスIDが登録済みかを定義から判定し、二重登録を防ぐ。
+     *
+     * @param Definition $flowDef
+     * @param string     $methodName
+     * @param string     $serviceId
+     *
+     * @return bool
+     */
+    private function alreadyWired(Definition $flowDef, string $methodName, string $serviceId): bool
+    {
+        foreach ($flowDef->getMethodCalls() as [$m, $args]) {
+            if ($m !== $methodName || empty($args)) {
+                continue;
+            }
+            // 文字列IDでも Reference でも比較可能に正規化
+            $arg0 = (string) $args[0];
+            if ($arg0 === $serviceId) {
+                return true;
+            }
+        }
+        return false;
     }
 }

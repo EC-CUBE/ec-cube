@@ -101,9 +101,8 @@ class PurchaseFlowPassTest extends EccubeTestCase
 
 /**
  * Class PurchaseFlowPassTest_CartFlow
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_CartFlow extends ItemHolderValidator
 {
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -114,9 +113,8 @@ class PurchaseFlowPassTest_CartFlow extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_ShoppingFlow
- *
- * @ShoppingFlow
  */
+#[ShoppingFlow]
 class PurchaseFlowPassTest_ShoppingFlow extends ItemHolderValidator
 {
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -127,9 +125,8 @@ class PurchaseFlowPassTest_ShoppingFlow extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_OrderFlow
- *
- * @OrderFlow
  */
+#[OrderFlow]
 class PurchaseFlowPassTest_OrderFlow extends ItemHolderValidator
 {
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -140,9 +137,8 @@ class PurchaseFlowPassTest_OrderFlow extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_ItemPreprocessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemPreprocessor implements ItemPreprocessor
 {
     public function process(ItemInterface $item, PurchaseContext $context)
@@ -153,9 +149,8 @@ class PurchaseFlowPassTest_ItemPreprocessor implements ItemPreprocessor
 
 /**
  * Class PurchaseFlowPassTest_ItemValidator
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemValidator extends ItemValidator
 {
     protected function validate(ItemInterface $item, PurchaseContext $context)
@@ -166,9 +161,8 @@ class PurchaseFlowPassTest_ItemValidator extends ItemValidator
 
 /**
  * Class PurchaseFlowPassTest_ItemHolderPreprocessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -179,9 +173,8 @@ class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreproces
 
 /**
  * Class PurchaseFlowPassTest_ItemHolderValidator
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
 {
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -192,9 +185,8 @@ class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_ItemHolderPostValidator
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidator
 {
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -205,9 +197,8 @@ class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidat
 
 /**
  * Class PurchaseFlowPassTest_DiscountProcessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
 {
     public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -225,9 +216,8 @@ class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
 
 /**
  * Class PurchaseFlowPassTest_PurchaseProcessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_PurchaseProcessor implements PurchaseProcessor
 {
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
