@@ -16,9 +16,7 @@ namespace Plugin\MigrationSample\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 
-/**
- * @EntityExtension("Eccube\Entity\BaseInfo")
- */
+#[EntityExtension(\Eccube\Entity\BaseInfo::class)]
 trait BaseInfo3Trait
 {
     /**

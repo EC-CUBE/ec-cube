@@ -15,9 +15,7 @@ namespace Plugin\Horizon\Entity;
 
 use Eccube\Annotation\EntityExtension;
 
-/**
- * @EntityExtension("Eccube\Entity\Cart")
- */
+#[EntityExtension(\Eccube\Entity\Cart::class)]
 trait CartTrait
 {
     /**
