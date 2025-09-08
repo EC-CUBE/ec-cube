@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Annotation\EntityExtension;
+use Eccube\Entity\Product;
 use Eccube\Service\EntityProxyService;
 use Eccube\Tests\EccubeTestCase;
 use PhpCsFixer\Tokenizer\CT;
@@ -301,9 +302,7 @@ EOT
     }
 }
 
-/**
- * @EntityExtension("Eccube\Entity\Product")
- */
+#[EntityExtension(Product::class)]
 trait EntityProxyServiceTest_ProductTrait
 {
     public $testProperty;

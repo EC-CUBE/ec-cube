@@ -12,13 +12,13 @@
  */
 
 // TODO: Change namespace Eccube\Attribute;
+
 namespace Eccube\Annotation;
 
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 final class EntityExtension
 {
-    /**
-     * @var string
-     */
-    public $value;
+    public function __construct(public string $value)
+    {
+    }
 }

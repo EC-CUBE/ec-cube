@@ -13,7 +13,6 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\EntityExtension;
 use Eccube\Common\EccubeConfig;
@@ -184,15 +183,15 @@ class EntityProxyService
         }
 
         // TraitをEntityごとにまとめる
-        $reader = new AnnotationReader();
         $proxySets = [];
         foreach ($traitSets as $traits) {
             $proxies = [];
             foreach ($traits as $trait) {
-                $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
-                if ($anno) {
-                    $class = str_replace('\\\\', '\\', $anno->value);
-                    $class = ltrim($class, '\\');
+                $rc = new \ReflectionClass($trait);
+                foreach ($rc->getAttributes(EntityExtension::class, \ReflectionAttribute::IS_INSTANCEOF) as $attr) {
+                    /** @var EntityExtension $inst */
+                    $inst = $attr->newInstance();
+                    $class = ltrim(str_replace('\\\\', '\\', $inst->value), '\\');
                     $proxies[$class][] = $trait;
                 }
             }
