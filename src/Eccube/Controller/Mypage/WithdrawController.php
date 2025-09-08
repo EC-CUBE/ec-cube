@@ -23,7 +23,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -89,12 +89,10 @@ class WithdrawController extends AbstractController
 
     /**
      * 退会画面.
-     *
-     * @Route("/mypage/withdraw", name="mypage_withdraw", methods={"GET", "POST"})
-     * @Route("/mypage/withdraw", name="mypage_withdraw_confirm", methods={"GET", "POST"})
-     *
-     * @Template("Mypage/withdraw.twig")
      */
+    #[Route('/mypage/withdraw', name: 'mypage_withdraw', methods: ['GET', 'POST'])]
+    #[Route('/mypage/withdraw', name: 'mypage_withdraw_confirm', methods: ['GET', 'POST'])]
+    #[Template('Mypage/withdraw.twig')]
     public function index(Request $request)
     {
         $builder = $this->formFactory->createBuilder();
@@ -171,11 +169,9 @@ class WithdrawController extends AbstractController
 
     /**
      * 退会完了画面.
-     *
-     * @Route("/mypage/withdraw_complete", name="mypage_withdraw_complete", methods={"GET"})
-     *
-     * @Template("Mypage/withdraw_complete.twig")
      */
+    #[Route('/mypage/withdraw_complete', name: 'mypage_withdraw_complete', methods: ['GET'])]
+    #[Template('Mypage/withdraw_complete.twig')]
     public function complete(Request $request)
     {
         return [];

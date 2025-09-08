@@ -13,22 +13,14 @@
 
 namespace Eccube\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\ORM\Mapping\Annotation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
-
-/**
- * @Annotation
- * @Target("METHOD")
- */
-final class ForwardOnly implements ConfigurationInterface
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class ForwardOnly
 {
     /**
      * Returns the alias name for an annotated configuration.
      *
      * @return string
      */
-    #[\Override]
     public function getAliasName()
     {
         return 'forward_only';
@@ -39,7 +31,6 @@ final class ForwardOnly implements ConfigurationInterface
      *
      * @return bool
      */
-    #[\Override]
     public function allowArray()
     {
         return false;

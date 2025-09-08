@@ -20,7 +20,7 @@ use Eccube\Form\Validator\Email;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -70,11 +70,9 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * 非会員処理
-     *
-     * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
-     *
-     * @Template("Shopping/nonmember.twig")
      */
+    #[Route('/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
+    #[Template('Shopping/nonmember.twig')]
     public function index(Request $request)
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.
@@ -135,9 +133,8 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * お客様情報の変更(非会員)
-     *
-     * @Route("/shopping/customer", name="shopping_customer", methods={"POST"})
      */
+    #[Route('/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
     public function customer(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {

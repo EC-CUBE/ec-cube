@@ -17,7 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Calendar;
 use Eccube\Form\Type\Admin\CalendarType;
 use Eccube\Repository\CalendarRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -43,12 +43,10 @@ class CalendarController extends AbstractController
 
     /**
      * カレンダー設定の初期表示・登録
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/calendar", name="admin_setting_shop_calendar", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/calendar/new", name="admin_setting_shop_calendar_new", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/calendar.twig")
      */
+    #[Route('/%eccube_admin_route%/setting/shop/calendar', name: 'admin_setting_shop_calendar', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/setting/shop/calendar/new', name: 'admin_setting_shop_calendar_new', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/Shop/calendar.twig')]
     public function index(Request $request)
     {
         $Calendar = new Calendar();
@@ -116,9 +114,8 @@ class CalendarController extends AbstractController
 
     /**
      * カレンダー設定の削除
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/calendar/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_calendar_delete", methods={"DELETE"})
      */
+    #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Calendar $Calendar)
     {
         $this->isTokenValid();

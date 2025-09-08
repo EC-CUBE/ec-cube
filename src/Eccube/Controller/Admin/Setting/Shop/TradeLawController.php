@@ -18,7 +18,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TradeLawType;
 use Eccube\Repository\TradeLawRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,12 +39,10 @@ class TradeLawController extends AbstractController
     /**
      * 特定商取引法設定の初期表示・登録
      *
-     * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/tradelaw.twig")
-     *
      * @param Request $request
      */
+    #[Route('/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
+    #[Template('@admin/Setting/Shop/tradelaw.twig')]
     public function index(Request $request)
     {
         $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);

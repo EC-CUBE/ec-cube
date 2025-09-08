@@ -36,16 +36,13 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  * * PurchaseProcessor
  *
  * ## 追加対象のフローの指定方法
- * * カートのPurchaseFlowにProcessorを追加する場合はCartFlowアノテーションを追加
- * * 購入フローのPurchaseFlowにProcessorを追加する場合はShoppingFlowアノテーションを追加
- * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアノテーションを追加
- *
- * @CartFlow
- *
- * @ShoppingFlow
- *
- * @OrderFlow
+ * * カートのPurchaseFlowにProcessorを追加する場合はCartFlowアトリビュートを追加
+ * * 購入フローのPurchaseFlowにProcessorを追加する場合はShoppingFlowアトリビュートを追加
+ * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアトリビュートを追加
  */
+#[CartFlow]
+#[ShoppingFlow]
+#[OrderFlow]
 class SaleLimitOneValidator extends ItemValidator
 {
     /**

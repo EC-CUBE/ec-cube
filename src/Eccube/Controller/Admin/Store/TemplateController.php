@@ -20,7 +20,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
@@ -59,14 +59,12 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧画面
      *
-     * @Route("/%eccube_admin_route%/store/template", name="admin_store_template", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/template.twig")
-     *
      * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
+    #[Template('@admin/Store/template.twig')]
     public function index(Request $request, CacheUtil $cacheUtil)
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
@@ -106,13 +104,12 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧からのダウンロード
      *
-     * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"}, methods={"GET"})
-     *
      * @param Request $request
      * @param \Eccube\Entity\Template $Template
      *
      * @return BinaryFileResponse
      */
+    #[Route('/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function download(Request $request, \Eccube\Entity\Template $Template)
     {
         // 該当テンプレートのディレクトリ
@@ -169,9 +166,7 @@ class TemplateController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"}, methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, \Eccube\Entity\Template $Template)
     {
         $this->isTokenValid();
@@ -211,14 +206,12 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/template_add.twig")
-     *
      * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
+    #[Template('@admin/Store/template_add.twig')]
     public function install(Request $request)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');

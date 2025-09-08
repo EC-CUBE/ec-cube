@@ -33,8 +33,9 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\PluginApiService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -125,11 +126,8 @@ class AdminController extends AbstractController
         $this->pluginApiService = $pluginApiService;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/login", name="admin_login", methods={"GET", "POST"})
-     *
-     * @Template("@admin/login.twig")
-     */
+    #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
+    #[Template('@admin/login.twig')]
     public function login(Request $request)
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
@@ -163,11 +161,9 @@ class AdminController extends AbstractController
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
-     *
-     * @Route("/%eccube_admin_route%/", name="admin_homepage", methods={"GET"})
-     *
-     * @Template("@admin/index.twig")
      */
+    #[Route('/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
+    #[Template('@admin/index.twig')]
     public function index(Request $request)
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
@@ -276,10 +272,9 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale", methods={"GET"})
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
+    #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
     public function sale(Request $request)
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -316,15 +311,13 @@ class AdminController extends AbstractController
     /**
      * パスワード変更画面
      *
-     * @Route("/%eccube_admin_route%/change_password", name="admin_change_password", methods={"GET", "POST"})
-     *
-     * @Template("@admin/change_password.twig")
-     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
-    public function changePassword(Request $request)
+    #[Route('/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
+    #[Template('@admin/change_password.twig')]
+    public function changePassword(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $builder = $this->formFactory
             ->createBuilder(ChangePasswordType::class);
@@ -374,13 +367,12 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock", methods={"GET"})
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function searchNonStockProducts(Request $request)
+    #[Route('/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
+    public function searchNonStockProducts(Request $request): Response
     {
         // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
         $searchData = [];
@@ -396,12 +388,11 @@ class AdminController extends AbstractController
     /**
      * 本会員の検索結果を表示する.
      *
-     * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer", methods={"GET"})
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
+    #[Route('/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
     public function searchCustomer(Request $request)
     {
         $searchData = [];

@@ -14,7 +14,7 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -24,11 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CssController extends AbstractController
 {
-    /**
-     * @Route("/%eccube_admin_route%/content/css", name="admin_content_css", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/css.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/css', name: 'admin_content_css', methods: ['GET', 'POST'])]
+    #[Template('@admin/Content/css.twig')]
     public function index(Request $request)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');

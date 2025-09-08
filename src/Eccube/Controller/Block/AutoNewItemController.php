@@ -16,7 +16,7 @@ namespace Eccube\Controller\Block;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\ProductRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -41,14 +41,12 @@ class AutoNewItemController extends AbstractController
     }
 
     /**
-     * @Route("/block/auto_new_item", name="block_auto_new_item", methods={"GET"})
-     *
-     * @Template("Block/auto_new_item.twig")
-     *
      * @param Request $request
      *
      * @return array
      */
+    #[Route('/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
+    #[Template('Block/auto_new_item.twig')]
     public function index(Request $request)
     {
         $qb = $this->productRepository->getQueryBuilderBySearchData([

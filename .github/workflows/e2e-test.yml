@@ -166,7 +166,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: codeception-${{ matrix.group }}-evidence
+          name: codeception-${{ matrix.php }}-${{ matrix.group }}-evidence
           path: codeception/_output/
 
       -   name: List files in current directory
@@ -184,5 +184,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: codeception-${{ matrix.group }}-logs
+          name: codeception-${{ matrix.php }}-${{ matrix.group }}-logs
           path: var/log/

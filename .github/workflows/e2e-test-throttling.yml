@@ -140,11 +140,11 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: codeception-${{ matrix.method }}-evidence
+          name: codeception-${{ matrix.php }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: codeception-${{ matrix.method }}-logs
+          name: codeception-${{ matrix.php }}-${{ matrix.method }}-logs
           path: var/log/

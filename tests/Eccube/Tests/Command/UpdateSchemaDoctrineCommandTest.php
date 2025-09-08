@@ -446,9 +446,7 @@ namespace Plugin\\{$tmpname}\\Entity;
 use Eccube\Annotation\EntityExtension;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @EntityExtension("Eccube\Entity\Customer")
- */
+ #[\Eccube\Annotation\EntityExtension(\Eccube\Entity\Customer::class)]
 trait HogeTrait
 {
     /**

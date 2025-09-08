@@ -11,16 +11,12 @@
  * file that was distributed with this source code.
  */
 
+// TODO: Change namespace Eccube\Attribute;
+
 namespace Eccube\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\ORM\Mapping\Annotation;
-
-/**
- * @Annotation
- * @Target("PROPERTY")
- */
-final class FormAppend implements Annotation
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
+final class FormAppend
 {
     /**
      * @var bool

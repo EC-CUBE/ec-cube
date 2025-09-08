@@ -17,9 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @EntityExtension("Eccube\Entity\Product")
- */
+#[EntityExtension(\Eccube\Entity\Product::class)]
 trait ProductUrlTrait
 {
     /**

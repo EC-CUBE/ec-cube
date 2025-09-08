@@ -15,9 +15,7 @@ namespace Eccube\Form\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class TwigLint extends Constraint
 {
     public $message = 'Invalid twig format. {{ error }}';

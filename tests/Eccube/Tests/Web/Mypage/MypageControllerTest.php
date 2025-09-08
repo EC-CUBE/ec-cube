@@ -52,8 +52,9 @@ class MypageControllerTest extends AbstractWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('mypage_favorite');
+        // mypage_favorite_deleteはprocutt_idを受け取る
         $this->client->request('DELETE',
-            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getId()])
+            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getProduct()->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 

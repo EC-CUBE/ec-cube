@@ -16,7 +16,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Service\SystemService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,11 +47,8 @@ class SystemController
         $this->systemService = $systemService;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system", methods={"GET"})
-     *
-     * @Template("@admin/Setting/System/system.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
+    #[Template('@admin/Setting/System/system.twig')]
     public function index(Request $request)
     {
         $info = [];
@@ -70,9 +67,7 @@ class SystemController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo", methods={"GET"})
-     */
+    #[Route('/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
     public function phpinfo(Request $request)
     {
         ob_start();

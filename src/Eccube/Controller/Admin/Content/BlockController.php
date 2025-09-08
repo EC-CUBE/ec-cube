@@ -23,7 +23,7 @@ use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,11 +50,8 @@ class BlockController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/block", name="admin_content_block", methods={"GET"})
-     *
-     * @Template("@admin/Content/block.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
+    #[Template('@admin/Content/block.twig')]
     public function index(Request $request)
     {
         $DeviceType = $this->deviceTypeRepository
@@ -77,12 +74,9 @@ class BlockController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/block/new", name="admin_content_block_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/block_edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Content/block_edit.twig')]
     public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -183,9 +177,7 @@ class BlockController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();

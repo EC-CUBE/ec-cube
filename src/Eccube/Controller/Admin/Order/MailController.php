@@ -22,7 +22,7 @@ use Eccube\Form\Type\Admin\OrderMailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -68,11 +68,8 @@ class MailController extends AbstractController
         $this->twig = $twig;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/mail.twig")
-     */
+    #[Route('/%eccube_admin_route%/order/{id}/mail', requirements: ['id' => '\d+'], name: 'admin_order_mail', methods: ['GET', 'POST'])]
+    #[Template('@admin/Order/mail.twig')]
     public function index(Request $request, Order $Order)
     {
         $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);

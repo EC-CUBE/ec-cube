@@ -16,9 +16,7 @@ namespace Plugin\Boomerang10\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 
-/**
- * @EntityExtension("Plugin\Boomerang\Entity\Bar")
- */
+#[EntityExtension(\Plugin\Boomerang\Entity\Bar::class)]
 trait BarTrait
 {
     /**

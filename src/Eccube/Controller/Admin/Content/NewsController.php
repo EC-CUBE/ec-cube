@@ -21,7 +21,8 @@ use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Repository\NewsRepository;
 use Eccube\Util\CacheUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,17 +47,15 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
-     * @Route("/%eccube_admin_route%/content/news", name="admin_content_news", methods={"GET"})
-     * @Route("/%eccube_admin_route%/content/news/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_content_news_page", methods={"GET"})
-     *
-     * @Template("@admin/Content/news.twig")
-     *
      * @param Request $request
      * @param int $page_no
      * @param PaginatorInterface $paginator
      *
      * @return array
      */
+    #[Route('/%eccube_admin_route%/content/news', name: 'admin_content_news', methods: ['GET'])]
+    #[Route('/%eccube_admin_route%/content/news/page/{page_no}', name: 'admin_content_news_page', requirements: ['page_no' => '\d+'], methods: ['GET'])]
+    #[Template('@admin/Content/news.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = 1)
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
@@ -83,16 +82,14 @@ class NewsController extends AbstractController
     /**
      * 新着情報を登録・編集する。
      *
-     * @Route("/%eccube_admin_route%/content/news/new", name="admin_content_news_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/news_edit.twig")
-     *
      * @param Request $request
      * @param null $id
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/content/news/new', name: 'admin_content_news_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/content/news/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_news_edit', methods: ['GET', 'POST'])]
+    #[Template('@admin/Content/news_edit.twig')]
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         if ($id) {
@@ -152,13 +149,12 @@ class NewsController extends AbstractController
     /**
      * 指定した新着情報を削除する。
      *
-     * @Route("/%eccube_admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete", methods={"DELETE"})
-     *
      * @param Request $request
      * @param News $News
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/content/news/{id}/delete', name: 'admin_content_news_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, News $News, CacheUtil $cacheUtil)
     {
         $this->isTokenValid();

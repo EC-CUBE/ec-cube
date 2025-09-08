@@ -18,6 +18,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginApiException;
+use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
@@ -28,16 +29,16 @@ use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route("/%eccube_admin_route%/store/plugin/api")
- */
+#[Route('/%eccube_admin_route%/store/plugin/api')]
 class OwnerStoreController extends AbstractController
 {
     /**
@@ -118,17 +119,15 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @Route("/search", name="admin_store_plugin_owners_search", methods={"GET", "POST"})
-     * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/plugin_search.twig")
-     *
      * @param Request     $request
      * @param int $page_no
      * @param PaginatorInterface $paginator
      *
      * @return array
      */
+    #[Route('/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
+    #[Route('/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template('@admin/Store/plugin_search.twig')]
     public function search(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
@@ -226,28 +225,25 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm", methods={"GET"})
-     *
-     * @Template("@admin/Store/plugin_confirm.twig")
-     *
      * @param Request $request
      *
      * @return array
      *
-     * @throws \Eccube\Exception\PluginException
+     * @throws PluginException
      */
-    public function doConfirm(Request $request, $id)
+    #[Route('/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function doConfirm(Request $request, $id): Response
     {
         try {
             $item = $this->pluginApiService->getPlugin($id);
             // Todo: need define item's dependency mechanism
             $requires = $this->pluginService->getPluginRequired($item);
 
-            return [
+            return $this->render('@admin/Store/plugin_confirm.twig', [
                 'item' => $item,
                 'requires' => $requires,
                 'is_update' => false,
-            ];
+            ]);
         } catch (PluginApiException $e) {
             $this->addError($e->getMessage(), 'admin');
 
@@ -258,12 +254,11 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
     public function apiInstall(Request $request)
     {
         $this->isTokenValid();
@@ -309,12 +304,11 @@ class OwnerStoreController extends AbstractController
     /**
      * New ways to remove plugin: using composer command
      *
-     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
-     *
      * @param Plugin $Plugin
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/delete/{id}/uninstall', requirements: ['id' => '\d+'], name: 'admin_store_plugin_api_uninstall', methods: ['DELETE'])]
     public function apiUninstall(Plugin $Plugin)
     {
         $this->isTokenValid();
@@ -359,12 +353,11 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
     public function apiUpgrade(Request $request)
     {
         $this->isTokenValid();
@@ -429,12 +422,11 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、スキーマ更新
      *
-     * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
     public function apiSchemaUpdate(Request $request)
     {
         $this->isTokenValid();
@@ -480,12 +472,11 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、更新処理
      *
-     * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
     public function apiUpdate(Request $request)
     {
         $this->isTokenValid();
@@ -520,14 +511,12 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm update page
      *
-     * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm", methods={"GET"})
-     *
-     * @Template("@admin/Store/plugin_confirm.twig")
-     *
      * @param Plugin $Plugin
      *
      * @return array
      */
+    #[Route('/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template('@admin/Store/plugin_confirm.twig')]
     public function doUpdateConfirm(Plugin $Plugin)
     {
         try {

@@ -33,10 +33,9 @@ class BoomerangController extends AbstractController
     }
 
     /**
-     * @Route("/boomerang", name="boomerang")
-     *
      * @return JsonResponse
      */
+    #[Route('/boomerang', name: 'boomerang', methods: ['GET'])]
     public function index()
     {
         /** @var Cart[] $list */
@@ -46,9 +45,7 @@ class BoomerangController extends AbstractController
         return $this->json($ids);
     }
 
-    /**
-     * @Route("/boomerang/new")
-     */
+    #[Route('/boomerang/new')]
     public function new()
     {
         $Bar = new Bar();

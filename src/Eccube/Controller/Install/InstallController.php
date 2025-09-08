@@ -35,7 +35,7 @@ use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Session\Session;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -109,13 +109,11 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
-     * @Route("/", name="homepage", methods={"GET"})
-     * @Route("/install", name="install", methods={"GET"})
-     *
-     * @Template("index.twig")
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/', name: 'homepage', methods: ['GET'])]
+    #[Route('/install', name: 'install', methods: ['GET'])]
+    #[Template('index.twig')]
     public function index()
     {
         if (!$this->isInstallEnv()) {
@@ -130,12 +128,10 @@ class InstallController extends AbstractController
     /**
      * ようこそ.
      *
-     * @Route("/install/step1", name="install_step1", methods={"GET", "POST"})
-     *
-     * @Template("step1.twig")
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
+    #[Template('step1.twig')]
     public function step1(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -171,12 +167,10 @@ class InstallController extends AbstractController
     /**
      * ディレクトリとファイルの書き込み権限をチェック.
      *
-     * @Route("/install/step2", name="install_step2", methods={"GET"})
-     *
-     * @Template("step2.twig")
-     *
      * @return array
      */
+    #[Route('/install/step2', name: 'install_step2', methods: ['GET'])]
+    #[Template('step2.twig')]
     public function step2()
     {
         if (!$this->isInstallEnv()) {
@@ -248,15 +242,13 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
-     * @Route("/install/step3", name="install_step3", methods={"GET", "POST"})
-     *
-     * @Template("step3.twig")
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
+    #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
+    #[Template('step3.twig')]
     public function step3(Request $request, EntityManagerInterface $entityManager)
     {
         if (!$this->isInstallEnv()) {
@@ -321,14 +313,12 @@ class InstallController extends AbstractController
     /**
      * データベースの設定.
      *
-     * @Route("/install/step4", name="install_step4", methods={"GET", "POST"})
-     *
-     * @Template("step4.twig")
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
+    #[Route('/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
+    #[Template('step4.twig')]
     public function step4(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -371,14 +361,12 @@ class InstallController extends AbstractController
     /**
      * データベースの初期化.
      *
-     * @Route("/install/step5", name="install_step5", methods={"GET", "POST"})
-     *
-     * @Template("step5.twig")
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
+    #[Route('/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
+    #[Template('step5.twig')]
     public function step5(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -453,11 +441,9 @@ class InstallController extends AbstractController
 
     /**
      * インストール完了
-     *
-     * @Route("/install/complete", name="install_complete", methods={"GET"})
-     *
-     * @Template("complete.twig")
      */
+    #[Route('/install/complete', name: 'install_complete', methods: ['GET'])]
+    #[Template('complete.twig')]
     public function complete(Request $request)
     {
         if (!$this->isInstallEnv()) {

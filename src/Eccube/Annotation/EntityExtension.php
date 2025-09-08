@@ -11,19 +11,14 @@
  * file that was distributed with this source code.
  */
 
+// TODO: Change namespace Eccube\Attribute;
+
 namespace Eccube\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\ORM\Mapping\Annotation;
-
-/**
- * @Annotation
- * @Target("CLASS")
- */
-final class EntityExtension implements Annotation
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+final class EntityExtension
 {
-    /**
-     * @var string
-     */
-    public $value;
+    public function __construct(public string $value)
+    {
+    }
 }

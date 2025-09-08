@@ -24,7 +24,7 @@ use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -117,12 +117,10 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録画面.
-     *
-     * @Route("/entry", name="entry", methods={"GET", "POST"})
-     * @Route("/entry", name="entry_confirm", methods={"GET", "POST"})
-     *
-     * @Template("Entry/index.twig")
      */
+    #[Route('/entry', name: 'entry', methods: ['GET', 'POST'])]
+    #[Route('/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
+    #[Template('Entry/index.twig')]
     public function index(Request $request)
     {
         if ($this->isGranted('ROLE_USER')) {
@@ -221,11 +219,9 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録完了画面.
-     *
-     * @Route("/entry/complete", name="entry_complete", methods={"GET"})
-     *
-     * @Template("Entry/complete.twig")
      */
+    #[Route('/entry/complete', name: 'entry_complete', methods: ['GET'])]
+    #[Template('Entry/complete.twig')]
     public function complete()
     {
         return [];
@@ -233,11 +229,9 @@ class EntryController extends AbstractController
 
     /**
      * 会員のアクティベート（本会員化）を行う.
-     *
-     * @Route("/entry/activate/{secret_key}/{qtyInCart}", name="entry_activate", methods={"GET"})
-     *
-     * @Template("Entry/activate.twig")
      */
+    #[Route('/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
+    #[Template('Entry/activate.twig')]
     public function activate(Request $request, $secret_key, $qtyInCart = null)
     {
         $errors = $this->recursiveValidator->validate(

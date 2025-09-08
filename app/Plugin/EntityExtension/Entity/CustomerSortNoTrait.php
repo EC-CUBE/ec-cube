@@ -16,9 +16,7 @@ namespace Plugin\EntityExtension\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 
-/**
- * @EntityExtension("Eccube\Entity\Customer")
- */
+#[EntityExtension(\Eccube\Entity\Customer::class)]
 trait CustomerSortNoTrait
 {
     /**
