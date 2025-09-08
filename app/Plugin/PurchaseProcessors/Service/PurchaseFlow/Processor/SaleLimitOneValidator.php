@@ -39,7 +39,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  * * カートのPurchaseFlowにProcessorを追加する場合はCartFlowアトリビュートを追加
  * * 購入フローのPurchaseFlowにProcessorを追加する場合はShoppingFlowアトリビュートを追加
  * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアトリビュートを追加
- *
  */
 #[CartFlow]
 #[ShoppingFlow]

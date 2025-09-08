@@ -14,7 +14,6 @@
 namespace Eccube\EventListener;
 
 use Eccube\Annotation\ForwardOnly;
-use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -31,7 +30,8 @@ class ForwardOnlyListener implements EventSubscriberInterface
      * Kernel Controller listener callback.
      *
      * @param FilterControllerEvent $event
-     * @throws ReflectionException
+     *
+     * @throws \ReflectionException
      */
     public function onController(ControllerEvent $event)
     {
@@ -48,7 +48,7 @@ class ForwardOnlyListener implements EventSubscriberInterface
 
         // Attribute #[ForwardOnly]
         [$controllerObj, $method] = $event->getController();
-        $refClass  = new \ReflectionClass($controllerObj);
+        $refClass = new \ReflectionClass($controllerObj);
         if ($refClass->hasMethod($method)) {
             $refMethod = $refClass->getMethod($method);
             $forwardOnly = \count($refMethod->getAttributes(ForwardOnly::class)) > 0;

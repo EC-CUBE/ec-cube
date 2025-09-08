@@ -13,8 +13,6 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Annotation\CartFlow;
 use Eccube\Annotation\OrderFlow;
 use Eccube\Annotation\ShoppingFlow;
@@ -157,6 +155,7 @@ class PurchaseFlowPass implements CompilerPassInterface
                 return true;
             }
         }
+
         return false;
     }
 }

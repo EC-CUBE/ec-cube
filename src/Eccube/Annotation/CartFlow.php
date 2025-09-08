@@ -12,6 +12,7 @@
  */
 
 // TODO: Change namespace Eccube\Attribute;
+
 namespace Eccube\Annotation;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
