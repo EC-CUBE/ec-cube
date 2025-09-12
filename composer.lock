@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3af7b4f42f37f5daae85bbbe56cc2f5",
+    "content-hash": "d8ce81b9e616fe8472294f3728dc19f1",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -1179,16 +1179,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.10.1",
+            "version": "3.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "3626601014388095d3af9de7e9e958623b7ef005"
+                "reference": "c6c16cf787eaba3112203dfcd715fa2059c62282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/3626601014388095d3af9de7e9e958623b7ef005",
-                "reference": "3626601014388095d3af9de7e9e958623b7ef005",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c6c16cf787eaba3112203dfcd715fa2059c62282",
+                "reference": "c6c16cf787eaba3112203dfcd715fa2059c62282",
                 "shasum": ""
             },
             "require": {
@@ -1204,10 +1204,10 @@
             },
             "require-dev": {
                 "doctrine/cache": "^1.11|^2.0",
-                "doctrine/coding-standard": "13.0.0",
+                "doctrine/coding-standard": "13.0.1",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
-                "phpstan/phpstan": "2.1.17",
+                "phpstan/phpstan": "2.1.22",
                 "phpstan/phpstan-strict-rules": "^2",
                 "phpunit/phpunit": "9.6.23",
                 "slevomat/coding-standard": "8.16.2",
@@ -1273,7 +1273,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.10.1"
+                "source": "https://github.com/doctrine/dbal/tree/3.10.2"
             },
             "funding": [
                 {
@@ -1289,7 +1289,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-05T12:18:06+00:00"
+            "time": "2025-09-04T23:51:27+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1341,16 +1341,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.15.1",
+            "version": "2.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "5a305c5e776f9d3eb87f5b94d40d50aff439211d"
+                "reference": "152d5083f0cd205a278131dc4351a8c94d007fe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/5a305c5e776f9d3eb87f5b94d40d50aff439211d",
-                "reference": "5a305c5e776f9d3eb87f5b94d40d50aff439211d",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/152d5083f0cd205a278131dc4351a8c94d007fe1",
+                "reference": "152d5083f0cd205a278131dc4351a8c94d007fe1",
                 "shasum": ""
             },
             "require": {
@@ -1387,6 +1387,7 @@
                 "phpunit/phpunit": "^9.6.22",
                 "psr/log": "^1.1.4 || ^2.0 || ^3.0",
                 "symfony/doctrine-messenger": "^6.4 || ^7.0",
+                "symfony/expression-language": "^6.4 || ^7.0",
                 "symfony/messenger": "^6.4 || ^7.0",
                 "symfony/phpunit-bridge": "^7.2",
                 "symfony/property-info": "^6.4 || ^7.0",
@@ -1443,7 +1444,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.15.1"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.16.1"
             },
             "funding": [
                 {
@@ -1459,7 +1460,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-30T15:48:28+00:00"
+            "time": "2025-09-05T15:24:53+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -13053,20 +13054,20 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.28",
+            "version": "2.1.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "fcf8b71aeab4e1a1131d1783cef97b23a51b87a9"
+                "reference": "41600c8379eb5aee63e9413fe9e97273e25d57e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/fcf8b71aeab4e1a1131d1783cef97b23a51b87a9",
-                "reference": "fcf8b71aeab4e1a1131d1783cef97b23a51b87a9",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/41600c8379eb5aee63e9413fe9e97273e25d57e4",
+                "reference": "41600c8379eb5aee63e9413fe9e97273e25d57e4",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0"
+                "php": "^7.4|^8.0"
             },
             "conflict": {
                 "phpstan/phpstan-shim": "*"
@@ -13107,7 +13108,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-17T17:15:39+00:00"
+            "time": "2025-08-04T19:17:37+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -13619,21 +13620,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "1.2.10",
+            "version": "2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "40f9cf38c05296bd32f444121336a521a293fa61"
+                "reference": "729aabc0ec66e700ef164e26454a1357f222a2f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/40f9cf38c05296bd32f444121336a521a293fa61",
-                "reference": "40f9cf38c05296bd32f444121336a521a293fa61",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/729aabc0ec66e700ef164e26454a1357f222a2f3",
+                "reference": "729aabc0ec66e700ef164e26454a1357f222a2f3",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0",
-                "phpstan/phpstan": "^1.12.5"
+                "php": "^7.4|^8.0",
+                "phpstan/phpstan": "^2.1.18"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -13658,6 +13659,7 @@
                 "MIT"
             ],
             "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "homepage": "https://getrector.com/",
             "keywords": [
                 "automation",
                 "dev",
@@ -13666,7 +13668,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.2.10"
+                "source": "https://github.com/rectorphp/rector/tree/2.1.6"
             },
             "funding": [
                 {
@@ -13674,7 +13676,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-08T13:59:10+00:00"
+            "time": "2025-09-05T15:43:08+00:00"
         },
         {
             "name": "sebastian/cli-parser",
