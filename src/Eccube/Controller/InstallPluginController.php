@@ -169,7 +169,7 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションチェックファイルの有効期限を確認する
      *
-     * @param mixed $token
+     * @param string $token
      *
      * @return bool
      */

@@ -128,7 +128,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * return No Image filename
      *
-     * @param mixed $image
+     * @param string $image
      *
      * @return string
      */
@@ -140,9 +140,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param mixed $date
-     * @param mixed $value
-     * @param mixed $format
+     * @param string $date
+     * @param string $value
+     * @param string $format
      *
      * @return string
      */
@@ -158,10 +158,10 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param mixed $number
-     * @param mixed $decimals
-     * @param mixed $decPoint
-     * @param mixed $thousandsSep
+     * @param string|int|float $number
+     * @param int $decimals
+     * @param string $decPoint
+     * @param string $thousandsSep
      *
      * @return string
      */
@@ -177,9 +177,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param mixed $value
-     * @param mixed $length
-     * @param mixed $end
+     * @param string $value
+     * @param int $length
+     * @param string $end
      *
      * @return string
      */
@@ -191,7 +191,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param mixed $date
+     * @param string|\DateTimeInterface $date
      *
      * @return string
      */

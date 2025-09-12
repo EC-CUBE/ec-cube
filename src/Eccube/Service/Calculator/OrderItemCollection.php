@@ -71,7 +71,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      *
      * TODO 暫定対応. 本来は明細種別でチェックする.
      *
-     * @param mixed $productName
+     * @param string $productName
      */
     public function hasProductByName($productName)
     {

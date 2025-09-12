@@ -92,7 +92,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price02 IncTax
          *
-         * @param mixed $price02_inc_tax
+         * @param string $price02_inc_tax
          *
          * @return ProductClass
          */

@@ -130,7 +130,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * If a header row has been set, an associative array will be returned
      *
-     * @return mixed
+     * @return array|null
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -452,7 +452,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @deprecated 使用していないため削除予定
      *
-     * @param mixed $row
+     * @param string[] $row
      */
     protected function convertEncodingRows($row)
     {

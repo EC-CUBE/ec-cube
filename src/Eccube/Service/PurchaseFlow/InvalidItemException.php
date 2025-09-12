@@ -45,7 +45,7 @@ class InvalidItemException extends \Exception
     }
 
     /**
-     * @param mixed $errorMessage
+     * @param string $errorMessage
      *
      * @return InvalidItemException
      */

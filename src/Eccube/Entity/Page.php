@@ -171,7 +171,7 @@ if (!class_exists(Page::class)) {
         /**
          * Set id
          *
-         * @param mixed $id
+         * @param int $id
          *
          * @return Page
          */

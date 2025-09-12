@@ -15,6 +15,7 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Payment;
 
 /**
@@ -54,7 +55,7 @@ class PaymentRepository extends AbstractRepository
      * 条件によってはDoctrineのキャッシュが返されるため、arrayで結果を返すパターンも用意
      *
      * @param $delivery
-     * @param $returnType true : Object、false: arrayが戻り値
+     * @param bool $returnType true : Object、false: arrayが戻り値
      *
      * @return array
      */
@@ -81,10 +82,10 @@ class PaymentRepository extends AbstractRepository
     /**
      * 共通の支払方法を取得
      *
-     * @param $deliveries
-     * @param mixed $returnType
+     * @param Delivery[] $deliveries
+     * @param bool $returnType
      *
-     * @return array
+     * @return Payment[]
      */
     public function findAllowedPayments($deliveries, $returnType = false)
     {

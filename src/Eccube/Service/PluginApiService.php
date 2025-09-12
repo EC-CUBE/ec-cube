@@ -70,7 +70,7 @@ class PluginApiService
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getApiUrl()
     {
@@ -82,7 +82,7 @@ class PluginApiService
     }
 
     /**
-     * @param mixed $apiUrl
+     * @param string $apiUrl
      */
     public function setApiUrl($apiUrl)
     {
@@ -264,7 +264,7 @@ class PluginApiService
      *
      * @param string $url
      * @param array $data
-     * @param mixed $post
+     * @param bool $post
      *
      * @return array
      *

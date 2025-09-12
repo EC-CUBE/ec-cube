@@ -180,7 +180,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get getClassCategories2
          *
-         * @param mixed $class_category1
+         * @param int $class_category1
          *
          * @return array
          */

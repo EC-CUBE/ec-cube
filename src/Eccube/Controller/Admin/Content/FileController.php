@@ -477,7 +477,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param mixed $targetDir
+     * @param string $targetDir
      * @param string $topDir
      */
     protected function checkDir($targetDir, $topDir)
@@ -492,7 +492,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param mixed $target
+     * @param string $target
      *
      * @return string
      */
@@ -505,6 +505,11 @@ class FileController extends AbstractController
         return $target;
     }
 
+    /**
+     * @param string $target
+     *
+     * @return string
+     */
     private function convertStrToServer($target)
     {
         if ($this->encode == self::SJIS) {
@@ -514,15 +519,25 @@ class FileController extends AbstractController
         return $target;
     }
 
+    /**
+     * @param string|null $nowDir
+     *
+     * @return string
+     */
     private function getUserDataDir($nowDir = null)
     {
         return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
     private function getJailDir($path)
     {
-        $realpath = realpath($path);
-        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
+        $realpath = (string) realpath($path);
+        $jailPath = str_replace((string) realpath($this->getUserDataDir()), '', $realpath);
 
         return $jailPath ?: '/';
     }

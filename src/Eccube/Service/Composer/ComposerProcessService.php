@@ -81,10 +81,9 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * Run command
      *
-     * @param mixed $commands
-     * @param mixed|null $output
-     * @param mixed $init
-     * @param string $command
+     * @param string[] $commands
+     * @param string[]|null $output
+     * @param bool $init
      *
      * @throws PluginException
      */
@@ -116,7 +115,7 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * Set init
      *
-     * @param mixed|null $BaseInfo
+     * @param BaseInfo|null $BaseInfo
      *
      * @throws PluginException
      */

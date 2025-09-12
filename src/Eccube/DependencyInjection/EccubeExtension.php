@@ -183,7 +183,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param mixed $enabled
+     * @param string[] $enabled
      * @param string $pluginDir
      */
     protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir)
@@ -212,7 +212,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param mixed $enabled
+     * @param string[] $enabled
      * @param string $pluginDir
      */
     protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir)

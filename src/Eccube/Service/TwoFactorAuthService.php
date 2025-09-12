@@ -14,6 +14,7 @@
 namespace Eccube\Service;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Member;
 use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,8 +97,7 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param mixed $Member
-     * @param Eccube\Entity\Member
+     * @param Member $Member
      *
      * @return bool
      */
@@ -126,8 +126,7 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param mixed $Member
-     * @param Eccube\Entity\Member
+     * @param Member $Member
      *
      * @return Cookie
      */
@@ -161,10 +160,8 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param mixed $authKey
-     * @param mixed $token
-     * @param Eccube\Entity\Member
-     * @param string
+     * @param string $authKey
+     * @param string $token
      *
      * @return bool
      */

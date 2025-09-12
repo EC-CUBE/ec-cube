@@ -45,7 +45,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
     /**
      * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
      *
-     * @param mixed $username
+     * @param string $username
      *
      * @return UserInterface
      *

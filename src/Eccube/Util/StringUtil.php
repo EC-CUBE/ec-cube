@@ -122,7 +122,7 @@ class StringUtil
      * 文字コードの判定
      *
      * @param string $value
-     * @param mixed $encoding
+     * @param string[] $encoding
      *
      * @return string
      */
@@ -159,7 +159,7 @@ class StringUtil
     /**
      * 現在からの経過時間を書式化する.
      *
-     * @param $date
+     * @param string|\DateTimeInterface $date
      *
      * @return string
      */
@@ -217,7 +217,7 @@ class StringUtil
      * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
      * 空白と判断する.
      *
-     * @param mixed $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
+     * @param string $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
      * @param bool $greedy '貧欲'にチェックを行う場合 true, デフォルト false
      *
      * @return bool $value が空白と判断された場合 true
@@ -282,7 +282,7 @@ class StringUtil
 
     /**
      * @param $value
-     * @param mixed $greedy
+     * @param bool $greedy
      *
      * @return bool
      */
