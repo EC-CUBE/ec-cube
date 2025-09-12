@@ -21,6 +21,9 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     /**
      * @dataProvider twigSnippetsProvider
      * @dataProvider twigVarFreeAreaProvider
+     *
+     * @param mixed $snippet
+     * @param mixed $whitelisted
      */
     public function testFreeArea($snippet, $whitelisted)
     {
@@ -38,6 +41,9 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     /**
      * @dataProvider twigSnippetsProvider
      * @dataProvider twigVarMetaTagsProvider
+     *
+     * @param mixed $snippet
+     * @param mixed $whitelisted
      */
     public function testMetatags($snippet, $whitelisted)
     {

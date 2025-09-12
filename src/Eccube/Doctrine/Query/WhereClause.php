@@ -42,6 +42,8 @@ class WhereClause
 
     /**
      * @param Expr\Comparison $expr
+     * @param mixed $x
+     * @param mixed $y
      */
     private static function newWhereClause($expr, $x, $y)
     {

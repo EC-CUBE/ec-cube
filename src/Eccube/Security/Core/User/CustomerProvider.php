@@ -43,11 +43,13 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
     }
 
     /**
+     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
+     *
+     * @param mixed $username
+     *
      * @return UserInterface
      *
      * @throws UserNotFoundException
-     *
-     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
      */
     public function loadUserByUsername($username): Customer
     {
@@ -107,6 +109,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
     #[\Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        /** @var Customer $user */
         $user->setPassword($newHashedPassword);
         $this->entityManager->flush();
     }

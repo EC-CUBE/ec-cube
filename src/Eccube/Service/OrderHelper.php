@@ -516,6 +516,9 @@ class OrderHelper
 
     /**
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+     *
+     * @param mixed $attribute
+     * @param mixed|null $subject
      */
     private function isGranted($attribute, $subject = null): bool
     {

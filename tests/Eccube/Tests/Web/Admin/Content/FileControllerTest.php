@@ -244,6 +244,11 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider dataProviderUploadIgnoreFiles
+     *
+     * @param mixed $fileName
+     * @param mixed $mimeType
+     * @param mixed $errorMessage
+     * @param mixed $exists
      */
     public function testUploadIgnoreFiles($fileName, $mimeType, $errorMessage, $exists)
     {

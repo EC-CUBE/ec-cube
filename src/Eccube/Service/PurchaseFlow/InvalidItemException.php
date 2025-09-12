@@ -45,6 +45,8 @@ class InvalidItemException extends \Exception
     }
 
     /**
+     * @param mixed $errorMessage
+     *
      * @return InvalidItemException
      */
     public static function fromProductClass($errorMessage, ProductClass $ProductClass): self

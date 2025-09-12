@@ -986,6 +986,7 @@ class InstallController extends AbstractController
     }
 
     /**
+     * @param mixed $adminAllowHosts
      * @param string
      *
      * @return string

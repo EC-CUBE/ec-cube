@@ -92,6 +92,8 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price02 IncTax
          *
+         * @param mixed $price02_inc_tax
+         *
          * @return ProductClass
          */
         public function setPrice02IncTax($price02_inc_tax)

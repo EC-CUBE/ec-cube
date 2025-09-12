@@ -48,6 +48,10 @@ class PluginRepositoryTest extends EccubeTestCase
 
     /**
      * @dataProvider dataFormCodeProvider
+     *
+     * @param mixed $code
+     * @param mixed $search
+     * @param mixed $isNotNull
      */
     public function testFindByCode($code, $search, $isNotNull)
     {

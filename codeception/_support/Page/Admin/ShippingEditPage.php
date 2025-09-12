@@ -63,6 +63,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_姓($value, $num = 0)
     {
@@ -73,6 +74,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_名($value, $num = 0)
     {
@@ -83,6 +85,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_セイ($value, $num = 0)
     {
@@ -93,6 +96,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_メイ($value, $num = 0)
     {
@@ -103,6 +107,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_郵便番号($value, $num = 0)
     {
@@ -120,6 +125,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_市区町村名($value, $num = 0)
     {
@@ -130,6 +136,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_番地_ビル名($value, $num = 0)
     {
@@ -140,6 +147,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param string $value
+     * @param mixed $num
      */
     public function 入力_電話番号($value, $num = 0)
     {

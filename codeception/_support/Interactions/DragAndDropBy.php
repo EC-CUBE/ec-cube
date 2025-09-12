@@ -24,6 +24,8 @@ class DragAndDropBy extends WebDriverActions
 {
     /**
      * @param RemoteWebElement $source
+     * @param mixed $x_offset
+     * @param mixed $y_offset
      */
     public function __construct(WebDriver $driver, $source, $x_offset, $y_offset)
     {

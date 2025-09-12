@@ -477,6 +477,7 @@ class FileController extends AbstractController
     }
 
     /**
+     * @param mixed $targetDir
      * @param string $topDir
      */
     protected function checkDir($targetDir, $topDir)
@@ -491,6 +492,8 @@ class FileController extends AbstractController
     }
 
     /**
+     * @param mixed $target
+     *
      * @return string
      */
     private function convertStrFromServer($target)

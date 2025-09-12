@@ -169,6 +169,8 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションチェックファイルの有効期限を確認する
      *
+     * @param mixed $token
+     *
      * @return bool
      */
     public function isValidTransaction($token)

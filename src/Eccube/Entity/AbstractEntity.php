@@ -76,8 +76,8 @@ abstract class AbstractEntity implements \ArrayAccess
      * DBから取り出した連想配列を, プロパティへ設定する際に使用します.
      *
      * @param array $arrProps プロパティの情報を格納した連想配列
-     * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
      * @param string[] $excludeAttribute 除外したいフィールド名の配列
+     * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
      */
     public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], ?\ReflectionClass $parentClass = null)
     {
@@ -109,8 +109,8 @@ abstract class AbstractEntity implements \ArrayAccess
      * Symfony Serializer Component is expensive, and hard to implementation.
      * Use for encoder only.
      *
-     * @param \ReflectionClass $parentClass parent class. Use internally of this method..
      * @param array $excludeAttribute Array of field names to exclusion.
+     * @param \ReflectionClass $parentClass parent class. Use internally of this method..
      *
      * @return array
      */

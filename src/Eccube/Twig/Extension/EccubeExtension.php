@@ -128,6 +128,8 @@ class EccubeExtension extends AbstractExtension
     /**
      * return No Image filename
      *
+     * @param mixed $image
+     *
      * @return string
      */
     public function getNoImageProduct($image)
@@ -137,6 +139,10 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
+     *
+     * @param mixed $date
+     * @param mixed $value
+     * @param mixed $format
      *
      * @return string
      */
@@ -152,6 +158,11 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
+     * @param mixed $number
+     * @param mixed $decimals
+     * @param mixed $decPoint
+     * @param mixed $thousandsSep
+     *
      * @return string
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
@@ -166,6 +177,10 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
+     * @param mixed $value
+     * @param mixed $length
+     * @param mixed $end
+     *
      * @return string
      */
     public function getEllipsis($value, $length = 100, $end = '...')
@@ -175,6 +190,8 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
+     *
+     * @param mixed $date
      *
      * @return string
      */

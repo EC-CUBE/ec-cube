@@ -171,6 +171,8 @@ if (!class_exists(Page::class)) {
         /**
          * Set id
          *
+         * @param mixed $id
+         *
          * @return Page
          */
         public function setId($id)

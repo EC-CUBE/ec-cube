@@ -82,6 +82,7 @@ class PaymentRepository extends AbstractRepository
      * 共通の支払方法を取得
      *
      * @param $deliveries
+     * @param mixed $returnType
      *
      * @return array
      */

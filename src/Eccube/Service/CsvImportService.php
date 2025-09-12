@@ -451,6 +451,8 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * それ以外の環境では何もしない。
      *
      * @deprecated 使用していないため削除予定
+     *
+     * @param mixed $row
      */
     protected function convertEncodingRows($row)
     {

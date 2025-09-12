@@ -72,7 +72,7 @@ class TwoFactorAuthService
      * constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param UserPasswordHasherInterface $passwordHasher
+     * @param UserPasswordHasherInterface $p
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -96,6 +96,7 @@ class TwoFactorAuthService
     }
 
     /**
+     * @param mixed $Member
      * @param Eccube\Entity\Member
      *
      * @return bool
@@ -125,6 +126,7 @@ class TwoFactorAuthService
     }
 
     /**
+     * @param mixed $Member
      * @param Eccube\Entity\Member
      *
      * @return Cookie
@@ -159,6 +161,8 @@ class TwoFactorAuthService
     }
 
     /**
+     * @param mixed $authKey
+     * @param mixed $token
      * @param Eccube\Entity\Member
      * @param string
      *

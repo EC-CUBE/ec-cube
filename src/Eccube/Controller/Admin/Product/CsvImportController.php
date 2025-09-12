@@ -1303,6 +1303,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param array $row
      * @param Product $Product
      * @param CsvImportService $data
+     * @param mixed $headerByKey
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
     {
@@ -1511,6 +1512,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param Product $Product
      * @param ProductClass $ProductClass
      * @param CsvImportService $data
+     * @param mixed $headerByKey
      *
      * @return ProductClass
      */
@@ -1686,6 +1688,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 登録、更新時のエラー画面表示
+     *
+     * @param mixed $message
      */
     protected function addErrors($message)
     {

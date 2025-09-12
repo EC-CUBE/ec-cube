@@ -127,6 +127,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 引数の配列から CSV を生成し, リソースを返す.
+     *
+     * @param mixed $filename
      */
     public function createCsvFromArray(array $csv, $filename = 'products.csv')
     {
@@ -746,6 +748,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @see https://github.com/EC-CUBE/ec-cube/pull/4177
      *
      * @dataProvider dataDeliveryFeeProvider
+     *
+     * @param mixed $optionDeliveryFee
+     * @param mixed $expected
      */
     public function testImportDeliveryFee($optionDeliveryFee, $expected)
     {
@@ -809,6 +814,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @param string $bind
      * @param string $original_name
+     * @param mixed $isXmlHttpRequest
      *
      * @return Crawler
      */
@@ -873,6 +879,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @dataProvider dataDescriptionDetailProvider
      *
      * @see https://github.com/EC-CUBE/ec-cube/pull/4218
+     *
+     * @param mixed $length
+     * @param mixed $selector
+     * @param mixed $pattern
      */
     public function testImportDescriptionetail($length, $selector, $pattern)
     {
@@ -1074,6 +1084,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider splitCsvDataProvider
+     *
+     * @param mixed $lineNo
+     * @param mixed $expecedFileNo
      */
     public function testSplitCsv($lineNo, $expecedFileNo)
     {

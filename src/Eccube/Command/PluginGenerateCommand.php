@@ -179,6 +179,9 @@ class PluginGenerateCommand extends Command
 
     /**
      * @param string $pluginDir
+     * @param mixed $name
+     * @param mixed $code
+     * @param mixed $version
      */
     protected function createConfig($pluginDir, $name, $code, $version)
     {
@@ -257,6 +260,7 @@ EOL;
 
     /**
      * @param string $pluginDir
+     * @param mixed $code
      */
     protected function createTwigBlock($pluginDir, $code)
     {
@@ -284,6 +288,7 @@ EOL;
 
     /**
      * @param string $pluginDir
+     * @param mixed $code
      */
     protected function createNav($pluginDir, $code)
     {
@@ -311,6 +316,7 @@ EOL;
 
     /**
      * @param string $pluginDir
+     * @param mixed $code
      */
     protected function createEvent($pluginDir, $code)
     {
@@ -338,6 +344,7 @@ EOL;
 
     /**
      * @param string $pluginDir
+     * @param mixed $code
      */
     protected function createConfigController($pluginDir, $code)
     {

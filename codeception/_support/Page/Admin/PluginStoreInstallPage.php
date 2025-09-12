@@ -28,6 +28,8 @@ class PluginStoreInstallPage extends AbstractAdminPageStyleGuide
     }
 
     /**
+     * @param mixed $message
+     *
      * @return PluginManagePage
      *
      * @throws \Exception

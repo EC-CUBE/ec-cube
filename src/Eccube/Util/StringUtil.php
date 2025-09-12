@@ -122,6 +122,7 @@ class StringUtil
      * 文字コードの判定
      *
      * @param string $value
+     * @param mixed $encoding
      *
      * @return string
      */
@@ -281,6 +282,7 @@ class StringUtil
 
     /**
      * @param $value
+     * @param mixed $greedy
      *
      * @return bool
      */

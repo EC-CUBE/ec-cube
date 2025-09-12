@@ -90,6 +90,10 @@ class EccubeExtensionTest extends EccubeTestCase
 
     /**
      * @dataProvider extensionProvider
+     *
+     * @param mixed $ext
+     * @param mixed $iconOnly
+     * @param mixed $expected
      */
     public function testGetExtensionIcon($ext, $iconOnly, $expected)
     {

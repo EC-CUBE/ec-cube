@@ -106,6 +106,9 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider adminRouteDirParams
+     *
+     * @param mixed $rootDir
+     * @param mixed $valid
      */
     public function testAdminRouteDir($rootDir, $valid)
     {
@@ -328,6 +331,9 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider ipAddressParams
+     *
+     * @param mixed $ip
+     * @param mixed $valid
      */
     public function testFrontAllowHost($ip, $valid)
     {
@@ -338,6 +344,9 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider ipAddressParams
+     *
+     * @param mixed $ip
+     * @param mixed $valid
      */
     public function testFrontDenyHost($ip, $valid)
     {
@@ -348,6 +357,9 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider ipAddressParams
+     *
+     * @param mixed $ip
+     * @param mixed $valid
      */
     public function testAdminAllowHost($ip, $valid)
     {
@@ -358,6 +370,9 @@ class SecurityTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider ipAddressParams
+     *
+     * @param mixed $ip
+     * @param mixed $valid
      */
     public function testAdminDenyHost($ip, $valid)
     {

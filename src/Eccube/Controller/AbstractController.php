@@ -228,6 +228,7 @@ class AbstractController extends Controller
 
     /**
      * @param string $targetPath
+     * @param mixed|null $namespace
      */
     public function setLoginTargetPath($targetPath, $namespace = null)
     {

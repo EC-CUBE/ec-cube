@@ -102,6 +102,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param int $rowNum
+     * @param mixed $execute
      */
     public function 一覧_削除($rowNum, $execute = true)
     {
@@ -118,6 +119,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param int $rowNum
+     * @param mixed $execute
      */
     public function 一覧_仮会員メール再送($rowNum, $execute = true)
     {

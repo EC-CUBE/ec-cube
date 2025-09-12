@@ -128,6 +128,9 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider dataStatusProvider
+     *
+     * @param mixed $status
+     * @param mixed $count
      */
     public function testIndexWithPostSearchByStatus($status, $count)
     {

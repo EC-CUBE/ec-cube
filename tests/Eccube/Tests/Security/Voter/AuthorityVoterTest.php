@@ -44,6 +44,9 @@ class AuthorityVoterTest extends EccubeTestCase
 
     /**
      * @dataProvider voteProvider
+     *
+     * @param mixed $accessUrl
+     * @param mixed $expected
      */
     public function testVote(array $deniedUrls, $accessUrl, $expected)
     {

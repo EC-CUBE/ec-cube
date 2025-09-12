@@ -34,6 +34,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
     /**
      * @deprecated AbstractWebTestCase::loginTo() を使用してください.
+     *
+     * @param mixed|null $user
      */
     public function logIn($user = null)
     {

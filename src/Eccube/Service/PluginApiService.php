@@ -264,6 +264,7 @@ class PluginApiService
      *
      * @param string $url
      * @param array $data
+     * @param mixed $post
      *
      * @return array
      *

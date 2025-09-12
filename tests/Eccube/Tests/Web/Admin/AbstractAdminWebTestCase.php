@@ -25,6 +25,8 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 
     /**
      * @deprecated \Eccube\Tests\Web\AbstractWebTestCase::loginTo() を使用してください.
+     *
+     * @param mixed|null $user
      */
     public function logIn($user = null)
     {

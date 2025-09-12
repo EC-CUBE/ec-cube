@@ -247,6 +247,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     }
 
     /**
+     * @param mixed $OrderItems
+     *
      * @return array
      */
     public function createOrderItemsFormDataEdit($OrderItems)

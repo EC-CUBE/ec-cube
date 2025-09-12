@@ -37,8 +37,8 @@ class MailHistoryRepository extends AbstractRepository
     }
 
     /**
-     * @param \Eccube\Entity\Customer
      * @param int $id
+     * @param \Eccube\Entity\Customer
      *
      * @expectedException \Exception|NoResultException|NonUniqueResultException
      */
