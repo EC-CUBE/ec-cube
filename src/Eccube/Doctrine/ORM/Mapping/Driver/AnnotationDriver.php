@@ -13,11 +13,15 @@
 
 namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\Persistence\Mapping\MappingException;
 
-class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
+class AnnotationDriver extends AttributeDriver
 {
     protected $trait_proxies_directory;
+
+    protected $excludePaths = [];
+    protected $classNames;
 
     public function setTraitProxiesDirectory($dir)
     {

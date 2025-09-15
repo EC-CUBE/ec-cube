@@ -421,9 +421,7 @@ class TestChildEntity extends TestExtendsEntity
 
 class TestChildren extends AbstractEntity
 {
-    /**
-     * @Id
-     */
+    #[Id]
     private $childField;
 
     public function __construct($childField)

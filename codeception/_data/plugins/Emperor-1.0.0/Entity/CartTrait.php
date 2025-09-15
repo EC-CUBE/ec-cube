@@ -20,12 +20,9 @@ use Eccube\Annotation\EntityExtension;
 trait CartTrait
 {
     /**
-     * @ORM\OneToOne(targetEntity="Plugin\Emperor\Entity\Foo")
-     *
-     * @ORM\JoinColumns({
-     *
-     *   @ORM\JoinColumn(name="foo_id", referencedColumnName="id")
-     * })
+     * @var foo
      */
+    #[ORM\OneToOne(targetEntity: Foo::class)]
+    #[ORM\JoinColumn(name: 'foo_id', referencedColumnName: 'id', nullable: true)]
     public $foo;
 }

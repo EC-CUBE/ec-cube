@@ -26,7 +26,6 @@ use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
-use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
 use Eccube\DependencyInjection\Facade\LoggerFacade;
 use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
@@ -153,13 +152,6 @@ class Kernel extends BaseKernel
         $Translator = $container->get('translator');
         if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($Translator);
-        }
-
-        /** @var AnnotationReaderFacade $AnnotationReaderFacade */
-        $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
-        $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
-        if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
-            AnnotationReaderFacade::init($AnnotationReader);
         }
     }
 
@@ -291,7 +283,7 @@ class Kernel extends BaseKernel
         $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
         $namespaces = ['Eccube\\Entity'];
         $reader = new Reference('annotation_reader');
-        $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+        $driver = new Definition(AnnotationDriver::class, [$paths]);
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
@@ -317,7 +309,7 @@ class Kernel extends BaseKernel
                 $paths = ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity'];
                 $namespaces = ['Plugin\\'.$code.'\\Entity'];
                 $reader = new Reference('annotation_reader');
-                $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+                $driver = new Definition(AnnotationDriver::class, [$paths]);
                 $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
                 $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
             }

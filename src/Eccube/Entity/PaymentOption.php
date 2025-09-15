@@ -14,67 +14,47 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PaymentOptionRepository;
 
 if (!class_exists(PaymentOption::class)) {
     /**
      * PaymentOption
-     *
-     * @ORM\Table(name="dtb_payment_option")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentOptionRepository")
      */
+    #[ORM\Table(name: 'dtb_payment_option')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: PaymentOptionRepository::class)]
     class PaymentOption extends AbstractEntity
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="delivery_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
          */
+        #[ORM\Column(name: 'delivery_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'NONE')]
         private $delivery_id;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="payment_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
          */
+        #[ORM\Column(name: 'payment_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'NONE')]
         private $payment_id;
 
         /**
          * @var Delivery
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="PaymentOptions")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'PaymentOptions')]
+        #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
         /**
          * @var Payment
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment", inversedBy="PaymentOptions")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Payment::class, inversedBy: 'PaymentOptions')]
+        #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
         private $Payment;
 
         /**

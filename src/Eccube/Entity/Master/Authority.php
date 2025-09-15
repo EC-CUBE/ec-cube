@@ -14,23 +14,18 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\AuthorityRepository;
 
 if (!class_exists(Authority::class, false)) {
     /**
      * Authority
-     *
-     * @ORM\Table(name="mtb_authority")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\AuthorityRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'mtb_authority')]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: AuthorityRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     class Authority extends AbstractMasterEntity
     {
         /**

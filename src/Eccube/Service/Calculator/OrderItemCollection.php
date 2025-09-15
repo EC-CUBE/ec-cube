@@ -21,7 +21,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
     protected $type;
 
-    public function __construct($OrderItems, $type = null)
+    public function __construct($OrderItems = [], $type = null)
     {
         // $OrderItems が Collection だったら toArray(); する
         $this->type = is_null($type) ? Order::class : $type;

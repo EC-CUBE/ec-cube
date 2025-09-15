@@ -14,23 +14,18 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\WorkRepository;
 
 if (!class_exists(Work::class, false)) {
     /**
      * Work
-     *
-     * @ORM\Table(name="mtb_work")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\WorkRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'mtb_work')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: WorkRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class Work extends AbstractMasterEntity
     {
         /**

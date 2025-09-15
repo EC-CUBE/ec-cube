@@ -409,26 +409,24 @@ use Doctrine\\ORM\\Mapping as ORM;
 if (!class_exists('\\Plugin\\{$code}\\Entity\\Config', false)) {
     /**
      * Config
-     *
-     * @ORM\Table(name="plg_{$snakecased}_config")
-     * @ORM\Entity(repositoryClass="Plugin\\{$code}\\Repository\\ConfigRepository")
      */
+    #[ORM\Table(name: "plg_{$snakecased}_config")]
+    #[ORM\Entity(repositoryClass: "Plugin\\{$code}\\Repository\\ConfigRepository")]
     class Config
     {
         /**
          * @var int
          *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Id]
+        #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
+        #[ORM\GeneratedValue(strategy: "IDENTITY")]
         private \$id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
          */
+        #[ORM\Column(name: "name", type: "string", length: 255)]
         private \$name;
 
         /**

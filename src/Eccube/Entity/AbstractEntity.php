@@ -19,13 +19,12 @@ use Doctrine\Inflector\NoopWordInflector;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Proxy\Proxy;
-use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @MappedSuperclass */
+#[MappedSuperclass]
 abstract class AbstractEntity implements \ArrayAccess
 {
     #[\ReturnTypeWillChange]
@@ -249,9 +248,8 @@ abstract class AbstractEntity implements \ArrayAccess
         $Properties = $PropReflect->getProperties();
 
         foreach ($Properties as $Property) {
-            $AnnotationReader = AnnotationReaderFacade::create();
-            $anno = $AnnotationReader->getPropertyAnnotation($Property, Id::class);
-            if ($anno) {
+            $attribute = $Property->getAttributes(Id::class);
+            if ($attribute) {
                 $Property->setAccessible(true);
                 $Result[$Property->getName()] = $Property->getValue($Entity);
             }

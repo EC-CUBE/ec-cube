@@ -13,7 +13,6 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
@@ -73,7 +72,6 @@ class SchemaService
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string) $namespace)) {
                     // Setup to AnnotationDriver
                     $newDriver = new ReloadSafeAnnotationDriver(
-                        new AnnotationReader(),
                         $oldDriver->getPaths()
                     );
                     $newDriver->setFileExtension($oldDriver->getFileExtension());
@@ -87,7 +85,7 @@ class SchemaService
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
                         if ($extraEntityNamespace === $namespace) {
-                            $chain->addDriver(new NopAnnotationDriver(new AnnotationReader()), $namespace);
+                            $chain->addDriver(new NopAnnotationDriver($namespace));
                         }
                     }
                 }

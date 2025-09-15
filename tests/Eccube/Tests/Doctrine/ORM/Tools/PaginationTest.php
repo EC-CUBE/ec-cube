@@ -18,6 +18,7 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Eccube\Entity\Member;
@@ -91,7 +92,7 @@ class PaginationTest extends EccubeTestCase
 
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
-        $driver = $config->newDefaultAnnotationDriver(__DIR__, false);
+        $driver = new AttributeDriver([__DIR__]);
         $chain = $config->getMetadataDriverImpl()->getDriver();
         $chain->addDriver($driver, __NAMESPACE__);
 
@@ -344,25 +345,17 @@ class PaginationTest extends EccubeTestCase
 
 /**
  * テスト用のエンティティ
- *
- * @ORM\Entity(repositoryClass="Eccube\Tests\Doctrine\ORM\Tools\TestRepository")
- *
- * @ORM\Table(name="test_entity")
  */
+#[ORM\Table(name: 'test_entity')]
+#[ORM\Entity(repositoryClass: TestRepository::class)]
 class TestEntity
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     public $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     public $col;
 }
 

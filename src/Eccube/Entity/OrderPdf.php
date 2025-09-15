@@ -14,19 +14,16 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\OrderPdfRepository;
 
 if (!class_exists(OrderPdf::class)) {
     /**
      * OrderPdf
-     *
-     * @ORM\Table(name="dtb_order_pdf")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\OrderPdfRepository")
      */
+    #[ORM\Table(name: 'dtb_order_pdf')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\Entity(repositoryClass: OrderPdfRepository::class)]
     class OrderPdf extends AbstractEntity
     {
         public $ids;
@@ -37,81 +34,69 @@ if (!class_exists(OrderPdf::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="member_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
          */
+        #[ORM\Column(name: 'member_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
         private $member_id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="title", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'title', type: 'string', nullable: true)]
         private $title;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="message1", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'message1', type: 'string', nullable: true)]
         private $message1;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="message2", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'message2', type: 'string', nullable: true)]
         private $message2;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="message3", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'message3', type: 'string', nullable: true)]
         private $message3;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="note1", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'note1', type: 'string', nullable: true)]
         private $note1;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="note2", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'note2', type: 'string', nullable: true)]
         private $note2;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="note3", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'note3', type: 'string', nullable: true)]
         private $note3;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible = true;
 
         /**

@@ -18,17 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(Block::class)) {
     /**
      * Block
-     *
-     * @ORM\Table(name="dtb_block", uniqueConstraints={@ORM\UniqueConstraint(name="device_type_id", columns={"device_type_id", "file_name"})})
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\BlockRepository")
      */
+    #[ORM\Table(name: 'dtb_block', uniqueConstraints: [new ORM\UniqueConstraint(name: 'device_type_id', columns: ['device_type_id', 'file_name'])])]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\BlockRepository::class)]
     class Block extends AbstractEntity
     {
         /**
@@ -38,74 +33,59 @@ if (!class_exists(Block::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="block_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'block_name', type: 'string', length: 255, nullable: true)]
         private $name;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="file_name", type="string", length=255)
          */
+        #[ORM\Column(name: 'file_name', type: 'string', length: 255)]
         private $file_name;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="use_controller", type="boolean", options={"default":false})
          */
+        #[ORM\Column(name: 'use_controller', type: 'boolean', options: ['default' => false])]
         private $use_controller = false;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="deletable", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'deletable', type: 'boolean', options: ['default' => true])]
         private $deletable = true;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Block", cascade={"persist","remove"})
          */
+        #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
         /**
          * @var Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
+        #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
         /**

@@ -450,8 +450,9 @@ use Doctrine\ORM\Mapping as ORM;
 trait HogeTrait
 {
     /**
-     * @ORM\Column(name="test_update_schema_command", type="string", nullable=true)
+     * @var string|null
      */
+    #[ORM\Column(name: 'test_update_schema_command', type: 'text', nullable: true)]
     public \$testUpdateSchemaCommand;
 }
 EOT

@@ -18,66 +18,46 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(CustomerFavoriteProduct::class)) {
     /**
      * CustomerFavoriteProduct
-     *
-     * @ORM\Table(name="dtb_customer_favorite_product")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerFavoriteProductRepository")
      */
+    #[ORM\Table(name: 'dtb_customer_favorite_product')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\CustomerFavoriteProductRepository::class)]
     class CustomerFavoriteProduct extends AbstractEntity
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var Customer
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerFavoriteProducts')]
+        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
          * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'CustomerFavoriteProducts')]
+        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**

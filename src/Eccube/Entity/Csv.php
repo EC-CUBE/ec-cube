@@ -18,108 +18,82 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(Csv::class)) {
     /**
      * Csv
-     *
-     * @ORM\Table(name="dtb_csv")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CsvRepository")
      */
+    #[ORM\Table(name: 'dtb_csv')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\CsvRepository::class)]
     class Csv extends AbstractEntity
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="entity_name", type="string", length=255)
          */
+        #[ORM\Column(name: 'entity_name', type: 'string', length: 255)]
         private $entity_name;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="field_name", type="string", length=255)
          */
+        #[ORM\Column(name: 'field_name', type: 'string', length: 255)]
         private $field_name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="reference_field_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'reference_field_name', type: 'string', length: 255, nullable: true)]
         private $reference_field_name;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="disp_name", type="string", length=255)
          */
+        #[ORM\Column(name: 'disp_name', type: 'string', length: 255)]
         private $disp_name;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
         private $sort_no;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="enabled", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'enabled', type: 'boolean', options: ['default' => true])]
         private $enabled = true;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var Master\CsvType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="csv_type_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\CsvType::class)]
+        #[ORM\JoinColumn(name: 'csv_type_id', referencedColumnName: 'id')]
         private $CsvType;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

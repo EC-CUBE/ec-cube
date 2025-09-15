@@ -14,21 +14,17 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\MailHistoryRepository;
 
 if (!class_exists(MailHistory::class)) {
     /**
      * MailHistory
-     *
-     * @ORM\Table(name="dtb_mail_history")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
      */
+    #[ORM\Table(name: 'dtb_mail_history')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: MailHistoryRepository::class)]
     class MailHistory extends AbstractEntity implements \Stringable
     {
         /**
@@ -42,65 +38,48 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="send_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'send_date', type: 'datetimetz', nullable: true)]
         private $send_date;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'mail_subject', type: 'string', length: 255, nullable: true)]
         private $mail_subject;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="mail_body", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'mail_body', type: 'text', nullable: true)]
         private $mail_body;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="mail_html_body", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'mail_html_body', type: 'text', nullable: true)]
         private $mail_html_body;
 
         /**
          * @var Order
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'MailHistories')]
+        #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true)]
         private $Order;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id", nullable=true)
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: true)]
         private $Creator;
 
         /**

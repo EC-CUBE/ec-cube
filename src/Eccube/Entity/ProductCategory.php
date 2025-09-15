@@ -14,67 +14,47 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ProductCategoryRepository;
 
 if (!class_exists(ProductCategory::class)) {
     /**
      * ProductCategory
-     *
-     * @ORM\Table(name="dtb_product_category")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductCategoryRepository")
      */
+    #[ORM\Table(name: 'dtb_product_category')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
     class ProductCategory extends AbstractEntity
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
          */
+        #[ORM\Column(name: 'product_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'NONE')]
         private $product_id;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
          */
+        #[ORM\Column(name: 'category_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'NONE')]
         private $category_id;
 
         /**
          * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductCategories')]
+        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var Category
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ProductCategories')]
+        #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
         private $Category;
 
         /**

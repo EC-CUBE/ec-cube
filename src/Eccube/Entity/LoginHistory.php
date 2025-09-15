@@ -15,84 +15,63 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\LoginHistoryStatus;
+use Eccube\Repository\LoginHistoryRepository;
 
 if (!class_exists(LoginHistory::class)) {
     /**
      * LoginHistory
-     *
-     * @ORM\Table(name="dtb_login_history")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\LoginHistoryRepository")
      */
+    #[ORM\Table(name: 'dtb_login_history')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: LoginHistoryRepository::class)]
     class LoginHistory extends AbstractEntity
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(type="text",nullable=true)
          */
+        #[ORM\Column(type: 'text', nullable: true)]
         private $user_name;
 
         /**
          * @var string
-         *
-         * @ORM\Column(type="text",nullable=true)
          */
+        #[ORM\Column(type: 'text', nullable: true)]
         private $client_ip;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var LoginHistoryStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\LoginHistoryStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="login_history_status_id", referencedColumnName="id", nullable=false)
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
+        #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
         private $Status;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
         private $LoginUser;
 
         /**

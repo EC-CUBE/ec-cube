@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxType;
+use Eccube\Repository\OrderRepository;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Service\TaxRuleService;
@@ -25,28 +26,20 @@ use Eccube\Service\TaxRuleService;
 if (!class_exists(Order::class)) {
     /**
      * Order
-     *
-     * @ORM\Table(name="dtb_order", indexes={
-     *
-     *     @ORM\Index(name="dtb_order_email_idx", columns={"email"}),
-     *     @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}),
-     *     @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}),
-     *     @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"}),
-     *     @ORM\Index(name="dtb_order_order_no_idx", columns={"order_no"})
-     *  },
-     *  uniqueConstraints={
-     *
-     *     @ORM\UniqueConstraint(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"})
-     *  })
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\OrderRepository")
      */
+    #[ORM\Table(name: 'dtb_order', indexes: [
+        new ORM\Index(columns: ['email'], name: 'dtb_order_email_idx'),
+        new ORM\Index(columns: ['order_date'], name: 'dtb_order_order_date_idx'),
+        new ORM\Index(columns: ['payment_date'], name: 'dtb_order_payment_date_idx'),
+        new ORM\Index(columns: ['update_date'], name: 'dtb_order_update_date_idx'),
+        new ORM\Index(columns: ['order_no'], name: 'dtb_order_order_no_idx'),
+    ], uniqueConstraints: [
+        new ORM\UniqueConstraint(name: 'dtb_order_pre_order_id_idx', columns: ['pre_order_id']),
+    ])]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: OrderRepository::class)]
     class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
     {
         use NameTrait;
@@ -334,211 +327,180 @@ if (!class_exists(Order::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'pre_order_id', type: 'string', length: 255, nullable: true)]
         private $pre_order_id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="order_no", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'order_no', type: 'string', length: 255, nullable: true)]
         private $order_no;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="message", type="string", length=4000, nullable=true)
          */
+        #[ORM\Column(name: 'message', type: 'string', length: 4000, nullable: true)]
         private $message;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="name01", type="string", length=255)
          */
+        #[ORM\Column(name: 'name01', type: 'string', length: 255)]
         private $name01;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="name02", type="string", length=255)
          */
+        #[ORM\Column(name: 'name02', type: 'string', length: 255)]
         private $name02;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'kana01', type: 'string', length: 255, nullable: true)]
         private $kana01;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'kana02', type: 'string', length: 255, nullable: true)]
         private $kana02;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
         private $company_name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="email", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
         private $email;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
          */
+        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
         private $phone_number;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
          */
+        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
         private $postal_code;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
         private $addr01;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
         private $addr02;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="birth", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'birth', type: 'datetimetz', nullable: true)]
         private $birth;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'subtotal', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $subtotal = 0;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="discount", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'discount', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $discount = 0;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'delivery_fee_total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $delivery_fee_total = 0;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'charge', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $charge = 0;
 
         /**
          * @var string
          *
-         * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
-         *
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
+        #[ORM\Column(name: 'tax', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $tax = 0;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $total = 0;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="payment_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'payment_total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $payment_total = 0;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'payment_method', type: 'string', length: 255, nullable: true)]
         private $payment_method;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="note", type="string", length=4000, nullable=true)
          */
+        #[ORM\Column(name: 'note', type: 'string', length: 4000, nullable: true)]
         private $note;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="order_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'order_date', type: 'datetimetz', nullable: true)]
         private $order_date;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="payment_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'payment_date', type: 'datetimetz', nullable: true)]
         private $payment_date;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="currency_code", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'currency_code', type: 'string', nullable: true)]
         private $currency_code;
 
         /**
@@ -549,9 +511,8 @@ if (!class_exists(Order::class)) {
          * 表示する際にHTMLは利用可能です。
          *
          * @var string|null
-         *
-         * @ORM\Column(name="complete_message", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'complete_message', type: 'text', nullable: true)]
         private $complete_message;
 
         /**
@@ -561,158 +522,101 @@ if (!class_exists(Order::class)) {
          * 複数のプラグインから利用されるため, appendCompleteMailMesssage()で追加してください.
          *
          * @var string|null
-         *
-         * @ORM\Column(name="complete_mail_message", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'complete_mail_message', type: 'text', nullable: true)]
         private $complete_mail_message;
 
         /**
          * @var \Doctrine\Common\Collections\Collection|OrderItem[]
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
          */
+        #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $OrderItems;
 
         /**
          * @var \Doctrine\Common\Collections\Collection|Shipping[]
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist","remove"})
          */
+        #[ORM\OneToMany(targetEntity: Shipping::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $Shippings;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order", cascade={"remove"})
-         *
-         * @ORM\OrderBy({
-         *     "send_date"="DESC"
-         * })
          */
+        #[ORM\OneToMany(targetEntity: MailHistory::class, mappedBy: 'Order', cascade: ['remove'])]
+        #[ORM\OrderBy(['send_date' => 'DESC'])]
         private $MailHistories;
 
         /**
          * @var Customer
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="Orders")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'Orders')]
+        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
          * @var Master\Country
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
          * @var Master\Sex
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="sex_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Sex::class)]
+        #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
          * @var Master\Job
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="job_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Job::class)]
+        #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
         /**
          * @var Payment
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Payment::class)]
+        #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
         private $Payment;
 
         /**
          * @var Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
+        #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
          * @var Master\CustomerOrderStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\CustomerOrderStatus::class)]
+        #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $CustomerOrderStatus;
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
          * @var Master\OrderStatusColor
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\OrderStatusColor::class)]
+        #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $OrderStatusColor;
 
         /**
          * @var Master\OrderStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\OrderStatus::class)]
+        #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $OrderStatus;
 
         /**

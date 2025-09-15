@@ -23,7 +23,7 @@ class ItemCollection extends ArrayCollection
 {
     protected $type;
 
-    public function __construct($Items, $type = null)
+    public function __construct($Items = [], $type = null)
     {
         $this->type = is_null($type) ? Order::class : $type;
 

@@ -18,17 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(ClassCategory::class)) {
     /**
      * ClassCategory
-     *
-     * @ORM\Table(name="dtb_class_category")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ClassCategoryRepository")
      */
+    #[ORM\Table(name: 'dtb_class_category')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\ClassCategoryRepository::class)]
     class ClassCategory extends AbstractEntity implements \Stringable
     {
         /**
@@ -42,79 +37,60 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'backend_name', type: 'string', length: 255, nullable: true)]
         private $backend_name;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
          */
+        #[ORM\Column(name: 'name', type: 'string', length: 255)]
         private $name;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'integer', options: ['unsigned' => true])]
         private $sort_no;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var ClassName
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassName", inversedBy="ClassCategories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="class_name_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: ClassName::class, inversedBy: 'ClassCategories')]
+        #[ORM\JoinColumn(name: 'class_name_id', referencedColumnName: 'id')]
         private $ClassName;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

@@ -14,23 +14,19 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ShippingRepository;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 if (!class_exists(Shipping::class)) {
     /**
      * Shipping
-     *
-     * @ORM\Table(name="dtb_shipping")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ShippingRepository")
      */
+    #[ORM\Table(name: 'dtb_shipping')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: ShippingRepository::class)]
     class Shipping extends AbstractEntity
     {
         use NameTrait;
@@ -51,212 +47,168 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name01", type="string", length=255)
          */
+        #[ORM\Column(name: 'name01', type: 'string', length: 255)]
         private $name01;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name02", type="string", length=255)
          */
+        #[ORM\Column(name: 'name02', type: 'string', length: 255)]
         private $name02;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'kana01', type: 'string', length: 255, nullable: true)]
         private $kana01;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'kana02', type: 'string', length: 255, nullable: true)]
         private $kana02;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
         private $company_name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
          */
+        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
         private $phone_number;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
          */
+        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
         private $postal_code;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
         private $addr01;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
         private $addr02;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="delivery_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'delivery_name', type: 'string', length: 255, nullable: true)]
         private $shipping_delivery_name;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="time_id", type="integer", options={"unsigned":true}, nullable=true)
          */
+        #[ORM\Column(name: 'time_id', type: 'integer', options: ['unsigned' => true], nullable: true)]
         private $time_id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="delivery_time", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'delivery_time', type: 'string', length: 255, nullable: true)]
         private $shipping_delivery_time;
 
         /**
          * お届け予定日/お届け希望日
          *
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="delivery_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'delivery_date', type: 'datetimetz', nullable: true)]
         private $shipping_delivery_date;
 
         /**
          * 出荷日
          *
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="shipping_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'shipping_date', type: 'datetimetz', nullable: true)]
         private $shipping_date;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="tracking_number", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'tracking_number', type: 'string', length: 255, nullable: true)]
         private $tracking_number;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="note", type="string", length=4000, nullable=true)
          */
+        #[ORM\Column(name: 'note', type: 'string', length: 4000, nullable: true)]
         private $note;
 
         /**
          * @var int|null
-         *
-         * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true, options: ['unsigned' => true])]
         private $sort_no;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="mail_send_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'mail_send_date', type: 'datetimetz', nullable: true)]
         private $mail_send_date;
 
         /**
          * @var Order
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings", cascade={"persist"})
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Order::class, cascade: ['persist'], inversedBy: 'Shippings')]
+        #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
         private $Order;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist"})
          */
+        #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
         private $OrderItems;
 
         /**
          * @var Master\Country
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
          * @var Delivery
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Delivery::class)]
+        #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
         /**
@@ -266,14 +218,9 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

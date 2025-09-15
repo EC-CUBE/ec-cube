@@ -20,7 +20,8 @@ use Eccube\Annotation\EntityExtension;
 trait CustomerSortNoTrait
 {
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @var int|null
      */
+    #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true)]
     public $sort_no;
 }

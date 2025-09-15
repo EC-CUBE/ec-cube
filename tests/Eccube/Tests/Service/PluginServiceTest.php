@@ -605,21 +605,21 @@ namespace Plugin\@@@@\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Blocknn
+ * Block
  *
- * @ORM\Table(name="plg_@@@@")
- * @ORM\Entity(repositoryClass="Plugin\@@@@\Repository\BlockRepository")
  */
 if (!class_exists('\Plugin\@@@@\Entity\Block')) {
+#[ORM\Table(name:"plg_@@@@")]
+#[ORM\Entity(repositoryClass: "Plugin\@@@@\Repository\BlockRepository")]
 class Block
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $id;
 
     /**

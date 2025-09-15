@@ -14,21 +14,17 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PageRepository;
 
 if (!class_exists(Page::class)) {
     /**
      * Page
-     *
-     * @ORM\Table(name="dtb_page", indexes={@ORM\Index(name="dtb_page_url_idx", columns={"url"})})
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PageRepository")
      */
+    #[ORM\Table(name: 'dtb_page', indexes: [new ORM\Index(columns: ['url'], name: 'dtb_page_url_idx')])]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: PageRepository::class)]
     class Page extends AbstractEntity
     {
         // 編集可能フラグ
@@ -55,109 +51,89 @@ if (!class_exists(Page::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="page_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'page_name', type: 'string', length: 255, nullable: true)]
         private $name;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="url", type="string", length=255)
          */
+        #[ORM\Column(name: 'url', type: 'string', length: 255)]
         private $url;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'file_name', type: 'string', length: 255, nullable: true)]
         private $file_name;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="edit_type", type="smallint", options={"unsigned":true,"default":1})
          */
+        #[ORM\Column(name: 'edit_type', type: 'smallint', options: ['unsigned' => true, 'default' => 1])]
         private $edit_type = 1;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="author", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'author', type: 'string', length: 255, nullable: true)]
         private $author;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="description", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
         private $description;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="keyword", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'keyword', type: 'string', length: 255, nullable: true)]
         private $keyword;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="meta_robots", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'meta_robots', type: 'string', length: 255, nullable: true)]
         private $meta_robots;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="meta_tags", type="string", length=4000, nullable=true)
          */
+        #[ORM\Column(name: 'meta_tags', type: 'string', length: 4000, nullable: true)]
         private $meta_tags;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Page", cascade={"persist","remove"})
          */
+        #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
         private $PageLayouts;
 
         /**
          * @var Page
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="master_page_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Page::class)]
+        #[ORM\JoinColumn(name: 'master_page_id', referencedColumnName: 'id')]
         private $MasterPage;
 
         /**
