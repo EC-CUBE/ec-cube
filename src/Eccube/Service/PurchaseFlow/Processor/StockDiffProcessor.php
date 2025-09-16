@@ -88,7 +88,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             // ステータスをキャンセルから対応中に変更した場合
             } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
-                if ($stock - $toQuantity < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                if ($stock - $toQuantity < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             } else {

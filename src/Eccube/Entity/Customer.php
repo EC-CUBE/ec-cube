@@ -1180,7 +1180,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Set point
          *
-         * @param float|string $point
+         * @param string $point
          *
          * @return Customer
          */

@@ -22,7 +22,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -76,7 +75,9 @@ class SecurityListener implements EventSubscriberInterface
     }
 
     /**
-     * @param AuthenticationFailureEvent $event
+     * @param LoginFailureEvent $event
+     *
+     * @return void
      */
     public function onAuthenticationFailure(LoginFailureEvent $event)
     {

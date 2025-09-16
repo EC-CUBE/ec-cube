@@ -388,8 +388,8 @@ class DeliveryController extends AbstractController
         // 手数料抜きの利用条件の一覧を作成
         $rules = array_map(function (Payment $Payment) {
             return [
-                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0,
-                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX,
+                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0, // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX, // @phpstan-ignore-line TODO bcmath-polyfill を使用する
             ];
         }, $PaymentsData);
 

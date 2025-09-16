@@ -610,14 +610,14 @@ if (!class_exists(Order::class)) {
         private $OrderItems;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection|Shipping[]
+         * @var \Doctrine\ORM\PersistentCollection<int,Shipping>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist","remove"})
          */
         private $Shippings;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,MailHistory>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order", cascade={"remove"})
          *
@@ -1537,7 +1537,7 @@ if (!class_exists(Order::class)) {
         /**
          * @param string|null $complete_mail_message
          *
-         * @return
+         * @return self
          */
         public function setCompleteMailMessage($complete_mail_message = null)
         {
@@ -1549,7 +1549,7 @@ if (!class_exists(Order::class)) {
         /**
          * @param string|null $complete_mail_message
          *
-         * @return
+         * @return self
          */
         public function appendCompleteMailMessage($complete_mail_message = null)
         {
@@ -1646,7 +1646,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get shippings.
          *
-         * @return \Doctrine\Common\Collections\Collection|Shipping[]
+         * @return \Doctrine\Common\Collections\Collection<int,Shipping>
          */
         public function getShippings()
         {
@@ -1911,9 +1911,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderStatus.
          *
-         * @param Master\OrderStatus|object|null $orderStatus
+         * @param Master\OrderStatus|null $orderStatus
          *
-         * @return Order
+         * @return self
          */
         public function setOrderStatus(?Master\OrderStatus $orderStatus = null)
         {

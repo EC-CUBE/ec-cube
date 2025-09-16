@@ -207,7 +207,7 @@ class AddCartType extends AbstractType
             new Assert\NotBlank(),
         ], '[product_class_id]');
         if ($this->Product->getClassName1()) {
-            $context->validateValue($data['classcategory_id1'], [
+            $context->validateValue($data['classcategory_id1'], [ // @phpstan-ignore-line TODO このメソッドは使用されているか要確認
                 new Assert\NotBlank(),
                 new Assert\NotEqualTo([
                     'value' => '__unselected',

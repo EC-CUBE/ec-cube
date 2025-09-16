@@ -747,7 +747,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Get deliveryFreeAmount.
          *
-         * @return float|string|null
+         * @return string|null
          */
         public function getDeliveryFreeAmount()
         {

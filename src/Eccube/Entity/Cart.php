@@ -282,7 +282,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return float|string
+         * @return string
          */
         public function getTotalPrice()
         {

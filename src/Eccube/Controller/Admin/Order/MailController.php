@@ -54,7 +54,7 @@ class MailController extends AbstractController
      * @param MailService $mailService
      * @param MailHistoryRepository $mailHistoryRepository
      * @param OrderRepository $orderRepository
-     * @param twig $twig
+     * @param Environment $twig
      */
     public function __construct(
         MailService $mailService,

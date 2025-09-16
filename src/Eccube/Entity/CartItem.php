@@ -103,7 +103,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param  string  $price
+         * @param string $price
          *
          * @return CartItem
          */
@@ -115,7 +115,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return float|string
+         * @return string
          */
         #[\Override]
         public function getPrice()
@@ -137,7 +137,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return float|string
+         * @return string
          */
         #[\Override]
         public function getQuantity()

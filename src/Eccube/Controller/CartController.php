@@ -104,7 +104,7 @@ class CartController extends AbstractController
                 if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
                     $isDeliveryFree[$Cart->getCartKey()] = true;
                 } else {
-                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
+                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                 }
             }
 

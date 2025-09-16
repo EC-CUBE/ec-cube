@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
@@ -55,7 +56,7 @@ class AbstractController extends Controller
     protected $eventDispatcher;
 
     /**
-     * @var SessionInterface
+     * @var FlashBagAwareSessionInterface
      */
     protected $session;
 

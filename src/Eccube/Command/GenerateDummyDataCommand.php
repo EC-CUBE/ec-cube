@@ -34,7 +34,7 @@ class GenerateDummyDataCommand extends Command
     protected $generator;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 

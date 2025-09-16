@@ -376,7 +376,6 @@ class CsvImportController extends AbstractCsvImportController
                         $this->createProductTag($row, $Product, $data, $headerByKey);
 
                         // 商品規格が存在しなければ新規登録
-                        /** @var ProductClass[] $ProductClasses */
                         $ProductClasses = $Product->getProductClasses();
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
@@ -1419,7 +1418,7 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setStockUnlimited(false);
             // 在庫数が設定されていなければエラー
             if (isset($row[$headerByKey['stock']]) && StringUtil::isNotBlank($row[$headerByKey['stock']])) {
-                $stock = str_replace(',', '', $row[$headerByKey['stock']]);
+                $stock = str_replace(',', '', (string) $row[$headerByKey['stock']]);
                 if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                     $ProductClass->setStock($stock);
                 } else {
@@ -1439,7 +1438,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         if (isset($row[$headerByKey['sale_limit']]) && StringUtil::isNotBlank($row[$headerByKey['sale_limit']])) {
-            $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
+            $saleLimit = str_replace(',', '', (string) $row[$headerByKey['sale_limit']]);
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
@@ -1603,7 +1602,7 @@ class CsvImportController extends AbstractCsvImportController
                 $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
                 $this->addErrors($message);
             } else {
-                $stock = str_replace(',', '', $row[$headerByKey['stock']]);
+                $stock = str_replace(',', '', (string) $row[$headerByKey['stock']]);
                 if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                     $ProductClass->setStock($row[$headerByKey['stock']]);
                 } else {
@@ -1621,7 +1620,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['sale_limit']])) {
             if ($row[$headerByKey['sale_limit']] != '') {
-                $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
+                $saleLimit = str_replace(',', '', (string) $row[$headerByKey['sale_limit']]);
                 if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                     $ProductClass->setSaleLimit($saleLimit);
                 } else {

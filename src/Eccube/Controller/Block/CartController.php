@@ -42,13 +42,13 @@ class CartController extends AbstractController
         // ここではpurchaseFlowは実行しない
 
         $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
+            /** @var Cart $Cart */
             $total += $Cart->getTotalQuantity();
 
             return $total;
         }, 0);
         $totalPrice = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
+            /** @var Cart $Cart */
             $total += $Cart->getTotalPrice();
 
             return $total;

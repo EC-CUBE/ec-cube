@@ -75,7 +75,7 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * @param ResponseEvent $event
+     * @param RequestEvent $event
      */
     public function onKernelRequest(RequestEvent $event)
     {

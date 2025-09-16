@@ -60,6 +60,7 @@ class TwoFactorAuthController extends AbstractController
     #[Template('@admin/two_factor_auth.twig')]
     public function auth(Request $request)
     {
+        /** @var \Eccube\Entity\Member $Member */
         $Member = $this->getUser();
 
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
@@ -129,6 +130,7 @@ class TwoFactorAuthController extends AbstractController
     private function createResponse(Request $request)
     {
         $error = null;
+        /** @var \Eccube\Entity\Member $Member */
         $Member = $this->getUser();
         $builder = $this->formFactory->createBuilder(TwoFactorAuthType::class);
         $form = null;

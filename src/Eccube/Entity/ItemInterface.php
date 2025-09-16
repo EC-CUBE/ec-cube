@@ -84,14 +84,14 @@ interface ItemInterface
     public function getPointRate();
 
     /**
-     * @param float|int|string $price
+     * @param string $price
      *
      * @return $this
      */
     public function setPrice($price);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPriceIncTax();
 }

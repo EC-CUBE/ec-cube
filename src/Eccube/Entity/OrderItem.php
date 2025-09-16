@@ -39,7 +39,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get price IncTax
          *
-         * @return float|string
+         * @return string
          */
         public function getPriceIncTax()
         {
@@ -539,7 +539,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get quantity.
          *
-         * @return float|string
+         * @return string
          */
         #[\Override]
         public function getQuantity()

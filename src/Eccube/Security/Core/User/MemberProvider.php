@@ -47,7 +47,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
      *
      * @param string $username
      *
-     * @return UserInterface
+     * @return Member
      *
      * @throws UserNotFoundException
      */

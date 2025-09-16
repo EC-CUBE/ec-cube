@@ -89,7 +89,7 @@ class EntryController extends AbstractController
      * @param MailService $mailService
      * @param BaseInfoRepository $baseInfoRepository
      * @param CustomerRepository $customerRepository
-     * @param PasswordHasher $passwordHasher
+     * @param UserPasswordHasherInterface $passwordHasher
      * @param ValidatorInterface $validatorInterface
      * @param TokenStorageInterface $tokenStorage
      */

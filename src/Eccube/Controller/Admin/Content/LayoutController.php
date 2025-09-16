@@ -120,8 +120,6 @@ class LayoutController extends AbstractController
      * @param Layout $Layout
      *
      * @return RedirectResponse
-     *
-     * @throws Exception
      */
     #[Route('/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Layout $Layout, CacheUtil $cacheUtil)

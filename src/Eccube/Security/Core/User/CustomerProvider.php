@@ -47,7 +47,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      *
      * @param string $username
      *
-     * @return UserInterface
+     * @return Customer
      *
      * @throws UserNotFoundException
      */

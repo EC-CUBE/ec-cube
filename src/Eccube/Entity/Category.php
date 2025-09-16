@@ -192,7 +192,7 @@ if (!class_exists(Category::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\ORM\PersistentCollection<int,ProductCategory>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Category", fetch="EXTRA_LAZY")
          */

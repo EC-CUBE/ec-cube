@@ -31,6 +31,7 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -227,7 +228,7 @@ class OwnerStoreController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array
+     * @return RedirectResponse|Response
      *
      * @throws PluginException
      */

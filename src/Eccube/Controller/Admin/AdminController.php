@@ -334,6 +334,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \Eccube\Entity\Member $Member */
             $Member = $this->getUser();
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
@@ -407,7 +408,6 @@ class AdminController extends AbstractController
 
     /**
      * @param array $excludes
-     * @param \Doctrine\ORM\EntityManagerInterface $em
      *
      * @return array<int|string,mixed>|Request|null
      */

@@ -528,7 +528,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get deliveryFee.
          *
-         * @return float|string|null
+         * @return string|null
          */
         public function getDeliveryFee()
         {

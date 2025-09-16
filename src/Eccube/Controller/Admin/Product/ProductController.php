@@ -283,14 +283,14 @@ class ProductController extends AbstractController
 
     #[Route('/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Product/product_class_popup.twig')]
-    public function loadProductClasses(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] Product $Product)
+    public function loadProductClasses(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] ?Product $Product)
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
         $data = [];
-        /** @var ProductRepository $Product */
+        /** @var Product|null $Product */
         if (!$Product) {
             throw new NotFoundHttpException();
         }
@@ -550,7 +550,6 @@ class ProductController extends AbstractController
 
                 // カテゴリの登録
                 // 一度クリア
-                /** @var Product $Product */
                 foreach ($Product->getProductCategories() as $ProductCategory) {
                     $Product->removeProductCategory($ProductCategory);
                     $this->entityManager->remove($ProductCategory);

@@ -868,7 +868,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int, ProductCategory>
          */
         public function getProductCategories()
         {
@@ -904,7 +904,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productClasses.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int, ProductClass>
          */
         public function getProductClasses()
         {
