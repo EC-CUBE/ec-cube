@@ -57,7 +57,6 @@ class SchemaService
      * @param array $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
      * @param string $outputDir Metadata の出力先ディレクトリ
-     * @param bool $saveMode UpdateSchema を即時実行する場合 true
      */
     public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
     {

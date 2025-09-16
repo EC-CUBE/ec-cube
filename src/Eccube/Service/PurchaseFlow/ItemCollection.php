@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 
 class ItemCollection extends ArrayCollection
 {

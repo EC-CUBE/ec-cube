@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TwoFactorAuthService
 {
@@ -50,7 +49,7 @@ class TwoFactorAuthService
     protected $requestStack;
 
     /**
-     * @var Request
+     * @var Request|null
      */
     protected $request;
 
@@ -73,7 +72,8 @@ class TwoFactorAuthService
      * constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param UserPasswordHasherInterface $p
+     * @param PasswordHasherFactoryInterface $passwordHasherFactory
+     * @param RequestStack $requestStack
      */
     public function __construct(
         EccubeConfig $eccubeConfig,

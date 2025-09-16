@@ -53,18 +53,18 @@ interface PaymentMethodInterface
     /**
      * PaymentMethod の処理に必要な FormInterface を設定します.
      *
-     * @param FormInterface
+     * @param FormInterface $form
      *
-     * @return PaymentMethod
+     * @return self
      */
     public function setFormType(FormInterface $form);
 
     /**
      * この決済を使用する Order を設定します.
      *
-     * @param Order
+     * @param Order $Order
      *
-     * @return PaymentMethod
+     * @return self
      */
     public function setOrder(Order $Order);
 }

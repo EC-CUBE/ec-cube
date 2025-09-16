@@ -193,6 +193,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         }
         $toUsePoint = $itemHolder->getUsePoint();
 
-        return $toUsePoint - $fromUsePoint;
+        return $toUsePoint - $fromUsePoint; // @phpstan-ignore-line TODO bcmath-polyfill を使用する
     }
 }

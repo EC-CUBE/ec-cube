@@ -31,7 +31,7 @@ class Cash implements PaymentMethodInterface
     /** @var FormInterface */
     private $form;
 
-    /** @var */
+    /** @var PurchaseFlow */
     private $purchaseFlow;
 
     /**

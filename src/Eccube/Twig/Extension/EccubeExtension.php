@@ -140,7 +140,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param string $date
+     * @param \DateTimeInterface|null $date
      * @param string $value
      * @param string $format
      *
@@ -158,7 +158,7 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param string|int|float $number
+     * @param float|null $number
      * @param int $decimals
      * @param string $decPoint
      * @param string $thousandsSep
@@ -167,7 +167,9 @@ class EccubeExtension extends AbstractExtension
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
+        /** @var string $locale */
         $locale = $this->eccubeConfig['locale'];
+        /** @var string $currency */
         $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 

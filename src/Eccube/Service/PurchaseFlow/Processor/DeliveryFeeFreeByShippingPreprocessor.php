@@ -61,7 +61,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
                 $total = 0;
                 $quantity = 0;
                 foreach ($Shipping->getProductOrderItems() as $Item) {
-                    $total += $Item->getPriceIncTax() * $Item->getQuantity();
+                    $total += $Item->getPriceIncTax() * $Item->getQuantity(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                     $quantity += $Item->getQuantity();
                 }
                 // 送料無料（金額）を超えている

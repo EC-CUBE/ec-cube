@@ -63,8 +63,8 @@ class OutputParser
 
         // 'name' => 'value'
         $result = array_column($infoLogs, 2, 1);
-        $result['requires'] = static::parseArrayInfoOutput($rowArray, 'requires');
-        $result['requires (dev)'] = static::parseArrayInfoOutput($rowArray, 'requires (dev)');
+        $result['requires'] = self::parseArrayInfoOutput($rowArray, 'requires');
+        $result['requires (dev)'] = self::parseArrayInfoOutput($rowArray, 'requires (dev)');
 
         return $result;
     }

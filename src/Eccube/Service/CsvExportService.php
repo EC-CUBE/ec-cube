@@ -291,6 +291,7 @@ class CsvExportService
         $page = 1;
         $limit = 100;
         while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
+            /** @var \Knp\Component\Pager\Pagination\AbstractPagination<int, mixed> $results */
             if (!$results->valid()) {
                 break;
             }

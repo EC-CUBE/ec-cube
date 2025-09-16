@@ -128,7 +128,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                     if (!$item->isProduct()) {
                         continue;
                     }
-                    $deliveryFeeProduct += $item->getProductClass()->getDeliveryFee() * $item->getQuantity();
+                    $deliveryFeeProduct += $item->getProductClass()->getDeliveryFee() * $item->getQuantity(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                 }
             }
 

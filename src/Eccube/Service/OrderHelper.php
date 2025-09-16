@@ -106,7 +106,7 @@ class OrderHelper
     protected $deviceTypeRepository;
 
     /**
-     * @var MobileDetector
+     * @var MobileDetect
      */
     protected $mobileDetector;
 

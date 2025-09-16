@@ -480,13 +480,14 @@ class MailService
      * Send admin order mail.
      *
      * @param Order $Order 受注情報
-     * @param $formData 入力内容
+     * @param array<string, string> $formData 入力内容
      *
      * @return Email
      *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
+     * @throws TransportExceptionInterface
      */
     public function sendAdminOrderMail(Order $Order, $formData)
     {
@@ -651,7 +652,9 @@ class MailService
      *
      * @param Shipping $Shipping
      *
-     * @throws \Twig_Error
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
      */
     public function sendShippingNotifyMail(Shipping $Shipping)
     {
@@ -714,7 +717,9 @@ class MailService
      *
      * @return string
      *
-     * @throws \Twig_Error
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
      */
     public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false)
     {

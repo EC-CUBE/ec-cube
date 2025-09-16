@@ -340,7 +340,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Stream filter を適用し, 新たな SplFileObject を返す.
      *
      * @param \SplFileObject $file Stream filter を適用する SplFileObject
-     * @param \php_user_filter $filters 適用する stream filter のクラス名
+     * @param string $filters 適用する stream filter のクラス名
      *
      * @return \SplFileObject 適用後の SplFileObject
      */

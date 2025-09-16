@@ -15,6 +15,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\ProductClassRepository;
@@ -56,7 +57,9 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             return;
         }
 
+        /** @var Order $From */
         $From = $context->getOriginHolder();
+        /** @var Order $To */
         $To = $itemHolder;
         $diff = $this->getDiffOfQuantities($From, $To);
 
@@ -73,19 +76,19 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
                 return $Item->getProductClass()->getId() == $id;
             });
             $toQuantity = array_reduce($Items, function ($quantity, $Item) {
-                return $quantity += $Item->getQuantity();
+                return $quantity += $Item->getQuantity(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
             }, 0);
 
             // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() != OrderStatus::CANCEL) {
-                if ($stock + $toQuantity < 0) {
+                if ($stock + $toQuantity < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             // ステータスをキャンセルから対応中に変更した場合
             } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
-                if ($stock - $toQuantity < 0) {
+                if ($stock - $toQuantity < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             } else {
