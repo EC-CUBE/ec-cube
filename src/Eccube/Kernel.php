@@ -30,7 +30,7 @@ use Eccube\DependencyInjection\Facade\LoggerFacade;
 use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
-use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
@@ -45,7 +45,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -282,8 +281,7 @@ class Kernel extends BaseKernel
         // Eccube
         $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
         $namespaces = ['Eccube\\Entity'];
-        $reader = new Reference('annotation_reader');
-        $driver = new Definition(AnnotationDriver::class, [$paths]);
+        $driver = new Definition(TraitProxyAttributeDriver::class, [$paths]);
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
@@ -308,8 +306,7 @@ class Kernel extends BaseKernel
             if (file_exists($pluginDir.'/'.$code.'/Entity')) {
                 $paths = ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity'];
                 $namespaces = ['Plugin\\'.$code.'\\Entity'];
-                $reader = new Reference('annotation_reader');
-                $driver = new Definition(AnnotationDriver::class, [$paths]);
+                $driver = new Definition(TraitProxyAttributeDriver::class, [$paths]);
                 $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
                 $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
             }

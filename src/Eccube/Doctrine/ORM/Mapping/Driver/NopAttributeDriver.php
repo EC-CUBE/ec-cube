@@ -15,7 +15,7 @@ namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 
-class NopAnnotationDriver extends AttributeDriver
+class NopAttributeDriver extends AttributeDriver
 {
     #[\Override]
     public function getAllClassNames()

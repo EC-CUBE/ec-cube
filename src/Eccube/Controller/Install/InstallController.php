@@ -25,7 +25,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
-use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Entity\Customer;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -583,7 +583,7 @@ class InstallController extends AbstractController
             $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
         $config = Setup::createConfiguration(true);
-        $driver = new AnnotationDriver($paths);
+        $driver = new TraitProxyAttributeDriver($paths);
         $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
         $config->setMetadataDriverImpl($driver);
 

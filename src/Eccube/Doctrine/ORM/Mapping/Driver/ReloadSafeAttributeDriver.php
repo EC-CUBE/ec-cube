@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * 同じプロセス内で、Proxy元のEntityがロードされた後に同じFQCNを持つProxyをロードしようとすると、Fatalエラーが発生する.
  * このエラーを回避するために、新しく生成されたProxyクラスは一時的にクラス名を変更してからロードして、マッピングメタデータを抽出する.
  */
-class ReloadSafeAnnotationDriver extends AnnotationDriver
+class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
 {
     /**
      * @var array 新しく生成されたProxyファイルのリスト
@@ -50,9 +50,11 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
 
     /**
      * {@inheritdoc}
+     *
+     * @throws MappingException
      */
     #[\Override]
-    public function getAllClassNames()
+    public function getAllClassNames(): ?array
     {
         if ($this->classNames !== null) {
             return $this->classNames;

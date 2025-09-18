@@ -15,8 +15,8 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
-use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\NopAttributeDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAttributeDriver;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -71,7 +71,7 @@ class SchemaService
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string) $namespace)) {
                     // Setup to AnnotationDriver
-                    $newDriver = new ReloadSafeAnnotationDriver(
+                    $newDriver = new ReloadSafeAttributeDriver(
                         $oldDriver->getPaths()
                     );
                     $newDriver->setFileExtension($oldDriver->getFileExtension());
@@ -85,7 +85,7 @@ class SchemaService
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
                         if ($extraEntityNamespace === $namespace) {
-                            $chain->addDriver(new NopAnnotationDriver($namespace));
+                            $chain->addDriver(new NopAttributeDriver($namespace));
                         }
                     }
                 }
