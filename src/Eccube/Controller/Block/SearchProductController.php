@@ -20,7 +20,7 @@ use Eccube\Form\Type\SearchProductBlockType;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SearchProductController extends AbstractController
 {

@@ -22,7 +22,7 @@ use Eccube\Service\CsvImportService;
 use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {

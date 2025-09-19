@@ -24,7 +24,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 class MailController extends AbstractController

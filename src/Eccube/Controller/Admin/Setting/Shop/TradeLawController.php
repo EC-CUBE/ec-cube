@@ -21,7 +21,7 @@ use Eccube\Repository\TradeLawRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TradeLawController extends AbstractController
 {

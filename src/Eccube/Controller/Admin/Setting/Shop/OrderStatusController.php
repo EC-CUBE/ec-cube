@@ -21,7 +21,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class OrderStatusController extends AbstractController
 {

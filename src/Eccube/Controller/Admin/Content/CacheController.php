@@ -19,7 +19,7 @@ use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CacheController extends AbstractController
 {

@@ -21,7 +21,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class LogController extends AbstractController
 {

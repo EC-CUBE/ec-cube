@@ -21,7 +21,7 @@ use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MasterdataController extends AbstractController
 {

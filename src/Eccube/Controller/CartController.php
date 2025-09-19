@@ -26,7 +26,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {

@@ -18,7 +18,7 @@ use Eccube\Entity\Cart;
 use Eccube\Repository\CartRepository;
 use Plugin\Boomerang\Entity\Bar;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class BoomerangController extends AbstractController
 {

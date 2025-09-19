@@ -27,7 +27,7 @@ use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 

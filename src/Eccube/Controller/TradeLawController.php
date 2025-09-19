@@ -15,7 +15,7 @@ namespace Eccube\Controller;
 
 use Eccube\Repository\TradeLawRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TradeLawController extends AbstractController
 {

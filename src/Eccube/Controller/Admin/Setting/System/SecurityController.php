@@ -19,7 +19,7 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SecurityController extends AbstractController

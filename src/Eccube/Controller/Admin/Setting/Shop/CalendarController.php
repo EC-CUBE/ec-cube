@@ -19,7 +19,7 @@ use Eccube\Form\Type\Admin\CalendarType;
 use Eccube\Repository\CalendarRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class CalendarController
