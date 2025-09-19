@@ -75,7 +75,7 @@ class NewsRepository extends AbstractRepository
     }
 
     /**
-     * @return News[]|ArrayCollection
+     * @return News[]|ArrayCollection<int, News>
      */
     public function getList()
     {

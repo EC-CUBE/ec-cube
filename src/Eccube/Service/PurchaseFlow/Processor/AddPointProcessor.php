@@ -62,7 +62,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @param ItemHolderInterface $itemHolder
      *
-     * @return int
+     * @return string
      */
     private function calculateAddPoint(ItemHolderInterface $itemHolder)
     {
@@ -78,21 +78,24 @@ class AddPointProcessor extends ItemHolderPostValidator
                 }
 
                 // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
-                $point = 0;
+                $point = '0';
                 if ($item->isPoint()) {
-                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2)), (string) $item->getQuantity());
+                    $point = (string) round((float) $pointCalc);
                 // Only calc point on product
                 } elseif ($item->isProduct()) {
                     // ポイント = 単価 * ポイント付与率 * 数量
-                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2)), (string) $item->getQuantity());
+                    $point = (string) round((float) $pointCalc);
                 } elseif ($item->isDiscount()) {
-                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2)), (string) $item->getQuantity());
+                    $point = (string) round((float) $pointCalc);
                 }
 
-                return $carry + $point;
-            }, 0);
+                return bcadd((string) $carry, $point);
+            }, '0');
 
-        return $totalPoint < 0 ? 0 : $totalPoint;
+        return bccomp($totalPoint, '0') < 0 ? '0' : $totalPoint;
     }
 
     /**

@@ -798,7 +798,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get buyTimes.
          *
-         * @return float|string|null
+         * @return string|null
          */
         public function getBuyTimes()
         {
@@ -822,7 +822,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get buyTotal.
          *
-         * @return float|string|null
+         * @return string|null
          */
         public function getBuyTotal()
         {
@@ -1214,7 +1214,7 @@ if (!class_exists(Customer::class)) {
         public function serialize()
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
-            // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
+            // CustomerRepository::loadUserByIdentifier() で Status をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
                 $this->email,

@@ -93,8 +93,8 @@ class CartController extends AbstractController
             $isDeliveryFree[$Cart->getCartKey()] = false;
 
             if ($this->baseInfo->getDeliveryFreeQuantity()) {
-                if ($this->baseInfo->getDeliveryFreeQuantity() > $Cart->getQuantity()) {
-                    $quantity[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeQuantity() - $Cart->getQuantity();
+                if (bccomp((string) $this->baseInfo->getDeliveryFreeQuantity(), $Cart->getQuantity()) > 0) {
+                    $quantity[$Cart->getCartKey()] = bcsub((string) $this->baseInfo->getDeliveryFreeQuantity(), $Cart->getQuantity());
                 } else {
                     $isDeliveryFree[$Cart->getCartKey()] = true;
                 }

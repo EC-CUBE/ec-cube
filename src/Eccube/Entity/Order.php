@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Service\Calculator\OrderItemCollection;
@@ -610,7 +611,7 @@ if (!class_exists(Order::class)) {
         private $OrderItems;
 
         /**
-         * @var \Doctrine\ORM\PersistentCollection<int,Shipping>
+         * @var \Doctrine\Common\Collections\Collection<int,Shipping>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist","remove"})
          */
@@ -1319,7 +1320,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get paymentTotal.
          *
-         * @return float|string
+         * @return string
          */
         public function getPaymentTotal()
         {
@@ -1653,7 +1654,10 @@ if (!class_exists(Order::class)) {
             $criteria = Criteria::create()
                 ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
 
-            return $this->Shippings->matching($criteria);
+            /** @var PersistentCollection<int,Shipping> $Shippings */
+            $Shippings = $this->Shippings;
+
+            return $Shippings->matching($criteria);
         }
 
         /**
@@ -1944,9 +1948,9 @@ if (!class_exists(Order::class)) {
         #[\Override]
         public function getQuantity()
         {
-            $quantity = 0;
+            $quantity = '0';
             foreach ($this->getItems() as $item) {
-                $quantity += $item->getQuantity();
+                $quantity = bcadd($quantity, (string) $item->getQuantity());
             }
 
             return $quantity;

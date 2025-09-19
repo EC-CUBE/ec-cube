@@ -342,12 +342,12 @@ if (!class_exists(Cart::class)) {
         /**
          * 個数の合計を返します。
          *
-         * @return int
+         * @return string
          */
         #[\Override]
         public function getQuantity()
         {
-            return $this->getTotalQuantity();
+            return (string) $this->getTotalQuantity();
         }
 
         /**

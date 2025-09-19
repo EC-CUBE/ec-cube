@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 if (!class_exists(Category::class)) {
     /**
@@ -142,7 +143,10 @@ if (!class_exists(Category::class)) {
             ->setFirstResult(0)
             ->setMaxResults(1);
 
-            return $this->ProductCategories->matching($criteria)->count() > 0;
+            /** @var PersistentCollection <int,ProductCategory> */
+            $ProductCategories = $this->ProductCategories;
+
+            return $ProductCategories->matching($criteria)->count() > 0;
         }
 
         /**

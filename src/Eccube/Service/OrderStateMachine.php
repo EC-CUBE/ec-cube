@@ -21,13 +21,12 @@ use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
 {
     /**
-     * @var StateMachine
+     * @var WorkflowInterface
      */
     private $machine;
 

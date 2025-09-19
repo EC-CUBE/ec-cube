@@ -47,7 +47,7 @@ class CustomerPurchaseInfoProcessor extends AbstractPurchaseProcessor
         }
         $Customer->setLastBuyDate($now);
 
-        $Customer->setBuyTimes($Customer->getBuyTimes() + 1);
-        $Customer->setBuyTotal($Customer->getBuyTotal() + $target->getTotal()); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+        $Customer->setBuyTimes(bcadd($Customer->getBuyTimes(), '1'));
+        $Customer->setBuyTotal(bcadd($Customer->getBuyTotal(), $target->getTotal()));
     }
 }

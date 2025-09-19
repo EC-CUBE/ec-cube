@@ -48,6 +48,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -1967,7 +1968,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/csv_split', name: 'admin_product_csv_split', methods: ['POST'])]
     public function splitCsv(Request $request)
@@ -2073,7 +2074,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/csv_split_cleanup', name: 'admin_product_csv_split_cleanup', methods: ['POST'])]
     public function cleanupSplitCsv(Request $request)

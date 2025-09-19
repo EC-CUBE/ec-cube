@@ -14,6 +14,8 @@
 namespace Eccube\EventListener;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Eccube\Request\Context;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

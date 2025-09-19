@@ -28,7 +28,7 @@ interface PaymentMethodInterface
      *
      * 主にクレジットカードの有効性チェック等を実装します.
      *
-     * @return PaymentResult
+     * @return PaymentResult|bool
      */
     public function verify();
 
@@ -46,7 +46,7 @@ interface PaymentMethodInterface
      *
      * PaymentDispatcher に遷移先の情報を設定することで, 他のコントローラに処理を移譲できます.
      *
-     * @return PaymentDispatcher
+     * @return PaymentDispatcher|bool
      */
     public function apply();
 

@@ -149,7 +149,7 @@ if (!class_exists(Member::class)) {
         /**
          * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
          *
-         * @var int
+         * @var bool
          */
         private $two_factor_auth_enabled = false;
 
@@ -591,7 +591,7 @@ if (!class_exists(Member::class)) {
         public function serialize()
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
-            // MemberRepository::loadUserByUsername() で Work をチェックしているため、ここでは不要
+            // MemberRepository::loadUserByIdentifier() で Work をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
                 $this->login_id,

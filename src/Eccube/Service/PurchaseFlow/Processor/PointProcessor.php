@@ -91,7 +91,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
                     $minus = $itemHolder->getTotal() + $discount;
                     // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
                     $overPoint = $this->pointHelper->priceToPoint($minus);
-                    $usePoint = $itemHolder->getUsePoint() + $overPoint;
+                    $usePoint = bcadd($itemHolder->getUsePoint(), $overPoint);
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
                     $result = ProcessResult::warn(trans('purchase_flow.over_payment_total'), self::class);
                 }

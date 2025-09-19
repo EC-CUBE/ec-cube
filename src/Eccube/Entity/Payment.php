@@ -63,7 +63,7 @@ if (!class_exists(Payment::class)) {
          *
          * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
-        private $charge = 0;
+        private $charge = '0';
 
         /**
          * @var string|null
@@ -108,7 +108,7 @@ if (!class_exists(Payment::class)) {
         private $method_class;
 
         /**
-         * @var int
+         * @var bool
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
@@ -358,7 +358,7 @@ if (!class_exists(Payment::class)) {
         }
 
         /**
-         * @return int
+         * @return bool
          */
         public function isVisible()
         {

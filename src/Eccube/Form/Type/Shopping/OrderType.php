@@ -135,8 +135,8 @@ class OrderType extends AbstractType
             $Deliveries = $this->getDeliveries($Order);
             $Payments = $this->getPayments($Deliveries);
             // @see https://github.com/EC-CUBE/ec-cube/issues/4881
-            $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
+            $charge = $Order->getPayment() ? (string) $Order->getPayment()->getCharge() : '0';
+            $Payments = $this->filterPayments($Payments, bcsub((string) $Order->getPaymentTotal(), $charge));
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments, $Order->getPayment());
@@ -163,8 +163,8 @@ class OrderType extends AbstractType
 
             $Payments = $this->getPayments($Deliveries);
             // @see https://github.com/EC-CUBE/ec-cube/issues/4881
-            $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
+            $charge = $Order->getPayment() ? (string) $Order->getPayment()->getCharge() : '0';
+            $Payments = $this->filterPayments($Payments, bcsub((string) $Order->getPaymentTotal(), $charge));
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments);
