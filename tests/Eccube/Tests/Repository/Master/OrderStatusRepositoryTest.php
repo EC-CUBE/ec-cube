@@ -133,7 +133,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
             function ($OrderStatus) {
                 return $OrderStatus->getId();
             }, $OrderStatuses));
-        $this->expected = OrderStatus::NEW;
+        $this->expected = (string) OrderStatus::NEW;
         $this->verify();
     }
 

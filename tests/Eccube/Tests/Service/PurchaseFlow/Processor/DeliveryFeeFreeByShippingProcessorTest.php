@@ -44,6 +44,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
     /**
      * 送料無料条件が設定されていない場合
+     *
+     * @group decimal
      */
     public function testWithoutDeliveryFreeSettings()
     {
@@ -58,7 +60,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals(1000, $DeliveryFee->getTotalPrice());
+        self::assertSame('1000.00', $DeliveryFee->getTotalPrice());
     }
 
     /**
@@ -66,34 +68,35 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @dataProvider deliveryFreeAmountProvider
      *
-     * @param $amount int 受注金額
-     * @param $expectedFee int 期待する送料
+     * @param string $amount 受注金額
+     * @param string $expectedFee 期待する送料
+     *
+     * @group decimal
      */
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
-        $this->newBaseInfo(1000, 0);
+        $this->newBaseInfo('1000.00', '0');
         $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
         $Shipping->setOrder($Order);
         $Order->addShipping($Shipping);
-        $DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping);
+        $DeliveryFee = $this->newDeliveryFeeItem('1000.00', $Shipping);
         $Order->addOrderItem($DeliveryFee);
         $Order->addOrderItem($this->newProductOrderItem($amount, 1, $Shipping));
 
         $processor->process($Order, new PurchaseContext());
-
-        self::assertEquals($expectedFee, $DeliveryFee->getTotalPrice());
+        self::assertSame($expectedFee, $DeliveryFee->getTotalPrice());
     }
 
     public function deliveryFreeAmountProvider()
     {
         return [
-            [1, 1000],
-            [999, 1000],
-            [1000, 0],
-            [99999, 0],
+            ['1', '1000.00'],
+            ['999', '1000.00'],
+            ['1000', '0.00'],
+            ['99999', '0.00'],
         ];
     }
 
@@ -104,41 +107,45 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @param $quantity int 数量
      * @param $expectedFee int 期待する送料
+     *
+     * @group decimal
      */
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
-        $this->newBaseInfo(0, 10);
+        $this->newBaseInfo('0', '10');
         $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
 
         $Shipping = $this->newShipping(1);
         $Order = new Order();
         $Shipping->setOrder($Order);
         $Order->addShipping($Shipping);
-        $DeliveryFee = $this->newDeliveryFeeItem(1000, $Shipping);
+        $DeliveryFee = $this->newDeliveryFeeItem('1000.00', $Shipping);
         $Order->addOrderItem($DeliveryFee);
-        $Order->addOrderItem($this->newProductOrderItem(1000, $quantity, $Shipping));
+        $Order->addOrderItem($this->newProductOrderItem('1000.00', $quantity, $Shipping));
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals($expectedFee, $DeliveryFee->getTotalPrice());
+        self::assertSame($expectedFee, $DeliveryFee->getTotalPrice());
     }
 
     public function deliveryFreeQuantityProvider()
     {
         return [
-            [1, 1000],
-            [9, 1000],
-            [10, 0],
-            [100, 0],
+            ['1', '1000.00'],
+            ['9', '1000.00'],
+            ['10', '0.00'],
+            ['100', '0.00'],
         ];
     }
 
     /**
      * 複数配送で送料無料条件(金額)が設定されている場合
+     *
+     * @group decimal
      */
     public function testMultipleShippingWithDeliveryFreeAmount()
     {
-        $this->newBaseInfo(1000, 0);
+        $this->newBaseInfo('1000', '0');
         $processor = new DeliveryFeeFreeByShippingPreprocessor($this->baseInfoRepository);
         $Shipping1 = $this->newShipping(1);
         $Shipping2 = $this->newShipping(2);
@@ -160,12 +167,14 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals(0, $Shipping1DeliveryFee->getTotalPrice());
-        self::assertEquals(1000, $Shipping2DeliveryFee->getTotalPrice());
+        self::assertSame('0.00', $Shipping1DeliveryFee->getTotalPrice());
+        self::assertSame('1000.00', $Shipping2DeliveryFee->getTotalPrice());
     }
 
     /**
      * 複数配送で送料無料条件(数量)が設定されている場合
+     *
+     * @group decimal
      */
     public function testMultipleShippingWithDeliveryFreeQuantity()
     {
@@ -191,8 +200,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals(1000, $Shipping1DeliveryFee->getTotalPrice());
-        self::assertEquals(0, $Shipping2DeliveryFee->getTotalPrice());
+        self::assertSame('1000.00', $Shipping1DeliveryFee->getTotalPrice());
+        self::assertSame('0.00', $Shipping2DeliveryFee->getTotalPrice());
     }
 
     private function newBaseInfo($deliveryFeeAmount, $deliveryFeeQuantity)
@@ -229,7 +238,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         return $OrderItem;
     }
 
-    private function newDeliveryFeeItem($fee, Shipping $Shipping)
+    private function newDeliveryFeeItem(string $fee, Shipping $Shipping)
     {
         $OrderItem = new OrderItem();
         $OrderItem->setOrderItemType($this->DeliveryFeeType);

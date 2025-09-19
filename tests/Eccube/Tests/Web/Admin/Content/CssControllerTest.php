@@ -73,7 +73,7 @@ __CSS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);
-        $this->assertEquals($css, $contents);
+        $this->assertSame($css, $contents);
     }
 
     public function testRoutingAdminContentCssEditFailure()
@@ -126,6 +126,6 @@ __CSS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);
-        $this->assertEquals($css, $contents);
+        $this->assertSame($css, $contents);
     }
 }

@@ -57,7 +57,9 @@ class TagControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->expected = 6;
-        $this->actual = $this->TagRepo->find(3)->getSortNo();
+        $Tag = $this->TagRepo->find(3);
+        $this->entityManager->refresh($Tag); // Refresh しないとリクエストの値(string)が入ってしまう
+        $this->actual = $Tag->getSortNo();
         $this->verify();
     }
 

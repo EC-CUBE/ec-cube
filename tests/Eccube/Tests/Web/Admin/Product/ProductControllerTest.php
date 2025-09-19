@@ -907,7 +907,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_bulk_product_status', ['id' => ProductStatus::DISPLAY_SHOW]),
             []
         );
-        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
 
         // case invalid product status id
         $this->client->request(
@@ -915,7 +915,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_bulk_product_status', ['id' => 0]),
             []
         );
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
 
         // case true
         $productIds = [];
@@ -938,7 +938,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ['ids' => $productIds]
             );
             $result = $this->productRepository->findBy(['id' => $productIds, 'Status' => $ProductStatus]);
-            $this->assertEquals(count($productIds), count($result));
+            $this->assertSame(count($productIds), count($result));
         }
     }
 
@@ -1257,12 +1257,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $target = $crawler->filter('#dangerous-id');
-        $this->assertEquals(0, $target->count());
+        $this->assertSame(0, $target->count());
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $target = $crawler->filter('.safe_to_use_class');
-        $this->assertEquals(1, $target->count());
+        $this->assertSame(1, $target->count());
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists

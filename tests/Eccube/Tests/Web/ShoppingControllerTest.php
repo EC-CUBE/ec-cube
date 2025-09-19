@@ -119,12 +119,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#test-news-id');
-        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+        $this->assertSame(0, $testNewsArea_notFoundTest->count());
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertEquals(1, $testNewsArea->count());
+        $this->assertSame(1, $testNewsArea->count());
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -900,7 +900,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
     }
 
@@ -935,7 +935,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
     }
 
@@ -983,7 +983,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
     }
 
@@ -1031,7 +1031,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
     }
 

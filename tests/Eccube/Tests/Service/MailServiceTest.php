@@ -350,16 +350,16 @@ class MailServiceTest extends AbstractServiceTestCase
 
     public function testConvertRFCViolatingEmail()
     {
-        $this->expected = new Address('".aa"@example.com');
-        $this->actual = $this->mailService->convertRFCViolatingEmail('.aa@example.com');
+        $this->expected = (new Address('".aa"@example.com'))->toString();
+        $this->actual = $this->mailService->convertRFCViolatingEmail('.aa@example.com')->toString();
         $this->verify();
 
-        $this->expected = new Address('"aa."@example.com');
-        $this->actual = $this->mailService->convertRFCViolatingEmail('aa.@example.com');
+        $this->expected = (new Address('"aa."@example.com'))->toString();
+        $this->actual = $this->mailService->convertRFCViolatingEmail('aa.@example.com')->toString();
         $this->verify();
 
-        $this->expected = new Address('"a..a"@example.com');
-        $this->actual = $this->mailService->convertRFCViolatingEmail('a..a@example.com');
+        $this->expected = (new Address('"a..a"@example.com'))->toString();
+        $this->actual = $this->mailService->convertRFCViolatingEmail('a..a@example.com')->toString();
         $this->verify();
     }
 

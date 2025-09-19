@@ -153,7 +153,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
         $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([1, 2], $actualIds);
+        self::assertSame([1, 2], $actualIds);
 
         $delivery1 = $this->createDelivery('テスト配送1', $typeA, [$payment1, $payment2]);
         $delivery2 = $this->createDelivery('テスト配送2', $typeA, [$payment3]);
@@ -161,7 +161,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
         $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([1, 2, 3], $actualIds);
+        self::assertSame([1, 2, 3], $actualIds);
     }
 
     /**
@@ -189,7 +189,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
         $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([1], $actualIds);
+        self::assertSame([1], $actualIds);
 
         // 共通する支払方法がない場合
 
@@ -199,7 +199,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
         $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([], $actualIds);
+        self::assertSame([], $actualIds);
     }
 
     private function createSaleType($name, $id)

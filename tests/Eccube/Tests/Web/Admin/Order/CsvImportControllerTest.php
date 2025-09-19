@@ -38,7 +38,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->refresh($Shipping);
 
-        self::assertEquals('1234', $Shipping->getTrackingNumber());
+        self::assertSame('1234', $Shipping->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
@@ -55,7 +55,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->refresh($Shipping);
 
-        self::assertEquals('1234', $Shipping->getTrackingNumber());
+        self::assertSame('1234', $Shipping->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
@@ -76,7 +76,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->refresh($Shipping);
 
-        self::assertEquals('', $Shipping->getTrackingNumber());
+        self::assertSame('', $Shipping->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-01-23'), $Shipping->getShippingDate());
     }
 
@@ -229,15 +229,15 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->entityManager->refresh($Shipping1);
-        self::assertEquals('1234', $Shipping1->getTrackingNumber());
+        self::assertSame('1234', $Shipping1->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-01-11'), $Shipping1->getShippingDate());
 
         $this->entityManager->refresh($Shipping2);
-        self::assertEquals('5678', $Shipping2->getTrackingNumber());
+        self::assertSame('5678', $Shipping2->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-02-22'), $Shipping2->getShippingDate());
 
         $this->entityManager->refresh($Shipping3);
-        self::assertEquals('9012', $Shipping3->getTrackingNumber());
+        self::assertSame('9012', $Shipping3->getTrackingNumber());
         self::assertEquals($this->parseDate('2018-03-22'), $Shipping3->getShippingDate());
     }
 

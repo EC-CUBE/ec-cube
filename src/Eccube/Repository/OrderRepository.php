@@ -476,9 +476,8 @@ class OrderRepository extends AbstractRepository
 
         $FirstOrder = $this->find(['id' => $result['first_order_id']]);
         $LastOrder = $this->find(['id' => $result['last_order_id']]);
-
         $Customer->setBuyTimes($result['buy_times']);
-        $Customer->setBuyTotal($result['buy_total']);
+        $Customer->setBuyTotal((string) $result['buy_total']); // buy_totalはdecimal(12,2)のためstring
         $Customer->setFirstBuyDate($FirstOrder->getOrderDate());
         $Customer->setLastBuyDate($LastOrder->getOrderDate());
     }

@@ -83,6 +83,6 @@ class DeliverySettingValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertEquals(0, $this->cartItem->getQuantity());
+        self::assertSame(0, $this->cartItem->getQuantity());
     }
 }

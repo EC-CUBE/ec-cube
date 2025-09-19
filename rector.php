@@ -18,6 +18,7 @@ use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\DeadCode\Rector\Switch_\RemoveDuplicatedCaseInSwitchRector;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\Php53\Rector\Ternary\TernaryToElvisRector;
 use Rector\Php54\Rector\Array_\LongArrayToShortArrayRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
@@ -87,7 +88,11 @@ return RectorConfig::configure()
                // TODO:以下を適用する
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
-               ])
+           ])
+           // 個別にルールを追加する場合はここに記述
+           ->withRules([
+               AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する
+           ])
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,

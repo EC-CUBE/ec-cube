@@ -49,14 +49,14 @@ if (!class_exists(CartItem::class)) {
          *
          * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"default":0})
          */
-        private $price = 0;
+        private $price = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"default":0})
          */
-        private $quantity = 0;
+        private $quantity = '0';
 
         /**
          * @var ProductClass
@@ -103,7 +103,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param  int  $price
+         * @param  string  $price
          *
          * @return CartItem
          */
@@ -124,7 +124,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param  int  $quantity
+         * @param  string  $quantity
          *
          * @return CartItem
          */
@@ -146,11 +146,11 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return int
+         * @return string
          */
         public function getTotalPrice()
         {
-            return $this->getPrice() * $this->getQuantity();
+            return bcmul($this->getPrice(), $this->getQuantity(), 2);
         }
 
         /**

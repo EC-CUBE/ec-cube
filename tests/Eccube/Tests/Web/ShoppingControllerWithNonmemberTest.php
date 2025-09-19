@@ -331,7 +331,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
         );
 
-        $this->assertEquals('OK', json_decode($this->client->getResponse()->getContent())->status);
+        $this->assertSame('OK', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     /**
@@ -373,7 +373,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
         );
 
-        $this->assertEquals('NG', json_decode($this->client->getResponse()->getContent())->status);
+        $this->assertSame('NG', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     /**
@@ -415,7 +415,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
         );
 
-        $this->assertEquals('NG', json_decode($this->client->getResponse()->getContent())->status);
+        $this->assertSame('NG', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     public function createNonmemberFormData()

@@ -89,6 +89,6 @@ class BaseInfoRepositoryTest extends EccubeTestCase
     {
         $BaseInfo = $this->baseInfoRepository->get();
         $this->assertNotNull($BaseInfo);
-        $this->assertEquals(1, $BaseInfo->getId());
+        $this->assertSame(1, $BaseInfo->getId());
     }
 }

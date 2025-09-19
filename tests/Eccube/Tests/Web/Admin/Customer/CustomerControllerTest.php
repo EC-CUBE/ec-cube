@@ -249,7 +249,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $SecondTimeMail = $MessageSecondTime->toString();
         $secretKeyFirstTime = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
         $secretKeySecondTime = mb_substr($SecondTimeMail, mb_strrpos($SecondTimeMail, '/activate/') + 10, 32);
-        $this->assertNotEquals($secretKeyFirstTime, $secretKeySecondTime);
+        $this->assertNotSame($secretKeyFirstTime, $secretKeySecondTime);
     }
 
     /**

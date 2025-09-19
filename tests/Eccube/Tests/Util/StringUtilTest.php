@@ -37,7 +37,7 @@ class StringUtilTest extends TestCase
         $result = StringUtil::random();
         $this->actual = strlen($result);
         // デフォルトは16桁
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
         $this->assertTrue(preg_match('/[A-Za-z0-9]{16}/', $result) === 1);
     }
 
@@ -47,7 +47,7 @@ class StringUtilTest extends TestCase
         $result = StringUtil::random($this->expected);
         $this->actual = strlen($result);
 
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
         $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
     }
 
@@ -70,7 +70,7 @@ class StringUtilTest extends TestCase
         $result = StringUtil::quickRandom();
         $this->actual = strlen($result);
         // デフォルトは16桁
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
         $this->assertTrue(preg_match('/[A-Za-z0-9]{16}/', $result) === 1);
     }
 
@@ -80,7 +80,7 @@ class StringUtilTest extends TestCase
         $result = StringUtil::QuickRandom($this->expected);
         $this->actual = strlen($result);
 
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
         $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
     }
 
@@ -90,7 +90,7 @@ class StringUtilTest extends TestCase
 
         $param = "aaaa\r\n";
         $this->actual = StringUtil::convertLineFeed($param);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\r";
         $this->actual = StringUtil::convertLineFeed($param);
@@ -108,7 +108,7 @@ class StringUtilTest extends TestCase
 
         $param = "aaaa\n";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\r";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
@@ -126,7 +126,7 @@ class StringUtilTest extends TestCase
 
         $param = "aaaa\nbbbb\ncccc\n";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\rbbbb\rcccc\r";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
@@ -141,7 +141,7 @@ class StringUtilTest extends TestCase
     {
         $this->expected = '';
         $this->actual = StringUtil::convertLineFeed($this->expected);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testCharacterEncodingWithSJIS()
@@ -150,12 +150,12 @@ class StringUtilTest extends TestCase
         $text = mb_convert_encoding('京', 'SJIS', 'UTF-8');
         $this->expected = 'SJIS';
         $this->actual = StringUtil::characterEncoding($text);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         // 検出順序を変更してみる
         $this->expected = 'SJIS-win';
         $this->actual = StringUtil::characterEncoding($text, ['SJIS-win', 'UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS']);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testCharacterEncodingWithEuc()
@@ -164,7 +164,7 @@ class StringUtilTest extends TestCase
         $text = mb_convert_encoding('京', 'euc-jp', 'UTF-8');
         $this->expected = 'EUC-JP';
         $this->actual = StringUtil::characterEncoding($text);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testCharacterEncodingWithUTF8()
@@ -174,7 +174,7 @@ class StringUtilTest extends TestCase
         $text = mb_convert_encoding('〠', 'UTF-8', 'UTF-8');
         $this->expected = 'UTF-8';
         $this->actual = StringUtil::characterEncoding($text);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testCharacterEncodingWithNone()
@@ -190,7 +190,7 @@ class StringUtilTest extends TestCase
         $value = '一弍三4567890あいうえお';
         $this->expected = '一弍三4567890...';
         $this->actual = StringUtil::ellipsis($value, 10, '...');
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testEllipsisWithShort()
@@ -198,7 +198,7 @@ class StringUtilTest extends TestCase
         $value = '一弍三';
         $this->expected = '一弍三';
         $this->actual = StringUtil::ellipsis($value, 10, '...');
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testTimeAgo()
@@ -207,66 +207,66 @@ class StringUtilTest extends TestCase
         $date = $elapsedTime;
         $this->expected = '0秒前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT59S'));
         $this->expected = '59秒前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT60S'));
         $this->expected = '1分前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT59M59S'));
         $this->expected = '59分前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT59M60S'));
         $this->expected = '1時間前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT23H59M59S'));
         $this->expected = '23時間前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT23H59M60S'));
         $this->expected = '1日前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('P31DT23H59M59S'));
         $this->expected = '31日前';
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('P31DT23H59M60S'));
         $this->expected = date('Y/m/d', strtotime('- 32 days'));
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('P1Y'));
         $this->expected = date('Y/m/d', strtotime('- 1 years'));
         $this->actual = StringUtil::timeAgo($date);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         // 日付書式を引数に
         $this->expected = date('Y/m/d', strtotime('- 1 years'));
         $this->actual = StringUtil::timeAgo(date('Y/m/d', strtotime('- 1 years')));
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         // 引数が空
         $this->actual = StringUtil::timeAgo('');
@@ -475,12 +475,12 @@ class StringUtilTest extends TestCase
         $text = '     a　';
         $this->expected = 'a';
         $this->actual = StringUtil::trimAll($text);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $text = '     a　a　';
         $this->expected = 'a　a';
         $this->actual = StringUtil::trimAll($text);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $text = '';
         $this->actual = StringUtil::trimAll($text);

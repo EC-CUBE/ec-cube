@@ -19,7 +19,7 @@ jobs:
   php-cs-fixer:
     uses: ./.github/workflows/php-cs-fixer.yml
   unit-test:
-    needs: [ phpstan ]
+    needs: [ phpstan, php-cs-fixer ]
     uses: ./.github/workflows/unit-test.yml
   e2e-test:
     needs: [ unit-test ]
