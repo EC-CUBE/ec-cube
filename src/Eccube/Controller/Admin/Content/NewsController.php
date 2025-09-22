@@ -83,7 +83,7 @@ class NewsController extends AbstractController
      * 新着情報を登録・編集する。
      *
      * @param Request $request
-     * @param null $id
+     * @param int|null $id
      *
      * @return array|RedirectResponse
      */

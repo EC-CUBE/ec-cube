@@ -67,4 +67,12 @@ class PurchaseFlowResult
     {
         return !empty($this->getWarning());
     }
+
+    /**
+     * @return ItemHolderInterface
+     */
+    public function getItemHolder()
+    {
+        return $this->itemHolder;
+    }
 }

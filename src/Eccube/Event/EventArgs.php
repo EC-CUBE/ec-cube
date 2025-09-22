@@ -65,7 +65,7 @@ class EventArgs extends GenericEvent
     }
 
     /**
-     * @return Response
+     * @return Response|null
      */
     public function getResponse()
     {

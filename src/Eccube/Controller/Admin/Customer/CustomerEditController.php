@@ -72,7 +72,7 @@ class CustomerEditController extends AbstractController
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
-            /** @var Customer $Customer */
+            /** @var Customer|null $Customer */
             $Customer = $this->customerRepository
                 ->find($id);
 

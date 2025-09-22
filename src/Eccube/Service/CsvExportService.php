@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CsvExportService
 {
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $fp;
 
@@ -47,12 +47,12 @@ class CsvExportService
     protected $closed = false;
 
     /**
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $convertEncodingCallBack;
 
     /**
-     * @var EntityManagerInterface
+     * @var EntityManagerInterface|null
      */
     protected $entityManager;
 

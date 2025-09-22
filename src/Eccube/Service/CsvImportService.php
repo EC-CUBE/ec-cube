@@ -371,7 +371,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param int $rowNumber Row number
      *
-     * @return array
+     * @return array|string|false
      */
     protected function readHeaderRow($rowNumber)
     {

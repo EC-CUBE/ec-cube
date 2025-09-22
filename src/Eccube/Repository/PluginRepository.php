@@ -41,7 +41,7 @@ class PluginRepository extends AbstractRepository
      *
      * @param string $code プラグインコード
      *
-     * @return Plugin
+     * @return Plugin|null
      */
     public function findByCode($code)
     {

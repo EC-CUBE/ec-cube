@@ -198,7 +198,7 @@ class ShippingType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
-                /** @var Shipping $Shipping */
+                /** @var Shipping|null $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
@@ -245,7 +245,7 @@ class ShippingType extends AbstractType
             /** @var Shipping $Shipping */
             $Shipping = $event->getData();
             $form = $event->getForm();
-            /** @var Delivery $Delivery */
+            /** @var Delivery|null $Delivery */
             $Delivery = $form['Delivery']->getData();
             if ($Delivery) {
                 $Shipping->setShippingDeliveryName($Delivery->getName());

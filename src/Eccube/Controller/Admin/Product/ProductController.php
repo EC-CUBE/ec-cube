@@ -757,7 +757,7 @@ class ProductController extends AbstractController
         $success = false;
 
         if (!is_null($id)) {
-            /** @var Product $Product */
+            /** @var Product|null $Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
                 if ($request->isXmlHttpRequest()) {
@@ -772,54 +772,49 @@ class ProductController extends AbstractController
                 }
             }
 
-            if ($Product instanceof Product) {
-                log_info('商品削除開始', [$id]);
+            log_info('商品削除開始', [$id]);
 
-                $deleteImages = $Product->getProductImage();
-                $ProductClasses = $Product->getProductClasses();
+            $deleteImages = $Product->getProductImage();
+            $ProductClasses = $Product->getProductClasses();
 
-                try {
-                    $this->productRepository->delete($Product);
-                    $this->entityManager->flush();
+            try {
+                $this->productRepository->delete($Product);
+                $this->entityManager->flush();
 
-                    $event = new EventArgs(
-                        [
-                            'Product' => $Product,
-                            'ProductClass' => $ProductClasses,
-                            'deleteImages' => $deleteImages,
-                        ],
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE);
-                    $deleteImages = $event->getArgument('deleteImages');
+                $event = new EventArgs(
+                    [
+                        'Product' => $Product,
+                        'ProductClass' => $ProductClasses,
+                        'deleteImages' => $deleteImages,
+                    ],
+                    $request
+                );
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE);
+                $deleteImages = $event->getArgument('deleteImages');
 
-                    // 画像ファイルの削除(commit後に削除させる)
-                    /** @var ProductImage $deleteImage */
-                    foreach ($deleteImages as $deleteImage) {
-                        if ($this->productImageRepository->findOneBy(['file_name' => $deleteImage->getFileName()])) {
-                            continue;
-                        }
-                        try {
-                            $fs = new Filesystem();
-                            $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);
-                        } catch (\Exception) {
-                            // エラーが発生しても無視する
-                        }
+                // 画像ファイルの削除(commit後に削除させる)
+                /** @var ProductImage $deleteImage */
+                foreach ($deleteImages as $deleteImage) {
+                    if ($this->productImageRepository->findOneBy(['file_name' => $deleteImage->getFileName()])) {
+                        continue;
                     }
-
-                    log_info('商品削除完了', [$id]);
-
-                    $success = true;
-                    $message = trans('admin.common.delete_complete');
-
-                    $cacheUtil->clearDoctrineCache();
-                } catch (ForeignKeyConstraintViolationException) {
-                    log_info('商品削除エラー', [$id]);
-                    $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
+                    try {
+                        $fs = new Filesystem();
+                        $fs->remove($this->eccubeConfig['eccube_save_image_dir'].'/'.$deleteImage);
+                    } catch (\Exception) {
+                        // エラーが発生しても無視する
+                    }
                 }
-            } else {
+
+                log_info('商品削除完了', [$id]);
+
+                $success = true;
+                $message = trans('admin.common.delete_complete');
+
+                $cacheUtil->clearDoctrineCache();
+            } catch (ForeignKeyConstraintViolationException) {
                 log_info('商品削除エラー', [$id]);
-                $message = trans('admin.common.delete_error');
+                $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
             }
         } else {
             log_info('商品削除エラー', [$id]);

@@ -259,6 +259,7 @@ class PluginService
         // dbにプラグイン登録
         $this->entityManager->getConnection()->beginTransaction();
         try {
+            /** @var Plugin|null $Plugin */
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
             if (!$Plugin) {

@@ -332,7 +332,7 @@ class ProductClassController extends AbstractController
 
             // 無効から有効にした場合は, 過去の登録情報を検索.
             if (!$pc->getId()) {
-                /** @var ProductClass $ExistsProductClass */
+                /** @var ProductClass|null $ExistsProductClass */
                 $ExistsProductClass = $this->productClassRepository->findOneBy([
                     'Product' => $Product,
                     'ClassCategory1' => $pc->getClassCategory1(),

@@ -174,7 +174,7 @@ class OrderRepository extends AbstractRepository
 
         // status
         $filterStatus = false;
-        if (!empty($searchData['status']) && count($searchData['status']) > 0) {
+        if (isset($searchData['status']) && count($searchData['status']) > 0) {
             $qb
                 ->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $searchData['status']);

@@ -92,7 +92,7 @@ class TaxProcessor implements ItemHolderPreprocessor
             }
 
             // 税区分: 非課税, 不課税
-            if ($item->getTaxType()->getId() != TaxType::TAXATION) {
+            if ($item->getTaxType() && $item->getTaxType()->getId() != TaxType::TAXATION) {
                 $item->setTax('0');
                 $item->setTaxRate('0');
                 $item->setRoundingType(null);

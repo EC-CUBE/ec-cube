@@ -191,7 +191,7 @@ class CartController extends AbstractController
 
         $this->isTokenValid();
 
-        /** @var ProductClass $ProductClass */
+        /** @var ProductClass|null $ProductClass */
         $ProductClass = $this->productClassRepository->find($productClassId);
 
         if (is_null($ProductClass)) {

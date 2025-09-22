@@ -195,7 +195,7 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE);
 
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $event->getArgument('Order');
 
         if (!$Order) {
@@ -228,7 +228,7 @@ class MypageController extends AbstractController
 
         $Customer = $this->getUser();
 
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $this->orderRepository->findOneBy(
             [
                 'order_no' => $order_no,

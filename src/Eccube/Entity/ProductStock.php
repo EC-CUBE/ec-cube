@@ -35,14 +35,14 @@ if (!class_exists(ProductStock::class)) {
         public const OUT_OF_STOCK = 2;
 
         /**
-         * @var int
+         * @var int|null
          */
         private $product_class_id;
 
         /**
          * Set product_class_id
          *
-         * @param int $productClassId
+         * @param int|null $productClassId
          *
          * @return ProductStock
          */
@@ -56,7 +56,7 @@ if (!class_exists(ProductStock::class)) {
         /**
          * Get product_class_id
          *
-         * @return int
+         * @return int|null
          */
         public function getProductClassId()
         {
@@ -71,6 +71,8 @@ if (!class_exists(ProductStock::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 

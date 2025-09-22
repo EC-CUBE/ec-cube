@@ -41,6 +41,8 @@ if (!class_exists(CartItem::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -237,14 +239,13 @@ if (!class_exists(CartItem::class)) {
         {
             $this->ProductClass = $ProductClass;
 
-            $this->product_class_id = is_object($ProductClass) ?
-            $ProductClass->getId() : null;
+            $this->product_class_id = $ProductClass->getId();
 
             return $this;
         }
 
         /**
-         * @return ProductClass
+         * @return ProductClass|null
          */
         #[\Override]
         public function getProductClass()

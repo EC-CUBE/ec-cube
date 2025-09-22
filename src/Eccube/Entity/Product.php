@@ -139,7 +139,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get ClassName1
          *
-         * @return string
+         * @return string|null
          */
         public function getClassName1()
         {
@@ -151,7 +151,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get ClassName2
          *
-         * @return string
+         * @return string|null
          */
         public function getClassName2()
         {
@@ -904,7 +904,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productClasses.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, ProductClass>
+         * @return \Doctrine\Common\Collections\Collection<int, ProductClass>|null
          */
         public function getProductClasses()
         {

@@ -40,7 +40,7 @@ class PluginUpdateCommand extends Command
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin $Plugin */
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
 
         if (!$Plugin) {

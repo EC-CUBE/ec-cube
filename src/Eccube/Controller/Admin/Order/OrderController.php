@@ -633,7 +633,7 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('admin_order');
         }
 
-        /** @var OrderPdf $OrderPdf */
+        /** @var OrderPdf|null $OrderPdf */
         $OrderPdf = $this->orderPdfRepository->find($this->getUser());
 
         if (!$OrderPdf) {

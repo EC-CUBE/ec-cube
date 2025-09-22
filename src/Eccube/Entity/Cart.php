@@ -15,7 +15,6 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 if (!class_exists(Cart::class)) {
@@ -51,6 +50,8 @@ if (!class_exists(Cart::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -128,16 +129,6 @@ if (!class_exists(Cart::class)) {
          * @ORM\Column(name="update_date", type="datetimetz")
          */
         private $update_date;
-
-        /**
-         * @var InvalidItemException[]
-         */
-        private $errors = [];
-
-        public function __wakeup()
-        {
-            $this->errors = [];
-        }
 
         public function __construct()
         {

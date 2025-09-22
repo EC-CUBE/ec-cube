@@ -22,12 +22,8 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 {
     /** @var \SessionHandlerInterface */
     private $handler;
-    /** @var bool */
-    private $doDestroy;
     /** @var string */
     private $sessionName;
-    /** @var string */
-    private $newSessionId;
 
     /**
      *  {@inheritdoc}
@@ -139,7 +135,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
             }
         }
 
-        return $this->newSessionId === $sessionId || $this->doDestroy($sessionId);
+        return $this->doDestroy($sessionId);
     }
 
     /**
@@ -148,8 +144,6 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     #[\Override]
     protected function doDestroy($sessionId): bool
     {
-        $this->doDestroy = false;
-
         return $this->handler->destroy($sessionId);
     }
 

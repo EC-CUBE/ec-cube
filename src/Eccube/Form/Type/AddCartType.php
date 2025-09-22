@@ -110,7 +110,7 @@ class AddCartType extends AbstractType
                         new Assert\Regex(['pattern' => '/^\d+$/']),
                     ],
                 ]);
-            if ($Product && $Product->getProductClasses()) {
+            if ($Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
                     $builder->add('classcategory_id1', ChoiceType::class, [
                         'label' => $Product->getClassName1(),

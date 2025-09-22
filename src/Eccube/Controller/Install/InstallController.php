@@ -16,6 +16,7 @@ namespace Eccube\Controller\Install;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
@@ -871,6 +872,7 @@ class InstallController extends AbstractController
             $salt = StringUtil::random(32);
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
             $stmt->bindParam(':login_id', $data['login_id']);
+            /** @var Result|null $row */
             $row = $stmt->executeQuery();
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row) {

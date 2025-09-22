@@ -70,7 +70,7 @@ class ProductRepository extends AbstractRepository
      *
      * @param int $productId
      *
-     * @return Product
+     * @return Product|null
      */
     public function findWithSortedClassCategories($productId)
     {

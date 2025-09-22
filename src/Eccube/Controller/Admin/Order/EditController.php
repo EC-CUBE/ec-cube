@@ -515,7 +515,7 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');
 
-            /** @var \Eccube\Entity\Customer $Customer */
+            /** @var \Eccube\Entity\Customer|null $Customer */
             $Customer = $this->customerRepository
                 ->find($request->get('id'));
 

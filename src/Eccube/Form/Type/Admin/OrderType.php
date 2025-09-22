@@ -301,7 +301,7 @@ class OrderType extends AbstractType
     {
         /** @var Order|null $Order */
         $Order = $event->getData();
-        if (null === $Order || ($Order && !$Order->getId())) {
+        if (null === $Order || !$Order->getId()) {
             return;
         }
 
@@ -342,7 +342,7 @@ class OrderType extends AbstractType
      */
     public function addShippingForm(FormEvent $event)
     {
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $event->getData();
 
         // 複数配送時はShippingの編集は行わない

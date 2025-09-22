@@ -63,7 +63,7 @@ class CategoryController extends AbstractController
     public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
     {
         if ($parent_id) {
-            /** @var Category $Parent */
+            /** @var Category|null $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
                 throw new NotFoundHttpException();

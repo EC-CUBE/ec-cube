@@ -145,6 +145,8 @@ if (!class_exists(OrderItem::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -513,7 +515,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get price.
          *
-         * @return string
+         * @return string|null
          */
         #[\Override]
         public function getPrice()
@@ -801,7 +803,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @return RoundingType
+         * @return RoundingType|null
          */
         public function getRoundingType()
         {
@@ -809,7 +811,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param RoundingType $RoundingType
+         * @param RoundingType|null $RoundingType
          *
          * @return $this
          */
@@ -861,7 +863,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxDisplayType
          *
-         * @return TaxDisplayType
+         * @return TaxDisplayType|null
          */
         public function getTaxDisplayType()
         {
