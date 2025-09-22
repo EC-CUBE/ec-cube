@@ -473,7 +473,7 @@ class InstallController extends AbstractController
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
             'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
-            'DATABASE_CHARSET' => \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8',
+            'DATABASE_CHARSET' => \str_starts_with((string) $databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
@@ -495,7 +495,7 @@ class InstallController extends AbstractController
 
         return [
             'admin_url' => $adminUrl,
-            'is_sqlite' => str_contains($databaseUrl, 'sqlite'),
+            'is_sqlite' => str_contains((string) $databaseUrl, 'sqlite'),
             'token' => $token,
         ];
     }

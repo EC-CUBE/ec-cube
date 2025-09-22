@@ -936,7 +936,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->productRepo->findOneBy(['name' => '商品別税率テスト用']);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()[0];
-        $this->expected = $postTaxRate === null ? null : $postTaxRate;
+        $this->expected = $postTaxRate ?? null;
         if ($ProductClass->getTaxRule() == null) {
             $this->actual = $ProductClass->getTaxRule();
         } else {

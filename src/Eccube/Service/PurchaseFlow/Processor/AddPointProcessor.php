@@ -92,7 +92,7 @@ class AddPointProcessor extends ItemHolderPostValidator
                     $point = (string) round((float) $pointCalc);
                 }
 
-                return bcadd((string) $carry, $point);
+                return bcadd($carry, $point);
             }, '0');
 
         return bccomp($totalPoint, '0') < 0 ? '0' : $totalPoint;

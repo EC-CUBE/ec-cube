@@ -322,7 +322,7 @@ class PurchaseFlow implements \Stringable
                 return $sum;
             }, '0');
         // TODO 後方互換のため discount には正の整数を代入する
-        $itemHolder->setDiscount(bcmul($total, '-1', 2));
+        $itemHolder->setDiscount(bcmul((string) $total, '-1', 2));
     }
 
     /**
