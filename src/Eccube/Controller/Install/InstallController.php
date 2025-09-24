@@ -33,13 +33,13 @@ use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
-use Eccube\Session\Session;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -501,17 +501,17 @@ class InstallController extends AbstractController
         ];
     }
 
-    protected function getSessionData(Session $session)
+    protected function getSessionData(SessionInterface $session)
     {
         return $session->get('eccube.session.install', []);
     }
 
-    protected function removeSessionData(Session $session)
+    protected function removeSessionData(SessionInterface $session)
     {
         $session->clear();
     }
 
-    protected function setSessionData(Session $session, $data = [])
+    protected function setSessionData(SessionInterface $session, $data = [])
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);

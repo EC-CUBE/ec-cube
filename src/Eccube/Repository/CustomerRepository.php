@@ -91,7 +91,7 @@ class CustomerRepository extends AbstractRepository
         $Customer
             ->setStatus($CustomerStatus)
             ->setSecretKey($this->getUniqueSecretKey())
-            ->setPoint(0);
+            ->setPoint('0');
 
         return $Customer;
     }

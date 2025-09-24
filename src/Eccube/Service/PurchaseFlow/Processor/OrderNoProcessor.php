@@ -91,9 +91,9 @@ class OrderNoProcessor implements ItemHolderPreprocessor
 
                                             return sprintf("%0{$res[1]}d", $random);
                                         } elseif ($res[0] === 'random_alnum') {
-                                            return strtoupper(StringUtil::random($res[1]));
+                                            return strtoupper(StringUtil::random((int) $res[1]));
                                         } elseif ($res[0] === 'random_alpha') {
-                                            return strtoupper(ByteString::fromRandom($res[1], implode('', range('A', 'Z')))->toString());
+                                            return strtoupper(ByteString::fromRandom((int) $res[1], implode('', range('A', 'Z')))->toString());
                                         }
                                     }
 

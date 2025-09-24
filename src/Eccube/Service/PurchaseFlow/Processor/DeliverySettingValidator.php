@@ -78,6 +78,6 @@ class DeliverySettingValidator extends ItemValidator
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
-        $item->setQuantity(0);
+        $item->setQuantity('0');
     }
 }

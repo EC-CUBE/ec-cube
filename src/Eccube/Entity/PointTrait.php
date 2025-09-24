@@ -72,7 +72,7 @@ trait PointTrait
     /**
      * Get usePoint
      *
-     * @return string|int|float
+     * @return string
      */
     public function getUsePoint()
     {

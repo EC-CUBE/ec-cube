@@ -83,7 +83,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get price01 IncTax
          *
-         * @return float|string
+         * @return string
          */
         public function getPrice01IncTax()
         {
@@ -107,7 +107,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get price02 IncTax
          *
-         * @return float|string
+         * @return string
          */
         public function getPrice02IncTax()
         {
@@ -191,7 +191,7 @@ if (!class_exists(ProductClass::class)) {
         private $code;
 
         /**
-         * @var float|string|null
+         * @var string|null
          *
          * @ORM\Column(name="stock", type="decimal", precision=10, scale=0, nullable=true)
          */
@@ -205,28 +205,28 @@ if (!class_exists(ProductClass::class)) {
         private $stock_unlimited = false;
 
         /**
-         * @var float|string|null
+         * @var string|null
          *
          * @ORM\Column(name="sale_limit", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true})
          */
         private $sale_limit;
 
         /**
-         * @var float|string|null
+         * @var string|null
          *
          * @ORM\Column(name="price01", type="decimal", precision=12, scale=2, nullable=true)
          */
         private $price01;
 
         /**
-         * @var float|int|string
+         * @var string
          *
          * @ORM\Column(name="price02", type="decimal", precision=12, scale=2)
          */
         private $price02;
 
         /**
-         * @var float|string|null
+         * @var string|null
          *
          * @ORM\Column(name="delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
          */
@@ -409,7 +409,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get stock.
          *
-         * @return float|string|null
+         * @return string|null
          */
         public function getStock()
         {

@@ -67,7 +67,7 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
             $items = $itemHolder->getItems();
             foreach ($items as $item) {
                 if ($item->isDeliveryFee()) {
-                    $item->setQuantity(0);
+                    $item->setQuantity('0');
                 }
             }
         }

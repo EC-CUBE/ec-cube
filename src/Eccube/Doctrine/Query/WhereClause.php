@@ -21,7 +21,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class WhereClause
 {
-    /** @var Expr\Comparison */
+    /** @var Expr\Comparison|string */
     private $expr;
 
     /**
@@ -32,7 +32,7 @@ class WhereClause
     /**
      * WhereClause constructor.
      *
-     * @param Expr\Comparison $expr
+     * @param Expr\Comparison|string $expr
      * @param string|array<string, int|string>|null $params
      */
     private function __construct($expr, $params = null)

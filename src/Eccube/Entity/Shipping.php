@@ -957,7 +957,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set timeId
          *
-         * @param int $timeId
+         * @param int|null $timeId
          *
          * @return Shipping
          */
@@ -971,7 +971,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get timeId
          *
-         * @return int
+         * @return int|null
          */
         public function getTimeId()
         {

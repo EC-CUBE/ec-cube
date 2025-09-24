@@ -213,6 +213,9 @@ class EntityProxyService
 
         // Traitのuse句があるかどうか
         $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        if (empty($newTraitTokens)) {
+            throw new \InvalidArgumentException('Trait name is invalid.');
+        }
 
         if ($useTraitIndex > 0) {
             $useTraitEndIndex = $entityTokens->getNextTokenOfKind($useTraitIndex, [';']);

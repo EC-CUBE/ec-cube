@@ -480,35 +480,35 @@ if (!class_exists(Order::class)) {
         private $birth;
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $subtotal = '0';
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="discount", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $discount = '0';
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $delivery_fee_total = '0';
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $charge = '0';
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          *
@@ -517,14 +517,14 @@ if (!class_exists(Order::class)) {
         private $tax = '0';
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $total = '0';
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="payment_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
@@ -1150,7 +1150,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set subtotal.
          *
-         * @param float|int|string $subtotal
+         * @param string $subtotal
          *
          * @return Order
          */
@@ -1201,7 +1201,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set deliveryFeeTotal.
          *
-         * @param float|int|string $deliveryFeeTotal
+         * @param string $deliveryFeeTotal
          *
          * @return Order
          */
@@ -1216,7 +1216,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get deliveryFeeTotal.
          *
-         * @return float|int|string
+         * @return string
          */
         #[\Override]
         public function getDeliveryFeeTotal()
@@ -1227,7 +1227,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set charge.
          *
-         * @param float|int|string $charge
+         * @param string $charge
          *
          * @return Order
          */
@@ -1252,7 +1252,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set tax.
          *
-         * @param float|int|string $tax
+         * @param string $tax
          *
          * @return Order
          *
@@ -1281,7 +1281,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set total.
          *
-         * @param float|int|string $total
+         * @param string $total
          *
          * @return Order
          */
@@ -1296,7 +1296,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get total.
          *
-         * @return float|int|string
+         * @return string
          */
         #[\Override]
         public function getTotal()
@@ -1307,7 +1307,7 @@ if (!class_exists(Order::class)) {
         /**
          * Set paymentTotal.
          *
-         * @param float|int|string $paymentTotal
+         * @param string $paymentTotal
          *
          * @return Order
          */

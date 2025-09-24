@@ -69,14 +69,14 @@ class StockMultipleValidator extends ItemHolderValidator
 
                 if ($stock == 0) {
                     foreach ($Items as $Item) {
-                        $Item->setQuantity(0);
+                        $Item->setQuantity('0');
                     }
                     $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
                 }
                 $isOver = false;
                 foreach ($Items as $Item) {
-                    if ($stock - $Item->getQuantity() >= 0) {
-                        $stock = $stock - $Item->getQuantity();
+                    if (bcsub($stock, $Item->getQuantity()) >= 0) {
+                        $stock = bcsub($stock, $Item->getQuantity());
                     } else {
                         $Item->setQuantity($stock);
                         $stock = 0;

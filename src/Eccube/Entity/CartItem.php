@@ -47,14 +47,14 @@ if (!class_exists(CartItem::class)) {
         private $id;
 
         /**
-         * @var string|float
+         * @var string
          *
          * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"default":0})
          */
         private $price = '0';
 
         /**
-         * @var string|float
+         * @var string
          *
          * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"default":0})
          */

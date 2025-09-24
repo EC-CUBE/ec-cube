@@ -25,7 +25,7 @@ class PluginApiException extends \Exception
      */
     public function __construct($curlInfo)
     {
-        parent::__construct(self::getResponseErrorMessage($curlInfo), $curlInfo['http_code']);
+        parent::__construct(self::getResponseErrorMessage($curlInfo), (int) $curlInfo['http_code']);
         $this->curlInfo = $curlInfo;
     }
 

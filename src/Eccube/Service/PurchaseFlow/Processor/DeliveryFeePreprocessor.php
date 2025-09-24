@@ -128,7 +128,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                     if (!$item->isProduct()) {
                         continue;
                     }
-                    $deliveryFeeProduct += $item->getProductClass()->getDeliveryFee() * $item->getQuantity(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                    $deliveryFeeProduct = bcadd($deliveryFeeProduct, bcmul($item->getProductClass()->getDeliveryFee(), $item->getQuantity()));
                 }
             }
 
@@ -137,12 +137,12 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                 'Delivery' => $Shipping->getDelivery(),
                 'Pref' => $Shipping->getPref(),
             ]);
-            $fee = is_object($DeliveryFee) ? $DeliveryFee->getFee() : 0;
+            $fee = is_object($DeliveryFee) ? $DeliveryFee->getFee() : '0';
 
             $OrderItem = new OrderItem();
             $OrderItem->setProductName($DeliveryFeeType->getName())
-                ->setPrice($fee + $deliveryFeeProduct)
-                ->setQuantity(1)
+                ->setPrice(bcadd($fee, $deliveryFeeProduct))
+                ->setQuantity('1')
                 ->setOrderItemType($DeliveryFeeType)
                 ->setShipping($Shipping)
                 ->setOrder($Order)

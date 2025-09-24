@@ -470,15 +470,15 @@ class OrderRepository extends AbstractRepository
             // 受注データが存在しなければ初期化
             $Customer->setFirstBuyDate(null);
             $Customer->setLastBuyDate(null);
-            $Customer->setBuyTimes(0);
-            $Customer->setBuyTotal(0);
+            $Customer->setBuyTimes('0');
+            $Customer->setBuyTotal('0');
 
             return;
         }
 
         $FirstOrder = $this->find(['id' => $result['first_order_id']]);
         $LastOrder = $this->find(['id' => $result['last_order_id']]);
-        $Customer->setBuyTimes($result['buy_times']);
+        $Customer->setBuyTimes((string) $result['buy_times']);
         $Customer->setBuyTotal((string) $result['buy_total']); // buy_totalはdecimal(12,2)のためstring
         $Customer->setFirstBuyDate($FirstOrder->getOrderDate());
         $Customer->setLastBuyDate($LastOrder->getOrderDate());

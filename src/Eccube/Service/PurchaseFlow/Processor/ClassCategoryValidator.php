@@ -59,6 +59,6 @@ class ClassCategoryValidator extends ItemValidator
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
-        $item->setQuantity(0);
+        $item->setQuantity('0');
     }
 }

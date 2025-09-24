@@ -115,7 +115,7 @@ class PointHelper
      * 明細追加処理.
      *
      * @param ItemHolderInterface $itemHolder
-     * @param int $discount
+     * @param string $discount
      */
     public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
     {
@@ -142,9 +142,9 @@ class PointHelper
         $OrderItem->setProductName($DiscountType->getName())
             ->setPrice($discount)
             ->setPointRate($pointRate)
-            ->setQuantity(1)
-            ->setTax(0)
-            ->setTaxRate(0)
+            ->setQuantity('1')
+            ->setTax('0')
+            ->setTaxRate('0')
             ->setRoundingType(null)
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)
@@ -175,13 +175,13 @@ class PointHelper
     {
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() - $point);
+        $Customer->setPoint(bcsub($Customer->getPoint(), $point));
     }
 
     public function rollback(ItemHolderInterface $itemHolder, $point)
     {
         // 利用したポイントをユーザに戻す.
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint($Customer->getPoint() + $point);
+        $Customer->setPoint(bcadd($Customer->getPoint(), $point));
     }
 }

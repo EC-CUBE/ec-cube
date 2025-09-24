@@ -100,7 +100,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
         $Taxation = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
         $item->setProductName($OrderItemType->getName())
-            ->setQuantity(1)
+            ->setQuantity('1')
             ->setPrice($itemHolder->getPayment()->getCharge())
             ->setOrderItemType($OrderItemType)
             ->setOrder($itemHolder)

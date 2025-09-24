@@ -57,7 +57,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     {
         // 在庫を減らす
         $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock - $itemQuantity;
+            return bcsub((string) $currentStock, (string) $itemQuantity);
         });
     }
 
@@ -69,7 +69,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     {
         // 在庫を戻す
         $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock + $itemQuantity;
+            return bcadd((string) $currentStock, (string) $itemQuantity);
         });
     }
 

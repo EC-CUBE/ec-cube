@@ -242,7 +242,7 @@ class PointDiffProcessorTest extends EccubeTestCase
     public function testUsePointEachOrderStatus($orderStatusId, $isChange)
     {
         $Customer = new Customer();
-        $Customer->setPoint(100);
+        $Customer->setPoint('100');
 
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];

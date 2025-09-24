@@ -266,7 +266,7 @@ class PluginApiService
      * @param array $data
      * @param bool $post
      *
-     * @return bool
+     * @return string
      *
      * @throws PluginApiException
      */
@@ -319,7 +319,7 @@ class PluginApiService
 
         log_info('http get_info', $info);
 
-        if ($info['http_code'] !== 200) {
+        if ($info['http_code'] !== 200 || $result === false) {
             throw new PluginApiException($info);
         }
 

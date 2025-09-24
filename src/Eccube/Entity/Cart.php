@@ -96,14 +96,14 @@ if (!class_exists(Cart::class)) {
         private $pre_order_id;
 
         /**
-         * @var string|float
+         * @var string
          *
          * @ORM\Column(name="total_price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
         private $total_price;
 
         /**
-         * @var float|int|string
+         * @var string
          *
          * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */

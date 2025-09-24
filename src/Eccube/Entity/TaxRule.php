@@ -89,14 +89,14 @@ if (!class_exists(TaxRule::class)) {
         private $id;
 
         /**
-         * @var float|int|string
+         * @var string
          *
          * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
         private $tax_rate = '0';
 
         /**
-         * @var float|int|string
+         * @var string
          *
          * @ORM\Column(name="tax_adjust", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */

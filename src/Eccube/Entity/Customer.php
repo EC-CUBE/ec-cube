@@ -168,14 +168,14 @@ if (!class_exists(Customer::class)) {
         private $last_buy_date;
 
         /**
-         * @var float|string|null
+         * @var string|null
          *
          * @ORM\Column(name="buy_times", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
          */
         private $buy_times = '0';
 
         /**
-         * @var float|string|null
+         * @var string|null
          *
          * @ORM\Column(name="buy_total", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
@@ -203,7 +203,7 @@ if (!class_exists(Customer::class)) {
         private $reset_expire;
 
         /**
-         * @var float|string
+         * @var string
          *
          * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
          */
@@ -317,8 +317,8 @@ if (!class_exists(Customer::class)) {
             $this->CustomerAddresses = new \Doctrine\Common\Collections\ArrayCollection();
             $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
 
-            $this->setBuyTimes(0);
-            $this->setBuyTotal(0);
+            $this->setBuyTimes('0');
+            $this->setBuyTotal('0');
         }
 
         /**
@@ -784,7 +784,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Set buyTimes.
          *
-         * @param float|string|int|null $buyTimes
+         * @param string|null $buyTimes
          *
          * @return Customer
          */
@@ -808,7 +808,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Set buyTotal.
          *
-         * @param float|string|int|null $buyTotal
+         * @param string|null $buyTotal
          *
          * @return Customer
          */

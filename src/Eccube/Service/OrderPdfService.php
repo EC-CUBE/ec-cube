@@ -526,7 +526,7 @@ class OrderPdfService extends Fpdi
             }
             $arrOrder[$i][0] = $productName;
             // 購入数量
-            $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
+            $arrOrder[$i][1] = number_format((float) $OrderItem->getQuantity());
             // 税込金額（単価）
             $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPrice());
             // 小計（商品毎）
