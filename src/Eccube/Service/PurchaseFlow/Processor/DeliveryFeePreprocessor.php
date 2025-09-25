@@ -128,7 +128,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
                     if (!$item->isProduct()) {
                         continue;
                     }
-                    $deliveryFeeProduct = bcadd($deliveryFeeProduct, bcmul($item->getProductClass()->getDeliveryFee(), $item->getQuantity()));
+                    $deliveryFeeProduct = bcadd($deliveryFeeProduct, bcmul((string) $item->getProductClass()->getDeliveryFee(), $item->getQuantity()));
                 }
             }
 

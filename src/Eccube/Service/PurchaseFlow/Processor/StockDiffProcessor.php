@@ -82,17 +82,17 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() != OrderStatus::CANCEL) {
-                if (bcadd($stock, $toQuantity) < 0) {
+                if (bcadd((string) $stock, $toQuantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             // ステータスをキャンセルから対応中に変更した場合
             } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
-                if (bcsub($stock, $toQuantity) < 0) {
+                if (bcsub((string) $stock, $toQuantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             } else {
-                if (bcsub($stock, $quantity) < 0) {
+                if (bcsub((string) $stock, (string) $quantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             }
