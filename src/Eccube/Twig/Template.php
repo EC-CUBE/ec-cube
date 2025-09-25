@@ -13,7 +13,13 @@
 
 namespace Eccube\Twig;
 
+use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Layout;
+use Eccube\Entity\Page;
 use Eccube\Event\TemplateEvent;
+use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Twig\Source;
 
@@ -74,7 +80,7 @@ class Template extends \Twig\Template
      * @param array<mixed> $context
      * @param array<mixed> $blocks
      *
-     * @return void
+     * @return array<empty>
      */
     protected function doDisplay(array $context, array $blocks = []): iterable
     {

@@ -218,7 +218,7 @@ class StringUtil
      * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
      * 空白と判断する.
      *
-     * @param string|int|float|array|object $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
+     * @param string|int|float|array<mixed>|object $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
      * @param bool $greedy '貧欲'にチェックを行う場合 true, デフォルト false
      *
      * @return bool $value が空白と判断された場合 true

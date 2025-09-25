@@ -22,6 +22,8 @@ trait ValidatorTrait
      * @param ProductClass|null $ProductClass
      * @param bool $warning
      *
+     * @return void
+     *
      * @throws InvalidItemException
      */
     protected function throwInvalidItemException($errorCode, ?ProductClass $ProductClass = null, $warning = false)

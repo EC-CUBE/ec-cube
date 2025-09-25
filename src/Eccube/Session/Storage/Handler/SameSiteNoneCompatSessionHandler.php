@@ -62,8 +62,6 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      *
      * @param string $sessionId
-     *
-     * @return false|string
      */
     #[\Override]
     protected function doRead($sessionId): string

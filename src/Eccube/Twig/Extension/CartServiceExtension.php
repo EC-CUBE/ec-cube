@@ -58,16 +58,16 @@ class CartServiceExtension extends AbstractExtension
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function get_carts_total_price()
     {
         $Carts = $this->cartService->getCarts();
-        $totalPrice = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalPrice();
+        $totalPrice = array_reduce($Carts, function (string $total, Cart $Cart) {
+            $total = bcadd($total, $Cart->getTotalPrice());
 
             return $total;
-        }, 0);
+        }, '0');
 
         return $totalPrice;
     }

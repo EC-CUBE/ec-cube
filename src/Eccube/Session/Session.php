@@ -100,12 +100,18 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         $this->getSession()->set($name, $value);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[\Override]
     public function all(): array
     {
         return $this->getSession()->all();
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     */
     #[\Override]
     public function replace(array $attributes)
     {
