@@ -231,7 +231,7 @@ class OwnerStoreController extends AbstractController
      * @param Request $request
      * @param string|int $id
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return RedirectResponse|Response
      *
      * @throws PluginException
      */

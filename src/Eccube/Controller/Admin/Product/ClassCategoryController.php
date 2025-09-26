@@ -308,6 +308,7 @@ class ClassCategoryController extends AbstractController
      * 規格分類CSVの出力.
      *
      * @param Request $request
+     * @param string $class_name_id
      *
      * @return StreamedResponse
      */

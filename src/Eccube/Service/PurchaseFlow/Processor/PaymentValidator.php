@@ -106,6 +106,7 @@ class PaymentValidator extends ItemHolderPostValidator
      */
     private function getDeliveries(SaleType $SaleType)
     {
+        /** @var Delivery[] $Deliveries */
         $Deliveries = $this->deliveryRepository->findBy(
             [
                 'SaleType' => $SaleType,

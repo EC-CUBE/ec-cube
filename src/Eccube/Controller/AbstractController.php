@@ -99,7 +99,7 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param SessionInterface $session
+     * @param Session $session
      *
      * @return void
      */

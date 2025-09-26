@@ -249,7 +249,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockFind
          *
-         * @return bool
+         * @return bool|null
          */
         public function getStockFind()
         {
@@ -263,7 +263,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Stock min
          *
-         * @return int|null
+         * @return string|null
          */
         public function getStockMin()
         {
@@ -277,7 +277,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Stock max
          *
-         * @return int|null
+         * @return string|null
          */
         public function getStockMax()
         {
@@ -291,7 +291,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockUnlimited min
          *
-         * @return int|null
+         * @return bool|null
          */
         public function getStockUnlimitedMin()
         {
@@ -305,7 +305,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockUnlimited max
          *
-         * @return int|null
+         * @return bool|null
          */
         public function getStockUnlimitedMax()
         {

@@ -23,6 +23,7 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -54,7 +55,7 @@ class MailController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param MailTemplate|null $Mail
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws \Twig\Error\LoaderError
      */
@@ -188,6 +189,12 @@ class MailController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param MailTemplate $Mail
+     *
+     * @return RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, MailTemplate $Mail)
     {
@@ -239,7 +246,7 @@ class MailController extends AbstractController
     /**
      * テンプレートディレクトリ配下のパスかどうかを検証する
      *
-     * @param $path
+     * @param string $path
      *
      * @return bool
      */

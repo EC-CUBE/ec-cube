@@ -20,9 +20,10 @@ use Eccube\Entity\AbstractEntity;
 /**
  * ECCUBE AbstractRepository
  *
- * @method AbstractEntity|null find($id, $lockMode = null, $lockVersion = null)
- * @method AbstractEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method AbstractEntity[]    findAll()
+ * @method T|null find($id, $lockMode = null, $lockVersion = null)
+ * @method T|null findOneBy(array $criteria, array $orderBy = null)
+ * @method T[]    findAll()
+ * @method T[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
  * @template T of AbstractEntity
  *
@@ -38,7 +39,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティを削除します。
      *
-     * @param AbstractEntity $entity
+     * @param T $entity
      *
      * @return void
      */
@@ -50,7 +51,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティの登録/保存します。
      *
-     * @param AbstractEntity $entity
+     * @param T $entity
      *
      * @return void
      */

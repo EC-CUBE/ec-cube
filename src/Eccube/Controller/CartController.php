@@ -212,10 +212,10 @@ class CartController extends AbstractController
         // 明細の増減・削除
         switch ($operation) {
             case 'up':
-                $this->cartService->addProduct($ProductClass, 1);
+                $this->cartService->addProduct($ProductClass, '1');
                 break;
             case 'down':
-                $this->cartService->addProduct($ProductClass, -1);
+                $this->cartService->addProduct($ProductClass, '-1');
                 break;
             case 'remove':
                 $this->cartService->removeProduct($ProductClass);

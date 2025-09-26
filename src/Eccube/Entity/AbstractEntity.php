@@ -27,6 +27,8 @@ use Symfony\Component\Serializer\Serializer;
 
 /**
  * @MappedSuperclass
+ *
+ * @implements \ArrayAccess<string, mixed>
  */
 abstract class AbstractEntity implements \ArrayAccess
 {
@@ -159,7 +161,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * - AbstractEntity :: associative array such as [id => value]
      * - PersistentCollection :: associative array of [[id => value], [id => value], ...]
      *
-     * @param array|string[] $excludeAttribute Array of field names to exclusion.
+     * @param string[] $excludeAttribute Array of field names to exclusion.
      *
      * @return array<string,mixed>
      */
@@ -202,7 +204,7 @@ abstract class AbstractEntity implements \ArrayAccess
     /**
      * Convert to XML.
      *
-     * @param array<string,mixed> $excludeAttribute Array of field names to exclusion.
+     * @param string[] $excludeAttribute Array of field names to exclusion.
      *
      * @return string
      */

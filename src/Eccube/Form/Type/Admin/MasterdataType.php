@@ -68,7 +68,7 @@ class MasterdataType extends AbstractType
             if ($namespace == 'Eccube\Entity') {
                 $classNames = $driver->getAllClassNames();
                 foreach ($classNames as $className) {
-                    /** @var ClassMetadata $meta */
+                    /** @var ClassMetadata<object> $meta */
                     $meta = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
 
                     // OrderStatus/OrderStatusColorは対象外

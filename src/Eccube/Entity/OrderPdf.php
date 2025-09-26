@@ -144,7 +144,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $title
+         * @param string $title
          *
          * @return $this
          */
@@ -164,7 +164,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $message1
+         * @param string $message1
          *
          * @return $this
          */
@@ -184,7 +184,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $message2
+         * @param string $message2
          *
          * @return $this
          */
@@ -224,7 +224,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $note1
+         * @param string $note1
          *
          * @return $this
          */
@@ -244,7 +244,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $note2
+         * @param string $note2
          *
          * @return $this
          */
@@ -264,7 +264,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $note3
+         * @param string $note3
          *
          * @return $this
          */

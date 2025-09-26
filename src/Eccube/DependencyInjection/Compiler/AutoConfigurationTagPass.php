@@ -81,10 +81,16 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * @param string $id
+     * @param Definition $definition
+     *
+     * @return void
+     */
     protected function configurePaymentMethodTag($id, Definition $definition)
     {
         $class = $definition->getClass();
-        if (is_subclass_of($class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
+        if (is_subclass_of((string) $class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
             $definition->addTag('eccube_payment_method');
         }
     }

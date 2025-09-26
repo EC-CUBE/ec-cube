@@ -222,7 +222,7 @@ if (!class_exists(Cart::class)) {
         /**
          * カートの中に出荷データがないので、空のコレクションを返します。
          *
-         * @return ArrayCollection<empty>
+         * @return ArrayCollection<int, Shipping>
          */
         public function getShippings()
         {
@@ -317,13 +317,13 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return int
+         * @return string
          */
         public function getTotalQuantity()
         {
-            $totalQuantity = 0;
+            $totalQuantity = '0';
             foreach ($this->CartItems as $CartItem) {
-                $totalQuantity += $CartItem->getQuantity();
+                $totalQuantity = bcadd($totalQuantity, $CartItem->getQuantity());
             }
 
             return $totalQuantity;
@@ -535,11 +535,11 @@ if (!class_exists(Cart::class)) {
         /**
          * {@inheritdoc}
          *
-         * @return ArrayCollection<empty>
+         * @return OrderItem[]
          */
         public function getProductOrderItems()
         {
-            return new ArrayCollection();
+            return [];
         }
     }
 }

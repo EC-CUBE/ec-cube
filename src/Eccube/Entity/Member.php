@@ -69,7 +69,7 @@ if (!class_exists(Member::class)) {
         }
 
         /**
-         * {@inheritdoc}
+         * @return string
          */
         public function getUsername()
         {

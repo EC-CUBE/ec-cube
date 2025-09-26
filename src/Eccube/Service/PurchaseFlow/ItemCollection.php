@@ -57,7 +57,7 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @return Collection<int, ItemInterface>
+     * @return ItemCollection<int, ItemInterface>
      */
     // 明細種別ごとに返すメソッド作る
     public function getProductClasses()
@@ -69,7 +69,7 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @return Collection<int, ItemInterface>
+     * @return ItemCollection<int, ItemInterface>
      */
     public function getDeliveryFees()
     {
@@ -80,7 +80,7 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @return Collection<int, ItemInterface>
+     * @return ItemCollection<int, ItemInterface>
      */
     public function getCharges()
     {
@@ -91,7 +91,7 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @return Collection<int, ItemInterface>
+     * @return ItemCollection<int, ItemInterface>
      */
     public function getDiscounts()
     {

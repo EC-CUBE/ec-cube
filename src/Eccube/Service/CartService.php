@@ -265,7 +265,7 @@ class CartService
             foreach ($allCartItems as $itemInArray) {
                 // 同じ明細があればマージする
                 if ($this->cartItemComparator->compare($item, $itemInArray)) {
-                    $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
+                    $itemInArray->setQuantity(bcadd($itemInArray->getQuantity(), $item->getQuantity()));
                     $itemExists = true;
                     break;
                 }
@@ -334,11 +334,11 @@ class CartService
      * カートに商品を追加します.
      *
      * @param ProductClass|int $ProductClass  商品規格
-     * @param int $quantity 数量
+     * @param string $quantity 数量
      *
      * @return bool 商品を追加できた場合はtrue
      */
-    public function addProduct($ProductClass, $quantity = 1)
+    public function addProduct($ProductClass, $quantity = '1')
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;

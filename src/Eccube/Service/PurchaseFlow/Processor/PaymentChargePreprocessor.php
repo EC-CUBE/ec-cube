@@ -99,13 +99,16 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {
         /** @var Order $itemHolder */
+        /** @var OrderItemType $OrderItemType */
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
+        /** @var TaxDisplayType $TaxDisplayType */
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
+        /** @var TaxType $Taxation */
         $Taxation = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
         $item->setProductName($OrderItemType->getName())
             ->setQuantity('1')
-            ->setPrice($itemHolder->getPayment()->getCharge())
+            ->setPrice($itemHolder->getPayment()?->getCharge())
             ->setOrderItemType($OrderItemType)
             ->setOrder($itemHolder)
             ->setTaxDisplayType($TaxDisplayType)

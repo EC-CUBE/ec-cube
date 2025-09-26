@@ -342,7 +342,7 @@ if (!class_exists(Customer::class)) {
         }
 
         /**
-         * {@inheritdoc}
+         * @return string
          */
         public function getUsername()
         {

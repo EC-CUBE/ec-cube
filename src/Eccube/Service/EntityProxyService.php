@@ -52,12 +52,12 @@ class EntityProxyService
     /**
      * EntityのProxyを生成します。
      *
-     * @param array<int, array<int, string>>|array<int,string> $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
-     * @param array<int, array<int, array<int, string>>>|array<int,string> $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
+     * @param array<int,string> $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
+     * @param array<int,string> $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
      * @param string $outputDir 出力先
      * @param OutputInterface|null $output ログ出力
      *
-     * @return array<int, string> 生成したファイルのリスト
+     * @return array<string> 生成したファイルのリスト
      *
      * @throws \ReflectionException
      */
@@ -75,6 +75,7 @@ class EntityProxyService
         // プロキシファイルの生成
         foreach ($targetEntities as $targetEntity) {
             $traits = $addTraits[$targetEntity] ?? [];
+            /** @var class-string $targetEntity */
             $fileName = $this->originalEntityPath($targetEntity);
             $baseName = basename($fileName);
             $entityTokens = Tokens::fromCode(file_get_contents($fileName));
@@ -114,6 +115,15 @@ class EntityProxyService
         return $generatedFiles;
     }
 
+    /**
+     * Entityの元のソースファイルのパスを返します.
+     *
+     * @param class-string $entityClassName EntityのFQCN
+     *
+     * @return string 元のソースファイルのパス
+     *
+     * @throws \ReflectionException
+     */
     private function originalEntityPath(string $entityClassName): string
     {
         $projectDir = rtrim(str_replace('\\', '/', $this->eccubeConfig->get('kernel.project_dir')), '/');
@@ -142,9 +152,9 @@ class EntityProxyService
     /**
      * 複数のディレクトリセットをスキャンしてディレクトリセットごとのEntityとTraitのマッピングを返します.
      *
-     * @param array<int, string> $dirSets スキャン対象ディレクトリリストの配列
+     * @param array<int, array<int, string>> $dirSets スキャン対象ディレクトリリストの配列
      *
-     * @return array<int, string> ディレクトリセットごとのEntityとTraitのマッピング
+     * @return array<int, array<string, array<int, string>>> ディレクトリセットごとのEntityとTraitのマッピング
      *
      * @throws \ReflectionException
      */

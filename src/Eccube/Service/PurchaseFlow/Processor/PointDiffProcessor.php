@@ -190,17 +190,17 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
-     * @return int
+     * @return string
      */
     protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if ($context->getOriginHolder()) {
             $fromUsePoint = $context->getOriginHolder()->getUsePoint();
         } else {
-            $fromUsePoint = 0;
+            $fromUsePoint = '0';
         }
         $toUsePoint = $itemHolder->getUsePoint();
 
-        return $toUsePoint - $fromUsePoint; // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+        return bcsub($toUsePoint, $fromUsePoint);
     }
 }

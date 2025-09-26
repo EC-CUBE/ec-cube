@@ -302,7 +302,7 @@ class OrderType extends AbstractType
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param ArrayCollection $Payments
+     * @param ArrayCollection<int, Payment> $Payments
      * @param string $total
      *
      * @return Payment[]
@@ -314,11 +314,11 @@ class OrderType extends AbstractType
             $min = $Payment->getRuleMin();
             $max = $Payment->getRuleMax();
 
-            if (null !== $min && ($total + $charge) < $min) {
+            if (null !== $min && bcadd($total, $charge) < $min) {
                 return false;
             }
 
-            if (null !== $max && ($total + $charge) > $max) {
+            if (null !== $max && bcadd($total, $charge) > $max) {
                 return false;
             }
 

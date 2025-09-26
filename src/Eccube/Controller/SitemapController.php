@@ -15,6 +15,7 @@ namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Page;
+use Eccube\Entity\Product;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
@@ -96,7 +97,7 @@ class SitemapController extends AbstractController
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
-        /** @var SlidingPagination $pagination */
+        /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $paginator->paginate(
             $productQueryBuilder,
             1,
@@ -147,7 +148,7 @@ class SitemapController extends AbstractController
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
-        /** @var SlidingPagination $pagination */
+        /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $paginator->paginate(
             $productQueryBuilder,
             $request->get('page') ?: 1,

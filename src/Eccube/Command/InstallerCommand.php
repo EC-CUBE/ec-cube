@@ -44,6 +44,9 @@ class InstallerCommand extends Command
      */
     protected $databaseUrl;
 
+    /**
+     * @var object
+     */
     private $envFileUpdater;
 
     public function __construct(EccubeConfig $eccubeConfig)

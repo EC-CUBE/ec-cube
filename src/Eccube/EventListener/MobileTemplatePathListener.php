@@ -89,7 +89,7 @@ class MobileTemplatePathListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string,array<string, int>>
+     * @return array<string,array<string|int>>
      */
     #[\Override]
     public static function getSubscribedEvents()

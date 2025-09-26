@@ -206,7 +206,7 @@ class PluginService
      * @param string $code プラグインコード
      * @param mixed $notExists
      *
-     * @return void
+     * @return bool
      *
      * @throws ConnectionException
      * @throws Exception
@@ -249,6 +249,8 @@ class PluginService
 
             throw $e;
         }
+
+        return true;
     }
 
     // インストール事前処理
@@ -425,7 +427,7 @@ class PluginService
     public function deleteDirs($arr)
     {
         foreach ($arr as $dir) {
-            if (isset($dir) && file_exists($dir)) {
+            if (file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }
@@ -725,9 +727,14 @@ class PluginService
         }
         @mkdir($outputDir);
 
-        $enabledPluginCodes = array_map(
-            function ($p) { return $p->getCode(); },
-            $temporary ? $this->pluginRepository->findAll() : $this->pluginRepository->findAllEnabled()
+        if ($temporary) {
+            $Plugins = $this->pluginRepository->findAll();
+        } else {
+            $Plugins = $this->pluginRepository->findAllEnabled();
+        }
+        /** @var Plugin[] $Plugins */
+        $enabledPluginCodes = array_map(fn ($p) => $p->getCode(),
+            $Plugins
         );
 
         $excludes = [];
@@ -889,7 +896,7 @@ class PluginService
      *
      * @param array<string, string|int>|Plugin $plugin format as plugin from api
      *
-     * @return array<int, string>
+     * @return array<int, string>|array<mixed>
      *
      * @throws PluginException
      */

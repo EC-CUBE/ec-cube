@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class PurchaseContext extends \SplObjectStorage
 {
     /**
-     * @var Customer|null 会員情報
+     * @var UserInterface|Customer|null 会員情報
      */
     private $user;
 

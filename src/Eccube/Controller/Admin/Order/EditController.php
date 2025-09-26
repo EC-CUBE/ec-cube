@@ -15,11 +15,13 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -466,7 +468,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH);
 
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination<int, Customer> $pagination */
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -474,7 +476,7 @@ class EditController extends AbstractController
                 ['wrap-queries' => true]
             );
 
-            /** @var \Eccube\Entity\Customer[] $Customers */
+            /** @var Customer[] $Customers */
             $Customers = $pagination->getItems();
 
             if (empty($Customers)) {
@@ -526,7 +528,7 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');
 
-            /** @var \Eccube\Entity\Customer|null $Customer */
+            /** @var Customer|null $Customer */
             $Customer = $this->customerRepository
                 ->find($request->get('id'));
 
@@ -629,7 +631,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH);
 
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination<int, Product> $pagination */
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -637,7 +639,7 @@ class EditController extends AbstractController
                 ['wrap-queries' => true]
             );
 
-            /** @var \Eccube\Entity\Product[] $Products */
+            /** @var Product[] $Products */
             $Products = $pagination->getItems();
 
             if (empty($Products)) {

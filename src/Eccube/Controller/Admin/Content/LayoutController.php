@@ -211,6 +211,9 @@ class LayoutController extends AbstractController
                 // プレビューする画面を取得
                 try {
                     $Page = $this->pageRepository->find($previewPageId);
+                    if ($Page === null) {
+                        throw new NoResultException();
+                    }
                 } catch (NoResultException) {
                     throw new NotFoundHttpException();
                 }

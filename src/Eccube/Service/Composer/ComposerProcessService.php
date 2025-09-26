@@ -142,6 +142,12 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
+    /**
+     * @param string $key
+     * @param string[]|null $value
+     *
+     * @return array<string, array<string, string>>|mixed
+     */
     #[\Override]
     public function execConfig($key, $value = null)
     {

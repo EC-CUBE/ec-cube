@@ -19,8 +19,6 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 
 /**
- * @var OrderItemCollection<int, OrderItem|ItemInterface>
- *
  * @extends \Doctrine\Common\Collections\ArrayCollection<int, mixed>
  */
 class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection

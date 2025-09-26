@@ -268,6 +268,11 @@ jobs:
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
 
+    /**
+     * @param string $pluginDir
+     *
+     * @return void
+     */
     protected function createGitattributes($pluginDir)
     {
         $source = <<<EOL

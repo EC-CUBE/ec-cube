@@ -65,7 +65,7 @@ class PointHelper
     /**
      * ポイントを金額に変換する.
      *
-     * @param int $point ポイント
+     * @param string $point ポイント
      *
      * @return string 金額
      *
@@ -76,13 +76,13 @@ class PointHelper
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
-        return bcmul((string) $point, $BaseInfo->getPointConversionRate(), 0);
+        return bcmul($point, (string) $BaseInfo->getPointConversionRate(), 0);
     }
 
     /**
      * ポイントを値引き額に変換する. マイナス値を返す.
      *
-     * @param int $point ポイント
+     * @param string $point ポイント
      *
      * @return string 金額
      *
@@ -97,7 +97,7 @@ class PointHelper
     /**
      * 金額をポイントに変換する.
      *
-     * @param float|int $price
+     * @param string $price
      *
      * @return string ポイント
      *
@@ -108,7 +108,7 @@ class PointHelper
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
-        return bcfloor(bcdiv((string) $price, $BaseInfo->getPointConversionRate(), 4));
+        return bcfloor(bcdiv($price, (string) $BaseInfo->getPointConversionRate(), 4));
     }
 
     /**
@@ -179,7 +179,7 @@ class PointHelper
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param int $point
+     * @param string $point
      *
      * @return void
      */
@@ -187,12 +187,12 @@ class PointHelper
     {
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint(bcsub($Customer->getPoint(), (string) $point));
+        $Customer->setPoint(bcsub($Customer->getPoint(), $point));
     }
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param int $point
+     * @param string $point
      *
      * @return void
      */
@@ -200,6 +200,6 @@ class PointHelper
     {
         // 利用したポイントをユーザに戻す.
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint(bcadd($Customer->getPoint(), (string) $point));
+        $Customer->setPoint(bcadd($Customer->getPoint(), $point));
     }
 }

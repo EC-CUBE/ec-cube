@@ -51,6 +51,7 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
         if (!$target instanceof Order) {
             return;
         }
+        /** @var OrderStatus $OrderStatus */
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $target->setOrderStatus($OrderStatus);
         $target->setOrderDate(new \DateTime());

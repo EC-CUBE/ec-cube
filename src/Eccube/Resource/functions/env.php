@@ -11,6 +11,14 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Gets the value of an environment variable. Supports boolean, null and empty values.
+ *
+ * @param string $key The environment variable key
+ * @param mixed $default The default value to return if the environment variable does not exist
+ *
+ * @return mixed The environment variable value or the default value
+ */
 function env($key, $default = null)
 {
     $value = getenv($key);

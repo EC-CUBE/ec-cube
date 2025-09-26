@@ -48,16 +48,16 @@ class CartController extends AbstractController
 
         $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
             /** @var Cart $Cart */
-            $total += $Cart->getTotalQuantity();
+            $total = bcadd($total, $Cart->getTotalQuantity());
 
             return $total;
-        }, 0);
+        }, '0');
         $totalPrice = array_reduce($Carts, function ($total, $Cart) {
             /** @var Cart $Cart */
-            $total += $Cart->getTotalPrice();
+            $total = bcadd($total, $Cart->getTotalPrice());
 
             return $total;
-        }, 0);
+        }, '0');
 
         $route = $request->attributes->get('_route');
 

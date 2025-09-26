@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 interface ItemHolderInterface
@@ -139,7 +140,7 @@ interface ItemHolderInterface
     /**
      * 出荷情報を追加します - 注文のみ
      *
-     * @return ArrayCollection
+     * @return ArrayCollection<int, Shipping>
      */
     public function getShippings();
 

@@ -85,7 +85,7 @@ class NewsController extends AbstractController
      * @param Request $request
      * @param int|null $id
      *
-     * @return array|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/news/new', name: 'admin_content_news_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/news/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_news_edit', methods: ['GET', 'POST'])]

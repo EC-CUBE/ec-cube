@@ -41,9 +41,8 @@ use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 /**
  * CSV reader
  *
- * @implements \Iterator<int, array<int, string>>
- * @implements \SeekableIterator<int, array<int, string>>
- * @implements \Countable<int>
+ * @implements \Iterator<int, array<int|string, string>>
+ * @implements \SeekableIterator<int, array<int|string, string>>
  */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
@@ -434,7 +433,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param array<int, string> $line
      *
-     * @return array<int, string|array>
+     * @return array<int, string>
      */
     protected function mergeDuplicates(array $line)
     {

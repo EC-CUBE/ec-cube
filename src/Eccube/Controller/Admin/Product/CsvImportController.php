@@ -878,6 +878,11 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格登録CSVアップロード
+     *
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return array<mixed>|JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/class_name_csv_upload', name: 'admin_product_class_name_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_class_name.twig')]
@@ -996,6 +1001,11 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格分類CSV登録CSVアップロード
+     *
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return array<mixed>|JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/class_category_csv_upload', name: 'admin_product_class_category_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_class_category.twig')]
@@ -1203,7 +1213,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品画像の削除、登録
      *
-     * @param array<string,string> $row
+     * @param array<int,string> $row
      * @param Product $Product
      * @param CsvImportService<int,mixed> $data
      * @param array<mixed> $headerByKey
@@ -1256,7 +1266,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品カテゴリの削除、登録
      *
-     * @param array<string,string> $row
+     * @param array<int,string> $row
      * @param Product $Product
      * @param CsvImportService<int,mixed> $data
      * @param array<mixed> $headerByKey
@@ -1326,7 +1336,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * タグの登録
      *
-     * @param array<string,string> $row
+     * @param array<int,string> $row
      * @param Product $Product
      * @param CsvImportService<int,mixed> $data
      * @param array<string, mixed> $headerByKey
@@ -1745,7 +1755,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVヘッダー定義
      *
-     * @return array<string,array<string,mixed>>
+     * @return array<string,array<string,string|bool>>
      */
     protected function getProductCsvHeader()
     {
@@ -1881,7 +1891,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * カテゴリCSVヘッダー定義
      *
-     * @return array<string,array<string,mixed>>
+     * @return array<string,array<string,string|bool>>
      */
     protected function getCategoryCsvHeader()
     {
@@ -1911,6 +1921,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格CSVヘッダー定義
+     *
+     * @return array<string,array<string,string|bool>>
      */
     protected function getClassNameCsvHeader()
     {
@@ -1940,6 +1952,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格分類CSVヘッダー定義
+     *
+     * @return array<string,array<string,string|bool>>
      */
     protected function getClassCategoryCsvHeader()
     {

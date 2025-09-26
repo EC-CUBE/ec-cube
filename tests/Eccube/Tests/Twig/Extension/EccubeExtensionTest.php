@@ -82,7 +82,7 @@ class EccubeExtensionTest extends EccubeTestCase
                 $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02()), $actual['price02_with_currency']);
                 $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax_with_currency']);
                 $this->assertEquals($ProductClass->getCode(), $actual['product_code']);
-                $this->assertSame($ProductClass->getSaleType()->getId(), $actual['sale_type']);
+                $this->assertSame($ProductClass->getSaleType()->getId(), (int) $actual['sale_type']);
                 $this->assertEquals($ProductClass->getStockFind(), $actual['stock_find']);
             }
         }

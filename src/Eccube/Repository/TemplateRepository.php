@@ -24,6 +24,8 @@ use Eccube\Entity\Template;
  *
  * @method array<int, Template> findByCode(string $code)
  * @method Template|null findOneByCode(string $code)
+ *
+ * @extends AbstractRepository<Template>
  */
 class TemplateRepository extends AbstractRepository
 {

@@ -190,11 +190,7 @@ class PurchaseFlow implements \Stringable
         $this->calculateAll($itemHolder);
 
         foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
-            $result = $holderPreprocessor->process($itemHolder, $context);
-            if ($result) {
-                $flowResult->addProcessResult($result);
-            }
-
+            $holderPreprocessor->process($itemHolder, $context);
             $this->calculateAll($itemHolder);
         }
 

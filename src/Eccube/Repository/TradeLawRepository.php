@@ -16,6 +16,9 @@ namespace Eccube\Repository;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\TradeLaw;
 
+/**
+ * @extends AbstractRepository<TradeLaw>
+ */
 class TradeLawRepository extends AbstractRepository
 {
     public function __construct(RegistryInterface $registry)

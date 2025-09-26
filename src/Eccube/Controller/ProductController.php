@@ -167,7 +167,7 @@ class ProductController extends AbstractController
         $query = $qb->getQuery()
             ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
-        /** @var SlidingPagination $pagination */
+        /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $paginator->paginate(
             $query,
             !empty($searchData['pageno']) && preg_match('/^\d+$/', (string) $searchData['pageno']) ? $searchData['pageno'] : 1,

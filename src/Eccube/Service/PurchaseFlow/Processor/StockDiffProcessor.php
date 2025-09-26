@@ -104,7 +104,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @param ItemHolderInterface $From
      * @param ItemHolderInterface $To
      *
-     * @return array<int, int> 商品クラスIDをキーとした商品の数量の差分
+     * @return array<int, string> 商品クラスIDをキーとした商品の数量の差分
      */
     protected function getDiffOfQuantities(ItemHolderInterface $From, ItemHolderInterface $To)
     {
@@ -118,15 +118,15 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             if (isset($FromItems[$id]) && isset($ToItems[$id])) {
                 // 2 -> 3 = +1
                 // 2 -> 1 = -1
-                $diff[$id] = $ToItems[$id] - $FromItems[$id];
+                $diff[$id] = (string) ($ToItems[$id] - $FromItems[$id]);
             } // 削除された明細
             elseif (isset($FromItems[$id]) && empty($ToItems[$id])) {
                 // 2 -> 0 = -2
-                $diff[$id] = $FromItems[$id] * -1;
+                $diff[$id] = (string) ($FromItems[$id] * -1);
             } // 追加された明細
             elseif (!isset($FromItems[$id]) && isset($ToItems[$id])) {
                 // 0 -> 2 = +2
-                $diff[$id] = $ToItems[$id];
+                $diff[$id] = (string) $ToItems[$id];
             }
         }
 
@@ -179,7 +179,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
                 continue;
             }
 
-            $stock = $ProductClass->getStock() - $quantity;
+            $stock = $ProductClass->getStock() !== null ? bcsub((string) $ProductClass->getStock(), $quantity) : null;
             $ProductStock = $ProductClass->getProductStock();
             if (!$ProductStock) {
                 $ProductStock = new ProductStock();

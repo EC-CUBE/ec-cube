@@ -43,7 +43,7 @@ class AutoNewItemController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array
+     * @return array<string, mixed>
      */
     #[Route('/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
     #[Template('Block/auto_new_item.twig')]
