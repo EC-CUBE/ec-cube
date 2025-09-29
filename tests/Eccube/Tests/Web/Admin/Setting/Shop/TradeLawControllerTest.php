@@ -99,7 +99,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(1, $failedInput->count());
 
         // Check Text
-        $this->assertSame('<span class="form-error-message">値が長すぎます。255文字以内でなければなりません。</span>',
+        $this->assertSame('<span class="form-error-message">この値は、255文字以内で入力してください。</span>',
             $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
     }
 
@@ -125,7 +125,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(1, $failedInput->count());
 
         // Check Text
-        $this->assertSame('<span class="form-error-message">値が長すぎます。4000文字以内でなければなりません。</span>',
+        $this->assertSame('<span class="form-error-message">この値は、4000文字以内で入力してください。</span>',
             $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
     }
 
