@@ -123,7 +123,7 @@ class CartServiceTest extends AbstractServiceTestCase
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
 
-        $this->assertEquals(1, $CartItems[0]->getProductClassId());
+        $this->assertSame(1, $CartItems[0]->getProductClassId());
     }
 
     public function testAddProductsQuantity()
@@ -133,7 +133,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             return $q + $item->getQuantity();
         });
-        $this->assertEquals(1, $quantity);
+        $this->assertSame(1, $quantity);
     }
 
     public function testAddProductsQuantityOverSaleLimit()
@@ -144,7 +144,7 @@ class CartServiceTest extends AbstractServiceTestCase
             return $q + $item->getQuantity();
         });
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
-        $this->assertEquals(6, $quantity);
+        $this->assertSame(6, $quantity);
     }
 
     public function testAddProductsQuantityMultiItems()
@@ -163,7 +163,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             return $q + $item->getQuantity();
         });
-        $this->assertEquals(5, $quantity);
+        $this->assertSame(5, $quantity);
     }
 
     public function testAddProductsWithCartItemComparator()
@@ -183,9 +183,9 @@ class CartServiceTest extends AbstractServiceTestCase
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertEquals(1, count($CartItems));
-        self::assertEquals(2, $CartItems[0]->getProductClassId());
-        self::assertEquals(2, $CartItems[0]->getQuantity());
+        self::assertSame(1, count($CartItems));
+        self::assertSame(2, $CartItems[0]->getProductClassId());
+        self::assertSame(2, $CartItems[0]->getQuantity());
 
         $this->cartService->addProduct($ProductClass, 1);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
@@ -193,11 +193,11 @@ class CartServiceTest extends AbstractServiceTestCase
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertEquals(2, count($CartItems));
-        self::assertEquals(2, $CartItems[0]->getProductClassId());
-        self::assertEquals(2, $CartItems[0]->getQuantity());
-        self::assertEquals(2, $CartItems[1]->getProductClassId());
-        self::assertEquals(1, $CartItems[1]->getQuantity());
+        self::assertSame(2, count($CartItems));
+        self::assertSame(2, $CartItems[0]->getProductClassId());
+        self::assertSame(2, $CartItems[0]->getQuantity());
+        self::assertSame(2, $CartItems[1]->getProductClassId());
+        self::assertSame(1, $CartItems[1]->getQuantity());
     }
 
     public function testUpProductQuantity()
@@ -215,7 +215,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             return $q + $item->getQuantity();
         });
-        $this->assertEquals(2, $quantity);
+        $this->assertSame(2, $quantity);
     }
 
     public function testDownProductQuantity()
@@ -233,7 +233,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
             return $q + $item->getQuantity();
         });
-        $this->assertEquals(1, $quantity);
+        $this->assertSame(1, $quantity);
     }
 
     public function testRemoveProduct()

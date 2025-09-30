@@ -66,7 +66,7 @@ class PointHelper
      *
      * @param $point ポイント
      *
-     * @return float|int 金額
+     * @return string 金額
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -75,7 +75,7 @@ class PointHelper
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
-        return intval($point * $BaseInfo->getPointConversionRate());
+        return bcmul($point, $BaseInfo->getPointConversionRate(), 0);
     }
 
     /**
@@ -83,14 +83,14 @@ class PointHelper
      *
      * @param $point ポイント
      *
-     * @return float|int 金額
+     * @return string 金額
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function pointToDiscount($point)
     {
-        return $this->pointToPrice($point) * -1;
+        return bcmul($this->pointToPrice($point), '-1', 0);
     }
 
     /**
@@ -98,7 +98,7 @@ class PointHelper
      *
      * @param $price
      *
-     * @return float ポイント
+     * @return string ポイント
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -107,7 +107,7 @@ class PointHelper
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
-        return floor($price / $BaseInfo->getPointConversionRate());
+        return bcfloor(bcdiv($price, $BaseInfo->getPointConversionRate(), 4));
     }
 
     /**

@@ -218,7 +218,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
+        $this->entityManager->refresh($DeliveryOne); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = $newSortNo;
         $this->actual = $DeliveryOne->getSortNo();
         $this->verify();

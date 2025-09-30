@@ -477,7 +477,7 @@ class Generator
                 ->setProduct($Product)
                 ->setSaleType($SaleType)
                 ->setStockUnlimited(false)
-                ->setPrice02($faker->randomNumber(5))
+                ->setPrice02((string) $faker->randomNumber(5))
                 ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
@@ -525,7 +525,7 @@ class Generator
             ->setProductStock($ProductStock)
             ->setProduct($Product)
             ->setSaleType($SaleType)
-            ->setPrice02($faker->randomNumber(5))
+            ->setPrice02((string) $faker->randomNumber(5))
             ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
             ->setCreateDate(new \DateTime()) // FIXME
@@ -676,8 +676,8 @@ class Generator
                 ->setProduct($Product)
                 ->setProductName($Product->getName())
                 ->setProductCode($ProductClass->getCode())
-                ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($quantity)
+                ->setPrice((string) $ProductClass->getPrice02())
+                ->setQuantity((string) $quantity)
                 ->setTaxType($Taxation) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
@@ -703,8 +703,8 @@ class Generator
         $OrderItemDeliveryFee->setShipping($Shipping)
             ->setOrder($Order)
             ->setProductName('送料')
-            ->setPrice($fee)
-            ->setQuantity(1)
+            ->setPrice((string) $fee)
+            ->setQuantity('1')
             ->setTaxType($Taxation) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
@@ -717,8 +717,8 @@ class Generator
             // ->setShipping($Shipping) // Shipping には登録しない
             ->setOrder($Order)
             ->setProductName('手数料')
-            ->setPrice($charge)
-            ->setQuantity(1)
+            ->setPrice((string) $charge)
+            ->setQuantity('1')
             ->setTaxType($Taxation) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
@@ -731,8 +731,8 @@ class Generator
             // ->setShipping($Shipping) // Shipping には登録しない
             ->setOrder($Order)
             ->setProductName('値引き')
-            ->setPrice($discount * -1)
-            ->setQuantity(1)
+            ->setPrice((string) ($discount * -1))
+            ->setQuantity('1')
             ->setTaxType($NonTaxable) // 不課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDiscount); // 値引き明細
@@ -744,8 +744,8 @@ class Generator
             $OrderItemPoint
                 ->setOrder($Order)
                 ->setProductName('ポイント')
-                ->setPrice($point * -1)
-                ->setQuantity(1)
+                ->setPrice((string) ($point * -1))
+                ->setQuantity('1')
                 ->setTaxType($NonTaxable)
                 ->setTaxDisplayType($TaxInclude)
                 ->setOrderItemType($ItemPoint);

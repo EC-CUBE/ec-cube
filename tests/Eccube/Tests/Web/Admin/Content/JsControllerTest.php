@@ -73,7 +73,7 @@ __JS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
         $contents = file_get_contents($this->dir.self::JS_FILE);
-        $this->assertEquals($js, $contents);
+        $this->assertSame($js, $contents);
     }
 
     public function testRoutingAdminContentJsEditFailure()
@@ -126,6 +126,6 @@ __JS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
         $contents = file_get_contents($this->dir.self::JS_FILE);
-        $this->assertEquals($js, $contents);
+        $this->assertSame($js, $contents);
     }
 }

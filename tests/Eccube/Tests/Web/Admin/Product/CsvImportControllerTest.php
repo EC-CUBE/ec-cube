@@ -219,8 +219,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify('class_category_id2 は null');
 
         // del_flg = 0 の行の確認
-        $this->expected = 1;
-        $this->actual = $result[1]['visible'];
+        $this->expected = true;
+        $this->actual = (bool) $result[1]['visible']; // SQLite3, MySQL だと 1 になるためキャストする
         $this->verify('result[1] は visible = 1');
 
         $this->expected = 3;
@@ -330,7 +330,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         // del_flg = 0 の行の確認
         $this->expected = true;
-        $this->actual = $result[1]['visible'];
+        $this->actual = (bool) $result[1]['visible']; // SQLite3, MySQL だと 1 になるためキャストする
         $this->verify('result[1] は visible = true');
 
         $this->expected = 3;
@@ -772,7 +772,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function dataDeliveryFeeProvider()
     {
         return [
-            [true, 5000],   // 送料オプション有効時は更新
+            [true, '5000'],   // 送料オプション有効時は更新
             [false, null],  // 送料オプション無効時はスキップ
         ];
     }
@@ -899,11 +899,13 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @dataProvider dataTaxRuleProvider
      *
-     * @param $optionTaxRule
-     * @param $preTaxRate
-     * @param $postTaxRate
+     * @param bool $optionTaxRule
+     * @param string $preTaxRate
+     * @param string|null $postTaxRate
      *
      * @throws \Exception
+     *
+     * @group decimal
      */
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {
@@ -913,6 +915,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush($BaseInfo);
         $this->entityManager->clear();
 
+        $csv = [];
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '税率'];
         $csv[] = [1, '商品別税率テスト用', 1, 1, 1, $preTaxRate];
         $this->filepath = $this->createCsvFromArray($csv);
@@ -923,7 +926,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->productRepo->findOneBy(['name' => '商品別税率テスト用']);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()[0];
-        $this->expected = $postTaxRate;
+        $this->expected = $postTaxRate === null ? null : $postTaxRate;
         if ($ProductClass->getTaxRule() == null) {
             $this->actual = $ProductClass->getTaxRule();
         } else {
@@ -935,11 +938,11 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function dataTaxRuleProvider()
     {
         return [
-            [true, 0, 0],
-            [true, 12, 12],
+            [true, '0', '0'],
+            [true, '12', '12'],
             [true, '', null],
-            [false, 0, null],
-            [false, 12, null],
+            [false, '0', null],
+            [false, '12', null],
             [false, '', null],
         ];
     }
@@ -1133,7 +1136,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $json = \json_decode($response->getContent(), true);
         $this->assertTrue($json['success']);
-        $this->assertEquals('2行目〜2行目を登録しました', $json['success_message']);
+        $this->assertSame('2行目〜2行目を登録しました', $json['success_message']);
     }
 
     public function testCleanupCsv()

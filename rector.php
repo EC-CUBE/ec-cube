@@ -83,6 +83,11 @@ return RectorConfig::configure()
                NullToStrictStringFuncCallArgRector::class, // null を厳密な string 型に変換する
                NestedAnnotationToAttributeRector::class, // ネストされたアノテーションをアトリビュートに変換する
                ])
+           ])
+           // 個別にルールを追加する場合はここに記述
+           ->withRules([
+               AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する
+           ])
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,

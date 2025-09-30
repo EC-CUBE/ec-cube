@@ -63,7 +63,7 @@ class TimeZoneTest extends EccubeTestCase
         $expected = '2000-01-01 00:00:00';
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -97,7 +97,7 @@ class TimeZoneTest extends EccubeTestCase
         $expected = '2000-01-01 00:00:00';
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
 
         $sql = 'select id, create_date from dtb_product where id = ?';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql, [$id]);
@@ -107,7 +107,7 @@ class TimeZoneTest extends EccubeTestCase
         $expected = '1999-12-31 15:00:00';
         $actual = new \DateTime($product['create_date'], new \DateTimeZone('UTC'));
 
-        $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
+        $this->assertSame($expected, $actual->format('Y-m-d H:i:s'));
     }
 
     public function testDbalSelect()
@@ -120,7 +120,7 @@ class TimeZoneTest extends EccubeTestCase
         $expected = '1999-12-31 15:00:00';
         $actual = new \DateTime($product['create_date'], new \DateTimeZone('UTC'));
 
-        $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
+        $this->assertSame($expected, $actual->format('Y-m-d H:i:s'));
 
         // convertToPHPValueでjst時刻に変換可能
         $timezone = new \DateTimeZone(static::getContainer()->getParameter('timezone'));
@@ -156,6 +156,6 @@ class TimeZoneTest extends EccubeTestCase
         $expected = '1999-12-31 15:00:00';
         $actual = new \DateTime($product['create_date'], new \DateTimeZone('UTC'));
 
-        $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
+        $this->assertSame($expected, $actual->format('Y-m-d H:i:s'));
     }
 }

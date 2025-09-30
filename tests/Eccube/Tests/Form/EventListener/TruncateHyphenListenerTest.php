@@ -28,6 +28,6 @@ class TruncateHyphenListenerTest extends TestCase
         $filter = new TruncateHyphenListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('0123456789', $event->getData());
+        $this->assertSame('0123456789', $event->getData());
     }
 }

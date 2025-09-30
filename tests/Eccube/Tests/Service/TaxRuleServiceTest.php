@@ -50,129 +50,153 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByCalcRuleWithDefault()
     {
-        $input = 100.4;
-        $this->expected = 101;
+        $input = '100.4';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 101;
+        $input = '100.5';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
+        $input = '100';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
+        $input = '101';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByRoundingTypeWithCeil()
     {
-        $input = 100.4;
-        $this->expected = 101;
+        $input = '100.4';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 101;
+        $input = '100.5';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
+        $input = '100';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
+        $input = '101';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByRoundingTypeWithRound()
     {
-        $input = 100.4;
-        $this->expected = 100;
+        $input = '100.4';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 101;
+        $input = '100.5';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
+        $input = '100';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
+        $input = '101';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByRoundingTypeWithFloor()
     {
-        $input = 100.4;
-        $this->expected = 100;
+        $input = '100.4';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 100;
+        $input = '100.5';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
+        $input = '100';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
+        $input = '101';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcTax()
     {
-        $input = 1000;
-        $rate = 8;
-        $this->expected = 80.0;
+        $input = '1000';
+        $rate = '8';
+        $this->expected = '80.00';
         $this->actual = $this->taxRuleService->calcTax($input, $rate, RoundingType::ROUND);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcTaxWithAdjust()
     {
-        $input = 1008;
-        $rate = 8;
-        $adjust = -1;
-        $this->expected = 80.0;
+        $input = '1008';
+        $rate = '8';
+        $adjust = '-1';
+        $this->expected = '80.00';
         $this->actual = $this->taxRuleService->calcTax($input, $rate, RoundingType::ROUND, $adjust);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTax()
     {
-        $input = 1000;
-        $this->expected = 100.0;
+        $input = '1000';
+        $this->expected = '100.00';
         $this->actual = $this->taxRuleService->getTax($input);
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcIncTax()
     {
-        $input = 1000;
-        $this->expected = 1100.0;
+        $input = '1000';
+        $this->expected = '1100.00';
         $this->actual = $this->taxRuleService->getPriceIncTax($input);
         $this->verify();
     }

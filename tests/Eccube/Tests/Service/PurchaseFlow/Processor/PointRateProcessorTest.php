@@ -49,7 +49,7 @@ class PointRateProcessorTest extends EccubeTestCase
         $this->processor->execute($this->Order, new PurchaseContext());
 
         foreach ($this->Order->getOrderItems() as $OrderItem) {
-            $this->assertEquals($OrderItem->getPointRate(), $this->BaseInfo->getBasicPointRate());
+            $this->assertSame($OrderItem->getPointRate(), $this->BaseInfo->getBasicPointRate());
         }
     }
 
@@ -66,9 +66,9 @@ class PointRateProcessorTest extends EccubeTestCase
 
         foreach ($this->Order->getOrderItems() as $OrderItem) {
             if ($OrderItem->isProduct()) {
-                $this->assertEquals($OrderItem->getPointRate(), $productPointRate);
+                $this->assertSame($OrderItem->getPointRate(), $productPointRate);
             } else {
-                $this->assertEquals($OrderItem->getPointRate(), $baseRate);
+                $this->assertSame($OrderItem->getPointRate(), $baseRate);
             }
         }
     }

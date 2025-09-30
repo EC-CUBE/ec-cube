@@ -22,7 +22,7 @@ class LoginControllerTest extends AbstractWebTestCase
         $this->client->request('GET', $this->generateUrl('admin_login'));
 
         // ログイン
-        $this->assertEquals(
+        $this->assertSame(
             200,
             $this->client->getResponse()->getStatusCode()
         );
@@ -48,7 +48,7 @@ class LoginControllerTest extends AbstractWebTestCase
         $this->client->request('GET', $this->generateUrl('admin_homepage'));
 
         // ログイン
-        $this->assertEquals(
+        $this->assertSame(
             302,
             $this->client->getResponse()->getStatusCode()
         );

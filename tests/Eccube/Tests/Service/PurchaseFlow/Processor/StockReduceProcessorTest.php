@@ -50,7 +50,7 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 在庫が減っている
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertEquals(7, $ProductClass->getStock());
+        self::assertSame(7, $ProductClass->getStock());
     }
 
     public function testRollback()
@@ -75,7 +75,7 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 在庫が戻っている
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertEquals(10, $ProductClass->getStock());
+        self::assertSame(10, $ProductClass->getStock());
     }
 
     public function testMultiShipping()
@@ -103,6 +103,6 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 複数のOrderItemで同じProductClassの場合、合算した在庫数が減っている
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertEquals(0, $ProductClass->getStock());
+        self::assertSame(0, $ProductClass->getStock());
     }
 }

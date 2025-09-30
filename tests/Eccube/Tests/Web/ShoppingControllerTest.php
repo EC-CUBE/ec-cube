@@ -119,12 +119,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#test-news-id');
-        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+        $this->assertSame(0, $testNewsArea_notFoundTest->count());
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertEquals(1, $testNewsArea->count());
+        $this->assertSame(1, $testNewsArea->count());
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -159,7 +159,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 確認画面
-        $crawler = $this->scenarioComplete($this->generateUrl('shopping_confirm'), $Customer);
+        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_confirm'));
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -487,7 +487,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->scenarioConfirm($Customer);
         // お届け先の設定
         $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
-        $crawler = $this->scenarioComplete($shipping_url, $client);
+        $crawler = $this->scenarioComplete(null, $shipping_url, $client);
 
         // お届け先一覧
         $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
@@ -524,7 +524,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($this->generateUrl('shopping_confirm'), $client);
+        $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'), $client);
 
         $this->baseInfoRepository->get();
         $Messages = $this->getMailCatcherMessages();
@@ -588,8 +588,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 確認画面
         $crawler = $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => $Delivery->getId(),
@@ -604,8 +604,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 完了画面
         $this->scenarioComplete(
-            $this->generateUrl('shopping_checkout'),
             $Customer,
+            $this->generateUrl('shopping_checkout'),
             [],
             true
         );
@@ -664,8 +664,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 確認画面
         $crawler = $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => 1,
@@ -680,8 +680,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 完了画面
         $this->scenarioComplete(
-            $this->generateUrl('shopping_checkout'),
             $Customer,
+            $this->generateUrl('shopping_checkout'),
             [],
             true
         );
@@ -803,8 +803,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 確認画面
         $crawler = $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => 1,
@@ -846,8 +846,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 確認画面
         $crawler = $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => 1,
@@ -900,7 +900,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
     }
 
@@ -935,7 +935,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
     }
 
@@ -973,8 +973,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 確認画面
         $crawler = $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => 1,
@@ -983,7 +983,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
     }
 
@@ -1021,8 +1021,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 確認画面
         $crawler = $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => 1,
@@ -1031,7 +1031,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
     }
 

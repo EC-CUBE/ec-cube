@@ -52,7 +52,7 @@ class PrefTypeTest extends AbstractTypeTestCase
         $choices = $view->vars['choices'];
 
         // placeholder
-        $this->assertEquals('common.select__pref', $view->vars['placeholder']);
+        $this->assertSame('common.select__pref', $view->vars['placeholder']);
 
         $data = [];
         // attrなど含まれているので

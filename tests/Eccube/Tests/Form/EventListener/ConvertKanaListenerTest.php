@@ -28,7 +28,7 @@ class ConvertKanaListenerTest extends TestCase
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('12345', $event->getData());
+        $this->assertSame('12345', $event->getData());
     }
 
     public function testConvertKanaArray()
@@ -40,7 +40,7 @@ class ConvertKanaListenerTest extends TestCase
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals(['12345'], $event->getData());
+        $this->assertSame(['12345'], $event->getData());
     }
 
     public function testConvertKanaHiraganaToKana()
@@ -52,6 +52,6 @@ class ConvertKanaListenerTest extends TestCase
         $filter = new ConvertKanaListener('CV');
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('アイウエオ', $event->getData());
+        $this->assertSame('アイウエオ', $event->getData());
     }
 }
