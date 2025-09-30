@@ -101,8 +101,8 @@ class OrderRepositoryTest extends EccubeTestCase
 
         self::assertNull($Customer->getFirstBuyDate());
         self::assertNull($Customer->getLastBuyDate());
-        self::assertSame(0, $Customer->getBuyTimes());
-        self::assertSame(0, $Customer->getBuyTotal());
+        self::assertSame('0', $Customer->getBuyTimes());
+        self::assertSame('0', $Customer->getBuyTotal());
 
         $Order1 = $this->createOrder($Customer);
         $Order1->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));

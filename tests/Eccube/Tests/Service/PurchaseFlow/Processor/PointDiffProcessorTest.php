@@ -273,9 +273,9 @@ class PointDiffProcessorTest extends EccubeTestCase
         $purchaseFlow->commit($AfterOrder, $context);
 
         if ($isChange) {
-            self::assertSame(90, $Customer->getPoint());
+            self::assertSame('90', $Customer->getPoint());
         } else {
-            self::assertSame(100, $Customer->getPoint());
+            self::assertSame('100', $Customer->getPoint());
         }
     }
 
