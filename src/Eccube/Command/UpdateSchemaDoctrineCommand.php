@@ -57,7 +57,6 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     protected ManagerRegistry $managerRegistry;
 
     public function __construct(
-        PluginRepository $pluginRepository,
         PluginService $pluginService,
         SchemaService $schemaService,
         ManagerRegistry $managerRegistry,
@@ -67,7 +66,7 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
         if (!$em instanceof EntityManagerInterface) {
             throw new \LogicException('Default manager is not an ORM EntityManager.');
         }
-        parent::__construct(new SingleManagerProvider($em)); // ← ここだけ差し替え        $this->pluginRepository = $pluginRepository;
+        parent::__construct(new SingleManagerProvider($em));
 
         $this->pluginService = $pluginService;
         $this->schemaService = $schemaService;

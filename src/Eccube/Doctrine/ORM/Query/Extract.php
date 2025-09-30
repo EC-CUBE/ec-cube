@@ -14,10 +14,10 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
-use Doctrine\ORM\Query\QueryException;
-use Doctrine\ORM\Query\TokenType;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 /**
  * EXTRACT (field FROM [type] source)
@@ -78,7 +78,7 @@ class Extract extends FunctionNode
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
 
-        //$parser->match(TokenType::T_IDENTIFIER);
+        // $parser->match(TokenType::T_IDENTIFIER);
         // SELECT c FROM Eccube\Entity\Customer c WHERE EXTRACT(MONTH FROM c.birth) = :birth_month ORDER BY c.update_date DESC, c.id DESC
         $this->field = $upperField;
 

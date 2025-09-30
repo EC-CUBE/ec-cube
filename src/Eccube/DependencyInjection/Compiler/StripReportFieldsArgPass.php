@@ -28,8 +28,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * ORM3 環境で DoctrineBundle が AttributeDriver に第2/第3引数を渡す定義を、
  * 最終的に「paths の 1 引数」に統一し、Configuration の setMetadataDriverImpl も
  * 対応する *_attribute_metadata_driver サービス参照へ差し替える。
- *
- *
  */
 final class StripReportFieldsArgPass implements CompilerPassInterface
 {
@@ -83,7 +81,7 @@ final class StripReportFieldsArgPass implements CompilerPassInterface
         if (\count($args) >= 1) {
             // paths の 1 引数だけにする（第2/第3引数を捨てる）
             $def->setArguments([$args[0]]);
-            # trigger_error('AttributeDriver arguments are fixed to 1 (paths) by StripReportFieldsArgPass.', E_USER_DEPRECATED);
+            // trigger_error('AttributeDriver arguments are fixed to 1 (paths) by StripReportFieldsArgPass.', E_USER_DEPRECATED);
         }
     }
 

@@ -13,7 +13,7 @@
 
 namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\MappingException;
 use Eccube\Util\StringUtil;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -61,7 +61,7 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
         }
 
         if (!$this->paths) {
-            throw MappingException::pathRequired();
+            throw MappingException::pathRequiredForDriver(static::class);
         }
 
         foreach ($this->paths as $path) {

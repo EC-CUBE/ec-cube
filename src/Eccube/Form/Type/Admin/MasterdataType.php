@@ -14,7 +14,6 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\OrderStatus;
@@ -50,9 +49,10 @@ class MasterdataType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $masterdata = [];
+
         // AttributeDriver でも有効なメタデータ一括取得に変更
         foreach ($this->entityManager->getMetadataFactory()->getAllMetadata() as $meta) {
-
             // 抽象クラスは除外
             $rc = $meta->getReflectionClass();
             if ($rc && $rc->isAbstract()) {

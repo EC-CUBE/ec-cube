@@ -169,12 +169,10 @@ class TaxRuleRepository extends AbstractRepository
             ->where('t.apply_date < :apply_date')
             ->setParameter('apply_date', $apply_date);
 
-
         // Pref
         if ($Pref) {
             $qb->andWhere('t.Pref IS NULL OR t.Pref = :Pref');
             $qb->setParameter('Pref', $Pref);
-
         } else {
             $qb->andWhere('t.Pref IS NULL');
         }
@@ -183,7 +181,6 @@ class TaxRuleRepository extends AbstractRepository
         if ($Country) {
             $qb->andWhere('t.Country IS NULL OR t.Country = :Country');
             $qb->setParameter('Country', $Country);
-
         } else {
             $qb->andWhere('t.Country IS NULL');
         }

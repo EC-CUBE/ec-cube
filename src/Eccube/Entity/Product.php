@@ -569,6 +569,7 @@ if (!class_exists(Product::class)) {
          * 関連エンティティも再帰的にコピーする.
          *
          * @param Product $Product
+         *
          * @return $this
          */
         public function copy(Product $Product): Product
@@ -589,7 +590,7 @@ if (!class_exists(Product::class)) {
             $this->ProductClasses = new ArrayCollection();
             foreach ($Classes as $Class) {
                 $CopyClass = new ProductClass();
-                $CopyClass->copyProperties($Class, ['id','product_id']);
+                $CopyClass->copyProperties($Class, ['id', 'product_id']);
                 $this->addProductClass($CopyClass);
                 $CopyClass->setProduct($this);
             }

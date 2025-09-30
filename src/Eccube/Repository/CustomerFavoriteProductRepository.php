@@ -62,7 +62,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
             ->andWhere('cf.Customer = :Customer AND cf.Product = :Product')
             ->setParameter('Customer', $Customer)
             ->setParameter('Product', $Product)
-            ;
+        ;
         $count = $qb
             ->getQuery()
             ->getSingleScalarResult();
