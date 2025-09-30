@@ -16,6 +16,7 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Mapping\MappingException as ORMMappingException;
 use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Eccube\Common\Constant;
@@ -354,7 +355,7 @@ class PluginService
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
                         $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
-                        $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                        $driver = new AttributeDriver([$entityDir]);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
                     }

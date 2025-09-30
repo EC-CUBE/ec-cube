@@ -562,28 +562,39 @@ if (!class_exists(Product::class)) {
             $this->id = null;
         }
 
-        public function copy()
+        /**
+         * Productエンティティのコピーを作成する.
+         *
+         * コピー元のProductを受け取り,
+         * 関連エンティティも再帰的にコピーする.
+         *
+         * @param Product $Product
+         * @return $this
+         */
+        public function copy(Product $Product): Product
         {
             // コピー対象外
             $this->CustomerFavoriteProducts = new ArrayCollection();
 
-            $Categories = $this->getProductCategories();
+            $Categories = $Product->getProductCategories();
             $this->ProductCategories = new ArrayCollection();
             foreach ($Categories as $Category) {
                 $CopyCategory = clone $Category;
+                $CopyCategory->setProductId($this->getId());
                 $this->addProductCategory($CopyCategory);
                 $CopyCategory->setProduct($this);
             }
 
-            $Classes = $this->getProductClasses();
+            $Classes = $Product->getProductClasses();
             $this->ProductClasses = new ArrayCollection();
             foreach ($Classes as $Class) {
-                $CopyClass = clone $Class;
+                $CopyClass = new ProductClass();
+                $CopyClass->copyProperties($Class, ['id','product_id']);
                 $this->addProductClass($CopyClass);
                 $CopyClass->setProduct($this);
             }
 
-            $Images = $this->getProductImage();
+            $Images = $Product->getProductImage();
             $this->ProductImage = new ArrayCollection();
             foreach ($Images as $Image) {
                 $CloneImage = clone $Image;
@@ -591,7 +602,7 @@ if (!class_exists(Product::class)) {
                 $CloneImage->setProduct($this);
             }
 
-            $Tags = $this->getProductTag();
+            $Tags = $Product->getProductTag();
             $this->ProductTag = new ArrayCollection();
             foreach ($Tags as $Tag) {
                 $CloneTag = clone $Tag;

@@ -209,9 +209,6 @@ services:
         arguments:
             - '@native_file_session_handler'
 
-    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
-        public: true
-
     Detection\MobileDetect:
         tags:
           - { name: mobile_detect.mobile_detector.default }

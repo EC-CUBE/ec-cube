@@ -14,7 +14,7 @@
 namespace Plugin\EntityForm\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 use Eccube\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 

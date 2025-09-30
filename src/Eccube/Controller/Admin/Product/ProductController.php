@@ -834,19 +834,27 @@ class ProductController extends AbstractController
         }
     }
 
-    #[Route('/%eccube_admin_route%/product/product/{id}/copy', requirements: ['id' => '\d+'], name: 'admin_product_product_copy', methods: ['POST'])]
-    public function copy(Request $request, $id = null)
+    #[Route('/%eccube_admin_route%/product/product/{id}/copy', name: 'admin_product_product_copy', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function copy(Request $request, $id = null): RedirectResponse
     {
         $this->isTokenValid();
 
         if (!is_null($id)) {
             $Product = $this->productRepository->find($id);
             if ($Product instanceof Product) {
-                $CopyProduct = clone $Product;
-                $CopyProduct->copy();
+                $CopyProduct = new Product();
+                $CopyProduct->copyProperties($Product, ['id']);
                 $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
                 $CopyProduct->setStatus($ProductStatus);
 
+                // 商品IDの確定
+                $this->entityManager->persist($CopyProduct);
+                $this->entityManager->flush();
+
+                // 商品関連のコピー
+                $CopyProduct->copy($Product);
+
+                // 商品カテゴリの登録
                 $CopyProductCategories = $CopyProduct->getProductCategories();
                 foreach ($CopyProductCategories as $Category) {
                     $this->entityManager->persist($Category);

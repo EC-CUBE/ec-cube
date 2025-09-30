@@ -13,9 +13,9 @@
 
 namespace Plugin\PurchaseProcessors\Service\PurchaseFlow\Processor;
 
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemValidator;

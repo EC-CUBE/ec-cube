@@ -158,7 +158,7 @@ class ProductController extends AbstractController
         $searchData = $event->getArgument('searchData');
 
         $query = $qb->getQuery()
-            ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short']);
+            ->setResultCacheLifetime($this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
         /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
@@ -304,7 +304,7 @@ class ProductController extends AbstractController
      * カートに追加.
      */
     #[Route('/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function addCart(Request $request, Product $Product)
+    public function addCart(Request $request, Product $Product): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         // エラーメッセージの配列
         $errorMessages = [];

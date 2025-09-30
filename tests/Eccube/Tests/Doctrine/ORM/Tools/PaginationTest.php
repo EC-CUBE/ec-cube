@@ -17,10 +17,10 @@ use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Eccube\Entity\Member;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductTag;
@@ -93,8 +93,7 @@ class PaginationTest extends EccubeTestCase
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
         $driver = new AttributeDriver([__DIR__]);
-        $chain = $config->getMetadataDriverImpl()->getDriver();
-        $chain->addDriver($driver, __NAMESPACE__);
+        $config->setMetadataDriverImpl($driver);
 
         // 初期データより大きい値を指定
         $price02 = $this->getFaker()->randomNumber(9);

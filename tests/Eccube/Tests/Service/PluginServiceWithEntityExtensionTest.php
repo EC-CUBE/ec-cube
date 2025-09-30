@@ -311,9 +311,9 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
 namespace Plugin\\{$tmpname}\\Entity;
 
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 
- #[\Eccube\Annotation\EntityExtension(\Eccube\Entity\Customer::class)]
+ #[\Eccube\Attribute\EntityExtension(\Eccube\Entity\Customer::class)]
 trait HogeTrait
 {
 }

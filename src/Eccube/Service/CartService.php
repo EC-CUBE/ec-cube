@@ -392,12 +392,14 @@ class CartService
         return true;
     }
 
-    public function save()
+    public function save(): void
     {
         $cartKeys = [];
         foreach ($this->carts as $Cart) {
             $Cart->setCustomer($this->getUser());
+            // CartとCartItemを保存
             $this->entityManager->persist($Cart);
+
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
             }

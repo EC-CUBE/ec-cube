@@ -113,7 +113,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return array
      */
-    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], ?\ReflectionClass $parentClass = null)
+    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], ?\ReflectionClass $parentClass = null): array
     {
         if (is_object($parentClass)) {
             $objReflect = $parentClass;

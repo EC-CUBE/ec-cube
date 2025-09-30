@@ -129,7 +129,10 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
 
     public function __set($name, $value)
     {
-        throw new \InvalidArgumentException();
+        if (!property_exists($this, $name)) {
+            throw new \InvalidArgumentException();
+        }
+        $this->$name = $value;
     }
 
     public static function __callStatic($name, $arguments)

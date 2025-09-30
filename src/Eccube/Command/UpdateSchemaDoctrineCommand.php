@@ -14,8 +14,11 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\Proxy\DoctrineCommandHelper;
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand as BaseUpdateSchemaDoctrineCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as OrmUpdateCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
@@ -31,7 +34,7 @@ use Symfony\Component\Finder\Finder;
  * Command to generate the SQL needed to update the database schema to match
  * the current mapping information.
  */
-class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
+class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
 {
     /**
      * @var PluginRepository
@@ -48,13 +51,24 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
      */
     protected $schemaService;
 
+    /**
+     * @var ManagerRegistry
+     */
+    protected ManagerRegistry $managerRegistry;
+
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         SchemaService $schemaService,
+        ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct();
-        $this->pluginRepository = $pluginRepository;
+        /** @var EntityManagerInterface $em */
+        $em = $managerRegistry->getManager();
+        if (!$em instanceof EntityManagerInterface) {
+            throw new \LogicException('Default manager is not an ORM EntityManager.');
+        }
+        parent::__construct(new SingleManagerProvider($em)); // ← ここだけ差し替え        $this->pluginRepository = $pluginRepository;
+
         $this->pluginService = $pluginService;
         $this->schemaService = $schemaService;
     }

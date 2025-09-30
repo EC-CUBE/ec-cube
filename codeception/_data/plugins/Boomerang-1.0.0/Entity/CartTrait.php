@@ -14,7 +14,7 @@
 namespace Plugin\Boomerang\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 
 #[EntityExtension(\Eccube\Entity\Cart::class)]
 trait CartTrait

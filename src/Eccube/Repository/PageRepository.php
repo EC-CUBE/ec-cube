@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
@@ -72,7 +73,7 @@ class PageRepository extends AbstractRepository
      *
      * @return Page
      */
-    public function getPageByRoute($route)
+    public function getPageByRoute($route): Page
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -84,7 +85,7 @@ class PageRepository extends AbstractRepository
                 ->where('p.url = :url')
                 ->setParameter('url', $route)
                 ->getQuery()
-                ->useResultCache(true, $this->getCacheLifetime())
+                ->setResultCacheLifetime($this->getCacheLifetime())
                 ->getSingleResult();
         } catch (\Exception) {
             return $this->newPage();
@@ -99,16 +100,16 @@ class PageRepository extends AbstractRepository
      * @return Page
      *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function getByUrl($url)
+    public function getByUrl($url): Page
     {
         $qb = $this->createQueryBuilder('p');
         $Page = $qb->select('p')
             ->where('p.url = :route')
             ->setParameter('route', $url)
             ->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
+            ->setResultCacheLifetime($this->getCacheLifetime())
             ->getSingleResult();
 
         return $Page;
@@ -117,7 +118,7 @@ class PageRepository extends AbstractRepository
     /**
      * @return Page
      */
-    public function newPage()
+    public function newPage(): Page
     {
         $Page = new Page();
         $Page->setEditType(Page::EDIT_TYPE_USER);
@@ -135,7 +136,7 @@ class PageRepository extends AbstractRepository
      *
      * @return array                             ページ属性の配列
      */
-    public function getPageList($where = null, $parameters = [])
+    public function getPageList($where = null, $parameters = []): array
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.id <> 0')

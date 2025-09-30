@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 class NopAttributeDriver extends AttributeDriver
 {
     #[\Override]
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         return [];
     }

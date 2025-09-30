@@ -443,10 +443,10 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
 namespace Plugin\\{$tmpname}\\Entity;
 
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 use Doctrine\ORM\Mapping as ORM;
 
- #[\Eccube\Annotation\EntityExtension(\Eccube\Entity\Customer::class)]
+ #[\Eccube\Attribute\EntityExtension(\Eccube\Entity\Customer::class)]
 trait HogeTrait
 {
     /**

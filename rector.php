@@ -22,7 +22,6 @@ use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-//use Rector\Php80\Rector\FunctionLike\MixedTypeRector;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php81\Rector\MethodCall\RemoveReflectionSetAccessibleCallsRector;
@@ -67,7 +66,6 @@ return RectorConfig::configure()
                RemoveUnusedConstructorParamRector::class, // コンストラクタの未使用パラメータはプラグインで使用される可能性があるため除外
                RemoveUnusedPrivatePropertyRector::class, // 未使用のプライベートプロパティ削除は慎重に行う必要があるため除外
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
-               MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
                // TODO:以下を適用する

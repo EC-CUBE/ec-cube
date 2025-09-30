@@ -14,7 +14,7 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 use Eccube\Common\EccubeConfig;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;

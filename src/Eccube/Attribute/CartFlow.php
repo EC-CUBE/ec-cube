@@ -11,11 +11,9 @@
  * file that was distributed with this source code.
  */
 
-// TODO: Change namespace Eccube\Attribute;
-
-namespace Eccube\Annotation;
+namespace Eccube\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class OrderFlow
+final class CartFlow
 {
 }

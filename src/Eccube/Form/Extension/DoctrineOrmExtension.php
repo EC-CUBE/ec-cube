@@ -13,12 +13,9 @@
 
 namespace Eccube\Form\Extension;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\FormAppend;
-use Eccube\Annotation\FormExtension;
+use Eccube\Attribute\FormAppend;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,15 +35,9 @@ class DoctrineOrmExtension extends AbstractTypeExtension
      */
     protected $em;
 
-    /**
-     * @var AnnotationReader
-     */
-    protected $reader;
-
-    public function __construct(EntityManagerInterface $em, Reader $reader)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->reader = $reader;
     }
 
     /**
@@ -75,16 +66,19 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 /** @var \ReflectionProperty[] $props */
                 $props = $meta->getReflectionProperties();
                 foreach ($props as $prop) {
-                    $anno = $this->reader->getPropertyAnnotation($prop, FormAppend::class);
-                    if ($anno) {
-                        $options = is_null($anno->options) ? [] : $anno->options;
-                        $options['eccube_form_options'] = [
-                            'auto_render' => (true === $anno->auto_render),
-                            'form_theme' => $anno->form_theme,
-                            'style_class' => $anno->style_class ?: 'ec-select',
-                        ];
-                        if (!isset($form[$prop->getName()])) {
-                            $form->add($prop->getName(), $anno->type, $options);
+                    $attrs = $prop->getAttributes(FormAppend::class);
+                    foreach ($attrs as $attr) {
+                        $instance = $attr->newInstance();
+                        if ($instance) {
+                            $options = is_null($instance->options) ? [] : $instance->options;
+                            $options['eccube_form_options'] = [
+                                'auto_render' => (true === $instance->auto_render),
+                                'form_theme' => $instance->form_theme,
+                                'style_class' => $instance->style_class ?: 'ec-select',
+                            ];
+                            if (!isset($form[$prop->getName()])) {
+                                $form->add($prop->getName(), $instance->type, $options);
+                            }
                         }
                     }
                 }

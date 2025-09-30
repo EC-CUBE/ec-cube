@@ -22,6 +22,7 @@ use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
+use Eccube\DependencyInjection\Compiler\StripReportFieldsArgPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
@@ -128,7 +129,7 @@ class Kernel extends BaseKernel
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
      */
     #[\Override]
-    public function boot()
+    public function boot(): void
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
         // $this->loadEntityProxies();
@@ -154,7 +155,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $confDir = $this->getProjectDir().'/app/config/eccube';
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
@@ -175,7 +176,7 @@ class Kernel extends BaseKernel
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RoutingConfigurator $routes)
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $container = $this->getContainer();
 
@@ -205,7 +206,7 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
-                $builder = $routes->import($dir, 'annotation');
+                $builder = $routes->import($dir, 'Attribute');
                 $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
@@ -216,7 +217,7 @@ class Kernel extends BaseKernel
     }
 
     #[\Override]
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         $this->addEntityExtensionPass($container);
 
@@ -272,9 +273,10 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(PurchaseProcessor::class)
             ->addTag(PurchaseFlowPass::PURCHASE_PROCESSOR_TAG);
         $container->addCompilerPass(new PurchaseFlowPass());
+        $container->addCompilerPass(new StripReportFieldsArgPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1000);
     }
 
-    protected function addEntityExtensionPass(ContainerBuilder $container)
+    protected function addEntityExtensionPass(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
@@ -286,7 +288,7 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
         // Customize
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createAttributeMappingDriver(
             ['Customize\\Entity'],
             ['%kernel.project_dir%/app/Customize/Entity']
         ));
@@ -313,7 +315,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    protected function loadEntityProxies()
+    protected function loadEntityProxies(): void
     {
         // see https://github.com/EC-CUBE/ec-cube/issues/4727
         // キャッシュクリアなど、コード内でコマンドを利用している場合に2回実行されてしまう
