@@ -1250,8 +1250,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // 完了画面
         $this->scenarioComplete(
-            $this->generateUrl('shopping_confirm'),
             $Customer,
+            $this->generateUrl('shopping_confirm'),
             [
                 [
                     'Delivery' => 1,
