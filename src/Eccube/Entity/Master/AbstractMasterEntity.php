@@ -129,10 +129,51 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
 
     public function __set($name, $value)
     {
-        if (!property_exists($this, $name)) {
-            throw new \InvalidArgumentException();
+        // VarExporter(LazyGhost) 経由かつ、プロパティが実在する場合のみ許可
+        if (self::isLazyGhostHydration() && self::assignToDeclaredProperty($this, $name, $value)) {
+            // スコープを $this に束縛して、子クラスの protected/private も安全に代入
+            (\Closure::bind(function ($n, $v) { $this->$n = $v; }, $this, $this))($name, $value);
+
+            return;
         }
-        $this->$name = $value;
+        throw new \InvalidArgumentException(\sprintf('%s: unknown property "%s"', static::class, $name));
+    }
+
+    private static function isLazyGhostHydration(): bool
+    {
+        // コストを抑えるためスタック深さは小さめ＆引数は無視
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 12);
+        foreach ($trace as $f) {
+            if (isset($f['class']) && \str_starts_with((string) $f['class'], 'Symfony\\Component\\VarExporter')) {
+                return true; // Internal\Hydrator や LazyGhostTrait など
+            }
+            if (isset($f['file']) && false !== \strpos((string) $f['file'], 'var-exporter')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * +     * 継承チェーンを遡って「宣言クラス」を特定し、そのスコープで代入する。
+     * +     * 見つかった場合 true / 見つからなければ false を返す。
+     * +     */
+    private static function assignToDeclaredProperty(object $obj, string $name, $value): bool
+    {
+        $rc = new \ReflectionClass($obj);
+        while ($rc) {
+            if ($rc->hasProperty($name)) {
+                $declaring = $rc->getProperty($name)->getDeclaringClass()->getName();
+                // 宣言クラスのスコープで代入（private/protected どちらでも可）
+                (\Closure::bind(function ($n, $v) { $this->$n = $v; }, $obj, $declaring))($name, $value);
+
+                return true;
+            }
+            $rc = $rc->getParentClass();
+        }
+
+        return false;
     }
 
     public static function __callStatic($name, $arguments)
