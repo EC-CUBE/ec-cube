@@ -131,14 +131,14 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
             // 送料の計算
-            $deliveryFeeProduct = 0;
+            $deliveryFeeProduct = '0';
             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                 /** @var OrderItem $item */
                 foreach ($Shipping->getOrderItems() as $item) {
                     if (!$item->isProduct()) {
                         continue;
                     }
-                    $deliveryFeeProduct = bcadd($deliveryFeeProduct, bcmul((string) $item->getProductClass()->getDeliveryFee(), $item->getQuantity()));
+                    $deliveryFeeProduct = bcadd($deliveryFeeProduct, bcmul((string) $item->getProductClass()->getDeliveryFee(), (string) $item->getQuantity(), 0));
                 }
             }
 
