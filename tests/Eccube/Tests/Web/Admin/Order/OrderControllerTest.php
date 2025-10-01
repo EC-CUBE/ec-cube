@@ -379,7 +379,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $this->assertEquals(count($orderIds), count($result));
+        $this->assertSame(count($orderIds), count($result));
     }
 
     /**
@@ -407,7 +407,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
     }
 
     public function testBulkOrderStatusInvalidStatus()
@@ -427,7 +427,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
     public function testBulkOrderStatusShippingNotFound()
@@ -445,7 +445,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testSimpleUpdateOrderStatusWithSendMail()
@@ -494,7 +494,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $this->assertEquals(count($orderIds), count($result));
+        $this->assertSame(count($orderIds), count($result));
     }
 
     public function testUpdateTrackingNumber()

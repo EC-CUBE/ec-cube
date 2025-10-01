@@ -166,7 +166,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('product_class.price02 降順なので, id 昇順にソートされるはず');
-        $this->assertEquals($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
     }
 
     /**
@@ -192,7 +192,7 @@ class PaginationTest extends EccubeTestCase
         // テスト用のエンティティとjoinし,ソートする.
         $qb
             ->addSelect('COALESCE(test.col, 0) as HIDDEN col')
-            ->leftJoin('Eccube\Tests\Doctrine\ORM\Tools\TestEntity', 'test', 'WITH', 'p.id = test.id')
+            ->leftJoin(TestEntity::class, 'test', 'WITH', 'p.id = test.id')
             ->groupBy('p')
             ->addGroupBy('test')
             ->orderBy('col', 'DESC')
@@ -228,7 +228,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('test_entity.col 降順なので, id 昇順にソートされるはず');
-        $this->assertEquals($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
     }
 
     /**
@@ -303,7 +303,7 @@ class PaginationTest extends EccubeTestCase
         $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
         // テスト用のエンティティを検索するクエリ
-        $repository = $this->entityManager->getRepository('Eccube\Tests\Doctrine\ORM\Tools\TestEntity');
+        $repository = $this->entityManager->getRepository(TestEntity::class);
         $testQb = $repository->createQueryBuilder('test');
         $testQb->select('test.id');
         $testQb->where('test.col = :col');

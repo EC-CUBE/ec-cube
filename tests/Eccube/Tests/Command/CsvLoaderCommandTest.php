@@ -36,7 +36,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
 
         $this->initCommand(new CsvLoaderCommand());
 
-        $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
+        $Jobs = $this->app['orm.em']->getRepository(\Eccube\Entity\Master\Job::class)->findAll();
         foreach ($Jobs as $Job) {
             $this->app['orm.em']->remove($Job);
         }
@@ -75,7 +75,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         }
 
         $this->file->rewind();
-        $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
+        $Jobs = $this->app['orm.em']->getRepository(\Eccube\Entity\Master\Job::class)->findAll();
 
         $this->expected = count($rows);
         $this->actual = count($Jobs);

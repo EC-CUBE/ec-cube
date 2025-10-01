@@ -84,12 +84,12 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = [$CsvNotOut->isEnabled(), $CsvOut->isEnabled()];
+        $this->actual = [(int) $CsvNotOut->isEnabled(), (int) $CsvOut->isEnabled()];
         $this->expected = [Constant::ENABLED, Constant::DISABLED];
         $this->verify();
     }
 
-    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = 'Eccube\Entity\Product', $ref = null)
+    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = \Eccube\Entity\Product::class, $ref = null)
     {
         $CsvType = $this->entityManager->getRepository(CsvType::class)->find($csvType);
         $Creator = $this->createMember();

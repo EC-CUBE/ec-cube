@@ -266,10 +266,10 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => 2]));
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
-        $this->assertEquals('Product', $json->{'@type'});
-        $this->assertEquals('チェリーアイスサンド', $json->name);
-        $this->assertEquals(3080, $json->offers->price);
-        $this->assertEquals('InStock', $json->offers->availability);
+        $this->assertSame('Product', $json->{'@type'});
+        $this->assertSame('チェリーアイスサンド', $json->name);
+        $this->assertSame(3080.00, $json->offers->price);
+        $this->assertSame('InStock', $json->offers->availability);
 
         // 在庫なし商品のテスト
         $Product = $this->createProduct('Product no stock', 1);
@@ -282,8 +282,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
-        $this->assertEquals('Product no stock', $json->name);
-        $this->assertEquals('OutOfStock', $json->offers->availability);
+        $this->assertSame('Product no stock', $json->name);
+        $this->assertSame('OutOfStock', $json->offers->availability);
     }
 
     /**
@@ -294,21 +294,21 @@ class ProductControllerTest extends AbstractWebTestCase
         // カテゴリ指定なし
         $url = $this->generateUrl('product_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->client->request('GET', $url);
-        $this->assertEquals('article', $crawler->filter('meta[property="og:type"]')->attr('content'));
-        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
-        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+        $this->assertSame('article', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertSame($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertSame($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
         $this->assertCount(0, $crawler->filter('meta[name="robots"]'));
 
         // カテゴリ指定あり
         $url = $this->generateUrl('product_list', ['category_id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->client->request('GET', $url);
-        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertSame($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
 
         // 検索 0件 → noindex 確認
         $url = $this->generateUrl('product_list', ['category_id' => 1, 'name' => 'notfoundquery'], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->client->request('GET', $url);
         $this->assertStringContainsString('お探しの商品は見つかりませんでした', $crawler->html());
-        $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
+        $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
 
     /**
@@ -332,12 +332,12 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request('GET', $url);
 
-        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
-        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
-        $this->assertEquals('og:product', $crawler->filter('meta[property="og:type"]')->attr('content'));
-        $this->assertEquals($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
-        $this->assertEquals($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
-        $this->assertEquals($imgPath, $crawler->filter('meta[property="og:image"]')->attr('content'));
+        $this->assertSame($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertSame($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+        $this->assertSame('og:product', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertSame($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
+        $this->assertSame($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
+        $this->assertSame($imgPath, $crawler->filter('meta[property="og:image"]')->attr('content'));
         $this->assertCount(0, $crawler->filter('meta[name="robots"]'));
 
         // 商品の description_list を削除
@@ -348,8 +348,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request('GET', $url);
 
-        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
-        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+        $this->assertSame($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertSame($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
     }
 
     /**
@@ -371,6 +371,6 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request('GET', $productUrl);
 
-        $this->assertEquals('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
+        $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
 }

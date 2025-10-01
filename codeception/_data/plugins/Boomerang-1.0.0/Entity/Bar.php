@@ -15,7 +15,7 @@ namespace Plugin\Boomerang\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('Plugin\Boomerang\Entity\Bar')) {
+if (!class_exists(Bar::class)) {
     /**
      * @ORM\Table(name="dtb_bar")
      *

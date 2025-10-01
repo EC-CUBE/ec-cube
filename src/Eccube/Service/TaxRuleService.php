@@ -39,13 +39,13 @@ class TaxRuleService
     /**
      * 設定情報に基づいて税金の金額を返す
      *
-     * @param  int                                    $price        計算対象の金額
+     * @param  string                                    $price        計算対象の金額
      * @param  int|\Eccube\Entity\Product|null        $product      商品
      * @param  int|ProductClass|null   $productClass 商品規格
      * @param  int|\Eccube\Entity\Master\Pref|null    $pref         都道府県
      * @param  int|\Eccube\Entity\Master\Country|null $country      国
      *
-     * @return float                                 税金付与した金額
+     * @return string                                 税金付与した金額
      */
     public function getTax($price, $product = null, $productClass = null, $pref = null, $country = null)
     {
@@ -71,50 +71,54 @@ class TaxRuleService
     /**
      * calcIncTax
      *
-     * @param  int                                    $price        計算対象の金額
+     * @param  string                                    $price        計算対象の金額
      * @param  int|\Eccube\Entity\Product|null        $product      商品
      * @param  int|ProductClass|null   $productClass 商品規格
      * @param  int|\Eccube\Entity\Master\Pref|null    $pref         都道府県
      * @param  int|\Eccube\Entity\Master\Country|null $country      国
      *
-     * @return float
+     * @return string
      */
     public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
     {
-        return $price + $this->getTax($price, $product, $productClass, $pref, $country);
+        return bcadd($price, $this->getTax($price, $product, $productClass, $pref, $country), 2);
     }
 
     /**
      * 税金額を計算する
      *
-     * @param  int    $price     計算対象の金額
-     * @param  int    $taxRate   税率(%単位)
+     * @param  string    $price     計算対象の金額
+     * @param  string    $taxRate   税率(%単位)
      * @param  int    $RoundingType  端数処理
-     * @param  int    $taxAdjust 調整額
+     * @param  string    $taxAdjust 調整額
      *
-     * @return float 税金額
+     * @return string 税金額
      */
-    public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = 0)
+    public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = '0')
     {
-        $tax = $price * $taxRate / 100;
+        // tax = price * taxRate / 100
+        $tax = bcdiv(bcmul($price, $taxRate, 4), '100', 4);
         $roundTax = self::roundByRoundingType($tax, $RoundingType);
 
-        return $roundTax + $taxAdjust;
+        return bcadd($roundTax, $taxAdjust, 2);
     }
 
     /**
      * 税込金額から税金額を計算する
      *
-     * @param  int    $price     計算対象の金額
-     * @param  int    $taxRate   税率(%単位)
+     * @param  string    $price     計算対象の金額
+     * @param  string    $taxRate   税率(%単位)
      * @param  int    $RoundingType  端数処理
-     * @param  int    $taxAdjust 調整額
+     * @param  string    $taxAdjust 調整額
      *
-     * @return float  税金額
+     * @return string  税金額
      */
-    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = 0)
+    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = '0')
     {
-        $tax = ($price - $taxAdjust) * $taxRate / (100 + $taxRate);
+        // tax = (price - taxAdjust) * taxRate / (100 + taxRate)
+        $priceAfterAdjust = bcsub($price, $taxAdjust, 4);
+        $divisor = bcadd('100', $taxRate, 4);
+        $tax = bcdiv(bcmul($priceAfterAdjust, $taxRate, 4), $divisor, 4);
 
         return self::roundByRoundingType($tax, $RoundingType);
     }
@@ -122,29 +126,29 @@ class TaxRuleService
     /**
      * 課税規則に応じて端数処理を行う
      *
-     * @param  int $value    端数処理を行う数値
+     * @param  string $value    端数処理を行う数値
      * @param int $RoundingType
      *
-     * @return float        端数処理後の数値
+     * @return string        端数処理後の数値
      */
     public static function roundByRoundingType($value, $RoundingType)
     {
         switch ($RoundingType) {
             // 四捨五入
             case \Eccube\Entity\Master\RoundingType::ROUND:
-                $ret = round($value);
+                $ret = bcround($value, 0);
                 break;
                 // 切り捨て
             case \Eccube\Entity\Master\RoundingType::FLOOR:
-                $ret = floor($value);
+                $ret = bcfloor($value);
                 break;
                 // 切り上げ
             case \Eccube\Entity\Master\RoundingType::CEIL:
-                $ret = ceil($value);
+                $ret = bcceil($value);
                 break;
                 // デフォルト:切り上げ
             default:
-                $ret = ceil($value);
+                $ret = bcceil($value);
                 break;
         }
 

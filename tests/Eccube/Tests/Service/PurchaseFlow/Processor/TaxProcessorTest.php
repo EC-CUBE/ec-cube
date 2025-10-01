@@ -73,6 +73,9 @@ class TaxProcessorTest extends EccubeTestCase
         $this->entityManager->flush();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcTax()
     {
         $this->processor->process($this->Order, new PurchaseContext());
@@ -80,12 +83,14 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4236
+     *
+     * @group decimal
      */
     public function testTaxRateChangedShoppingFlow()
     {
@@ -99,12 +104,14 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1100, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame('1100.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     *
+     * @group decimal
      */
     public function testTaxRateChangedOrderFlow()
     {
@@ -118,12 +125,14 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4330
+     *
+     * @group decimal
      */
     public function testProductTaxRule()
     {
@@ -163,7 +172,7 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 }

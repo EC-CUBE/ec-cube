@@ -77,13 +77,15 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の明細の合計金額を返す.
          * 商品合計 + 送料 + 手数料 + 値引き(課税).
+         *
+         * @return string
          */
         public function getTaxableTotal()
         {
-            $total = 0;
+            $total = '0';
 
             foreach ($this->getTaxableItems() as $Item) {
-                $total += $Item->getTotalPrice();
+                $total = bcadd($total, $Item->getTotalPrice(), 2);
             }
 
             return $total;
@@ -92,7 +94,7 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の明細の合計金額を、税率ごとに集計する.
          *
-         * @return array
+         * @return array<string, string>  [税率 => 合計金額]
          */
         public function getTaxableTotalByTaxRate()
         {
@@ -102,11 +104,11 @@ if (!class_exists(Order::class)) {
                 $totalPrice = $Item->getTotalPrice();
                 $taxRate = $Item->getTaxRate();
                 $total[$taxRate] = isset($total[$taxRate])
-                    ? $total[$taxRate] + $totalPrice
+                    ? bcadd($total[$taxRate], $totalPrice, 2)
                     : $totalPrice;
             }
 
-            krsort($total);
+            krsort($total, SORT_NUMERIC);
 
             return $total;
         }
@@ -116,16 +118,27 @@ if (!class_exists(Order::class)) {
          *
          * 不課税, 非課税の値引明細は税率ごとに按分する.
          *
-         * @return int[]
+         * @return array<string, string>
          */
         public function getTotalByTaxRate()
         {
             $roundingTypes = $this->getRoundingTypeByTaxRate();
             $total = [];
+            $taxableTotal = $this->getTaxableTotal();
+            $taxFreeDiscount = $this->getTaxFreeDiscount();
+
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+                if (bccomp($taxableTotal, '0', 2) !== 0) {
+                    // 按分計算: totalPrice - (abs(taxFreeDiscount) * totalPrice / taxableTotal)
+                    $absDiscount = ltrim($taxFreeDiscount, '-');
+                    $discountPortion = bcdiv(bcmul($absDiscount, $totalPrice, 6), $taxableTotal, 6);
+                    $value = bcsub($totalPrice, $discountPortion, 6);
+                } else {
+                    $value = '0';
+                }
+
                 $total[$rate] = TaxRuleService::roundByRoundingType(
-                    $this->getTaxableTotal() ?
-                        $totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal() : 0,
+                    $value,
                     $roundingTypes[$rate]->getId()
                 );
             }
@@ -140,19 +153,42 @@ if (!class_exists(Order::class)) {
          *
          * 不課税, 非課税の値引明細は税率ごとに按分する.
          *
-         * @return int[]
+         * @return array<string, string>
          */
         public function getTaxByTaxRate()
         {
             $roundingTypes = $this->getRoundingTypeByTaxRate();
             $tax = [];
+            $taxableTotal = $this->getTaxableTotal();
+            $taxFreeDiscount = $this->getTaxFreeDiscount();
+
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
                 if (is_null($roundingTypes[$rate])) {
                     continue;
                 }
+
+                if (bccomp($taxableTotal, '0', 2) !== 0) {
+                    // (totalPrice - abs(taxFreeDiscount) * totalPrice / taxableTotal) * (rate / (100 + rate))
+                    $absDiscount = ltrim($taxFreeDiscount, '-');
+
+                    // abs(taxFreeDiscount) * totalPrice / taxableTotal
+                    $discountPortion = bcdiv(bcmul($absDiscount, $totalPrice, 6), $taxableTotal, 6);
+
+                    // totalPrice - discountPortion
+                    $afterDiscount = bcsub($totalPrice, $discountPortion, 6);
+
+                    // rate / (100 + rate)
+                    $rateStr = (string) $rate;
+                    $taxRate = bcdiv($rateStr, bcadd('100', $rateStr, 6), 6);
+
+                    // 最終計算
+                    $value = bcmul($afterDiscount, $taxRate, 6);
+                } else {
+                    $value = '0';
+                }
+
                 $tax[$rate] = TaxRuleService::roundByRoundingType(
-                    $this->getTaxableTotal() ?
-                        ($totalPrice - abs($this->getTaxFreeDiscount()) * $totalPrice / $this->getTaxableTotal()) * ($rate / (100 + $rate)) : 0,
+                    $value,
                     $roundingTypes[$rate]->getId()
                 );
             }
@@ -179,13 +215,13 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の値引き金額合計を返す.
          *
-         * @return mixed
+         * @return string
          */
         public function getTaxableDiscount()
         {
             return array_reduce($this->getTaxableDiscountItems(), function ($sum, OrderItem $Item) {
-                return $sum += $Item->getTotalPrice();
-            }, 0);
+                return bcadd($sum, $Item->getTotalPrice(), 2);
+            }, '0');
         }
 
         /**
@@ -205,13 +241,13 @@ if (!class_exists(Order::class)) {
         /**
          * 非課税・不課税の値引き額を返す.
          *
-         * @return int|float
+         * @return string
          */
         public function getTaxFreeDiscount()
         {
             return array_reduce($this->getTaxFreeDiscountItems(), function ($sum, OrderItem $Item) {
-                return $sum += $Item->getTotalPrice();
-            }, 0);
+                return bcadd($sum, $Item->getTotalPrice(), 2);
+            }, '0');
         }
 
         /**
@@ -305,7 +341,7 @@ if (!class_exists(Order::class)) {
                     // 同じ規格の商品がある場合は個数をまとめる
                     /** @var ItemInterface $OrderItem */
                     $OrderItem = $orderItemArray[$productClassId];
-                    $quantity = $OrderItem->getQuantity() + $ProductOrderItem->getQuantity();
+                    $quantity = bcadd($OrderItem->getQuantity(), $ProductOrderItem->getQuantity());
                     $OrderItem->setQuantity($quantity);
                 } else {
                     // 新規規格の商品は新しく追加する
@@ -446,28 +482,28 @@ if (!class_exists(Order::class)) {
          *
          * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
-        private $subtotal = 0;
+        private $subtotal = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="discount", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
-        private $discount = 0;
+        private $discount = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
-        private $delivery_fee_total = 0;
+        private $delivery_fee_total = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
-        private $charge = 0;
+        private $charge = '0';
 
         /**
          * @var string
@@ -476,21 +512,21 @@ if (!class_exists(Order::class)) {
          *
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
-        private $tax = 0;
+        private $tax = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
-        private $total = 0;
+        private $total = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="payment_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
-        private $payment_total = 0;
+        private $payment_total = '0';
 
         /**
          * @var string|null
@@ -720,13 +756,13 @@ if (!class_exists(Order::class)) {
          */
         public function __construct(?Master\OrderStatus $orderStatus = null)
         {
-            $this->setDiscount(0)
-                ->setSubtotal(0)
-                ->setTotal(0)
-                ->setPaymentTotal(0)
-                ->setCharge(0)
-                ->setTax(0)
-                ->setDeliveryFeeTotal(0)
+            $this->setDiscount('0')
+                ->setSubtotal('0')
+                ->setTotal('0')
+                ->setPaymentTotal('0')
+                ->setCharge('0')
+                ->setTax('0')
+                ->setDeliveryFeeTotal('0')
                 ->setOrderStatus($orderStatus);
 
             $this->OrderItems = new ArrayCollection();

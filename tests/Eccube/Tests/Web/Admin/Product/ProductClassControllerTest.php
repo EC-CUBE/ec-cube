@@ -196,6 +196,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class new.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
+     *
+     * @group decimal
      */
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
@@ -219,7 +221,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $crawler = $this->client->submit($form);
 
         // select class category with tax = 0;
-        $taxRate = 0;
+        $taxRate = '0';
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
         $form['product_class_matrix[product_classes][0][checked]']->tick();
@@ -236,7 +238,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // check database
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertEquals($taxRate, $taxRule->getTaxRate());
+        $this->assertSame($taxRate, $taxRule->getTaxRate());
     }
 
     /**
@@ -328,6 +330,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class edit.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
+     *
+     * @group decimal
      */
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
@@ -362,7 +366,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertEquals(0, $taxRule->getTaxRate());
+        $this->assertSame('0', (string) $taxRule->getTaxRate());
     }
 
     /**

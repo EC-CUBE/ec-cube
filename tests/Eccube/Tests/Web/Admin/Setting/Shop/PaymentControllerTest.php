@@ -241,12 +241,8 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         foreach ($Payments as $Payment) {
             $this->expected[$Payment->getId()] = $Payment->getSortNo();
         }
-
-        // swap sort_no
-        reset($this->expected);
-        $firstKey = key($this->expected);
-        end($this->expected);
-        $lastKey = key($this->expected);
+        $firstKey = array_key_first($this->expected);
+        $lastKey = array_key_last($this->expected);
 
         $tmp = $this->expected[$firstKey];
         $this->expected[$firstKey] = $this->expected[$lastKey];
@@ -262,6 +258,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
         $this->actual = [];
         foreach ($Payments as $Payment) {
+            $this->entityManager->refresh($Payment); // Refresh しないとリクエストの値(string)が入ってしまう
             $this->actual[$Payment->getId()] = $Payment->getSortNo();
         }
         sort($this->expected);

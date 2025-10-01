@@ -50,7 +50,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
 
-        $this->assertEquals(['id', 'number', 'description'], $CsvImportService->getFields());
+        $this->assertSame(['id', 'number', 'description'], $CsvImportService->getFields());
 
         foreach ($CsvImportService as $row) {
             $this->assertNotNull($row['id']);
@@ -58,9 +58,9 @@ class CsvImportServiceTest extends AbstractServiceTestCase
             $this->assertNotNull($row['description']);
         }
 
-        $this->assertEquals(
+        $this->assertSame(
             [
-                'id' => 6,
+                'id' => '6',
                 'number' => '456',
                 'description' => 'Another description',
             ],
@@ -110,7 +110,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_no_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
-        $this->assertEquals(3, $CsvImportService->count());
+        $this->assertSame(3, $CsvImportService->count());
     }
 
     public function testCountWithHeaders()
@@ -118,7 +118,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
-        $this->assertEquals(3, $CsvImportService->count(), 'Row count should not include header');
+        $this->assertSame(3, $CsvImportService->count(), 'Row count should not include header');
     }
 
     public function testCountDoesNotMoveFilePointer()
@@ -155,7 +155,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
             'details' => ['Details1', 'Details2'],
             'last' => 'Last one',
         ];
-        $this->assertEquals($expected, $current);
+        $this->assertSame($expected, $current);
     }
 
     /**

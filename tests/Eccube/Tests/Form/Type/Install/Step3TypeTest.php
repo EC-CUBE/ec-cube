@@ -58,7 +58,7 @@ class Step3TypeTest extends AbstractTypeTestCase
     {
         $this->form->submit($this->formData);
         $this->form->isValid();
-        $this->assertEquals('', (string) $this->form->getErrors(true, false));
+        $this->assertSame('', (string) $this->form->getErrors(true, false));
     }
 
     public function testInvalidShopNameBlank()

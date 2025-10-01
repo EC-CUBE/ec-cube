@@ -204,6 +204,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $MovedClassName = $this->classNameRepo->find($ClassName->getId());
+        $this->entityManager->refresh($MovedClassName); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
         $this->actual = $MovedClassName->getSortNo();
         $this->verify();

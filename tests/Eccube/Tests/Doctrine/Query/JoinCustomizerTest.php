@@ -25,7 +25,7 @@ class JoinCustomizerTest extends EccubeTestCase
         $builder = $this->createQueryBuilder();
         $customizer = new JoinCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
-        self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p');
+        self::assertSame($builder->getDQL(), 'SELECT p FROM Product p');
     }
 
     public function testCustomizeInnerJoin()
@@ -37,7 +37,7 @@ class JoinCustomizerTest extends EccubeTestCase
             ];
         });
         $customizer->customize($builder, null, '');
-        self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct');
+        self::assertSame($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct');
     }
 
     public function testCustomizeMultiInnerJoin()
@@ -50,7 +50,7 @@ class JoinCustomizerTest extends EccubeTestCase
             ];
         });
         $customizer->customize($builder, null, '');
-        self::assertEquals($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c');
+        self::assertSame($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c');
     }
 
     /**

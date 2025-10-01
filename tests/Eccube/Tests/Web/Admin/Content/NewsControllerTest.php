@@ -112,12 +112,12 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $target = $crawler->filter('#dangerous-id');
-        $this->assertEquals(0, $target->count());
+        $this->assertSame(0, $target->count());
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $target = $crawler->filter('.safe_to_use_class');
-        $this->assertEquals(1, $target->count());
+        $this->assertSame(1, $target->count());
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists

@@ -170,7 +170,7 @@ class EA09ShippingCest
         /* @var Order[] $Orders */
         $Orders = (Fixtures::get('createOrders'))($Customer, 3);
         // 入金済みに更新しておく
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::PAID);
+        $Status = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::PAID);
         foreach ($Orders as $newOrder) {
             $newOrder->setOrderStatus($Status);
         }
@@ -254,7 +254,7 @@ class EA09ShippingCest
         /* @var Order[] $Orders */
         $Orders = (Fixtures::get('createOrders'))($Customer, 3);
         // キャンセルに更新しておく
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
+        $Status = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::CANCEL);
         foreach ($Orders as $newOrder) {
             $newOrder->setOrderStatus($Status);
         }

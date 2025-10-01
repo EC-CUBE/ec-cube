@@ -91,14 +91,14 @@ if (!class_exists(TaxRule::class)) {
          *
          * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
-        private $tax_rate = 0;
+        private $tax_rate = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="tax_adjust", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
-        private $tax_adjust = 0;
+        private $tax_adjust = '0';
 
         /**
          * @var \DateTime

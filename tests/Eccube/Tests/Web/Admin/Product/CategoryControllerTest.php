@@ -162,7 +162,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category')));
-        $this->assertEquals('親0', $Category->getName());
+        $this->assertSame('親0', $Category->getName());
     }
 
     public function testInlineEditWithParent()
@@ -188,7 +188,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         $rUrl = $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
-        $this->assertEquals('子0', $Category->getName());
+        $this->assertSame('子0', $Category->getName());
     }
 
     public function testIndexWithPostParent()
@@ -294,6 +294,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $MovedCategory = $this->categoryRepository->find($Category->getId());
+
+        $this->entityManager->refresh($MovedCategory); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
         $this->actual = $MovedCategory->getSortNo();
         $this->verify();

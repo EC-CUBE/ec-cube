@@ -16,6 +16,7 @@ use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\DeadCode\Rector\Switch_\RemoveDuplicatedCaseInSwitchRector;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\Php53\Rector\Ternary\TernaryToElvisRector;
 use Rector\Php54\Rector\Array_\LongArrayToShortArrayRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
@@ -92,7 +93,11 @@ return RectorConfig::configure()
                StrContainsRector::class, // str_contains()を使用する
                RemoveUnusedVariableInCatchRector::class, // catchブロック内の未使用変数を削除する
                ClassOnThisVariableObjectRector::class, // `$this::class` を `static::class`／`self::class` に書き換え
-               ClassOnObjectRector::class,  // `get_class($obj)` を `$obj::class` に書き換え
+               ClassOnObjectRector::class,  // `get_class($obj)` を `$obj::class` に書き換え,
+           ])
+           // 個別にルールを追加する場合はここに記述
+           ->withRules([
+               AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する
            ])
            // よく使われるルールセットを有効化
            ->withSets([

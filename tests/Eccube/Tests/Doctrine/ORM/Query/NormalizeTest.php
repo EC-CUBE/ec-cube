@@ -20,7 +20,7 @@ class NormalizeTest extends EccubeTestCase
     public function testGetSql()
     {
         $sql = $this->entityManager->createQueryBuilder()
-            ->select('p.id')->from('Eccube\Entity\Product', 'p')
+            ->select('p.id')->from(\Eccube\Entity\Product::class, 'p')
             ->where('NORMALIZE(p.name) LIKE :name')
             ->getQuery()->getSql();
         switch ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName()) {

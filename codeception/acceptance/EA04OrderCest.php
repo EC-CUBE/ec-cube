@@ -435,7 +435,7 @@ class EA04OrderCest
         $ExistsNewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
-        $CancelStatus = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
+        $CancelStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::CANCEL);
         foreach ($ExistsNewOrders as $ExistsNewOrder) {
             $ExistsNewOrder->setOrderStatus($CancelStatus);
         }
@@ -445,7 +445,7 @@ class EA04OrderCest
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
         $NewOrders = $createOrders($createCustomer(), 2, []);
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
+        $Status = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         foreach ($NewOrders as $NewOrder) {
             $NewOrder->setOrderStatus($Status);
         }
@@ -493,7 +493,7 @@ class EA04OrderCest
         $ExistsNewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
-        $CancelStatus = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
+        $CancelStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::CANCEL);
         foreach ($ExistsNewOrders as $ExistsNewOrder) {
             $ExistsNewOrder->setOrderStatus($CancelStatus);
         }
@@ -503,7 +503,7 @@ class EA04OrderCest
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
         $NewOrders = $createOrders($createCustomer(), 2, []);
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
+        $Status = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         foreach ($NewOrders as $NewOrder) {
             $NewOrder->setOrderStatus($Status);
         }

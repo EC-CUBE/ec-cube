@@ -99,7 +99,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->assertStringContainsString('保存しました', $success);
 
         $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
-        $this->assertEquals($trackingNumber, $expectedShipping->getTrackingNumber());
+        $this->assertSame($trackingNumber, $expectedShipping->getTrackingNumber());
     }
 
     /**
@@ -114,7 +114,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $Shipping = $Order->getShippings()->first();
 
         // 編集前は出荷先が１個
-        $this->assertEquals(1, $Order->getShippings()->count());
+        $this->assertSame(1, $Order->getShippings()->count());
 
         // 出荷登録画面表示
         $crawler = $this->client->request(
@@ -156,7 +156,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷先が２個で登録されていることを確認
         $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
-        $this->assertEquals(2, $expectedOrder->getShippings()->count());
+        $this->assertSame(2, $expectedOrder->getShippings()->count());
 
         // 1個の出荷登録フォームを作成
         $formData['shippings'] = [$shippingFormData];
@@ -176,7 +176,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷先が1個で登録されていることを確認
         $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
-        $this->assertEquals(1, $expectedOrder->getShippings()->count());
+        $this->assertSame(1, $expectedOrder->getShippings()->count());
     }
 
     /**
@@ -264,6 +264,8 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      * 発送管理で追加した商品明細の税額が計算されている
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4193
+     *
+     * @group decimal
      */
     public function testCalculateTax()
     {
@@ -312,7 +314,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         // 税額が計算されている
         /** @var Order $Order */
         $Order = $this->entityManager->find(Order::class, $Order->getId());
-        self::assertEquals(100, $Order->getProductOrderItems()[0]->getTax());
-        self::assertEquals(200, $Order->getProductOrderItems()[1]->getTax());
+        self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
+        self::assertSame('200.00', $Order->getProductOrderItems()[1]->getTax());
     }
 }

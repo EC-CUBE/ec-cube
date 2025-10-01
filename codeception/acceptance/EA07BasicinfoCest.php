@@ -144,7 +144,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T08_会員設定の設定、編集(マイページに注文状況を表示：無効)');
 
         $entityManager = Fixtures::get('entityManager');
-        $customer = $entityManager->getRepository('Eccube\Entity\Customer')->find(1);
+        $customer = $entityManager->getRepository(Eccube\Entity\Customer::class)->find(1);
         ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, false)
             ->登録();

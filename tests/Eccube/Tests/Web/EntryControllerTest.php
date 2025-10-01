@@ -209,7 +209,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
@@ -231,7 +231,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $Customer->setName01('<Sanitize&>');
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
@@ -279,8 +279,8 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertEquals('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
+        self::assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertSame('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
     }
 
     public function testConfirmWithAmpersand()
@@ -296,7 +296,7 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertEquals('＆', $crawler->filter('#entry_company_name')->attr('value'));
+        self::assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        self::assertSame('＆', $crawler->filter('#entry_company_name')->attr('value'));
     }
 }

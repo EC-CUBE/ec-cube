@@ -145,7 +145,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         // アンインストールできるか
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['code' => $tmpname]));
-        $this->assertEquals(Constant::DISABLED, $plugin->isEnabled());
+        $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled());
         $this->assertTrue($this->service->uninstall($plugin));
     }
 
@@ -329,14 +329,14 @@ EOD;
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
         $this->assertTrue($this->service->install($tmpfile));
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
-        $this->assertEquals(Constant::DISABLED, $plugin->isEnabled()); // インストール直後にプラグインがdisableになっているか
+        $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled()); // インストール直後にプラグインがdisableになっているか
         try {
             $this->assertTrue($this->service->enable($plugin)); // enableにしようとするが、例外発生
         } catch (\Exception $e) {
         }
         $this->entityManager->detach($plugin);
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
-        $this->assertEquals(Constant::DISABLED, $plugin->isEnabled()); // プラグインがdisableのままになっていることを確認
+        $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled()); // プラグインがdisableのままになっていることを確認
     }
 
     // インストーラを含むプラグインが正しくインストールできるか
@@ -455,7 +455,7 @@ EOD;
         // check parser
         $actual2 = $this->service->parseToComposerCommand($actual, false);
         $expected2 = implode(' ', array_keys($expected));
-        $this->assertEquals($expected2, $actual2);
+        $this->assertSame($expected2, $actual2);
     }
 
     /**
@@ -490,7 +490,7 @@ EOD;
         // check parser
         $actual2 = $this->service->parseToComposerCommand($actual, false);
         $expected2 = implode(' ', array_keys($expected));
-        $this->assertEquals($expected2, $actual2);
+        $this->assertSame($expected2, $actual2);
     }
 
     /**
@@ -527,7 +527,7 @@ EOD;
         foreach ($expected as $packages => $version) {
             $expected2 .= $packages.':'.$version.' ';
         }
-        $this->assertEquals(trim($expected2), $actual2);
+        $this->assertSame(trim($expected2), $actual2);
     }
 
     /**
@@ -700,7 +700,7 @@ EOD;
 
         $config = $this->service->readConfig($pluginDir);
 
-        self::assertEquals('0', $config['source']);
+        self::assertSame(0, $config['source']);
     }
 
     /**
