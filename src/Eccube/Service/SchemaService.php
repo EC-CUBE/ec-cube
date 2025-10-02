@@ -15,6 +15,7 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\ORM\Mapping\Driver\NopAttributeDriver;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAttributeDriver;
 use Eccube\Util\StringUtil;
@@ -32,16 +33,20 @@ class SchemaService
      */
     private $pluginContext;
 
+    private EccubeConfig $eccubeConfig;
+
+
     /**
      * SchemaService constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PluginContext $pluginContext
      */
-    public function __construct(EntityManagerInterface $entityManager, PluginContext $pluginContext)
+    public function __construct(EntityManagerInterface $entityManager, PluginContext $pluginContext, EccubeConfig $eccubeConfig)
     {
         $this->entityManager = $entityManager;
         $this->pluginContext = $pluginContext;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -60,30 +65,39 @@ class SchemaService
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
-            $outputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
+            $outputDir = sys_get_temp_dir() . '/metadata_' . StringUtil::random(12);
             mkdir($outputDir);
             $createOutputDir = true;
         }
 
         try {
             $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
-            $drivers = $chain->getDrivers();
-            foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string) $namespace)) {
+            $paths = $chain->getPaths();
+            foreach ($paths as $path) {
+                if ('Eccube\Entity' === $path || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string)$path)) {
                     // Setup to AttributeDriver
-                    $newDriver = new ReloadSafeAttributeDriver($oldDriver->getPaths());
-                    $newDriver->setFileExtension($oldDriver->getFileExtension());
-                    $newDriver->addExcludePaths($oldDriver->getExcludePaths());
+                    $paths = array_map(function ($pathOrNamespace) use ($path) {
+                        // すでにパス形式ならそのまま返す
+                        if (is_dir($pathOrNamespace)) {
+                            return $pathOrNamespace;
+                        }
+                        // namespace形式 → 実パスに変換
+                        return $this->convertNamespaceToPath($path);
+                    }, $chain->getPaths());
+
+                    $newDriver = new ReloadSafeAttributeDriver($paths);
+                    $newDriver->setFileExtension($chain->getFileExtension());
+                    $newDriver->addExcludePaths($chain->getExcludePaths());
                     $newDriver->setTraitProxiesDirectory($proxiesDirectory);
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
-                    $chain->addDriver($newDriver, $namespace);
+                    $this->entityManager->getConfiguration()->setMetadataDriverImpl($newDriver);
                 }
 
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
-                        if ($extraEntityNamespace === $namespace) {
-                            $chain->addDriver(new NopAttributeDriver($namespace));
+                        if ($extraEntityNamespace === $path) {
+                            $chain->addDriver(new NopAttributeDriver($paths));
                         }
                     }
                 }
@@ -126,12 +140,12 @@ class SchemaService
     public function dropTable($targetNamespace)
     {
         $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
-        $drivers = $chain->getDrivers();
+        $paths = $chain->getPaths();
 
         $dropMetas = [];
-        foreach ($drivers as $namespace => $driver) {
-            if ($targetNamespace === $namespace) {
-                $allClassNames = $driver->getAllClassNames();
+        foreach ($paths as $path) {
+            if ($targetNamespace === $path) {
+                $allClassNames = $chain->getAllClassNames();
 
                 foreach ($allClassNames as $className) {
                     $dropMetas[] = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
@@ -140,5 +154,11 @@ class SchemaService
         }
         $tool = new SchemaTool($this->entityManager);
         $tool->dropSchema($dropMetas);
+    }
+
+    private function convertNamespaceToPath(string $namespace): string
+    {
+        // ベースディレクトリからの相対パスを構築
+        return $this->eccubeConfig->get('kernel.project_dir') . '/src/' . str_replace('\\', '/', $namespace);
     }
 }

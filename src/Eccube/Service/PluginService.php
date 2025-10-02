@@ -355,9 +355,8 @@ class PluginService
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
                         $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
-                        $driver = new AttributeDriver([$entityDir]);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
-                        $chain->addDriver($driver, $namespace);
+                        $chain->addPaths([$namespace]);
                     }
                 }
 
