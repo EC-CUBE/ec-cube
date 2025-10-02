@@ -35,7 +35,6 @@ class SchemaService
 
     private EccubeConfig $eccubeConfig;
 
-
     /**
      * SchemaService constructor.
      *
@@ -65,26 +64,38 @@ class SchemaService
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
-            $outputDir = sys_get_temp_dir() . '/metadata_' . StringUtil::random(12);
+            $outputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
             mkdir($outputDir);
             $createOutputDir = true;
         }
 
         try {
-            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
+            // アノテーションドライバーを騙して、Temディレクトリに生成された、Entityを読み込む
+            // TODO:AttributeDriverで動的にmetadataDriverを追加する方法を調べる、
+            $config = $this->entityManager->getConfiguration();
+            $chain = $config->getMetadataDriverImpl()->getDriver();
             $paths = $chain->getPaths();
             foreach ($paths as $path) {
-                if ('Eccube\Entity' === $path || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string)$path)) {
+                if ('Eccube\Entity' === $path || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string) $path)) {
                     // Setup to AttributeDriver
                     $paths = array_map(function ($pathOrNamespace) use ($path) {
                         // すでにパス形式ならそのまま返す
                         if (is_dir($pathOrNamespace)) {
                             return $pathOrNamespace;
                         }
+
                         // namespace形式 → 実パスに変換
                         return $this->convertNamespaceToPath($path);
                     }, $chain->getPaths());
 
+                    // 要件：プラグインの無効化状態なら、Annotationは読まないが、
+                    // DBテーブルは追加された状態にする必要がある。
+                    // テーブルを追加するために、プラグインのインストール時に
+                    // tmpにファイルを追加して、そのtmpを読み込んでいる。
+
+                    // 検証手順
+                    // 1. プラグインのインストールをしてテーブルができているか
+                    // 2. 無効化状態でも、findしても取得されないのか
                     $newDriver = new ReloadSafeAttributeDriver($paths);
                     $newDriver->setFileExtension($chain->getFileExtension());
                     $newDriver->addExcludePaths($chain->getExcludePaths());
@@ -92,11 +103,15 @@ class SchemaService
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
                     $this->entityManager->getConfiguration()->setMetadataDriverImpl($newDriver);
+                    // tmpディレクトリ以下も読み込んであげる必要がある。
+                    // 通常は名前空間が同じで、クラス名が同じならエラーになる
+                    // eccubeの場合は、proxyを読むようになっていて、proxyが必ず優先されるようになっている。
                 }
 
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
                         if ($extraEntityNamespace === $path) {
+                            // $this->entityManager->getConfiguration()->setMetadataDriverImpl(new NopAttributeDriver($paths));
                             $chain->addDriver(new NopAttributeDriver($paths));
                         }
                     }
@@ -159,6 +174,6 @@ class SchemaService
     private function convertNamespaceToPath(string $namespace): string
     {
         // ベースディレクトリからの相対パスを構築
-        return $this->eccubeConfig->get('kernel.project_dir') . '/src/' . str_replace('\\', '/', $namespace);
+        return $this->eccubeConfig->get('kernel.project_dir').'/src/'.str_replace('\\', '/', $namespace);
     }
 }
