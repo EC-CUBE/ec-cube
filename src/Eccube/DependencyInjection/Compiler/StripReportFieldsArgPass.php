@@ -15,19 +15,17 @@ declare(strict_types=1);
 
 namespace Eccube\DependencyInjection\Compiler;
 
-use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * ORM3 環境で DoctrineBundle が AttributeDriver に第2/第3引数を渡す定義を、
- * 最終的に「paths の 1 引数」に統一し、Configuration の setMetadataDriverImpl も
- * 対応する *_attribute_metadata_driver サービス参照へ差し替える。
+ * 最終的に「paths の 1 引数」に統一する。
+ * MappingDriverChain は維持し、SchemaService が複数の名前空間を扱えるようにする。
  */
 final class StripReportFieldsArgPass implements CompilerPassInterface
 {
@@ -40,10 +38,10 @@ final class StripReportFieldsArgPass implements CompilerPassInterface
             }
         }
 
-        // 2) doctrine.orm.<em>_configuration の setMetadataDriverImpl を driver サービス参照に置換
+        // 2) MappingDriverChain の addDriver() 呼び出しを修正
         foreach ($c->getDefinitions() as $id => $def) {
-            if ($this->isOrmConfigurationId($id)) {
-                $this->fixOrmConfiguration($c, $id, $def);
+            if ($this->isMappingDriverChainId($id)) {
+                $this->fixMappingDriverChainCalls($c, $id, $def);
             }
         }
 
@@ -56,64 +54,47 @@ final class StripReportFieldsArgPass implements CompilerPassInterface
     private function isOrmAttrDriverServiceId(string $id): bool
     {
         return str_starts_with($id, 'doctrine.orm.')
-            && str_ends_with($id, '_attribute_metadata_driver');
+            && (str_ends_with($id, '_attribute_metadata_driver')
+                || str_ends_with($id, '_attribute_metadata_driver.inner'));
     }
 
-    private function isOrmConfigurationId(string $id): bool
+    private function isMappingDriverChainId(string $id): bool
     {
         return str_starts_with($id, 'doctrine.orm.')
-            && str_ends_with($id, '_configuration');
-    }
-
-    private function emNameFromConfigId(string $id): string
-    {
-        return preg_replace('#^doctrine\.orm\.|_configuration$#', '', $id) ?: 'default';
-    }
-
-    private function driverServiceIdForEm(string $em): string
-    {
-        return "doctrine.orm.{$em}_attribute_metadata_driver";
+            && str_ends_with($id, '_metadata_driver');
     }
 
     private function forceOneArg(Definition $def): void
     {
         $args = $def->getArguments();
-        if (\count($args) >= 1) {
+        if (\count($args) > 1) {
             // paths の 1 引数だけにする（第2/第3引数を捨てる）
             $def->setArguments([$args[0]]);
-            // trigger_error('AttributeDriver arguments are fixed to 1 (paths) by StripReportFieldsArgPass.', E_USER_DEPRECATED);
         }
     }
 
-    private function fixOrmConfiguration(ContainerBuilder $c, string $id, Definition $def): void
+    private function fixMappingDriverChainCalls(ContainerBuilder $c, string $chainId, Definition $def): void
     {
-        // 念のためクラス確認（Configuration 以外でも ID で処理継続）
-        $cls = $def->getClass();
-        if (is_string($cls)) {
-            $cls = $c->getParameterBag()->resolveValue($cls);
-        }
-        // 既存の setMetadataDriverImpl を除去
-        $calls = array_values(array_filter(
-            $def->getMethodCalls(),
-            static fn (array $mc): bool => ($mc[0] ?? '') !== 'setMetadataDriverImpl'
-        ));
-        $def->setMethodCalls($calls);
-
-        // 対象EMの driver サービス参照を明示設定
-        $em = $this->emNameFromConfigId($id);
-        $driverId = $this->driverServiceIdForEm($em);
-        if ($c->hasDefinition($driverId) || $c->hasAlias($driverId)) {
-            $def->addMethodCall('setMetadataDriverImpl', [new Reference($driverId)]);
-
-            return;
-        }
-
-        // driver サービスが無い（想定外）場合は、既存の inline 定義を 1 引数へ矯正
-        foreach ($def->getMethodCalls() as [$m, $mArgs]) {
-            if ($m === 'setMetadataDriverImpl' && !empty($mArgs)) {
-                $this->fixValueDeep($c, $mArgs[0]);
+        $calls = $def->getMethodCalls();
+        foreach ($calls as $i => [$method, $args]) {
+            if ($method === 'addDriver' && isset($args[0])) {
+                // addDriver() の第1引数（ドライバー）を修正
+                $args[0] = $this->fixDriverArgument($c, $args[0]);
+                $calls[$i] = [$method, $args];
             }
         }
+        $def->setMethodCalls($calls);
+    }
+
+    private function fixDriverArgument(ContainerBuilder $c, mixed $driver): mixed
+    {
+        if ($driver instanceof Definition) {
+            $this->fixDefinitionDeep($c, $driver);
+
+            return $driver;
+        }
+
+        return $driver;
     }
 
     private function fixDefinitionDeep(ContainerBuilder $c, Definition $def): void

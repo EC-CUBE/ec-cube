@@ -677,7 +677,9 @@ EOD;
     {
         $code = 'remove_assets_dir';
         $dir = $this->eccubeConfig['plugin_html_realdir'].$code;
-        mkdir($dir, 0777, true);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
 
         $this->assertFileExists($dir);
 

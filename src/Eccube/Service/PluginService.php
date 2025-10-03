@@ -353,9 +353,23 @@ class PluginService
                     $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
-                        $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
-                        $namespace = 'Plugin\\'.$config['code'].'\\Entity';
-                        $chain->addPaths([$entityDir]);
+                        $driver = $ormConfig->getMetadataDriverImpl();
+
+                        // DoctrineBundleのMappingDriverラッパーをアンラップ
+                        if ($driver instanceof \Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver) {
+                            $driver = $driver->getDriver();
+                        }
+
+                        if ($driver instanceof \Doctrine\Persistence\Mapping\Driver\MappingDriverChain) {
+                            $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                            // 既存のドライバーを取得または新しく作成
+                            $drivers = $driver->getDrivers();
+                            if (!isset($drivers[$namespace])) {
+                                $attributeDriver = new \Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver([$entityDir]);
+                                $attributeDriver->setTraitProxiesDirectory($this->projectRoot.'/app/proxy/entity');
+                                $driver->addDriver($attributeDriver, $namespace);
+                            }
+                        }
                     }
                 }
 
