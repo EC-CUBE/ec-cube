@@ -92,7 +92,8 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));
+        // Doctrine ORM 3.xではEntityManagerHelperが削除されたため、この行をコメントアウト
+        // DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));
         $noProxy = true === $input->getOption('no-proxy');
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');

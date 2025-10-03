@@ -388,9 +388,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     {
         $kernel = static::createKernel();
         $command = new UpdateSchemaDoctrineCommand(
-            $this->pluginRepository,
             $this->pluginService,
-            $this->schemaService
+            $this->schemaService,
+            static::getContainer()->get('doctrine')
         );
         $application = new Application($kernel);
         $application->add($command);
