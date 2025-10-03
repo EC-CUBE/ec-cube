@@ -134,7 +134,8 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     public function __set($name, $value)
     {
-        throw new \InvalidArgumentException();
+        // Allow Doctrine ORM 3.x lazy ghost objects to hydrate properties
+        // see also. https://github.com/EC-CUBE/ec-cube/issues/6469
     }
 
     public static function __callStatic($name, $arguments)
@@ -144,6 +145,14 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     protected static function getConstantValue($name)
     {
+        @trigger_error(
+            sprintf(
+                'The enum-like property access mechanism is deprecated. Use PHP 8.2+ trait constants instead: trait MyTrait { public const %s = value; }',
+                $name
+            ),
+            E_USER_DEPRECATED
+        );
+
         if (in_array($name, ['id', 'name', 'sortNo'])) {
             throw new \InvalidArgumentException();
         }
