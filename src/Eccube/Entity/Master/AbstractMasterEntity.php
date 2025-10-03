@@ -127,14 +127,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
         return self::getConstantValue($name);
     }
 
-    // TODO:一時コメントアウト、orm3から遅延初期化される影響でエラーになる。
-    //    public function __set($name, $value)
-    //    {
-    //        //throw new \InvalidArgumentException();
-    //        //trigger_error(\sprintf('%s: unknown property "%s"', static::class, $name), E_USER_WARNING);
-    //        //log_warning(\sprintf('%s: unknown property "%s"', static::class, $name));
-    //    }
-
     public static function __callStatic($name, $arguments)
     {
         return self::getConstantValue($name);
