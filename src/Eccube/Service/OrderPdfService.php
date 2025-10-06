@@ -266,9 +266,9 @@ class OrderPdfService extends Fpdi
     /**
      * PDFファイルを出力する.
      *
-     * @return string|mixed
+     * @return string
      */
-    public function outputPdf(): mixed
+    public function outputPdf(): string
     {
         return $this->Output($this->getPdfFileName(), 'S');
     }

@@ -172,9 +172,9 @@ class PluginGenerateCommand extends Command
     /**
      * @param string $version
      *
-     * @return mixed
+     * @return string
      */
-    public function validateVersion($version): mixed
+    public function validateVersion($version): string
     {
         // TODO
         return $version;

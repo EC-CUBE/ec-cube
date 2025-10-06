@@ -444,11 +444,11 @@ class AdminController extends AbstractController
     /**
      * @param \DateTime $dateTime
      *
-     * @return array|mixed
+     * @return array
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByDay($dateTime): mixed
+    protected function getSalesByDay($dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -481,11 +481,11 @@ class AdminController extends AbstractController
     /**
      * @param \DateTime $dateTime
      *
-     * @return array|mixed
+     * @return array
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByMonth($dateTime): mixed
+    protected function getSalesByMonth($dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -520,11 +520,11 @@ class AdminController extends AbstractController
     /**
      * 在庫切れ商品数を取得
      *
-     * @return mixed
+     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countNonStockProducts(): mixed
+    protected function countNonStockProducts(): int|string|null
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(DISTINCT p.id)')
@@ -540,11 +540,11 @@ class AdminController extends AbstractController
     /**
      * 商品数を取得
      *
-     * @return mixed
+     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countProducts(): mixed
+    protected function countProducts(): int|string|null
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(p.id)')
@@ -557,11 +557,11 @@ class AdminController extends AbstractController
     /**
      * 本会員数を取得
      *
-     * @return mixed
+     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countCustomers(): mixed
+    protected function countCustomers(): int|string|null
     {
         $qb = $this->customerRepository->createQueryBuilder('c')
             ->select('count(c.id)')

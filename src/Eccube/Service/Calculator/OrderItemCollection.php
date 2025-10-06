@@ -134,9 +134,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
-    public function getType(): mixed
+    public function getType(): string
     {
         return $this->type;
     }

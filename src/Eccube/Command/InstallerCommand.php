@@ -359,11 +359,11 @@ class InstallerCommand extends Command
     /**
      * @param string $databaseUrl
      *
-     * @return false|mixed|string
+     * @return false|string
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function getDatabaseServerVersion($databaseUrl): mixed
+    protected function getDatabaseServerVersion($databaseUrl): false|string
     {
         try {
             $conn = DriverManager::getConnection([

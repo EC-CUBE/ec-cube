@@ -37,7 +37,7 @@ class UTCDateTimeTzType extends DateTimeTzType
      * {@inheritdoc}
      */
     #[\Override]
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value->setTimezone(self::getUtcTimeZone());
@@ -50,7 +50,7 @@ class UTCDateTimeTzType extends DateTimeTzType
      * {@inheritdoc}
      */
     #[\Override]
-    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\DateTimeInterface
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;

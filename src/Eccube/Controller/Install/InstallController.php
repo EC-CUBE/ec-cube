@@ -530,9 +530,9 @@ class InstallController extends AbstractController
     /**
      * @param SessionInterface $session
      *
-     * @return mixed
+     * @return array
      */
-    protected function getSessionData(SessionInterface $session): mixed
+    protected function getSessionData(SessionInterface $session): array
     {
         return $session->get('eccube.session.install', []);
     }

@@ -88,9 +88,9 @@ class OrderStateMachine implements EventSubscriberInterface
      * @param OrderStateMachineContext $context
      * @param OrderStatus $OrderStatus
      *
-     * @return mixed|\Symfony\Component\Workflow\Transition|null
+     * @return \Symfony\Component\Workflow\Transition|null
      */
-    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): mixed
+    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): ?\Symfony\Component\Workflow\Transition
     {
         $transitions = $this->machine->getEnabledTransitions($context);
         foreach ($transitions as $t) {

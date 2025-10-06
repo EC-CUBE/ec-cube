@@ -74,9 +74,9 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array|mixed
+     * @return array<int|string,array<int,string>>|null
      */
-    public static function parseConfig($output): mixed
+    public static function parseConfig($output): ?array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rowArray = array_filter($rowArray, function ($line) {
@@ -151,9 +151,9 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array|mixed|string
+     * @return string|null
      */
-    public static function parseComposerVersion($output): mixed
+    public static function parseComposerVersion($output): ?string
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rowArray = array_filter($rowArray, function ($line) {

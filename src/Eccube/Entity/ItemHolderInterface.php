@@ -147,9 +147,9 @@ interface ItemHolderInterface
     /**
      * 注文ステータスを返す - 注文のみ
      *
-     * @return mixed
+     * @return Master\OrderStatus|null
      */
-    public function getOrderStatus(): mixed;
+    public function getOrderStatus(): ?Master\OrderStatus;
 
     /**
      * 商品の受注明細を取得 - 注文のみ

@@ -27,7 +27,7 @@ use Eccube\Entity\OrderItem;
 class ItemCollection extends ArrayCollection
 {
     /**
-     * @var mixed|string
+     * @var string
      */
     protected $type;
 
@@ -139,9 +139,9 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
-    public function getType(): mixed
+    public function getType(): string
     {
         return $this->type;
     }

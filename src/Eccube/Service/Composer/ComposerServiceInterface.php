@@ -44,9 +44,9 @@ interface ComposerServiceInterface
      * @param string $key
      * @param string|null $value
      *
-     * @return mixed
+     * @return array<string, array<string, string>>|null
      */
-    public function execConfig($key, $value = null): mixed;
+    public function execConfig($key, $value = null): ?array;
 
     /**
      * @param BaseInfo $BaseInfo

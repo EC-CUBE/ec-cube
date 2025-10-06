@@ -286,9 +286,9 @@ class EntryController extends AbstractController
      * @param Request $request
      * @param string $secret_key
      *
-     * @return \Eccube\Entity\Cart|mixed
+     * @return int
      */
-    private function entryActivate(Request $request, $secret_key): mixed
+    private function entryActivate(Request $request, $secret_key): int
     {
         log_info('本会員登録開始');
         $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);

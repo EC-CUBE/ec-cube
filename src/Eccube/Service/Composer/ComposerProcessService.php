@@ -146,10 +146,10 @@ class ComposerProcessService implements ComposerServiceInterface
      * @param string $key
      * @param string[]|null $value
      *
-     * @return array<string, array<string, string>>|mixed
+     * @return array<string, array<string, string>>|null
      */
     #[\Override]
-    public function execConfig($key, $value = null): mixed
+    public function execConfig($key, $value = null): ?array
     {
         return $this->composerApiService->execConfig($key, $value);
     }
