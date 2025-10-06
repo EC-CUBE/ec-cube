@@ -519,17 +519,17 @@ class CartService
     }
 
     /**
-     * @return \Symfony\Component\Security\Core\User\UserInterface|void|null
+     * @return \Symfony\Component\Security\Core\User\UserInterface|null
      */
-    protected function getUser(): void
+    protected function getUser(): ?\Symfony\Component\Security\Core\User\UserInterface
     {
         if (null === $token = $this->tokenStorage->getToken()) {
-            return;
+            return null;
         }
 
         if (!is_object($user = $token->getUser())) {
             // e.g. anonymous authentication
-            return;
+            return null;
         }
 
         return $user;

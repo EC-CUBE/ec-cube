@@ -284,7 +284,7 @@ class ClassCategoryController extends AbstractController
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/sort_no/move', name: 'admin_product_class_category_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request): void
+    public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -302,6 +302,8 @@ class ClassCategoryController extends AbstractController
 
             return new Response('Successful');
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**

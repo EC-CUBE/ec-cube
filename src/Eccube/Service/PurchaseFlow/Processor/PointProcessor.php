@@ -70,10 +70,10 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): void
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): ?ProcessResult
     {
         if (!$this->supports($itemHolder)) {
-            return;
+            return null;
         }
 
         /** @var Order $itemHolder */
@@ -120,7 +120,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             }
         }
 
-        return;
+        return null;
     }
 
     /*

@@ -141,10 +141,8 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     /**
      * @param string $name
      * @param mixed $value
-     *
-     * @return mixed
      */
-    public function __set($name, $value): mixed
+    public function __set($name, $value): void
     {
         throw new \InvalidArgumentException();
     }

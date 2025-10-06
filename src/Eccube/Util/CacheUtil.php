@@ -71,14 +71,14 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * @param TerminateEvent $event
      *
-     * @return string|void
+     * @return string
      *
      * @throws \Exception
      */
-    public function forceClearCache(TerminateEvent $event): void
+    public function forceClearCache(TerminateEvent $event): string
     {
         if ($this->clearCacheAfterResponse === false) {
-            return;
+            return '';
         }
 
         $console = new Application($this->kernel);

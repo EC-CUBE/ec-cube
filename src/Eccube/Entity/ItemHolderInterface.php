@@ -13,7 +13,7 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 interface ItemHolderInterface
@@ -67,29 +67,29 @@ interface ItemHolderInterface
      *
      * @param string $total
      *
-     * @return ItemHolderInterface|void
+     * @return $this
      */
-    public function setDiscount($total): void;
+    public function setDiscount($total): self;
 
     /**
      * 手数料合計を設定します。
      *
      * @param string $total
      *
-     * @return ItemHolderInterface|void
+     * @return $this
      */
-    public function setCharge($total): void;
+    public function setCharge($total): self;
 
     /**
      * 税額合計を設定します。
      *
      * @param string $total
      *
-     * @return ItemHolderInterface|void
+     * @return $this
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
-    public function setTax($total): void;
+    public function setTax($total): self;
 
     /**
      * 加算ポイントを設定します。
@@ -140,9 +140,9 @@ interface ItemHolderInterface
     /**
      * 出荷情報を追加します - 注文のみ
      *
-     * @return ArrayCollection<int, Shipping>
+     * @return Collection<int, Shipping>
      */
-    public function getShippings(): ArrayCollection;
+    public function getShippings(): Collection;
 
     /**
      * 注文ステータスを返す - 注文のみ
