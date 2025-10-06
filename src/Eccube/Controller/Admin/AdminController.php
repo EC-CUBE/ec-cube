@@ -37,7 +37,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -87,7 +87,7 @@ class AdminController extends AbstractController
     protected $pluginApiService;
 
     /**
-     * @var array 売り上げ状況用受注状況
+     * @var array<int,int> 売り上げ状況用受注状況
      */
     private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
@@ -126,6 +126,9 @@ class AdminController extends AbstractController
         $this->pluginApiService = $pluginApiService;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
     #[Template('@admin/login.twig')]
     public function login(Request $request)
@@ -157,7 +160,7 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array
+     * @return array<string,mixed>
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -313,7 +316,7 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
     #[Template('@admin/change_password.twig')]
@@ -334,6 +337,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \Eccube\Entity\Member $Member */
             $Member = $this->getUser();
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
@@ -406,10 +410,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param array $excludes
+     * @param array<int,int> $excludes
      *
-     * @return Request|null
+     * @return array<int|string,mixed>|null
      */
     protected function getOrderEachStatus(array $excludes)
     {
@@ -573,9 +576,9 @@ class AdminController extends AbstractController
      *
      * @param Carbon $fromDate
      * @param Carbon $toDate
-     * @param $format
+     * @param string $format
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function getData(Carbon $fromDate, Carbon $toDate, $format)
     {
@@ -596,12 +599,12 @@ class AdminController extends AbstractController
     /**
      * 期間毎にデータをまとめる
      *
-     * @param $result
+     * @param float|int|mixed|string $result
      * @param Carbon $fromDate
      * @param Carbon $toDate
-     * @param $format
+     * @param string $format
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function convert($result, Carbon $fromDate, Carbon $toDate, $format)
     {

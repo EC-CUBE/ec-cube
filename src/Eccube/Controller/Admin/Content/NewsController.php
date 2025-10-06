@@ -25,7 +25,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class NewsController extends AbstractController
 {
@@ -51,7 +51,7 @@ class NewsController extends AbstractController
      * @param int $page_no
      * @param PaginatorInterface $paginator
      *
-     * @return array
+     * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/content/news', name: 'admin_content_news', methods: ['GET'])]
     #[Route('/%eccube_admin_route%/content/news/page/{page_no}', name: 'admin_content_news_page', requirements: ['page_no' => '\d+'], methods: ['GET'])]
@@ -83,9 +83,9 @@ class NewsController extends AbstractController
      * 新着情報を登録・編集する。
      *
      * @param Request $request
-     * @param null $id
+     * @param int|null $id
      *
-     * @return array|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/news/new', name: 'admin_content_news_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/news/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_news_edit', methods: ['GET', 'POST'])]

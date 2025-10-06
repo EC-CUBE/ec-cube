@@ -173,11 +173,11 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $ProductClass = $this->productClassRepository->find(2);
 
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -185,9 +185,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $CartItems = $this->cartService->getCart()->getCartItems();
         self::assertSame(1, count($CartItems));
         self::assertSame(2, $CartItems[0]->getProductClassId());
-        self::assertSame(2, $CartItems[0]->getQuantity());
+        self::assertSame('2', $CartItems[0]->getQuantity());
 
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -195,9 +195,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $CartItems = $this->cartService->getCart()->getCartItems();
         self::assertSame(2, count($CartItems));
         self::assertSame(2, $CartItems[0]->getProductClassId());
-        self::assertSame(2, $CartItems[0]->getQuantity());
+        self::assertSame('2', $CartItems[0]->getQuantity());
         self::assertSame(2, $CartItems[1]->getProductClassId());
-        self::assertSame(1, $CartItems[1]->getQuantity());
+        self::assertSame('1', $CartItems[1]->getQuantity());
     }
 
     public function testUpProductQuantity()

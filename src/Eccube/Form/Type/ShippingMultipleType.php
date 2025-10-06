@@ -38,13 +38,18 @@ class ShippingMultipleType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->addEventListener(FormEvents::POST_SET_DATA, function ($event) {
-                /** @var \Eccube\Entity\OrderItem $data */
+                /** @var \Eccube\Entity\OrderItem|null $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();

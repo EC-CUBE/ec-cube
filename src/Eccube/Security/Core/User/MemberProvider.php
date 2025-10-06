@@ -24,6 +24,9 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @implements UserProviderInterface<Member>
+ */
 class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     /**
@@ -40,18 +43,6 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
     {
         $this->memberRepository = $memberRepository;
         $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return UserInterface
-     *
-     * @throws UserNotFoundException
-     *
-     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
-     */
-    public function loadUserByUsername($username): Member
-    {
-        return $this->loadUserByIdentifier($username);
     }
 
     /**
@@ -73,7 +64,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByIdentifier($user->getUsername());
     }
 
     /**
@@ -104,6 +95,7 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
     #[\Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        /** @var Member $user */
         $user->setPassword($newHashedPassword);
         $this->entityManager->flush();
     }

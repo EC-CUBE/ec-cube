@@ -37,6 +37,13 @@ use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * CSV reader
+ *
+ * @implements \Iterator<int, array<int|string, string>>
+ * @implements \SeekableIterator<int, array<int|string, string>>
+ */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
     public const DUPLICATE_HEADERS_INCREMENT = 1;
@@ -59,7 +66,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Column headers as read from the CSV file
      *
-     * @var array
+     * @var array<int, string|int>
      */
     protected $columnHeaders = [];
 
@@ -82,7 +89,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Faulty CSV rows
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $errors = [];
 
@@ -130,7 +137,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * If a header row has been set, an associative array will be returned
      *
-     * @return mixed
+     * @return array<int, string>|null
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -166,7 +173,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Get column headers
      *
-     * @return array
+     * @return array<int, string|int>
      */
     public function getColumnHeaders()
     {
@@ -176,7 +183,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Set column headers
      *
-     * @param array $columnHeaders
+     * @param array<int, string> $columnHeaders
+     *
+     * @return void
      */
     public function setColumnHeaders(array $columnHeaders)
     {
@@ -289,7 +298,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<int, string>
      */
     public function getFields()
     {
@@ -301,7 +310,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param int $number Row number
      *
-     * @return array
+     * @return array<int, string>|null
      */
     public function getRow($number)
     {
@@ -313,7 +322,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Get rows that have an invalid number of columns
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getErrors()
     {
@@ -340,7 +349,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Stream filter を適用し, 新たな SplFileObject を返す.
      *
      * @param \SplFileObject $file Stream filter を適用する SplFileObject
-     * @param \php_user_filter $filters 適用する stream filter のクラス名
+     * @param string $filters 適用する stream filter のクラス名
      *
      * @return \SplFileObject 適用後の SplFileObject
      */
@@ -371,7 +380,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @param int $rowNumber Row number
      *
-     * @return array
+     * @return array<int, string>|string|false
      */
     protected function readHeaderRow($rowNumber)
     {
@@ -391,9 +400,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => 'first', $duplicate1 => 'second', $duplicate2 => 'third'
      *
-     * @param array $headers
+     * @param array<int, string> $headers
      *
-     * @return array
+     * @return array<int, string>
      */
     protected function incrementHeaders(array $headers)
     {
@@ -422,9 +431,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Yields value:
      * $duplicate => ['first', 'second', 'third']
      *
-     * @param array $line
+     * @param array<int, string> $line
      *
-     * @return array
+     * @return array<int, string>
      */
     protected function mergeDuplicates(array $line)
     {
@@ -442,25 +451,5 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         }
 
         return $values;
-    }
-
-    /**
-     * 行の文字エンコーディングを変換する.
-     *
-     * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
-     * それ以外の環境では何もしない。
-     *
-     * @deprecated 使用していないため削除予定
-     */
-    protected function convertEncodingRows($row)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
-            foreach ($row as &$col) {
-                $col = mb_convert_encoding($col, 'UTF-8', 'SJIS-win');
-            }
-        }
-
-        return $row;
     }
 }

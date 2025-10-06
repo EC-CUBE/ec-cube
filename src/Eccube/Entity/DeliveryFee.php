@@ -29,6 +29,8 @@ if (!class_exists(DeliveryFee::class)) {
     {
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -42,14 +44,14 @@ if (!class_exists(DeliveryFee::class)) {
         private $fee;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          */
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryFees')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id', nullable: false)]
         private $Delivery;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]

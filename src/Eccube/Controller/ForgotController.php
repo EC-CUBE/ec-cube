@@ -23,7 +23,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -56,7 +56,7 @@ class ForgotController extends AbstractController
      * @param ValidatorInterface $validator
      * @param MailService $mailService
      * @param CustomerRepository $customerRepository
-     * @param UserPasswordHasherInterface $encoderFactory
+     * @param UserPasswordHasherInterface $passwordHasher
      */
     public function __construct(
         ValidatorInterface $validator,
@@ -72,6 +72,10 @@ class ForgotController extends AbstractController
 
     /**
      * パスワードリマインダ.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
     #[Template('Forgot/index.twig')]
@@ -143,6 +147,12 @@ class ForgotController extends AbstractController
 
     /**
      * 再設定URL送信完了画面.
+     *
+     * @param Request $request
+     *
+     * @return array<empty>
+     *
+     * @throws HttpException\NotFoundHttpException
      */
     #[Route('/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
     #[Template('Forgot/complete.twig')]
@@ -157,6 +167,13 @@ class ForgotController extends AbstractController
 
     /**
      * パスワード再発行実行画面.
+     *
+     * @param Request $request
+     * @param string $reset_key
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws HttpException\NotFoundHttpException
      */
     #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
     #[Template('Forgot/reset.twig')]

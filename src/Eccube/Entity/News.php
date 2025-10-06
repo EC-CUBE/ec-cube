@@ -39,6 +39,8 @@ if (!class_exists(News::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -94,7 +96,7 @@ if (!class_exists(News::class)) {
         private $visible;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
@@ -279,7 +281,7 @@ if (!class_exists(News::class)) {
         }
 
         /**
-         * @return int
+         * @return bool
          */
         public function isVisible()
         {

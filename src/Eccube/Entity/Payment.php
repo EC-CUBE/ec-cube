@@ -38,6 +38,8 @@ if (!class_exists(Payment::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -54,7 +56,7 @@ if (!class_exists(Payment::class)) {
          * @var string|null
          */
         #[ORM\Column(name: 'charge', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
-        private $charge = 0;
+        private $charge = '0';
 
         /**
          * @var string|null
@@ -93,7 +95,9 @@ if (!class_exists(Payment::class)) {
         private $method_class;
 
         /**
-         * @var int
+         * @var bool
+         *
+         * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
         #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible;
@@ -111,13 +115,13 @@ if (!class_exists(Payment::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,PaymentOption>
          */
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
         private $PaymentOptions;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
@@ -334,7 +338,7 @@ if (!class_exists(Payment::class)) {
         }
 
         /**
-         * @return int
+         * @return bool
          */
         public function isVisible()
         {
@@ -430,7 +434,7 @@ if (!class_exists(Payment::class)) {
         /**
          * Get paymentOptions.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,PaymentOption>
          */
         public function getPaymentOptions()
         {

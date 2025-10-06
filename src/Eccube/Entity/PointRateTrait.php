@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait PointRateTrait
 {
     /**
-     * @var string
+     * @var string|null
      */
     #[ORM\Column(name: 'point_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true], nullable: true)]
     private $point_rate;
@@ -28,7 +28,7 @@ trait PointRateTrait
      *
      * @param string $pointRate
      *
-     * @return OrderItem
+     * @return $this
      */
     public function setPointRate($pointRate)
     {

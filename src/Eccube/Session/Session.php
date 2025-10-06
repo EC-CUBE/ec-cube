@@ -100,12 +100,18 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         $this->getSession()->set($name, $value);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[\Override]
     public function all(): array
     {
         return $this->getSession()->all();
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     */
     #[\Override]
     public function replace(array $attributes)
     {
@@ -139,7 +145,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
     #[\Override]
     public function getBag(string $name): SessionBagInterface
     {
-        return $this->getSession()->getBag();
+        return $this->getSession()->getBag($name);
     }
 
     #[\Override]
@@ -151,6 +157,9 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
     #[\Override]
     public function getFlashBag(): FlashBagInterface
     {
-        return $this->getSession()->getFlashBag();
+        /** @var FlashBagAwareSessionInterface $session */
+        $session = $this->getSession();
+
+        return $session->getFlashBag();
     }
 }

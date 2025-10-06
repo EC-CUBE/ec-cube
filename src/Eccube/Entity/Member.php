@@ -33,6 +33,11 @@ if (!class_exists(Member::class)) {
     #[ORM\Entity(repositoryClass: MemberRepository::class)]
     class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
+        /**
+         * @param ClassMetadata $metadata
+         *
+         * @return void
+         */
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
             $metadata->addConstraint(new UniqueEntity([
@@ -60,7 +65,7 @@ if (!class_exists(Member::class)) {
         }
 
         /**
-         * {@inheritdoc}
+         * @return string
          */
         public function getUsername()
         {
@@ -69,6 +74,8 @@ if (!class_exists(Member::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
@@ -101,6 +108,9 @@ if (!class_exists(Member::class)) {
         #[ORM\Column(name: 'login_id', type: 'string', length: 255)]
         private $login_id;
 
+        /**
+         * @var string|null
+         */
         #[Assert\NotBlank]
         #[Assert\Length(max: 4096)]
         private $plainPassword;
@@ -112,7 +122,7 @@ if (!class_exists(Member::class)) {
         private $password;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'salt', type: 'string', length: 255, nullable: true)]
         private $salt;
@@ -124,13 +134,13 @@ if (!class_exists(Member::class)) {
         private $sort_no;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'two_factor_auth_key', type: 'string', length: 255, nullable: true, options: ['fixed' => false])]
         private $two_factor_auth_key;
 
         /**
-         * @var int
+         * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
          */
         #[ORM\Column(name: 'two_factor_auth_enabled', type: 'boolean', nullable: false, options: ['default' => false])]
         private $two_factor_auth_enabled = false;
@@ -154,21 +164,21 @@ if (!class_exists(Member::class)) {
         private $login_date;
 
         /**
-         * @var Master\Work
+         * @var Master\Work|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Work::class)]
         #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]
         private $Work;
 
         /**
-         * @var Master\Authority
+         * @var Master\Authority|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
         #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
         private $Authority;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
@@ -473,7 +483,7 @@ if (!class_exists(Member::class)) {
         /**
          * Set Work
          *
-         * @param Master\Work
+         * @param Master\Work|null $work
          *
          * @return Member
          */
@@ -555,7 +565,7 @@ if (!class_exists(Member::class)) {
         public function serialize()
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
-            // MemberRepository::loadUserByUsername() で Work をチェックしているため、ここでは不要
+            // MemberRepository::loadUserByIdentifier() で Work をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
                 $this->login_id,

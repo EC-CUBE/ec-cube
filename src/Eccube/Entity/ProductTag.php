@@ -31,7 +31,7 @@ if (!class_exists(ProductTag::class)) {
          * Get tag_id
          * use csv export
          *
-         * @return int
+         * @return int|null
          */
         public function getTagId()
         {
@@ -44,6 +44,8 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -57,21 +59,21 @@ if (!class_exists(ProductTag::class)) {
         private $create_date;
 
         /**
-         * @var Product
+         * @var Product|null
          */
         #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
-         * @var Tag
+         * @var Tag|null
          */
         #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'ProductTag')]
         #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
         private $Tag;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]

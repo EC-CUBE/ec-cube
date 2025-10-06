@@ -26,10 +26,11 @@ if (!class_exists(OrderPdf::class)) {
     #[ORM\Entity(repositoryClass: OrderPdfRepository::class)]
     class OrderPdf extends AbstractEntity
     {
+        /** @var mixed */
         public $ids;
-
+        /** @var \DateTime|string */
         public $issue_date;
-
+        /** @var mixed */
         public $default;
 
         /**
@@ -40,43 +41,43 @@ if (!class_exists(OrderPdf::class)) {
         private $member_id;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'title', type: 'string', nullable: true)]
         private $title;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'message1', type: 'string', nullable: true)]
         private $message1;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'message2', type: 'string', nullable: true)]
         private $message2;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'message3', type: 'string', nullable: true)]
         private $message3;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'note1', type: 'string', nullable: true)]
         private $note1;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'note2', type: 'string', nullable: true)]
         private $note2;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'note3', type: 'string', nullable: true)]
         private $note3;
@@ -100,7 +101,7 @@ if (!class_exists(OrderPdf::class)) {
         private $visible = true;
 
         /**
-         * @return string
+         * @return int
          */
         public function getMemberId()
         {
@@ -108,7 +109,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $member_id
+         * @param int $member_id
          *
          * @return $this
          */
@@ -128,7 +129,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $title
+         * @param string $title
          *
          * @return $this
          */
@@ -148,7 +149,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $message1
+         * @param string $message1
          *
          * @return $this
          */
@@ -168,7 +169,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $message2
+         * @param string $message2
          *
          * @return $this
          */
@@ -188,7 +189,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $message3
+         * @param string|null $message3
          *
          * @return $this
          */
@@ -208,7 +209,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $note1
+         * @param string $note1
          *
          * @return $this
          */
@@ -228,7 +229,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $note2
+         * @param string $note2
          *
          * @return $this
          */
@@ -248,7 +249,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $note3
+         * @param string $note3
          *
          * @return $this
          */
@@ -268,7 +269,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $create_date
+         * @param \DateTime|string $create_date
          *
          * @return $this
          */
@@ -288,7 +289,7 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param $update_date
+         * @param \DateTime|string $update_date
          *
          * @return $this
          */
@@ -304,7 +305,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @param bool $visible
          *
-         * @return Delivery
+         * @return OrderPdf
          */
         public function setVisible($visible)
         {

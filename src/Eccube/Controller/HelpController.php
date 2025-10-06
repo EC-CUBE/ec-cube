@@ -14,7 +14,7 @@
 namespace Eccube\Controller;
 
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class HelpController extends AbstractController
 {
@@ -27,6 +27,8 @@ class HelpController extends AbstractController
 
     /**
      * ご利用ガイド.
+     *
+     * @return array<empty>
      */
     #[Route('/help/guide', name: 'help_guide', methods: ['GET'])]
     #[Template('Help/guide.twig')]
@@ -37,6 +39,8 @@ class HelpController extends AbstractController
 
     /**
      * 当サイトについて.
+     *
+     * @return array<empty>
      */
     #[Route('/help/about', name: 'help_about', methods: ['GET'])]
     #[Template('Help/about.twig')]
@@ -47,6 +51,8 @@ class HelpController extends AbstractController
 
     /**
      * プライバシーポリシー.
+     *
+     * @return array<empty>
      */
     #[Route('/help/privacy', name: 'help_privacy', methods: ['GET'])]
     #[Template('Help/privacy.twig')]
@@ -57,6 +63,8 @@ class HelpController extends AbstractController
 
     /**
      * 利用規約.
+     *
+     * @return array<empty>
      */
     #[Route('/help/agreement', name: 'help_agreement', methods: ['GET'])]
     #[Template('Help/agreement.twig')]

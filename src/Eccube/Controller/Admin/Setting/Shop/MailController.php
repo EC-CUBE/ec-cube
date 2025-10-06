@@ -23,9 +23,10 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 /**
@@ -48,6 +49,16 @@ class MailController extends AbstractController
         $this->mailTemplateRepository = $mailTemplateRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param Environment $twig
+     * @param CacheUtil $cacheUtil
+     * @param MailTemplate|null $Mail
+     *
+     * @return RedirectResponse|array<string,mixed>
+     *
+     * @throws \Twig\Error\LoaderError
+     */
     #[Route('/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}', requirements: ['id' => '\d+'], name: 'admin_setting_shop_mail_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/mail.twig')]
@@ -150,6 +161,11 @@ class MailController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
     #[Template('@admin/Setting/Shop/mail_view.twig')]
     public function preview(Request $request)
@@ -173,6 +189,12 @@ class MailController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param MailTemplate $Mail
+     *
+     * @return RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, MailTemplate $Mail)
     {
@@ -224,7 +246,7 @@ class MailController extends AbstractController
     /**
      * テンプレートディレクトリ配下のパスかどうかを検証する
      *
-     * @param $path
+     * @param string $path
      *
      * @return bool
      */

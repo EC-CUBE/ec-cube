@@ -22,7 +22,7 @@ abstract class JoinCustomizer implements QueryCustomizer
 {
     /**
      * @param QueryBuilder $builder
-     * @param array $params
+     * @param array<mixed> $params
      * @param string $queryKey
      *
      * @return void
@@ -39,8 +39,8 @@ abstract class JoinCustomizer implements QueryCustomizer
      * 追加するJOIN句を組み立てます。
      * このメソッドの戻り値が、元のクエリのJOIN句に追加されます。
      *
-     * @param array $params
-     * @param $queryKey
+     * @param array<mixed> $params
+     * @param string $queryKey
      *
      * @return JoinClause[]
      */

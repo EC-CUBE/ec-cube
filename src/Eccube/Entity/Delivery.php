@@ -38,6 +38,8 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -93,33 +95,33 @@ if (!class_exists(Delivery::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,PaymentOption>
          */
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $PaymentOptions;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,DeliveryFee>
          */
         #[ORM\OneToMany(targetEntity: DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $DeliveryFees;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,DeliveryTime>
          */
         #[ORM\OneToMany(targetEntity: DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $DeliveryTimes;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
-         * @var Master\SaleType
+         * @var Master\SaleType|null
          */
         #[ORM\ManyToOne(targetEntity: Master\SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
@@ -342,7 +344,7 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get paymentOptions.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int, PaymentOption>
          */
         public function getPaymentOptions()
         {
@@ -378,7 +380,7 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get deliveryFees.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,DeliveryFee>
          */
         public function getDeliveryFees()
         {
@@ -414,7 +416,7 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get deliveryTimes.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,DeliveryTime>
          */
         public function getDeliveryTimes()
         {

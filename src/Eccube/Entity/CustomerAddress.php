@@ -87,6 +87,8 @@ if (!class_exists(CustomerAddress::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -94,13 +96,13 @@ if (!class_exists(CustomerAddress::class)) {
         private $id;
 
         /**
-         * @var string|null
+         * @var string
          */
         #[ORM\Column(name: 'name01', type: 'string', length: 255)]
         private $name01;
 
         /**
-         * @var string|null
+         * @var string
          */
         #[ORM\Column(name: 'name02', type: 'string', length: 255)]
         private $name02;
@@ -160,21 +162,21 @@ if (!class_exists(CustomerAddress::class)) {
         private $update_date;
 
         /**
-         * @var Customer
+         * @var Customer|null
          */
         #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerAddresses')]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]

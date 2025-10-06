@@ -107,6 +107,9 @@ if (!class_exists(Customer::class)) {
         #[ORM\Column(name: 'birth', type: 'datetimetz', nullable: true)]
         private $birth;
 
+        /**
+         * @var string|null
+         */
         #[Assert\NotBlank]
         #[Assert\Length(max: 4096)]
         private $plain_password;
@@ -190,54 +193,54 @@ if (!class_exists(Customer::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(mappedBy: 'Customer', targetEntity: CustomerFavoriteProduct::class, cascade: ['remove'])]
         private $CustomerFavoriteProducts;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,CustomerAddress>
          */
         #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
         private $CustomerAddresses;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,Order>
          */
         #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'Customer')]
         private $Orders;
 
         /**
-         * @var Master\CustomerStatus
+         * @var Master\CustomerStatus|null
          */
         #[ORM\ManyToOne(targetEntity: Master\CustomerStatus::class)]
         #[ORM\JoinColumn(name: 'customer_status_id', referencedColumnName: 'id')]
         private $Status;
 
         /**
-         * @var Master\Sex
+         * @var Master\Sex|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Sex::class)]
         #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
-         * @var Master\Job
+         * @var Master\Job|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Job::class)]
         #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
@@ -252,8 +255,8 @@ if (!class_exists(Customer::class)) {
             $this->CustomerAddresses = new \Doctrine\Common\Collections\ArrayCollection();
             $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
 
-            $this->setBuyTimes(0);
-            $this->setBuyTotal(0);
+            $this->setBuyTimes('0');
+            $this->setBuyTotal('0');
         }
 
         /**
@@ -275,7 +278,7 @@ if (!class_exists(Customer::class)) {
         }
 
         /**
-         * {@inheritdoc}
+         * @return string
          */
         public function getUsername()
         {
@@ -284,12 +287,19 @@ if (!class_exists(Customer::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
         {
         }
 
+        /**
+         * @param ClassMetadata $metadata
+         *
+         * @return void
+         */
         // TODO: できればFormTypeで行いたい
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
@@ -303,7 +313,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {
@@ -913,7 +923,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          */
         public function getCustomerFavoriteProducts()
         {
@@ -949,7 +959,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerAddresses.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,CustomerAddress>
          */
         public function getCustomerAddresses()
         {
@@ -985,7 +995,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get orders.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,Order>
          */
         public function getOrders()
         {
@@ -1129,7 +1139,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get point
          *
-         * @return string
+         * @return string|int
          */
         public function getPoint()
         {
@@ -1149,7 +1159,7 @@ if (!class_exists(Customer::class)) {
         public function serialize()
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
-            // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
+            // CustomerRepository::loadUserByIdentifier() で Status をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
                 $this->email,

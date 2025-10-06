@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TwoFactorAuthListener implements EventSubscriberInterface
 {
     /**
-     * @var array 2段階認証のチェックを除外するroute
+     * @var array<string> 2段階認証のチェックを除外するroute
      */
     public const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
 
@@ -52,8 +52,9 @@ class TwoFactorAuthListener implements EventSubscriberInterface
 
     /**
      * @param EccubeConfig $eccubeConfig
-     * @param Context $context,
+     * @param Context $requestContext,
      * @param UrlGeneratorInterface $router
+     * @param TwoFactorAuthService $twoFactorAuthService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -69,6 +70,8 @@ class TwoFactorAuthListener implements EventSubscriberInterface
 
     /**
      * @param ControllerArgumentsEvent $event
+     *
+     * @return void
      */
     public function onKernelController(ControllerArgumentsEvent $event)
     {
@@ -111,7 +114,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array
+     * @return array<string,array<int|string>>
      */
     #[\Override]
     public static function getSubscribedEvents()

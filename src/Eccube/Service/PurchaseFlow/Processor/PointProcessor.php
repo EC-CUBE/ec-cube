@@ -73,9 +73,10 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if (!$this->supports($itemHolder)) {
-            return;
+            return null;
         }
 
+        /** @var Order $itemHolder */
         $usePoint = $itemHolder->getUsePoint();
         $discount = $this->pointHelper->pointToDiscount($usePoint);
 
@@ -86,11 +87,11 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             // 購入フロー実行時
             if ($context->isShoppingFlow()) {
                 // 支払い金額 < 利用ポイントによる値引き額.
-                if ($itemHolder->getTotal() + $discount < 0) {
+                if ($itemHolder->getTotal() + $discount < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                     $minus = $itemHolder->getTotal() + $discount;
                     // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
                     $overPoint = $this->pointHelper->priceToPoint($minus);
-                    $usePoint = $itemHolder->getUsePoint() + $overPoint;
+                    $usePoint = bcadd($itemHolder->getUsePoint(), $overPoint);
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
                     $result = ProcessResult::warn(trans('purchase_flow.over_payment_total'), self::class);
                 }
@@ -106,7 +107,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             // 受注登録・編集実行時
             } else {
                 // 支払い金額 < 利用ポイントによる値引き額.
-                if ($itemHolder->getTotal() >= 0 && $itemHolder->getTotal() + $discount < 0) {
+                if ($itemHolder->getTotal() >= 0 && $itemHolder->getTotal() + $discount < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                     $result = ProcessResult::error(trans('purchase_flow.over_payment_total'), self::class);
                 }
             }
@@ -118,6 +119,8 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
                 return $result;
             }
         }
+
+        return null;
     }
 
     /*

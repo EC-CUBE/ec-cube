@@ -21,6 +21,13 @@ class PaymentMethodPass implements CompilerPassInterface
 {
     public const PAYMENT_METHOD_TAG = 'eccube.payment.method';
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
     #[\Override]
     public function process(ContainerBuilder $container)
     {

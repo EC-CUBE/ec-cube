@@ -48,11 +48,13 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -118,13 +120,21 @@ class CsvImportController extends AbstractCsvImportController
      * @var ValidatorInterface
      */
     protected $validator;
-
+    /**
+     * @var array<int,mixed>
+     */
     private $errors = [];
-
+    /**
+     * @var bool
+     */
     protected $isSplitCsv = false;
-
+    /**
+     * @var int
+     */
     protected $csvFileNo = 1;
-
+    /**
+     * @var int
+     */
     protected $currentLineNo = 1;
 
     private readonly \HTMLPurifier $purifier;
@@ -181,10 +191,9 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVアップロード
      *
-     * @return array
+     * @return array<mixed>|JsonResponse
      *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\ORM\NoResultException|\Doctrine\DBAL\Exception
      */
     #[Route('/%eccube_admin_route%/product/product_csv_upload', name: 'admin_product_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_product.twig')]
@@ -376,7 +385,6 @@ class CsvImportController extends AbstractCsvImportController
                         $this->createProductTag($row, $Product, $data, $headerByKey);
 
                         // 商品規格が存在しなければ新規登録
-                        /** @var ProductClass[] $ProductClasses */
                         $ProductClasses = $Product->getProductClasses();
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
@@ -687,7 +695,9 @@ class CsvImportController extends AbstractCsvImportController
                     log_info('商品CSV登録完了');
                     if (!$this->isSplitCsv) {
                         $message = 'admin.common.csv_upload_complete';
-                        $this->session->getFlashBag()->add('eccube.admin.success', $message);
+                        /** @var Session $session */
+                        $session = $this->session;
+                        $session->getFlashBag()->add('eccube.admin.success', $message);
                     }
 
                     $cacheUtil->clearDoctrineCache();
@@ -700,6 +710,13 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * カテゴリ登録CSVアップロード
+     *
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return array<mixed>|JsonResponse
+     *
+     * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\DBAL\Exception\DriverException|\Doctrine\DBAL\Exception
      */
     #[Route('/%eccube_admin_route%/product/category_csv_upload', name: 'admin_product_category_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_category.twig')]
@@ -804,7 +821,7 @@ class CsvImportController extends AbstractCsvImportController
                                 return $this->renderWithError($form, $headers);
                             }
 
-                            /** @var Category $ParentCategory */
+                            /** @var Category|null $ParentCategory */
                             $ParentCategory = $this->categoryRepository->find($row[$headerByKey['parent_category_id']]);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
@@ -847,7 +864,9 @@ class CsvImportController extends AbstractCsvImportController
                     $this->entityManager->getConnection()->commit();
                     log_info('カテゴリCSV登録完了');
                     $message = 'admin.common.csv_upload_complete';
-                    $this->session->getFlashBag()->add('eccube.admin.success', $message);
+                    /** @var Session $session */
+                    $session = $this->session;
+                    $session->getFlashBag()->add('eccube.admin.success', $message);
 
                     $cacheUtil->clearDoctrineCache();
                 }
@@ -859,6 +878,11 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格登録CSVアップロード
+     *
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return array<mixed>|JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/class_name_csv_upload', name: 'admin_product_class_name_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_class_name.twig')]
@@ -977,6 +1001,11 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格分類CSV登録CSVアップロード
+     *
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return array<mixed>|JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/class_category_csv_upload', name: 'admin_product_class_category_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_class_category.twig')]
@@ -1112,9 +1141,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @param $type
+     * @param Request $request
+     * @param string $type
      *
      * @return StreamedResponse
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/csv_template/{type}', name: 'admin_product_csv_template', requirements: ['type' => '\w+'], methods: ['GET'])]
     public function csvTemplate(Request $request, $type)
@@ -1142,12 +1174,12 @@ class CsvImportController extends AbstractCsvImportController
      * 登録、更新時のエラー画面表示
      *
      * @param FormInterface $form
-     * @param array $headers
+     * @param array<string, array<string, mixed>> $headers
      * @param bool $rollback
      *
-     * @return array
+     * @return JsonResponse|array<mixed>
      *
-     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\DBAL\Exception
      */
     protected function renderWithError($form, $headers, $rollback = true)
     {
@@ -1181,10 +1213,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品画像の削除、登録
      *
-     * @param $row
+     * @param array<int,string> $row
      * @param Product $Product
-     * @param CsvImportService $data
-     * @param $headerByKey
+     * @param CsvImportService<int,mixed> $data
+     * @param array<mixed> $headerByKey
+     *
+     * @return void
      */
     protected function createProductImage($row, Product $Product, $data, $headerByKey)
     {
@@ -1232,10 +1266,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品カテゴリの削除、登録
      *
-     * @param $row
+     * @param array<int,string> $row
      * @param Product $Product
-     * @param CsvImportService $data
-     * @param $headerByKey
+     * @param CsvImportService<int,mixed> $data
+     * @param array<mixed> $headerByKey
+     *
+     * @return void
      */
     protected function createProductCategory($row, Product $Product, $data, $headerByKey)
     {
@@ -1300,9 +1336,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * タグの登録
      *
-     * @param array $row
+     * @param array<int,string> $row
      * @param Product $Product
-     * @param CsvImportService $data
+     * @param CsvImportService<int,mixed> $data
+     * @param array<string, mixed> $headerByKey
+     *
+     * @return void
      */
     protected function createProductTag($row, Product $Product, $data, $headerByKey)
     {
@@ -1350,10 +1389,10 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品規格分類1、商品規格分類2がnullとなる商品規格情報を作成
      *
-     * @param $row
+     * @param array<mixed> $row
      * @param Product $Product
-     * @param CsvImportService $data
-     * @param $headerByKey
+     * @param CsvImportService<int,mixed> $data
+     * @param array<string, mixed> $headerByKey
      * @param null $ClassCategory1
      * @param null $ClassCategory2
      *
@@ -1418,7 +1457,7 @@ class CsvImportController extends AbstractCsvImportController
             $ProductClass->setStockUnlimited(false);
             // 在庫数が設定されていなければエラー
             if (isset($row[$headerByKey['stock']]) && StringUtil::isNotBlank($row[$headerByKey['stock']])) {
-                $stock = str_replace(',', '', $row[$headerByKey['stock']]);
+                $stock = str_replace(',', '', (string) $row[$headerByKey['stock']]);
                 if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                     $ProductClass->setStock($stock);
                 } else {
@@ -1438,7 +1477,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         if (isset($row[$headerByKey['sale_limit']]) && StringUtil::isNotBlank($row[$headerByKey['sale_limit']])) {
-            $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
+            $saleLimit = str_replace(',', '', (string) $row[$headerByKey['sale_limit']]);
             if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
@@ -1507,10 +1546,11 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品規格情報を更新
      *
-     * @param $row
+     * @param array<mixed> $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param CsvImportService $data
+     * @param CsvImportService<int,mixed> $data
+     * @param array<string, mixed> $headerByKey
      *
      * @return ProductClass
      */
@@ -1601,7 +1641,7 @@ class CsvImportController extends AbstractCsvImportController
                 $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
                 $this->addErrors($message);
             } else {
-                $stock = str_replace(',', '', $row[$headerByKey['stock']]);
+                $stock = str_replace(',', '', (string) $row[$headerByKey['stock']]);
                 if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                     $ProductClass->setStock($row[$headerByKey['stock']]);
                 } else {
@@ -1619,7 +1659,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['sale_limit']])) {
             if ($row[$headerByKey['sale_limit']] != '') {
-                $saleLimit = str_replace(',', '', $row[$headerByKey['sale_limit']]);
+                $saleLimit = str_replace(',', '', (string) $row[$headerByKey['sale_limit']]);
                 if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                     $ProductClass->setSaleLimit($saleLimit);
                 } else {
@@ -1686,6 +1726,10 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 登録、更新時のエラー画面表示
+     *
+     * @param string $message
+     *
+     * @return void
      */
     protected function addErrors($message)
     {
@@ -1693,7 +1737,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     protected function getErrors()
     {
@@ -1711,7 +1755,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVヘッダー定義
      *
-     * @return array
+     * @return array<string,array<string,string|bool>>
      */
     protected function getProductCsvHeader()
     {
@@ -1846,6 +1890,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * カテゴリCSVヘッダー定義
+     *
+     * @return array<string,array<string,string|bool>>
      */
     protected function getCategoryCsvHeader()
     {
@@ -1875,6 +1921,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格CSVヘッダー定義
+     *
+     * @return array<string,array<string,string|bool>>
      */
     protected function getClassNameCsvHeader()
     {
@@ -1904,6 +1952,8 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格分類CSVヘッダー定義
+     *
+     * @return array<string,array<string,string|bool>>
      */
     protected function getClassCategoryCsvHeader()
     {
@@ -1959,7 +2009,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/csv_split', name: 'admin_product_csv_split', methods: ['POST'])]
     public function splitCsv(Request $request)
@@ -2025,7 +2075,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)
@@ -2065,7 +2115,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/product/csv_split_cleanup', name: 'admin_product_csv_split_cleanup', methods: ['POST'])]
     public function cleanupSplitCsv(Request $request)
@@ -2090,6 +2140,9 @@ class CsvImportController extends AbstractCsvImportController
         return $this->json(['success' => true]);
     }
 
+    /**
+     * @return array<mixed>
+     */
     protected function getCsvTempFiles()
     {
         $files = Finder::create()
@@ -2105,6 +2158,11 @@ class CsvImportController extends AbstractCsvImportController
         return $choices;
     }
 
+    /**
+     * @param int $currentLineNo
+     *
+     * @return float|int
+     */
     protected function convertLineNo($currentLineNo)
     {
         if ($this->isSplitCsv) {

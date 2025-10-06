@@ -282,6 +282,9 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider getMergeRulesProvider
+     *
+     * @param mixed $rules
+     * @param mixed $expected
      */
     public function testGetMergeRules($rules, $expected)
     {

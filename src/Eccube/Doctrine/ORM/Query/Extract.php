@@ -42,10 +42,22 @@ use Doctrine\ORM\Query\TokenType;
  */
 class Extract extends FunctionNode
 {
+    /**
+     * @var string
+     */
     protected $field;
+    /**
+     * @var string
+     */
     protected $type;
+    /**
+     * @var \Doctrine\ORM\Query\AST\Node|string
+     */
     protected $source;
 
+    /**
+     * @var string[]
+     */
     protected $formats = [
         'YEAR' => '%Y',
         'MONTH' => '%m',
@@ -55,7 +67,9 @@ class Extract extends FunctionNode
         'SECOND' => '%S',
         'WEEK' => '%W',
     ];
-
+    /**
+     * @var string[]
+     */
     protected $dateTimeTypes = [
         'TIMESTAMP',
         'DATE',
@@ -78,10 +92,7 @@ class Extract extends FunctionNode
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
 
-        // $parser->match(TokenType::T_IDENTIFIER);
-        // SELECT c FROM Eccube\Entity\Customer c WHERE EXTRACT(MONTH FROM c.birth) = :birth_month ORDER BY c.update_date DESC, c.id DESC
         $this->field = $upperField;
-
         $parser->match(TokenType::T_FROM);
 
         $next = $lexer->glimpse();

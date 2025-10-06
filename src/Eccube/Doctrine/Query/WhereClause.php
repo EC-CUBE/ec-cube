@@ -21,18 +21,19 @@ use Doctrine\ORM\QueryBuilder;
  */
 class WhereClause
 {
+    /** @var Expr\Comparison|string */
     private $expr;
 
     /**
-     * @var array
+     * @var string|array<string, int|string>|null
      */
     private $params;
 
     /**
      * WhereClause constructor.
      *
-     * @param $expr
-     * @param array $params
+     * @param Expr\Comparison|string $expr
+     * @param string|array<string, int|string>|null $params
      */
     private function __construct($expr, $params = null)
     {
@@ -42,6 +43,10 @@ class WhereClause
 
     /**
      * @param Expr\Comparison $expr
+     * @param string $x
+     * @param string|array<string, int|string> $y
+     *
+     * @return self
      */
     private static function newWhereClause($expr, $x, $y)
     {
@@ -59,9 +64,9 @@ class WhereClause
      *      WhereClause::eq('name', ':Name', 'hoge')
      *      WhereClause::eq('name', ':Name', ['Name' => 'hoge'])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -77,9 +82,9 @@ class WhereClause
      *      WhereClause::neq('name', ':Name', 'hoge')
      *      WhereClause::neq('name', ':Name', ['Name' => 'hoge'])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -94,7 +99,7 @@ class WhereClause
      * Example:
      *      WhereClause::isNull('name')
      *
-     * @param $x
+     * @param string $x
      *
      * @return WhereClause
      */
@@ -109,7 +114,7 @@ class WhereClause
      * Example:
      *      WhereClause::isNotNull('name')
      *
-     * @param $x
+     * @param string $x
      *
      * @return WhereClause
      */
@@ -125,9 +130,9 @@ class WhereClause
      *      WhereClause::like('name', ':Name', '%hoge')
      *      WhereClause::like('name', ':Name', ['Name' => '%hoge'])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -143,9 +148,9 @@ class WhereClause
      *      WhereClause::notLike('name', ':Name', '%hoge')
      *      WhereClause::notLike('name', ':Name', ['Name' => '%hoge'])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -161,9 +166,9 @@ class WhereClause
      *      WhereClause::in('name', ':Names', ['foo', 'bar'])
      *      WhereClause::in('name', ':Names', ['Names' => ['foo', 'bar']])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -172,6 +177,11 @@ class WhereClause
         return new WhereClause(self::expr()->in($x, $y), self::isMap($param) ? $param : [$y => $param]);
     }
 
+    /**
+     * @param array<int, string>|array<string, string> $arrayOrMap
+     *
+     * @return bool
+     */
     private static function isMap($arrayOrMap)
     {
         return array_values($arrayOrMap) !== $arrayOrMap;
@@ -184,9 +194,9 @@ class WhereClause
      *      WhereClause::notIn('name', ':Names', ['foo', 'bar'])
      *      WhereClause::notIn('name', ':Names', ['Names' => ['foo', 'bar']])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -202,10 +212,10 @@ class WhereClause
      *      WhereClause::between('price', ':PriceMin', ':PriceMax', [1000, 2000])
      *      WhereClause::between('price', ':PriceMin', ':PriceMax', ['PriceMin' => 1000, 'PriceMax' => 2000])
      *
-     * @param $var
-     * @param $x
-     * @param $y
-     * @param $params
+     * @param string $var
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $params
      *
      * @return WhereClause
      */
@@ -221,9 +231,9 @@ class WhereClause
      *      WhereClause::gt('price', ':Price', 1000)
      *      WhereClause::gt('price', ':Price', ['Price' => 1000])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -239,9 +249,9 @@ class WhereClause
      *      WhereClause::gte('price', ':Price', 1000)
      *      WhereClause::gte('price', ':Price', ['Price' => 1000])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -257,9 +267,9 @@ class WhereClause
      *      WhereClause::lt('price', ':Price', 1000)
      *      WhereClause::lt('price', ':Price', ['Price' => 1000])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -275,9 +285,9 @@ class WhereClause
      *      WhereClause::lte('price', ':Price', 1000)
      *      WhereClause::lte('price', ':Price', ['Price' => 1000])
      *
-     * @param $x
-     * @param $y
-     * @param $param
+     * @param string $x
+     * @param string $y
+     * @param string|array<string, int|string>|null $param
      *
      * @return WhereClause
      */
@@ -294,6 +304,13 @@ class WhereClause
         return new Expr();
     }
 
+    /**
+     * QueryBuilderにWHERE句を組み立てます。
+     *
+     * @param QueryBuilder $builder
+     *
+     * @return void
+     */
     public function build(QueryBuilder $builder)
     {
         $builder->andWhere($this->expr);

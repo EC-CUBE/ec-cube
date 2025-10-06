@@ -39,6 +39,8 @@ class TwigLintValidator extends ConstraintValidator
     /**
      * @param mixed $value
      * @param Constraint $constraint
+     *
+     * @return void
      */
     #[\Override]
     public function validate($value, Constraint $constraint)
@@ -55,6 +57,7 @@ class TwigLintValidator extends ConstraintValidator
             $nodeTree = $this->twig->parse($this->twig->tokenize(new Source($value, '')));
             $this->twig->compile($nodeTree);
         } catch (Error $e) {
+            /** @var TwigLint $constraint */
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ error }}', $e->getMessage())
                 ->addViolation();

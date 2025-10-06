@@ -20,7 +20,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class UserDataController extends AbstractController
 {
@@ -48,6 +48,14 @@ class UserDataController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param string $route
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_user_data_route%/{route}', name: 'user_data', requirements: ['route' => '([0-9a-zA-Z_\-]+\/?)+(?<!\/)'], methods: ['GET'])]
     public function index(Request $request, $route)
     {

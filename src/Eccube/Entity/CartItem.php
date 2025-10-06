@@ -30,6 +30,8 @@ if (!class_exists(CartItem::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -49,14 +51,14 @@ if (!class_exists(CartItem::class)) {
         private $quantity = '0';
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          */
         #[ORM\ManyToOne(targetEntity: ProductClass::class)]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
-         * @var Cart
+         * @var Cart|null
          */
         #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'CartItems', cascade: ['persist'])]
         #[ORM\JoinColumn(name: 'cart_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -83,7 +85,7 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param  string  $price
+         * @param string $price
          *
          * @return CartItem
          */
@@ -199,6 +201,9 @@ if (!class_exists(CartItem::class)) {
             return false;
         }
 
+        /**
+         * @return Master\OrderItemType
+         */
         #[\Override]
         public function getOrderItemType()
         {
@@ -217,14 +222,13 @@ if (!class_exists(CartItem::class)) {
         {
             $this->ProductClass = $ProductClass;
 
-            $this->product_class_id = is_object($ProductClass) ?
-            $ProductClass->getId() : null;
+            $this->product_class_id = $ProductClass->getId();
 
             return $this;
         }
 
         /**
-         * @return ProductClass
+         * @return ProductClass|null
          */
         #[\Override]
         public function getProductClass()
@@ -240,6 +244,9 @@ if (!class_exists(CartItem::class)) {
             return $this->product_class_id;
         }
 
+        /**
+         * @return float|int|string
+         */
         public function getPriceIncTax()
         {
             // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
@@ -256,6 +263,8 @@ if (!class_exists(CartItem::class)) {
 
         /**
          * @param Cart $Cart
+         *
+         * @return $this
          */
         public function setCart(Cart $Cart)
         {

@@ -25,6 +25,9 @@ $rules = [
     'increment_style' => false,
     'yoda_style' => false,
     'header_comment' => ['header' => $header],
+    'phpdoc_add_missing_param_annotation' => true,
+    'phpdoc_param_order' => true,
+    'phpdoc_to_comment' => false, // /** @var */ を変換してしまうため
 ];
 
 $finder = \PhpCsFixer\Finder::create()

@@ -44,14 +44,14 @@ if (!class_exists(ProductCategory::class)) {
         private $category_id;
 
         /**
-         * @var Product
+         * @var Product|null
          */
         #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductCategories')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
-         * @var Category
+         * @var Category|null
          */
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ProductCategories')]
         #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]

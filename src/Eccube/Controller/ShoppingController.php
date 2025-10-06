@@ -36,13 +36,15 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -127,6 +129,10 @@ class ShoppingController extends AbstractShoppingController
      * 既に受注が生成されている場合(pre_order_idで取得できる場合)は, 受注の生成を行わずに画面を表示する.
      *
      * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
+     *
+     * @param PurchaseFlow $cartPurchaseFlow
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping', name: 'shopping', methods: ['GET'])]
     #[Template('Shopping/index.twig')]
@@ -149,6 +155,7 @@ class ShoppingController extends AbstractShoppingController
 
         // 受注の初期化.
         log_info('[注文手続] 受注の初期化処理を開始します.');
+        /** @var Customer $Customer */
         $Customer = $this->getUser() ?: $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
 
@@ -206,6 +213,11 @@ class ShoppingController extends AbstractShoppingController
      *
      * data-triggerは, click/change/blur等のイベント名を指定してください。
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
+     *
+     * @param Request $request
+     * @param RouterInterface $router
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
     #[Template('Shopping/index.twig')]
@@ -284,6 +296,12 @@ class ShoppingController extends AbstractShoppingController
      * ここではPaymentMethod::verifyがコールされます.
      * PaymentMethod::verifyではクレジットカードの有効性チェック等, 注文手続きを進められるかどうかのチェック処理を行う事を想定しています.
      * PaymentMethod::verifyでエラーが発生した場合は, 注文手続き画面へリダイレクトします.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|array<string,mixed>
+     *
+     * @throws TooManyRequestsHttpException
      */
     #[Route('/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
     #[Template('Shopping/confirm.twig')]
@@ -328,7 +346,7 @@ class ShoppingController extends AbstractShoppingController
             $Customer = $this->getUser();
             if ($Customer instanceof Customer) {
                 log_info('[注文確認] 会員ベースのスロットリングを実行します.');
-                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create($Customer->getId());
+                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create((string) $Customer->getId());
                 if (!$customerLimiter->consume()->isAccepted()) {
                     log_info('[注文確認] 試行回数制限を超過しました(会員ベース)');
                     throw new TooManyRequestsHttpException();
@@ -374,11 +392,12 @@ class ShoppingController extends AbstractShoppingController
 
         log_info('[注文確認] フォームエラーのため, 注文手続画面を表示します.', [$Order->getId()]);
 
-        $template = new Template([
-            'owner' => $this->confirm(...),
-            'template' => 'Shopping/index.twig',
-        ]);
-        $request->attributes->set('_template', $template);
+        // $template = new Template([
+        //     'owner' => $this->confirm(...),
+        //     'template' => 'Shopping/index.twig',
+        // ]);
+        // TODO これであっているか要確認
+        $request->attributes->set('_template', new Template('Shopping/index.twig'));
 
         return [
             'form' => $form->createView(),
@@ -391,6 +410,12 @@ class ShoppingController extends AbstractShoppingController
      * 注文処理を行う.
      *
      * 決済プラグインによる決済処理および注文の確定処理を行います.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>|Response
+     *
+     * @throws TooManyRequestsHttpException
      */
     #[Route('/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
     #[Template('Shopping/confirm.twig')]
@@ -444,7 +469,7 @@ class ShoppingController extends AbstractShoppingController
                 $Customer = $this->getUser();
                 if ($Customer instanceof Customer) {
                     log_info('[注文完了] 会員ベースのスロットリングを実行します.');
-                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create($Customer->getId());
+                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create((string) $Customer->getId());
                     if (!$customerLimiter->consume()->isAccepted()) {
                         log_info('[注文完了] 試行回数制限を超過しました(会員ベース)');
                         throw new TooManyRequestsHttpException();
@@ -517,6 +542,10 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * 購入完了画面を表示する.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|array<string,mixed>
      */
     #[Route('/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
     #[Template('Shopping/complete.twig')]
@@ -565,6 +594,11 @@ class ShoppingController extends AbstractShoppingController
      *
      * 会員ログイン時, お届け先を選択する画面を表示する
      * 非会員の場合はこの画面は使用しない。
+     *
+     * @param Request $request
+     * @param Shipping $Shipping
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping.twig')]
@@ -638,6 +672,11 @@ class ShoppingController extends AbstractShoppingController
      *
      * 会員時は新しいお届け先を作成し, 作成したお届け先を選択状態にして注文手続き画面へ遷移する.
      * 非会員時は選択されたお届け先の編集を行う.
+     *
+     * @param Request $request
+     * @param Shipping $Shipping
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_edit.twig')]
@@ -662,6 +701,7 @@ class ShoppingController extends AbstractShoppingController
 
         $CustomerAddress = new CustomerAddress();
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            /** @var Customer $Customer */
             $Customer = $this->getUser();
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
@@ -670,7 +710,9 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // ログイン時は会員と紐付け
-            $CustomerAddress->setCustomer($this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $CustomerAddress->setCustomer($Customer);
         } else {
             // 非会員時はお届け先をセット
             $CustomerAddress->setFromShipping($Shipping);
@@ -701,6 +743,7 @@ class ShoppingController extends AbstractShoppingController
 
                 // 会員情報変更時にメールを送信
                 if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                    /** @var Customer $Customer */
                     $Customer = $this->getUser();
 
                     // 情報のセット
@@ -742,6 +785,11 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * ログイン画面.
+     *
+     * @param Request $request
+     * @param AuthenticationUtils $authenticationUtils
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/login', name: 'shopping_login', methods: ['GET'])]
     #[Template('Shopping/login.twig')]
@@ -751,9 +799,11 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping');
         }
 
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createNamedBuilder('', CustomerLoginType::class);
 
         if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            /** @var Customer|null $Customer */
             $Customer = $this->getUser();
             if ($Customer) {
                 $builder->get('login_email')->setData($Customer->getEmail());
@@ -778,6 +828,11 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * 購入エラー画面.
+     *
+     * @param Request $request
+     * @param PurchaseFlow $cartPurchaseFlow
+     *
+     * @return Response|array<empty>
      */
     #[Route('/shopping/error', name: 'shopping_error', methods: ['GET'])]
     #[Template('Shopping/shopping_error.twig')]
@@ -793,8 +848,10 @@ class ShoppingController extends AbstractShoppingController
 
         // 購入エラー画面についてはwarninメッセージを出力しない為、warningレベルのメッセージが存在する場合、削除する.
         // (warningが残っている場合、購入エラー画面以降のタイミングで誤って表示されてしまう為.)
-        if ($this->session->getFlashBag()->has('eccube.front.warning')) {
-            $this->session->getFlashBag()->get('eccube.front.warning');
+        /** @var Session $session */
+        $session = $this->session;
+        if ($session->getFlashBag()->has('eccube.front.warning')) {
+            $session->getFlashBag()->get('eccube.front.warning');
         }
 
         $event = new EventArgs(
@@ -832,7 +889,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param PaymentMethodInterface $paymentMethod
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
      */
     protected function executeApply(PaymentMethodInterface $paymentMethod)
     {
@@ -865,6 +922,8 @@ class ShoppingController extends AbstractShoppingController
                     array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
             }
         }
+
+        return null;
     }
 
     /**

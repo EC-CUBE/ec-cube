@@ -13,16 +13,17 @@
 
 namespace Eccube\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\DoctrineCommandHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as OrmUpdateCommand;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Eccube\Util\StringUtil;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -92,8 +93,13 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // Doctrine ORM 3.xではEntityManagerHelperが削除されたため、この行をコメントアウト
-        // DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));
+        /** @var Application $app */
+        $app = $this->getApplication();
+        $eccubeKernel = $app->getKernel();
+        $em = $eccubeKernel->getContainer()->get('doctrine')->getManager($input->getOption('em'));
+        assert($em instanceof EntityManagerInterface);
+        $this->getApplication()->getHelperSet()->set(new EntityManagerHelper($em), 'em');
+
         $noProxy = true === $input->getOption('no-proxy');
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');
@@ -137,6 +143,11 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
         }
     }
 
+    /**
+     * @param string $outputDir
+     *
+     * @return void
+     */
     protected function removeOutputDir($outputDir)
     {
         if (file_exists($outputDir)) {

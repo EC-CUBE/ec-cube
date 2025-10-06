@@ -36,6 +36,9 @@ class ComposerRemoveCommand extends Command
         $this->composerService = $composerService;
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

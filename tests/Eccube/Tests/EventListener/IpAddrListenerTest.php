@@ -57,6 +57,10 @@ class IpAddrListenerTest extends AbstractWebTestCase
 
     /**
      * @dataProvider ipAddressParams
+     *
+     * @param mixed $allowHost
+     * @param mixed $denyHost
+     * @param mixed $expected
      */
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
@@ -97,6 +101,10 @@ class IpAddrListenerTest extends AbstractWebTestCase
 
     /**
      * @dataProvider ipAddressParams
+     *
+     * @param mixed $allowHost
+     * @param mixed $denyHost
+     * @param mixed $expected
      */
     public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
     {

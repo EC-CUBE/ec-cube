@@ -31,14 +31,14 @@ if (!class_exists(ProductStock::class)) {
         public const OUT_OF_STOCK = 2;
 
         /**
-         * @var int
+         * @var int|null
          */
         private $product_class_id;
 
         /**
          * Set product_class_id
          *
-         * @param int $productClassId
+         * @param int|null $productClassId
          *
          * @return ProductStock
          */
@@ -52,7 +52,7 @@ if (!class_exists(ProductStock::class)) {
         /**
          * Get product_class_id
          *
-         * @return int
+         * @return int|null
          */
         public function getProductClassId()
         {
@@ -61,6 +61,8 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -86,14 +88,14 @@ if (!class_exists(ProductStock::class)) {
         private $update_date;
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          */
         #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'ProductStock')]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]

@@ -44,6 +44,7 @@ class Acceptance extends Module
     }
 
     /**
+     * @param mixed $keys
      * @param string|string[]
      */
     public function sendKeys($keys)

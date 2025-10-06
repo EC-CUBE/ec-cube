@@ -28,6 +28,9 @@ interface PurchaseProcessor
      * @param ItemHolderInterface $target
      * @param PurchaseContext $context
      *
+     * @return void
+     * @return void
+     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context);
@@ -38,6 +41,9 @@ interface PurchaseProcessor
      * @param ItemHolderInterface $target
      * @param PurchaseContext     $context
      *
+     * @return void
+     * @return void
+     *
      * @throws PurchaseException
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context);
@@ -47,6 +53,8 @@ interface PurchaseProcessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
+     *
+     * @return void
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context);
 }

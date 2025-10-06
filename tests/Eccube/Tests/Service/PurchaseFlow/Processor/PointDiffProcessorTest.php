@@ -242,7 +242,7 @@ class PointDiffProcessorTest extends EccubeTestCase
     public function testUsePointEachOrderStatus($orderStatusId, $isChange)
     {
         $Customer = new Customer();
-        $Customer->setPoint(100);
+        $Customer->setPoint('100');
 
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
@@ -273,9 +273,9 @@ class PointDiffProcessorTest extends EccubeTestCase
         $purchaseFlow->commit($AfterOrder, $context);
 
         if ($isChange) {
-            self::assertSame(90, $Customer->getPoint());
+            self::assertSame('90', $Customer->getPoint());
         } else {
-            self::assertSame(100, $Customer->getPoint());
+            self::assertSame('100', $Customer->getPoint());
         }
     }
 

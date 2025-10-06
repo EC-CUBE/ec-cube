@@ -34,7 +34,7 @@ class GenerateDummyDataCommand extends Command
     protected $generator;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -57,6 +57,9 @@ class GenerateDummyDataCommand extends Command
         $this->productRepository = $productRepository;
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {
@@ -183,7 +186,7 @@ EOF
                 }
                 $this->entityManager->flush();
                 $j++;
-                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0 && $j > 0) {
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0) {
                     $output->writeln(' ...'.$j);
                 }
             }

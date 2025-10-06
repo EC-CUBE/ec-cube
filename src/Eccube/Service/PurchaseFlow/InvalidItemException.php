@@ -17,10 +17,21 @@ use Eccube\Entity\ProductClass;
 
 class InvalidItemException extends \Exception
 {
+    /**
+     * @var array<int, string>|mixed
+     */
     private $messageArgs;
 
+    /**
+     * @var bool
+     */
     private $warning;
 
+    /**
+     * @param string|null $message
+     * @param array<int, string>|mixed $messageArgs
+     * @param bool $warning
+     */
     public function __construct($message = null, $messageArgs = [], $warning = false)
     {
         parent::__construct($message);
@@ -29,7 +40,7 @@ class InvalidItemException extends \Exception
     }
 
     /**
-     * @return array
+     * @return array<int, string>
      */
     public function getMessageArgs(): array
     {
@@ -45,6 +56,9 @@ class InvalidItemException extends \Exception
     }
 
     /**
+     * @param string|null $errorMessage
+     * @param ProductClass $ProductClass
+     *
      * @return InvalidItemException
      */
     public static function fromProductClass($errorMessage, ProductClass $ProductClass): self

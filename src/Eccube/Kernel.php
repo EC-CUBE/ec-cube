@@ -127,6 +127,8 @@ class Kernel extends BaseKernel
      * {@inheritdoc}
      *
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
+     *
+     * @return void
      */
     #[\Override]
     public function boot(): void
@@ -153,8 +155,24 @@ class Kernel extends BaseKernel
         if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($Translator);
         }
+
+        // TODO:削除
+        //        /** @var AnnotationReaderFacade $AnnotationReaderFacade */
+        //        $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
+        //        $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
+        //        if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
+        //            AnnotationReaderFacade::init($AnnotationReader);
+        //        }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param LoaderInterface $loader
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $confDir = $this->getProjectDir().'/app/config/eccube';
@@ -176,6 +194,11 @@ class Kernel extends BaseKernel
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
+    /**
+     * @param RoutingConfigurator $routes
+     *
+     * @return void
+     */
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $container = $this->getContainer();
@@ -216,6 +239,11 @@ class Kernel extends BaseKernel
         }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
     #[\Override]
     protected function build(ContainerBuilder $container): void
     {
@@ -277,6 +305,11 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new StripReportFieldsArgPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
     }
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
     protected function addEntityExtensionPass(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
@@ -316,6 +349,9 @@ class Kernel extends BaseKernel
         }
     }
 
+    /**
+     * @return void
+     */
     protected function loadEntityProxies(): void
     {
         // see https://github.com/EC-CUBE/ec-cube/issues/4727

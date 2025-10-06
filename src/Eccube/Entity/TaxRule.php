@@ -73,6 +73,8 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -110,42 +112,42 @@ if (!class_exists(TaxRule::class)) {
         private $update_date;
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          */
         #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'TaxRule')]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
-         * @var Product
+         * @var Product|null
          */
         #[ORM\ManyToOne(targetEntity: Product::class)]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
-         * @var Master\RoundingType
+         * @var Master\RoundingType|null
          */
         #[ORM\ManyToOne(targetEntity: Master\RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]

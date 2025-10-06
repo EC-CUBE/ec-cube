@@ -191,12 +191,12 @@ class StockDiffProcessorTest extends EccubeTestCase
         $purchaseFlow->addPurchaseProcessor($this->processor);
         $context = new PurchaseContext($BeforeOrder, $Customer);
         $purchaseFlow->prepare($AfterOrder, $context);
-        $this->expected = $afterStock;
+        $this->expected = $afterStock === null ? null : (string) $afterStock;
         $this->actual = $ProductClass->getStock();
         $this->verify('dtb_product_class の在庫数(stock)が正しくセットされていない。');
 
         $ProductStock = $ProductClass->getProductStock();
-        $this->expected = $afterStock;
+        $this->expected = $afterStock === null ? null : (string) $afterStock;
         $this->actual = $ProductStock->getStock();
         $this->verify('dtb_product_stock の在庫数(stock)が正しくセットされていない。');
     }

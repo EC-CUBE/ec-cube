@@ -28,18 +28,57 @@ if (!class_exists(Product::class)) {
     #[ORM\Entity(repositoryClass: ProductRepository::class)]
     class Product extends AbstractEntity implements \Stringable
     {
+        /**
+         * @var bool
+         */
         private $_calc = false;
+        /**
+         * @var array<int,bool>
+         */
         private $stockFinds = [];
+        /**
+         * @var array<int,string|null>
+         */
         private $stocks = [];
+        /**
+         * @var array<int,bool>
+         */
         private $stockUnlimiteds = [];
+        /**
+         * @var array<int, string|null>
+         */
         private $price01 = [];
+        /**
+         * @var array<int, string|null>
+         */
         private $price02 = [];
+        /**
+         * @var array<int, string|null>
+         */
         private $price01IncTaxs = [];
+        /**
+         * @var array<int, string|null>
+         */
         private $price02IncTaxs = [];
+        /**
+         * @var array<int, string|null>
+         */
         private $codes = [];
+        /**
+         * @var array<string|int, string|null>
+         */
         private $classCategories1 = [];
+        /**
+         * @var array<string|int, string|null>
+         */
         private $classCategories2 = [];
+        /**
+         * @var string
+         */
         private $className1;
+        /**
+         * @var string
+         */
         private $className2;
 
         /**
@@ -51,6 +90,9 @@ if (!class_exists(Product::class)) {
             return (string) $this->getName();
         }
 
+        /**
+         * @return void
+         */
         public function _calc()
         {
             if (!$this->_calc) {
@@ -135,7 +177,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get ClassName1
          *
-         * @return string
+         * @return string|null
          */
         public function getClassName1()
         {
@@ -147,7 +189,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get ClassName2
          *
-         * @return string
+         * @return string|null
          */
         public function getClassName2()
         {
@@ -159,7 +201,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get getClassCategories1
          *
-         * @return array
+         * @return array<int, string|null>
          */
         public function getClassCategories1()
         {
@@ -168,6 +210,9 @@ if (!class_exists(Product::class)) {
             return $this->classCategories1;
         }
 
+        /**
+         * @return array<string,int>
+         */
         public function getClassCategories1AsFlip()
         {
             return array_flip($this->getClassCategories1());
@@ -176,7 +221,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get getClassCategories2
          *
-         * @return array
+         * @param string $class_category1
+         *
+         * @return array<int, string|null>
          */
         public function getClassCategories2($class_category1)
         {
@@ -185,6 +232,11 @@ if (!class_exists(Product::class)) {
             return $this->classCategories2[$class_category1] ?? [];
         }
 
+        /**
+         * @param string $class_category1
+         *
+         * @return array<string,int>
+         */
         public function getClassCategories2AsFlip($class_category1)
         {
             return array_flip($this->getClassCategories2($class_category1));
@@ -193,7 +245,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockFind
          *
-         * @return bool
+         * @return bool|null
          */
         public function getStockFind()
         {
@@ -207,7 +259,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Stock min
          *
-         * @return int
+         * @return string|null
          */
         public function getStockMin()
         {
@@ -221,7 +273,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Stock max
          *
-         * @return int
+         * @return string|null
          */
         public function getStockMax()
         {
@@ -235,7 +287,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockUnlimited min
          *
-         * @return int
+         * @return bool|null
          */
         public function getStockUnlimitedMin()
         {
@@ -249,7 +301,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get StockUnlimited max
          *
-         * @return int
+         * @return bool|null
          */
         public function getStockUnlimitedMax()
         {
@@ -263,7 +315,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01 min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01Min()
         {
@@ -279,7 +331,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01 max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01Max()
         {
@@ -295,7 +347,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02 min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02Min()
         {
@@ -309,7 +361,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02 max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02Max()
         {
@@ -323,7 +375,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01IncTax min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01IncTaxMin()
         {
@@ -337,7 +389,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price01IncTax max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice01IncTaxMax()
         {
@@ -351,7 +403,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02IncTax min
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02IncTaxMin()
         {
@@ -365,7 +417,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Price02IncTax max
          *
-         * @return int
+         * @return string|null
          */
         public function getPrice02IncTaxMax()
         {
@@ -379,7 +431,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Product_code min
          *
-         * @return int
+         * @return string|null
          */
         public function getCodeMin()
         {
@@ -398,7 +450,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get Product_code max
          *
-         * @return int
+         * @return string|null
          */
         public function getCodeMax()
         {
@@ -414,6 +466,9 @@ if (!class_exists(Product::class)) {
             return count($codes) ? max($codes) : null;
         }
 
+        /**
+         * @return ProductImage|null
+         */
         public function getMainListImage()
         {
             $ProductImages = $this->getProductImage();
@@ -421,6 +476,9 @@ if (!class_exists(Product::class)) {
             return $ProductImages->isEmpty() ? null : $ProductImages[0];
         }
 
+        /**
+         * @return ProductImage|null
+         */
         public function getMainFileName()
         {
             if (count($this->ProductImage) > 0) {
@@ -430,6 +488,9 @@ if (!class_exists(Product::class)) {
             }
         }
 
+        /**
+         * @return bool
+         */
         public function hasProductClass()
         {
             foreach ($this->ProductClasses as $ProductClass) {
@@ -445,7 +506,7 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -501,45 +562,45 @@ if (!class_exists(Product::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ProductCategory>
          */
         #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductCategories;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ProductClass>
          */
         #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductClasses;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ProductImage>
          */
         #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $ProductImage;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ProductTag>
          */
         #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
         private $ProductTag;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
-         * @var Master\ProductStatus
+         * @var Master\ProductStatus|null
          */
         #[ORM\ManyToOne(targetEntity: Master\ProductStatus::class)]
         #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
@@ -568,11 +629,9 @@ if (!class_exists(Product::class)) {
          * コピー元のProductを受け取り,
          * 関連エンティティも再帰的にコピーする.
          *
-         * @param Product $Product
-         *
-         * @return $this
+         * @return Product
          */
-        public function copy(Product $Product): Product
+        public function copy()
         {
             // コピー対象外
             $this->CustomerFavoriteProducts = new ArrayCollection();
@@ -845,7 +904,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int, ProductCategory>
          */
         public function getProductCategories()
         {
@@ -881,7 +940,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productClasses.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int, ProductClass>|null
          */
         public function getProductClasses()
         {
@@ -917,7 +976,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productImage.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,ProductImage>
          */
         public function getProductImage()
         {
@@ -953,7 +1012,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productTag.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,ProductTag>
          */
         public function getProductTag()
         {
@@ -964,7 +1023,7 @@ if (!class_exists(Product::class)) {
          * Get Tag
          * フロント側タグsort_no順の配列を作成する
          *
-         * @return []Tag
+         * @return Tag[]
          */
         public function getTags()
         {
@@ -1010,7 +1069,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          */
         public function getCustomerFavoriteProducts()
         {

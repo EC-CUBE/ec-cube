@@ -24,6 +24,9 @@ class PluginUninstallCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:uninstall';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

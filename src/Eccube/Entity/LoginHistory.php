@@ -30,6 +30,8 @@ if (!class_exists(LoginHistory::class)) {
     {
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -37,13 +39,13 @@ if (!class_exists(LoginHistory::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(type: 'text', nullable: true)]
         private $user_name;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(type: 'text', nullable: true)]
         private $client_ip;
@@ -68,7 +70,7 @@ if (!class_exists(LoginHistory::class)) {
         private $Status;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'SET NULL')]

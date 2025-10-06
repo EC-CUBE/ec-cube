@@ -30,6 +30,12 @@ class OrderTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider filterPaymentsProvider
+     *
+     * @param mixed $charge
+     * @param mixed $total
+     * @param mixed $min
+     * @param mixed $max
+     * @param mixed $result
      */
     public function testFilterPayments($charge, $total, $min, $max, $result)
     {

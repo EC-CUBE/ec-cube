@@ -43,6 +43,8 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -50,7 +52,9 @@ if (!class_exists(Calendar::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
+         *
+         * @ORM\Column(name="title", type="string", length=255, nullable=true)
          */
         #[ORM\Column(name: 'title', type: 'string', length: 255, nullable: true)]
         private $title;

@@ -26,37 +26,37 @@ class PurchaseFlow implements \Stringable
     protected $flowType;
 
     /**
-     * @var ArrayCollection|ItemPreprocessor[]
+     * @var ArrayCollection<int, ItemPreprocessor>
      */
     protected $itemPreprocessors;
 
     /**
-     * @var ArrayCollection|ItemHolderPreprocessor[]
+     * @var ArrayCollection<int, ItemHolderPreprocessor>
      */
     protected $itemHolderPreprocessors;
 
     /**
-     * @var ArrayCollection|ItemValidator[]
+     * @var ArrayCollection<int, ItemValidator>
      */
     protected $itemValidators;
 
     /**
-     * @var ArrayCollection|ItemHolderValidator[]
+     * @var ArrayCollection<int, ItemHolderValidator>
      */
     protected $itemHolderValidators;
 
     /**
-     * @var ArrayCollection|ItemHolderPostValidator[]
+     * @var ArrayCollection<int, ItemHolderPostValidator>
      */
     protected $itemHolderPostValidators;
 
     /**
-     * @var ArrayCollection|DiscountProcessor[]
+     * @var ArrayCollection<int, DiscountProcessor>
      */
     protected $discountProcessors;
 
     /**
-     * @var ArrayCollection|PurchaseProcessor[]
+     * @var ArrayCollection<int, PurchaseProcessor>
      */
     protected $purchaseProcessors;
 
@@ -71,46 +71,92 @@ class PurchaseFlow implements \Stringable
         $this->discountProcessors = new ArrayCollection();
     }
 
+    /**
+     * @param string $flowType
+     *
+     * @return void
+     */
     public function setFlowType($flowType)
     {
         $this->flowType = $flowType;
     }
 
+    /**
+     * @param ArrayCollection<int, PurchaseProcessor> $processors
+     *
+     * @return void
+     */
     public function setPurchaseProcessors(ArrayCollection $processors)
     {
         $this->purchaseProcessors = $processors;
     }
 
+    /**
+     * @param ArrayCollection<int, ItemValidator> $itemValidators
+     *
+     * @return void
+     */
     public function setItemValidators(ArrayCollection $itemValidators)
     {
         $this->itemValidators = $itemValidators;
     }
 
+    /**
+     * @param ArrayCollection<int, ItemHolderValidator> $itemHolderValidators
+     *
+     * @return void
+     */
     public function setItemHolderValidators(ArrayCollection $itemHolderValidators)
     {
         $this->itemHolderValidators = $itemHolderValidators;
     }
 
+    /**
+     * @param ArrayCollection<int, ItemPreprocessor> $itemPreprocessors
+     *
+     * @return void
+     */
     public function setItemPreprocessors(ArrayCollection $itemPreprocessors)
     {
         $this->itemPreprocessors = $itemPreprocessors;
     }
 
+    /**
+     * @param ArrayCollection<int, ItemHolderPreprocessor> $itemHolderPreprocessors
+     *
+     * @return void
+     */
     public function setItemHolderPreprocessors(ArrayCollection $itemHolderPreprocessors)
     {
         $this->itemHolderPreprocessors = $itemHolderPreprocessors;
     }
 
+    /**
+     * @param ArrayCollection<int, ItemHolderPostValidator> $itemHolderPostValidators
+     *
+     * @return void
+     */
     public function setItemHolderPostValidators(ArrayCollection $itemHolderPostValidators)
     {
         $this->itemHolderPostValidators = $itemHolderPostValidators;
     }
 
+    /**
+     * @param ArrayCollection<int, DiscountProcessor> $discountProcessors
+     *
+     * @return void
+     */
     public function setDiscountProcessors(ArrayCollection $discountProcessors)
     {
         $this->discountProcessors = $discountProcessors;
     }
 
+    /**
+     * @param ItemHolderInterface $itemHolder
+     * @param PurchaseContext $context
+     *
+     * @return PurchaseFlowResult
+     */
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $context->setFlowType($this->flowType);
@@ -144,11 +190,7 @@ class PurchaseFlow implements \Stringable
         $this->calculateAll($itemHolder);
 
         foreach ($this->itemHolderPreprocessors as $holderPreprocessor) {
-            $result = $holderPreprocessor->process($itemHolder, $context);
-            if ($result) {
-                $flowResult->addProcessResult($result);
-            }
-
+            $holderPreprocessor->process($itemHolder, $context);
             $this->calculateAll($itemHolder);
         }
 
@@ -182,6 +224,8 @@ class PurchaseFlow implements \Stringable
      * @param ItemHolderInterface $target
      * @param PurchaseContext $context
      *
+     * @return void
+     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
@@ -199,6 +243,8 @@ class PurchaseFlow implements \Stringable
      * @param ItemHolderInterface $target
      * @param PurchaseContext $context
      *
+     * @return void
+     *
      * @throws PurchaseException
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
@@ -215,6 +261,8 @@ class PurchaseFlow implements \Stringable
      *
      * @param ItemHolderInterface $target
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     public function rollback(ItemHolderInterface $target, PurchaseContext $context)
     {
@@ -225,36 +273,71 @@ class PurchaseFlow implements \Stringable
         }
     }
 
+    /**
+     * @param PurchaseProcessor $purchaseProcessor
+     *
+     * @return void
+     */
     public function addPurchaseProcessor(PurchaseProcessor $purchaseProcessor)
     {
         $this->purchaseProcessors[] = $purchaseProcessor;
     }
 
+    /**
+     * @param ItemHolderPreprocessor $itemHolderPreprocessor
+     *
+     * @return void
+     */
     public function addItemHolderPreprocessor(ItemHolderPreprocessor $itemHolderPreprocessor)
     {
         $this->itemHolderPreprocessors[] = $itemHolderPreprocessor;
     }
 
+    /**
+     * @param ItemPreprocessor $itemPreprocessor
+     *
+     * @return void
+     */
     public function addItemPreprocessor(ItemPreprocessor $itemPreprocessor)
     {
         $this->itemPreprocessors[] = $itemPreprocessor;
     }
 
+    /**
+     * @param ItemValidator $itemValidator
+     *
+     * @return void
+     */
     public function addItemValidator(ItemValidator $itemValidator)
     {
         $this->itemValidators[] = $itemValidator;
     }
 
+    /**
+     * @param ItemHolderValidator $itemHolderValidator
+     *
+     * @return void
+     */
     public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator)
     {
         $this->itemHolderValidators[] = $itemHolderValidator;
     }
 
+    /**
+     * @param ItemHolderPostValidator $itemHolderPostValidator
+     *
+     * @return void
+     */
     public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderPostValidator)
     {
         $this->itemHolderPostValidators[] = $itemHolderPostValidator;
     }
 
+    /**
+     * @param DiscountProcessor $discountProcessor
+     *
+     * @return void
+     */
     public function addDiscountProcessor(DiscountProcessor $discountProcessor)
     {
         $this->discountProcessors[] = $discountProcessor;
@@ -262,6 +345,8 @@ class PurchaseFlow implements \Stringable
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
@@ -278,6 +363,11 @@ class PurchaseFlow implements \Stringable
         }
     }
 
+    /**
+     * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
+     */
     protected function calculateSubTotal(ItemHolderInterface $itemHolder)
     {
         $total = $itemHolder->getItems()
@@ -296,6 +386,8 @@ class PurchaseFlow implements \Stringable
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function calculateDeliveryFeeTotal(ItemHolderInterface $itemHolder)
     {
@@ -311,6 +403,8 @@ class PurchaseFlow implements \Stringable
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function calculateDiscount(ItemHolderInterface $itemHolder)
     {
@@ -322,11 +416,13 @@ class PurchaseFlow implements \Stringable
                 return $sum;
             }, '0');
         // TODO 後方互換のため discount には正の整数を代入する
-        $itemHolder->setDiscount(bcmul($total, '-1', 2));
+        $itemHolder->setDiscount(bcmul((string) $total, '-1', 2));
     }
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function calculateCharge(ItemHolderInterface $itemHolder)
     {
@@ -342,6 +438,8 @@ class PurchaseFlow implements \Stringable
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function calculateTax(ItemHolderInterface $itemHolder)
     {
@@ -363,6 +461,8 @@ class PurchaseFlow implements \Stringable
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function calculateAll(ItemHolderInterface $itemHolder)
     {
@@ -381,6 +481,7 @@ class PurchaseFlow implements \Stringable
      */
     public function dump()
     {
+        /** @var \Closure(mixed): mixed $callback */
         $callback = function ($processor) {
             return $processor::class;
         };

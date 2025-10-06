@@ -16,7 +16,7 @@ namespace Eccube\Common;
 interface EccubeTwigBlock
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
     public static function getTwigBlock();
 }

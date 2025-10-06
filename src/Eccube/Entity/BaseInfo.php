@@ -27,6 +27,8 @@ if (!class_exists(BaseInfo::class)) {
     {
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -222,19 +224,20 @@ if (!class_exists(BaseInfo::class)) {
         private $option_point = true;
 
         /**
+         * @var string|null
          * @var string
          */
         #[ORM\Column(name: 'basic_point_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
         private $basic_point_rate = '1';
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'point_conversion_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
         private $point_conversion_rate = '1';
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
@@ -242,7 +245,7 @@ if (!class_exists(BaseInfo::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
@@ -748,7 +751,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Set optionNostockHidden.
          *
-         * @param int $optionNostockHidden
+         * @param bool $optionNostockHidden
          *
          * @return BaseInfo
          */
@@ -1050,7 +1053,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Get pointConversionRate
          *
-         * @return string
+         * @return string|null
          */
         public function getPointConversionRate()
         {

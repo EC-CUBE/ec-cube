@@ -34,6 +34,8 @@ trait PluginCommandTrait
 
     /**
      * @param PluginService $pluginService
+     *
+     * @return void
      */
     #[Required]
     public function setPluginService(PluginService $pluginService)
@@ -43,6 +45,8 @@ trait PluginCommandTrait
 
     /**
      * @param PluginRepository $pluginRepository
+     *
+     * @return void
      */
     #[Required]
     public function setPluginRepository(PluginRepository $pluginRepository)
@@ -50,6 +54,11 @@ trait PluginCommandTrait
         $this->pluginRepository = $pluginRepository;
     }
 
+    /**
+     * @param SymfonyStyle $io
+     *
+     * @return void
+     */
     protected function clearCache(SymfonyStyle $io)
     {
         $command = ['bin/console', 'cache:clear', '--no-warmup'];

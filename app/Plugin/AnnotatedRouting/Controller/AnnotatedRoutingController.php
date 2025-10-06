@@ -15,7 +15,7 @@ namespace Plugin\AnnotatedRouting\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/arc')]
 class AnnotatedRoutingController

@@ -52,12 +52,14 @@ class EntityProxyService
     /**
      * EntityのProxyを生成します。
      *
-     * @param array $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
-     * @param array $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
+     * @param array<int,string> $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
+     * @param array<int,string> $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
      * @param string $outputDir 出力先
-     * @param OutputInterface $output ログ出力
+     * @param OutputInterface|null $output ログ出力
      *
-     * @return array 生成したファイルのリスト
+     * @return array<string> 生成したファイルのリスト
+     *
+     * @throws \ReflectionException
      */
     public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null)
     {
@@ -73,6 +75,7 @@ class EntityProxyService
         // プロキシファイルの生成
         foreach ($targetEntities as $targetEntity) {
             $traits = $addTraits[$targetEntity] ?? [];
+            /** @var class-string $targetEntity */
             $fileName = $this->originalEntityPath($targetEntity);
             $baseName = basename($fileName);
             $entityTokens = Tokens::fromCode(file_get_contents($fileName));
@@ -112,6 +115,15 @@ class EntityProxyService
         return $generatedFiles;
     }
 
+    /**
+     * Entityの元のソースファイルのパスを返します.
+     *
+     * @param class-string $entityClassName EntityのFQCN
+     *
+     * @return string 元のソースファイルのパス
+     *
+     * @throws \ReflectionException
+     */
     private function originalEntityPath(string $entityClassName): string
     {
         $projectDir = rtrim(str_replace('\\', '/', $this->eccubeConfig->get('kernel.project_dir')), '/');
@@ -140,9 +152,11 @@ class EntityProxyService
     /**
      * 複数のディレクトリセットをスキャンしてディレクトリセットごとのEntityとTraitのマッピングを返します.
      *
-     * @param $dirSets array スキャン対象ディレクトリリストの配列
+     * @param array<int, array<int, string>> $dirSets スキャン対象ディレクトリリストの配列
      *
-     * @return array ディレクトリセットごとのEntityとTraitのマッピング
+     * @return array<int, array<string, array<int, string>>> ディレクトリセットごとのEntityとTraitのマッピング
+     *
+     * @throws \ReflectionException
      */
     private function scanTraits($dirSets)
     {
@@ -205,7 +219,9 @@ class EntityProxyService
      * EntityにTraitを追加.
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
-     * @param $trait string 追加するTraitのFQCN
+     * @param string $trait 追加するTraitのFQCN
+     *
+     * @return void
      */
     private function addTrait($entityTokens, $trait)
     {
@@ -213,6 +229,9 @@ class EntityProxyService
 
         // Traitのuse句があるかどうか
         $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        if (empty($newTraitTokens)) {
+            throw new \InvalidArgumentException('Trait name is invalid.');
+        }
 
         if ($useTraitIndex > 0) {
             $useTraitEndIndex = $entityTokens->getNextTokenOfKind($useTraitIndex, [';']);
@@ -244,7 +263,9 @@ class EntityProxyService
      * EntityからTraitを削除.
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
-     * @param $trait string 削除するTraitのFQCN
+     * @param string $trait  削除するTraitのFQCN
+     *
+     * @return void
      */
     private function removeTrait($entityTokens, $trait)
     {
@@ -284,9 +305,9 @@ class EntityProxyService
      * - プラグインのTrait -> \Plugin\Xxx\Entity\XxxTrait
      * - 本体でuseされているTrait -> PointTrait
      *
-     * @param $name
+     * @param string $name
      *
-     * @return array|Token[]
+     * @return array<int, Token>|Token[]
      */
     private function convertTraitNameToTokens($name)
     {
@@ -312,6 +333,8 @@ class EntityProxyService
      * remove block to 'if (!class_exists(<class name>)) { }'
      *
      * @param Tokens $entityTokens
+     *
+     * @return void
      */
     private function removeClassExistsBlock(Tokens $entityTokens)
     {

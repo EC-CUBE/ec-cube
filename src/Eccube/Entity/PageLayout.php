@@ -50,14 +50,14 @@ if (!class_exists(PageLayout::class)) {
         private $sort_no;
 
         /**
-         * @var Page
+         * @var Page|null
          */
         #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'PageLayouts')]
         #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id')]
         private $Page;
 
         /**
-         * @var Layout
+         * @var Layout|null
          */
         #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'PageLayouts')]
         #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]

@@ -24,10 +24,12 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class PaymentTotalNegativeValidator extends ItemHolderPostValidator
 {
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder カート or 注文
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws InvalidItemException
+     * @return void
+     *
+     * @throws InvalidItemException 合計金額がマイナスの場合
      */
     #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)

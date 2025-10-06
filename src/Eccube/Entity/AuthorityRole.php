@@ -28,6 +28,8 @@ if (!class_exists(AuthorityRole::class)) {
     {
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -53,6 +55,15 @@ if (!class_exists(AuthorityRole::class)) {
         private $update_date;
 
         /**
+         * @var Master\Authority|null
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
+         *
+         * @ORM\JoinColumns({
+         *
+         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
+         * })
+         *
          * @var Master\Authority
          */
         #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
@@ -60,7 +71,7 @@ if (!class_exists(AuthorityRole::class)) {
         private $Authority;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]

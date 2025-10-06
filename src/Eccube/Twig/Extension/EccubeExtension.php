@@ -111,9 +111,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param array $menus
+     * @param array<mixed> $menus
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getActiveMenus($menus = [])
     {
@@ -128,6 +128,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * return No Image filename
      *
+     * @param string|null $image
+     * @param string $image
+     *
      * @return string
      */
     public function getNoImageProduct($image)
@@ -137,6 +140,10 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
+     *
+     * @param \DateTimeInterface|null $date
+     * @param string $value
+     * @param string $format
      *
      * @return string
      */
@@ -152,19 +159,30 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
+     * @param float|string|null $number
+     * @param int $decimals
+     * @param string $decPoint
+     * @param string $thousandsSep
+     *
      * @return string
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
+        /** @var string $locale */
         $locale = $this->eccubeConfig['locale'];
+        /** @var string $currency */
         $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        return $formatter->formatCurrency($number ?? 0, $currency);
+        return $formatter->formatCurrency((float) ($number ?? 0), $currency);
     }
 
     /**
      * Name of this extension
+     *
+     * @param string $value
+     * @param int $length
+     * @param string $end
      *
      * @return string
      */
@@ -175,6 +193,8 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
+     *
+     * @param string|\DateTimeInterface $date
      *
      * @return string
      */
@@ -211,7 +231,7 @@ class EccubeExtension extends AbstractExtension
      * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
      * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
      *
-     * @param $id
+     * @param int|float|string $id
      *
      * @return Product|null
      */
@@ -272,17 +292,17 @@ class EccubeExtension extends AbstractExtension
                 'classcategory_id2' => $class_category_id2,
                 'name' => $class_category_name2,
                 'stock_find' => $ProductClass->getStockFind(),
-                'price01' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01()),
-                'price02' => number_format($ProductClass->getPrice02()),
-                'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02_inc_tax' => number_format($ProductClass->getPrice02IncTax()),
+                'price01' => $ProductClass->getPrice01() === null ? '' : number_format((float) $ProductClass->getPrice01()),
+                'price02' => number_format((float) $ProductClass->getPrice02()),
+                'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format((float) $ProductClass->getPrice01IncTax()),
+                'price02_inc_tax' => number_format((float) $ProductClass->getPrice02IncTax()),
                 'price01_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01()),
                 'price02_with_currency' => $this->getPriceFilter($ProductClass->getPrice02()),
                 'price01_inc_tax_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01IncTax()),
                 'price02_inc_tax_with_currency' => $this->getPriceFilter($ProductClass->getPrice02IncTax()),
                 'product_class_id' => (string) $ProductClass->getId(),
                 'product_code' => $ProductClass->getCode() ?? '',
-                'sale_type' => (string) $ProductClass->getSaleType()->getId(),
+                'sale_type' => (string) $ProductClass->getSaleType()?->getId(),
             ];
         }
 
@@ -292,8 +312,8 @@ class EccubeExtension extends AbstractExtension
     /**
      * Display file extension icon
      *
-     * @param $ext
-     * @param $attr
+     * @param string $ext
+     * @param array<string,string> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string

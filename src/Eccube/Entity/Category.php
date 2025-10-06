@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 if (!class_exists(Category::class)) {
     /**
@@ -68,6 +69,9 @@ if (!class_exists(Category::class)) {
             return $this;
         }
 
+        /**
+         * @return array<mixed>
+         */
         public function getParents()
         {
             $path = $this->getPath();
@@ -76,6 +80,9 @@ if (!class_exists(Category::class)) {
             return $path;
         }
 
+        /**
+         * @return array<mixed>
+         */
         public function getPath()
         {
             $path = [];
@@ -94,11 +101,17 @@ if (!class_exists(Category::class)) {
             return array_reverse($path);
         }
 
+        /**
+         * @return string
+         */
         public function getNameWithLevel()
         {
             return str_repeat('　', $this->getHierarchy() - 1).$this->getName();
         }
 
+        /**
+         * @return array<int,mixed>
+         */
         public function getDescendants()
         {
             $DescendantCategories = [];
@@ -115,6 +128,9 @@ if (!class_exists(Category::class)) {
             return $DescendantCategories;
         }
 
+        /**
+         * @return Category[]|mixed[]
+         */
         public function getSelfAndDescendants()
         {
             return array_merge([$this], $this->getDescendants());
@@ -137,11 +153,16 @@ if (!class_exists(Category::class)) {
             ->setFirstResult(0)
             ->setMaxResults(1);
 
-            return $this->ProductCategories->matching($criteria)->count() > 0;
+            /** @var PersistentCollection <int,ProductCategory> */
+            $ProductCategories = $this->ProductCategories;
+
+            return $ProductCategories->matching($criteria)->count() > 0;
         }
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -179,27 +200,27 @@ if (!class_exists(Category::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ProductCategory>
          */
         #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
         private $ProductCategories;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,Category>
          */
         #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'Parent')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
         private $Children;
 
         /**
-         * @var Category
+         * @var Category|null
          */
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'Children')]
         #[ORM\JoinColumn(name: 'parent_category_id', referencedColumnName: 'id')]
         private $Parent;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
@@ -373,7 +394,7 @@ if (!class_exists(Category::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,ProductCategory>
          */
         public function getProductCategories()
         {
@@ -409,7 +430,7 @@ if (!class_exists(Category::class)) {
         /**
          * Get children.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,Category>
          */
         public function getChildren()
         {

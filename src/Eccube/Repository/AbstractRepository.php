@@ -14,20 +14,34 @@
 namespace Eccube\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\DBALException;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AbstractEntity;
 
+/**
+ * ECCUBE AbstractRepository
+ *
+ * @method T|null find($id, $lockMode = null, $lockVersion = null)
+ * @method T|null findOneBy(array $criteria, array $orderBy = null)
+ * @method T[]    findAll()
+ * @method T[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @template T of AbstractEntity
+ *
+ * @extends ServiceEntityRepository<T>
+ */
 abstract class AbstractRepository extends ServiceEntityRepository
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
     /**
      * エンティティを削除します。
      *
-     * @param AbstractEntity $entity
+     * @param T $entity
+     *
+     * @return void
      */
     public function delete($entity)
     {
@@ -37,13 +51,18 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティの登録/保存します。
      *
-     * @param AbstractEntity $entity
+     * @param T $entity
+     *
+     * @return void
      */
     public function save($entity)
     {
         $this->getEntityManager()->persist($entity);
     }
 
+    /**
+     * @return int|string|null
+     */
     protected function getCacheLifetime()
     {
         if ($this->eccubeConfig !== null) {
@@ -57,8 +76,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * PostgreSQL環境かどうかを判定します。
      *
      * @return bool
-     *
-     * @throws DBALException
      */
     protected function isPostgreSQL()
     {
@@ -69,8 +86,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * MySQL環境かどうかを判定します。
      *
      * @return bool
-     *
-     * @throws DBALException
      */
     protected function isMySQL()
     {

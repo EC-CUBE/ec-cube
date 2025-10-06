@@ -84,7 +84,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame(0, $item->getQuantity());
+            self::assertSame('0', $item->getQuantity());
         }
     }
 
@@ -101,7 +101,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame(0, $item->getQuantity());
+            self::assertSame('0', $item->getQuantity());
         }
     }
 

@@ -105,6 +105,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * @dataProvider loadCsvInvalidFormatProvider
+     *
+     * @param mixed $csv
+     * @param mixed $errorMessage
      */
     public function testLoadCsvInvalidFormat($csv, $errorMessage)
     {

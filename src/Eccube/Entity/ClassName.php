@@ -37,6 +37,8 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -44,7 +46,7 @@ if (!class_exists(ClassName::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'backend_name', type: 'string', length: 255, nullable: true)]
         private $backend_name;
@@ -74,14 +76,14 @@ if (!class_exists(ClassName::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,ClassCategory>
          */
         #[ORM\OneToMany(targetEntity: ClassCategory::class, mappedBy: 'ClassName')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
         private $ClassCategories;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
@@ -254,7 +256,7 @@ if (!class_exists(ClassName::class)) {
         /**
          * Get classCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,ClassCategory>
          */
         public function getClassCategories()
         {

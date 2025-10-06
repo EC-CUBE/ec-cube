@@ -122,16 +122,45 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
         return $this->sort_no;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function __get($name)
     {
         return self::getConstantValue($name);
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    public function __set($name, $value)
+    {
+        throw new \InvalidArgumentException();
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic($name, $arguments)
     {
         return self::getConstantValue($name);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     *
+     * @throws \ReflectionException
+     */
     protected static function getConstantValue($name)
     {
         if (in_array($name, ['id', 'name', 'sortNo'])) {

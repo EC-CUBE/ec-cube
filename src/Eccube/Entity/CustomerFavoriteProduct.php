@@ -28,6 +28,8 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
     {
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -47,14 +49,14 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         private $update_date;
 
         /**
-         * @var Customer
+         * @var Customer|null
          */
         #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerFavoriteProducts')]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
-         * @var Product
+         * @var Product|null
          */
         #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'CustomerFavoriteProducts')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]

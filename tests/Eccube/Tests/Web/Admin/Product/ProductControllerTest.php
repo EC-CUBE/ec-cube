@@ -1234,6 +1234,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
      *
      * @dataProvider purifyTarget
+     *
+     * @param mixed $formName
+     * @param mixed $methodName
      */
     public function testPurifyXssInput($formName, $methodName): void
     {

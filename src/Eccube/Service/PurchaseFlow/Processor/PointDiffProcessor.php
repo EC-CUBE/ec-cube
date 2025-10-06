@@ -55,6 +55,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -78,6 +80,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -94,6 +98,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)
@@ -103,6 +109,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -182,17 +190,17 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
-     * @return int
+     * @return string
      */
     protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if ($context->getOriginHolder()) {
             $fromUsePoint = $context->getOriginHolder()->getUsePoint();
         } else {
-            $fromUsePoint = 0;
+            $fromUsePoint = '0';
         }
         $toUsePoint = $itemHolder->getUsePoint();
 
-        return $toUsePoint - $fromUsePoint;
+        return bcsub($toUsePoint, $fromUsePoint);
     }
 }

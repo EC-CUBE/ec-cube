@@ -24,8 +24,11 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailController extends AbstractController
 {
@@ -54,7 +57,7 @@ class MailController extends AbstractController
      * @param MailService $mailService
      * @param MailHistoryRepository $mailHistoryRepository
      * @param OrderRepository $orderRepository
-     * @param twig $twig
+     * @param Environment $twig
      */
     public function __construct(
         MailService $mailService,
@@ -68,6 +71,16 @@ class MailController extends AbstractController
         $this->twig = $twig;
     }
 
+    /**
+     * @param Request $request
+     * @param Order $Order
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
+     */
     #[Route('/%eccube_admin_route%/order/{id}/mail', requirements: ['id' => '\d+'], name: 'admin_order_mail', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/mail.twig')]
     public function index(Request $request, Order $Order)
@@ -98,6 +111,7 @@ class MailController extends AbstractController
             switch ($mode) {
                 case 'change':
                     if ($form->get('template')->isValid()) {
+                        /** @var \Eccube\Entity\MailTemplate|null $MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
 
                         if ($MailTemplate) {
@@ -189,6 +203,12 @@ class MailController extends AbstractController
         ];
     }
 
+    /**
+     * @param Order $Order
+     * @param string $twig
+     *
+     * @return string
+     */
     private function createBody($Order, $twig = 'Mail/order.twig')
     {
         $body = '';

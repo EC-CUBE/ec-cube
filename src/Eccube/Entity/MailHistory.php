@@ -38,6 +38,8 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -69,14 +71,14 @@ if (!class_exists(MailHistory::class)) {
         private $mail_html_body;
 
         /**
-         * @var Order
+         * @var Order|null
          */
         #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'MailHistories')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true)]
         private $Order;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: true)]

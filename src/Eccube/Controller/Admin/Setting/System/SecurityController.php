@@ -19,7 +19,7 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SecurityController extends AbstractController
@@ -39,6 +39,12 @@ class SecurityController extends AbstractController
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/security.twig')]
     public function index(Request $request, CacheUtil $cacheUtil)

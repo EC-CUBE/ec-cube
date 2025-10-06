@@ -56,7 +56,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @return int
+         * @return int|null
          */
         public function getOrderItemTypeId()
         {
@@ -135,6 +135,8 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -226,56 +228,56 @@ if (!class_exists(OrderItem::class)) {
         private $processor_name;
 
         /**
-         * @var Order
+         * @var Order|null
          */
         #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'OrderItems')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
         private $Order;
 
         /**
-         * @var Product
+         * @var Product|null
          */
         #[ORM\ManyToOne(targetEntity: Product::class)]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          */
         #[ORM\ManyToOne(targetEntity: ProductClass::class)]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
-         * @var Shipping
+         * @var Shipping|null
          */
         #[ORM\ManyToOne(targetEntity: Shipping::class, inversedBy: 'OrderItems')]
         #[ORM\JoinColumn(name: 'shipping_id', referencedColumnName: 'id')]
         private $Shipping;
 
         /**
-         * @var RoundingType
+         * @var RoundingType|null
          */
         #[ORM\ManyToOne(targetEntity: RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
         private $RoundingType;
 
         /**
-         * @var Master\TaxType
+         * @var Master\TaxType|null
          */
         #[ORM\ManyToOne(targetEntity: Master\TaxType::class)]
         #[ORM\JoinColumn(name: 'tax_type_id', referencedColumnName: 'id')]
         private $TaxType;
 
         /**
-         * @var TaxDisplayType
+         * @var TaxDisplayType|null
          */
         #[ORM\ManyToOne(targetEntity: TaxDisplayType::class)]
         #[ORM\JoinColumn(name: 'tax_display_type_id', referencedColumnName: 'id')]
         private $TaxDisplayType;
 
         /**
-         * @var OrderItemType
+         * @var OrderItemType|null
          */
         #[ORM\ManyToOne(targetEntity: OrderItemType::class)]
         #[ORM\JoinColumn(name: 'order_item_type_id', referencedColumnName: 'id')]
@@ -452,7 +454,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get price.
          *
-         * @return string
+         * @return string|null
          */
         #[\Override]
         public function getPrice()
@@ -463,7 +465,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set quantity.
          *
-         * @param string $quantity
+         * @param string|int $quantity
          *
          * @return OrderItem
          */
@@ -478,7 +480,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get quantity.
          *
-         * @return string
+         * @return string|float|int
          */
         #[\Override]
         public function getQuantity()
@@ -495,7 +497,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param string $tax
+         * @param string|float $tax
          *
          * @return $this
          */
@@ -509,7 +511,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param string $taxRate
+         * @param string|int $taxRate
          *
          * @return OrderItem
          */
@@ -547,7 +549,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxAdjust.
          *
-         * @return string
+         * @return string|float|int
          */
         public function getTaxAdjust()
         {
@@ -654,6 +656,9 @@ if (!class_exists(OrderItem::class)) {
             return $this->Order;
         }
 
+        /**
+         * @return int|null
+         */
         public function getOrderId()
         {
             if (is_object($this->getOrder())) {
@@ -737,7 +742,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @return RoundingType
+         * @return RoundingType|null
          */
         public function getRoundingType()
         {
@@ -745,7 +750,9 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param RoundingType $RoundingType
+         * @param RoundingType|null $RoundingType
+         *
+         * @return $this
          */
         public function setRoundingType(?RoundingType $RoundingType = null)
         {
@@ -771,7 +778,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxType
          *
-         * @return Master\TaxType
+         * @return Master\TaxType|null
          */
         public function getTaxType()
         {
@@ -795,7 +802,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxDisplayType
          *
-         * @return TaxDisplayType
+         * @return TaxDisplayType|null
          */
         public function getTaxDisplayType()
         {
@@ -819,7 +826,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get orderItemType
          *
-         * @return OrderItemType
+         * @return OrderItemType|null
          */
         #[\Override]
         public function getOrderItemType()

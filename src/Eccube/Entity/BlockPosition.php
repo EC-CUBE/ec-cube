@@ -57,14 +57,14 @@ if (!class_exists(BlockPosition::class)) {
         private $block_row;
 
         /**
-         * @var Block
+         * @var Block|null
          */
         #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'BlockPositions')]
         #[ORM\JoinColumn(name: 'block_id', referencedColumnName: 'id')]
         private $Block;
 
         /**
-         * @var Layout
+         * @var Layout|null
          */
         #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'BlockPositions')]
         #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]

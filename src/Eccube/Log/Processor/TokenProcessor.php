@@ -13,6 +13,8 @@
 
 namespace Eccube\Log\Processor;
 
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TokenProcessor
@@ -27,11 +29,17 @@ class TokenProcessor
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @param array<string, array<int, mixed>> $records
+     *
+     * @return array<string, array<string, mixed>>
+     */
     public function __invoke(array $records)
     {
         $records['extra']['user_id'] = 'N/A';
 
         if (null !== $token = $this->tokenStorage->getToken()) {
+            /** @var Customer|Member|null $user */
             $user = $token->getUser();
             $records['extra']['user_id'] = is_object($user)
                 ? $user->getId()

@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment as Twig;
 
 class LayoutController extends AbstractController
@@ -99,6 +99,9 @@ class LayoutController extends AbstractController
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
     #[Template('@admin/Content/layout_list.twig')]
     public function index()
@@ -120,8 +123,6 @@ class LayoutController extends AbstractController
      * @param Layout $Layout
      *
      * @return RedirectResponse
-     *
-     * @throws Exception
      */
     #[Route('/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Layout $Layout, CacheUtil $cacheUtil)
@@ -146,6 +147,16 @@ class LayoutController extends AbstractController
         return $this->redirectToRoute('admin_content_layout');
     }
 
+    /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     * @param string|null $id
+     * @param string|null $previewPageId
+     *
+     * @return RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/content/layout/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_layout_edit', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/layout/new', name: 'admin_content_layout_new', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/layout.twig')]
@@ -200,6 +211,9 @@ class LayoutController extends AbstractController
                 // プレビューする画面を取得
                 try {
                     $Page = $this->pageRepository->find($previewPageId);
+                    if ($Page === null) {
+                        throw new NoResultException();
+                    }
                 } catch (NoResultException) {
                     throw new NotFoundHttpException();
                 }
@@ -267,6 +281,11 @@ class LayoutController extends AbstractController
         ]);
     }
 
+    /**
+     * @param string $id
+     *
+     * @return RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/layout/{id}/preview', requirements: ['id' => '\d+'], name: 'admin_content_layout_preview', methods: ['POST'])]
     public function preview(Request $request, $id, CacheUtil $cacheUtil)
     {

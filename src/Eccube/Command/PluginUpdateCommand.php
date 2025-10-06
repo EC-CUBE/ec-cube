@@ -25,6 +25,9 @@ class PluginUpdateCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:update';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {
@@ -40,7 +43,7 @@ class PluginUpdateCommand extends Command
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin $Plugin */
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
 
         if (!$Plugin) {

@@ -44,14 +44,14 @@ if (!class_exists(PaymentOption::class)) {
         private $payment_id;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          */
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'PaymentOptions')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
         /**
-         * @var Payment
+         * @var Payment|null
          */
         #[ORM\ManyToOne(targetEntity: Payment::class, inversedBy: 'PaymentOptions')]
         #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]

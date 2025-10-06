@@ -18,11 +18,26 @@ use Doctrine\Persistence\Mapping\MappingException;
 
 class TraitProxyAttributeDriver extends AttributeDriver
 {
+    /**
+     * @var string
+     */
     protected $trait_proxies_directory;
 
+    /**
+     * @var array
+     */
     protected $excludePaths = [];
+
+    /**
+     * @var string
+     */
     protected $classNames;
 
+    /**
+     * @param string $dir
+     *
+     * @return void
+     */
     public function setTraitProxiesDirectory($dir)
     {
         $this->trait_proxies_directory = $dir;

@@ -53,10 +53,11 @@ class SchemaService
      * Metadata を出力する一時ディレクトリを指定しない場合は内部で生成し, コールバック関数実行後に削除されます.
      *
      * @param callable $callback Metadata を生成した後に実行されるコールバック関数
-     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param array<mixed> $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
-     * @param bool $saveMode UpdateSchema を即時実行する場合 true
      * @param string $outputDir Metadata の出力先ディレクトリ
+     *
+     * @return void
      */
     public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
     {
@@ -121,9 +122,11 @@ class SchemaService
     /**
      * Doctrine Metadata を生成して UpdateSchema を実行する.
      *
-     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param array<mixed> $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
      * @param bool $saveMode UpdateSchema を即時実行する場合 true
+     *
+     * @return void
      */
     public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
     {
@@ -135,7 +138,9 @@ class SchemaService
     /**
      * ネームスペースに含まれるEntityのテーブルを削除する
      *
-     * @param $targetNamespace string 削除対象のネームスペース
+     * @param  string $targetNamespace 削除対象のネームスペース
+     *
+     * @return void
      */
     public function dropTable($targetNamespace)
     {

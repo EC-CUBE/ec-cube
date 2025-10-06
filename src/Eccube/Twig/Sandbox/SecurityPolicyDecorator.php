@@ -26,12 +26,29 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
         $this->securityPolicy = $securityPolicy;
     }
 
+    /**
+     * @param array<mixed> $tags
+     * @param array<mixed> $filters
+     * @param array<mixed> $functions
+     *
+     * @return void
+     *
+     * @throws \Twig\Sandbox\SecurityError
+     */
     #[\Override]
     public function checkSecurity($tags, $filters, $functions): void
     {
         $this->securityPolicy->checkSecurity($tags, $filters, $functions);
     }
 
+    /**
+     * @param mixed $obj
+     * @param string $method
+     *
+     * @return void
+     *
+     * @throws \Twig\Sandbox\SecurityNotAllowedMethodError
+     */
     #[\Override]
     public function checkMethodAllowed($obj, $method): void
     {
@@ -42,6 +59,14 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
         $this->securityPolicy->checkMethodAllowed($obj, $method);
     }
 
+    /**
+     * @param mixed $obj
+     * @param string $method
+     *
+     * @return void
+     *
+     * @throws \Twig\Sandbox\SecurityNotAllowedPropertyError
+     */
     #[\Override]
     public function checkPropertyAllowed($obj, $method): void
     {

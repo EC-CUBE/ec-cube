@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AddressType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $config;
 
@@ -44,6 +44,11 @@ class AddressType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -84,6 +89,12 @@ class AddressType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -96,6 +107,10 @@ class AddressType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)

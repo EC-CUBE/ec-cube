@@ -69,6 +69,8 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider getValidTestData
+     *
+     * @param mixed $data
      */
     public function testValidData($data)
     {

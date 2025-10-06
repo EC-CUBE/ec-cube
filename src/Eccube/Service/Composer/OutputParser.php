@@ -23,7 +23,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public static function parseRequire($output)
     {
@@ -49,7 +49,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array
+     * @return array<int|string,array<int,string>|string>
      */
     public static function parseInfo($output)
     {
@@ -63,8 +63,8 @@ class OutputParser
 
         // 'name' => 'value'
         $result = array_column($infoLogs, 2, 1);
-        $result['requires'] = static::parseArrayInfoOutput($rowArray, 'requires');
-        $result['requires (dev)'] = static::parseArrayInfoOutput($rowArray, 'requires (dev)');
+        $result['requires'] = self::parseArrayInfoOutput($rowArray, 'requires');
+        $result['requires (dev)'] = self::parseArrayInfoOutput($rowArray, 'requires (dev)');
 
         return $result;
     }
@@ -91,7 +91,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function parseList($output)
     {
@@ -120,10 +120,10 @@ class OutputParser
     }
 
     /**
-     * @param $rowArray
+     * @param array<mixed> $rowArray
      * @param string $key
      *
-     * @return array
+     * @return array<string, string>
      */
     private static function parseArrayInfoOutput($rowArray, $key)
     {

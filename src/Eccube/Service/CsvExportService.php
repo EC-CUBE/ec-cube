@@ -17,6 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
@@ -29,6 +30,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Util\FormUtil;
+use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +38,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CsvExportService
 {
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $fp;
 
@@ -46,17 +48,17 @@ class CsvExportService
     protected $closed = false;
 
     /**
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $convertEncodingCallBack;
 
     /**
-     * @var EntityManagerInterface
+     * @var EntityManagerInterface|null
      */
     protected $entityManager;
 
     /**
-     * @var QueryBuilder;
+     * @var QueryBuilder|null
      */
     protected $qb;
 
@@ -66,12 +68,12 @@ class CsvExportService
     protected $eccubeConfig;
 
     /**
-     * @var CsvType
+     * @var CsvType|null
      */
     protected $CsvType;
 
     /**
-     * @var Csv[]
+     * @var Csv[]|null
      */
     protected $Csvs;
 
@@ -152,7 +154,9 @@ class CsvExportService
     }
 
     /**
-     * @param $config
+     * @param EccubeConfig $config
+     *
+     * @return void
      */
     public function setConfig($config)
     {
@@ -161,6 +165,8 @@ class CsvExportService
 
     /**
      * @param CsvRepository $csvRepository
+     *
+     * @return void
      */
     public function setCsvRepository(CsvRepository $csvRepository)
     {
@@ -169,6 +175,8 @@ class CsvExportService
 
     /**
      * @param CsvTypeRepository $csvTypeRepository
+     *
+     * @return void
      */
     public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository)
     {
@@ -177,6 +185,8 @@ class CsvExportService
 
     /**
      * @param OrderRepository $orderRepository
+     *
+     * @return void
      */
     public function setOrderRepository(OrderRepository $orderRepository)
     {
@@ -185,6 +195,8 @@ class CsvExportService
 
     /**
      * @param CustomerRepository $customerRepository
+     *
+     * @return void
      */
     public function setCustomerRepository(CustomerRepository $customerRepository)
     {
@@ -193,6 +205,8 @@ class CsvExportService
 
     /**
      * @param ProductRepository $productRepository
+     *
+     * @return void
      */
     public function setProductRepository(ProductRepository $productRepository)
     {
@@ -201,6 +215,8 @@ class CsvExportService
 
     /**
      * @param EntityManagerInterface $entityManager
+     *
+     * @return void
      */
     public function setEntityManager(EntityManagerInterface $entityManager)
     {
@@ -217,6 +233,8 @@ class CsvExportService
 
     /**
      * @param QueryBuilder $qb
+     *
+     * @return void
      */
     public function setExportQueryBuilder(QueryBuilder $qb)
     {
@@ -226,7 +244,9 @@ class CsvExportService
     /**
      * Csv種別からServiceの初期化を行う.
      *
-     * @param $CsvType|integer
+     * @param CsvType|int $CsvType
+     *
+     * @return void
      */
     public function initCsvType($CsvType)
     {
@@ -257,6 +277,8 @@ class CsvExportService
     /**
      * ヘッダ行を出力する.
      * このメソッドを使う場合は, 事前にinitCsvType($CsvType)で初期化しておく必要がある.
+     *
+     * @return void
      */
     public function exportHeader()
     {
@@ -279,6 +301,8 @@ class CsvExportService
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
      *
      * @param \Closure $closure
+     *
+     * @return void
      */
     public function exportData(\Closure $closure)
     {
@@ -291,6 +315,7 @@ class CsvExportService
         $page = 1;
         $limit = 100;
         while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
+            /** @var AbstractPagination<int, mixed> $results */
             if (!$results->valid()) {
                 break;
             }
@@ -311,11 +336,11 @@ class CsvExportService
      * CSV出力項目と比較し, 合致するデータを返す.
      *
      * @param Csv $Csv
-     * @param $entity
+     * @param AbstractEntity $entity
      *
      * @return string|null
      */
-    public function getData(Csv $Csv, $entity)
+    public function getData(Csv $Csv, AbstractEntity $entity)
     {
         // エンティティ名が一致するかどうかチェック.
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
@@ -333,7 +358,7 @@ class CsvExportService
         $data = $entity->offsetGet($Csv->getFieldName());
 
         // one to one の場合は, dtb_csv.reference_field_name, 合致する結果を取得する.
-        if ($data instanceof \Eccube\Entity\AbstractEntity) {
+        if ($data instanceof AbstractEntity) {
             return $data->offsetGet($Csv->getReferenceFieldName());
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
@@ -371,6 +396,9 @@ class CsvExportService
         };
     }
 
+    /**
+     * @return void
+     */
     public function fopen()
     {
         if (is_null($this->fp) || $this->closed) {
@@ -379,7 +407,9 @@ class CsvExportService
     }
 
     /**
-     * @param $row
+     * @param array<int, string|int> $row
+     *
+     * @return void
      */
     public function fputcsv($row)
     {
@@ -390,6 +420,9 @@ class CsvExportService
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
     }
 
+    /**
+     * @return void
+     */
     public function fclose()
     {
         if (!$this->closed) {

@@ -28,6 +28,8 @@ if (!class_exists(Csv::class)) {
     {
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -83,14 +85,14 @@ if (!class_exists(Csv::class)) {
         private $update_date;
 
         /**
-         * @var Master\CsvType
+         * @var Master\CsvType|null
          */
         #[ORM\ManyToOne(targetEntity: Master\CsvType::class)]
         #[ORM\JoinColumn(name: 'csv_type_id', referencedColumnName: 'id')]
         private $CsvType;
 
         /**
-         * @var Member
+         * @var Member|null
          */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]

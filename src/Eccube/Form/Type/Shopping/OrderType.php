@@ -89,6 +89,11 @@ class OrderType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -126,7 +131,7 @@ class OrderType extends AbstractType
 
         // 支払い方法のプルダウンを生成
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            /** @var Order $Order */
+            /** @var Order|null $Order */
             $Order = $event->getData();
             if (null === $Order || !$Order->getId()) {
                 return;
@@ -135,8 +140,8 @@ class OrderType extends AbstractType
             $Deliveries = $this->getDeliveries($Order);
             $Payments = $this->getPayments($Deliveries);
             // @see https://github.com/EC-CUBE/ec-cube/issues/4881
-            $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
+            $charge = $Order->getPayment() ? (string) $Order->getPayment()->getCharge() : '0';
+            $Payments = $this->filterPayments($Payments, bcsub((string) $Order->getPaymentTotal(), $charge));
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments, $Order->getPayment());
@@ -163,8 +168,8 @@ class OrderType extends AbstractType
 
             $Payments = $this->getPayments($Deliveries);
             // @see https://github.com/EC-CUBE/ec-cube/issues/4881
-            $charge = $Order->getPayment() ? $Order->getPayment()->getCharge() : 0;
-            $Payments = $this->filterPayments($Payments, $Order->getPaymentTotal() - $charge);
+            $charge = $Order->getPayment() ? (string) $Order->getPayment()->getCharge() : '0';
+            $Payments = $this->filterPayments($Payments, bcsub((string) $Order->getPaymentTotal(), $charge));
 
             $form = $event->getForm();
             $this->addPaymentForm($form, $Payments);
@@ -180,6 +185,13 @@ class OrderType extends AbstractType
         });
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -197,6 +209,13 @@ class OrderType extends AbstractType
         return '_shopping_order';
     }
 
+    /**
+     * @param FormInterface $form
+     * @param Payment[] $choices
+     * @param Payment|null $data
+     *
+     * @return void
+     */
     private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null)
     {
         $message = trans('front.shopping.payment_method_unselected');
@@ -244,9 +263,9 @@ class OrderType extends AbstractType
      * 配送方法に紐づく支払い方法を取得する
      * 各配送方法に共通する支払い方法のみ返す.
      *
-     * @param Delivery[] $Deliveries
+     * @param array<int, Delivery> $Deliveries
      *
-     * @return ArrayCollection
+     * @return ArrayCollection<int, Payment>
      */
     private function getPayments($Deliveries)
     {
@@ -283,8 +302,8 @@ class OrderType extends AbstractType
     /**
      * 支払い方法の利用条件でフィルタをかける.
      *
-     * @param ArrayCollection $Payments
-     * @param $total
+     * @param ArrayCollection<int, Payment> $Payments
+     * @param string $total
      *
      * @return Payment[]
      */
@@ -295,11 +314,11 @@ class OrderType extends AbstractType
             $min = $Payment->getRuleMin();
             $max = $Payment->getRuleMax();
 
-            if (null !== $min && ($total + $charge) < $min) {
+            if (null !== $min && bcadd($total, $charge) < $min) {
                 return false;
             }
 
-            if (null !== $max && ($total + $charge) > $max) {
+            if (null !== $max && bcadd($total, $charge) > $max) {
                 return false;
             }
 

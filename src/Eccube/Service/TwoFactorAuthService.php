@@ -14,12 +14,12 @@
 namespace Eccube\Service;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Member;
 use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TwoFactorAuthService
 {
@@ -49,7 +49,7 @@ class TwoFactorAuthService
     protected $requestStack;
 
     /**
-     * @var Request
+     * @var Request|null
      */
     protected $request;
 
@@ -72,7 +72,8 @@ class TwoFactorAuthService
      * constructor.
      *
      * @param EccubeConfig $eccubeConfig
-     * @param UserPasswordHasherInterface $passwordHasher
+     * @param PasswordHasherFactoryInterface $passwordHasherFactory
+     * @param RequestStack $requestStack
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -96,7 +97,7 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param Eccube\Entity\Member
+     * @param Member $Member
      *
      * @return bool
      */
@@ -125,7 +126,7 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param Eccube\Entity\Member
+     * @param Member $Member
      *
      * @return Cookie
      */
@@ -159,8 +160,8 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param Eccube\Entity\Member
-     * @param string
+     * @param string $authKey
+     * @param string $token
      *
      * @return bool
      */

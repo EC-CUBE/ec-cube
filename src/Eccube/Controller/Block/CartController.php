@@ -17,7 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
@@ -32,6 +32,11 @@ class CartController extends AbstractController
         $this->cartService = $cartService;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     #[Route('/block/cart', name: 'block_cart', methods: ['GET'])]
     #[Route('/block/cart_sp', name: 'block_cart_sp', methods: ['GET'])]
     public function index(Request $request)
@@ -42,17 +47,17 @@ class CartController extends AbstractController
         // ここではpurchaseFlowは実行しない
 
         $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getTotalQuantity();
+            /** @var Cart $Cart */
+            $total = bcadd($total, $Cart->getTotalQuantity());
 
             return $total;
-        }, 0);
+        }, '0');
         $totalPrice = array_reduce($Carts, function ($total, $Cart) {
-            /* @var Cart $Cart */
-            $total += $Cart->getTotalPrice();
+            /** @var Cart $Cart */
+            $total = bcadd($total, $Cart->getTotalPrice());
 
             return $total;
-        }, 0);
+        }, '0');
 
         $route = $request->attributes->get('_route');
 

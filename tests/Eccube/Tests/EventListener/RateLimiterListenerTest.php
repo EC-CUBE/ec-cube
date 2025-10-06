@@ -29,6 +29,10 @@ class RateLimiterListenerTest extends EccubeTestCase
 {
     /**
      * @dataProvider onControllerProvider
+     *
+     * @param mixed $limiterId
+     * @param mixed $type
+     * @param mixed $params
      */
     public function testOnController($limiterId, $type, $params)
     {

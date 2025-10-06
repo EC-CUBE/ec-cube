@@ -31,8 +31,8 @@ class ProductClassComparator implements CartItemComparator
     {
         $ProductClass1 = $Item1->getProductClass();
         $ProductClass2 = $Item2->getProductClass();
-        $product_class_id1 = $ProductClass1 ? (string) $ProductClass1->getId() : null;
-        $product_class_id2 = $ProductClass2 ? (string) $ProductClass2->getId() : null;
+        $product_class_id1 = $ProductClass1 ? $ProductClass1->getId() : null;
+        $product_class_id2 = $ProductClass2 ? $ProductClass2->getId() : null;
 
         return $product_class_id1 === $product_class_id2;
     }

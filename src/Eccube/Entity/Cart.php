@@ -37,6 +37,8 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -44,13 +46,13 @@ if (!class_exists(Cart::class)) {
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'cart_key', type: 'string', nullable: true)]
         private $cart_key;
 
         /**
-         * @var Customer
+         * @var Customer|null
          */
         #[ORM\ManyToOne(targetEntity: Customer::class)]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
@@ -62,7 +64,7 @@ if (!class_exists(Cart::class)) {
         private $lock = false;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection|CartItem[]
+         * @var \Doctrine\Common\Collections\Collection<int,CartItem>
          */
         #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
@@ -137,6 +139,8 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @param string $cartKey
+         *
+         * @return Cart
          */
         public function setCartKey(string $cartKey)
         {
@@ -178,7 +182,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  int             $pre_order_id
+         * @param string|null $pre_order_id
          *
          * @return Cart
          */
@@ -202,6 +206,16 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
+         * カートの中に出荷データがないので、空のコレクションを返します。
+         *
+         * @return ArrayCollection<int, Shipping>
+         */
+        public function getShippings()
+        {
+            return new ArrayCollection();
+        }
+
+        /**
          * @return Cart
          */
         public function clearCartItems()
@@ -212,7 +226,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return ArrayCollection|CartItem[]
+         * @return \Doctrine\Common\Collections\Collection<int,CartItem>
          */
         public function getCartItems()
         {
@@ -222,7 +236,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Alias of getCartItems()
          *
-         * @return ItemCollection
+         * @return ItemCollection<int,ItemInterface>
          */
         #[\Override]
         public function getItems()
@@ -231,7 +245,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  CartItem[]          $CartItems
+         * @param  \Doctrine\Common\Collections\Collection<int,CartItem> $CartItems
          *
          * @return Cart
          */
@@ -245,7 +259,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Set total.
          *
-         * @param int $total_price
+         * @param string $total_price
          *
          * @return Cart
          */
@@ -266,6 +280,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Alias of setTotalPrice.
+         *
+         * @param string $total
+         *
+         * @return Cart
          */
         #[\Override]
         public function setTotal($total)
@@ -285,13 +303,13 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return int
+         * @return string
          */
         public function getTotalQuantity()
         {
-            $totalQuantity = 0;
+            $totalQuantity = '0';
             foreach ($this->CartItems as $CartItem) {
-                $totalQuantity += $CartItem->getQuantity();
+                $totalQuantity = bcadd($totalQuantity, $CartItem->getQuantity());
             }
 
             return $totalQuantity;
@@ -299,34 +317,46 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @param ItemInterface $item
+         *
+         * @return void
          */
         #[\Override]
         public function addItem(ItemInterface $item)
         {
-            $this->CartItems->add($item);
+            if ($item instanceof CartItem) {
+                $this->CartItems->add($item);
+            }
         }
 
         /**
          * @param ItemInterface $item
+         *
+         * @return void
          */
         public function removeItem(ItemInterface $item)
         {
-            $this->CartItems->removeElement($item);
+            if ($item instanceof CartItem) {
+                $this->CartItems->removeElement($item);
+            }
         }
 
         /**
          * 個数の合計を返します。
          *
-         * @return int
+         * @return string
          */
         #[\Override]
         public function getQuantity()
         {
-            return $this->getTotalQuantity();
+            return (string) $this->getTotalQuantity();
         }
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return Cart
          */
         #[\Override]
         public function setDeliveryFeeTotal($total)
@@ -354,7 +384,9 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param Customer $Customer
+         * @param Customer|null $Customer
+         *
+         * @return Cart
          */
         public function setCustomer(?Customer $Customer = null)
         {
@@ -437,6 +469,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return void
          */
         #[\Override]
         public function setDiscount($total)
@@ -446,6 +482,10 @@ if (!class_exists(Cart::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @param string $total
+         *
+         * @return void
          */
         #[\Override]
         public function setCharge($total)
@@ -456,12 +496,36 @@ if (!class_exists(Cart::class)) {
         /**
          * {@inheritdoc}
          *
+         * @param string $total
+         *
+         * @return void
+         *
          * @deprecated
          */
         #[\Override]
         public function setTax($total)
         {
             // TODO quiet
+        }
+
+        /**
+         * 注文ではないので、nullを返します。
+         *
+         * @return null
+         */
+        public function getOrderStatus()
+        {
+            return null;
+        }
+
+        /**
+         * {@inheritdoc}
+         *
+         * @return OrderItem[]
+         */
+        public function getProductOrderItems()
+        {
+            return [];
         }
     }
 }

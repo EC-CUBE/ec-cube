@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class InstallPluginController extends InstallController
 {
@@ -53,7 +53,6 @@ class InstallPluginController extends InstallController
      * 有効化可能なプラグイン一覧を返します.
      *
      * @param Request $request
-     * @param string $code
      *
      * @return JsonResponse
      */
@@ -103,7 +102,7 @@ class InstallPluginController extends InstallController
             throw new NotFoundHttpException();
         }
 
-        /** @var Plugin $Plugin */
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->entityManager->getRepository(Plugin::class)->findOneBy(['code' => $code]);
         $log = null;
         // プラグインが存在しない場合は無視する
@@ -169,6 +168,8 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションチェックファイルの有効期限を確認する
      *
+     * @param string $token
+     *
      * @return bool
      */
     public function isValidTransaction($token)
@@ -190,6 +191,14 @@ class InstallPluginController extends InstallController
     /**
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
+     *
+     * @param Request $request
+     * @param ComposerApiService $composerApiService
+     * @param EventDispatcherInterface $dispatcher
+     *
+     * @return JsonResponse
+     *
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
     public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher)
@@ -204,6 +213,7 @@ class InstallPluginController extends InstallController
             throw new NotFoundHttpException();
         }
 
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginReposigoty->findByCode('Api42');
 
         // WebApiプラグインがインストールされているが、sodium拡張がない場合は、プラグインをアンインストールする
@@ -222,6 +232,9 @@ class InstallPluginController extends InstallController
         return $this->json(['success' => true]);
     }
 
+    /**
+     * @return void
+     */
     private function clearCacheOnTerminate()
     {
         // KernelEvents::TERMINATE で強制的にキャッシュを削除する

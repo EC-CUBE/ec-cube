@@ -14,10 +14,14 @@
 namespace Eccube\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TemplateWrapper;
 use Twig\TwigFunction;
 
 class TwigIncludeExtension extends AbstractExtension
 {
+    /**
+     * @var \Twig\Environment
+     */
     protected $twig;
 
     public function __construct(\Twig\Environment $twig)
@@ -34,6 +38,15 @@ class TwigIncludeExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * 指定したテンプレートをレンダリングして返す
+     *
+     * @param array<mixed> $context 現在のコンテキスト
+     * @param string|TemplateWrapper $template レンダリングするテンプレート名
+     * @param array<mixed> $variables テンプレートに渡す変数
+     *
+     * @return string レンダリング結果
+     */
     public function include_dispatch($context, $template, $variables = [])
     {
         if (!empty($variables)) {

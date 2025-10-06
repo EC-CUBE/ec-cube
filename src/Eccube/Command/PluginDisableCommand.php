@@ -24,6 +24,9 @@ class PluginDisableCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:disable';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

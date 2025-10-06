@@ -47,6 +47,10 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
 
     /**
      * @dataProvider provideSession
+     *
+     * @param mixed $fixture
+     * @param mixed $user_agent
+     * @param mixed $shouldSendSameSiteNone
      */
     public function testSecureSession($fixture, $user_agent, $shouldSendSameSiteNone)
     {
@@ -74,6 +78,10 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
      * Secure 属性が付与されない場合は, SameSite 属性も付与されない(ブラウザのデフォルト値)
      *
      * @dataProvider provideSession
+     *
+     * @param mixed $fixture
+     * @param mixed $user_agent
+     * @param mixed $shouldSendSameSiteNone
      */
     public function testNonSecureSession($fixture, $user_agent, $shouldSendSameSiteNone)
     {

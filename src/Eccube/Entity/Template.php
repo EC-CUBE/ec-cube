@@ -51,6 +51,8 @@ if (!class_exists(Template::class)) {
 
         /**
          * @var int
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -82,7 +84,7 @@ if (!class_exists(Template::class)) {
         private $update_date;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          */
         #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
