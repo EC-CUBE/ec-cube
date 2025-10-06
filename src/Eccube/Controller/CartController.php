@@ -26,7 +26,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
@@ -72,6 +72,10 @@ class CartController extends AbstractController
 
     /**
      * カート画面.
+     *
+     * @param Request $request
+     *
+     * @return array<string,mixed>
      */
     #[Route('/cart', name: 'cart', methods: ['GET'])]
     #[Template('Cart/index.twig')]
@@ -93,8 +97,8 @@ class CartController extends AbstractController
             $isDeliveryFree[$Cart->getCartKey()] = false;
 
             if ($this->baseInfo->getDeliveryFreeQuantity()) {
-                if ($this->baseInfo->getDeliveryFreeQuantity() > $Cart->getQuantity()) {
-                    $quantity[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeQuantity() - $Cart->getQuantity();
+                if (bccomp((string) $this->baseInfo->getDeliveryFreeQuantity(), $Cart->getQuantity()) > 0) {
+                    $quantity[$Cart->getCartKey()] = bcsub((string) $this->baseInfo->getDeliveryFreeQuantity(), $Cart->getQuantity());
                 } else {
                     $isDeliveryFree[$Cart->getCartKey()] = true;
                 }
@@ -104,7 +108,7 @@ class CartController extends AbstractController
                 if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
                     $isDeliveryFree[$Cart->getCartKey()] = true;
                 } else {
-                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
+                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                 }
             }
 
@@ -127,7 +131,7 @@ class CartController extends AbstractController
     }
 
     /**
-     * @param $Carts
+     * @param \Eccube\Entity\Cart[] $Carts
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
@@ -183,6 +187,11 @@ class CartController extends AbstractController
      *      - 個数が0になる場合は、明細を削除する
      * - 削除
      *      - 明細を削除する
+     *
+     * @param string $operation
+     * @param string|int $productClassId
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
     public function handleCartItem($operation, $productClassId)
@@ -191,7 +200,7 @@ class CartController extends AbstractController
 
         $this->isTokenValid();
 
-        /** @var ProductClass $ProductClass */
+        /** @var ProductClass|null $ProductClass */
         $ProductClass = $this->productClassRepository->find($productClassId);
 
         if (is_null($ProductClass)) {
@@ -203,10 +212,10 @@ class CartController extends AbstractController
         // 明細の増減・削除
         switch ($operation) {
             case 'up':
-                $this->cartService->addProduct($ProductClass, 1);
+                $this->cartService->addProduct($ProductClass, '1');
                 break;
             case 'down':
-                $this->cartService->addProduct($ProductClass, -1);
+                $this->cartService->addProduct($ProductClass, '-1');
                 break;
             case 'remove':
                 $this->cartService->removeProduct($ProductClass);
@@ -224,6 +233,11 @@ class CartController extends AbstractController
 
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
+     *
+     * @param Request $request
+     * @param string $cart_key
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
     #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
     public function buystep(Request $request, $cart_key)

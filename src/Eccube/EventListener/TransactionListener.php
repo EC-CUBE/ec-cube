@@ -52,6 +52,8 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Disable transaction listener.
+     *
+     * @return void
      */
     public function disable()
     {
@@ -62,6 +64,8 @@ class TransactionListener implements EventSubscriberInterface
      * Kernel request listener callback.
      *
      * @param RequestEvent $event
+     *
+     * @return void
      */
     public function onKernelRequest(RequestEvent $event)
     {
@@ -90,6 +94,8 @@ class TransactionListener implements EventSubscriberInterface
      * Kernel exception listener callback.
      *
      * @param ExceptionEvent $event
+     *
+     * @return void
      */
     public function onKernelException(ExceptionEvent $event)
     {
@@ -103,7 +109,9 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $this->em->getConnection()->getNativeConnection();
+        if ($nativeConnection->inTransaction()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
                 $this->em->rollback();
             }
@@ -116,7 +124,9 @@ class TransactionListener implements EventSubscriberInterface
     /**
      *  Kernel terminate listener callback.
      *
-     * @param PostResponseEvent $event
+     * @param TerminateEvent $event
+     *
+     * @return void
      */
     public function onKernelTerminate(TerminateEvent $event)
     {
@@ -125,7 +135,11 @@ class TransactionListener implements EventSubscriberInterface
 
             return;
         }
-        if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $this->em->getConnection()->getNativeConnection();
+
+        if ($nativeConnection->inTransaction()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
                 $this->em->rollback();
                 log_debug('Rollback executed.');
@@ -141,7 +155,7 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * Return the events to subscribe to.
      *
-     * @return array
+     * @return array<string,mixed>
      */
     #[\Override]
     public static function getSubscribedEvents()

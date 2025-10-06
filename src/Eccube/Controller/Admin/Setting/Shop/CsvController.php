@@ -22,7 +22,7 @@ use Eccube\Repository\Master\CsvTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -52,6 +52,12 @@ class CsvController extends AbstractController
         $this->csvTypeRepository = $csvTypeRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param CsvType $CsvType
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/csv.twig')]
     public function index(Request $request, CsvType $CsvType)

@@ -83,6 +83,8 @@ if (!class_exists(TaxRule::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -122,7 +124,7 @@ if (!class_exists(TaxRule::class)) {
         private $update_date;
 
         /**
-         * @var ProductClass
+         * @var ProductClass|null
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="TaxRule")
          *
@@ -134,7 +136,7 @@ if (!class_exists(TaxRule::class)) {
         private $ProductClass;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *
@@ -146,7 +148,7 @@ if (!class_exists(TaxRule::class)) {
         private $Creator;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
          *
@@ -158,7 +160,7 @@ if (!class_exists(TaxRule::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *
@@ -170,7 +172,7 @@ if (!class_exists(TaxRule::class)) {
         private $Pref;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product")
          *
@@ -182,7 +184,7 @@ if (!class_exists(TaxRule::class)) {
         private $Product;
 
         /**
-         * @var Master\RoundingType
+         * @var Master\RoundingType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
          *

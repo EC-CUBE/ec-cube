@@ -43,6 +43,9 @@ if (!class_exists(Page::class)) {
         // ご利用規約ページID
         public const AGREEMENT_PAGE_ID = 19;
 
+        /**
+         * @return array|Layout[]
+         */
         public function getLayouts()
         {
             $Layouts = [];
@@ -142,14 +145,14 @@ if (!class_exists(Page::class)) {
         private $meta_tags;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,PageLayout>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Page", cascade={"persist","remove"})
          */
         private $PageLayouts;
 
         /**
-         * @var Page
+         * @var Page|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
          *
@@ -171,6 +174,8 @@ if (!class_exists(Page::class)) {
         /**
          * Set id
          *
+         * @param int $id
+         *
          * @return Page
          */
         public function setId($id)
@@ -183,7 +188,7 @@ if (!class_exists(Page::class)) {
         /**
          * Get id
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {
@@ -457,7 +462,7 @@ if (!class_exists(Page::class)) {
         /**
          * Get pageLayoutLayout.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,PageLayout>
          */
         public function getPageLayouts()
         {
@@ -482,6 +487,8 @@ if (!class_exists(Page::class)) {
          * Remove pageLayoutLayout
          *
          * @param PageLayout $PageLayout
+         *
+         * @return void
          */
         public function removePageLayout(PageLayout $PageLayout)
         {
@@ -513,7 +520,7 @@ if (!class_exists(Page::class)) {
         }
 
         /**
-         * @param $layoutId
+         * @param int $layoutId
          *
          * @return int|null
          */

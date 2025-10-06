@@ -74,6 +74,8 @@ class ForgotTypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider getInvalidTestData
+     *
+     * @param mixed $data
      */
     public function testInvalidData($data)
     {

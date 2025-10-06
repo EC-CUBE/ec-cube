@@ -41,10 +41,22 @@ use Doctrine\ORM\Query\SqlWalker;
  */
 class Extract extends FunctionNode
 {
+    /**
+     * @var string
+     */
     protected $field;
+    /**
+     * @var string
+     */
     protected $type;
+    /**
+     * @var \Doctrine\ORM\Query\AST\Node|string
+     */
     protected $source;
 
+    /**
+     * @var string[]
+     */
     protected $formats = [
         'YEAR' => '%Y',
         'MONTH' => '%m',
@@ -54,7 +66,9 @@ class Extract extends FunctionNode
         'SECOND' => '%S',
         'WEEK' => '%W',
     ];
-
+    /**
+     * @var string[]
+     */
     protected $dateTimeTypes = [
         'TIMESTAMP',
         'DATE',
@@ -80,7 +94,7 @@ class Extract extends FunctionNode
         $next = $lexer->glimpse();
         if (isset($next['type']) && $next['type'] === Lexer::T_STRING) {
             $upperType = strtoupper((string) $lexer->lookahead['value']);
-            if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !in_array($upperType, $this->dateTimeTypes, true)) {
+            if (!in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }
             $parser->match(Lexer::T_IDENTIFIER);

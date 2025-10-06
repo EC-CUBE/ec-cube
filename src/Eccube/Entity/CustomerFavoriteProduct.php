@@ -39,6 +39,8 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -57,7 +59,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         private $update_date;
 
         /**
-         * @var Customer
+         * @var Customer|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
          *
@@ -69,7 +71,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         private $Customer;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
          *

@@ -72,7 +72,7 @@ if (!class_exists(BlockPosition::class)) {
         private $block_row;
 
         /**
-         * @var Block
+         * @var Block|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Block", inversedBy="BlockPositions")
          *
@@ -84,7 +84,7 @@ if (!class_exists(BlockPosition::class)) {
         private $Block;
 
         /**
-         * @var Layout
+         * @var Layout|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="BlockPositions")
          *

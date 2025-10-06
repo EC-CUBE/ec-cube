@@ -86,6 +86,11 @@ class ShippingType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -224,7 +229,7 @@ class ShippingType extends AbstractType
                 'data' => true,
             ])
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                /** @var Shipping $data */
+                /** @var Shipping|null $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
@@ -341,6 +346,10 @@ class ShippingType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)

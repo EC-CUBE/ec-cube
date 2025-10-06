@@ -48,6 +48,8 @@ if (!class_exists(MailTemplate::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -87,7 +89,7 @@ if (!class_exists(MailTemplate::class)) {
         private $update_date;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

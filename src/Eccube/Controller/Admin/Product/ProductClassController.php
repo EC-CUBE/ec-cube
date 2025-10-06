@@ -28,10 +28,11 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ProductClassController extends AbstractController
 {
@@ -82,6 +83,14 @@ class ProductClassController extends AbstractController
 
     /**
      * 商品規格が登録されていなければ新規登録, 登録されていれば更新画面を表示する
+     *
+     * @param Request $request
+     * @param string $id
+     * @param CacheUtil $cacheUtil
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException|\Doctrine\ORM\NonUniqueResultException
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/product_class.twig')]
@@ -144,6 +153,7 @@ class ProductClassController extends AbstractController
                 $this->isTokenValid();
 
                 // 登録,更新ボタンが押下されたかどうか.
+                /** @var ClickableInterface $form['save'] */
                 $isSave = $form['save']->isClicked();
 
                 // 規格名1/2から商品規格の組み合わせを生成する.
@@ -189,6 +199,14 @@ class ProductClassController extends AbstractController
 
     /**
      * 商品規格を初期化する.
+     *
+     * @param Request $request
+     * @param Product $Product
+     * @param CacheUtil $cacheUtil
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}/clear', requirements: ['id' => '\d+'], name: 'admin_product_product_class_clear', methods: ['POST'])]
     public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
@@ -282,8 +300,8 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の配列をマージする.
      *
-     * @param $ProductClassesForMatrix
-     * @param $ProductClasses
+     * @param array<int,ProductClass> $ProductClassesForMatrix
+     * @param \Doctrine\Common\Collections\ArrayCollection<int,ProductClass> $ProductClasses
      *
      * @return array|ProductClass[]
      */
@@ -319,6 +337,10 @@ class ProductClassController extends AbstractController
      *
      * @param Product $Product
      * @param array|ProductClass[] $ProductClasses
+     *
+     * @return void
+     *
+     * @throws NoResultException
      */
     protected function saveProductClasses(Product $Product, $ProductClasses = [])
     {
@@ -330,7 +352,7 @@ class ProductClassController extends AbstractController
 
             // 無効から有効にした場合は, 過去の登録情報を検索.
             if (!$pc->getId()) {
-                /** @var ProductClass $ExistsProductClass */
+                /** @var ProductClass|null $ExistsProductClass */
                 $ExistsProductClass = $this->productClassRepository->findOneBy([
                     'Product' => $Product,
                     'ClassCategory1' => $pc->getClassCategory1(),
@@ -409,10 +431,10 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格登録フォームを生成する.
      *
-     * @param array $ProductClasses
+     * @param array<int,ProductClass> $ProductClasses
      * @param ClassName|null $ClassName1
      * @param ClassName|null $ClassName2
-     * @param array $options
+     * @param array<string,mixed> $options
      *
      * @return \Symfony\Component\Form\FormInterface
      */
@@ -436,7 +458,7 @@ class ProductClassController extends AbstractController
      * 商品を取得する.
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
      *
-     * @param $id
+     * @param string|int $id
      *
      * @return Product|null
      *

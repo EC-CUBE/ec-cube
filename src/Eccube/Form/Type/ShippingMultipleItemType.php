@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ShippingMultipleItemType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -95,6 +95,11 @@ class ShippingMultipleItemType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -150,7 +155,7 @@ class ShippingMultipleItemType extends AbstractType
                 ]);
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                /** @var \Eccube\Entity\Shipping $data */
+                /** @var \Eccube\Entity\Shipping|null $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();

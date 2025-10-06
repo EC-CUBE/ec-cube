@@ -54,7 +54,7 @@ if (!class_exists(PaymentOption::class)) {
         private $payment_id;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="PaymentOptions")
          *
@@ -66,7 +66,7 @@ if (!class_exists(PaymentOption::class)) {
         private $Delivery;
 
         /**
-         * @var Payment
+         * @var Payment|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment", inversedBy="PaymentOptions")
          *

@@ -22,12 +22,9 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 {
     /** @var \SessionHandlerInterface */
     private $handler;
-    /** @var bool */
-    private $doDestroy;
+
     /** @var string */
     private $sessionName;
-    /** @var string */
-    private $newSessionId;
 
     /**
      *  {@inheritdoc}
@@ -63,6 +60,8 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $sessionId
      */
     #[\Override]
     protected function doRead($sessionId): string
@@ -72,6 +71,11 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $sessionId
+     * @param mixed $data
+     *
+     * @return bool
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -82,6 +86,11 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $sessionId
+     * @param mixed $data
+     *
+     * @return bool
      */
     #[\Override]
     protected function doWrite($sessionId, $data): bool
@@ -93,6 +102,12 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
      * {@inheritdoc}
      *
      * @see https://github.com/symfony/symfony/blob/2adc85d49cbe14e346068fa7e9c2e1f08ab31de6/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/AbstractSessionHandler.php#L126-L167
+     *
+     * @param string $sessionId
+     *
+     * @return bool
+     *
+     * @throws \LogicException
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -139,22 +154,26 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
             }
         }
 
-        return $this->newSessionId === $sessionId || $this->doDestroy($sessionId);
+        return $this->doDestroy($sessionId);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $sessionId
+     *
+     * @return bool
      */
     #[\Override]
     protected function doDestroy($sessionId): bool
     {
-        $this->doDestroy = false;
-
         return $this->handler->destroy($sessionId);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     #[\Override]
     public function close(): bool

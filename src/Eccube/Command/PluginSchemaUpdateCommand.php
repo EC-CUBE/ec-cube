@@ -26,6 +26,9 @@ class PluginSchemaUpdateCommand extends Command
 
     protected static $defaultName = 'eccube:plugin:schema-update';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {
@@ -41,7 +44,7 @@ class PluginSchemaUpdateCommand extends Command
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin $Plugin */
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
         if (!$Plugin) {
             $io->error("No such plugin `{$code}`.");

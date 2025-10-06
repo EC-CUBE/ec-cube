@@ -15,6 +15,7 @@ namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Page;
+use Eccube\Entity\Product;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
@@ -25,7 +26,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SitemapController extends AbstractController
 {
@@ -73,6 +74,10 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap index
+     *
+     * @param PaginatorInterface $paginator
+     *
+     * @return Response
      */
     #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
     public function index(PaginatorInterface $paginator)
@@ -92,7 +97,7 @@ class SitemapController extends AbstractController
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
-        /** @var SlidingPagination $pagination */
+        /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $paginator->paginate(
             $productQueryBuilder,
             1,
@@ -115,6 +120,8 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap of product categories
+     *
+     * @return Response
      */
     #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
     public function category()
@@ -141,7 +148,7 @@ class SitemapController extends AbstractController
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
-        /** @var SlidingPagination $pagination */
+        /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $paginator->paginate(
             $productQueryBuilder,
             $request->get('page') ?: 1,
@@ -160,6 +167,8 @@ class SitemapController extends AbstractController
      * Output sitemap of pages
      *
      * Output sitemap of pages without 'noindex' in meta robots.
+     *
+     * @return Response
      */
     #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
     public function page()
@@ -195,7 +204,7 @@ class SitemapController extends AbstractController
     /**
      * Output XML response by data.
      *
-     * @param array $data
+     * @param array<string,mixed> $data
      * @param string $template_name
      *
      * @return Response

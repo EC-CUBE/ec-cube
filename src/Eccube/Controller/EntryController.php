@@ -28,7 +28,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -89,7 +89,7 @@ class EntryController extends AbstractController
      * @param MailService $mailService
      * @param BaseInfoRepository $baseInfoRepository
      * @param CustomerRepository $customerRepository
-     * @param PasswordHasher $passwordHasher
+     * @param UserPasswordHasherInterface $passwordHasher
      * @param ValidatorInterface $validatorInterface
      * @param TokenStorageInterface $tokenStorage
      */
@@ -117,6 +117,10 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録画面.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/entry', name: 'entry', methods: ['GET', 'POST'])]
     #[Route('/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
@@ -219,6 +223,8 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録完了画面.
+     *
+     * @return array<empty>
      */
     #[Route('/entry/complete', name: 'entry_complete', methods: ['GET'])]
     #[Template('Entry/complete.twig')]
@@ -229,6 +235,14 @@ class EntryController extends AbstractController
 
     /**
      * 会員のアクティベート（本会員化）を行う.
+     *
+     * @param Request $request
+     * @param string $secret_key
+     * @param string|null $qtyInCart
+     *
+     * @return array<string,mixed>
+     *
+     * @throws HttpException\NotFoundHttpException
      */
     #[Route('/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
     #[Template('Entry/activate.twig')]
@@ -270,7 +284,7 @@ class EntryController extends AbstractController
      * 会員登録処理を行う
      *
      * @param Request $request
-     * @param $secret_key
+     * @param string $secret_key
      *
      * @return \Eccube\Entity\Cart|mixed
      */

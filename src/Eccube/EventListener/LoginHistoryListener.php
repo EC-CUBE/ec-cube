@@ -68,7 +68,7 @@ class LoginHistoryListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     #[\Override]
     public static function getSubscribedEvents()
@@ -79,6 +79,11 @@ class LoginHistoryListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param InteractiveLoginEvent $event
+     *
+     * @return void
+     */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
         $request = $event->getRequest();
@@ -104,6 +109,11 @@ class LoginHistoryListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param LoginFailureEvent $event
+     *
+     * @return void
+     */
     public function onAuthenticationFailure(LoginFailureEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();
@@ -120,7 +130,7 @@ class LoginHistoryListener implements EventSubscriberInterface
         $Member = null;
         $userName = null;
         $passport = $event->getPassport();
-        if ($passport->hasBadge(UserBadge::class)) {
+        if ($passport->hasBadge(UserBadge::class) && $passport->getBadge(UserBadge::class) instanceof UserBadge) {
             $userName = $passport->getBadge(UserBadge::class)
                 ->getUserIdentifier();
             $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);

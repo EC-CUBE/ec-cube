@@ -30,6 +30,8 @@ class PluginPass implements CompilerPassInterface
      * サービスタグが収集されるタイミング(一般的にPassConfig::TYPE_BEFORE_OPTIMIZATIONの0)より先に実行される必要があります.
      *
      * @param ContainerBuilder $container
+     *
+     * @return void
      */
     #[\Override]
     public function process(ContainerBuilder $container)

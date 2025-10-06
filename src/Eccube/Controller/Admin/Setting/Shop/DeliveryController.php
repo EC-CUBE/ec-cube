@@ -35,7 +35,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class DeliveryController
@@ -68,7 +68,7 @@ class DeliveryController extends AbstractController
     protected $deliveryTimeRepository;
 
     /**
-     * @var DeliveryTimeRepository
+     * @var SaleTypeRepository
      */
     protected $saleTypeRepository;
 
@@ -90,6 +90,11 @@ class DeliveryController extends AbstractController
         $this->saleTypeRepository = $saleTypeRepository;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
     #[Template('@admin/Setting/Shop/delivery.twig')]
     public function index(Request $request)
@@ -110,6 +115,15 @@ class DeliveryController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param EccubeExtension $extension
+     * @param string|int|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/delivery_edit.twig')]
@@ -285,6 +299,12 @@ class DeliveryController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param Delivery $Delivery
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Delivery $Delivery)
     {
@@ -326,6 +346,12 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
+    /**
+     * @param Request $request
+     * @param Delivery $Delivery
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visibility(Request $request, Delivery $Delivery)
     {
@@ -356,6 +382,13 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @throws BadRequestHttpException
+     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)
     {
@@ -381,15 +414,15 @@ class DeliveryController extends AbstractController
      *
      * @param Payment[] $PaymentsData
      *
-     * @return array
+     * @return array<int,array<string,float|string|null>>
      */
     private function getMergeRules(array $PaymentsData)
     {
         // 手数料抜きの利用条件の一覧を作成
         $rules = array_map(function (Payment $Payment) {
             return [
-                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0,
-                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX,
+                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0, // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX, // @phpstan-ignore-line TODO bcmath-polyfill を使用する
             ];
         }, $PaymentsData);
 

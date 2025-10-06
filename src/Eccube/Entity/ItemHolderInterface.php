@@ -13,12 +13,13 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 interface ItemHolderInterface
 {
     /**
-     * @return ItemCollection
+     * @return ItemCollection<int, CartItem>|ItemCollection<int, OrderItem>
      */
     public function getItems();
 
@@ -33,6 +34,8 @@ interface ItemHolderInterface
      * 合計金額を設定します。
      *
      * @param string $total
+     *
+     * @return ItemHolderInterface
      */
     public function setTotal($total);
 
@@ -47,6 +50,8 @@ interface ItemHolderInterface
      * 送料合計を設定します。
      *
      * @param string $total
+     *
+     * @return ItemHolderInterface
      */
     public function setDeliveryFeeTotal($total);
 
@@ -61,6 +66,8 @@ interface ItemHolderInterface
      * 値引き合計を設定します。
      *
      * @param string $total
+     *
+     * @return ItemHolderInterface|void
      */
     public function setDiscount($total);
 
@@ -68,6 +75,8 @@ interface ItemHolderInterface
      * 手数料合計を設定します。
      *
      * @param string $total
+     *
+     * @return ItemHolderInterface|void
      */
     public function setCharge($total);
 
@@ -75,6 +84,8 @@ interface ItemHolderInterface
      * 税額合計を設定します。
      *
      * @param string $total
+     *
+     * @return ItemHolderInterface|void
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
@@ -84,6 +95,8 @@ interface ItemHolderInterface
      * 加算ポイントを設定します。
      *
      * @param string $addPoint
+     *
+     * @return ItemHolderInterface
      */
     public function setAddPoint($addPoint);
 
@@ -98,6 +111,8 @@ interface ItemHolderInterface
      * 利用ポイントを設定します。
      *
      * @param string $usePoint
+     *
+     * @return ItemHolderInterface
      */
     public function setUsePoint($usePoint);
 
@@ -110,6 +125,36 @@ interface ItemHolderInterface
 
     /**
      * @param ItemInterface $item
+     *
+     * @return void
      */
     public function addItem(ItemInterface $item);
+
+    /**
+     * Get customer.
+     *
+     * @return Customer|null
+     */
+    public function getCustomer();
+
+    /**
+     * 出荷情報を追加します - 注文のみ
+     *
+     * @return ArrayCollection<int, Shipping>
+     */
+    public function getShippings();
+
+    /**
+     * 注文ステータスを返す - 注文のみ
+     *
+     * @return mixed
+     */
+    public function getOrderStatus();
+
+    /**
+     * 商品の受注明細を取得 - 注文のみ
+     *
+     * @return OrderItem[]
+     */
+    public function getProductOrderItems();
 }

@@ -54,11 +54,13 @@ if (!class_exists(Calendar::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="title", type="string", length=255, nullable=true)
          */

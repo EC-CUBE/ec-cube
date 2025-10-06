@@ -280,9 +280,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrder = $this->orderRepository->find($Order->getId());
 
         // 顧客の購入回数と購入金額確認
-        $this->expected = bcadd($totalPrice, $EditedOrder->getTotalPrice(), 2);
+        $this->expected = bcadd((string) $totalPrice, (string) $EditedOrder->getTotalPrice(), 2);
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
-        $this->actual = bcadd($EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
+        $this->actual = bcadd((string) $EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
         $this->verify();
         $this->expected = '2';
         $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
@@ -504,19 +504,19 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 : $totalPrice;
         }
         foreach ($totalByTaxRate as $rate => $price) {
-            $taxValue = bcdiv(bcmul($price, $rate, 4), bcadd('100', $rate, 0), 4);
+            $taxValue = bcdiv(bcmul((string) $price, (string) $rate, 4), bcadd('100', (string) $rate, 0), 4);
             $tax = static::getContainer()->get(TaxRuleService::class)
                 ->roundByRoundingType($taxValue, RoundingType::ROUND);
             $totalTaxByTaxRate[$rate] = $tax;
         }
         $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
-            return bcadd($sum, $tax, 2);
+            return bcadd($sum, (string) $tax, 2);
         }, '0');
 
         // 確認する「トータル税金」
         $this->expected = $totalTax;
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
-        $this->actual = bcadd($EditedOrderafterEdit->getTax(), '0', 2);
+        $this->actual = bcadd((string) $EditedOrderafterEdit->getTax(), '0', 2);
         $this->verify();
     }
 

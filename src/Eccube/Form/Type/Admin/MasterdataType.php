@@ -13,10 +13,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderStatusColor;
@@ -47,14 +47,20 @@ class MasterdataType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $masterdata = [];
-
+        /** @var MappingDriver $mappingDriver */
+        $mappingDriver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
         /** @var MappingDriverChain $driverChain */
-        $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
+        $driverChain = $mappingDriver->getDriver();
         /** @var MappingDriver[] $drivers */
         $drivers = $driverChain->getDrivers();
 
@@ -62,7 +68,7 @@ class MasterdataType extends AbstractType
             if ($namespace == 'Eccube\Entity') {
                 $classNames = $driver->getAllClassNames();
                 foreach ($classNames as $className) {
-                    /** @var ClassMetadata $meta */
+                    /** @var ClassMetadata<object> $meta */
                     $meta = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
 
                     // OrderStatus/OrderStatusColorは対象外

@@ -20,10 +20,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class JsController extends AbstractController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,\Symfony\Component\Form\FormView>
+     *
+     * @throws IOException
+     */
     #[Route('/%eccube_admin_route%/content/js', name: 'admin_content_js', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/js.twig')]
     public function index(Request $request)

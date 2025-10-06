@@ -36,7 +36,7 @@ class CsrfExtension extends AbstractExtension
     }
 
     /**
-     * @return array
+     * @return array<int,TwigFunction>
      */
     #[\Override]
     public function getFunctions()

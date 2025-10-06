@@ -35,7 +35,7 @@ if (!class_exists(ProductTag::class)) {
          * Get tag_id
          * use csv export
          *
-         * @return int
+         * @return int|null
          */
         public function getTagId()
         {
@@ -54,6 +54,8 @@ if (!class_exists(ProductTag::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -65,7 +67,7 @@ if (!class_exists(ProductTag::class)) {
         private $create_date;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductTag")
          *
@@ -77,7 +79,7 @@ if (!class_exists(ProductTag::class)) {
         private $Product;
 
         /**
-         * @var Tag
+         * @var Tag|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Tag", inversedBy="ProductTag")
          *
@@ -89,7 +91,7 @@ if (!class_exists(ProductTag::class)) {
         private $Tag;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

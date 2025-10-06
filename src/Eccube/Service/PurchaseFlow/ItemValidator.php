@@ -46,6 +46,8 @@ abstract class ItemValidator
      *
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     abstract protected function validate(ItemInterface $item, PurchaseContext $context);
 
@@ -54,6 +56,8 @@ abstract class ItemValidator
      *
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {

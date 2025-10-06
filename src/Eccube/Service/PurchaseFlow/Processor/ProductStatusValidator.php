@@ -25,10 +25,12 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class ProductStatusValidator extends ItemValidator
 {
     /**
-     * @param ItemInterface $item
+     * @param ItemInterface $item 明細アイテム
      * @param PurchaseContext $context
      *
-     * @throws InvalidItemException
+     * @return void
+     *
+     * @throws InvalidItemException 商品が公開されていない場合
      */
     #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context)
@@ -47,12 +49,14 @@ class ProductStatusValidator extends ItemValidator
     }
 
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
+     * @param ItemInterface $item 明細アイテム
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @return void
      */
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
-        $item->setQuantity(0);
+        $item->setQuantity('0');
     }
 }

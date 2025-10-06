@@ -23,7 +23,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class TaxRuleController
@@ -54,6 +54,10 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の初期表示・登録
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
@@ -148,6 +152,13 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の削除
+     *
+     * @param Request $request
+     * @param TaxRule $TaxRule
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Doctrine\ORM\NoResultException
      */
     #[Route('/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, TaxRule $TaxRule)

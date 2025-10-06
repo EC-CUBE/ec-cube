@@ -79,9 +79,11 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     /**
-     * Run command
+     * @param string[] $commands
+     * @param string[]|null $output
+     * @param bool $init
      *
-     * @param string $command
+     * @return string
      *
      * @throws PluginException
      */
@@ -113,7 +115,13 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * Set init
      *
+     * @param BaseInfo|null $BaseInfo
+     *
+     * @return void
+     *
      * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function init($BaseInfo = null)
     {
@@ -134,6 +142,12 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
+    /**
+     * @param string $key
+     * @param string[]|null $value
+     *
+     * @return array<string, array<string, string>>|mixed
+     */
     #[\Override]
     public function execConfig($key, $value = null)
     {
@@ -146,6 +160,19 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
+    /**
+     * @param string $packageName
+     * @param string|null $version
+     * @param string $callback
+     * @param null $typeFilter
+     * @param int $level
+     *
+     * @return void
+     *
+     * @throws PluginException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     #[\Override]
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {

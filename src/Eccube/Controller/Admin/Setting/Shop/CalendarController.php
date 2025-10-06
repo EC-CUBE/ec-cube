@@ -19,7 +19,7 @@ use Eccube\Form\Type\Admin\CalendarType;
 use Eccube\Repository\CalendarRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class CalendarController
@@ -43,6 +43,10 @@ class CalendarController extends AbstractController
 
     /**
      * カレンダー設定の初期表示・登録
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar', name: 'admin_setting_shop_calendar', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/calendar/new', name: 'admin_setting_shop_calendar_new', methods: ['GET', 'POST'])]
@@ -114,6 +118,13 @@ class CalendarController extends AbstractController
 
     /**
      * カレンダー設定の削除
+     *
+     * @param Request $request
+     * @param Calendar $Calendar
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\ORMException
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Calendar $Calendar)

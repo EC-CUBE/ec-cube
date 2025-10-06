@@ -41,6 +41,10 @@ class RepeatedEmailType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)

@@ -45,6 +45,8 @@ if (!class_exists(DeliveryTime::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -56,7 +58,7 @@ if (!class_exists(DeliveryTime::class)) {
         private $delivery_time;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryTimes")
          *

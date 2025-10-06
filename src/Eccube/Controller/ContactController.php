@@ -21,7 +21,7 @@ use Eccube\Repository\PageRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
@@ -51,6 +51,10 @@ class ContactController extends AbstractController
 
     /**
      * お問い合わせ画面.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     #[Route('/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
@@ -126,6 +130,8 @@ class ContactController extends AbstractController
 
     /**
      * お問い合わせ完了画面.
+     *
+     * @return array<empty>
      */
     #[Route('/contact/complete', name: 'contact_complete', methods: ['GET'])]
     #[Template('Contact/complete.twig')]

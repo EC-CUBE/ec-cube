@@ -126,7 +126,7 @@ class TaxRuleService
     /**
      * 課税規則に応じて端数処理を行う
      *
-     * @param  string $value    端数処理を行う数値
+     * @param string $value    端数処理を行う数値
      * @param int $RoundingType
      *
      * @return string        端数処理後の数値

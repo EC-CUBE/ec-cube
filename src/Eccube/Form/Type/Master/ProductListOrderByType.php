@@ -25,6 +25,11 @@ class ProductListOrderByType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -39,6 +44,10 @@ class ProductListOrderByType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)
@@ -50,6 +59,8 @@ class ProductListOrderByType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getBlockPrefix()
@@ -59,6 +70,8 @@ class ProductListOrderByType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     #[\Override]
     public function getParent()

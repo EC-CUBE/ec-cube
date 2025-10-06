@@ -98,18 +98,20 @@ if (!class_exists(CustomerAddress::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="name02", type="string", length=255)
          */
@@ -179,7 +181,7 @@ if (!class_exists(CustomerAddress::class)) {
         private $update_date;
 
         /**
-         * @var Customer
+         * @var Customer|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerAddresses")
          *
@@ -191,7 +193,7 @@ if (!class_exists(CustomerAddress::class)) {
         private $Customer;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
          *
@@ -203,7 +205,7 @@ if (!class_exists(CustomerAddress::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *

@@ -48,11 +48,13 @@ if (!class_exists(ClassCategory::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
          */
@@ -94,7 +96,7 @@ if (!class_exists(ClassCategory::class)) {
         private $update_date;
 
         /**
-         * @var ClassName
+         * @var ClassName|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassName", inversedBy="ClassCategories")
          *
@@ -106,7 +108,7 @@ if (!class_exists(ClassCategory::class)) {
         private $ClassName;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

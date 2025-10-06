@@ -37,6 +37,11 @@ class RestrictFileUploadListener implements EventSubscriberInterface
         $this->requestContext = $requestContext;
     }
 
+    /**
+     * @param RequestEvent $event
+     *
+     * @return void
+     */
     public function onKernelRequest(RequestEvent $event)
     {
         if (!$event->isMainRequest()) {

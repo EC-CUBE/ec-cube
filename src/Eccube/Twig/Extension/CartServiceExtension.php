@@ -41,36 +41,48 @@ class CartServiceExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return Cart|null
+     */
     public function get_cart()
     {
         return $this->cartService->getCart();
     }
 
+    /**
+     * @return Cart[]
+     */
     public function get_all_carts()
     {
         return $this->cartService->getCarts();
     }
 
+    /**
+     * @return string
+     */
     public function get_carts_total_price()
     {
         $Carts = $this->cartService->getCarts();
-        $totalPrice = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalPrice();
+        $totalPrice = array_reduce($Carts, function (string $total, Cart $Cart) {
+            $total = bcadd($total, $Cart->getTotalPrice());
 
             return $total;
-        }, 0);
+        }, '0');
 
         return $totalPrice;
     }
 
+    /**
+     * @return string
+     */
     public function get_carts_total_quantity()
     {
         $Carts = $this->cartService->getCarts();
         $totalQuantity = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalQuantity();
+            $total = bcadd($total, $Cart->getTotalQuantity());
 
             return $total;
-        }, 0);
+        }, '0');
 
         return $totalQuantity;
     }

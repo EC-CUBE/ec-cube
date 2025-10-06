@@ -50,6 +50,8 @@ if (!class_exists(News::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -110,7 +112,7 @@ if (!class_exists(News::class)) {
         private $visible;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *
@@ -300,7 +302,7 @@ if (!class_exists(News::class)) {
         }
 
         /**
-         * @return int
+         * @return bool
          */
         public function isVisible()
         {

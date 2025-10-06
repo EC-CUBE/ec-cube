@@ -44,6 +44,9 @@ if (!class_exists(Shipping::class)) {
          */
         public const SHIPPING_MAIL_SENT = 2;
 
+        /**
+         * @return string
+         */
         public function getShippingMultipleDefaultName()
         {
             return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
@@ -57,6 +60,8 @@ if (!class_exists(Shipping::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -75,14 +80,14 @@ if (!class_exists(Shipping::class)) {
         private $name02;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
          */
         private $kana01;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
          */
@@ -131,7 +136,7 @@ if (!class_exists(Shipping::class)) {
         private $shipping_delivery_name;
 
         /**
-         * @var int
+         * @var int|null
          *
          * @ORM\Column(name="time_id", type="integer", options={"unsigned":true}, nullable=true)
          */
@@ -163,14 +168,14 @@ if (!class_exists(Shipping::class)) {
         private $shipping_date;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="tracking_number", type="string", length=255, nullable=true)
          */
         private $tracking_number;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="note", type="string", length=4000, nullable=true)
          */
@@ -205,7 +210,7 @@ if (!class_exists(Shipping::class)) {
         private $mail_send_date;
 
         /**
-         * @var Order
+         * @var Order|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings", cascade={"persist"})
          *
@@ -217,14 +222,14 @@ if (!class_exists(Shipping::class)) {
         private $Order;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,OrderItem>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist"})
          */
         private $OrderItems;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
          *
@@ -236,7 +241,7 @@ if (!class_exists(Shipping::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *
@@ -248,7 +253,7 @@ if (!class_exists(Shipping::class)) {
         private $Pref;
 
         /**
-         * @var Delivery
+         * @var Delivery|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery")
          *
@@ -265,7 +270,7 @@ if (!class_exists(Shipping::class)) {
         private $ProductClassOfTemp;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *
@@ -309,28 +314,6 @@ if (!class_exists(Shipping::class)) {
         }
 
         /**
-         * 個人情報をクリア.
-         *
-         * @return Shipping
-         */
-        public function clearCustomerAddress()
-        {
-            $this
-            ->setName01(null)
-            ->setName02(null)
-            ->setKana01(null)
-            ->setKana02(null)
-            ->setCompanyName(null)
-            ->setPhoneNumber(null)
-            ->setPostalCode(null)
-            ->setPref(null)
-            ->setAddr01(null)
-            ->setAddr02(null);
-
-            return $this;
-        }
-
-        /**
          * Get id.
          *
          * @return int
@@ -343,7 +326,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set name01.
          *
-         * @param string $name01
+         * @param string|null $name01
          *
          * @return Shipping
          */
@@ -367,7 +350,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set name02.
          *
-         * @param string $name02
+         * @param string|null $name02
          *
          * @return Shipping
          */
@@ -777,7 +760,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get orderItems.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return ItemCollection
          */
         public function getOrderItems()
         {
@@ -977,7 +960,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set timeId
          *
-         * @param int $timeId
+         * @param int|null $timeId
          *
          * @return Shipping
          */
@@ -991,7 +974,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get timeId
          *
-         * @return int
+         * @return int|null
          */
         public function getTimeId()
         {

@@ -56,7 +56,9 @@ class Logger extends AbstractLogger
      *
      * @param mixed $level
      * @param string $message
-     * @param array $context
+     * @param array<string, mixed> $context
+     *
+     * @return void
      */
     #[\Override]
     public function log($level, $message, array $context = [])

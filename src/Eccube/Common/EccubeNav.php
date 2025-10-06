@@ -16,7 +16,7 @@ namespace Eccube\Common;
 interface EccubeNav
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
     public static function getNav();
 }

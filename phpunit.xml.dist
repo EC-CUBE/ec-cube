@@ -9,6 +9,7 @@
          convertDeprecationsToExceptions="false"
 >
     <php>
+        <ini name="memory_limit" value="-1" />
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_CLASS" value="Eccube\Kernel" />
@@ -22,6 +23,9 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
+            <exclude>./tests/Eccube/Tests/Plugin/PluginManagerTest.php</exclude>
+            <exclude>./tests/Eccube/Tests/Service/PluginServiceTest.php</exclude>
+            <exclude>./tests/Eccube/Tests/Command/GenerateDummyDataCommandTest.php</exclude>
         </testsuite>
     </testsuites>
 

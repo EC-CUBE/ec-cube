@@ -31,8 +31,8 @@ class EventArgs extends GenericEvent
     /**
      * EventArgs constructor.
      *
-     * @param array $arguments
-     * @param Request $request
+     * @param array<mixed> $arguments
+     * @param Request|null $request
      */
     public function __construct(array $arguments = [], ?Request $request = null)
     {
@@ -42,6 +42,8 @@ class EventArgs extends GenericEvent
 
     /**
      * @param Request $request
+     *
+     * @return void
      */
     public function setRequest(Request $request)
     {
@@ -58,6 +60,8 @@ class EventArgs extends GenericEvent
 
     /**
      * @param Response $response
+     *
+     * @return void
      */
     public function setResponse(Response $response)
     {
@@ -65,7 +69,7 @@ class EventArgs extends GenericEvent
     }
 
     /**
-     * @return Response
+     * @return Response|null
      */
     public function getResponse()
     {

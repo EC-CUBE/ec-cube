@@ -45,6 +45,8 @@ abstract class ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
+     * @return void
+     *
      * @throws InvalidItemException
      */
     abstract protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context);

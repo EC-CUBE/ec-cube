@@ -129,11 +129,13 @@ if (!class_exists(Customer::class)) {
          * @Assert\NotBlank()
          *
          * @Assert\Length(max=4096)
+         *
+         * @var string|null
          */
         private $plain_password;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="password", type="string", length=255)
          */
@@ -224,14 +226,14 @@ if (!class_exists(Customer::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Customer", cascade={"remove"})
          */
         private $CustomerFavoriteProducts;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,CustomerAddress>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerAddress", mappedBy="Customer", cascade={"remove"})
          *
@@ -242,14 +244,14 @@ if (!class_exists(Customer::class)) {
         private $CustomerAddresses;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,Order>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\Order", mappedBy="Customer")
          */
         private $Orders;
 
         /**
-         * @var Master\CustomerStatus
+         * @var Master\CustomerStatus|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerStatus")
          *
@@ -261,7 +263,7 @@ if (!class_exists(Customer::class)) {
         private $Status;
 
         /**
-         * @var Master\Sex
+         * @var Master\Sex|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
          *
@@ -273,7 +275,7 @@ if (!class_exists(Customer::class)) {
         private $Sex;
 
         /**
-         * @var Master\Job
+         * @var Master\Job|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
          *
@@ -285,7 +287,7 @@ if (!class_exists(Customer::class)) {
         private $Job;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
          *
@@ -297,7 +299,7 @@ if (!class_exists(Customer::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *
@@ -317,8 +319,8 @@ if (!class_exists(Customer::class)) {
             $this->CustomerAddresses = new \Doctrine\Common\Collections\ArrayCollection();
             $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
 
-            $this->setBuyTimes(0);
-            $this->setBuyTotal(0);
+            $this->setBuyTimes('0');
+            $this->setBuyTotal('0');
         }
 
         /**
@@ -340,7 +342,7 @@ if (!class_exists(Customer::class)) {
         }
 
         /**
-         * {@inheritdoc}
+         * @return string
          */
         public function getUsername()
         {
@@ -349,12 +351,19 @@ if (!class_exists(Customer::class)) {
 
         /**
          * {@inheritdoc}
+         *
+         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
         {
         }
 
+        /**
+         * @param ClassMetadata $metadata
+         *
+         * @return void
+         */
         // TODO: できればFormTypeで行いたい
         public static function loadValidatorMetadata(ClassMetadata $metadata)
         {
@@ -368,7 +377,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {
@@ -978,7 +987,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          */
         public function getCustomerFavoriteProducts()
         {
@@ -1014,7 +1023,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerAddresses.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,CustomerAddress>
          */
         public function getCustomerAddresses()
         {
@@ -1050,7 +1059,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get orders.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,Order>
          */
         public function getOrders()
         {
@@ -1194,7 +1203,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get point
          *
-         * @return string
+         * @return string|int
          */
         public function getPoint()
         {
@@ -1214,7 +1223,7 @@ if (!class_exists(Customer::class)) {
         public function serialize()
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
-            // CustomerRepository::loadUserByUsername() で Status をチェックしているため、ここでは不要
+            // CustomerRepository::loadUserByIdentifier() で Status をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
                 $this->email,

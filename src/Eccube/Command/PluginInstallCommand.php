@@ -24,6 +24,9 @@ class PluginInstallCommand extends Command
     use PluginCommandTrait;
     protected static $defaultName = 'eccube:plugin:install';
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {

@@ -69,6 +69,9 @@ class DeleteCartsCommand extends Command
         $this->cartRepository = $cartRepository;
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {
@@ -77,6 +80,14 @@ class DeleteCartsCommand extends Command
             ->addArgument('date', InputArgument::REQUIRED, 'Deletes carts before the specified date');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output)
     {
@@ -104,6 +115,14 @@ class DeleteCartsCommand extends Command
         $input->setArgument('date', $dateStr);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     #[\Override]
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
@@ -127,6 +146,11 @@ class DeleteCartsCommand extends Command
         return 0;
     }
 
+    /**
+     * @param \DateTime $dateTime
+     *
+     * @return void
+     */
     protected function deleteCarts(\DateTime $dateTime)
     {
         try {
@@ -149,6 +173,9 @@ class DeleteCartsCommand extends Command
         }
     }
 
+    /**
+     * @return \IntlDateFormatter|null
+     */
     protected function createIntlFormatter()
     {
         return \IntlDateFormatter::create(

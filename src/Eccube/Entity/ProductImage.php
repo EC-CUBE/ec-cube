@@ -48,6 +48,8 @@ if (!class_exists(ProductImage::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -73,7 +75,7 @@ if (!class_exists(ProductImage::class)) {
         private $create_date;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductImage")
          *
@@ -85,7 +87,7 @@ if (!class_exists(ProductImage::class)) {
         private $Product;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

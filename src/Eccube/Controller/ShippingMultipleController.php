@@ -34,7 +34,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
@@ -110,6 +110,10 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * 複数配送処理
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_multiple.twig')]
@@ -219,6 +223,7 @@ class ShippingMultipleController extends AbstractShoppingController
             // お届け先情報をすべて削除
             /** @var Shipping $Shipping */
             foreach ($Order->getShippings() as $Shipping) {
+                /** @var OrderItem $OrderItem */
                 foreach ($Shipping->getOrderItems() as $OrderItem) {
                     $Shipping->removeOrderItem($OrderItem);
                     $Order->removeOrderItem($OrderItem);
@@ -381,6 +386,10 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * 会員ログイン時は会員のお届け先に追加する
      * 非会員時はセッションに追加する
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_multiple_edit.twig')]

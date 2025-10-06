@@ -69,6 +69,8 @@ class Step1TypeTest extends AbstractTypeTestCase
 
     /**
      * @dataProvider getValidTestData
+     *
+     * @param mixed $data
      */
     public function testValidData($data)
     {

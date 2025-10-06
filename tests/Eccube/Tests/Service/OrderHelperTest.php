@@ -76,6 +76,9 @@ class OrderHelperTest extends EccubeTestCase
      * 税表示区分が問題ないかを確認する
      *
      * @dataProvider taxDisplayTypeProvider
+     *
+     * @param mixed $OrderItemType
+     * @param mixed $TaxDisplayType
      */
     public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
     {

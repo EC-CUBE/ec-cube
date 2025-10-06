@@ -61,7 +61,7 @@ if (!class_exists(PageLayout::class)) {
         private $sort_no;
 
         /**
-         * @var Page
+         * @var Page|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayouts")
          *
@@ -73,7 +73,7 @@ if (!class_exists(PageLayout::class)) {
         private $Page;
 
         /**
-         * @var Layout
+         * @var Layout|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="PageLayouts")
          *

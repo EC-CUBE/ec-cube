@@ -182,6 +182,8 @@ class CartService
 
     /**
      * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
+     *
+     * @return void
      */
     public function mergeFromPersistedCart()
     {
@@ -234,7 +236,7 @@ class CartService
     }
 
     /**
-     * @param CartItem[] $cartItems
+     * @param array<int,CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
      *
      * @return CartItem[]
      */
@@ -251,10 +253,10 @@ class CartService
     }
 
     /**
-     * @param $cartItems
-     * @param $allCartItems
+     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
+     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $allCartItems
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function mergeCartItems($cartItems, $allCartItems)
     {
@@ -263,7 +265,7 @@ class CartService
             foreach ($allCartItems as $itemInArray) {
                 // 同じ明細があればマージする
                 if ($this->cartItemComparator->compare($item, $itemInArray)) {
-                    $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
+                    $itemInArray->setQuantity(bcadd($itemInArray->getQuantity(), $item->getQuantity()));
                     $itemExists = true;
                     break;
                 }
@@ -276,6 +278,11 @@ class CartService
         return $allCartItems;
     }
 
+    /**
+     * @param array<int, CartItem> $cartItems
+     *
+     * @return void
+     */
     protected function restoreCarts($cartItems)
     {
         foreach ($this->getCarts() as $Cart) {
@@ -293,14 +300,16 @@ class CartService
 
         foreach ($cartItems as $item) {
             $allocatedId = $this->cartItemAllocator->allocate($item);
-            $cartKey = $this->createCartKey($allocatedId, $this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $cartKey = $this->createCartKey($allocatedId, $Customer);
 
             if (isset($Carts[$cartKey])) {
                 $Cart = $Carts[$cartKey];
                 $Cart->addCartItem($item);
                 $item->setCart($Cart);
             } else {
-                /** @var Cart $Cart */
+                /** @var Cart|null $Cart */
                 $Cart = $this->cartRepository->findOneBy(['cart_key' => $cartKey]);
                 if ($Cart) {
                     foreach ($Cart->getCartItems() as $i) {
@@ -324,12 +333,12 @@ class CartService
     /**
      * カートに商品を追加します.
      *
-     * @param $ProductClass ProductClass 商品規格
-     * @param $quantity int 数量
+     * @param ProductClass|int $ProductClass  商品規格
+     * @param string $quantity 数量
      *
      * @return bool 商品を追加できた場合はtrue
      */
-    public function addProduct($ProductClass, $quantity = 1)
+    public function addProduct($ProductClass, $quantity = '1')
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
@@ -361,6 +370,11 @@ class CartService
         return true;
     }
 
+    /**
+     * @param int|ProductClass $ProductClass
+     *
+     * @return bool
+     */
     public function removeProduct($ProductClass)
     {
         if (!$ProductClass instanceof ProductClass) {
@@ -392,11 +406,16 @@ class CartService
         return true;
     }
 
+    /**
+     * @return void
+     */
     public function save()
     {
         $cartKeys = [];
         foreach ($this->carts as $Cart) {
-            $Cart->setCustomer($this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $Cart->setCustomer($Customer);
             $this->entityManager->persist($Cart);
             foreach ($Cart->getCartItems() as $item) {
                 $this->entityManager->persist($item);
@@ -409,7 +428,7 @@ class CartService
     }
 
     /**
-     * @param  string $pre_order_id
+     * @param  string|null $pre_order_id
      *
      * @return CartService
      */
@@ -465,6 +484,8 @@ class CartService
 
     /**
      * @param CartItemComparator $cartItemComparator
+     *
+     * @return void
      */
     public function setCartItemComparator($cartItemComparator)
     {
@@ -475,6 +496,8 @@ class CartService
      * カートキーで指定したインデックスにあるカートを優先にする
      *
      * @param string $cartKey カートキー
+     *
+     * @return void
      */
     public function setPrimary($cartKey)
     {
@@ -495,6 +518,9 @@ class CartService
         $this->save();
     }
 
+    /**
+     * @return \Symfony\Component\Security\Core\User\UserInterface|void|null
+     */
     protected function getUser()
     {
         if (null === $token = $this->tokenStorage->getToken()) {
@@ -511,6 +537,9 @@ class CartService
 
     /**
      * @param string $allocatedId
+     * @param Customer|null $Customer
+     *
+     * @return string
      */
     protected function createCartKey($allocatedId, ?Customer $Customer = null)
     {

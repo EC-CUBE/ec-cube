@@ -49,6 +49,11 @@ class LogType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
+     *
+     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -58,7 +63,7 @@ class LogType extends AbstractType
         $finder->name('*.log')
             ->depth('== 0')
             ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
-                return strcmp($b->getMTime(), $a->getMTime());
+                return strcmp((string) $b->getMTime(), (string) $a->getMTime());
             });
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
         foreach ($finder->in($dirs) as $file) {

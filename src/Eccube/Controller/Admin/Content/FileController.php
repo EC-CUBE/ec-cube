@@ -29,14 +29,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FileController extends AbstractController
 {
     public const SJIS = 'sjis-win';
     public const UTF = 'UTF-8';
+
+    /**
+     * @var array<int,array<string,string>>
+     */
     private $errors = [];
+    /**
+     * @var string
+     */
     private $encode;
 
     /**
@@ -50,6 +57,9 @@ class FileController extends AbstractController
         }
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/file.twig')]
     public function index(Request $request)
@@ -116,6 +126,11 @@ class FileController extends AbstractController
         ];
     }
 
+    /**
+     * @return BinaryFileResponse
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
     public function view(Request $request)
     {
@@ -133,6 +148,10 @@ class FileController extends AbstractController
      * Create directory
      *
      * @param Request $request
+     *
+     * @return void
+     *
+     * @throws IOException
      */
     public function create(Request $request)
     {
@@ -198,6 +217,9 @@ class FileController extends AbstractController
         }
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
     public function delete(Request $request)
     {
@@ -222,6 +244,11 @@ class FileController extends AbstractController
         return $this->redirectToRoute('admin_content_file', ['tree_select_file' => dirname((string) $selectFile)]);
     }
 
+    /**
+     * @return BinaryFileResponse
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
     public function download(Request $request)
     {
@@ -252,6 +279,11 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return void
+     */
     public function upload(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
@@ -333,6 +365,11 @@ class FileController extends AbstractController
         }
     }
 
+    /**
+     * @param array<int,array<string, mixed>> $tree
+     *
+     * @return array<int,array<int, mixed>>
+     */
     private function getTreeToArray($tree)
     {
         $arrTree = [];
@@ -350,6 +387,11 @@ class FileController extends AbstractController
         return $arrTree;
     }
 
+    /**
+     * @param array<int,array<string, mixed>> $tree
+     *
+     * @return array<int<0,max>,mixed>
+     */
     private function getPathsToArray($tree)
     {
         $paths = [];
@@ -363,6 +405,8 @@ class FileController extends AbstractController
     /**
      * @param string $topDir
      * @param Request $request
+     *
+     * @return array<int,array<string,mixed>>
      */
     private function getTree($topDir, $request)
     {
@@ -402,6 +446,8 @@ class FileController extends AbstractController
 
     /**
      * @param string $nowDir
+     *
+     * @return array<mixed>
      */
     private function getFileList($nowDir)
     {
@@ -471,13 +517,21 @@ class FileController extends AbstractController
         return $arrFileList;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return array|false|string|string[]
+     */
     protected function normalizePath($path)
     {
         return str_replace('\\', '/', realpath($path));
     }
 
     /**
+     * @param string $targetDir
      * @param string $topDir
+     *
+     * @return bool
      */
     protected function checkDir($targetDir, $topDir)
     {
@@ -491,6 +545,8 @@ class FileController extends AbstractController
     }
 
     /**
+     * @param string $target
+     *
      * @return string
      */
     private function convertStrFromServer($target)
@@ -502,6 +558,11 @@ class FileController extends AbstractController
         return $target;
     }
 
+    /**
+     * @param string $target
+     *
+     * @return string
+     */
     private function convertStrToServer($target)
     {
         if ($this->encode == self::SJIS) {
@@ -511,15 +572,25 @@ class FileController extends AbstractController
         return $target;
     }
 
+    /**
+     * @param string|null $nowDir
+     *
+     * @return string
+     */
     private function getUserDataDir($nowDir = null)
     {
         return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
     private function getJailDir($path)
     {
-        $realpath = realpath($path);
-        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
+        $realpath = (string) realpath($path);
+        $jailPath = str_replace((string) realpath($this->getUserDataDir()), '', $realpath);
 
         return $jailPath ?: '/';
     }

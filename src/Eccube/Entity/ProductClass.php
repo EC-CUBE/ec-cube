@@ -31,9 +31,12 @@ if (!class_exists(ProductClass::class)) {
      */
     class ProductClass extends AbstractEntity
     {
+        /** @var string|null */
         private $price01_inc_tax;
+        /** @var string|null */
         private $price02_inc_tax;
-        private $tax_rate = false;
+        /** @var string|null */
+        private $tax_rate;
 
         /**
          * 商品規格名を含めた商品名を返す.
@@ -92,6 +95,8 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price02 IncTax
          *
+         * @param string $price02_inc_tax
+         *
          * @return ProductClass
          */
         public function setPrice02IncTax($price02_inc_tax)
@@ -128,7 +133,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set tax_rate
          *
-         * @param  string $tax_rate
+         * @param  string|null $tax_rate
          *
          * @return ProductClass
          */
@@ -142,7 +147,7 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get tax_rate
          *
-         * @return bool
+         * @return string|null
          */
         public function getTaxRate()
         {
@@ -170,7 +175,7 @@ if (!class_exists(ProductClass::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          *
@@ -258,28 +263,28 @@ if (!class_exists(ProductClass::class)) {
         private $currency_code;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true}, nullable=true)
          */
         private $point_rate;
 
         /**
-         * @var ProductStock
+         * @var ProductStock|null
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductStock", mappedBy="ProductClass", cascade={"persist","remove"})
          */
         private $ProductStock;
 
         /**
-         * @var TaxRule
+         * @var TaxRule|null
          *
          * @ORM\OneToOne(targetEntity="Eccube\Entity\TaxRule", mappedBy="ProductClass", cascade={"persist","remove"})
          */
         private $TaxRule;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductClasses")
          *
@@ -291,7 +296,7 @@ if (!class_exists(ProductClass::class)) {
         private $Product;
 
         /**
-         * @var Master\SaleType
+         * @var Master\SaleType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\SaleType")
          *
@@ -303,7 +308,7 @@ if (!class_exists(ProductClass::class)) {
         private $SaleType;
 
         /**
-         * @var ClassCategory
+         * @var ClassCategory|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassCategory")
          *
@@ -315,7 +320,7 @@ if (!class_exists(ProductClass::class)) {
         private $ClassCategory1;
 
         /**
-         * @var ClassCategory
+         * @var ClassCategory|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassCategory")
          *
@@ -327,7 +332,7 @@ if (!class_exists(ProductClass::class)) {
         private $ClassCategory2;
 
         /**
-         * @var DeliveryDuration
+         * @var DeliveryDuration|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryDuration")
          *
@@ -339,7 +344,7 @@ if (!class_exists(ProductClass::class)) {
         private $DeliveryDuration;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

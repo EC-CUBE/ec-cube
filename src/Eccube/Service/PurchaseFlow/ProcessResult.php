@@ -19,10 +19,19 @@ class ProcessResult
     public const WARNING = 'WARNING';
     public const SUCCESS = 'SUCCESS';
 
+    /**
+     * @var string
+     */
     protected $type;
 
+    /**
+     * @var string|null
+     */
     protected $message;
 
+    /**
+     * @var string|null
+     */
     protected $class;
 
     /**
@@ -70,21 +79,33 @@ class ProcessResult
         return new self(self::SUCCESS, $message, $class);
     }
 
+    /**
+     * @return bool
+     */
     public function isError()
     {
         return $this->type === self::ERROR;
     }
 
+    /**
+     * @return bool
+     */
     public function isWarning()
     {
         return $this->type === self::WARNING;
     }
 
+    /**
+     * @return bool
+     */
     public function isSuccess()
     {
         return $this->type === self::SUCCESS;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMessage()
     {
         return $this->message;

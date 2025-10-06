@@ -22,14 +22,14 @@ class UTCDateTimeTzType extends DateTimeTzType
     /**
      * UTCのタイムゾーン
      *
-     * @var \DateTimeZone
+     * @var \DateTimeZone|null
      */
     protected static $utc;
 
     /**
      * アプリケーションのタイムゾーン
      *
-     * @var \DateTimeZone
+     * @var \DateTimeZone|null
      */
     protected static $timezone;
 
@@ -97,12 +97,19 @@ class UTCDateTimeTzType extends DateTimeTzType
 
     /**
      * @param string $timezone
+     *
+     * @return void
      */
     public static function setTimeZone($timezone = 'Asia/Tokyo')
     {
         self::$timezone = new \DateTimeZone($timezone);
     }
 
+    /**
+     * @param AbstractPlatform $platform
+     *
+     * @return true
+     */
     #[\Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

@@ -39,6 +39,8 @@ if (!class_exists(Csv::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -99,7 +101,7 @@ if (!class_exists(Csv::class)) {
         private $update_date;
 
         /**
-         * @var Master\CsvType
+         * @var Master\CsvType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
          *
@@ -111,7 +113,7 @@ if (!class_exists(Csv::class)) {
         private $CsvType;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

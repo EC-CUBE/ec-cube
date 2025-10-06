@@ -33,7 +33,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -85,6 +85,13 @@ class CustomerController extends AbstractController
         $this->csvExportService = $csvExportService;
     }
 
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param string|null $page_no
+     *
+     * @return array<string,mixed>
+     */
     #[Route('/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Customer/index.twig')]
@@ -179,6 +186,14 @@ class CustomerController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param string $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
+     */
     #[Route('/%eccube_admin_route%/customer/{id}/resend', name: 'admin_customer_resend', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function resend(Request $request, $id)
     {
@@ -218,6 +233,13 @@ class CustomerController extends AbstractController
         return $this->redirectToRoute('admin_customer');
     }
 
+    /**
+     * @param Request $request
+     * @param string $id
+     * @param TranslatorInterface $translator
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, $id, TranslatorInterface $translator)
     {

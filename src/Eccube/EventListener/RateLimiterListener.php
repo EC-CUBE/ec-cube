@@ -14,6 +14,8 @@
 namespace Eccube\EventListener;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Eccube\Request\Context;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +38,14 @@ class RateLimiterListener implements EventSubscriberInterface
         $this->requestContext = $requestContext;
     }
 
+    /**
+     * @param ControllerEvent $event
+     *
+     * @return void
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function onController(ControllerEvent $event)
     {
         if (!$event->isMainRequest()) {
@@ -76,9 +86,10 @@ class RateLimiterListener implements EventSubscriberInterface
             /** @var RateLimiterFactory $factory */
             $factory = $this->locator->get($limiterId);
             if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
+                /** @var Customer|Member $User */
                 $User = $this->requestContext->getCurrentUser();
                 if ($User instanceof UserInterface) {
-                    $limiter = $factory->create($User->getId());
+                    $limiter = $factory->create((string) $User->getId());
                     if (!$limiter->consume()->isAccepted()) {
                         throw new TooManyRequestsHttpException();
                     }

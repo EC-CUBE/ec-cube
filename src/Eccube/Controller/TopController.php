@@ -18,6 +18,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TopController extends AbstractController
 {
+    /**
+     * @return array<empty>
+     */
     #[Route('/', name: 'homepage', methods: ['GET'])]
     #[Template('index.twig')]
     public function index()

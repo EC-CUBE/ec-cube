@@ -59,6 +59,12 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $this->pluginRepository = $pluginRepository;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
     #[\Override]
     public function initialize(InputInterface $input, OutputInterface $output)
     {
@@ -92,7 +98,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             ]);
             $question = new ConfirmationQuestion($message);
             if (!$this->io->askQuestion($question)) {
-                return 1;
+                return 0;
             }
         }
 

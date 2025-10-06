@@ -65,6 +65,8 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -75,7 +77,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
         if (!$itemHolder->getPayment() instanceof Payment || !$itemHolder->getPayment()->getId()) {
             return;
         }
-
+        /** @var OrderItem $item */
         foreach ($itemHolder->getItems() as $item) {
             if ($item->getProcessorName() == PaymentChargePreprocessor::class) {
                 $item->setPrice($itemHolder->getPayment()->getCharge());
@@ -91,16 +93,22 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      * Add charge item to item holder
      *
      * @param ItemHolderInterface $itemHolder
+     *
+     * @return void
      */
     protected function addChargeItem(ItemHolderInterface $itemHolder)
     {
+        /** @var Order $itemHolder */
+        /** @var OrderItemType $OrderItemType */
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
+        /** @var TaxDisplayType $TaxDisplayType */
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
+        /** @var TaxType $Taxation */
         $Taxation = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
         $item->setProductName($OrderItemType->getName())
-            ->setQuantity(1)
-            ->setPrice($itemHolder->getPayment()->getCharge())
+            ->setQuantity('1')
+            ->setPrice($itemHolder->getPayment()?->getCharge())
             ->setOrderItemType($OrderItemType)
             ->setOrder($itemHolder)
             ->setTaxDisplayType($TaxDisplayType)

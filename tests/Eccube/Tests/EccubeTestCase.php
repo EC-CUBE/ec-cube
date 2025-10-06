@@ -226,6 +226,11 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * LoginHistory オブジェクトを生成して返す
      *
+     * @param mixed $user_name
+     * @param mixed|null $client_ip
+     * @param mixed $status
+     * @param mixed|null $Member
+     *
      * @return LoginHistory
      */
     public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)

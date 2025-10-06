@@ -509,6 +509,10 @@ class StringUtilTest extends TestCase
 
     /**
      * @dataProvider replaceOrAddEnvProvider
+     *
+     * @param mixed $env
+     * @param mixed $replacement
+     * @param mixed $expected
      */
     public function testReplaceOrAddEnv($env, $replacement, $expected)
     {

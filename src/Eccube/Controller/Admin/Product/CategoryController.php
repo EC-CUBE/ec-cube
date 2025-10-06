@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CategoryController extends AbstractController
 {
@@ -56,6 +56,16 @@ class CategoryController extends AbstractController
         $this->categoryRepository = $categoryRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     * @param string|null $parent_id
+     * @param string|null $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws NotFoundHttpException|BadRequestHttpException|\Exception
+     */
     #[Route('/%eccube_admin_route%/product/category', name: 'admin_product_category', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
@@ -63,7 +73,7 @@ class CategoryController extends AbstractController
     public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
     {
         if ($parent_id) {
-            /** @var Category $Parent */
+            /** @var Category|null $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
                 throw new NotFoundHttpException();
@@ -209,6 +219,15 @@ class CategoryController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     * @param string $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
+     */
     #[Route('/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, $id, CacheUtil $cacheUtil)
     {
@@ -254,6 +273,14 @@ class CategoryController extends AbstractController
         }
     }
 
+    /**
+     * @param Request $request
+     * @param CacheUtil $cacheUtil
+     *
+     * @return Response|void
+     *
+     * @throws BadRequestHttpException|\Exception
+     */
     #[Route('/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request, CacheUtil $cacheUtil)
     {

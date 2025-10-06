@@ -25,8 +25,7 @@ use Eccube\Service\OrderHelper;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class WithdrawController extends AbstractController
@@ -42,7 +41,7 @@ class WithdrawController extends AbstractController
     protected $customerStatusRepository;
 
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     protected $tokenStorage;
 
@@ -89,6 +88,10 @@ class WithdrawController extends AbstractController
 
     /**
      * 退会画面.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
      */
     #[Route('/mypage/withdraw', name: 'mypage_withdraw', methods: ['GET', 'POST'])]
     #[Route('/mypage/withdraw', name: 'mypage_withdraw_confirm', methods: ['GET', 'POST'])]
@@ -169,6 +172,10 @@ class WithdrawController extends AbstractController
 
     /**
      * 退会完了画面.
+     *
+     * @param Request $request
+     *
+     * @return array<empty>
      */
     #[Route('/mypage/withdraw_complete', name: 'mypage_withdraw_complete', methods: ['GET'])]
     #[Template('Mypage/withdraw_complete.twig')]

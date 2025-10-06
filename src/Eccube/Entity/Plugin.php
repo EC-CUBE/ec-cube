@@ -39,6 +39,8 @@ if (!class_exists(Plugin::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -207,7 +209,7 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set source.
          *
-         * @param string $source
+         * @param string|int $source
          *
          * @return Plugin
          */

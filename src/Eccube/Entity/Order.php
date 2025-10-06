@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Service\Calculator\OrderItemCollection;
@@ -163,7 +164,7 @@ if (!class_exists(Order::class)) {
             $taxFreeDiscount = $this->getTaxFreeDiscount();
 
             foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
-                if (is_null($roundingTypes[$rate])) {
+                if (!array_key_exists($rate, $roundingTypes) || null === $roundingTypes[$rate]) {
                     continue;
                 }
 
@@ -178,7 +179,7 @@ if (!class_exists(Order::class)) {
                     $afterDiscount = bcsub($totalPrice, $discountPortion, 6);
 
                     // rate / (100 + rate)
-                    $rateStr = (string) $rate;
+                    $rateStr = $rate;
                     $taxRate = bcdiv($rateStr, bcadd('100', $rateStr, 6), 6);
 
                     // 最終計算
@@ -201,10 +202,11 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の値引き明細を返す.
          *
-         * @return array
+         * @return array<int, OrderItem>
          */
         public function getTaxableDiscountItems()
         {
+            /** @var OrderItem[] $items */
             $items = (new ItemCollection($this->getTaxableItems()))->sort()->toArray();
 
             return array_filter($items, function (OrderItem $Item) {
@@ -227,10 +229,11 @@ if (!class_exists(Order::class)) {
         /**
          * 非課税・不課税の値引き明細を返す.
          *
-         * @return array
+         * @return array<int,OrderItem>
          */
         public function getTaxFreeDiscountItems()
         {
+            /** @var OrderItem[] $items */
             $items = (new ItemCollection($this->getOrderItems()))->sort()->toArray();
 
             return array_filter($items, function (OrderItem $Item) {
@@ -253,7 +256,7 @@ if (!class_exists(Order::class)) {
         /**
          * 税率ごとの丸め規則を取得する.
          *
-         * @return array<string, RoundingType>
+         * @return array<string, RoundingType|null>
          */
         public function getRoundingTypeByTaxRate()
         {
@@ -315,7 +318,6 @@ if (!class_exists(Order::class)) {
         {
             $saleTypes = [];
             foreach ($this->getOrderItems() as $OrderItem) {
-                /** @var ProductClass $ProductClass */
                 $ProductClass = $OrderItem->getProductClass();
                 if ($ProductClass) {
                     $saleTypes[] = $ProductClass->getSaleType();
@@ -369,13 +371,15 @@ if (!class_exists(Order::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          *
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -401,14 +405,14 @@ if (!class_exists(Order::class)) {
         private $message;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="name01", type="string", length=255)
          */
         private $name01;
 
         /**
-         * @var string|null
+         * @var string
          *
          * @ORM\Column(name="name02", type="string", length=255)
          */
@@ -603,21 +607,21 @@ if (!class_exists(Order::class)) {
         private $complete_mail_message;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection|OrderItem[]
+         * @var \Doctrine\Common\Collections\Collection<int,OrderItem>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
          */
         private $OrderItems;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection|Shipping[]
+         * @var \Doctrine\Common\Collections\Collection<int,Shipping>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist","remove"})
          */
         private $Shippings;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,MailHistory>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order", cascade={"remove"})
          *
@@ -628,7 +632,7 @@ if (!class_exists(Order::class)) {
         private $MailHistories;
 
         /**
-         * @var Customer
+         * @var Customer|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="Orders")
          *
@@ -640,7 +644,7 @@ if (!class_exists(Order::class)) {
         private $Customer;
 
         /**
-         * @var Master\Country
+         * @var Master\Country|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
          *
@@ -652,7 +656,7 @@ if (!class_exists(Order::class)) {
         private $Country;
 
         /**
-         * @var Master\Pref
+         * @var Master\Pref|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
          *
@@ -664,7 +668,7 @@ if (!class_exists(Order::class)) {
         private $Pref;
 
         /**
-         * @var Master\Sex
+         * @var Master\Sex|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
          *
@@ -676,7 +680,7 @@ if (!class_exists(Order::class)) {
         private $Sex;
 
         /**
-         * @var Master\Job
+         * @var Master\Job|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
          *
@@ -688,7 +692,7 @@ if (!class_exists(Order::class)) {
         private $Job;
 
         /**
-         * @var Payment
+         * @var Payment|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment")
          *
@@ -700,7 +704,7 @@ if (!class_exists(Order::class)) {
         private $Payment;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
          *
@@ -714,7 +718,7 @@ if (!class_exists(Order::class)) {
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
-         * @var Master\CustomerOrderStatus
+         * @var Master\CustomerOrderStatus|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
          *
@@ -728,7 +732,7 @@ if (!class_exists(Order::class)) {
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
-         * @var Master\OrderStatusColor
+         * @var Master\OrderStatusColor|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
          *
@@ -740,7 +744,7 @@ if (!class_exists(Order::class)) {
         private $OrderStatusColor;
 
         /**
-         * @var Master\OrderStatus
+         * @var Master\OrderStatus|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
          *
@@ -802,7 +806,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {
@@ -1537,7 +1541,7 @@ if (!class_exists(Order::class)) {
         /**
          * @param string|null $complete_mail_message
          *
-         * @return
+         * @return self
          */
         public function setCompleteMailMessage($complete_mail_message = null)
         {
@@ -1549,7 +1553,7 @@ if (!class_exists(Order::class)) {
         /**
          * @param string|null $complete_mail_message
          *
-         * @return
+         * @return self
          */
         public function appendCompleteMailMessage($complete_mail_message = null)
         {
@@ -1599,7 +1603,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get orderItems.
          *
-         * @return \Doctrine\Common\Collections\Collection|OrderItem[]
+         * @return \Doctrine\Common\Collections\Collection<int,OrderItem>
          */
         public function getOrderItems()
         {
@@ -1646,14 +1650,17 @@ if (!class_exists(Order::class)) {
         /**
          * Get shippings.
          *
-         * @return \Doctrine\Common\Collections\Collection|Shipping[]
+         * @return \Doctrine\Common\Collections\Collection<int,Shipping>
          */
         public function getShippings()
         {
             $criteria = Criteria::create()
                 ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
 
-            return $this->Shippings->matching($criteria);
+            /** @var PersistentCollection<int,Shipping> $Shippings */
+            $Shippings = $this->Shippings;
+
+            return $Shippings->matching($criteria);
         }
 
         /**
@@ -1685,7 +1692,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get mailHistories.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,MailHistory>
          */
         public function getMailHistories()
         {
@@ -1711,7 +1718,7 @@ if (!class_exists(Order::class)) {
          *
          * @return Customer|null
          */
-        public function getCustomer()
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
@@ -1911,9 +1918,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderStatus.
          *
-         * @param Master\OrderStatus|object|null $orderStatus
+         * @param Master\OrderStatus|null $orderStatus
          *
-         * @return Order
+         * @return self
          */
         public function setOrderStatus(?Master\OrderStatus $orderStatus = null)
         {
@@ -1934,19 +1941,23 @@ if (!class_exists(Order::class)) {
 
         /**
          * @param ItemInterface $item
+         *
+         * @return void
          */
         #[\Override]
         public function addItem(ItemInterface $item)
         {
-            $this->OrderItems->add($item);
+            if ($item instanceof OrderItem) {
+                $this->OrderItems->add($item);
+            }
         }
 
         #[\Override]
         public function getQuantity()
         {
-            $quantity = 0;
+            $quantity = '0';
             foreach ($this->getItems() as $item) {
-                $quantity += $item->getQuantity();
+                $quantity = bcadd($quantity, (string) $item->getQuantity());
             }
 
             return $quantity;

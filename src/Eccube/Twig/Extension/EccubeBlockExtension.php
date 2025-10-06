@@ -19,16 +19,28 @@ use Twig\TwigFunction;
 
 class EccubeBlockExtension extends AbstractExtension
 {
+    /**
+     * @var Environment
+     */
     protected $twig;
-
+    /**
+     * @var array<int,string|\Eccube\Twig\Template>
+     */
     protected $blockTemplates;
 
+    /**
+     * @param Environment $twig
+     * @param array<int,string|\Eccube\Twig\Template> $blockTemplates
+     */
     public function __construct(Environment $twig, array $blockTemplates)
     {
         $this->twig = $twig;
         $this->blockTemplates = $blockTemplates;
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[\Override]
     public function getFunctions()
     {

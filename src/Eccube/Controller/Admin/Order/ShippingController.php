@@ -37,7 +37,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ShippingController extends AbstractController
@@ -124,6 +124,13 @@ class ShippingController extends AbstractController
 
     /**
      * 出荷登録/編集画面.
+     *
+     * @param Request $request
+     * @param Order $Order
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     *
+     * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_shipping_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/shipping.twig')]
@@ -295,8 +302,6 @@ class ShippingController extends AbstractController
      * @param Shipping $Shipping
      *
      * @return Response
-     *
-     * @throws \Twig_Error
      */
     #[Route('/%eccube_admin_route%/shipping/preview_notify_mail/{id}', requirements: ['id' => '\d+'], name: 'admin_shipping_preview_notify_mail', methods: ['GET'])]
     public function previewShippingNotifyMail(Shipping $Shipping)
@@ -308,8 +313,6 @@ class ShippingController extends AbstractController
      * @param Shipping $Shipping
      *
      * @return JsonResponse
-     *
-     * @throws \Twig_Error
      */
     #[Route('/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function notifyMail(Shipping $Shipping)

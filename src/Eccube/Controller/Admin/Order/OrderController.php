@@ -46,7 +46,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -188,6 +188,12 @@ class OrderController extends AbstractController
      *      - URLパラメータpage_noをセッションに保存します.
      *   - 初期表示
      *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param string|null $page_no
+     *
+     * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/order/page/{page_no}', name: 'admin_order_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
@@ -327,6 +333,11 @@ class OrderController extends AbstractController
         ];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
     #[Route('/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
     public function bulkDelete(Request $request)
     {
@@ -384,7 +395,7 @@ class OrderController extends AbstractController
 
     /**
      * @param Request $request
-     * @param $csvTypeId
+     * @param int $csvTypeId
      * @param string $fileName
      *
      * @return StreamedResponse
@@ -617,7 +628,7 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array|RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/order_pdf.twig')]
@@ -633,7 +644,7 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('admin_order');
         }
 
-        /** @var OrderPdf $OrderPdf */
+        /** @var OrderPdf|null $OrderPdf */
         $OrderPdf = $this->orderPdfRepository->find($this->getUser());
 
         if (!$OrderPdf) {

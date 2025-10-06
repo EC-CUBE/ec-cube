@@ -82,7 +82,7 @@ class EccubeExtensionTest extends EccubeTestCase
                 $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02()), $actual['price02_with_currency']);
                 $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax_with_currency']);
                 $this->assertEquals($ProductClass->getCode(), $actual['product_code']);
-                $this->assertEquals($ProductClass->getSaleType()->getId(), $actual['sale_type']);
+                $this->assertSame($ProductClass->getSaleType()->getId(), (int) $actual['sale_type']);
                 $this->assertEquals($ProductClass->getStockFind(), $actual['stock_find']);
             }
         }
@@ -90,6 +90,10 @@ class EccubeExtensionTest extends EccubeTestCase
 
     /**
      * @dataProvider extensionProvider
+     *
+     * @param mixed $ext
+     * @param mixed $iconOnly
+     * @param mixed $expected
      */
     public function testGetExtensionIcon($ext, $iconOnly, $expected)
     {

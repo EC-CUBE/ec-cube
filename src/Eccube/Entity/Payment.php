@@ -48,6 +48,8 @@ if (!class_exists(Payment::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -63,7 +65,7 @@ if (!class_exists(Payment::class)) {
          *
          * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
-        private $charge = 0;
+        private $charge = '0';
 
         /**
          * @var string|null
@@ -108,7 +110,7 @@ if (!class_exists(Payment::class)) {
         private $method_class;
 
         /**
-         * @var int
+         * @var bool
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
@@ -129,14 +131,14 @@ if (!class_exists(Payment::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var \Doctrine\Common\Collections\Collection<int,PaymentOption>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PaymentOption", mappedBy="Payment")
          */
         private $PaymentOptions;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *
@@ -358,7 +360,7 @@ if (!class_exists(Payment::class)) {
         }
 
         /**
-         * @return int
+         * @return bool
          */
         public function isVisible()
         {
@@ -454,7 +456,7 @@ if (!class_exists(Payment::class)) {
         /**
          * Get paymentOptions.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return \Doctrine\Common\Collections\Collection<int,PaymentOption>
          */
         public function getPaymentOptions()
         {

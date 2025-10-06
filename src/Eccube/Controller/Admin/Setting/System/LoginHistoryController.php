@@ -21,7 +21,7 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class LoginHistoryController
@@ -53,9 +53,11 @@ class LoginHistoryController extends AbstractController
      * ログイン履歴検索画面を表示する.
      * 左ナビゲーションの選択はGETで遷移する.
      *
-     * @param int $page_no
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param int|null $page_no
      *
-     * @return \Symfony\Component\HttpFoundation\Response|array
+     * @return \Symfony\Component\HttpFoundation\Response|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/system/login_history/{page_no}', name: 'admin_setting_system_login_history_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]

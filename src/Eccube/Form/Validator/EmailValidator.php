@@ -30,6 +30,13 @@ class EmailValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
+     *
+     * @param mixed $value
+     * @param Constraint $constraint
+     *
+     * @return void
+     *
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
     #[\Override]
     public function validate($value, Constraint $constraint)

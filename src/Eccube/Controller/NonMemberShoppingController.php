@@ -22,7 +22,7 @@ use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -70,6 +70,10 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * 非会員処理
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|array<string,mixed>
      */
     #[Route('/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
     #[Template('Shopping/nonmember.twig')]
@@ -133,6 +137,12 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * お客様情報の変更(非会員)
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
      */
     #[Route('/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
     public function customer(Request $request)
@@ -220,7 +230,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員でのお客様情報変更時の入力チェック
      *
-     * @param array $data リクエストパラメータ
+     * @param array<mixed> $data リクエストパラメータ
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface[]
      */

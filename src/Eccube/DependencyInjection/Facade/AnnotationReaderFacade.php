@@ -20,7 +20,7 @@ class AnnotationReaderFacade
     /** @var self|null */
     private static $instance;
 
-    /** @var Reader */
+    /** @var Reader|null */
     private static $Reader;
 
     /**
@@ -59,6 +59,9 @@ class AnnotationReaderFacade
         return self::$Reader;
     }
 
+    /**
+     * @return Reader|null
+     */
     public function getAnnotationReader()
     {
         return self::$Reader;

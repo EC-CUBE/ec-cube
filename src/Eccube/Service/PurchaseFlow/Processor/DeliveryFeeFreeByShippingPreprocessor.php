@@ -44,6 +44,8 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -61,7 +63,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
                 $total = 0;
                 $quantity = 0;
                 foreach ($Shipping->getProductOrderItems() as $Item) {
-                    $total += $Item->getPriceIncTax() * $Item->getQuantity();
+                    $total += $Item->getPriceIncTax() * $Item->getQuantity(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
                     $quantity += $Item->getQuantity();
                 }
                 // 送料無料（金額）を超えている
@@ -77,9 +79,10 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
                     }
                 }
                 if ($isFree) {
+                    /** @var \Eccube\Entity\OrderItem $Item */
                     foreach ($Shipping->getOrderItems() as $Item) {
                         if ($Item->getProcessorName() == DeliveryFeePreprocessor::class) {
-                            $Item->setQuantity(0);
+                            $Item->setQuantity('0');
                         }
                     }
                 }

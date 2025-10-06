@@ -33,7 +33,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -73,7 +73,9 @@ class ProductController extends AbstractController
      * @var ProductListMaxRepository
      */
     protected $productListMaxRepository;
-
+    /**
+     * @var string
+     */
     private $title = '';
 
     /**
@@ -107,6 +109,11 @@ class ProductController extends AbstractController
 
     /**
      * 商品一覧画面.
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return array<string,mixed>
      */
     #[Route('/products/list', name: 'product_list', methods: ['GET'])]
     #[Template('Product/list.twig')]
@@ -160,7 +167,7 @@ class ProductController extends AbstractController
         $query = $qb->getQuery()
             ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
-        /** @var SlidingPagination $pagination */
+        /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $paginator->paginate(
             $query,
             !empty($searchData['pageno']) && preg_match('/^\d+$/', (string) $searchData['pageno']) ? $searchData['pageno'] : 1,
@@ -208,7 +215,9 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return array
+     * @return array<string,mixed>
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/products/detail/{id}', name: 'product_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('Product/detail.twig')]
@@ -239,6 +248,7 @@ class ProductController extends AbstractController
 
         $is_favorite = false;
         if ($this->isGranted('ROLE_USER')) {
+            /** @var \Eccube\Entity\Customer $Customer */
             $Customer = $this->getUser();
             $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
         }
@@ -254,6 +264,11 @@ class ProductController extends AbstractController
 
     /**
      * お気に入り追加.
+     *
+     * @param Request $request
+     * @param Product $Product
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addFavorite(Request $request, Product $Product)
@@ -269,9 +284,9 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE);
 
         if ($this->isGranted('ROLE_USER')) {
+            /** @var \Eccube\Entity\Customer $Customer */
             $Customer = $this->getUser();
             $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
-            $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
 
             $event = new EventArgs(
                 [
@@ -286,7 +301,6 @@ class ProductController extends AbstractController
             // 非会員の場合、ログイン画面を表示
             //  ログイン後の画面遷移先を設定
             $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
-            $this->session->getFlashBag()->set('eccube.add.favorite', true);
 
             $event = new EventArgs(
                 [
@@ -302,6 +316,13 @@ class ProductController extends AbstractController
 
     /**
      * カートに追加.
+     *
+     * @param Request $request
+     * @param Product $Product
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
      */
     #[Route('/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function addCart(Request $request, Product $Product)
@@ -423,7 +444,7 @@ class ProductController extends AbstractController
     /**
      * ページタイトルの設定
      *
-     * @param  array|null $searchData
+     * @param  array<mixed>|null $searchData
      *
      * @return string
      */

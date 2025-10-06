@@ -57,7 +57,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     {
         // 在庫を減らす
         $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock - $itemQuantity;
+            return bcsub((string) $currentStock, (string) $itemQuantity);
         });
     }
 
@@ -69,10 +69,20 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     {
         // 在庫を戻す
         $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock + $itemQuantity;
+            return bcadd((string) $currentStock, (string) $itemQuantity);
         });
     }
 
+    /**
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param callable $callback 在庫数を計算するコールバック関数
+     *
+     * @return void
+     *
+     * @throws ShoppingException 在庫切れの場合
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\PessimisticLockException
+     */
     private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
     {
         // Order以外の場合は何もしない
@@ -84,7 +94,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
                 // 在庫チェックあり
-                /* @var ProductStock $productStock */
+                /** @var ProductStock $productStock */
                 $productStock = $item->getProductClass()->getProductStock();
                 if ($productStock->getProductClassId() === null) {
                     // 在庫に対してロックを実行

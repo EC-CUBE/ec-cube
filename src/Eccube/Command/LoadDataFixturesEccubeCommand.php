@@ -43,6 +43,9 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
         $this->passwordHasher = $passwordHasher;
     }
 
+    /**
+     * @return void
+     */
     #[\Override]
     protected function configure()
     {
@@ -59,13 +62,13 @@ EOF
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getEntityManager(null);
+        $em = $this->getEntityManager($this->getDoctrine()->getDefaultManagerName());
 
         // for full locale code cases
         $locale = env('ECCUBE_LOCALE', 'ja_JP');
         $locale = str_replace('_', '-', $locale);
         $locales = \Locale::parseLocale($locale);
-        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+        $localeDir = empty($locales) ? 'ja' : $locales['language'];
 
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
         $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.$localeDir);

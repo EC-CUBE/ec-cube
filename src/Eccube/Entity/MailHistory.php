@@ -48,6 +48,8 @@ if (!class_exists(MailHistory::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -80,7 +82,7 @@ if (!class_exists(MailHistory::class)) {
         private $mail_html_body;
 
         /**
-         * @var Order
+         * @var Order|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
          *
@@ -92,7 +94,7 @@ if (!class_exists(MailHistory::class)) {
         private $Order;
 
         /**
-         * @var Member
+         * @var Member|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
          *

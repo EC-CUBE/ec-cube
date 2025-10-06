@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 if (!class_exists(Layout::class)) {
@@ -71,6 +72,9 @@ if (!class_exists(Layout::class)) {
             return (string) $this->name;
         }
 
+        /**
+         * @return bool
+         */
         public function isDefault()
         {
             return in_array($this->id, [self::DEFAULT_LAYOUT_PREVIEW_PAGE, self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
@@ -127,7 +131,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @param int $targetId
          *
-         * @return BlockPosition[]
+         * @return BlockPosition[]|Collection<int,mixed>
          */
         public function getBlockPositionsByTargetId($targetId)
         {
@@ -138,66 +142,105 @@ if (!class_exists(Layout::class)) {
             );
         }
 
+        /**
+         * @return Block[]
+         */
         public function getUnused()
         {
             return $this->getBlocks(self::TARGET_ID_UNUSED);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getHead()
         {
             return $this->getBlocks(self::TARGET_ID_HEAD);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getBodyAfter()
         {
             return $this->getBlocks(self::TARGET_ID_BODY_AFTER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getHeader()
         {
             return $this->getBlocks(self::TARGET_ID_HEADER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getContentsTop()
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_TOP);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getSideLeft()
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_LEFT);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getMainTop()
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_TOP);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getMainBottom()
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_BOTTOM);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getSideRight()
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_RIGHT);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getContentsBottom()
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getFooter()
         {
             return $this->getBlocks(self::TARGET_ID_FOOTER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getDrawer()
         {
             return $this->getBlocks(self::TARGET_ID_DRAWER);
         }
 
+        /**
+         * @return Block[]
+         */
         public function getCloseBodyBefore()
         {
             return $this->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE);
@@ -225,11 +268,13 @@ if (!class_exists(Layout::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
         /**
-         * @var string
+         * @var string|null
          *
          * @ORM\Column(name="layout_name", type="string", length=255, nullable=true)
          */
@@ -250,14 +295,14 @@ if (!class_exists(Layout::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var Collection<int,BlockPosition>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Layout", cascade={"persist","remove"})
          */
         private $BlockPositions;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var Collection<int,PageLayout>
          *
          * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
          *
@@ -266,7 +311,7 @@ if (!class_exists(Layout::class)) {
         private $PageLayouts;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
          *
@@ -386,6 +431,8 @@ if (!class_exists(Layout::class)) {
          * Remove blockPosition
          *
          * @param BlockPosition $blockPosition
+         *
+         * @return void
          */
         public function removeBlockPosition(BlockPosition $blockPosition)
         {
@@ -395,7 +442,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get blockPositions
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection<int, BlockPosition>
          */
         public function getBlockPositions()
         {
@@ -420,6 +467,8 @@ if (!class_exists(Layout::class)) {
          * Remove pageLayoutLayout
          *
          * @param PageLayout $PageLayout
+         *
+         * @return void
          */
         public function removePageLayout(PageLayout $PageLayout)
         {
@@ -429,7 +478,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get pageLayoutLayouts
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection<int, PageLayout>
          */
         public function getPageLayouts()
         {
@@ -453,7 +502,7 @@ if (!class_exists(Layout::class)) {
         /**
          * Get deviceType
          *
-         * @return Master\DeviceType
+         * @return Master\DeviceType|null
          */
         public function getDeviceType()
         {

@@ -61,6 +61,8 @@ if (!class_exists(Template::class)) {
          * @ORM\Id
          *
          * @ORM\GeneratedValue(strategy="IDENTITY")
+         *
+         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         private $id;
 
@@ -93,7 +95,7 @@ if (!class_exists(Template::class)) {
         private $update_date;
 
         /**
-         * @var Master\DeviceType
+         * @var Master\DeviceType|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
          *

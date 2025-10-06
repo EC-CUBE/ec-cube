@@ -158,22 +158,22 @@ class PointProcessorTest extends EccubeTestCase
     /**
      * @dataProvider usePointOverPriceProvider
      *
-     * @param $usePoint int 利用ポイント
-     * @param $isError boolean エラーかどうか
+     * @param string $usePoint  利用ポイント
+     * @param bool $isError エラーかどうか
      *
      * @group decimal
      */
     public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
     {
-        $price = 100; // 商品の値段
+        $price = '100'; // 商品の値段
 
         $Customer = new Customer();
-        $Customer->setPoint(10000);
+        $Customer->setPoint('10000');
 
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
-        $Order->setTotal(100);
+        $Order->setTotal('100');
         $Order->setCustomer($Customer);
         $Order->setUsePoint($usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
@@ -189,17 +189,17 @@ class PointProcessorTest extends EccubeTestCase
             self::assertSame($price, $Order->getUsePoint());
         } else {
             self::assertNull($result);
-            self::assertEquals($usePoint, $Order->getUsePoint());
+            self::assertSame($usePoint, $Order->getUsePoint());
         }
     }
 
     public function usePointOverPriceProvider()
     {
         return [
-            [0, false],
-            [99, false],
-            [100, false],
-            [101, true],
+            ['0', false],
+            ['99', false],
+            ['100', false],
+            ['101', true],
         ];
     }
 
@@ -227,22 +227,22 @@ class PointProcessorTest extends EccubeTestCase
         $purchaseFlow->prepare($Order, $context);
         $purchaseFlow->commit($Order, $context);
 
-        self::assertSame(90, $Customer->getPoint());
+        self::assertSame('90', $Customer->getPoint());
     }
 
     /**
      * @dataProvider useAddPointProvider
      *
-     * @param $price int 商品の値段
-     * @param $usePoint int 利用ポイント
-     * @param $addPoint int 期待する付与ポイント
+     * @param string $price 商品の値段
+     * @param string $usePoint 利用ポイント
+     * @param string $addPoint 期待する付与ポイント
      *
      * @group decimal
      */
     public function testAddPoint($price, $usePoint, $addPoint)
     {
         $Customer = new Customer();
-        $Customer->setPoint(1000);
+        $Customer->setPoint('1000');
 
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
@@ -258,18 +258,18 @@ class PointProcessorTest extends EccubeTestCase
         $context = new PurchaseContext(null, $Customer);
         $purchaseFlow->validate($Order, $context);
 
-        self::assertEquals($addPoint, $Order->getAddPoint());
+        self::assertSame($addPoint, $Order->getAddPoint());
     }
 
     public function useAddPointProvider()
     {
         return [
-            [200, 0, 2],
-            [200, 100, 1],
-            [200, 200, 0],
-            [1000, 0, 10],
-            [1000, 100, 9],
-            [1000, 200, 8],
+            ['200', '0', '2'],
+            ['200', '100', '1'],
+            ['200', '200', '0'],
+            ['1000', '0', '10'],
+            ['1000', '100', '9'],
+            ['1000', '200', '8'],
         ];
     }
 
@@ -316,7 +316,7 @@ class PointProcessorTest extends EccubeTestCase
         $context = new PurchaseContext(null, $Customer);
         $purchaseFlow->validate($Order, $context);
 
-        self::assertEquals($addPoint, $Order->getAddPoint());
+        self::assertSame((string) $addPoint, $Order->getAddPoint());
     }
 
     public function useAddPointExcludeShippingFeeProvider()
@@ -415,7 +415,7 @@ class PointProcessorTest extends EccubeTestCase
         $context = new PurchaseContext(null, $Customer);
         $purchaseFlow->validate($Order, $context);
 
-        self::assertEquals($ProductPrice * $basicPointRate / 100, $Order->getAddPoint());
+        self::assertSame((string) ($ProductPrice * $basicPointRate / 100), $Order->getAddPoint());
     }
 
     public function basicPointRateProvider()

@@ -101,8 +101,8 @@ class OrderRepositoryTest extends EccubeTestCase
 
         self::assertNull($Customer->getFirstBuyDate());
         self::assertNull($Customer->getLastBuyDate());
-        self::assertSame(0, $Customer->getBuyTimes());
-        self::assertSame(0, $Customer->getBuyTotal());
+        self::assertSame('0', $Customer->getBuyTimes());
+        self::assertSame('0', $Customer->getBuyTotal());
 
         $Order1 = $this->createOrder($Customer);
         $Order1->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -133,7 +133,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertSame('2', $Customer->getBuyTimes());
 
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
-        self::assertSame(bcadd($Order1->getTotal(), $Order2->getTotal(), 2), bcadd($Customer->getBuyTotal(), '0', 2));
+        self::assertSame(bcadd($Order1->getTotal(), $Order2->getTotal(), 2), bcadd((string) $Customer->getBuyTotal(), '0', 2));
     }
 
     public function testGetQueryBuilderBySearchDataForAdminMulti2147483648()

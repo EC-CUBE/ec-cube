@@ -20,6 +20,11 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class TwigExtensionPass implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
     #[\Override]
     public function process(ContainerBuilder $container)
     {

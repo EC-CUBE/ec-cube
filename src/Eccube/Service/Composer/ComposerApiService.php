@@ -39,6 +39,9 @@ class ComposerApiService implements ComposerServiceInterface
      */
     private $consoleApplication;
 
+    /**
+     * @var string
+     */
     private $workingDir;
     /**
      * @var BaseInfoRepository
@@ -71,7 +74,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $pluginName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
      * @param string|null $version
      *
-     * @return array
+     * @return array<string|null, array<string|null, string>|string|null>
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -169,6 +172,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param bool $dryRun
      * @param OutputInterface|null $output
      *
+     * @return void
+     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -198,6 +203,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param bool $dryRun
      * @param OutputInterface|null $output
      *
+     * @return void
+     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -226,8 +233,8 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param string $packageName
      * @param string|null $version
-     * @param string $callback
-     * @param null $typeFilter
+     * @param callable $callback
+     * @param string|null $typeFilter
      * @param int $level
      *
      * @return void
@@ -262,9 +269,9 @@ class ComposerApiService implements ComposerServiceInterface
      * Run get config information
      *
      * @param string $key
-     * @param null $value
+     * @param string[]|null $value
      *
-     * @return array|mixed
+     * @return array<string, array<string, string>>|mixed
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -290,7 +297,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Get config list
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -310,6 +317,8 @@ class ComposerApiService implements ComposerServiceInterface
      * Set work dir
      *
      * @param string $workingDir
+     *
+     * @return void
      */
     public function setWorkingDir($workingDir)
     {
@@ -319,11 +328,11 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run composer command
      *
-     * @param array $commands
+     * @param array<string, string> $commands
      * @param OutputInterface|null $output
      * @param bool $init
      *
-     * @return string
+     * @return string|null
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -353,6 +362,7 @@ class ComposerApiService implements ComposerServiceInterface
 
         if ($useBufferedOutput) {
             ob_end_clean();
+            /** @var BufferedOutput $output */
             $log = $output->fetch();
             if ($exitCode) {
                 log_error($log);
@@ -374,6 +384,8 @@ class ComposerApiService implements ComposerServiceInterface
      * @param BaseInfo|null $BaseInfo
      * @param string[] $packageName
      * @param string|null $from
+     *
+     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -435,6 +447,9 @@ class ComposerApiService implements ComposerServiceInterface
         $this->initConsole();
     }
 
+    /**
+     * @return void
+     */
     private function initConsole()
     {
         $consoleApplication = new Application();
@@ -458,6 +473,15 @@ class ComposerApiService implements ComposerServiceInterface
         $this->init($BaseInfo);
     }
 
+    /**
+     * @param string $packageNames
+     *
+     * @return void
+     *
+     * @throws PluginException
+     * @throws \Doctrine\Persistence\Mapping\MappingException
+     * @throws \ReflectionException
+     */
     private function dropTableToExtra($packageNames)
     {
         $projectRoot = $this->eccubeConfig->get('kernel.project_dir');

@@ -54,7 +54,7 @@ if (!class_exists(ProductCategory::class)) {
         private $category_id;
 
         /**
-         * @var Product
+         * @var Product|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
          *
@@ -66,7 +66,7 @@ if (!class_exists(ProductCategory::class)) {
         private $Product;
 
         /**
-         * @var Category
+         * @var Category|null
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
          *

@@ -143,6 +143,10 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
+     * @param RequestEvent $event
+     *
+     * @return void
+     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -164,6 +168,10 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
+     * @param RequestEvent $event
+     *
+     * @return void
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function setFrontVariables(RequestEvent $event)
@@ -238,6 +246,11 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
     }
 
+    /**
+     * @param RequestEvent $event
+     *
+     * @return void
+     */
     public function setAdminGlobals(RequestEvent $event)
     {
         // メニュー表示用配列.
@@ -261,11 +274,11 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * URLに対する権限有無チェックして表示するNavを返す
      *
-     * @param array $parentNav
+     * @param array<string, array<string,mixed>> $parentNav
      * @param AuthorityRole[] $AuthorityRoles
      * @param string $baseUrl
      *
-     * @return array
+     * @return array<string, array<string,mixed>>
      */
     private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
     {
