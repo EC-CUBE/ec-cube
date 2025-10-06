@@ -57,7 +57,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -70,10 +70,10 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
-            return null;
+            return;
         }
 
         /** @var Order $itemHolder */
@@ -120,7 +120,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             }
         }
 
-        return null;
+        return;
     }
 
     /*
@@ -131,7 +131,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -145,7 +145,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         // 何もしない
     }
@@ -154,7 +154,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 利用したポイントをユーザに戻す.
         if (!$this->supports($itemHolder)) {
@@ -181,7 +181,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    private function supports(ItemHolderInterface $itemHolder): bool
     {
         if (!$this->pointHelper->isPointEnabled()) {
             return false;

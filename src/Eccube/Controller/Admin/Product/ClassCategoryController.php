@@ -85,7 +85,7 @@ class ClassCategoryController extends AbstractController
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}', name: 'admin_product_class_category', requirements: ['class_name_id' => '\d+'], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit', name: 'admin_product_class_category_edit', requirements: ['class_name_id' => "\d+", 'id' => "\d+"], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/class_category.twig')]
-    public function index(Request $request, $class_name_id, $id = null)
+    public function index(Request $request, $class_name_id, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
@@ -183,7 +183,7 @@ class ClassCategoryController extends AbstractController
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/delete', name: 'admin_product_class_category_delete', requirements: ['class_name_id' => '\d+', 'id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $class_name_id, $id)
+    public function delete(Request $request, $class_name_id, $id): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -236,7 +236,7 @@ class ClassCategoryController extends AbstractController
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/visibility', name: 'admin_product_class_category_visibility', requirements: ['class_name_id' => '\d+', 'id' => '\d+'], methods: ['PUT'])]
-    public function visibility(Request $request, $class_name_id, $id)
+    public function visibility(Request $request, $class_name_id, $id): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -284,7 +284,7 @@ class ClassCategoryController extends AbstractController
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/sort_no/move', name: 'admin_product_class_category_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request)
+    public function moveSortNo(Request $request): void
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -313,7 +313,7 @@ class ClassCategoryController extends AbstractController
      * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/class_category/export/{class_name_id}', name: 'admin_product_class_category_export', requirements: ['class_name_id' => '\d+'], methods: ['GET'])]
-    public function export(Request $request, $class_name_id)
+    public function export(Request $request, $class_name_id): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);

@@ -75,7 +75,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return bool
          */
-        public function isDefault()
+        public function isDefault(): bool
         {
             return in_array($this->id, [self::DEFAULT_LAYOUT_PREVIEW_PAGE, self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
         }
@@ -83,7 +83,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Page[]
          */
-        public function getPages()
+        public function getPages(): array
         {
             $Pages = [];
             foreach ($this->PageLayouts as $PageLayout) {
@@ -98,7 +98,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Block[]
          */
-        public function getBlocks($targetId = null)
+        public function getBlocks($targetId = null): array
         {
             /** @var BlockPosition[] $TargetBlockPositions */
             $TargetBlockPositions = [];
@@ -133,7 +133,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return BlockPosition[]|Collection<int,mixed>
          */
-        public function getBlockPositionsByTargetId($targetId)
+        public function getBlockPositionsByTargetId($targetId): array|Collection
         {
             return $this->BlockPositions->filter(
                 function ($BlockPosition) use ($targetId) {
@@ -145,7 +145,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getUnused()
+        public function getUnused(): array
         {
             return $this->getBlocks(self::TARGET_ID_UNUSED);
         }
@@ -153,7 +153,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getHead()
+        public function getHead(): array
         {
             return $this->getBlocks(self::TARGET_ID_HEAD);
         }
@@ -161,7 +161,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getBodyAfter()
+        public function getBodyAfter(): array
         {
             return $this->getBlocks(self::TARGET_ID_BODY_AFTER);
         }
@@ -169,7 +169,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getHeader()
+        public function getHeader(): array
         {
             return $this->getBlocks(self::TARGET_ID_HEADER);
         }
@@ -177,7 +177,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getContentsTop()
+        public function getContentsTop(): array
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_TOP);
         }
@@ -185,7 +185,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getSideLeft()
+        public function getSideLeft(): array
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_LEFT);
         }
@@ -193,7 +193,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getMainTop()
+        public function getMainTop(): array
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_TOP);
         }
@@ -201,7 +201,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getMainBottom()
+        public function getMainBottom(): array
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_BOTTOM);
         }
@@ -209,7 +209,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getSideRight()
+        public function getSideRight(): array
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_RIGHT);
         }
@@ -217,7 +217,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getContentsBottom()
+        public function getContentsBottom(): array
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM);
         }
@@ -225,7 +225,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getFooter()
+        public function getFooter(): array
         {
             return $this->getBlocks(self::TARGET_ID_FOOTER);
         }
@@ -233,7 +233,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getDrawer()
+        public function getDrawer(): array
         {
             return $this->getBlocks(self::TARGET_ID_DRAWER);
         }
@@ -241,7 +241,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Block[]
          */
-        public function getCloseBodyBefore()
+        public function getCloseBodyBefore(): array
         {
             return $this->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE);
         }
@@ -251,7 +251,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return int
          */
-        public function getColumnNum()
+        public function getColumnNum(): int
         {
             return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
         }
@@ -336,7 +336,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -348,7 +348,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Layout
          */
-        public function setName($name)
+        public function setName($name): Layout
         {
             $this->name = $name;
 
@@ -360,7 +360,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -372,7 +372,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Layout
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Layout
         {
             $this->create_date = $createDate;
 
@@ -384,7 +384,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -396,7 +396,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Layout
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Layout
         {
             $this->update_date = $updateDate;
 
@@ -408,7 +408,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -420,7 +420,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Layout
          */
-        public function addBlockPosition(BlockPosition $blockPosition)
+        public function addBlockPosition(BlockPosition $blockPosition): Layout
         {
             $this->BlockPositions[] = $blockPosition;
 
@@ -434,7 +434,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return void
          */
-        public function removeBlockPosition(BlockPosition $blockPosition)
+        public function removeBlockPosition(BlockPosition $blockPosition): void
         {
             $this->BlockPositions->removeElement($blockPosition);
         }
@@ -444,7 +444,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Collection<int, BlockPosition>
          */
-        public function getBlockPositions()
+        public function getBlockPositions(): Collection
         {
             return $this->BlockPositions;
         }
@@ -456,7 +456,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Layout
          */
-        public function addPageLayout(PageLayout $PageLayout)
+        public function addPageLayout(PageLayout $PageLayout): Layout
         {
             $this->PageLayouts[] = $PageLayout;
 
@@ -470,7 +470,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return void
          */
-        public function removePageLayout(PageLayout $PageLayout)
+        public function removePageLayout(PageLayout $PageLayout): void
         {
             $this->PageLayouts->removeElement($PageLayout);
         }
@@ -480,7 +480,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Collection<int, PageLayout>
          */
-        public function getPageLayouts()
+        public function getPageLayouts(): Collection
         {
             return $this->PageLayouts;
         }
@@ -492,7 +492,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Layout
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null)
+        public function setDeviceType(?Master\DeviceType $deviceType = null): Layout
         {
             $this->DeviceType = $deviceType;
 
@@ -504,7 +504,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return Master\DeviceType|null
          */
-        public function getDeviceType()
+        public function getDeviceType(): ?Master\DeviceType
         {
             return $this->DeviceType;
         }
@@ -514,7 +514,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return bool
          */
-        public function isDeletable()
+        public function isDeletable(): bool
         {
             if (!$this->getPageLayouts()->isEmpty()) {
                 return false;

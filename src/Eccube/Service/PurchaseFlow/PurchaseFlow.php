@@ -76,7 +76,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setFlowType($flowType)
+    public function setFlowType($flowType): void
     {
         $this->flowType = $flowType;
     }
@@ -86,7 +86,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setPurchaseProcessors(ArrayCollection $processors)
+    public function setPurchaseProcessors(ArrayCollection $processors): void
     {
         $this->purchaseProcessors = $processors;
     }
@@ -96,7 +96,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setItemValidators(ArrayCollection $itemValidators)
+    public function setItemValidators(ArrayCollection $itemValidators): void
     {
         $this->itemValidators = $itemValidators;
     }
@@ -106,7 +106,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setItemHolderValidators(ArrayCollection $itemHolderValidators)
+    public function setItemHolderValidators(ArrayCollection $itemHolderValidators): void
     {
         $this->itemHolderValidators = $itemHolderValidators;
     }
@@ -116,7 +116,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setItemPreprocessors(ArrayCollection $itemPreprocessors)
+    public function setItemPreprocessors(ArrayCollection $itemPreprocessors): void
     {
         $this->itemPreprocessors = $itemPreprocessors;
     }
@@ -126,7 +126,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setItemHolderPreprocessors(ArrayCollection $itemHolderPreprocessors)
+    public function setItemHolderPreprocessors(ArrayCollection $itemHolderPreprocessors): void
     {
         $this->itemHolderPreprocessors = $itemHolderPreprocessors;
     }
@@ -136,7 +136,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setItemHolderPostValidators(ArrayCollection $itemHolderPostValidators)
+    public function setItemHolderPostValidators(ArrayCollection $itemHolderPostValidators): void
     {
         $this->itemHolderPostValidators = $itemHolderPostValidators;
     }
@@ -146,7 +146,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function setDiscountProcessors(ArrayCollection $discountProcessors)
+    public function setDiscountProcessors(ArrayCollection $discountProcessors): void
     {
         $this->discountProcessors = $discountProcessors;
     }
@@ -157,7 +157,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return PurchaseFlowResult
      */
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): PurchaseFlowResult
     {
         $context->setFlowType($this->flowType);
 
@@ -228,7 +228,7 @@ class PurchaseFlow implements \Stringable
      *
      * @throws PurchaseException
      */
-    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
     {
         $context->setFlowType($this->flowType);
 
@@ -247,7 +247,7 @@ class PurchaseFlow implements \Stringable
      *
      * @throws PurchaseException
      */
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         $context->setFlowType($this->flowType);
 
@@ -264,7 +264,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function rollback(ItemHolderInterface $target, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $target, PurchaseContext $context): void
     {
         $context->setFlowType($this->flowType);
 
@@ -278,7 +278,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addPurchaseProcessor(PurchaseProcessor $purchaseProcessor)
+    public function addPurchaseProcessor(PurchaseProcessor $purchaseProcessor): void
     {
         $this->purchaseProcessors[] = $purchaseProcessor;
     }
@@ -288,7 +288,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addItemHolderPreprocessor(ItemHolderPreprocessor $itemHolderPreprocessor)
+    public function addItemHolderPreprocessor(ItemHolderPreprocessor $itemHolderPreprocessor): void
     {
         $this->itemHolderPreprocessors[] = $itemHolderPreprocessor;
     }
@@ -298,7 +298,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addItemPreprocessor(ItemPreprocessor $itemPreprocessor)
+    public function addItemPreprocessor(ItemPreprocessor $itemPreprocessor): void
     {
         $this->itemPreprocessors[] = $itemPreprocessor;
     }
@@ -308,7 +308,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addItemValidator(ItemValidator $itemValidator)
+    public function addItemValidator(ItemValidator $itemValidator): void
     {
         $this->itemValidators[] = $itemValidator;
     }
@@ -318,7 +318,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator)
+    public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator): void
     {
         $this->itemHolderValidators[] = $itemHolderValidator;
     }
@@ -328,7 +328,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderPostValidator)
+    public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderPostValidator): void
     {
         $this->itemHolderPostValidators[] = $itemHolderPostValidator;
     }
@@ -338,7 +338,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    public function addDiscountProcessor(DiscountProcessor $discountProcessor)
+    public function addDiscountProcessor(DiscountProcessor $discountProcessor): void
     {
         $this->discountProcessors[] = $discountProcessor;
     }
@@ -348,7 +348,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateTotal(ItemHolderInterface $itemHolder)
+    protected function calculateTotal(ItemHolderInterface $itemHolder): void
     {
         $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
             $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
@@ -368,7 +368,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateSubTotal(ItemHolderInterface $itemHolder)
+    protected function calculateSubTotal(ItemHolderInterface $itemHolder): void
     {
         $total = $itemHolder->getItems()
             ->getProductClasses()
@@ -389,7 +389,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateDeliveryFeeTotal(ItemHolderInterface $itemHolder)
+    protected function calculateDeliveryFeeTotal(ItemHolderInterface $itemHolder): void
     {
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
@@ -406,7 +406,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateDiscount(ItemHolderInterface $itemHolder)
+    protected function calculateDiscount(ItemHolderInterface $itemHolder): void
     {
         $total = $itemHolder->getItems()
             ->getDiscounts()
@@ -424,7 +424,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateCharge(ItemHolderInterface $itemHolder)
+    protected function calculateCharge(ItemHolderInterface $itemHolder): void
     {
         $total = $itemHolder->getItems()
             ->getCharges()
@@ -441,7 +441,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateTax(ItemHolderInterface $itemHolder)
+    protected function calculateTax(ItemHolderInterface $itemHolder): void
     {
         if ($itemHolder instanceof Order) {
             $total = array_reduce($itemHolder->getTaxByTaxRate(), function ($sum, $tax) {
@@ -464,7 +464,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return void
      */
-    protected function calculateAll(ItemHolderInterface $itemHolder)
+    protected function calculateAll(ItemHolderInterface $itemHolder): void
     {
         $this->calculateDeliveryFeeTotal($itemHolder);
         $this->calculateCharge($itemHolder);
@@ -479,7 +479,7 @@ class PurchaseFlow implements \Stringable
      *
      * @return string
      */
-    public function dump()
+    public function dump(): string
     {
         /** @var \Closure(mixed): mixed $callback */
         $callback = function ($processor) {

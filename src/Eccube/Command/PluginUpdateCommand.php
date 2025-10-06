@@ -29,7 +29,7 @@ class PluginUpdateCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
@@ -37,7 +37,7 @@ class PluginUpdateCommand extends Command
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

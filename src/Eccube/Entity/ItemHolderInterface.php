@@ -21,14 +21,14 @@ interface ItemHolderInterface
     /**
      * @return ItemCollection<int, CartItem>|ItemCollection<int, OrderItem>
      */
-    public function getItems();
+    public function getItems(): ItemCollection;
 
     /**
      * 合計金額を返します。
      *
      * @return string
      */
-    public function getTotal();
+    public function getTotal(): string;
 
     /**
      * 合計金額を設定します。
@@ -37,14 +37,14 @@ interface ItemHolderInterface
      *
      * @return ItemHolderInterface
      */
-    public function setTotal($total);
+    public function setTotal($total): ItemHolderInterface;
 
     /**
      * 個数の合計を返します。
      *
      * @return string
      */
-    public function getQuantity();
+    public function getQuantity(): string;
 
     /**
      * 送料合計を設定します。
@@ -53,14 +53,14 @@ interface ItemHolderInterface
      *
      * @return ItemHolderInterface
      */
-    public function setDeliveryFeeTotal($total);
+    public function setDeliveryFeeTotal($total): ItemHolderInterface;
 
     /**
      * 送料合計を返します。
      *
      * @return string
      */
-    public function getDeliveryFeeTotal();
+    public function getDeliveryFeeTotal(): string;
 
     /**
      * 値引き合計を設定します。
@@ -69,7 +69,7 @@ interface ItemHolderInterface
      *
      * @return ItemHolderInterface|void
      */
-    public function setDiscount($total);
+    public function setDiscount($total): void;
 
     /**
      * 手数料合計を設定します。
@@ -78,7 +78,7 @@ interface ItemHolderInterface
      *
      * @return ItemHolderInterface|void
      */
-    public function setCharge($total);
+    public function setCharge($total): void;
 
     /**
      * 税額合計を設定します。
@@ -89,7 +89,7 @@ interface ItemHolderInterface
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
-    public function setTax($total);
+    public function setTax($total): void;
 
     /**
      * 加算ポイントを設定します。
@@ -98,14 +98,14 @@ interface ItemHolderInterface
      *
      * @return ItemHolderInterface
      */
-    public function setAddPoint($addPoint);
+    public function setAddPoint($addPoint): ItemHolderInterface;
 
     /**
      * 加算ポイントを返します.
      *
      * @return string
      */
-    public function getAddPoint();
+    public function getAddPoint(): string;
 
     /**
      * 利用ポイントを設定します。
@@ -114,47 +114,47 @@ interface ItemHolderInterface
      *
      * @return ItemHolderInterface
      */
-    public function setUsePoint($usePoint);
+    public function setUsePoint($usePoint): ItemHolderInterface;
 
     /**
      * 利用ポイントを返します.
      *
      * @return string
      */
-    public function getUsePoint();
+    public function getUsePoint(): string;
 
     /**
      * @param ItemInterface $item
      *
      * @return void
      */
-    public function addItem(ItemInterface $item);
+    public function addItem(ItemInterface $item): void;
 
     /**
      * Get customer.
      *
      * @return Customer|null
      */
-    public function getCustomer();
+    public function getCustomer(): ?Customer;
 
     /**
      * 出荷情報を追加します - 注文のみ
      *
      * @return ArrayCollection<int, Shipping>
      */
-    public function getShippings();
+    public function getShippings(): ArrayCollection;
 
     /**
      * 注文ステータスを返す - 注文のみ
      *
      * @return mixed
      */
-    public function getOrderStatus();
+    public function getOrderStatus(): mixed;
 
     /**
      * 商品の受注明細を取得 - 注文のみ
      *
      * @return OrderItem[]
      */
-    public function getProductOrderItems();
+    public function getProductOrderItems(): array;
 }

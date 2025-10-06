@@ -48,7 +48,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      * @return void
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -66,7 +66,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @return string
      */
-    private function calculateAddPoint(ItemHolderInterface $itemHolder)
+    private function calculateAddPoint(ItemHolderInterface $itemHolder): string
     {
         $basicPointRate = $this->BaseInfo->getBasicPointRate();
 
@@ -113,7 +113,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    private function supports(ItemHolderInterface $itemHolder): bool
     {
         if (!$this->BaseInfo->isOptionPoint()) {
             return false;

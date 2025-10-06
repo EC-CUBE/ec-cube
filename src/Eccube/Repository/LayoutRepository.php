@@ -39,7 +39,7 @@ class LayoutRepository extends AbstractRepository
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function get($id)
+    public function get($id): mixed
     {
         try {
             $Layout = $this->createQueryBuilder('l')

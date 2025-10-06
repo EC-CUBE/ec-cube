@@ -89,7 +89,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return $this
          */
-        public function setId($id)
+        public function setId($id): static
         {
             $this->id = $id;
 
@@ -101,7 +101,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -113,7 +113,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return $this
          */
-        public function setName($name)
+        public function setName($name): static
         {
             $this->name = $name;
 
@@ -125,7 +125,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -137,7 +137,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return $this
          */
-        public function setSortNo($sort_no)
+        public function setSortNo($sort_no): static
         {
             $this->sort_no = $sort_no;
 
@@ -149,7 +149,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -161,7 +161,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return Tag
          */
-        public function addProductTag(ProductTag $productTag)
+        public function addProductTag(ProductTag $productTag): Tag
         {
             $this->ProductTag[] = $productTag;
 
@@ -175,7 +175,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductTag(ProductTag $productTag)
+        public function removeProductTag(ProductTag $productTag): bool
         {
             return $this->ProductTag->removeElement($productTag);
         }
@@ -185,7 +185,7 @@ if (!class_exists(Tag::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int, ProductTag>
          */
-        public function getProductTag()
+        public function getProductTag(): \Doctrine\Common\Collections\Collection
         {
             return $this->ProductTag;
         }

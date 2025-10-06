@@ -46,7 +46,7 @@ class CsvFixture implements FixtureInterface
      * @return void
      */
     #[\Override]
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         if ($manager instanceof EntityManagerInterface === false) {
             return;
@@ -145,7 +145,7 @@ class CsvFixture implements FixtureInterface
      *
      * @return string INSERT 文
      */
-    public function getSql($table_name, array $headers)
+    public function getSql($table_name, array $headers): string
     {
         return 'INSERT INTO '.$table_name.' ('.implode(', ', $headers).') VALUES ('.implode(', ', array_fill(0, count($headers), '?')).')';
     }
@@ -155,7 +155,7 @@ class CsvFixture implements FixtureInterface
      *
      * @return \SplFileObject
      */
-    public function getFile()
+    public function getFile(): \SplFileObject
     {
         return $this->file;
     }

@@ -57,7 +57,7 @@ class BlockController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
     #[Template('@admin/Content/block.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -93,7 +93,7 @@ class BlockController extends AbstractController
     #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Content/block_edit.twig')]
-    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null)
+    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -197,7 +197,7 @@ class BlockController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil)
+    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 

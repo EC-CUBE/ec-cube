@@ -74,7 +74,7 @@ class PageRepository extends AbstractRepository
      *
      * @return Page
      */
-    public function getPageByRoute($route)
+    public function getPageByRoute($route): Page
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -103,7 +103,7 @@ class PageRepository extends AbstractRepository
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getByUrl($url)
+    public function getByUrl($url): Page
     {
         $qb = $this->createQueryBuilder('p');
         $Page = $qb->select('p')
@@ -119,7 +119,7 @@ class PageRepository extends AbstractRepository
     /**
      * @return Page
      */
-    public function newPage()
+    public function newPage(): Page
     {
         $Page = new Page();
         $Page->setEditType(Page::EDIT_TYPE_USER);
@@ -137,7 +137,7 @@ class PageRepository extends AbstractRepository
      *
      * @return array<int, mixed> ページ属性の配列
      */
-    public function getPageList($where = null, $parameters = [])
+    public function getPageList($where = null, $parameters = []): array
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.id <> 0')

@@ -60,7 +60,7 @@ class SchemaService
      *
      * @return void
      */
-    public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
+    public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null): void
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
@@ -127,7 +127,7 @@ class SchemaService
      *
      * @return void
      */
-    public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
+    public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false): void
     {
         $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode) {
             $tool->updateSchema($metaData, $saveMode);
@@ -141,7 +141,7 @@ class SchemaService
      *
      * @return void
      */
-    public function dropTable($targetNamespace)
+    public function dropTable($targetNamespace): void
     {
         /** @var MappingDriver $mappingDriver */
         $mappingDriver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();

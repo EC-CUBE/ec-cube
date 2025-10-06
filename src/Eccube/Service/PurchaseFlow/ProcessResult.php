@@ -52,7 +52,7 @@ class ProcessResult
      *
      * @return ProcessResult
      */
-    public static function warn($message = null, $class = null)
+    public static function warn($message = null, $class = null): ProcessResult
     {
         return new self(self::WARNING, $message, $class);
     }
@@ -63,7 +63,7 @@ class ProcessResult
      *
      * @return ProcessResult
      */
-    public static function error($message = null, $class = null)
+    public static function error($message = null, $class = null): ProcessResult
     {
         return new self(self::ERROR, $message, $class);
     }
@@ -74,7 +74,7 @@ class ProcessResult
      *
      * @return ProcessResult
      */
-    public static function success($message = null, $class = null)
+    public static function success($message = null, $class = null): ProcessResult
     {
         return new self(self::SUCCESS, $message, $class);
     }
@@ -82,7 +82,7 @@ class ProcessResult
     /**
      * @return bool
      */
-    public function isError()
+    public function isError(): bool
     {
         return $this->type === self::ERROR;
     }
@@ -90,7 +90,7 @@ class ProcessResult
     /**
      * @return bool
      */
-    public function isWarning()
+    public function isWarning(): bool
     {
         return $this->type === self::WARNING;
     }
@@ -98,7 +98,7 @@ class ProcessResult
     /**
      * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->type === self::SUCCESS;
     }
@@ -106,7 +106,7 @@ class ProcessResult
     /**
      * @return string|null
      */
-    public function getMessage()
+    public function getMessage(): ?string
     {
         return $this->message;
     }

@@ -59,7 +59,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder, $context)) {
             return;
@@ -84,7 +84,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder, $context)) {
             return;
@@ -102,7 +102,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         // 何もしない
     }
@@ -113,7 +113,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder, $context)) {
             return;
@@ -144,7 +144,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context): bool
     {
         if (!$this->pointHelper->isPointEnabled()) {
             return false;
@@ -192,7 +192,7 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return string
      */
-    protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context): string
     {
         if ($context->getOriginHolder()) {
             $fromUsePoint = $context->getOriginHolder()->getUsePoint();

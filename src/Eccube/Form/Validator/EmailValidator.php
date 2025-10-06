@@ -39,7 +39,7 @@ class EmailValidator extends ConstraintValidator
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
     #[\Override]
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Email) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Email');

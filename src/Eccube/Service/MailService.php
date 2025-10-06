@@ -114,7 +114,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl)
+    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl): void
     {
         log_info('仮会員登録メール送信開始');
 
@@ -180,7 +180,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerCompleteMail(Customer $Customer)
+    public function sendCustomerCompleteMail(Customer $Customer): void
     {
         log_info('会員登録完了メール送信開始');
 
@@ -244,7 +244,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerWithdrawMail(Customer $Customer, string $email)
+    public function sendCustomerWithdrawMail(Customer $Customer, string $email): void
     {
         log_info('退会手続き完了メール送信開始');
 
@@ -308,7 +308,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendContactMail($formData)
+    public function sendContactMail($formData): void
     {
         log_info('お問い合わせ受付メール送信開始');
 
@@ -368,7 +368,7 @@ class MailService
      *
      * @return Email
      */
-    public function sendOrderMail(Order $Order)
+    public function sendOrderMail(Order $Order): Email
     {
         log_info('受注メール送信開始');
 
@@ -448,7 +448,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendAdminCustomerConfirmMail(Customer $Customer, $activateUrl)
+    public function sendAdminCustomerConfirmMail(Customer $Customer, $activateUrl): void
     {
         log_info('仮会員登録再送メール送信開始');
 
@@ -518,7 +518,7 @@ class MailService
      * @throws RuntimeError When an error occurred during rendering
      * @throws TransportExceptionInterface
      */
-    public function sendAdminOrderMail(Order $Order, $formData)
+    public function sendAdminOrderMail(Order $Order, $formData): Email
     {
         log_info('受注管理通知メール送信開始');
 
@@ -564,7 +564,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendPasswordResetNotificationMail(Customer $Customer, $reset_url)
+    public function sendPasswordResetNotificationMail(Customer $Customer, $reset_url): void
     {
         log_info('パスワード再発行メール送信開始');
 
@@ -632,7 +632,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendPasswordResetCompleteMail(Customer $Customer, $password)
+    public function sendPasswordResetCompleteMail(Customer $Customer, $password): void
     {
         log_info('パスワード変更完了メール送信開始');
 
@@ -699,7 +699,7 @@ class MailService
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
      */
-    public function sendShippingNotifyMail(Shipping $Shipping)
+    public function sendShippingNotifyMail(Shipping $Shipping): void
     {
         log_info('出荷通知メール送信処理開始', ['id' => $Shipping->getId()]);
 
@@ -764,7 +764,7 @@ class MailService
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
      */
-    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false)
+    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false): string
     {
         /** @var OrderItem[] $OrderItems */
         $OrderItems = $Shipping->getOrderItems()->toArray();
@@ -806,7 +806,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userData, string $eventName)
+    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userData, string $eventName): void
     {
         log_info('会員情報変更通知メール送信処理開始');
         log_info($eventName);
@@ -881,7 +881,7 @@ class MailService
      *
      * @return string|null  存在する場合はファイル名を返す
      */
-    public function getHtmlTemplate($templateName)
+    public function getHtmlTemplate($templateName): ?string
     {
         // メールテンプレート名からHTMLメール用テンプレート名を生成
         $fileName = explode('.', $templateName);

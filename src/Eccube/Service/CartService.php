@@ -123,7 +123,7 @@ class CartService
      *
      * @return Cart[]
      */
-    public function getCarts($empty_delete = false)
+    public function getCarts($empty_delete = false): array
     {
         if (null !== $this->carts) {
             if ($empty_delete) {
@@ -159,7 +159,7 @@ class CartService
      *
      * @return Cart[]
      */
-    public function getPersistedCarts()
+    public function getPersistedCarts(): array
     {
         return $this->cartRepository->findBy(['Customer' => $this->getUser()]);
     }
@@ -169,7 +169,7 @@ class CartService
      *
      * @return Cart[]
      */
-    public function getSessionCarts()
+    public function getSessionCarts(): array
     {
         $cartKeys = $this->session->get('cart_keys', []);
 
@@ -185,7 +185,7 @@ class CartService
      *
      * @return void
      */
-    public function mergeFromPersistedCart()
+    public function mergeFromPersistedCart(): void
     {
         $persistedCarts = $this->getPersistedCarts();
         $sessionCarts = $this->getSessionCarts();
@@ -211,7 +211,7 @@ class CartService
     /**
      * @return Cart|null
      */
-    public function getCart()
+    public function getCart(): ?Cart
     {
         $Carts = $this->getCarts();
 
@@ -240,7 +240,7 @@ class CartService
      *
      * @return CartItem[]
      */
-    protected function mergeAllCartItems($cartItems = [])
+    protected function mergeAllCartItems($cartItems = []): array
     {
         /** @var CartItem[] $allCartItems */
         $allCartItems = [];
@@ -258,7 +258,7 @@ class CartService
      *
      * @return array<mixed>
      */
-    protected function mergeCartItems($cartItems, $allCartItems)
+    protected function mergeCartItems($cartItems, $allCartItems): array
     {
         foreach ($cartItems as $item) {
             $itemExists = false;
@@ -283,7 +283,7 @@ class CartService
      *
      * @return void
      */
-    protected function restoreCarts($cartItems)
+    protected function restoreCarts($cartItems): void
     {
         foreach ($this->getCarts() as $Cart) {
             foreach ($Cart->getCartItems() as $i) {
@@ -338,7 +338,7 @@ class CartService
      *
      * @return bool 商品を追加できた場合はtrue
      */
-    public function addProduct($ProductClass, $quantity = '1')
+    public function addProduct($ProductClass, $quantity = '1'): bool
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
@@ -375,7 +375,7 @@ class CartService
      *
      * @return bool
      */
-    public function removeProduct($ProductClass)
+    public function removeProduct($ProductClass): bool
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
@@ -409,7 +409,7 @@ class CartService
     /**
      * @return void
      */
-    public function save()
+    public function save(): void
     {
         $cartKeys = [];
         foreach ($this->carts as $Cart) {
@@ -432,7 +432,7 @@ class CartService
      *
      * @return CartService
      */
-    public function setPreOrderId($pre_order_id)
+    public function setPreOrderId($pre_order_id): CartService
     {
         $this->getCart()->setPreOrderId($pre_order_id);
 
@@ -442,7 +442,7 @@ class CartService
     /**
      * @return string|null
      */
-    public function getPreOrderId()
+    public function getPreOrderId(): ?string
     {
         $Cart = $this->getCart();
         if (!empty($Cart)) {
@@ -455,7 +455,7 @@ class CartService
     /**
      * @return CartService
      */
-    public function clear()
+    public function clear(): CartService
     {
         $Carts = $this->getCarts();
         if (!empty($Carts)) {
@@ -487,7 +487,7 @@ class CartService
      *
      * @return void
      */
-    public function setCartItemComparator($cartItemComparator)
+    public function setCartItemComparator($cartItemComparator): void
     {
         $this->cartItemComparator = $cartItemComparator;
     }
@@ -499,7 +499,7 @@ class CartService
      *
      * @return void
      */
-    public function setPrimary($cartKey)
+    public function setPrimary($cartKey): void
     {
         $Carts = $this->getCarts();
         $primary = $Carts[0];
@@ -521,7 +521,7 @@ class CartService
     /**
      * @return \Symfony\Component\Security\Core\User\UserInterface|void|null
      */
-    protected function getUser()
+    protected function getUser(): void
     {
         if (null === $token = $this->tokenStorage->getToken()) {
             return;
@@ -541,7 +541,7 @@ class CartService
      *
      * @return string
      */
-    protected function createCartKey($allocatedId, ?Customer $Customer = null)
+    protected function createCartKey($allocatedId, ?Customer $Customer = null): string
     {
         if ($Customer instanceof Customer) {
             return $Customer->getId().'_'.$allocatedId;

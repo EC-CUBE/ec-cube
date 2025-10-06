@@ -56,7 +56,7 @@ class LogType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $files = [];
         $finder = new Finder();
@@ -99,7 +99,7 @@ class LogType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_system_log';
     }

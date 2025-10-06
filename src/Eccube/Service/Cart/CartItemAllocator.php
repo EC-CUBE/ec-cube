@@ -27,5 +27,5 @@ interface CartItemAllocator
      *
      * @return string
      */
-    public function allocate(CartItem $Item);
+    public function allocate(CartItem $Item): string;
 }

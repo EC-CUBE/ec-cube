@@ -120,7 +120,7 @@ class InstallerCommand extends Command
             /**
              * @return array<string,mixed>
              */
-            private function getEnvParameters()
+            private function getEnvParameters(): array
             {
                 return [
                     'APP_ENV' => $this->appEnv,
@@ -142,7 +142,7 @@ class InstallerCommand extends Command
              *
              * @return void
              */
-            public function updateEnvFile()
+            public function updateEnvFile(): void
             {
                 // $envDir = $this->eccubeConfig->get('kernel.project_dir');
                 $envFile = $this->envDir.'/.env';
@@ -163,7 +163,7 @@ class InstallerCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Install EC-CUBE');
@@ -176,7 +176,7 @@ class InstallerCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
         $this->io->text([
@@ -281,13 +281,13 @@ class InstallerCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
@@ -341,7 +341,7 @@ class InstallerCommand extends Command
      *
      * @return string
      */
-    protected function getDatabaseName($databaseUrl)
+    protected function getDatabaseName($databaseUrl): string
     {
         if (str_starts_with((string) $databaseUrl, 'sqlite')) {
             return 'sqlite';
@@ -363,7 +363,7 @@ class InstallerCommand extends Command
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function getDatabaseServerVersion($databaseUrl)
+    protected function getDatabaseServerVersion($databaseUrl): mixed
     {
         try {
             $conn = DriverManager::getConnection([

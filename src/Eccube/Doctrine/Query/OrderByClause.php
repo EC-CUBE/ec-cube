@@ -43,7 +43,7 @@ class OrderByClause
     /**
      * @return string
      */
-    public function getSort()
+    public function getSort(): string
     {
         return $this->sort;
     }
@@ -51,7 +51,7 @@ class OrderByClause
     /**
      * @return string
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return $this->order;
     }

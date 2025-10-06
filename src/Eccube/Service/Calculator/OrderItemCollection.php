@@ -45,7 +45,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      *
      * @return mixed|null
      */
-    public function reduce(\Closure $func, $initial = null)
+    public function reduce(\Closure $func, $initial = null): mixed
     {
         return array_reduce($this->toArray(), $func, $initial);
     }
@@ -55,7 +55,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      *
      * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
-    public function getProductClasses()
+    public function getProductClasses(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -66,7 +66,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
-    public function getDeliveryFees()
+    public function getDeliveryFees(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -77,7 +77,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
-    public function getCharges()
+    public function getCharges(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -88,7 +88,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
      */
-    public function getDiscounts()
+    public function getDiscounts(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -105,7 +105,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      *
      * @return bool
      */
-    public function hasProductByName($productName)
+    public function hasProductByName($productName): bool
     {
         $OrderItems = $this->filter(
             function (ItemInterface $OrderItem) use ($productName) {
@@ -123,7 +123,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      *
      * @return bool
      */
-    public function hasItemByOrderItemType($OrderItemType)
+    public function hasItemByOrderItemType($OrderItemType): bool
     {
         $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
             /* @var OrderItem $OrderItem */
@@ -136,7 +136,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     /**
      * @return mixed|string
      */
-    public function getType()
+    public function getType(): mixed
     {
         return $this->type;
     }

@@ -39,7 +39,7 @@ class ShippingRepository extends AbstractRepository
      *
      * @return Shipping[]
      */
-    public function findShippingsProduct($Order, $productClass)
+    public function findShippingsProduct($Order, $productClass): array
     {
         $shippings = $this->createQueryBuilder('s')
             ->innerJoin(\Eccube\Entity\OrderItem::class, 'si', 'WITH', 'si.Shipping = s.id')

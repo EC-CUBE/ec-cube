@@ -45,7 +45,7 @@ class CalendarRepository extends AbstractRepository
      *
      * @throws \Exception
      */
-    public function get($id = 1)
+    public function get($id = 1): Calendar
     {
         $calendar = $this->find($id);
 
@@ -61,7 +61,7 @@ class CalendarRepository extends AbstractRepository
      *
      * @return array<int, Calendar>|null
      */
-    public function getListOrderByIdDesc()
+    public function getListOrderByIdDesc(): ?array
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC');
@@ -79,7 +79,7 @@ class CalendarRepository extends AbstractRepository
      *
      * @return array<int, Calendar>|null
      */
-    public function getHolidayList(Carbon $startDate, Carbon $endDate)
+    public function getHolidayList(Carbon $startDate, Carbon $endDate): ?array
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
@@ -106,7 +106,7 @@ class CalendarRepository extends AbstractRepository
      * @throws OptimisticLockException
      */
     #[\Override]
-    public function delete($Calendar)
+    public function delete($Calendar): void
     {
         if (!$Calendar instanceof Calendar) {
             $Calendar = $this->find($Calendar);

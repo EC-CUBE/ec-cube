@@ -25,7 +25,7 @@ class OutputParser
      *
      * @return array<string,array<string,string>>
      */
-    public static function parseRequire($output)
+    public static function parseRequire($output): array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $installedLogs = array_filter(
@@ -51,7 +51,7 @@ class OutputParser
      *
      * @return array<int|string,array<int,string>|string>
      */
-    public static function parseInfo($output)
+    public static function parseInfo($output): array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $infoLogs = array_filter(array_map(function ($line) {
@@ -76,7 +76,7 @@ class OutputParser
      *
      * @return array|mixed
      */
-    public static function parseConfig($output)
+    public static function parseConfig($output): mixed
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rowArray = array_filter($rowArray, function ($line) {
@@ -93,7 +93,7 @@ class OutputParser
      *
      * @return array<mixed>
      */
-    public static function parseList($output)
+    public static function parseList($output): array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rawConfig = array_map(function ($line) {
@@ -125,7 +125,7 @@ class OutputParser
      *
      * @return array<string, string>
      */
-    private static function parseArrayInfoOutput($rowArray, $key)
+    private static function parseArrayInfoOutput($rowArray, $key): array
     {
         $result = [];
         $start = false;
@@ -153,7 +153,7 @@ class OutputParser
      *
      * @return array|mixed|string
      */
-    public static function parseComposerVersion($output)
+    public static function parseComposerVersion($output): mixed
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rowArray = array_filter($rowArray, function ($line) {

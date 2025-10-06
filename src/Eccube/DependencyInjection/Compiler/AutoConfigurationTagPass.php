@@ -37,7 +37,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
      * @return void
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             $this->configureDoctrineEventSubscriberTag($definition);
@@ -51,7 +51,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
      *
      * @return void
      */
-    protected function configureDoctrineEventSubscriberTag(Definition $definition)
+    protected function configureDoctrineEventSubscriberTag(Definition $definition): void
     {
         $class = $definition->getClass();
         if (!is_subclass_of($class, EventSubscriber::class)) {
@@ -71,7 +71,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
      *
      * @return void
      */
-    protected function configureRateLimiterTag($id, Definition $definition)
+    protected function configureRateLimiterTag($id, Definition $definition): void
     {
         if (\str_starts_with((string) $id, 'limiter')
             && $definition instanceof ChildDefinition
@@ -87,7 +87,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
      *
      * @return void
      */
-    protected function configurePaymentMethodTag($id, Definition $definition)
+    protected function configurePaymentMethodTag($id, Definition $definition): void
     {
         $class = $definition->getClass();
         if (is_subclass_of((string) $class, PaymentMethodInterface::class) && !$definition->isAbstract()) {

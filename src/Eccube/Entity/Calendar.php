@@ -41,7 +41,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return bool
          */
-        public function isDefaultCalendar()
+        public function isDefaultCalendar(): bool
         {
             return self::DEFAULT_CALENDAR_ID === $this->getId();
         }
@@ -92,7 +92,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -104,7 +104,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return Calendar
          */
-        public function setTitle($title)
+        public function setTitle($title): Calendar
         {
             $this->title = $title;
 
@@ -116,7 +116,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return string
          */
-        public function getTitle()
+        public function getTitle(): string
         {
             return $this->title;
         }
@@ -128,7 +128,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return Calendar
          */
-        public function setHoliday($holiday)
+        public function setHoliday($holiday): Calendar
         {
             $this->holiday = $holiday;
 
@@ -140,7 +140,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return \DateTime
          */
-        public function getHoliday()
+        public function getHoliday(): \DateTime
         {
             return $this->holiday;
         }
@@ -152,7 +152,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return Calendar
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Calendar
         {
             $this->create_date = $createDate;
 
@@ -164,7 +164,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -176,7 +176,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return Calendar
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Calendar
         {
             $this->update_date = $updateDate;
 
@@ -188,7 +188,7 @@ if (!class_exists(Calendar::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }

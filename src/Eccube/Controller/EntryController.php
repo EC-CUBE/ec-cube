@@ -125,7 +125,7 @@ class EntryController extends AbstractController
     #[Route('/entry', name: 'entry', methods: ['GET', 'POST'])]
     #[Route('/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
     #[Template('Entry/index.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($this->isGranted('ROLE_USER')) {
             log_info('認証済のためログイン処理をスキップ');
@@ -228,7 +228,7 @@ class EntryController extends AbstractController
      */
     #[Route('/entry/complete', name: 'entry_complete', methods: ['GET'])]
     #[Template('Entry/complete.twig')]
-    public function complete()
+    public function complete(): array
     {
         return [];
     }
@@ -246,7 +246,7 @@ class EntryController extends AbstractController
      */
     #[Route('/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
     #[Template('Entry/activate.twig')]
-    public function activate(Request $request, $secret_key, $qtyInCart = null)
+    public function activate(Request $request, $secret_key, $qtyInCart = null): array
     {
         $errors = $this->recursiveValidator->validate(
             $secret_key,
@@ -288,7 +288,7 @@ class EntryController extends AbstractController
      *
      * @return \Eccube\Entity\Cart|mixed
      */
-    private function entryActivate(Request $request, $secret_key)
+    private function entryActivate(Request $request, $secret_key): mixed
     {
         log_info('本会員登録開始');
         $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);

@@ -69,7 +69,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      * @return void
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;
@@ -96,7 +96,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
      *
      * @return void
      */
-    protected function addChargeItem(ItemHolderInterface $itemHolder)
+    protected function addChargeItem(ItemHolderInterface $itemHolder): void
     {
         /** @var Order $itemHolder */
         /** @var OrderItemType $OrderItemType */

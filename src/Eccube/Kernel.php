@@ -132,7 +132,7 @@ class Kernel extends BaseKernel
      * @return void
      */
     #[\Override]
-    public function boot()
+    public function boot(): void
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
         // $this->loadEntityProxies();
@@ -173,7 +173,7 @@ class Kernel extends BaseKernel
      *
      * @throws \Exception
      */
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $confDir = $this->getProjectDir().'/app/config/eccube';
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
@@ -199,7 +199,7 @@ class Kernel extends BaseKernel
      *
      * @return void
      */
-    protected function configureRoutes(RoutingConfigurator $routes)
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $container = $this->getContainer();
 
@@ -245,7 +245,7 @@ class Kernel extends BaseKernel
      * @return void
      */
     #[\Override]
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         $this->addEntityExtensionPass($container);
 
@@ -308,7 +308,7 @@ class Kernel extends BaseKernel
      *
      * @return void
      */
-    protected function addEntityExtensionPass(ContainerBuilder $container)
+    protected function addEntityExtensionPass(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
@@ -352,7 +352,7 @@ class Kernel extends BaseKernel
     /**
      * @return void
      */
-    protected function loadEntityProxies()
+    protected function loadEntityProxies(): void
     {
         // see https://github.com/EC-CUBE/ec-cube/issues/4727
         // キャッシュクリアなど、コード内でコマンドを利用している場合に2回実行されてしまう

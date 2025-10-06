@@ -31,7 +31,7 @@ trait PointRateTrait
      *
      * @return $this
      */
-    public function setPointRate($pointRate)
+    public function setPointRate($pointRate): static
     {
         $this->point_rate = $pointRate;
 
@@ -43,7 +43,7 @@ trait PointRateTrait
      *
      * @return string
      */
-    public function getPointRate()
+    public function getPointRate(): string
     {
         return $this->point_rate;
     }

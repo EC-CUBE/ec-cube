@@ -40,13 +40,13 @@ class ComposerRemoveCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('package', InputArgument::REQUIRED);
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execRemove($input->getArgument('package'), $output);
 

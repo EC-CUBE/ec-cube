@@ -31,7 +31,7 @@ class EccubeLogoutSuccessHandler implements EventSubscriberInterface
     /**
      * @return void
      */
-    public function onLogout(LogoutEvent $event)
+    public function onLogout(LogoutEvent $event): void
     {
         if ($this->context->isAdmin()) {
             $response = $event->getResponse();
@@ -43,7 +43,7 @@ class EccubeLogoutSuccessHandler implements EventSubscriberInterface
      * @return array<string, string>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [LogoutEvent::class => 'onLogout'];
     }

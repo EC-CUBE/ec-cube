@@ -47,7 +47,7 @@ class Context
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         $request = $this->requestStack->getMainRequest();
 
@@ -67,7 +67,7 @@ class Context
      *
      * @return bool
      */
-    public function isFront()
+    public function isFront(): bool
     {
         $request = $this->requestStack->getMainRequest();
 
@@ -81,7 +81,7 @@ class Context
     /**
      * @return UserInterface|null
      */
-    public function getCurrentUser()
+    public function getCurrentUser(): ?UserInterface
     {
         $request = $this->requestStack->getMainRequest();
 

@@ -102,7 +102,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -114,7 +114,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return LoginHistory
          */
-        public function setUserName($userName)
+        public function setUserName($userName): LoginHistory
         {
             $this->user_name = $userName;
 
@@ -126,7 +126,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return string
          */
-        public function getUserName()
+        public function getUserName(): string
         {
             return $this->user_name;
         }
@@ -136,7 +136,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return LoginHistory
          */
-        public function setStatus($Status)
+        public function setStatus($Status): LoginHistory
         {
             $this->Status = $Status;
 
@@ -146,7 +146,7 @@ if (!class_exists(LoginHistory::class)) {
         /**
          * @return LoginHistoryStatus
          */
-        public function getStatus()
+        public function getStatus(): LoginHistoryStatus
         {
             return $this->Status;
         }
@@ -158,7 +158,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return LoginHistory
          */
-        public function setClientIp($clientIp)
+        public function setClientIp($clientIp): LoginHistory
         {
             $this->client_ip = $clientIp;
 
@@ -170,7 +170,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return string
          */
-        public function getClientIp()
+        public function getClientIp(): string
         {
             return $this->client_ip;
         }
@@ -182,7 +182,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return LoginHistory
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): LoginHistory
         {
             $this->create_date = $createDate;
 
@@ -194,7 +194,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -206,7 +206,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return LoginHistory
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): LoginHistory
         {
             $this->update_date = $updateDate;
 
@@ -218,7 +218,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -230,7 +230,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return LoginHistory
          */
-        public function setLoginUser(?Member $loginUser = null)
+        public function setLoginUser(?Member $loginUser = null): LoginHistory
         {
             $this->LoginUser = $loginUser;
 
@@ -242,7 +242,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return Member
          */
-        public function getLoginUser()
+        public function getLoginUser(): Member
         {
             return $this->LoginUser;
         }

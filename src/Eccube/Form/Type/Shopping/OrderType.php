@@ -96,7 +96,7 @@ class OrderType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
         if ($options['skip_add_form']) {
@@ -193,7 +193,7 @@ class OrderType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -204,7 +204,7 @@ class OrderType extends AbstractType
     }
 
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return '_shopping_order';
     }
@@ -216,7 +216,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null)
+    private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null): void
     {
         $message = trans('front.shopping.payment_method_unselected');
 
@@ -246,7 +246,7 @@ class OrderType extends AbstractType
      *
      * @return Delivery[]
      */
-    private function getDeliveries(Order $Order)
+    private function getDeliveries(Order $Order): array
     {
         $Deliveries = [];
         foreach ($Order->getShippings() as $Shipping) {
@@ -267,7 +267,7 @@ class OrderType extends AbstractType
      *
      * @return ArrayCollection<int, Payment>
      */
-    private function getPayments($Deliveries)
+    private function getPayments($Deliveries): ArrayCollection
     {
         $PaymentsByDeliveries = [];
         foreach ($Deliveries as $Delivery) {
@@ -307,7 +307,7 @@ class OrderType extends AbstractType
      *
      * @return Payment[]
      */
-    private function filterPayments(ArrayCollection $Payments, $total)
+    private function filterPayments(ArrayCollection $Payments, $total): array
     {
         $PaymentArrays = $Payments->filter(function (Payment $Payment) use ($total) {
             $charge = $Payment->getCharge();

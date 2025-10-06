@@ -44,7 +44,7 @@ class TagController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/product/tag', name: 'admin_product_tag', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/tag.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         $Tag = new Tag();
         $Tags = $this->tagRepository->getList();
@@ -131,7 +131,7 @@ class TagController extends AbstractController
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/tag/{id}/delete', name: 'admin_product_tag_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Tag $Tag)
+    public function delete(Request $request, Tag $Tag): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -166,7 +166,7 @@ class TagController extends AbstractController
      * @return Response
      */
     #[Route('/%eccube_admin_route%/product/tag/sort_no/move', name: 'admin_product_tag_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request)
+    public function moveSortNo(Request $request): Response
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             $sortNos = $request->request->all();
@@ -190,7 +190,7 @@ class TagController extends AbstractController
      *
      * @return void
      */
-    protected function dispatchComplete(Request $request, FormInterface $form, Tag $Tag)
+    protected function dispatchComplete(Request $request, FormInterface $form, Tag $Tag): void
     {
         $event = new EventArgs(
             [

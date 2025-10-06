@@ -23,7 +23,7 @@ use Twig\NodeVisitor\NodeVisitorInterface;
 class TemplateEventExtension extends AbstractExtension
 {
     #[\Override]
-    public function getNodeVisitors()
+    public function getNodeVisitors(): array
     {
         return [new TemplateEventNodeVisiror()];
     }
@@ -51,7 +51,7 @@ class TemplateEventNodeVisiror implements NodeVisitorInterface
     }
 
     #[\Override]
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -60,7 +60,7 @@ class TemplateEventNodeVisiror implements NodeVisitorInterface
 class TemplateEventNode extends Node
 {
     #[\Override]
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->write('$__eccube__gblobal = $this->env->getGlobals();')

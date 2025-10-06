@@ -128,7 +128,7 @@ if (!class_exists(News::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -140,7 +140,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setPublishDate($publishDate = null)
+        public function setPublishDate($publishDate = null): News
         {
             $this->publish_date = $publishDate;
 
@@ -152,7 +152,7 @@ if (!class_exists(News::class)) {
          *
          * @return \DateTime|null
          */
-        public function getPublishDate()
+        public function getPublishDate(): ?\DateTime
         {
             return $this->publish_date;
         }
@@ -164,7 +164,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setTitle($title)
+        public function setTitle($title): News
         {
             $this->title = $title;
 
@@ -176,7 +176,7 @@ if (!class_exists(News::class)) {
          *
          * @return string
          */
-        public function getTitle()
+        public function getTitle(): string
         {
             return $this->title;
         }
@@ -188,7 +188,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setDescription($description = null)
+        public function setDescription($description = null): News
         {
             $this->description = $description;
 
@@ -200,7 +200,7 @@ if (!class_exists(News::class)) {
          *
          * @return string|null
          */
-        public function getDescription()
+        public function getDescription(): ?string
         {
             return $this->description;
         }
@@ -212,7 +212,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setUrl($url = null)
+        public function setUrl($url = null): News
         {
             $this->url = $url;
 
@@ -224,7 +224,7 @@ if (!class_exists(News::class)) {
          *
          * @return string|null
          */
-        public function getUrl()
+        public function getUrl(): ?string
         {
             return $this->url;
         }
@@ -236,7 +236,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setLinkMethod($linkMethod)
+        public function setLinkMethod($linkMethod): News
         {
             $this->link_method = $linkMethod;
 
@@ -248,7 +248,7 @@ if (!class_exists(News::class)) {
          *
          * @return bool
          */
-        public function isLinkMethod()
+        public function isLinkMethod(): bool
         {
             return $this->link_method;
         }
@@ -260,7 +260,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): News
         {
             $this->create_date = $createDate;
 
@@ -272,7 +272,7 @@ if (!class_exists(News::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -284,7 +284,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): News
         {
             $this->update_date = $updateDate;
 
@@ -296,7 +296,7 @@ if (!class_exists(News::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -304,7 +304,7 @@ if (!class_exists(News::class)) {
         /**
          * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
         }
@@ -314,7 +314,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setVisible($visible)
+        public function setVisible($visible): News
         {
             $this->visible = $visible;
 
@@ -328,7 +328,7 @@ if (!class_exists(News::class)) {
          *
          * @return News
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): News
         {
             $this->Creator = $creator;
 
@@ -340,7 +340,7 @@ if (!class_exists(News::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

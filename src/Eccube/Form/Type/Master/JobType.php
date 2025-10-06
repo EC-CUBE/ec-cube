@@ -27,7 +27,7 @@ class JobType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => \Eccube\Entity\Master\Job::class,
@@ -39,7 +39,7 @@ class JobType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'job';
     }
@@ -48,7 +48,7 @@ class JobType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): ?string
     {
         return MasterType::class;
     }

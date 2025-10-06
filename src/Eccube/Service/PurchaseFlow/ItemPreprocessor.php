@@ -26,5 +26,5 @@ interface ItemPreprocessor
      *
      * @return void
      */
-    public function process(ItemInterface $item, PurchaseContext $context);
+    public function process(ItemInterface $item, PurchaseContext $context): void;
 }

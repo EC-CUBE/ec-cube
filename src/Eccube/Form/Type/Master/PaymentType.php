@@ -28,7 +28,7 @@ class PaymentType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => \Eccube\Entity\Payment::class,
@@ -48,7 +48,7 @@ class PaymentType extends AbstractType
      * @return string
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'payment';
     }
@@ -59,7 +59,7 @@ class PaymentType extends AbstractType
      * @return string
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }

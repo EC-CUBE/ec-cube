@@ -28,7 +28,7 @@ class Step5Type extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('no_update', CheckboxType::class, [
@@ -42,7 +42,7 @@ class Step5Type extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'install_step5';
     }

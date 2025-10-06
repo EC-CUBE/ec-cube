@@ -51,7 +51,7 @@ class AddressType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $options['pref_options']['required'] = $options['required'];
         $options['addr01_options']['required'] = $options['required'];
@@ -97,7 +97,7 @@ class AddressType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $builder = $form->getConfig();
         $view->vars['pref_name'] = $builder->getAttribute('pref_name');
@@ -113,7 +113,7 @@ class AddressType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'options' => [],
@@ -146,7 +146,7 @@ class AddressType extends AbstractType
     }
 
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'address';
     }

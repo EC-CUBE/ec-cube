@@ -37,7 +37,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
     /**
      * @return object|null
      */
-    public function getTaxRuleService()
+    public function getTaxRuleService(): ?object
     {
         return $this->taxRuleService;
     }
@@ -46,7 +46,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
      * @return array|string[]
      */
     #[\Override]
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::prePersist,
@@ -61,7 +61,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
@@ -78,7 +78,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
@@ -95,7 +95,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
@@ -112,7 +112,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 

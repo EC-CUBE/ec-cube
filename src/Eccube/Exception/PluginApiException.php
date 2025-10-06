@@ -36,7 +36,7 @@ class PluginApiException extends \Exception
      *
      * @return string
      */
-    private static function getResponseErrorMessage($info)
+    private static function getResponseErrorMessage($info): string
     {
         if (!empty($info)) {
             $messageId = 'admin.store.package.api.'.$info['http_code'].'.error';
@@ -56,7 +56,7 @@ class PluginApiException extends \Exception
     /**
      * @return array<string, array<string, string>|null>
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return [
             'curlInfo' => $this->curlInfo,

@@ -53,7 +53,7 @@ class OrderStatusRepository extends AbstractRepository
      *
      * @see EntityRepository::findBy()
      */
-    public function findNotContainsBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+    public function findNotContainsBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
     {
         $qb = $this->createQueryBuilder('o');
 
@@ -87,7 +87,7 @@ class OrderStatusRepository extends AbstractRepository
      *
      * @return array<int, array<int, mixed>>
      */
-    public function findAllArray()
+    public function findAllArray(): array
     {
         $query = $this
             ->getEntityManager()

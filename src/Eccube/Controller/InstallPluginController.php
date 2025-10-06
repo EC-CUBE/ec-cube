@@ -57,7 +57,7 @@ class InstallPluginController extends InstallController
      * @return JsonResponse
      */
     #[Route('/install/plugins', name: 'install_plugins', methods: ['GET'])]
-    public function plugins(Request $request)
+    public function plugins(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -90,7 +90,7 @@ class InstallPluginController extends InstallController
      * @throws PluginException
      */
     #[Route('/install/plugin/{code}/enable', name: 'install_plugin_enable', requirements: ['code' => '\w+'], methods: ['PUT'])]
-    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher)
+    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -142,7 +142,7 @@ class InstallPluginController extends InstallController
      * @return RedirectResponse
      */
     #[Route('/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
-    public function redirectAdmin(Request $request)
+    public function redirectAdmin(Request $request): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -172,7 +172,7 @@ class InstallPluginController extends InstallController
      *
      * @return bool
      */
-    public function isValidTransaction($token)
+    public function isValidTransaction($token): bool
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
@@ -201,7 +201,7 @@ class InstallPluginController extends InstallController
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
-    public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher)
+    public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -235,7 +235,7 @@ class InstallPluginController extends InstallController
     /**
      * @return void
      */
-    private function clearCacheOnTerminate()
+    private function clearCacheOnTerminate(): void
     {
         // KernelEvents::TERMINATE で強制的にキャッシュを削除する
         // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083

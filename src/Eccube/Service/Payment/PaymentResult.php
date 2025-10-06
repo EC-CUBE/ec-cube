@@ -44,7 +44,7 @@ class PaymentResult
      *
      * @return PaymentResult
      */
-    public function setSuccess($success)
+    public function setSuccess($success): PaymentResult
     {
         $this->success = $success;
 
@@ -58,7 +58,7 @@ class PaymentResult
      *
      * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->success;
     }
@@ -68,7 +68,7 @@ class PaymentResult
      *
      * @return array<int, string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -80,7 +80,7 @@ class PaymentResult
      *
      * @return PaymentResult
      */
-    public function setErrors(array $errors)
+    public function setErrors(array $errors): PaymentResult
     {
         $this->errors = $errors;
 
@@ -96,7 +96,7 @@ class PaymentResult
      *
      * @return PaymentResult
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): PaymentResult
     {
         $this->response = $response;
 
@@ -108,7 +108,7 @@ class PaymentResult
      *
      * @return Response
      */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
     }

@@ -114,7 +114,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -126,7 +126,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return MailTemplate
          */
-        public function setName($name = null)
+        public function setName($name = null): MailTemplate
         {
             $this->name = $name;
 
@@ -138,7 +138,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
@@ -150,7 +150,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return MailTemplate
          */
-        public function setFileName($fileName = null)
+        public function setFileName($fileName = null): MailTemplate
         {
             $this->file_name = $fileName;
 
@@ -162,7 +162,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return string|null
          */
-        public function getFileName()
+        public function getFileName(): ?string
         {
             return $this->file_name;
         }
@@ -174,7 +174,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return MailTemplate
          */
-        public function setMailSubject($mailSubject = null)
+        public function setMailSubject($mailSubject = null): MailTemplate
         {
             $this->mail_subject = $mailSubject;
 
@@ -186,7 +186,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return string|null
          */
-        public function getMailSubject()
+        public function getMailSubject(): ?string
         {
             return $this->mail_subject;
         }
@@ -198,7 +198,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return MailTemplate
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): MailTemplate
         {
             $this->create_date = $createDate;
 
@@ -210,7 +210,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -222,7 +222,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return MailTemplate
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): MailTemplate
         {
             $this->update_date = $updateDate;
 
@@ -234,7 +234,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -246,7 +246,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return MailTemplate
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): MailTemplate
         {
             $this->Creator = $creator;
 
@@ -258,7 +258,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
@@ -276,7 +276,7 @@ if (!class_exists(MailTemplate::class)) {
          *
          * @return $this
          */
-        public function setDeletable(bool $deletable): self
+        public function setDeletable(bool $deletable): static
         {
             $this->deletable = $deletable;
 

@@ -91,7 +91,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return PageLayout
          */
-        public function setPageId($pageId)
+        public function setPageId($pageId): PageLayout
         {
             $this->page_id = $pageId;
 
@@ -103,7 +103,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return int
          */
-        public function getPageId()
+        public function getPageId(): int
         {
             return $this->page_id;
         }
@@ -115,7 +115,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return PageLayout
          */
-        public function setLayoutId($layoutId)
+        public function setLayoutId($layoutId): PageLayout
         {
             $this->layout_id = $layoutId;
 
@@ -127,7 +127,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return int
          */
-        public function getLayoutId()
+        public function getLayoutId(): int
         {
             return $this->layout_id;
         }
@@ -139,7 +139,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return PageLayout
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): PageLayout
         {
             $this->sort_no = $sortNo;
 
@@ -151,7 +151,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -163,7 +163,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return PageLayout
          */
-        public function setPage(?Page $Page = null)
+        public function setPage(?Page $Page = null): PageLayout
         {
             $this->Page = $Page;
 
@@ -175,7 +175,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return Page
          */
-        public function getPage()
+        public function getPage(): Page
         {
             return $this->Page;
         }
@@ -187,7 +187,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return PageLayout
          */
-        public function setLayout(?Layout $layout = null)
+        public function setLayout(?Layout $layout = null): PageLayout
         {
             $this->Layout = $layout;
 
@@ -199,7 +199,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return Layout
          */
-        public function getLayout()
+        public function getLayout(): Layout
         {
             return $this->Layout;
         }
@@ -210,7 +210,7 @@ if (!class_exists(PageLayout::class)) {
          *
          * @return int|null
          */
-        public function getDeviceTypeId()
+        public function getDeviceTypeId(): ?int
         {
             if ($this->Layout->getDeviceType()) {
                 return $this->Layout->getDeviceType()->getId();

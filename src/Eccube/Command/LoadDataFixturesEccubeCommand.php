@@ -47,7 +47,7 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Load data fixtures to your database.')
@@ -60,7 +60,7 @@ EOF
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $em = $this->getEntityManager($this->getDoctrine()->getDefaultManagerName());
 

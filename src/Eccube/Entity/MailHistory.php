@@ -110,7 +110,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -122,7 +122,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return MailHistory
          */
-        public function setSendDate($sendDate = null)
+        public function setSendDate($sendDate = null): MailHistory
         {
             $this->send_date = $sendDate;
 
@@ -134,7 +134,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return \DateTime|null
          */
-        public function getSendDate()
+        public function getSendDate(): ?\DateTime
         {
             return $this->send_date;
         }
@@ -146,7 +146,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return MailHistory
          */
-        public function setMailSubject($mailSubject = null)
+        public function setMailSubject($mailSubject = null): MailHistory
         {
             $this->mail_subject = $mailSubject;
 
@@ -158,7 +158,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return string|null
          */
-        public function getMailSubject()
+        public function getMailSubject(): ?string
         {
             return $this->mail_subject;
         }
@@ -170,7 +170,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return MailHistory
          */
-        public function setMailBody($mailBody = null)
+        public function setMailBody($mailBody = null): MailHistory
         {
             $this->mail_body = $mailBody;
 
@@ -182,7 +182,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return string|null
          */
-        public function getMailBody()
+        public function getMailBody(): ?string
         {
             return $this->mail_body;
         }
@@ -194,7 +194,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return MailHistory
          */
-        public function setMailHtmlBody($mailHtmlBody = null)
+        public function setMailHtmlBody($mailHtmlBody = null): MailHistory
         {
             $this->mail_html_body = $mailHtmlBody;
 
@@ -206,7 +206,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return string|null
          */
-        public function getMailHtmlBody()
+        public function getMailHtmlBody(): ?string
         {
             return $this->mail_html_body;
         }
@@ -218,7 +218,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return MailHistory
          */
-        public function setOrder(?Order $order = null)
+        public function setOrder(?Order $order = null): MailHistory
         {
             $this->Order = $order;
 
@@ -230,7 +230,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return Order|null
          */
-        public function getOrder()
+        public function getOrder(): ?Order
         {
             return $this->Order;
         }
@@ -242,7 +242,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return MailHistory
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): MailHistory
         {
             $this->Creator = $creator;
 
@@ -254,7 +254,7 @@ if (!class_exists(MailHistory::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

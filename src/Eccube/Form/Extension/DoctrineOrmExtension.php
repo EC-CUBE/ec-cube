@@ -56,7 +56,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -104,7 +104,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
      * @return void
      */
     #[\Override]
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $options = $form->getConfig()->getOption('eccube_form_options');
 
@@ -129,7 +129,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault(
             'eccube_form_options',

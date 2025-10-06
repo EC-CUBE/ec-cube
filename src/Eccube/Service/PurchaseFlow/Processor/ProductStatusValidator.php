@@ -33,7 +33,7 @@ class ProductStatusValidator extends ItemValidator
      * @throws InvalidItemException 商品が公開されていない場合
      */
     #[\Override]
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if ($item->isProduct()) {
             $ProductClass = $item->getProductClass();
@@ -55,7 +55,7 @@ class ProductStatusValidator extends ItemValidator
      * @return void
      */
     #[\Override]
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $item->setQuantity('0');
     }

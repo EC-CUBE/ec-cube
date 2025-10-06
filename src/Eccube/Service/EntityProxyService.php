@@ -61,7 +61,7 @@ class EntityProxyService
      *
      * @throws \ReflectionException
      */
-    public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null)
+    public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null): array
     {
         if (is_null($output)) {
             $output = new ConsoleOutput();
@@ -158,7 +158,7 @@ class EntityProxyService
      *
      * @throws \ReflectionException
      */
-    private function scanTraits($dirSets)
+    private function scanTraits($dirSets): array
     {
         // ディレクトリセットごとのファイルをロードしつつ一覧を作成
         $includedFileSets = [];
@@ -223,7 +223,7 @@ class EntityProxyService
      *
      * @return void
      */
-    private function addTrait($entityTokens, $trait)
+    private function addTrait($entityTokens, $trait): void
     {
         $newTraitTokens = $this->convertTraitNameToTokens($trait);
 
@@ -267,7 +267,7 @@ class EntityProxyService
      *
      * @return void
      */
-    private function removeTrait($entityTokens, $trait)
+    private function removeTrait($entityTokens, $trait): void
     {
         $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
         if ($useTraitIndex > 0) {
@@ -309,7 +309,7 @@ class EntityProxyService
      *
      * @return array<int, Token>|Token[]
      */
-    private function convertTraitNameToTokens($name)
+    private function convertTraitNameToTokens($name): array
     {
         $result = [];
         $i = 0;
@@ -336,7 +336,7 @@ class EntityProxyService
      *
      * @return void
      */
-    private function removeClassExistsBlock(Tokens $entityTokens)
+    private function removeClassExistsBlock(Tokens $entityTokens): void
     {
         $startIndex = $entityTokens->getNextTokenOfKind(0, [[T_IF]]);
         $classIndex = $entityTokens->getNextTokenOfKind(0, [[T_CLASS]]);

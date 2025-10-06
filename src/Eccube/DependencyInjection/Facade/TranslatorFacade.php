@@ -36,7 +36,7 @@ class TranslatorFacade
      *
      * @return TranslatorFacade|null
      */
-    public static function init(TranslatorInterface $Translator)
+    public static function init(TranslatorInterface $Translator): ?TranslatorFacade
     {
         if (null === self::$instance) {
             self::$instance = new self($Translator);
@@ -50,7 +50,7 @@ class TranslatorFacade
      *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): TranslatorInterface
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');

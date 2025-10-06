@@ -41,7 +41,7 @@ class BaseInfoRepository extends AbstractRepository
      *
      * @return BaseInfo
      */
-    public function get($id = 1)
+    public function get($id = 1): BaseInfo
     {
         $BaseInfo = $this->find($id);
 

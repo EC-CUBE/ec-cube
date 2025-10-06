@@ -61,7 +61,7 @@ class ShopController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/shop_master.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil)
+    public function index(Request $request, CacheUtil $cacheUtil): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         $BaseInfo = $this->baseInfoRepository->get();
         $builder = $this->formFactory

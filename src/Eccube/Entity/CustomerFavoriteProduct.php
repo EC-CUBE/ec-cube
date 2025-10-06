@@ -87,7 +87,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -99,7 +99,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return CustomerFavoriteProduct
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): CustomerFavoriteProduct
         {
             $this->create_date = $createDate;
 
@@ -111,7 +111,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -123,7 +123,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return CustomerFavoriteProduct
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): CustomerFavoriteProduct
         {
             $this->update_date = $updateDate;
 
@@ -135,7 +135,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -147,7 +147,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return CustomerFavoriteProduct
          */
-        public function setCustomer(?Customer $customer = null)
+        public function setCustomer(?Customer $customer = null): CustomerFavoriteProduct
         {
             $this->Customer = $customer;
 
@@ -159,7 +159,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return Customer|null
          */
-        public function getCustomer()
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
@@ -171,7 +171,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return CustomerFavoriteProduct
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): CustomerFavoriteProduct
         {
             $this->Product = $product;
 
@@ -183,7 +183,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
          *
          * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }

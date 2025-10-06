@@ -26,7 +26,7 @@ class EntityUtil
      *
      * @return array<mixed> エンティティのプロパティの配列
      */
-    public static function dumpToArray($entity)
+    public static function dumpToArray($entity): array
     {
         $objReflect = new \ReflectionClass($entity);
         $arrProperties = $objReflect->getProperties();

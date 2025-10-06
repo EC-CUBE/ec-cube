@@ -18,5 +18,5 @@ interface EccubeTwigBlock
     /**
      * @return array<mixed>
      */
-    public static function getTwigBlock();
+    public static function getTwigBlock(): array;
 }

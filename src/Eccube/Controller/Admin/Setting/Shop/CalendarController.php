@@ -51,7 +51,7 @@ class CalendarController extends AbstractController
     #[Route('/%eccube_admin_route%/setting/shop/calendar', name: 'admin_setting_shop_calendar', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/calendar/new', name: 'admin_setting_shop_calendar_new', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/calendar.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $Calendar = new Calendar();
         $builder = $this->formFactory
@@ -127,7 +127,7 @@ class CalendarController extends AbstractController
      * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\ORMException
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Calendar $Calendar)
+    public function delete(Request $request, Calendar $Calendar): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
         $this->calendarRepository->delete($Calendar);

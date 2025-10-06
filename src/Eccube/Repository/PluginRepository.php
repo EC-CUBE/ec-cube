@@ -34,7 +34,7 @@ class PluginRepository extends AbstractRepository
     /**
      * @return array<int, Plugin>
      */
-    public function findAllEnabled()
+    public function findAllEnabled(): array
     {
         return $this->findBy(['enabled' => '1']);
     }
@@ -48,7 +48,7 @@ class PluginRepository extends AbstractRepository
      *
      * @return Plugin|null
      */
-    public function findByCode($code)
+    public function findByCode($code): ?Plugin
     {
         $qb = $this->createQueryBuilder('p')
             ->where('LOWER(p.code) = :code')

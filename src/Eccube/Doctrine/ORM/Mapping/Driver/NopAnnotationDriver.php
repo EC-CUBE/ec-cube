@@ -16,7 +16,7 @@ namespace Eccube\Doctrine\ORM\Mapping\Driver;
 class NopAnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
 {
     #[\Override]
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         return [];
     }

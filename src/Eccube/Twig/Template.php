@@ -82,7 +82,7 @@ class Template extends \Twig\Template
      *
      * @return array<empty>
      */
-    protected function doDisplay(array $context, array $blocks = []): iterable
+    protected function doDisplay(array $context, array $blocks = []): array
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         return [];

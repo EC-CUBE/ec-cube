@@ -45,7 +45,7 @@ class SaveEventSubscriber implements EventSubscriber
      * @return array<int,string>
      */
     #[\Override]
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::prePersist,
@@ -58,7 +58,7 @@ class SaveEventSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
@@ -85,7 +85,7 @@ class SaveEventSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 

@@ -55,7 +55,7 @@ class CategoryRepository extends AbstractRepository
      *
      * @return int 全カテゴリの合計数
      */
-    public function getTotalCount()
+    public function getTotalCount(): int
     {
         return $this
             ->createQueryBuilder('c')
@@ -74,7 +74,7 @@ class CategoryRepository extends AbstractRepository
      *
      * @return Category[] カテゴリの配列
      */
-    public function getList(?Category $Parent = null, $flat = false)
+    public function getList(?Category $Parent = null, $flat = false): array
     {
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')
@@ -119,7 +119,7 @@ class CategoryRepository extends AbstractRepository
      * @throws NonUniqueResultException
      */
     #[\Override]
-    public function save($Category)
+    public function save($Category): void
     {
         if (!$Category->getId()) {
             $Parent = $Category->getParent();
@@ -160,7 +160,7 @@ class CategoryRepository extends AbstractRepository
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     #[\Override]
-    public function delete($Category)
+    public function delete($Category): void
     {
         $this
             ->createQueryBuilder('c')

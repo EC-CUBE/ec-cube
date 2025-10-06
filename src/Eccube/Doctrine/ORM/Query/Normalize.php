@@ -28,7 +28,7 @@ class Normalize extends FunctionNode
     public const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
 
     #[\Override]
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
@@ -37,7 +37,7 @@ class Normalize extends FunctionNode
     }
 
     #[\Override]
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker): string
     {
         $sql = match ($sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
             'postgresql' => sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO),

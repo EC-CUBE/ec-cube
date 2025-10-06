@@ -37,7 +37,7 @@ class WebServerDocumentRootPass implements CompilerPassInterface
      * @return void
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('web_server.command.server_run')) {
             return;

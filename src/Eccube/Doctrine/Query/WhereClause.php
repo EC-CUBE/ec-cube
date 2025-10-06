@@ -48,7 +48,7 @@ class WhereClause
      *
      * @return self
      */
-    private static function newWhereClause($expr, $x, $y)
+    private static function newWhereClause($expr, $x, $y): WhereClause
     {
         if (is_array($y)) {
             return new WhereClause($expr, $y);
@@ -70,7 +70,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function eq($x, $y, $param)
+    public static function eq($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->eq($x, $y), $y, $param);
     }
@@ -88,7 +88,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function neq($x, $y, $param)
+    public static function neq($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->neq($x, $y), $y, $param);
     }
@@ -103,7 +103,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function isNull($x)
+    public static function isNull($x): WhereClause
     {
         return new WhereClause(self::expr()->isNull($x));
     }
@@ -118,7 +118,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function isNotNull($x)
+    public static function isNotNull($x): WhereClause
     {
         return new WhereClause(self::expr()->isNotNull($x));
     }
@@ -136,7 +136,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function like($x, $y, $param)
+    public static function like($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->like($x, $y), $y, $param);
     }
@@ -154,7 +154,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function notLike($x, $y, $param)
+    public static function notLike($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->notLike($x, $y), $y, $param);
     }
@@ -172,7 +172,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function in($x, $y, $param)
+    public static function in($x, $y, $param): WhereClause
     {
         return new WhereClause(self::expr()->in($x, $y), self::isMap($param) ? $param : [$y => $param]);
     }
@@ -182,7 +182,7 @@ class WhereClause
      *
      * @return bool
      */
-    private static function isMap($arrayOrMap)
+    private static function isMap($arrayOrMap): bool
     {
         return array_values($arrayOrMap) !== $arrayOrMap;
     }
@@ -200,7 +200,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function notIn($x, $y, $param)
+    public static function notIn($x, $y, $param): WhereClause
     {
         return new WhereClause(self::expr()->notIn($x, $y), self::isMap($param) ? $param : [$y => $param]);
     }
@@ -219,7 +219,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function between($var, $x, $y, $params)
+    public static function between($var, $x, $y, $params): WhereClause
     {
         return new WhereClause(self::expr()->between($var, $x, $y), self::isMap($params) ? $params : [$x => $params[0], $y => $params[1]]);
     }
@@ -237,7 +237,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function gt($x, $y, $param)
+    public static function gt($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->gt($x, $y), $y, $param);
     }
@@ -255,7 +255,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function gte($x, $y, $param)
+    public static function gte($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->gte($x, $y), $y, $param);
     }
@@ -273,7 +273,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function lt($x, $y, $param)
+    public static function lt($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->lt($x, $y), $y, $param);
     }
@@ -291,7 +291,7 @@ class WhereClause
      *
      * @return WhereClause
      */
-    public static function lte($x, $y, $param)
+    public static function lte($x, $y, $param): WhereClause
     {
         return self::newWhereClause(self::expr()->lte($x, $y), $y, $param);
     }
@@ -299,7 +299,7 @@ class WhereClause
     /**
      * @return Expr
      */
-    private static function expr()
+    private static function expr(): Expr
     {
         return new Expr();
     }
@@ -311,7 +311,7 @@ class WhereClause
      *
      * @return void
      */
-    public function build(QueryBuilder $builder)
+    public function build(QueryBuilder $builder): void
     {
         $builder->andWhere($this->expr);
         if ($this->params) {

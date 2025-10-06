@@ -31,7 +31,7 @@ class CartServiceExtension extends AbstractExtension
     }
 
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_cart', $this->get_cart(...), ['is_safe' => ['all']]),
@@ -44,7 +44,7 @@ class CartServiceExtension extends AbstractExtension
     /**
      * @return Cart|null
      */
-    public function get_cart()
+    public function get_cart(): ?Cart
     {
         return $this->cartService->getCart();
     }
@@ -52,7 +52,7 @@ class CartServiceExtension extends AbstractExtension
     /**
      * @return Cart[]
      */
-    public function get_all_carts()
+    public function get_all_carts(): array
     {
         return $this->cartService->getCarts();
     }
@@ -60,7 +60,7 @@ class CartServiceExtension extends AbstractExtension
     /**
      * @return string
      */
-    public function get_carts_total_price()
+    public function get_carts_total_price(): string
     {
         $Carts = $this->cartService->getCarts();
         $totalPrice = array_reduce($Carts, function (string $total, Cart $Cart) {
@@ -75,7 +75,7 @@ class CartServiceExtension extends AbstractExtension
     /**
      * @return string
      */
-    public function get_carts_total_quantity()
+    public function get_carts_total_quantity(): string
     {
         $Carts = $this->cartService->getCarts();
         $totalQuantity = array_reduce($Carts, function ($total, Cart $Cart) {

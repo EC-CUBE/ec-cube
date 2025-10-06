@@ -44,14 +44,14 @@ class GenerateProxyCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Generate entity proxies');
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projectDir = $this->eccubeConfig->get('kernel.project_dir');
         $includeDirs = [$projectDir.'/app/Customize/Entity'];

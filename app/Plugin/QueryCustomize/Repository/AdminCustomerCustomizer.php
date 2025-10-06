@@ -27,7 +27,7 @@ class AdminCustomerCustomizer extends WhereCustomizer
      *
      * @return WhereClause[]
      */
-    protected function createStatements($params, $queryKey)
+    protected function createStatements($params, $queryKey): array
     {
         // travis-ciのテストが通らないため、コメントアウト
         // 試してみるにはコメントアウトを解除してください.
@@ -41,7 +41,7 @@ class AdminCustomerCustomizer extends WhereCustomizer
      *
      * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return QueryKey::CUSTOMER_SEARCH;
     }

@@ -29,12 +29,12 @@ interface QueryCustomizer
      *
      * @return void
      */
-    public function customize(QueryBuilder $builder, $params, $queryKey);
+    public function customize(QueryBuilder $builder, $params, $queryKey): void;
 
     /**
      * カスタマイズ対象のキーを返します。
      *
      * @return string
      */
-    public function getQueryKey();
+    public function getQueryKey(): string;
 }

@@ -123,7 +123,7 @@ class InstallController extends AbstractController
     #[Route('/', name: 'homepage', methods: ['GET'])]
     #[Route('/install', name: 'install', methods: ['GET'])]
     #[Template('index.twig')]
-    public function index()
+    public function index(): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -145,7 +145,7 @@ class InstallController extends AbstractController
      */
     #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
     #[Template('step1.twig')]
-    public function step1(Request $request)
+    public function step1(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -186,7 +186,7 @@ class InstallController extends AbstractController
      */
     #[Route('/install/step2', name: 'install_step2', methods: ['GET'])]
     #[Template('step2.twig')]
-    public function step2()
+    public function step2(): array
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -265,7 +265,7 @@ class InstallController extends AbstractController
      */
     #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
     #[Template('step3.twig')]
-    public function step3(Request $request, EntityManagerInterface $entityManager)
+    public function step3(Request $request, EntityManagerInterface $entityManager): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -337,7 +337,7 @@ class InstallController extends AbstractController
      */
     #[Route('/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
     #[Template('step4.twig')]
-    public function step4(Request $request)
+    public function step4(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -387,7 +387,7 @@ class InstallController extends AbstractController
      */
     #[Route('/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
     #[Template('step5.twig')]
-    public function step5(Request $request)
+    public function step5(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -470,7 +470,7 @@ class InstallController extends AbstractController
      */
     #[Route('/install/complete', name: 'install_complete', methods: ['GET'])]
     #[Template('complete.twig')]
-    public function complete(Request $request)
+    public function complete(Request $request): array
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -532,7 +532,7 @@ class InstallController extends AbstractController
      *
      * @return mixed
      */
-    protected function getSessionData(SessionInterface $session)
+    protected function getSessionData(SessionInterface $session): mixed
     {
         return $session->get('eccube.session.install', []);
     }
@@ -542,7 +542,7 @@ class InstallController extends AbstractController
      *
      * @return void
      */
-    protected function removeSessionData(SessionInterface $session)
+    protected function removeSessionData(SessionInterface $session): void
     {
         $session->clear();
     }
@@ -553,7 +553,7 @@ class InstallController extends AbstractController
      *
      * @return void
      */
-    protected function setSessionData(SessionInterface $session, $data = [])
+    protected function setSessionData(SessionInterface $session, $data = []): void
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
@@ -562,7 +562,7 @@ class InstallController extends AbstractController
     /**
      * @return void
      */
-    protected function checkModules()
+    protected function checkModules(): void
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
@@ -606,7 +606,7 @@ class InstallController extends AbstractController
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function createConnection(array $params)
+    protected function createConnection(array $params): Connection
     {
         if (str_contains((string) $params['url'], 'mysql')) {
             $params['charset'] = 'utf8mb4';
@@ -636,7 +636,7 @@ class InstallController extends AbstractController
      *
      * @throws \Doctrine\ORM\Exception\ORMException
      */
-    protected function createEntityManager(Connection $conn)
+    protected function createEntityManager(Connection $conn): EntityManager
     {
         $paths = [
             $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
@@ -657,7 +657,7 @@ class InstallController extends AbstractController
      *
      * @return string|null
      */
-    public function createDatabaseUrl(array $params)
+    public function createDatabaseUrl(array $params): ?string
     {
         if (!isset($params['database'])) {
             return null;
@@ -701,7 +701,7 @@ class InstallController extends AbstractController
      *
      * @throws \Exception
      */
-    public function extractDatabaseUrl($url)
+    public function extractDatabaseUrl($url): array
     {
         if (preg_match('|^sqlite://(.*)$|', $url, $matches)) {
             return [
@@ -733,7 +733,7 @@ class InstallController extends AbstractController
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
      */
-    public function createMailerUrl(array $params)
+    public function createMailerUrl(array $params): string
     {
         if (isset($params['transport'])) {
             $url = $params['transport'].'://';
@@ -791,7 +791,7 @@ class InstallController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    public function extractMailerUrl($url)
+    public function extractMailerUrl($url): array
     {
         $options = [
             'transport' => null,
@@ -855,7 +855,7 @@ class InstallController extends AbstractController
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function dropTables(EntityManager $em)
+    protected function dropTables(EntityManager $em): void
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($em);
@@ -870,7 +870,7 @@ class InstallController extends AbstractController
      *
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
-    protected function createTables(EntityManager $em)
+    protected function createTables(EntityManager $em): void
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($em);
@@ -882,7 +882,7 @@ class InstallController extends AbstractController
      *
      * @return void
      */
-    protected function importCsv(EntityManager $em)
+    protected function importCsv(EntityManager $em): void
     {
         // for full locale code cases
         $locale = env('ECCUBE_LOCALE', 'ja_JP');
@@ -905,7 +905,7 @@ class InstallController extends AbstractController
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function insert(Connection $conn, array $data)
+    protected function insert(Connection $conn, array $data): void
     {
         $conn->beginTransaction();
         try {
@@ -965,7 +965,7 @@ class InstallController extends AbstractController
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function update(Connection $conn, array $data)
+    protected function update(Connection $conn, array $data): void
     {
         $conn->beginTransaction();
         try {
@@ -1014,7 +1014,7 @@ class InstallController extends AbstractController
      *
      * @return array<string,string>
      */
-    public function createAppData($params, EntityManager $em)
+    public function createAppData($params, EntityManager $em): array
     {
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
         $version = $this->getDatabaseVersion($em);
@@ -1035,7 +1035,7 @@ class InstallController extends AbstractController
      *
      * @return $this
      */
-    protected function sendAppData($params, EntityManager $em)
+    protected function sendAppData($params, EntityManager $em): static
     {
         try {
             $query = http_build_query($this->createAppData($params, $em));
@@ -1068,7 +1068,7 @@ class InstallController extends AbstractController
      *
      * @throws \Exception
      */
-    public function getDatabaseVersion(EntityManager $em)
+    public function getDatabaseVersion(EntityManager $em): string
     {
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
@@ -1097,7 +1097,7 @@ class InstallController extends AbstractController
      *
      * @return string
      */
-    public function convertAdminAllowHosts($adminAllowHosts)
+    public function convertAdminAllowHosts($adminAllowHosts): string
     {
         if (empty($adminAllowHosts)) {
             return '[]';
@@ -1113,7 +1113,7 @@ class InstallController extends AbstractController
     /**
      * @return bool
      */
-    protected function isInstalled()
+    protected function isInstalled(): bool
     {
         return self::DEFAULT_AUTH_MAGIC !== $this->getParameter('eccube_auth_magic');
     }
@@ -1121,7 +1121,7 @@ class InstallController extends AbstractController
     /**
      * @return bool
      */
-    protected function isInstallEnv()
+    protected function isInstallEnv(): bool
     {
         $env = $this->getParameter('kernel.environment');
 

@@ -50,7 +50,7 @@ class PaymentDispatcher
      *
      * @return bool
      */
-    public function isForward()
+    public function isForward(): bool
     {
         return $this->forward;
     }
@@ -64,7 +64,7 @@ class PaymentDispatcher
      *
      * @return self
      */
-    public function setForward($forward)
+    public function setForward($forward): PaymentDispatcher
     {
         $this->forward = $forward;
 
@@ -76,7 +76,7 @@ class PaymentDispatcher
      *
      * @return string
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
@@ -88,7 +88,7 @@ class PaymentDispatcher
      *
      * @return self
      */
-    public function setRoute($route)
+    public function setRoute($route): PaymentDispatcher
     {
         $this->route = $route;
 
@@ -100,7 +100,7 @@ class PaymentDispatcher
      *
      * @return array<string, string>
      */
-    public function getQueryParameters()
+    public function getQueryParameters(): array
     {
         return $this->queryParameters;
     }
@@ -112,7 +112,7 @@ class PaymentDispatcher
      *
      * @return self
      */
-    public function setQueryParameters(array $queryParameters)
+    public function setQueryParameters(array $queryParameters): PaymentDispatcher
     {
         $this->queryParameters = $queryParameters;
 
@@ -124,7 +124,7 @@ class PaymentDispatcher
      *
      * @return array<string, string>
      */
-    public function getPathParameters()
+    public function getPathParameters(): array
     {
         return $this->pathParameters;
     }
@@ -136,7 +136,7 @@ class PaymentDispatcher
      *
      * @return PaymentDispatcher
      */
-    public function setPathParameters(array $pathParameters)
+    public function setPathParameters(array $pathParameters): PaymentDispatcher
     {
         $this->pathParameters = $pathParameters;
 
@@ -152,7 +152,7 @@ class PaymentDispatcher
      *
      * @return self
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): PaymentDispatcher
     {
         $this->response = $response;
 
@@ -164,7 +164,7 @@ class PaymentDispatcher
      *
      * @return Response
      */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
     }

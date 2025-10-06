@@ -55,7 +55,7 @@ class PointHelper
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function isPointEnabled()
+    public function isPointEnabled(): bool
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -72,7 +72,7 @@ class PointHelper
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function pointToPrice($point)
+    public function pointToPrice($point): string
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -89,7 +89,7 @@ class PointHelper
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function pointToDiscount($point)
+    public function pointToDiscount($point): string
     {
         return bcmul($this->pointToPrice($point), '-1', 0);
     }
@@ -104,7 +104,7 @@ class PointHelper
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function priceToPoint($price)
+    public function priceToPoint($price): string
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -121,7 +121,7 @@ class PointHelper
      *
      * @throws \Exception
      */
-    public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
+    public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount): void
     {
         // 注文明細以外は処理しない.
         if ($itemHolder instanceof Order === false) {
@@ -165,7 +165,7 @@ class PointHelper
      *
      * @return void
      */
-    public function removePointDiscountItem(ItemHolderInterface $itemHolder)
+    public function removePointDiscountItem(ItemHolderInterface $itemHolder): void
     {
         if ($itemHolder instanceof Order) {
             foreach ($itemHolder->getItems() as $item) {
@@ -183,7 +183,7 @@ class PointHelper
      *
      * @return void
      */
-    public function prepare(ItemHolderInterface $itemHolder, $point)
+    public function prepare(ItemHolderInterface $itemHolder, $point): void
     {
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
@@ -196,7 +196,7 @@ class PointHelper
      *
      * @return void
      */
-    public function rollback(ItemHolderInterface $itemHolder, $point)
+    public function rollback(ItemHolderInterface $itemHolder, $point): void
     {
         // 利用したポイントをユーザに戻す.
         $Customer = $itemHolder->getCustomer();

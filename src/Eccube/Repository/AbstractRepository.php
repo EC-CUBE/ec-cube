@@ -43,7 +43,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @return void
      */
-    public function delete($entity)
+    public function delete($entity): void
     {
         $this->getEntityManager()->remove($entity);
     }
@@ -55,7 +55,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @return void
      */
-    public function save($entity)
+    public function save($entity): void
     {
         $this->getEntityManager()->persist($entity);
     }
@@ -63,7 +63,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * @return int|string|null
      */
-    protected function getCacheLifetime()
+    protected function getCacheLifetime(): int|string|null
     {
         if ($this->eccubeConfig !== null) {
             return $this->eccubeConfig['eccube_result_cache_lifetime'];
@@ -77,7 +77,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @return bool
      */
-    protected function isPostgreSQL()
+    protected function isPostgreSQL(): bool
     {
         return 'postgresql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
     }
@@ -87,7 +87,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @return bool
      */
-    protected function isMySQL()
+    protected function isMySQL(): bool
     {
         return 'mysql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
     }

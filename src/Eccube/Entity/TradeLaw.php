@@ -114,7 +114,7 @@ if (!class_exists(TradeLaw::class)) {
         /**
          * @return string
          */
-        public function getName(): ?string
+        public function getName(): string
         {
             return $this->name;
         }
@@ -134,7 +134,7 @@ if (!class_exists(TradeLaw::class)) {
         /**
          * @return string
          */
-        public function getDescription(): ?string
+        public function getDescription(): string
         {
             return $this->description;
         }

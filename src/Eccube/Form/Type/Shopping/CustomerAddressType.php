@@ -33,7 +33,7 @@ class CustomerAddressType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // 会員住所とお届け先住所をマージして選択肢を作成
         /** @var Customer $Customer */
@@ -69,7 +69,7 @@ class CustomerAddressType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['customer' => null, 'shipping' => null]);
     }

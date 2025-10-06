@@ -34,7 +34,7 @@ class TokenProcessor
      *
      * @return array<string, array<string, mixed>>
      */
-    public function __invoke(array $records)
+    public function __invoke(array $records): array
     {
         $records['extra']['user_id'] = 'N/A';
 

@@ -122,7 +122,7 @@ class JoinClause
      *
      * @return $this
      */
-    public function addWhere(WhereClause $whereClause): self
+    public function addWhere(WhereClause $whereClause): static
     {
         $this->whereCustomizer->add($whereClause);
 
@@ -136,7 +136,7 @@ class JoinClause
      *
      * @return $this
      */
-    public function addOrderBy(OrderByClause $orderByClause): self
+    public function addOrderBy(OrderByClause $orderByClause): static
     {
         $this->orderByCustomizer->add($orderByClause);
 
@@ -148,7 +148,7 @@ class JoinClause
      *
      * @return void
      */
-    public function build(QueryBuilder $builder)
+    public function build(QueryBuilder $builder): void
     {
         if ($this->leftJoin) {
             $builder->leftJoin($this->join, $this->alias, $this->conditionType, $this->condition, $this->indexBy);
@@ -208,7 +208,7 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      *
      * @return void
      */
-    public function add(OrderByClause $orderByClause)
+    public function add(OrderByClause $orderByClause): void
     {
         $this->orderByClauses[] = $orderByClause;
     }

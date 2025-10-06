@@ -28,7 +28,7 @@ class SaleTypeCartAllocator implements CartItemAllocator
      * @return string
      */
     #[\Override]
-    public function allocate(CartItem $Item)
+    public function allocate(CartItem $Item): string
     {
         $ProductClass = $Item->getProductClass();
         if ($ProductClass && $ProductClass->getSaleType()) {

@@ -46,7 +46,7 @@ if (!class_exists(Page::class)) {
         /**
          * @return array|Layout[]
          */
-        public function getLayouts()
+        public function getLayouts(): array
         {
             $Layouts = [];
             foreach ($this->PageLayouts as $PageLayout) {
@@ -178,7 +178,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setId($id)
+        public function setId($id): Page
         {
             $this->id = $id;
 
@@ -190,7 +190,7 @@ if (!class_exists(Page::class)) {
          *
          * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -202,7 +202,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setName($name = null)
+        public function setName($name = null): Page
         {
             $this->name = $name;
 
@@ -214,7 +214,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
@@ -226,7 +226,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setUrl($url)
+        public function setUrl($url): Page
         {
             $this->url = $url;
 
@@ -238,7 +238,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string
          */
-        public function getUrl()
+        public function getUrl(): string
         {
             return $this->url;
         }
@@ -250,7 +250,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setFileName($fileName = null)
+        public function setFileName($fileName = null): Page
         {
             $this->file_name = $fileName;
 
@@ -262,7 +262,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string|null
          */
-        public function getFileName()
+        public function getFileName(): ?string
         {
             return $this->file_name;
         }
@@ -274,7 +274,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setEditType($editType)
+        public function setEditType($editType): Page
         {
             $this->edit_type = $editType;
 
@@ -286,7 +286,7 @@ if (!class_exists(Page::class)) {
          *
          * @return int
          */
-        public function getEditType()
+        public function getEditType(): int
         {
             return $this->edit_type;
         }
@@ -298,7 +298,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setAuthor($author = null)
+        public function setAuthor($author = null): Page
         {
             $this->author = $author;
 
@@ -310,7 +310,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string|null
          */
-        public function getAuthor()
+        public function getAuthor(): ?string
         {
             return $this->author;
         }
@@ -322,7 +322,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setDescription($description = null)
+        public function setDescription($description = null): Page
         {
             $this->description = $description;
 
@@ -334,7 +334,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string|null
          */
-        public function getDescription()
+        public function getDescription(): ?string
         {
             return $this->description;
         }
@@ -346,7 +346,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setKeyword($keyword = null)
+        public function setKeyword($keyword = null): Page
         {
             $this->keyword = $keyword;
 
@@ -358,7 +358,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string|null
          */
-        public function getKeyword()
+        public function getKeyword(): ?string
         {
             return $this->keyword;
         }
@@ -370,7 +370,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Page
         {
             $this->create_date = $createDate;
 
@@ -382,7 +382,7 @@ if (!class_exists(Page::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -394,7 +394,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Page
         {
             $this->update_date = $updateDate;
 
@@ -406,7 +406,7 @@ if (!class_exists(Page::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -418,7 +418,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setMetaRobots($metaRobots = null)
+        public function setMetaRobots($metaRobots = null): Page
         {
             $this->meta_robots = $metaRobots;
 
@@ -430,7 +430,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string|null
          */
-        public function getMetaRobots()
+        public function getMetaRobots(): ?string
         {
             return $this->meta_robots;
         }
@@ -442,7 +442,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setMetaTags($metaTags)
+        public function setMetaTags($metaTags): Page
         {
             $this->meta_tags = $metaTags;
 
@@ -454,7 +454,7 @@ if (!class_exists(Page::class)) {
          *
          * @return string
          */
-        public function getMetaTags()
+        public function getMetaTags(): string
         {
             return $this->meta_tags;
         }
@@ -464,7 +464,7 @@ if (!class_exists(Page::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,PageLayout>
          */
-        public function getPageLayouts()
+        public function getPageLayouts(): \Doctrine\Common\Collections\Collection
         {
             return $this->PageLayouts;
         }
@@ -476,7 +476,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function addPageLayout(PageLayout $PageLayout)
+        public function addPageLayout(PageLayout $PageLayout): Page
         {
             $this->PageLayouts[] = $PageLayout;
 
@@ -490,7 +490,7 @@ if (!class_exists(Page::class)) {
          *
          * @return void
          */
-        public function removePageLayout(PageLayout $PageLayout)
+        public function removePageLayout(PageLayout $PageLayout): void
         {
             $this->PageLayouts->removeElement($PageLayout);
         }
@@ -502,7 +502,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page
          */
-        public function setMasterPage(?Page $page = null)
+        public function setMasterPage(?Page $page = null): Page
         {
             $this->MasterPage = $page;
 
@@ -514,7 +514,7 @@ if (!class_exists(Page::class)) {
          *
          * @return Page|null
          */
-        public function getMasterPage()
+        public function getMasterPage(): ?Page
         {
             return $this->MasterPage;
         }
@@ -524,7 +524,7 @@ if (!class_exists(Page::class)) {
          *
          * @return int|null
          */
-        public function getSortNo($layoutId)
+        public function getSortNo($layoutId): ?int
         {
             $pageLayouts = $this->getPageLayouts();
 

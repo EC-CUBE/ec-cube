@@ -60,7 +60,7 @@ class PurchaseContext extends \SplObjectStorage
      *
      * @return ItemHolderInterface|null
      */
-    public function getOriginHolder()
+    public function getOriginHolder(): ?ItemHolderInterface
     {
         return $this->originHolder;
     }
@@ -70,7 +70,7 @@ class PurchaseContext extends \SplObjectStorage
      *
      * @return Customer|UserInterface|null
      */
-    public function getUser()
+    public function getUser(): Customer|UserInterface|null
     {
         return $this->user;
     }
@@ -80,7 +80,7 @@ class PurchaseContext extends \SplObjectStorage
      *
      * @return void
      */
-    public function setFlowType($flowType)
+    public function setFlowType($flowType): void
     {
         $this->flowType = $flowType;
     }
@@ -88,7 +88,7 @@ class PurchaseContext extends \SplObjectStorage
     /**
      * @return bool
      */
-    public function isOrderFlow()
+    public function isOrderFlow(): bool
     {
         return $this->flowType === self::ORDER_FLOW;
     }
@@ -96,7 +96,7 @@ class PurchaseContext extends \SplObjectStorage
     /**
      * @return bool
      */
-    public function isShoppingFlow()
+    public function isShoppingFlow(): bool
     {
         return $this->flowType === self::SHOPPING_FLOW;
     }
@@ -104,7 +104,7 @@ class PurchaseContext extends \SplObjectStorage
     /**
      * @return bool
      */
-    public function isCartFlow()
+    public function isCartFlow(): bool
     {
         return $this->flowType === self::CART_FLOW;
     }

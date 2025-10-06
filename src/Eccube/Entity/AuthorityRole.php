@@ -94,7 +94,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -106,7 +106,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return AuthorityRole
          */
-        public function setDenyUrl($denyUrl)
+        public function setDenyUrl($denyUrl): AuthorityRole
         {
             $this->deny_url = $denyUrl;
 
@@ -118,7 +118,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return string
          */
-        public function getDenyUrl()
+        public function getDenyUrl(): string
         {
             return $this->deny_url;
         }
@@ -130,7 +130,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return AuthorityRole
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): AuthorityRole
         {
             $this->create_date = $createDate;
 
@@ -142,7 +142,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -154,7 +154,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return AuthorityRole
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): AuthorityRole
         {
             $this->update_date = $updateDate;
 
@@ -166,7 +166,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -178,7 +178,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return AuthorityRole
          */
-        public function setAuthority(?Master\Authority $authority = null)
+        public function setAuthority(?Master\Authority $authority = null): AuthorityRole
         {
             $this->Authority = $authority;
 
@@ -190,7 +190,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return Master\Authority|null
          */
-        public function getAuthority()
+        public function getAuthority(): ?Master\Authority
         {
             return $this->Authority;
         }
@@ -202,7 +202,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return AuthorityRole
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): AuthorityRole
         {
             $this->Creator = $creator;
 
@@ -214,7 +214,7 @@ if (!class_exists(AuthorityRole::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

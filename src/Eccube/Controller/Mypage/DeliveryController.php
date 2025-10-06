@@ -65,7 +65,7 @@ class DeliveryController extends AbstractController
      */
     #[Route('/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
     #[Template('Mypage/delivery.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $Customer = $this->getUser();
 
@@ -87,7 +87,7 @@ class DeliveryController extends AbstractController
     #[Route('/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('Mypage/delivery_edit.twig')]
-    public function edit(Request $request, $id = null)
+    public function edit(Request $request, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
@@ -192,7 +192,7 @@ class DeliveryController extends AbstractController
      * @throws \Exception
      */
     #[Route('/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CustomerAddress $CustomerAddress)
+    public function delete(Request $request, CustomerAddress $CustomerAddress): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 

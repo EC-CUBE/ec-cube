@@ -33,7 +33,7 @@ if (!class_exists(ExportCsvRow::class)) {
          *
          * @return ExportCsvRow
          */
-        public function setData($data = null)
+        public function setData($data = null): ExportCsvRow
         {
             $this->data = $data;
 
@@ -45,7 +45,7 @@ if (!class_exists(ExportCsvRow::class)) {
          *
          * @return bool
          */
-        public function isDataNull()
+        public function isDataNull(): bool
         {
             if (is_null($this->data)) {
                 return true;
@@ -59,7 +59,7 @@ if (!class_exists(ExportCsvRow::class)) {
          *
          * @return void
          */
-        public function pushData()
+        public function pushData(): void
         {
             $this->row[] = $this->data;
             $this->data = null;
@@ -70,7 +70,7 @@ if (!class_exists(ExportCsvRow::class)) {
          *
          * @return array<int,string|null>
          */
-        public function getRow()
+        public function getRow(): array
         {
             return $this->row;
         }

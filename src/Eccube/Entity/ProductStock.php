@@ -46,7 +46,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductStock
          */
-        public function setProductClassId($productClassId)
+        public function setProductClassId($productClassId): ProductStock
         {
             $this->product_class_id = $productClassId;
 
@@ -58,7 +58,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return int|null
          */
-        public function getProductClassId()
+        public function getProductClassId(): ?int
         {
             return $this->product_class_id;
         }
@@ -126,7 +126,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -138,7 +138,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductStock
          */
-        public function setStock($stock = null)
+        public function setStock($stock = null): ProductStock
         {
             $this->stock = $stock;
 
@@ -150,7 +150,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return string|null
          */
-        public function getStock()
+        public function getStock(): ?string
         {
             return $this->stock;
         }
@@ -162,7 +162,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductStock
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): ProductStock
         {
             $this->create_date = $createDate;
 
@@ -174,7 +174,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -186,7 +186,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductStock
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): ProductStock
         {
             $this->update_date = $updateDate;
 
@@ -198,7 +198,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -210,7 +210,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductStock
          */
-        public function setProductClass(?ProductClass $productClass = null)
+        public function setProductClass(?ProductClass $productClass = null): ProductStock
         {
             $this->ProductClass = $productClass;
 
@@ -222,7 +222,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductClass|null
          */
-        public function getProductClass()
+        public function getProductClass(): ?ProductClass
         {
             return $this->ProductClass;
         }
@@ -234,7 +234,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return ProductStock
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): ProductStock
         {
             $this->Creator = $creator;
 
@@ -246,7 +246,7 @@ if (!class_exists(ProductStock::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

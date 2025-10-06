@@ -123,7 +123,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setId($id)
+        public function setId($id): Block
         {
             $this->id = $id;
 
@@ -135,7 +135,7 @@ if (!class_exists(Block::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -147,7 +147,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setName($name)
+        public function setName($name): Block
         {
             $this->name = $name;
 
@@ -159,7 +159,7 @@ if (!class_exists(Block::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -171,7 +171,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setFileName($fileName)
+        public function setFileName($fileName): Block
         {
             $this->file_name = $fileName;
 
@@ -183,7 +183,7 @@ if (!class_exists(Block::class)) {
          *
          * @return string
          */
-        public function getFileName()
+        public function getFileName(): string
         {
             return $this->file_name;
         }
@@ -195,7 +195,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setUseController($useController)
+        public function setUseController($useController): Block
         {
             $this->use_controller = $useController;
 
@@ -207,7 +207,7 @@ if (!class_exists(Block::class)) {
          *
          * @return bool
          */
-        public function isUseController()
+        public function isUseController(): bool
         {
             return $this->use_controller;
         }
@@ -219,7 +219,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setDeletable($deletable)
+        public function setDeletable($deletable): Block
         {
             $this->deletable = $deletable;
 
@@ -231,7 +231,7 @@ if (!class_exists(Block::class)) {
          *
          * @return bool
          */
-        public function isDeletable()
+        public function isDeletable(): bool
         {
             return $this->deletable;
         }
@@ -243,7 +243,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Block
         {
             $this->create_date = $createDate;
 
@@ -255,7 +255,7 @@ if (!class_exists(Block::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -267,7 +267,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Block
         {
             $this->update_date = $updateDate;
 
@@ -279,7 +279,7 @@ if (!class_exists(Block::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -291,7 +291,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function addBlockPosition(BlockPosition $blockPosition)
+        public function addBlockPosition(BlockPosition $blockPosition): Block
         {
             $this->BlockPositions[] = $blockPosition;
 
@@ -305,7 +305,7 @@ if (!class_exists(Block::class)) {
          *
          * @return void
          */
-        public function removeBlockPosition(BlockPosition $blockPosition)
+        public function removeBlockPosition(BlockPosition $blockPosition): void
         {
             $this->BlockPositions->removeElement($blockPosition);
         }
@@ -315,7 +315,7 @@ if (!class_exists(Block::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,BlockPosition>
          */
-        public function getBlockPositions()
+        public function getBlockPositions(): \Doctrine\Common\Collections\Collection
         {
             return $this->BlockPositions;
         }
@@ -327,7 +327,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Block
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null)
+        public function setDeviceType(?Master\DeviceType $deviceType = null): Block
         {
             $this->DeviceType = $deviceType;
 
@@ -339,7 +339,7 @@ if (!class_exists(Block::class)) {
          *
          * @return Master\DeviceType
          */
-        public function getDeviceType()
+        public function getDeviceType(): Master\DeviceType
         {
             return $this->DeviceType;
         }

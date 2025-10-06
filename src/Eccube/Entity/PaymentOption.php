@@ -84,7 +84,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return PaymentOption
          */
-        public function setDeliveryId($deliveryId)
+        public function setDeliveryId($deliveryId): PaymentOption
         {
             $this->delivery_id = $deliveryId;
 
@@ -96,7 +96,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return int
          */
-        public function getDeliveryId()
+        public function getDeliveryId(): int
         {
             return $this->delivery_id;
         }
@@ -108,7 +108,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return PaymentOption
          */
-        public function setPaymentId($paymentId)
+        public function setPaymentId($paymentId): PaymentOption
         {
             $this->payment_id = $paymentId;
 
@@ -120,7 +120,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return int
          */
-        public function getPaymentId()
+        public function getPaymentId(): int
         {
             return $this->payment_id;
         }
@@ -132,7 +132,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return PaymentOption
          */
-        public function setDelivery(?Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null): PaymentOption
         {
             $this->Delivery = $delivery;
 
@@ -144,7 +144,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return Delivery|null
          */
-        public function getDelivery()
+        public function getDelivery(): ?Delivery
         {
             return $this->Delivery;
         }
@@ -156,7 +156,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return PaymentOption
          */
-        public function setPayment(?Payment $payment = null)
+        public function setPayment(?Payment $payment = null): PaymentOption
         {
             $this->Payment = $payment;
 
@@ -168,7 +168,7 @@ if (!class_exists(PaymentOption::class)) {
          *
          * @return Payment|null
          */
-        public function getPayment()
+        public function getPayment(): ?Payment
         {
             return $this->Payment;
         }

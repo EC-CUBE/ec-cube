@@ -194,7 +194,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * @return string
      */
-    public function getCookieSameSite()
+    public function getCookieSameSite(): string
     {
         if ($this->shouldSendSameSiteNone() && $this->getCookieSecure()) {
             return Cookie::SAMESITE_NONE;
@@ -206,7 +206,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * @return string
      */
-    public function getCookiePath()
+    public function getCookiePath(): string
     {
         return env('ECCUBE_COOKIE_PATH', '/');
     }
@@ -214,7 +214,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * @return string
      */
-    public function getCookieSecure()
+    public function getCookieSecure(): string
     {
         $request = Request::createFromGlobals();
 
@@ -224,7 +224,7 @@ class SameSiteNoneCompatSessionHandler extends StrictSessionHandler
     /**
      * @return bool
      */
-    private function shouldSendSameSiteNone()
+    private function shouldSendSameSiteNone(): bool
     {
         $userAgent = array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : null;
 

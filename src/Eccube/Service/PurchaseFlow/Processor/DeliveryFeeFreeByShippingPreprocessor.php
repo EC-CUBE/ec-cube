@@ -48,7 +48,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
      * @return void
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!($this->BaseInfo->getDeliveryFreeAmount() || $this->BaseInfo->getDeliveryFreeQuantity())) {
             return;

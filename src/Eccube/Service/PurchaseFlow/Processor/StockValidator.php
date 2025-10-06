@@ -31,7 +31,7 @@ class StockValidator extends ItemValidator
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 在庫切れの場合
      */
     #[\Override]
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -56,7 +56,7 @@ class StockValidator extends ItemValidator
      * @return void
      */
     #[\Override]
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $stock = $item->getProductClass()->getStock();
         $item->setQuantity($stock);

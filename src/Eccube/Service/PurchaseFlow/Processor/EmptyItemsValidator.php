@@ -47,7 +47,7 @@ class EmptyItemsValidator extends ItemHolderValidator
      * @throws InvalidItemException 商品明細がない場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isProduct() && $item->getQuantity() <= 0) {

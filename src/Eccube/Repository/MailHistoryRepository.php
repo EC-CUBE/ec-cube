@@ -49,7 +49,7 @@ class MailHistoryRepository extends AbstractRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getByCustomerAndId(Customer $Customer, $id)
+    public function getByCustomerAndId(Customer $Customer, $id): MailHistory
     {
         $qb = $this->createQueryBuilder('mh')
             ->leftJoin('mh.Order', 'o')

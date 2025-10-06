@@ -56,7 +56,7 @@ class NewsController extends AbstractController
     #[Route('/%eccube_admin_route%/content/news', name: 'admin_content_news', methods: ['GET'])]
     #[Route('/%eccube_admin_route%/content/news/page/{page_no}', name: 'admin_content_news_page', requirements: ['page_no' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Content/news.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = 1)
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = 1): array
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
 
@@ -90,7 +90,7 @@ class NewsController extends AbstractController
     #[Route('/%eccube_admin_route%/content/news/new', name: 'admin_content_news_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/news/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_news_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/news_edit.twig')]
-    public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
+    public function edit(Request $request, CacheUtil $cacheUtil, $id = null): array|RedirectResponse
     {
         if ($id) {
             $News = $this->newsRepository->find($id);
@@ -155,7 +155,7 @@ class NewsController extends AbstractController
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/news/{id}/delete', name: 'admin_content_news_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, News $News, CacheUtil $cacheUtil)
+    public function delete(Request $request, News $News, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
 

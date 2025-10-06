@@ -81,7 +81,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      * @throws \Doctrine\ORM\NoResultException
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if ($itemHolder instanceof Order) {
             $this->removeDeliveryFeeItem($itemHolder);
@@ -94,7 +94,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      *
      * @return void
      */
-    private function removeDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    private function removeDeliveryFeeItem(ItemHolderInterface $itemHolder): void
     {
         if ($itemHolder instanceof Order) {
             foreach ($itemHolder->getShippings() as $Shipping) {
@@ -117,7 +117,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      *
      * @throws \Doctrine\ORM\NoResultException
      */
-    private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder): void
     {
         $DeliveryFeeType = $this->entityManager
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);

@@ -71,7 +71,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setEccubeConfig(EccubeConfig $eccubeConfig)
+    public function setEccubeConfig(EccubeConfig $eccubeConfig): void
     {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -82,7 +82,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
@@ -93,7 +93,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
@@ -104,7 +104,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setSession(Session $session)
+    public function setSession(Session $session): void
     {
         $this->session = $session;
     }
@@ -115,7 +115,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
@@ -126,7 +126,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -137,7 +137,7 @@ class AbstractController extends Controller
      * @return void
      */
     #[Required]
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
@@ -148,7 +148,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addSuccess($message, $namespace = 'front')
+    public function addSuccess($message, $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.success', $message);
     }
@@ -159,7 +159,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addSuccessOnce($message, $namespace = 'front')
+    public function addSuccessOnce($message, $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.success', $message);
     }
@@ -170,7 +170,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addError($message, $namespace = 'front')
+    public function addError($message, $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.error', $message);
     }
@@ -181,7 +181,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addErrorOnce($message, $namespace = 'front')
+    public function addErrorOnce($message, $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.error', $message);
     }
@@ -192,7 +192,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addDanger($message, $namespace = 'front')
+    public function addDanger($message, $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.danger', $message);
     }
@@ -203,7 +203,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addDangerOnce($message, $namespace = 'front')
+    public function addDangerOnce($message, $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.danger', $message);
     }
@@ -214,7 +214,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addWarning($message, $namespace = 'front')
+    public function addWarning($message, $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.warning', $message);
     }
@@ -225,7 +225,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addWarningOnce($message, $namespace = 'front')
+    public function addWarningOnce($message, $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.warning', $message);
     }
@@ -236,7 +236,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addInfo($message, $namespace = 'front')
+    public function addInfo($message, $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.info', $message);
     }
@@ -247,7 +247,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addInfoOnce($message, $namespace = 'front')
+    public function addInfoOnce($message, $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.info', $message);
     }
@@ -258,7 +258,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addRequestError($message, $namespace = 'front')
+    public function addRequestError($message, $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.request.error', $message);
     }
@@ -269,7 +269,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function addRequestErrorOnce($message, $namespace = 'front')
+    public function addRequestErrorOnce($message, $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.request.error', $message);
     }
@@ -277,7 +277,7 @@ class AbstractController extends Controller
     /**
      * @return void
      */
-    public function clearMessage()
+    public function clearMessage(): void
     {
         /** @var Session $session */
         $session = $this->session;
@@ -287,7 +287,7 @@ class AbstractController extends Controller
     /**
      * @return void
      */
-    public function deleteMessage()
+    public function deleteMessage(): void
     {
         $this->clearMessage();
         $this->addWarning('admin.common.delete_error_already_deleted', 'admin');
@@ -343,7 +343,7 @@ class AbstractController extends Controller
      *
      * @return void
      */
-    public function setLoginTargetPath($targetPath, $namespace = null)
+    public function setLoginTargetPath($targetPath, $namespace = null): void
     {
         if (is_null($namespace)) {
             /** @var Session $session */
@@ -365,7 +365,7 @@ class AbstractController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response A Response instance
      */
-    public function forwardToRoute($route, array $path = [], array $query = [])
+    public function forwardToRoute($route, array $path = [], array $query = []): \Symfony\Component\HttpFoundation\Response
     {
         $Route = $this->router->getRouteCollection()->get($route);
         if (!$Route) {
@@ -384,7 +384,7 @@ class AbstractController extends Controller
      *
      * @throws AccessDeniedHttpException
      */
-    protected function isTokenValid()
+    protected function isTokenValid(): bool
     {
         /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();

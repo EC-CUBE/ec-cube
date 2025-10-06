@@ -22,17 +22,17 @@ interface PurchaseInterface
      *
      * @return ItemHolderInterface
      */
-    public function setTotal($total);
+    public function setTotal($total): ItemHolderInterface;
 
     /**
      * 合計金額を返す。
      *
      * @return string
      */
-    public function getTotal();
+    public function getTotal(): string;
 
     /**
      * @return \Eccube\Service\PurchaseFlow\ItemCollection<int,ItemInterface>
      */
-    public function getItems();
+    public function getItems(): \Eccube\Service\PurchaseFlow\ItemCollection;
 }

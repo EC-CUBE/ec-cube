@@ -162,7 +162,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -174,7 +174,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setMethod($method = null)
+        public function setMethod($method = null): Payment
         {
             $this->method = $method;
 
@@ -186,7 +186,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return string|null
          */
-        public function getMethod()
+        public function getMethod(): ?string
         {
             return $this->method;
         }
@@ -198,7 +198,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setCharge($charge = null)
+        public function setCharge($charge = null): Payment
         {
             $this->charge = $charge;
 
@@ -210,7 +210,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return string|null
          */
-        public function getCharge()
+        public function getCharge(): ?string
         {
             return $this->charge;
         }
@@ -222,7 +222,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setRuleMax($ruleMax = null)
+        public function setRuleMax($ruleMax = null): Payment
         {
             $this->rule_max = $ruleMax;
 
@@ -234,7 +234,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return string|null
          */
-        public function getRuleMax()
+        public function getRuleMax(): ?string
         {
             return $this->rule_max;
         }
@@ -246,7 +246,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setSortNo($sortNo = null)
+        public function setSortNo($sortNo = null): Payment
         {
             $this->sort_no = $sortNo;
 
@@ -258,7 +258,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return int|null
          */
-        public function getSortNo()
+        public function getSortNo(): ?int
         {
             return $this->sort_no;
         }
@@ -270,7 +270,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setFixed($fixed)
+        public function setFixed($fixed): Payment
         {
             $this->fixed = $fixed;
 
@@ -282,7 +282,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return bool
          */
-        public function isFixed()
+        public function isFixed(): bool
         {
             return $this->fixed;
         }
@@ -294,7 +294,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setPaymentImage($paymentImage = null)
+        public function setPaymentImage($paymentImage = null): Payment
         {
             $this->payment_image = $paymentImage;
 
@@ -306,7 +306,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return string|null
          */
-        public function getPaymentImage()
+        public function getPaymentImage(): ?string
         {
             return $this->payment_image;
         }
@@ -318,7 +318,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setRuleMin($ruleMin = null)
+        public function setRuleMin($ruleMin = null): Payment
         {
             $this->rule_min = $ruleMin;
 
@@ -330,7 +330,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return string|null
          */
-        public function getRuleMin()
+        public function getRuleMin(): ?string
         {
             return $this->rule_min;
         }
@@ -342,7 +342,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setMethodClass($methodClass = null)
+        public function setMethodClass($methodClass = null): Payment
         {
             $this->method_class = $methodClass;
 
@@ -354,7 +354,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return string|null
          */
-        public function getMethodClass()
+        public function getMethodClass(): ?string
         {
             return $this->method_class;
         }
@@ -362,7 +362,7 @@ if (!class_exists(Payment::class)) {
         /**
          * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
         }
@@ -372,7 +372,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setVisible($visible)
+        public function setVisible($visible): Payment
         {
             $this->visible = $visible;
 
@@ -386,7 +386,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Payment
         {
             $this->create_date = $createDate;
 
@@ -398,7 +398,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -410,7 +410,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Payment
         {
             $this->update_date = $updateDate;
 
@@ -422,7 +422,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -434,7 +434,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function addPaymentOption(PaymentOption $paymentOption)
+        public function addPaymentOption(PaymentOption $paymentOption): Payment
         {
             $this->PaymentOptions[] = $paymentOption;
 
@@ -448,7 +448,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removePaymentOption(PaymentOption $paymentOption)
+        public function removePaymentOption(PaymentOption $paymentOption): bool
         {
             return $this->PaymentOptions->removeElement($paymentOption);
         }
@@ -458,7 +458,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,PaymentOption>
          */
-        public function getPaymentOptions()
+        public function getPaymentOptions(): \Doctrine\Common\Collections\Collection
         {
             return $this->PaymentOptions;
         }
@@ -470,7 +470,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Payment
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Payment
         {
             $this->Creator = $creator;
 
@@ -482,7 +482,7 @@ if (!class_exists(Payment::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

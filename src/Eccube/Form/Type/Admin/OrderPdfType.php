@@ -58,7 +58,7 @@ class OrderPdfType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $config = $this->eccubeConfig;
         $builder
@@ -185,7 +185,7 @@ class OrderPdfType extends AbstractType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'admin_order_pdf';
     }

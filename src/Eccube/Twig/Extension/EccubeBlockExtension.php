@@ -42,7 +42,7 @@ class EccubeBlockExtension extends AbstractExtension
      * @return TwigFunction[]
      */
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('eccube_block_*', function ($context, $name, array $parameters = []) {

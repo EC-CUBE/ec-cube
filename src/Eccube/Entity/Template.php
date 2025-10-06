@@ -39,7 +39,7 @@ if (!class_exists(Template::class)) {
         /**
          * @return bool
          */
-        public function isDefaultTemplate()
+        public function isDefaultTemplate(): bool
         {
             return self::DEFAULT_TEMPLATE_CODE === $this->getCode();
         }
@@ -111,7 +111,7 @@ if (!class_exists(Template::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -123,7 +123,7 @@ if (!class_exists(Template::class)) {
          *
          * @return Template
          */
-        public function setCode($code)
+        public function setCode($code): Template
         {
             $this->code = $code;
 
@@ -135,7 +135,7 @@ if (!class_exists(Template::class)) {
          *
          * @return string
          */
-        public function getCode()
+        public function getCode(): string
         {
             return $this->code;
         }
@@ -147,7 +147,7 @@ if (!class_exists(Template::class)) {
          *
          * @return Template
          */
-        public function setName($name)
+        public function setName($name): Template
         {
             $this->name = $name;
 
@@ -159,7 +159,7 @@ if (!class_exists(Template::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -171,7 +171,7 @@ if (!class_exists(Template::class)) {
          *
          * @return Template
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Template
         {
             $this->create_date = $createDate;
 
@@ -183,7 +183,7 @@ if (!class_exists(Template::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -195,7 +195,7 @@ if (!class_exists(Template::class)) {
          *
          * @return Template
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Template
         {
             $this->update_date = $updateDate;
 
@@ -207,7 +207,7 @@ if (!class_exists(Template::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -219,7 +219,7 @@ if (!class_exists(Template::class)) {
          *
          * @return Template
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null)
+        public function setDeviceType(?Master\DeviceType $deviceType = null): Template
         {
             $this->DeviceType = $deviceType;
 
@@ -231,7 +231,7 @@ if (!class_exists(Template::class)) {
          *
          * @return Master\DeviceType|null
          */
-        public function getDeviceType()
+        public function getDeviceType(): ?Master\DeviceType
         {
             return $this->DeviceType;
         }

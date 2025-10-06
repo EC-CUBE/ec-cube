@@ -91,7 +91,7 @@ if (!class_exists(CartItem::class)) {
          */
         private $product_class_id;
 
-        public function __sleep()
+        public function __sleep(): array
         {
             return ['product_class_id', 'price', 'quantity'];
         }
@@ -99,7 +99,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -109,7 +109,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return CartItem
          */
-        public function setPrice($price)
+        public function setPrice($price): CartItem
         {
             $this->price = $price;
 
@@ -120,7 +120,7 @@ if (!class_exists(CartItem::class)) {
          * @return string
          */
         #[\Override]
-        public function getPrice()
+        public function getPrice(): string
         {
             return $this->price;
         }
@@ -131,7 +131,7 @@ if (!class_exists(CartItem::class)) {
          * @return CartItem
          */
         #[\Override]
-        public function setQuantity($quantity)
+        public function setQuantity($quantity): CartItem
         {
             $this->quantity = $quantity;
 
@@ -142,7 +142,7 @@ if (!class_exists(CartItem::class)) {
          * @return string
          */
         #[\Override]
-        public function getQuantity()
+        public function getQuantity(): string
         {
             return $this->quantity;
         }
@@ -150,7 +150,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return string
          */
-        public function getTotalPrice()
+        public function getTotalPrice(): string
         {
             return bcmul($this->getPrice(), $this->getQuantity(), 2);
         }
@@ -161,7 +161,7 @@ if (!class_exists(CartItem::class)) {
          * @return bool 商品明細の場合 true
          */
         #[\Override]
-        public function isProduct()
+        public function isProduct(): bool
         {
             return true;
         }
@@ -172,7 +172,7 @@ if (!class_exists(CartItem::class)) {
          * @return bool 送料明細の場合 true
          */
         #[\Override]
-        public function isDeliveryFee()
+        public function isDeliveryFee(): bool
         {
             return false;
         }
@@ -183,7 +183,7 @@ if (!class_exists(CartItem::class)) {
          * @return bool 手数料明細の場合 true
          */
         #[\Override]
-        public function isCharge()
+        public function isCharge(): bool
         {
             return false;
         }
@@ -194,7 +194,7 @@ if (!class_exists(CartItem::class)) {
          * @return bool 値引き明細の場合 true
          */
         #[\Override]
-        public function isDiscount()
+        public function isDiscount(): bool
         {
             return false;
         }
@@ -205,7 +205,7 @@ if (!class_exists(CartItem::class)) {
          * @return bool 税額明細の場合 true
          */
         #[\Override]
-        public function isTax()
+        public function isTax(): bool
         {
             return false;
         }
@@ -216,7 +216,7 @@ if (!class_exists(CartItem::class)) {
          * @return bool ポイント明細の場合 true
          */
         #[\Override]
-        public function isPoint()
+        public function isPoint(): bool
         {
             return false;
         }
@@ -225,7 +225,7 @@ if (!class_exists(CartItem::class)) {
          * @return Master\OrderItemType
          */
         #[\Override]
-        public function getOrderItemType()
+        public function getOrderItemType(): Master\OrderItemType
         {
             // TODO OrderItemType::PRODUCT
             $ItemType = new Master\OrderItemType();
@@ -238,7 +238,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return $this
          */
-        public function setProductClass(ProductClass $ProductClass)
+        public function setProductClass(ProductClass $ProductClass): static
         {
             $this->ProductClass = $ProductClass;
 
@@ -251,7 +251,7 @@ if (!class_exists(CartItem::class)) {
          * @return ProductClass|null
          */
         #[\Override]
-        public function getProductClass()
+        public function getProductClass(): ?ProductClass
         {
             return $this->ProductClass;
         }
@@ -259,7 +259,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return int|null
          */
-        public function getProductClassId()
+        public function getProductClassId(): ?int
         {
             return $this->product_class_id;
         }
@@ -267,7 +267,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return float|int|string
          */
-        public function getPriceIncTax()
+        public function getPriceIncTax(): float|int|string
         {
             // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
             return $this->price;
@@ -276,7 +276,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return Cart
          */
-        public function getCart()
+        public function getCart(): Cart
         {
             return $this->Cart;
         }
@@ -286,7 +286,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @return $this
          */
-        public function setCart(Cart $Cart)
+        public function setCart(Cart $Cart): static
         {
             $this->Cart = $Cart;
 

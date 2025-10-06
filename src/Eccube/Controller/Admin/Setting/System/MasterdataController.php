@@ -34,7 +34,7 @@ class MasterdataController extends AbstractController
     #[Route('/%eccube_admin_route%/setting/system/masterdata', name: 'admin_setting_system_masterdata', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/system/masterdata/{entity}/edit', name: 'admin_setting_system_masterdata_view', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/masterdata.twig')]
-    public function index(Request $request, $entity = null)
+    public function index(Request $request, $entity = null): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|array
     {
         $data = [];
 
@@ -119,7 +119,7 @@ class MasterdataController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/system/masterdata/edit', name: 'admin_setting_system_masterdata_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/masterdata.twig')]
-    public function edit(Request $request)
+    public function edit(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);
 

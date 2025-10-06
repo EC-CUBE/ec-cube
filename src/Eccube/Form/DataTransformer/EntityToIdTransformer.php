@@ -50,7 +50,7 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @return string|int|null
      */
     #[\Override]
-    public function transform($entity)
+    public function transform($entity): string|int|null
     {
         if (null === $entity) {
             return '';
@@ -65,7 +65,7 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @return T|null
      */
     #[\Override]
-    public function reverseTransform($id)
+    public function reverseTransform($id): ?T
     {
         if ('' === $id || null === $id) {
             return null;

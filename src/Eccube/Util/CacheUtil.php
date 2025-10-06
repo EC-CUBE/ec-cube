@@ -63,7 +63,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @return void
      */
-    public function clearCache($env = null)
+    public function clearCache($env = null): void
     {
         $this->clearCacheAfterResponse = $env;
     }
@@ -75,7 +75,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @throws \Exception
      */
-    public function forceClearCache(TerminateEvent $event)
+    public function forceClearCache(TerminateEvent $event): void
     {
         if ($this->clearCacheAfterResponse === false) {
             return;
@@ -126,7 +126,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @throws \Exception
      */
-    public function clearDoctrineCache()
+    public function clearDoctrineCache(): ?string
     {
         /** @var Psr6CacheClearer $poolClearer */
         $poolClearer = $this->container->get('cache.global_clearer');
@@ -160,7 +160,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @return void
      */
-    public function clearTwigCache()
+    public function clearTwigCache(): void
     {
         $cacheDir = $this->kernel->getCacheDir().'/twig';
         $fs = new Filesystem();
@@ -181,7 +181,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @deprecated CacheUtil::clearCacheを利用すること
      */
-    public static function clear($app, $isAll, $isTwig = false)
+    public static function clear($app, $isAll, $isTwig = false): bool
     {
         $cacheDir = $app['config']['root_dir'].'/app/cache';
 
@@ -234,7 +234,7 @@ class CacheUtil implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::TERMINATE => 'forceClearCache'];
     }

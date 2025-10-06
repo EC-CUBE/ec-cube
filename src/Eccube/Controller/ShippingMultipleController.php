@@ -117,7 +117,7 @@ class ShippingMultipleController extends AbstractShoppingController
      */
     #[Route('/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_multiple.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -393,7 +393,7 @@ class ShippingMultipleController extends AbstractShoppingController
      */
     #[Route('/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_multiple_edit.twig')]
-    public function shippingMultipleEdit(Request $request)
+    public function shippingMultipleEdit(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {

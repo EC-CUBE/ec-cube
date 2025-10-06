@@ -37,13 +37,13 @@ class ComposerInstallCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('dry-run');
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execInstall($input->getOption('dry-run'), $output);
 

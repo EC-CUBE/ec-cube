@@ -39,7 +39,7 @@ class CartController extends AbstractController
      */
     #[Route('/block/cart', name: 'block_cart', methods: ['GET'])]
     #[Route('/block/cart_sp', name: 'block_cart_sp', methods: ['GET'])]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $Carts = $this->cartService->getCarts();
 

@@ -61,7 +61,7 @@ class GenerateDummyDataCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Dummy data generator')
@@ -86,7 +86,7 @@ EOF
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locale = $input->getOption('with-locale');
         $notImage = $input->getOption('without-image');

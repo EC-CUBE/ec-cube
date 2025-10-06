@@ -40,7 +40,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      *
      * @return void
      */
-    public function setNewProxyFiles($newProxyFiles)
+    public function setNewProxyFiles($newProxyFiles): void
     {
         $this->newProxyFiles = array_map(function ($file) {
             return realpath($file);
@@ -52,7 +52,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      *
      * @return void
      */
-    public function setOutputDir($outputDir)
+    public function setOutputDir($outputDir): void
     {
         $this->outputDir = $outputDir;
     }
@@ -61,7 +61,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      * {@inheritdoc}
      */
     #[\Override]
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         if ($this->classNames !== null) {
             return $this->classNames;
@@ -130,7 +130,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      *
      * @return array<int,string> ソースファイルに含まれるクラス名のリスト
      */
-    private function getClassNamesFromTokens($sourceFile)
+    private function getClassNamesFromTokens($sourceFile): array
     {
         $tokens = Tokens::fromCode(file_get_contents($sourceFile));
         $results = [];

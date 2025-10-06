@@ -32,7 +32,7 @@ class SaleLimitValidator extends ItemValidator
      * @throws InvalidItemException 販売制限数を超えている場合
      */
     #[\Override]
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -56,7 +56,7 @@ class SaleLimitValidator extends ItemValidator
      * @return void
      */
     #[\Override]
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $limit = $item->getProductClass()->getSaleLimit();
         $item->setQuantity($limit);

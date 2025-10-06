@@ -24,7 +24,7 @@ class ReflectionUtil
      *
      * @throws \ReflectionException
      */
-    public static function setValue($instance, $property, $value)
+    public static function setValue($instance, $property, $value): void
     {
         $refObj = new \ReflectionObject($instance);
         $refProp = $refObj->getProperty($property);
@@ -40,7 +40,7 @@ class ReflectionUtil
      *
      * @throws \ReflectionException
      */
-    public static function setValues($instance, array $values)
+    public static function setValues($instance, array $values): void
     {
         foreach ($values as $property => $value) {
             self::setValue($instance, $property, $value);

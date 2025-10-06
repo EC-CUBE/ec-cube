@@ -47,7 +47,7 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 合計金額が上限を超えている場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         $totalPrice = $itemHolder->getTotal();
         if ($totalPrice > $this->maxTotalFee) {

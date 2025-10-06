@@ -29,7 +29,7 @@ class QueryCustomizerPass implements CompilerPassInterface
      * @return void
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $queries = $container->getDefinition(Queries::class);
         $ids = $container->findTaggedServiceIds(self::QUERY_CUSTOMIZER_TAG);

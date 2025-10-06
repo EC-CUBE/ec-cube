@@ -63,7 +63,7 @@ class OrderRepository extends AbstractRepository
      *
      * @return void
      */
-    public function changeStatus($orderId, OrderStatus $Status)
+    public function changeStatus($orderId, OrderStatus $Status): void
     {
         $Order = $this
             ->find($orderId)
@@ -124,7 +124,7 @@ class OrderRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData)
+    public function getQueryBuilderBySearchDataForAdmin($searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
@@ -421,7 +421,7 @@ class OrderRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderByCustomer(Customer $Customer)
+    public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.Customer = :Customer')
@@ -443,7 +443,7 @@ class OrderRepository extends AbstractRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countByOrderStatus($OrderStatusOrId)
+    public function countByOrderStatus($OrderStatusOrId): int
     {
         return (int) $this->createQueryBuilder('o')
             ->select('COALESCE(COUNT(o.id), 0)')
@@ -463,7 +463,7 @@ class OrderRepository extends AbstractRepository
      *
      * @throws NonUniqueResultException
      */
-    public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
+    public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS]): void
     {
         try {
             $result = $this->createQueryBuilder('o')

@@ -32,7 +32,7 @@ class HelpController extends AbstractController
      */
     #[Route('/help/guide', name: 'help_guide', methods: ['GET'])]
     #[Template('Help/guide.twig')]
-    public function guide()
+    public function guide(): array
     {
         return [];
     }
@@ -44,7 +44,7 @@ class HelpController extends AbstractController
      */
     #[Route('/help/about', name: 'help_about', methods: ['GET'])]
     #[Template('Help/about.twig')]
-    public function about()
+    public function about(): array
     {
         return [];
     }
@@ -56,7 +56,7 @@ class HelpController extends AbstractController
      */
     #[Route('/help/privacy', name: 'help_privacy', methods: ['GET'])]
     #[Template('Help/privacy.twig')]
-    public function privacy()
+    public function privacy(): array
     {
         return [];
     }
@@ -68,7 +68,7 @@ class HelpController extends AbstractController
      */
     #[Route('/help/agreement', name: 'help_agreement', methods: ['GET'])]
     #[Template('Help/agreement.twig')]
-    public function agreement()
+    public function agreement(): array
     {
         return [];
     }

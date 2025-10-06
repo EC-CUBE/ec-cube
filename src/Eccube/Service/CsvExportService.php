@@ -158,7 +158,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setConfig($config)
+    public function setConfig($config): void
     {
         $this->eccubeConfig = $config;
     }
@@ -168,7 +168,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setCsvRepository(CsvRepository $csvRepository)
+    public function setCsvRepository(CsvRepository $csvRepository): void
     {
         $this->csvRepository = $csvRepository;
     }
@@ -178,7 +178,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository)
+    public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository): void
     {
         $this->csvTypeRepository = $csvTypeRepository;
     }
@@ -188,7 +188,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setOrderRepository(OrderRepository $orderRepository)
+    public function setOrderRepository(OrderRepository $orderRepository): void
     {
         $this->orderRepository = $orderRepository;
     }
@@ -198,7 +198,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setCustomerRepository(CustomerRepository $customerRepository)
+    public function setCustomerRepository(CustomerRepository $customerRepository): void
     {
         $this->customerRepository = $customerRepository;
     }
@@ -208,7 +208,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setProductRepository(ProductRepository $productRepository)
+    public function setProductRepository(ProductRepository $productRepository): void
     {
         $this->productRepository = $productRepository;
     }
@@ -218,7 +218,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
@@ -226,7 +226,7 @@ class CsvExportService
     /**
      * @return EntityManagerInterface
      */
-    public function getEntityManager()
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
     }
@@ -236,7 +236,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function setExportQueryBuilder(QueryBuilder $qb)
+    public function setExportQueryBuilder(QueryBuilder $qb): void
     {
         $this->qb = $qb;
     }
@@ -248,7 +248,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function initCsvType($CsvType)
+    public function initCsvType($CsvType): void
     {
         if ($CsvType instanceof CsvType) {
             $this->CsvType = $CsvType;
@@ -269,7 +269,7 @@ class CsvExportService
     /**
      * @return Csv[]
      */
-    public function getCsvs()
+    public function getCsvs(): array
     {
         return $this->Csvs;
     }
@@ -280,7 +280,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function exportHeader()
+    public function exportHeader(): void
     {
         if (is_null($this->CsvType) || is_null($this->Csvs)) {
             throw new \LogicException('init csv type incomplete.');
@@ -304,7 +304,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function exportData(\Closure $closure)
+    public function exportData(\Closure $closure): void
     {
         if (is_null($this->qb) || is_null($this->entityManager)) {
             throw new \LogicException('query builder not set.');
@@ -340,7 +340,7 @@ class CsvExportService
      *
      * @return string|null
      */
-    public function getData(Csv $Csv, AbstractEntity $entity)
+    public function getData(Csv $Csv, AbstractEntity $entity): ?string
     {
         // エンティティ名が一致するかどうかチェック.
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
@@ -385,7 +385,7 @@ class CsvExportService
      *
      * @return \Closure
      */
-    public function getConvertEncodingCallback()
+    public function getConvertEncodingCallback(): \Closure
     {
         $config = $this->eccubeConfig;
 
@@ -399,7 +399,7 @@ class CsvExportService
     /**
      * @return void
      */
-    public function fopen()
+    public function fopen(): void
     {
         if (is_null($this->fp) || $this->closed) {
             $this->fp = fopen('php://output', 'w');
@@ -411,7 +411,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function fputcsv($row)
+    public function fputcsv($row): void
     {
         if (is_null($this->convertEncodingCallBack)) {
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
@@ -423,7 +423,7 @@ class CsvExportService
     /**
      * @return void
      */
-    public function fclose()
+    public function fclose(): void
     {
         if (!$this->closed) {
             fclose($this->fp);
@@ -438,7 +438,7 @@ class CsvExportService
      *
      * @return QueryBuilder
      */
-    public function getOrderQueryBuilder(Request $request)
+    public function getOrderQueryBuilder(Request $request): QueryBuilder
     {
         $session = $request->getSession();
         $builder = $this->formFactory
@@ -462,7 +462,7 @@ class CsvExportService
      *
      * @return QueryBuilder
      */
-    public function getCustomerQueryBuilder(Request $request)
+    public function getCustomerQueryBuilder(Request $request): QueryBuilder
     {
         $session = $request->getSession();
         $builder = $this->formFactory
@@ -486,7 +486,7 @@ class CsvExportService
      *
      * @return QueryBuilder
      */
-    public function getProductQueryBuilder(Request $request)
+    public function getProductQueryBuilder(Request $request): QueryBuilder
     {
         $session = $request->getSession();
         $builder = $this->formFactory

@@ -66,7 +66,7 @@ class TemplateController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
     #[Template('@admin/Store/template.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil)
+    public function index(Request $request, CacheUtil $cacheUtil): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -111,7 +111,7 @@ class TemplateController extends AbstractController
      * @return BinaryFileResponse
      */
     #[Route('/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function download(Request $request, \Eccube\Entity\Template $Template)
+    public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
@@ -174,7 +174,7 @@ class TemplateController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, \Eccube\Entity\Template $Template)
+    public function delete(Request $request, \Eccube\Entity\Template $Template): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -219,7 +219,7 @@ class TemplateController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
     #[Template('@admin/Store/template_add.twig')]
-    public function install(Request $request)
+    public function install(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 

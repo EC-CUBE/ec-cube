@@ -23,7 +23,7 @@ class InitSubscriber implements EventSubscriber
      * {@inheritdoc}
      */
     #[\Override]
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [Events::postConnect];
     }
@@ -33,7 +33,7 @@ class InitSubscriber implements EventSubscriber
      *
      * @return void
      */
-    public function postConnect(ConnectionEventArgs $args)
+    public function postConnect(ConnectionEventArgs $args): void
     {
         $db = $args->getConnection();
         $platform = $args->getConnection()->getDatabasePlatform()->getName();

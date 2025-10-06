@@ -80,7 +80,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function execInfo($pluginName, $version)
+    public function execInfo($pluginName, $version): array
     {
         $output = $this->runCommand([
             'command' => 'info',
@@ -106,7 +106,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[\Override]
-    public function execRequire($packageName, $output = null, $from = null)
+    public function execRequire($packageName, $output = null, $from = null): string
     {
         $packageName = explode(' ', trim($packageName));
 
@@ -142,7 +142,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[\Override]
-    public function execRemove($packageName, $output = null)
+    public function execRemove($packageName, $output = null): string
     {
         $this->dropTableToExtra($packageName);
 
@@ -178,7 +178,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function execUpdate($dryRun, $output = null)
+    public function execUpdate($dryRun, $output = null): void
     {
         $this->init();
         $this->execConfig('allow-plugins.symfony/flex', ['false']);
@@ -209,7 +209,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function execInstall($dryRun, $output = null)
+    public function execInstall($dryRun, $output = null): void
     {
         $this->init();
         $this->execConfig('allow-plugins.symfony/flex', ['false']);
@@ -278,7 +278,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[\Override]
-    public function execConfig($key, $value = null)
+    public function execConfig($key, $value = null): mixed
     {
         $commands = [
             'command' => 'config',
@@ -303,7 +303,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         $output = $this->runCommand([
             'command' => 'config',
@@ -320,7 +320,7 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @return void
      */
-    public function setWorkingDir($workingDir)
+    public function setWorkingDir($workingDir): void
     {
         $this->workingDir = $workingDir;
     }
@@ -339,7 +339,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
-    public function runCommand($commands, $output = null, $init = true)
+    public function runCommand($commands, $output = null, $init = true): ?string
     {
         if ($init) {
             $this->init();
@@ -391,7 +391,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function init($BaseInfo = null, $packageName = [], $from = null)
+    private function init($BaseInfo = null, $packageName = [], $from = null): void
     {
         $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
 
@@ -450,7 +450,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * @return void
      */
-    private function initConsole()
+    private function initConsole(): void
     {
         $consoleApplication = new Application();
         $consoleApplication->resetComposer();
@@ -482,7 +482,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\Persistence\Mapping\MappingException
      * @throws \ReflectionException
      */
-    private function dropTableToExtra($packageNames)
+    private function dropTableToExtra($packageNames): void
     {
         $projectRoot = $this->eccubeConfig->get('kernel.project_dir');
 

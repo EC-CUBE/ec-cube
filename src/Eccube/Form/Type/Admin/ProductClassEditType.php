@@ -88,7 +88,7 @@ class ProductClassEditType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('checked', CheckboxType::class, [
@@ -162,7 +162,7 @@ class ProductClassEditType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ProductClass::class,
@@ -176,7 +176,7 @@ class ProductClassEditType extends AbstractType
      *
      * @return void
      */
-    protected function setTaxRate(FormBuilderInterface $builder)
+    protected function setTaxRate(FormBuilderInterface $builder): void
     {
         if (!$this->baseInfoRepository->get()->isOptionProductTaxRule()) {
             return;
@@ -200,7 +200,7 @@ class ProductClassEditType extends AbstractType
      *
      * @return void
      */
-    protected function setCheckbox(FormBuilderInterface $builder)
+    protected function setCheckbox(FormBuilderInterface $builder): void
     {
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
@@ -225,7 +225,7 @@ class ProductClassEditType extends AbstractType
      *
      * @return void
      */
-    protected function addValidations(FormBuilderInterface $builder)
+    protected function addValidations(FormBuilderInterface $builder): void
     {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
@@ -297,7 +297,7 @@ class ProductClassEditType extends AbstractType
      *
      * @return void
      */
-    protected function addErrors($key, FormInterface $form, ConstraintViolationListInterface $errors)
+    protected function addErrors($key, FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         foreach ($errors as $error) {
             $form[$key]->addError(new FormError($error->getMessage()));

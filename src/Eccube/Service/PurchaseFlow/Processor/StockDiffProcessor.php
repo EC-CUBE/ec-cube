@@ -52,7 +52,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (is_null($context->getOriginHolder())) {
             return;
@@ -106,7 +106,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return array<int, string> 商品クラスIDをキーとした商品の数量の差分
      */
-    protected function getDiffOfQuantities(ItemHolderInterface $From, ItemHolderInterface $To)
+    protected function getDiffOfQuantities(ItemHolderInterface $From, ItemHolderInterface $To): array
     {
         $FromItems = $this->getQuantityByProductClass($From);
         $ToItems = $this->getQuantityByProductClass($To);
@@ -138,7 +138,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return array<int, int> 商品クラスIDをキーとした商品の数量
      */
-    protected function getQuantityByProductClass(ItemHolderInterface $ItemHolder)
+    protected function getQuantityByProductClass(ItemHolderInterface $ItemHolder): array
     {
         $ItemsByProductClass = [];
         foreach ($ItemHolder->getItems() as $Item) {
@@ -164,7 +164,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
     {
         if (is_null($context->getOriginHolder())) {
             return;
@@ -200,7 +200,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
     }
 
@@ -213,7 +213,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * @return void
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
     }
 }

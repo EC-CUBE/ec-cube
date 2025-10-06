@@ -45,7 +45,7 @@ if (!class_exists(Category::class)) {
         /**
          * @return int
          */
-        public function countBranches()
+        public function countBranches(): int
         {
             $count = 1;
 
@@ -62,7 +62,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
+        public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo): Category
         {
             $this->setSortNo($this->getSortNo() + $sortNo);
             $em->persist($this);
@@ -77,7 +77,7 @@ if (!class_exists(Category::class)) {
         /**
          * @return array<mixed>
          */
-        public function getParents()
+        public function getParents(): array
         {
             $path = $this->getPath();
             array_pop($path);
@@ -88,7 +88,7 @@ if (!class_exists(Category::class)) {
         /**
          * @return array<mixed>
          */
-        public function getPath()
+        public function getPath(): array
         {
             $path = [];
             $Category = $this;
@@ -109,7 +109,7 @@ if (!class_exists(Category::class)) {
         /**
          * @return string
          */
-        public function getNameWithLevel()
+        public function getNameWithLevel(): string
         {
             return str_repeat('　', $this->getHierarchy() - 1).$this->getName();
         }
@@ -117,7 +117,7 @@ if (!class_exists(Category::class)) {
         /**
          * @return array<int,mixed>
          */
-        public function getDescendants()
+        public function getDescendants(): array
         {
             $DescendantCategories = [];
 
@@ -136,7 +136,7 @@ if (!class_exists(Category::class)) {
         /**
          * @return Category[]|mixed[]
          */
-        public function getSelfAndDescendants()
+        public function getSelfAndDescendants(): array
         {
             return array_merge([$this], $this->getDescendants());
         }
@@ -151,7 +151,7 @@ if (!class_exists(Category::class)) {
          *
          * @return bool
          */
-        public function hasProductCategories()
+        public function hasProductCategories(): bool
         {
             $criteria = Criteria::create()
             ->orderBy(['category_id' => Criteria::ASC])
@@ -268,7 +268,7 @@ if (!class_exists(Category::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -280,7 +280,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setName($name)
+        public function setName($name): Category
         {
             $this->name = $name;
 
@@ -292,7 +292,7 @@ if (!class_exists(Category::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -304,7 +304,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setHierarchy($hierarchy)
+        public function setHierarchy($hierarchy): Category
         {
             $this->hierarchy = $hierarchy;
 
@@ -316,7 +316,7 @@ if (!class_exists(Category::class)) {
          *
          * @return int
          */
-        public function getHierarchy()
+        public function getHierarchy(): int
         {
             return $this->hierarchy;
         }
@@ -328,7 +328,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): Category
         {
             $this->sort_no = $sortNo;
 
@@ -340,7 +340,7 @@ if (!class_exists(Category::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -352,7 +352,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Category
         {
             $this->create_date = $createDate;
 
@@ -364,7 +364,7 @@ if (!class_exists(Category::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -376,7 +376,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Category
         {
             $this->update_date = $updateDate;
 
@@ -388,7 +388,7 @@ if (!class_exists(Category::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -400,7 +400,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function addProductCategory(ProductCategory $productCategory)
+        public function addProductCategory(ProductCategory $productCategory): Category
         {
             $this->ProductCategories[] = $productCategory;
 
@@ -414,7 +414,7 @@ if (!class_exists(Category::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductCategory(ProductCategory $productCategory)
+        public function removeProductCategory(ProductCategory $productCategory): bool
         {
             return $this->ProductCategories->removeElement($productCategory);
         }
@@ -424,7 +424,7 @@ if (!class_exists(Category::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,ProductCategory>
          */
-        public function getProductCategories()
+        public function getProductCategories(): \Doctrine\Common\Collections\Collection
         {
             return $this->ProductCategories;
         }
@@ -436,7 +436,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function addChild(Category $child)
+        public function addChild(Category $child): Category
         {
             $this->Children[] = $child;
 
@@ -450,7 +450,7 @@ if (!class_exists(Category::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeChild(Category $child)
+        public function removeChild(Category $child): bool
         {
             return $this->Children->removeElement($child);
         }
@@ -460,7 +460,7 @@ if (!class_exists(Category::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,Category>
          */
-        public function getChildren()
+        public function getChildren(): \Doctrine\Common\Collections\Collection
         {
             return $this->Children;
         }
@@ -472,7 +472,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setParent(?Category $parent = null)
+        public function setParent(?Category $parent = null): Category
         {
             $this->Parent = $parent;
 
@@ -484,7 +484,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category|null
          */
-        public function getParent()
+        public function getParent(): ?Category
         {
             return $this->Parent;
         }
@@ -496,7 +496,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Category
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Category
         {
             $this->Creator = $creator;
 
@@ -508,7 +508,7 @@ if (!class_exists(Category::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

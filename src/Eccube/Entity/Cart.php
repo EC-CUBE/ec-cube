@@ -138,7 +138,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -146,7 +146,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return string
          */
-        public function getCartKey()
+        public function getCartKey(): string
         {
             return $this->cart_key;
         }
@@ -156,7 +156,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setCartKey(string $cartKey)
+        public function setCartKey(string $cartKey): Cart
         {
             $this->cart_key = $cartKey;
 
@@ -168,7 +168,7 @@ if (!class_exists(Cart::class)) {
          *
          * @deprecated 使用しないので削除予定
          */
-        public function getLock()
+        public function getLock(): bool
         {
             return $this->lock;
         }
@@ -180,7 +180,7 @@ if (!class_exists(Cart::class)) {
          *
          * @deprecated 使用しないので削除予定
          */
-        public function setLock($lock)
+        public function setLock($lock): Cart
         {
             $this->lock = $lock;
 
@@ -190,7 +190,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return string|null
          */
-        public function getPreOrderId()
+        public function getPreOrderId(): ?string
         {
             return $this->pre_order_id;
         }
@@ -200,7 +200,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setPreOrderId($pre_order_id)
+        public function setPreOrderId($pre_order_id): Cart
         {
             $this->pre_order_id = $pre_order_id;
 
@@ -212,7 +212,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function addCartItem(CartItem $CartItem)
+        public function addCartItem(CartItem $CartItem): Cart
         {
             $this->CartItems[] = $CartItem;
 
@@ -224,7 +224,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return ArrayCollection<int, Shipping>
          */
-        public function getShippings()
+        public function getShippings(): ArrayCollection
         {
             return new ArrayCollection();
         }
@@ -232,7 +232,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return Cart
          */
-        public function clearCartItems()
+        public function clearCartItems(): Cart
         {
             $this->CartItems->clear();
 
@@ -242,7 +242,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return \Doctrine\Common\Collections\Collection<int,CartItem>
          */
-        public function getCartItems()
+        public function getCartItems(): \Doctrine\Common\Collections\Collection
         {
             return $this->CartItems;
         }
@@ -253,7 +253,7 @@ if (!class_exists(Cart::class)) {
          * @return ItemCollection<int,ItemInterface>
          */
         #[\Override]
-        public function getItems()
+        public function getItems(): ItemCollection
         {
             return (new ItemCollection($this->getCartItems()))->sort();
         }
@@ -263,7 +263,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setCartItems($CartItems)
+        public function setCartItems($CartItems): Cart
         {
             $this->CartItems = $CartItems;
 
@@ -277,7 +277,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setTotalPrice($total_price)
+        public function setTotalPrice($total_price): Cart
         {
             $this->total_price = $total_price;
 
@@ -287,7 +287,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return string
          */
-        public function getTotalPrice()
+        public function getTotalPrice(): string
         {
             return $this->total_price;
         }
@@ -300,7 +300,7 @@ if (!class_exists(Cart::class)) {
          * @return Cart
          */
         #[\Override]
-        public function setTotal($total)
+        public function setTotal($total): Cart
         {
             return $this->setTotalPrice($total);
         }
@@ -311,7 +311,7 @@ if (!class_exists(Cart::class)) {
          * @return string
          */
         #[\Override]
-        public function getTotal()
+        public function getTotal(): string
         {
             return $this->getTotalPrice();
         }
@@ -319,7 +319,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @return string
          */
-        public function getTotalQuantity()
+        public function getTotalQuantity(): string
         {
             $totalQuantity = '0';
             foreach ($this->CartItems as $CartItem) {
@@ -335,7 +335,7 @@ if (!class_exists(Cart::class)) {
          * @return void
          */
         #[\Override]
-        public function addItem(ItemInterface $item)
+        public function addItem(ItemInterface $item): void
         {
             if ($item instanceof CartItem) {
                 $this->CartItems->add($item);
@@ -347,7 +347,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return void
          */
-        public function removeItem(ItemInterface $item)
+        public function removeItem(ItemInterface $item): void
         {
             if ($item instanceof CartItem) {
                 $this->CartItems->removeElement($item);
@@ -360,7 +360,7 @@ if (!class_exists(Cart::class)) {
          * @return string
          */
         #[\Override]
-        public function getQuantity()
+        public function getQuantity(): string
         {
             return (string) $this->getTotalQuantity();
         }
@@ -373,7 +373,7 @@ if (!class_exists(Cart::class)) {
          * @return Cart
          */
         #[\Override]
-        public function setDeliveryFeeTotal($total)
+        public function setDeliveryFeeTotal($total): Cart
         {
             $this->delivery_fee_total = $total;
 
@@ -384,7 +384,7 @@ if (!class_exists(Cart::class)) {
          * {@inheritdoc}
          */
         #[\Override]
-        public function getDeliveryFeeTotal()
+        public function getDeliveryFeeTotal(): string
         {
             return $this->delivery_fee_total;
         }
@@ -402,7 +402,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setCustomer(?Customer $Customer = null)
+        public function setCustomer(?Customer $Customer = null): Cart
         {
             $this->Customer = $Customer;
 
@@ -416,7 +416,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setSortNo($sortNo = null)
+        public function setSortNo($sortNo = null): Cart
         {
             $this->sort_no = $sortNo;
 
@@ -428,7 +428,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return int|null
          */
-        public function getSortNo()
+        public function getSortNo(): ?int
         {
             return $this->sort_no;
         }
@@ -440,7 +440,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Cart
         {
             $this->create_date = $createDate;
 
@@ -452,7 +452,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): \DateTime
         {
             return $this->create_date;
         }
@@ -464,7 +464,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Cart
         {
             $this->update_date = $updateDate;
 
@@ -476,7 +476,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): \DateTime
         {
             return $this->update_date;
         }
@@ -489,7 +489,7 @@ if (!class_exists(Cart::class)) {
          * @return void
          */
         #[\Override]
-        public function setDiscount($total)
+        public function setDiscount($total): void
         {
             // TODO quiet
         }
@@ -502,7 +502,7 @@ if (!class_exists(Cart::class)) {
          * @return void
          */
         #[\Override]
-        public function setCharge($total)
+        public function setCharge($total): void
         {
             // TODO quiet
         }
@@ -517,7 +517,7 @@ if (!class_exists(Cart::class)) {
          * @deprecated
          */
         #[\Override]
-        public function setTax($total)
+        public function setTax($total): void
         {
             // TODO quiet
         }
@@ -527,7 +527,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return null
          */
-        public function getOrderStatus()
+        public function getOrderStatus(): null
         {
             return null;
         }
@@ -537,7 +537,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return OrderItem[]
          */
-        public function getProductOrderItems()
+        public function getProductOrderItems(): array
         {
             return [];
         }

@@ -33,7 +33,7 @@ class SessionProcessor
      *
      * @return array<string, array<string, mixed>>
      */
-    public function __invoke(array $records)
+    public function __invoke(array $records): array
     {
         $records['extra']['session_id'] = 'N/A';
 

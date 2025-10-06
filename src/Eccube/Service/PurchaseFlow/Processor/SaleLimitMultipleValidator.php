@@ -45,7 +45,7 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 商品の購入数が在庫数を超えている場合
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         $OrderItemsByProductClass = [];
         foreach ($itemHolder->getItems() as $Item) {

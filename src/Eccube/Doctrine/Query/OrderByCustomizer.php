@@ -28,7 +28,7 @@ abstract class OrderByCustomizer implements QueryCustomizer
      * @return void
      */
     #[\Override]
-    final public function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, $params, $queryKey): void
     {
         foreach ($this->createStatements($params, $queryKey) as $index => $orderByClause) {
             if ($index === 0) {
@@ -48,5 +48,5 @@ abstract class OrderByCustomizer implements QueryCustomizer
      *
      * @return OrderByClause[]
      */
-    abstract protected function createStatements($params, $queryKey);
+    abstract protected function createStatements($params, $queryKey): array;
 }

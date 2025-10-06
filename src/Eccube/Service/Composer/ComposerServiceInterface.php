@@ -28,7 +28,7 @@ interface ComposerServiceInterface
      *
      * @return string
      */
-    public function execRequire($packageName, $output = null);
+    public function execRequire($packageName, $output = null): string;
 
     /**
      * Run remove command
@@ -38,7 +38,7 @@ interface ComposerServiceInterface
      *
      * @return string
      */
-    public function execRemove($packageName, $output = null);
+    public function execRemove($packageName, $output = null): string;
 
     /**
      * @param string $key
@@ -46,14 +46,14 @@ interface ComposerServiceInterface
      *
      * @return mixed
      */
-    public function execConfig($key, $value = null);
+    public function execConfig($key, $value = null): mixed;
 
     /**
      * @param BaseInfo $BaseInfo
      *
      * @return void
      */
-    public function configureRepository(BaseInfo $BaseInfo);
+    public function configureRepository(BaseInfo $BaseInfo): void;
 
     /**
      * @param string $packageName
@@ -64,5 +64,5 @@ interface ComposerServiceInterface
      *
      * @return void
      */
-    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0);
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void;
 }

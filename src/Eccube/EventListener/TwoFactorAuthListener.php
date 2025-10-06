@@ -73,7 +73,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelController(ControllerArgumentsEvent $event)
+    public function onKernelController(ControllerArgumentsEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -117,7 +117,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
      * @return array<string,array<int|string>>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', 7],

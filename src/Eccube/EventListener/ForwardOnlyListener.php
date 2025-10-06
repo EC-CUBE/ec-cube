@@ -36,7 +36,7 @@ class ForwardOnlyListener implements EventSubscriberInterface
      * @throws \ReflectionException
      * @throws AccessDeniedHttpException
      */
-    public function onController(ControllerEvent $event)
+    public function onController(ControllerEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -69,7 +69,7 @@ class ForwardOnlyListener implements EventSubscriberInterface
      * @return array<string,string>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => 'onController',

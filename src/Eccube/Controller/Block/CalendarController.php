@@ -42,7 +42,7 @@ class CalendarController extends AbstractController
      */
     #[Route('/block/calendar', name: 'block_calendar', methods: ['GET'])]
     #[Template('Block/calendar.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $today = Carbon::now();
         $firstDateOfThisMonth = $today->copy()->startOfMonth();
@@ -92,7 +92,7 @@ class CalendarController extends AbstractController
      *
      * @return array<int,array<string,string>> カレンダーの配列
      */
-    private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
+    private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate): array
     {
         for ($i = 0; $i < count($targetMonthCalendar); $i++) {
             // カレンダー配列の日が空の場合は処理をスキップ
@@ -131,7 +131,7 @@ class CalendarController extends AbstractController
      *
      * @return array<int,array<string,string>> カレンダーの配列
      */
-    private function createCalendar(Carbon $firstDateOfTargetMonth)
+    private function createCalendar(Carbon $firstDateOfTargetMonth): array
     {
         // 週のうちの何日目か 0 (日曜)から 6 (土曜)を取得
         $firstDayOfWeek = $firstDateOfTargetMonth->dayOfWeek;
@@ -188,7 +188,7 @@ class CalendarController extends AbstractController
      *
      * @return string 曜日の文字 : Sun(日曜)からSat(土曜)
      */
-    private function getDayOfWeekString($dayOfWeekNumber)
+    private function getDayOfWeekString($dayOfWeekNumber): string
     {
         $weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

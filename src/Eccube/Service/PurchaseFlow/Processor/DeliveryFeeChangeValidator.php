@@ -33,7 +33,7 @@ class DeliveryFeeChangeValidator extends ItemHolderPostValidator
      * @throws InvalidItemException 送料が変更されている場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;

@@ -28,7 +28,7 @@ class PluginUninstallCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
@@ -37,7 +37,7 @@ class PluginUninstallCommand extends Command
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

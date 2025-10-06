@@ -47,7 +47,7 @@ class AutoNewItemController extends AbstractController
      */
     #[Route('/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
     #[Template('Block/auto_new_item.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $qb = $this->productRepository->getQueryBuilderBySearchData([
             'orderby' => $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']),

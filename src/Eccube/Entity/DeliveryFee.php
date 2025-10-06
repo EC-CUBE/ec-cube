@@ -80,7 +80,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): int
         {
             return $this->id;
         }
@@ -92,7 +92,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return DeliveryFee
          */
-        public function setFee($fee)
+        public function setFee($fee): DeliveryFee
         {
             $this->fee = $fee;
 
@@ -104,7 +104,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return string
          */
-        public function getFee()
+        public function getFee(): string
         {
             return $this->fee;
         }
@@ -116,7 +116,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return DeliveryFee
          */
-        public function setDelivery(?Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null): DeliveryFee
         {
             $this->Delivery = $delivery;
 
@@ -128,7 +128,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return Delivery|null
          */
-        public function getDelivery()
+        public function getDelivery(): ?Delivery
         {
             return $this->Delivery;
         }
@@ -140,7 +140,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return DeliveryFee
          */
-        public function setPref(?Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null): DeliveryFee
         {
             $this->Pref = $pref;
 
@@ -152,7 +152,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return Master\Pref|null
          */
-        public function getPref()
+        public function getPref(): ?Master\Pref
         {
             return $this->Pref;
         }

@@ -66,13 +66,13 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
      * @return void
      */
     #[\Override]
-    public function initialize(InputInterface $input, OutputInterface $output)
+    public function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packageNames = [];
         $unSupportedPlugins = [];

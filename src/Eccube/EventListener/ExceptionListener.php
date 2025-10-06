@@ -46,7 +46,7 @@ class ExceptionListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $title = trans('exception.error_title');
         $message = trans('exception.error_message');
@@ -132,7 +132,7 @@ class ExceptionListener implements EventSubscriberInterface
      * @return array<string, array<int, string>> The event names to listen to
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => ['onKernelException'],

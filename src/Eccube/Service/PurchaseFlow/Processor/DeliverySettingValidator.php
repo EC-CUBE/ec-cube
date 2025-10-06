@@ -57,7 +57,7 @@ class DeliverySettingValidator extends ItemValidator
      * @throws InvalidItemException 配送業者が設定されていない場合
      */
     #[\Override]
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -80,7 +80,7 @@ class DeliverySettingValidator extends ItemValidator
      * @return void
      */
     #[\Override]
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $item->setQuantity('0');
     }

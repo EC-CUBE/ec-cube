@@ -74,7 +74,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return Product|null
      */
-    public function findWithSortedClassCategories($productId)
+    public function findWithSortedClassCategories($productId): ?Product
     {
         $qb = $this->createQueryBuilder('p');
         $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
@@ -105,7 +105,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return ArrayCollection<int, mixed>|array<int, mixed>|null
      */
-    public function findProductsWithSortedClassCategories(array $ids, $indexBy = null)
+    public function findProductsWithSortedClassCategories(array $ids, $indexBy = null): ArrayCollection|array|null
     {
         if (count($ids) < 1) {
             return [];
@@ -147,7 +147,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchData($searchData)
+    public function getQueryBuilderBySearchData($searchData): \Doctrine\ORM\QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.Status = 1');
@@ -248,7 +248,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData)
+    public function getQueryBuilderBySearchDataForAdmin($searchData): \Doctrine\ORM\QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('pc', 'pi', 'tr', 'ps')

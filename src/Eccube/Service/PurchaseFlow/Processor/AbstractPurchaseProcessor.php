@@ -23,7 +23,7 @@ abstract class AbstractPurchaseProcessor implements PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
     {
     }
 
@@ -31,7 +31,7 @@ abstract class AbstractPurchaseProcessor implements PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
     }
 
@@ -39,7 +39,7 @@ abstract class AbstractPurchaseProcessor implements PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
     }
 }

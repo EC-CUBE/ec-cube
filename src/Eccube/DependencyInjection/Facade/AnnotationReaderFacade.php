@@ -36,7 +36,7 @@ class AnnotationReaderFacade
      *
      * @return AnnotationReaderFacade|null
      */
-    public static function init(Reader $Reader)
+    public static function init(Reader $Reader): ?AnnotationReaderFacade
     {
         if (null === self::$instance) {
             self::$instance = new self($Reader);
@@ -50,7 +50,7 @@ class AnnotationReaderFacade
      *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): Reader
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');
@@ -62,7 +62,7 @@ class AnnotationReaderFacade
     /**
      * @return Reader|null
      */
-    public function getAnnotationReader()
+    public function getAnnotationReader(): ?Reader
     {
         return self::$Reader;
     }
