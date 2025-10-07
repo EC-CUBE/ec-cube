@@ -37,7 +37,7 @@ if (!class_exists(ClassCategory::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName();
         }
 
         /**

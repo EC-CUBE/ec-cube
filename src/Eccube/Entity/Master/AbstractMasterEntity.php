@@ -28,7 +28,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     #[\Override]
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     /**

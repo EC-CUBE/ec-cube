@@ -370,7 +370,7 @@ class ShoppingController extends AbstractShoppingController
                 }
 
                 $response = $PaymentResult->getResponse();
-                if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+                if ($response->isRedirection() || $response->isSuccessful()) {
                     $this->entityManager->flush();
 
                     log_info('[注文確認] PaymentMethod::verifyが指定したレスポンスを表示します.');
@@ -901,7 +901,7 @@ class ShoppingController extends AbstractShoppingController
             $this->entityManager->flush();
 
             // dispatcherがresponseを保持している場合はresponseを返す
-            if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+            if ($response->isRedirection() || $response->isSuccessful()) {
                 log_info('[注文処理] PaymentMethod::applyが指定したレスポンスを表示します.');
 
                 return $response;
@@ -938,7 +938,7 @@ class ShoppingController extends AbstractShoppingController
         $PaymentResult = $paymentMethod->checkout();
         $response = $PaymentResult->getResponse();
         // PaymentResultがresponseを保持している場合はresponseを返す
-        if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+        if ($response->isRedirection() || $response->isSuccessful()) {
             $this->entityManager->flush();
             log_info('[注文処理] PaymentMethod::checkoutが指定したレスポンスを表示します.');
 

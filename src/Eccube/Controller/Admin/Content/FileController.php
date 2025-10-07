@@ -257,7 +257,7 @@ class FileController extends AbstractController
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
                 setlocale(LC_ALL, 'ja_JP.UTF-8');
-                $pathParts = pathinfo((string) $file);
+                $pathParts = pathinfo($file);
 
                 $patterns = [
                     '/[a-zA-Z0-9!"#$%&()=~^|@`:*;+{}]/',
@@ -326,15 +326,15 @@ class FileController extends AbstractController
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
                 // フォルダの存在チェック
-                if (is_dir(rtrim((string) $nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
+                if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
                 }
                 // 英数字, 半角スペース, _-.() のみ許可
-                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', (string) $filename)) {
+                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', $filename)) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
                 }
                 // dotファイルはアップロード不可
-                if (str_starts_with((string) $filename, '.')) {
+                if (str_starts_with($filename, '.')) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
                 // 許可した拡張子以外アップロード不可

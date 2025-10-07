@@ -362,7 +362,7 @@ if (!class_exists(Cart::class)) {
         #[\Override]
         public function getQuantity(): string
         {
-            return (string) $this->getTotalQuantity();
+            return $this->getTotalQuantity();
         }
 
         /**

@@ -1957,7 +1957,7 @@ if (!class_exists(Order::class)) {
         {
             $quantity = '0';
             foreach ($this->getItems() as $item) {
-                $quantity = bcadd($quantity, (string) $item->getQuantity());
+                $quantity = bcadd($quantity, $item->getQuantity());
             }
 
             return $quantity;

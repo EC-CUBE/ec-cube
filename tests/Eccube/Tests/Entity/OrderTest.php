@@ -186,7 +186,7 @@ class OrderTest extends EccubeTestCase
         $this->verify();
         // まとめられた明細の商品の個数が全配送先の合計になっているか
         $OrderItem = $OrderItems[0];
-        $this->expected = bcmul((string) $quantity, (string) $times, 0);
+        $this->expected = bcmul($quantity, $times, 0);
         $this->actual = $OrderItem->getQuantity();
         $this->verify();
     }

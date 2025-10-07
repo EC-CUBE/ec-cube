@@ -53,7 +53,7 @@ class EccubeExtensionTest extends EccubeTestCase
 
                 $actual = $actuals[$class_category_id]['#'.$class_category_id2];
 
-                $this->assertEquals($class_category_id2, $actual['classcategory_id2']);
+                $this->assertSame($class_category_id2, $actual['classcategory_id2']);
                 $this->assertEquals($name2, $actual['name']);
 
                 $ProductClass = $Product

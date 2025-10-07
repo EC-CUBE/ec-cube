@@ -39,7 +39,7 @@ if (!class_exists(News::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getTitle();
+            return $this->getTitle();
         }
 
         /**

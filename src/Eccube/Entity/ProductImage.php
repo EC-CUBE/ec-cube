@@ -37,7 +37,7 @@ if (!class_exists(ProductImage::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getFileName();
+            return $this->getFileName();
         }
 
         /**
