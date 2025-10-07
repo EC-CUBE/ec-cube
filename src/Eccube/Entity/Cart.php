@@ -275,9 +275,9 @@ if (!class_exists(Cart::class)) {
          *
          * @param string $total_price
          *
-         * @return Cart
+         * @return $this
          */
-        public function setTotalPrice($total_price): Cart
+        public function setTotalPrice($total_price): static
         {
             $this->total_price = $total_price;
 
@@ -297,10 +297,10 @@ if (!class_exists(Cart::class)) {
          *
          * @param string $total
          *
-         * @return Cart
+         * @return $this
          */
         #[\Override]
-        public function setTotal($total): Cart
+        public function setTotal($total): static
         {
             return $this->setTotalPrice($total);
         }

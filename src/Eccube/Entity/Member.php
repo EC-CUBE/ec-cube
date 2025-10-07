@@ -363,10 +363,10 @@ if (!class_exists(Member::class)) {
         /**
          * Get salt.
          *
-         * @return string
+         * @return string|null
          */
         #[\Override]
-        public function getSalt(): string
+        public function getSalt(): ?string
         {
             return $this->salt;
         }
