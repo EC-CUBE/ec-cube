@@ -21,11 +21,13 @@ use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * ORM3 環境で DoctrineBundle が AttributeDriver に第2/第3引数を渡す定義を、
  * 最終的に「paths の 1 引数」に統一する。
  * MappingDriverChain は維持し、SchemaService が複数の名前空間を扱えるようにする。
+ * See https://github.com/doctrine/DoctrineBundle/issues/1844
  */
 final class StripReportFieldsArgPass implements CompilerPassInterface
 {

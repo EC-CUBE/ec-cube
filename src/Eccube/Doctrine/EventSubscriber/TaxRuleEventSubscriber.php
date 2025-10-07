@@ -57,7 +57,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */
@@ -91,7 +91,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */
@@ -108,7 +108,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */

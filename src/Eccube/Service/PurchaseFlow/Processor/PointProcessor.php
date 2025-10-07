@@ -88,6 +88,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             if ($context->isShoppingFlow()) {
                 // 支払い金額 < 利用ポイントによる値引き額.
                 if ($itemHolder->getTotal() + $discount < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                    /** @phpstan-ignore-next-line bcmathの実装次第、削除する */
                     $minus = $itemHolder->getTotal() + $discount;
                     // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
                     $overPoint = $this->pointHelper->priceToPoint($minus);

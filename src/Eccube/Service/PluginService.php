@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\MappingException as ORMMappingException;
 use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
@@ -486,9 +485,6 @@ class PluginService
             $meta = $this->readConfig($dir);
         }
 
-        if (!is_array($meta)) {
-            throw new PluginException('composer.json not found or syntax error');
-        }
         if (!isset($meta['code']) || !$this->checkSymbolName($meta['code'])) {
             throw new PluginException('composer.json code empty or invalid_character(\W)');
         }
@@ -681,7 +677,6 @@ class PluginService
             $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
             $this->schemaService->dropTable($namespace);
         } catch (PersistenceMappingException) {
-        } catch (ORMMappingException) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
         }
 
@@ -1089,7 +1084,7 @@ class PluginService
         }
         // Find plugin in array
         $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
-        if (false === $index) {
+        if ($index === false) { /** @phpstan-ignore-line */
             $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
         }
 

@@ -90,7 +90,7 @@ interface ItemInterface
     public function getId();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPointRate();
 

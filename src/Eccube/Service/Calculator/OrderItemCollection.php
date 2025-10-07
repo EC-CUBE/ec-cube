@@ -29,10 +29,10 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     protected $type;
 
     /**
-     * @param array<int, OrderItem> $OrderItems
+     * @param array<int, OrderItem>|null $OrderItems
      * @param string|null $type
      */
-    public function __construct($OrderItems, $type = null)
+    public function __construct($OrderItems = null, $type = null)
     {
         // $OrderItems が Collection だったら toArray(); する
         $this->type = is_null($type) ? Order::class : $type;

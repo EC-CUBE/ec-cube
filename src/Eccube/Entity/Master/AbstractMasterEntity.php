@@ -31,7 +31,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     }
 
     /**
-     * @var int
+     * @var int|null
      */
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'smallint', options: ['unsigned' => true])]
@@ -67,9 +67,9 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -130,17 +130,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     public function __get($name)
     {
         return self::getConstantValue($name);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function __set($name, $value)
-    {
-        throw new \InvalidArgumentException();
     }
 
     /**

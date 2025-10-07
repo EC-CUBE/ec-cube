@@ -54,7 +54,7 @@ class SaveEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class SaveEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */

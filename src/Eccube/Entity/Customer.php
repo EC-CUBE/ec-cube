@@ -1198,6 +1198,9 @@ if (!class_exists(Customer::class)) {
             return ['p' => $this->serialize()];
         }
 
+        /**
+         * @param array<string, mixed> $data
+         */
         public function __unserialize(array $data): void
         {
             if (isset($data['p']) && is_string($data['p'])) {

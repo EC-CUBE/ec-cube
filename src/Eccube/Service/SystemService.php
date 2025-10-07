@@ -225,7 +225,7 @@ class SystemService implements EventSubscriberInterface
 
         $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
         $contents = \file_get_contents($path);
-        $currentMode = \explode(':', $contents)[0] ?? null;
+        $currentMode = \explode(':', $contents)[0];
 
         if ($force || $currentMode === $mode) {
             \unlink($path);

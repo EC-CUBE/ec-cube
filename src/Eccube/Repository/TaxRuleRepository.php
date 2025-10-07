@@ -118,10 +118,8 @@ class TaxRuleRepository extends AbstractRepository
             /** @var Customer $Customer */
             $Customer = $this->tokenStorage->getToken()->getUser();
             // FIXME なぜか管理画面でも実行されている.
-            if ($Customer instanceof Customer) {
-                $Pref = $Customer->getPref();
-                $Country = $Customer->getCountry();
-            }
+            $Pref = $Customer->getPref();
+            $Country = $Customer->getCountry();
         }
 
         // 商品単位税率設定がOFFの場合
@@ -203,7 +201,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // ProductClass
-        if ($ProductClass && '0' !== $productClassId) {
+        if ($ProductClass && 0 !== $productClassId) {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $qb->setParameter('ProductClass', $ProductClass);
         } else {

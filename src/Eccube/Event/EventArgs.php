@@ -81,6 +81,6 @@ class EventArgs extends GenericEvent
      */
     public function hasResponse()
     {
-        return $this->response instanceof Response;
+        return $this->response !== null;
     }
 }

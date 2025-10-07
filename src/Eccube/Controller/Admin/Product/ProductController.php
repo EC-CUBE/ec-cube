@@ -667,7 +667,7 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
 
                 /**
-                 * @var array<string, Product>|Product[] $admin_product
+                 * @var array<string, Product>|Product[]|null $admin_product
                  */
                 $admin_product = $request->request->all()['admin_product'] ?? null;
                 if (is_array($admin_product) && array_key_exists('product_image', $admin_product)) {

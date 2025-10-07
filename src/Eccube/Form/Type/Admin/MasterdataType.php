@@ -60,7 +60,7 @@ class MasterdataType extends AbstractType
         foreach ($this->entityManager->getMetadataFactory()->getAllMetadata() as $meta) {
             // 抽象クラスは除外
             $rc = $meta->getReflectionClass();
-            if ($rc && $rc->isAbstract()) {
+            if ($rc->isAbstract()) {
                 continue;
             }
 

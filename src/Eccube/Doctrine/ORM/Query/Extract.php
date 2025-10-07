@@ -98,7 +98,7 @@ class Extract extends FunctionNode
         $next = $lexer->glimpse();
         if (isset($next->type) && $next->type === TokenType::T_STRING) {
             $upperType = strtoupper((string) $lexer->token->value);
-            if ($lexer->token->type !== TokenType::T_IDENTIFIER || !in_array($upperType, $this->dateTimeTypes, true)) {
+            if (!in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }
             $parser->match(TokenType::T_IDENTIFIER);

@@ -40,7 +40,7 @@ trait PointRateTrait
     /**
      * Get pointRate
      *
-     * @return string
+     * @return string|null
      */
     public function getPointRate()
     {

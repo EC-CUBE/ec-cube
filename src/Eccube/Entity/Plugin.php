@@ -29,12 +29,11 @@ if (!class_exists(Plugin::class)) {
     {
         /**
          * @var int
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**

@@ -34,12 +34,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
      */
     protected $em;
 
-    /**
-     * @var Reader
-     */
-    protected $reader;
-
-    public function __construct(EntityManagerInterface $em, Reader $reader)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -79,16 +74,14 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                     $attrs = $prop->getAttributes(FormAppend::class);
                     foreach ($attrs as $attr) {
                         $instance = $attr->newInstance();
-                        if ($instance) {
-                            $options = empty($instance->options) ? [] : $instance->options;
-                            $options['eccube_form_options'] = [
-                                'auto_render' => (true === $instance->auto_render),
-                                'form_theme' => $instance->form_theme,
-                                'style_class' => $instance->style_class ?: 'ec-select',
-                            ];
-                            if (!isset($form[$prop->getName()])) {
-                                $form->add($prop->getName(), $instance->type, $options);
-                            }
+                        $options = empty($instance->options) ? [] : $instance->options;
+                        $options['eccube_form_options'] = [
+                            'auto_render' => (true === $instance->auto_render),
+                            'form_theme' => $instance->form_theme,
+                            'style_class' => $instance->style_class ?: 'ec-select',
+                        ];
+                        if (!isset($form[$prop->getName()])) {
+                            $form->add($prop->getName(), $instance->type, $options);
                         }
                     }
                 }

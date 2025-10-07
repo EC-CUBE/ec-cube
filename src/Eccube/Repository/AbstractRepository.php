@@ -21,9 +21,9 @@ use Eccube\Entity\AbstractEntity;
  * ECCUBE AbstractRepository
  *
  * @method T|null find($id, $lockMode = null, $lockVersion = null)
- * @method T|null findOneBy(array $criteria, array $orderBy = null)
+ * @method T|null findOneBy(array<string, mixed> $criteria, array<string, string>|null $orderBy = null)
  * @method T[]    findAll()
- * @method T[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method T[]    findBy(array<string, mixed> $criteria, array<string, string>|null $orderBy = null, ?int $limit = null, ?int $offset = null)
  *
  * @template T of AbstractEntity
  *

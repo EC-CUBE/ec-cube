@@ -16,7 +16,6 @@ namespace Eccube\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as OrmUpdateCommand;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Repository\PluginRepository;
@@ -64,9 +63,6 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     ) {
         /** @var EntityManagerInterface $em */
         $em = $managerRegistry->getManager();
-        if (!$em instanceof EntityManagerInterface) {
-            throw new \LogicException('Default manager is not an ORM EntityManager.');
-        }
         parent::__construct(new SingleManagerProvider($em));
 
         $this->pluginService = $pluginService;
@@ -98,7 +94,6 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
         $eccubeKernel = $app->getKernel();
         $em = $eccubeKernel->getContainer()->get('doctrine')->getManager($input->getOption('em'));
         assert($em instanceof EntityManagerInterface);
-        $this->getApplication()->getHelperSet()->set(new EntityManagerHelper($em), 'em');
 
         $noProxy = true === $input->getOption('no-proxy');
         $dumpSql = true === $input->getOption('dump-sql');

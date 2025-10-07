@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PaymentDispatcher
 {
     /**
-     * @var Response
+     * @var Response|null
      */
     private $response;
 
@@ -162,7 +162,7 @@ class PaymentDispatcher
     /**
      * Response を返します.
      *
-     * @return Response
+     * @return Response|null
      */
     public function getResponse()
     {

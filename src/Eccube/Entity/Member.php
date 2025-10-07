@@ -83,12 +83,12 @@ if (!class_exists(Member::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private $id;
+        private ?int $id = null;
 
         /**
          * @var string|null
@@ -140,6 +140,8 @@ if (!class_exists(Member::class)) {
         private $two_factor_auth_key;
 
         /**
+         * @var bool
+         *
          * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
          */
         #[ORM\Column(name: 'two_factor_auth_enabled', type: 'boolean', nullable: false, options: ['default' => false])]
@@ -187,9 +189,9 @@ if (!class_exists(Member::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -604,6 +606,9 @@ if (!class_exists(Member::class)) {
             return ['p' => $this->serialize()];
         }
 
+        /**
+         * @param array<string, mixed> $data
+         */
         public function __unserialize(array $data): void
         {
             if (isset($data['p']) && is_string($data['p'])) {

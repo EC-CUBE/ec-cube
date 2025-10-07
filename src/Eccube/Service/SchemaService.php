@@ -86,9 +86,9 @@ class SchemaService
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
                     // Setup to AttributeDriver
-                    $newDriver = new ReloadSafeAttributeDriver($oldDriver->getPaths());
-                    $newDriver->setFileExtension($oldDriver->getFileExtension());
-                    $newDriver->addExcludePaths($oldDriver->getExcludePaths());
+                    $newDriver = new ReloadSafeAttributeDriver($oldDriver->paths ?? []);
+                    $newDriver->setFileExtension($oldDriver->fileExtension ?? '.php');
+                    $newDriver->addExcludePaths($oldDriver->excludePaths ?? []);
                     $newDriver->setTraitProxiesDirectory($proxiesDirectory);
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
@@ -130,8 +130,8 @@ class SchemaService
      */
     public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
     {
-        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode) {
-            $tool->updateSchema($metaData, $saveMode);
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) {
+            $tool->updateSchema($metaData);
         }, $generatedFiles, $proxiesDirectory);
     }
 

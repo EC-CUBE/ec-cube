@@ -14,9 +14,9 @@
 namespace Eccube\Repository;
 
 use Carbon\Carbon;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Calendar;
 

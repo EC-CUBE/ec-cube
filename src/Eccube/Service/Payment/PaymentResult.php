@@ -31,7 +31,7 @@ class PaymentResult
     private $success;
 
     /**
-     * @var Response
+     * @var Response|null
      */
     private $response;
 
@@ -106,7 +106,7 @@ class PaymentResult
     /**
      * Response を返します.
      *
-     * @return Response
+     * @return Response|null
      */
     public function getResponse()
     {

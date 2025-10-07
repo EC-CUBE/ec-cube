@@ -57,9 +57,6 @@ class PluginApiService
      * @param RequestStack $requestStack
      * @param BaseInfoRepository $baseInfoRepository
      * @param PluginRepository $pluginRepository
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
     {
@@ -312,7 +309,7 @@ class PluginApiService
         $curl = curl_init($url);
 
         if ($post) {
-            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POST, true);
 
             if (count($data) > 0) {
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
@@ -362,9 +359,9 @@ class PluginApiService
     /**
      * Get plugin information
      *
-     * @param array<string, string|int|array<int, string>>  $plugin
+     * @param array<string, string|int|array<int, string|float>|bool>  $plugin
      *
-     * @return array<string, string|int|array<int, string>>
+     * @return array<string, string|int|array<int, string|float>|bool>
      */
     public function buildInfo(&$plugin)
     {
@@ -376,7 +373,7 @@ class PluginApiService
     /**
      * Check support version
      *
-     * @param array<string, string|int|array<int, string|float>> $plugin
+     * @param array<string, string|int|array<int, string|float>|bool> $plugin
      *
      * @return void
      */

@@ -334,7 +334,7 @@ if (!class_exists(Order::class)) {
                 $productClassId = $ProductOrderItem->getProductClass()->getId();
                 if (array_key_exists($productClassId, $orderItemArray)) {
                     // 同じ規格の商品がある場合は個数をまとめる
-                    /** @var ItemInterface $OrderItem */
+                    /** @var OrderItem $OrderItem */
                     $OrderItem = $orderItemArray[$productClassId];
                     $quantity = bcadd($OrderItem->getQuantity(), $ProductOrderItem->getQuantity());
                     $OrderItem->setQuantity($quantity);
@@ -365,12 +365,11 @@ if (!class_exists(Order::class)) {
 
         /**
          * @var int|null
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**

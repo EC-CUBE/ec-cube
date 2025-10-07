@@ -971,10 +971,10 @@ class InstallController extends AbstractController
             $salt = StringUtil::random(32);
             $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
             $stmt->bindParam(':login_id', $data['login_id']);
-            /** @var Result|null $row */
+            /** @var Result $row */
             $row = $stmt->executeQuery();
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
-            if ($row) {
+            if ($row->fetchOne() !== false) {
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $conn->prepare('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;');
                 $sth->execute([

@@ -148,11 +148,11 @@ class Kernel extends BaseKernel
         date_default_timezone_set($timezone);
 
         $Logger = $container->get('eccube.logger');
-        if ($Logger !== null && $Logger instanceof Log\Logger) {
+        if ($Logger instanceof Log\Logger) {
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
+        if ($Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($Translator);
         }
 

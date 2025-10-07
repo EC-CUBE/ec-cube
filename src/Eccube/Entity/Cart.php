@@ -37,12 +37,11 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @var int
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
@@ -109,6 +108,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @var InvalidItemException[]
          */
+        /** @phpstan-ignore-next-line */
         private $errors = [];
 
         public function __wakeup()

@@ -28,12 +28,11 @@ if (!class_exists(AuthorityRole::class)) {
     {
         /**
          * @var int
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
@@ -64,10 +63,11 @@ if (!class_exists(AuthorityRole::class)) {
          *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
          * })
          *
-         * @var Master\Authority
+         * @var Master\Authority|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
         #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
+        /** @phpstan-ignore-next-line */
         private $Authority;
 
         /**

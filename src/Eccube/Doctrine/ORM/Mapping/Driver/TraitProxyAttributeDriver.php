@@ -24,16 +24,6 @@ class TraitProxyAttributeDriver extends AttributeDriver
     protected $trait_proxies_directory;
 
     /**
-     * @var array
-     */
-    protected $excludePaths = [];
-
-    /**
-     * @var string
-     */
-    protected $classNames;
-
-    /**
      * @param string $dir
      *
      * @return void
@@ -47,7 +37,7 @@ class TraitProxyAttributeDriver extends AttributeDriver
      * {@inheritdoc}
      */
     #[\Override]
-    public function getAllClassNames()
+    public function getAllClassNames(): ?array
     {
         if ($this->classNames !== null) {
             return $this->classNames;

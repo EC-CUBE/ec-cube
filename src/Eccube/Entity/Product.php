@@ -511,6 +511,7 @@ if (!class_exists(Product::class)) {
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
@@ -629,9 +630,11 @@ if (!class_exists(Product::class)) {
          * コピー元のProductを受け取り,
          * 関連エンティティも再帰的にコピーする.
          *
+         * @param Product $Product
+         *
          * @return Product
          */
-        public function copy()
+        public function copy(Product $Product): Product
         {
             // コピー対象外
             $this->CustomerFavoriteProducts = new ArrayCollection();
@@ -676,7 +679,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
         public function getId()
         {

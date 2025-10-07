@@ -17,7 +17,6 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -45,8 +44,6 @@ class PreOrderIdValidator implements PurchaseProcessor
      * @param PurchaseContext $context
      *
      * @return void
-     *
-     * @throws PurchaseException
      */
     #[\Override]
     public function prepare(ItemHolderInterface $target, PurchaseContext $context)
@@ -61,8 +58,6 @@ class PreOrderIdValidator implements PurchaseProcessor
      * @param PurchaseContext $context
      *
      * @return void
-     *
-     * @throws PurchaseException
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context)

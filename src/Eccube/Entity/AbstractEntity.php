@@ -24,6 +24,9 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @implements \ArrayAccess<string, mixed>
+ */
 #[MappedSuperclass]
 abstract class AbstractEntity implements \ArrayAccess
 {
@@ -136,12 +139,6 @@ abstract class AbstractEntity implements \ArrayAccess
         $parentClass = $objReflect->getParentClass();
         if (is_object($parentClass)) {
             $arrParents = self::toArray($excludeAttribute, $parentClass);
-            if (!is_array($arrParents)) {
-                $arrParents = [];
-            }
-            if (!is_array($arrResults)) {
-                $arrResults = [];
-            }
             $arrResults = array_merge($arrParents, $arrResults);
         }
 
