@@ -57,6 +57,7 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     protected ManagerRegistry $managerRegistry;
 
     public function __construct(
+        PluginRepository $pluginRepository,
         PluginService $pluginService,
         SchemaService $schemaService,
         ManagerRegistry $managerRegistry,
@@ -65,6 +66,7 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
         $em = $managerRegistry->getManager();
         parent::__construct(new SingleManagerProvider($em));
 
+        $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->schemaService = $schemaService;
     }
