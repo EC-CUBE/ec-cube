@@ -279,7 +279,7 @@ class ClassCategoryController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return Response|void
+     * @return Response
      *
      * @throws BadRequestHttpException
      */

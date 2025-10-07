@@ -107,9 +107,9 @@ if (!class_exists(CartItem::class)) {
         /**
          * @param string $price
          *
-         * @return CartItem
+         * @return static
          */
-        public function setPrice($price): CartItem
+        public function setPrice($price): static
         {
             $this->price = $price;
 
@@ -128,10 +128,10 @@ if (!class_exists(CartItem::class)) {
         /**
          * @param  string  $quantity
          *
-         * @return CartItem
+         * @return static
          */
         #[\Override]
-        public function setQuantity($quantity): CartItem
+        public function setQuantity($quantity): static
         {
             $this->quantity = $quantity;
 
@@ -265,18 +265,18 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return float|int|string
+         * @return string
          */
-        public function getPriceIncTax(): float|int|string
+        public function getPriceIncTax(): string
         {
             // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
             return $this->price;
         }
 
         /**
-         * @return Cart
+         * @return Cart|null
          */
-        public function getCart(): Cart
+        public function getCart(): ?Cart
         {
             return $this->Cart;
         }

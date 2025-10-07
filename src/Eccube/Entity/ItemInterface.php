@@ -80,9 +80,9 @@ interface ItemInterface
     /**
      * @param string $quantity
      *
-     * @return ItemInterface
+     * @return $this
      */
-    public function setQuantity($quantity): ItemInterface;
+    public function setQuantity($quantity): static;
 
     /**
      * @return int
@@ -95,7 +95,7 @@ interface ItemInterface
     public function getPointRate(): string;
 
     /**
-     * @param string $price
+     * @param string|null $price
      *
      * @return $this
      */

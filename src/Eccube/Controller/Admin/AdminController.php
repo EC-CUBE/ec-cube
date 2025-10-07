@@ -444,7 +444,7 @@ class AdminController extends AbstractController
     /**
      * @param \DateTime $dateTime
      *
-     * @return array
+     * @return array<string, int>
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -481,7 +481,7 @@ class AdminController extends AbstractController
     /**
      * @param \DateTime $dateTime
      *
-     * @return array
+     * @return array<string, int>
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

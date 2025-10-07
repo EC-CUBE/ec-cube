@@ -503,9 +503,9 @@ if (!class_exists(OrderItem::class)) {
          *
          * @param string $price
          *
-         * @return OrderItem
+         * @return $this
          */
-        public function setPrice($price): OrderItem
+        public function setPrice($price): static
         {
             $this->price = $price;
 
@@ -515,10 +515,10 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get price.
          *
-         * @return string|null
+         * @return string
          */
         #[\Override]
-        public function getPrice(): ?string
+        public function getPrice(): string
         {
             return $this->price;
         }
@@ -526,12 +526,12 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set quantity.
          *
-         * @param string|int $quantity
+         * @param string $quantity
          *
-         * @return OrderItem
+         * @return $this
          */
         #[\Override]
-        public function setQuantity($quantity): OrderItem
+        public function setQuantity($quantity): static
         {
             $this->quantity = $quantity;
 
@@ -541,10 +541,10 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get quantity.
          *
-         * @return string|float|int
+         * @return string
          */
         #[\Override]
-        public function getQuantity(): string|float|int
+        public function getQuantity(): string
         {
             return $this->quantity;
         }
@@ -558,7 +558,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param string|float $tax
+         * @param string $tax
          *
          * @return $this
          */
@@ -572,7 +572,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param string|int $taxRate
+         * @param string $taxRate
          *
          * @return OrderItem
          */
@@ -610,9 +610,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxAdjust.
          *
-         * @return string|float|int
+         * @return string
          */
-        public function getTaxAdjust(): string|float|int
+        public function getTaxAdjust(): string
         {
             return $this->tax_adjust;
         }

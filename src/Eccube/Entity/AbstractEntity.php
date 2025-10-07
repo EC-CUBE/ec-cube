@@ -67,6 +67,8 @@ abstract class AbstractEntity implements \ArrayAccess
         } elseif (method_exists($this, "has$method")) {
             return $this->{"has$method"}();
         }
+
+        return null;
     }
 
     #[\ReturnTypeWillChange]

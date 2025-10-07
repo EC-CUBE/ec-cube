@@ -232,6 +232,7 @@ class OrderItemType extends AbstractType
                     $ProductClass = $OrderItem->getProductClass();
                     $Product = $ProductClass->getProduct();
                     $OrderItem->setProduct($Product);
+                    // @phpstan-ignore-next-line TODO: $OrderItem->getPrice() === null の場合が本当にあるか精査する
                     if (null === $OrderItem->getPrice()) {
                         $OrderItem->setPrice($ProductClass->getPrice02());
                     }

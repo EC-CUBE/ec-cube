@@ -370,10 +370,10 @@ if (!class_exists(Cart::class)) {
          *
          * @param string $total
          *
-         * @return Cart
+         * @return $this
          */
         #[\Override]
-        public function setDeliveryFeeTotal($total): Cart
+        public function setDeliveryFeeTotal($total): static
         {
             $this->delivery_fee_total = $total;
 
@@ -486,12 +486,13 @@ if (!class_exists(Cart::class)) {
          *
          * @param string $total
          *
-         * @return void
+         * @return $this
          */
         #[\Override]
-        public function setDiscount($total): void
+        public function setDiscount($total): static
         {
-            // TODO quiet
+            // quiet
+            return $this;
         }
 
         /**
@@ -499,12 +500,13 @@ if (!class_exists(Cart::class)) {
          *
          * @param string $total
          *
-         * @return void
+         * @return $this
          */
         #[\Override]
-        public function setCharge($total): void
+        public function setCharge($total): static
         {
-            // TODO quiet
+            // quiet
+            return $this;
         }
 
         /**
@@ -512,14 +514,15 @@ if (!class_exists(Cart::class)) {
          *
          * @param string $total
          *
-         * @return void
+         * @return $this
          *
          * @deprecated
          */
         #[\Override]
-        public function setTax($total): void
+        public function setTax($total): static
         {
-            // TODO quiet
+            // quiet
+            return $this;
         }
 
         /**

@@ -44,7 +44,7 @@ interface ComposerServiceInterface
      * @param string $key
      * @param string|null $value
      *
-     * @return array<string, array<string, string>>|null
+     * @return array<int|string,array<int,string>>|null
      */
     public function execConfig($key, $value = null): ?array;
 

@@ -1178,10 +1178,10 @@ if (!class_exists(Order::class)) {
          *
          * @param string $discount
          *
-         * @return Order
+         * @return static
          */
         #[\Override]
-        public function setDiscount($discount): Order
+        public function setDiscount($discount): static
         {
             $this->discount = $discount;
 
@@ -1205,10 +1205,10 @@ if (!class_exists(Order::class)) {
          *
          * @param string $deliveryFeeTotal
          *
-         * @return Order
+         * @return $this
          */
         #[\Override]
-        public function setDeliveryFeeTotal($deliveryFeeTotal): Order
+        public function setDeliveryFeeTotal($deliveryFeeTotal): static
         {
             $this->delivery_fee_total = $deliveryFeeTotal;
 
@@ -1231,10 +1231,10 @@ if (!class_exists(Order::class)) {
          *
          * @param string $charge
          *
-         * @return Order
+         * @return $this
          */
         #[\Override]
-        public function setCharge($charge): Order
+        public function setCharge($charge): static
         {
             $this->charge = $charge;
 
@@ -1256,12 +1256,12 @@ if (!class_exists(Order::class)) {
          *
          * @param string $tax
          *
-         * @return Order
+         * @return $this
          *
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         #[\Override]
-        public function setTax($tax): Order
+        public function setTax($tax): static
         {
             $this->tax = $tax;
 
@@ -1285,10 +1285,10 @@ if (!class_exists(Order::class)) {
          *
          * @param string $total
          *
-         * @return Order
+         * @return static
          */
         #[\Override]
-        public function setTotal($total): Order
+        public function setTotal($total): static
         {
             $this->total = $total;
 

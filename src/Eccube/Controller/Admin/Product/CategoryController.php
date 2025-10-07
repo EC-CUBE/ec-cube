@@ -277,7 +277,7 @@ class CategoryController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return Response|void
+     * @return Response
      *
      * @throws BadRequestHttpException|\Exception
      */

@@ -131,9 +131,9 @@ if (!class_exists(Layout::class)) {
         /**
          * @param int $targetId
          *
-         * @return BlockPosition[]|Collection<int,mixed>
+         * @return Collection<int,BlockPosition>
          */
-        public function getBlockPositionsByTargetId($targetId): array|Collection
+        public function getBlockPositionsByTargetId($targetId): Collection
         {
             return $this->BlockPositions->filter(
                 function ($BlockPosition) use ($targetId) {
