@@ -6,6 +6,7 @@ framework:
     csrf_protection: { enabled: true }
     http_method_override: true
     trusted_hosts: ~
+    handle_all_throwables: true
     # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
     session:
         handler_id: 'Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler'
@@ -14,6 +15,8 @@ framework:
         cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
         gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true
+        cookie_secure: auto
+        cookie_samesite: none
 
     # When using the HTTP Cache, ESI allows to render page fragments separately
     # and with different cache configurations for each fragment
@@ -50,5 +53,7 @@ framework:
     # When 'ide' is set to null the file is opened in your web browser.
     # See https://symfony.com/doc/current/reference/configuration/framework.html#ide
     ide: ~
-    validation: { enable_annotations: false }
+    validation:
+        enable_attributes: true
+        email_validation_mode: html5
     # templating: { engines: ['twig'] }
