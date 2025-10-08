@@ -217,9 +217,9 @@ class Generator
         $faker = $this->getFaker();
         $Member = new Member();
         if (is_null($username)) {
-            $username = $faker->word;
+            $username = $faker->word();
             do {
-                $loginId = $faker->word;
+                $loginId = $faker->word();
             } while ($this->memberRepository->findBy(['login_id' => $loginId]));
         } else {
             $loginId = $username;
@@ -429,7 +429,7 @@ class Generator
                 $fs = new Filesystem();
                 $fs->copy($src, $dist);
             } else {
-                $image = $faker->word.'.jpg';
+                $image = $faker->word().'.jpg';
             }
             $ProductImage
                 ->setCreator($Member)
@@ -466,7 +466,7 @@ class Generator
             $this->entityManager->flush();
             $ProductClass = new ProductClass();
             do {
-                $ProductCode = $faker->word;
+                $ProductCode = $faker->word();
             } while (in_array($ProductCode, $ProductCodesGenerated));
             $ProductCodesGenerated[] = $ProductCode;
             $ProductClass
@@ -515,7 +515,7 @@ class Generator
             $ProductClass->setVisible(true);
         }
         do {
-            $ProductCode = $faker->word;
+            $ProductCode = $faker->word();
         } while (in_array($ProductCode, $ProductCodesGenerated));
         $ProductCodesGenerated[] = $ProductCode;
         $ProductClass
@@ -816,8 +816,8 @@ class Generator
         $faker = $this->getFaker();
         $Delivery = new Delivery();
         $Delivery
-            ->setServiceName($faker->word)
-            ->setName($faker->word)
+            ->setServiceName($faker->word())
+            ->setName($faker->word())
             ->setDescription($faker->paragraph())
             ->setConfirmUrl($faker->url)
             ->setSortNo($faker->randomNumber(2))
@@ -834,7 +834,7 @@ class Generator
             $DeliveryTime = new DeliveryTime();
             $DeliveryTime
                 ->setDelivery($Delivery)
-                ->setDeliveryTime($faker->word)
+                ->setDeliveryTime($faker->word())
                 ->setSortNo($i + 1)
                 ->setVisible(true);
             $this->entityManager->persist($DeliveryTime);
@@ -871,20 +871,20 @@ class Generator
         /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
         do {
-            $url = $faker->word;
+            $url = $faker->word();
         } while ($this->pageRepository->findBy(['url' => $url]));
         do {
-            $filename = $faker->word;
+            $filename = $faker->word();
         } while ($this->pageRepository->findBy(['file_name' => $filename]));
         $Page
-            ->setName($faker->word)
+            ->setName($faker->word())
             ->setUrl($url)
             ->setFileName($filename)
-            ->setAuthor($faker->word)
-            ->setDescription($faker->word)
-            ->setKeyword($faker->word)
-            ->setMetaRobots($faker->word)
-            ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word).'" />')
+            ->setAuthor($faker->word())
+            ->setDescription($faker->word())
+            ->setKeyword($faker->word())
+            ->setMetaRobots($faker->word())
+            ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word()).'" />')
         ;
         $this->entityManager->persist($Page);
         $this->entityManager->flush();

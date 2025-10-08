@@ -87,7 +87,7 @@ class PluginRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $Plugin = new Plugin();
         $Plugin->setCode($code)
-            ->setName($faker->word)
+            ->setName($faker->word())
             ->setVersion($faker->regexify('[0-9]\.[0-9]\.[0-9]'))
             ->setSource($faker->numberBetween(1000, 9999))
         ;

@@ -118,7 +118,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $templatePath = static::getContainer()->getParameter('eccube_theme_user_data_dir');
 
-        $name = $faker->word;
+        $name = $faker->word();
         $source = $faker->realText();
         $client->request(
             'POST',
@@ -197,7 +197,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $templatePath = static::getContainer()->getParameter('eccube_theme_user_data_dir');
 
-        $name = $faker->word;
+        $name = $faker->word();
         $source = $faker->realText();
         $client->request(
             'POST',
@@ -250,7 +250,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
                 $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()])),
             'ファイル名 Shopping/index は使用不可');
 
-        $name = $faker->word;
+        $name = $faker->word();
         $source = $faker->realText();
         $client->request(
             'POST',

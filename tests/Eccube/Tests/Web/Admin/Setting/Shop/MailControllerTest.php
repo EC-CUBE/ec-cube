@@ -261,9 +261,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $form = array_merge([
             '_token' => 'dummy',
-            'name' => $faker->word,
+            'name' => $faker->word(),
             'file_name' => 'test_'.$faker->lexify('????????'),
-            'mail_subject' => $faker->word,
+            'mail_subject' => $faker->word(),
             'tpl_data' => $faker->realText,
             'html_tpl_data' => $faker->realText,
         ], $form);
@@ -281,8 +281,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = array_merge([
             '_token' => 'dummy',
             'template' => $id,
-            'name' => $faker->word,
-            'mail_subject' => $faker->word,
+            'name' => $faker->word(),
+            'mail_subject' => $faker->word(),
             'tpl_data' => $faker->realText,
             'html_tpl_data' => $faker->realText,
         ], $form);

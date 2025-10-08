@@ -46,8 +46,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         $MailTemplate = new MailTemplate();
         $MailTemplate
-            ->setName($faker->word)
-            ->setMailSubject($faker->word)
+            ->setName($faker->word())
+            ->setMailSubject($faker->word())
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
         $this->entityManager->flush();
@@ -71,7 +71,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         return [
             'template' => 1,
-            'mail_subject' => $faker->word,
+            'mail_subject' => $faker->word(),
             'tpl_data' => $faker->realText(),
             '_token' => 'dummy',
         ];
