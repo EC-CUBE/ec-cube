@@ -14,6 +14,9 @@
 namespace Eccube\Twig\Extension;
 
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityError;
@@ -51,11 +54,48 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * @return string|null
      *
      * @throws SecurityError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false): ?string
     {
         try {
-            return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
+            $alreadySandboxed = false;
+            $sandbox = null;
+            if ($withContext) {
+                $variables = array_merge($context, $variables);
+            }
+
+            if ($isSandboxed = $sandboxed && $env->hasExtension(SandboxExtension::class)) {
+                $sandbox = $env->getExtension(SandboxExtension::class);
+                if (!$alreadySandboxed = $sandbox->isSandboxed()) {
+                    $sandbox->enableSandbox();
+                }
+            }
+
+            try {
+                $loaded = null;
+                try {
+                    $loaded = $env->resolveTemplate($template);
+                } catch (LoaderError $e) {
+                    if (!$ignoreMissing) {
+                        throw $e;
+                    }
+
+                    return null;
+                }
+
+                if ($isSandboxed) {
+                    $loaded->unwrap()->checkSecurity();
+                }
+
+                return $loaded->render($variables);
+            } finally {
+                if ($isSandboxed && !$alreadySandboxed) {
+                    $sandbox->disableSandbox();
+                }
+            }
         } catch (SecurityError $e) {
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
