@@ -14,16 +14,16 @@
 namespace Eccube\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
-use Twig\Extension\EscaperExtension;
+use Twig\Runtime\EscaperRuntime;
 
 class SafeTextmailEscaperExtension extends AbstractExtension
 {
     public function __construct(\Twig\Environment $twig)
     {
-        /** @var EscaperExtension $escaper */
-        $escaper = $twig->getExtension(EscaperExtension::class);
+        /** @var EscaperRuntime $escaper */
+        $escaper = $twig->getRuntime(EscaperRuntime::class);
         $escaper->setEscaper(
-            'safe_textmail', function ($twig, $string, $charset) {
+            'safe_textmail', function ($string, $charset) {
                 return str_replace(['<', '>'], ['＜', '＞'], $string);
             }
         );
