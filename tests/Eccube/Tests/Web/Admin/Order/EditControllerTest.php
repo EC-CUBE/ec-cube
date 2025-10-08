@@ -702,7 +702,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 税率が10%で登録されている
         /** @var Order $Order */
         $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
-        self::assertSame(10, $Order->getProductOrderItems()[0]->getTaxRate());
+        self::assertSame('10', $Order->getProductOrderItems()[0]->getTaxRate());
         self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
     }
 

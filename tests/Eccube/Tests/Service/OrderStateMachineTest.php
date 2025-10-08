@@ -240,7 +240,7 @@ class OrderStateMachineTest extends EccubeTestCase
 
         $this->stateMachine->apply($Order, $this->statusOf(OrderStatus::DELIVERED));
 
-        self::assertSame(1100, $Customer->getPoint(), '発送済みになれば加算ポイントが会員に付与されているはず');
+        self::assertSame('1100', $Customer->getPoint(), '発送済みになれば加算ポイントが会員に付与されているはず');
     }
 
     public function testTransitionReturn()
@@ -266,7 +266,8 @@ class OrderStateMachineTest extends EccubeTestCase
 
         $this->stateMachine->apply($Order, $this->statusOf(OrderStatus::RETURNED));
 
-        self::assertSame(1000 + 10 - 100, $Customer->getPoint(), '返品になれば利用ポイント分が戻され、加算ポイント分は引かれるはず');
+        // 1000 + 10 - 100 = 910
+        self::assertSame('910', $Customer->getPoint(), '返品になれば利用ポイント分が戻され、加算ポイント分は引かれるはず');
     }
 
     public function testTransitionCancelReturn()
@@ -295,7 +296,8 @@ class OrderStateMachineTest extends EccubeTestCase
 
         $this->stateMachine->apply($Order, $this->statusOf(OrderStatus::DELIVERED));
 
-        self::assertSame(1000 - 10 + 100, $Customer->getPoint(), '返品キャンセルになれば利用ポイント分が減らされ、加算ポイント分が増えるはず');
+        // 1000 - 10 + 100 = 1090
+        self::assertSame('1090', $Customer->getPoint(), '返品キャンセルになれば利用ポイント分が減らされ、加算ポイント分が増えるはず');
     }
 
     /**
