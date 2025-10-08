@@ -255,7 +255,7 @@ if (!class_exists(Block::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate(): \DateTime
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -279,7 +279,7 @@ if (!class_exists(Block::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate(): \DateTime
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

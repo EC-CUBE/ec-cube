@@ -129,9 +129,9 @@ if (!class_exists(ProductTag::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate(): \DateTime
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }

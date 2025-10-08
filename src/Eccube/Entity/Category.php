@@ -362,9 +362,9 @@ if (!class_exists(Category::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate(): \DateTime
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -386,9 +386,9 @@ if (!class_exists(Category::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate(): \DateTime
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

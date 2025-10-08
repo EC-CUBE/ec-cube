@@ -146,9 +146,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Get backend_name.
          *
-         * @return string
+         * @return string|null
          */
-        public function getBackendName(): string
+        public function getBackendName(): ?string
         {
             return $this->backend_name;
         }
@@ -218,9 +218,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate(): \DateTime
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -242,9 +242,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate(): \DateTime
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

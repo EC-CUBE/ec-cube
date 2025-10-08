@@ -677,9 +677,9 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate(): \DateTime
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

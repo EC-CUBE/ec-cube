@@ -76,7 +76,7 @@ if (!class_exists(TradeLaw::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return $this->getName();
+            return $this->getName() ?? '';
         }
 
         /**
@@ -112,9 +112,9 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getName(): string
+        public function getName(): ?string
         {
             return $this->name;
         }

@@ -676,9 +676,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate(): \DateTime
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -700,9 +700,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate(): \DateTime
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -724,9 +724,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get mailSendDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getMailSendDate(): \DateTime
+        public function getMailSendDate(): ?\DateTime
         {
             return $this->mail_send_date;
         }
