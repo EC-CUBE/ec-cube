@@ -68,9 +68,9 @@ interface ItemInterface
     public function getProductClass();
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPrice(): string;
+    public function getPrice(): ?string;
 
     /**
      * @return string
@@ -85,14 +85,14 @@ interface ItemInterface
     public function setQuantity($quantity): static;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int;
+    public function getId(): ?int;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPointRate(): string;
+    public function getPointRate(): ?string;
 
     /**
      * @param string|null $price

@@ -92,9 +92,9 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -116,9 +116,9 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Get denyUrl.
          *
-         * @return string
+         * @return string|null
          */
-        public function getDenyUrl(): string
+        public function getDenyUrl(): ?string
         {
             return $this->deny_url;
         }

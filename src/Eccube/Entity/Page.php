@@ -236,9 +236,9 @@ if (!class_exists(Page::class)) {
         /**
          * Get url.
          *
-         * @return string
+         * @return string|null
          */
-        public function getUrl(): string
+        public function getUrl(): ?string
         {
             return $this->url;
         }
@@ -452,9 +452,9 @@ if (!class_exists(Page::class)) {
         /**
          * Get meta_tags
          *
-         * @return string
+         * @return string|null
          */
-        public function getMetaTags(): string
+        public function getMetaTags(): ?string
         {
             return $this->meta_tags;
         }

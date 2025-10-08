@@ -94,7 +94,7 @@ if (!class_exists(TradeLaw::class)) {
         /**
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -132,9 +132,9 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getDescription(): string
+        public function getDescription(): ?string
         {
             return $this->description;
         }

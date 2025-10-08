@@ -198,9 +198,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -270,9 +270,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get applyDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getApplyDate(): \DateTime
+        public function getApplyDate(): ?\DateTime
         {
             return $this->apply_date;
         }

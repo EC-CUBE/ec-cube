@@ -90,9 +90,9 @@ if (!class_exists(Calendar::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -138,9 +138,9 @@ if (!class_exists(Calendar::class)) {
         /**
          * Get holiday.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getHoliday(): \DateTime
+        public function getHoliday(): ?\DateTime
         {
             return $this->holiday;
         }

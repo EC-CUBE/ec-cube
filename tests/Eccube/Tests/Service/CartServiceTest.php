@@ -275,7 +275,7 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
      *
      * @return bool 同じ明細になる場合はtrue
      */
-    public function compare(CartItem $item1, CartItem $item2)
+    public function compare(CartItem $item1, CartItem $item2): bool
     {
         return $item1->getProductClassId() == $item2->getProductClassId()
             && $item1->getQuantity() == $item2->getQuantity();

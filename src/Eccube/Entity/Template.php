@@ -111,7 +111,7 @@ if (!class_exists(Template::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }

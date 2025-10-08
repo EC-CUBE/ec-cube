@@ -363,9 +363,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -507,9 +507,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get price02.
          *
-         * @return string
+         * @return string|null
          */
-        public function getPrice02(): string
+        public function getPrice02(): ?string
         {
             return $this->price02;
         }
@@ -839,9 +839,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get pointRate
          *
-         * @return string
+         * @return string|null
          */
-        public function getPointRate(): string
+        public function getPointRate(): ?string
         {
             return $this->point_rate;
         }

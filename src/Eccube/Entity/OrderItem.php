@@ -138,7 +138,7 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
          *
@@ -347,9 +347,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -515,10 +515,10 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get price.
          *
-         * @return string
+         * @return string|null
          */
         #[\Override]
-        public function getPrice(): string
+        public function getPrice(): ?string
         {
             return $this->price;
         }
@@ -672,9 +672,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get processorName.
          *
-         * @return string
+         * @return string|null
          */
-        public function getProcessorName(): string
+        public function getProcessorName(): ?string
         {
             return $this->processor_name;
         }

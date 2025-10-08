@@ -319,7 +319,7 @@ if (!class_exists(BaseInfo::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }

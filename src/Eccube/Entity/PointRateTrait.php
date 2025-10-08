@@ -27,7 +27,7 @@ trait PointRateTrait
     /**
      * Set pointRate
      *
-     * @param string $pointRate
+     * @param string|null $pointRate
      *
      * @return $this
      */
@@ -41,9 +41,9 @@ trait PointRateTrait
     /**
      * Get pointRate
      *
-     * @return string
+     * @return string|null
      */
-    public function getPointRate(): string
+    public function getPointRate(): ?string
     {
         return $this->point_rate;
     }

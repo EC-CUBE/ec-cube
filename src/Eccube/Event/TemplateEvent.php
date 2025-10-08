@@ -68,9 +68,9 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getView(): string
+    public function getView(): ?string
     {
         return $this->view;
     }
@@ -86,9 +86,9 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSource(): string
+    public function getSource(): ?string
     {
         return $this->source;
     }

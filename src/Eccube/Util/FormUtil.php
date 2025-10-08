@@ -22,9 +22,9 @@ class FormUtil
      *
      * @param FormInterface $form
      *
-     * @return array<mixed>
+     * @return mixed
      */
-    public static function getViewData(FormInterface $form): array
+    public static function getViewData(FormInterface $form): mixed
     {
         $viewData = [];
         $forms = $form->all();

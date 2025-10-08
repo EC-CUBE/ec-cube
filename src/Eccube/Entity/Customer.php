@@ -401,9 +401,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get name01.
          *
-         * @return string
+         * @return string|null
          */
-        public function getName01(): string
+        public function getName01(): ?string
         {
             return $this->name01;
         }
@@ -425,9 +425,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get name02.
          *
-         * @return string
+         * @return string|null
          */
-        public function getName02(): string
+        public function getName02(): ?string
         {
             return $this->name02;
         }
@@ -593,9 +593,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get email.
          *
-         * @return string
+         * @return string|null
          */
-        public function getEmail(): string
+        public function getEmail(): ?string
         {
             return $this->email;
         }
@@ -1203,9 +1203,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get point
          *
-         * @return string|int
+         * @return string|null
          */
-        public function getPoint(): string|int
+        public function getPoint(): ?string
         {
             return $this->point;
         }

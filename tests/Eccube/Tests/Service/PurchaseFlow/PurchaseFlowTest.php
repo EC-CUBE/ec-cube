@@ -153,14 +153,14 @@ class PurchaseFlowTest extends EccubeTestCase
 
 class PurchaseFlowTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
     }
 }
 
 class PurchaseFlowTest_ItemPreprocessor implements ItemPreprocessor
 {
-    public function process(ItemInterface $item, PurchaseContext $context)
+    public function process(ItemInterface $item, PurchaseContext $context): void
     {
     }
 }
@@ -179,7 +179,7 @@ class PurchaseFlowTest_FailValidator extends ItemValidator
         $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemInterface $item, PurchaseContext $context): never
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         throw new InvalidItemException($this->errorMessage);
     }
@@ -208,7 +208,7 @@ class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
 
 class PurchaseFlowTest_FlowTypeValidator extends ItemHolderValidator
 {
-    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context): void
     {
         if ($context->isCartFlow()) {
             throw new InvalidItemException('Cart Flow');

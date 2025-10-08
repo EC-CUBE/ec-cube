@@ -336,7 +336,7 @@ if (!class_exists(Layout::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }

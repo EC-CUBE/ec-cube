@@ -68,15 +68,16 @@ class BlockRepository extends AbstractRepository
      *
      * @param  DeviceType $DeviceType
      *
-     * @return \Symfony\Component\HttpFoundation\Request|null
+     * @return Block[]
      */
-    public function getList($DeviceType): ?\Symfony\Component\HttpFoundation\Request
+    public function getList($DeviceType): array
     {
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.id', 'DESC')
             ->where('b.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType);
 
+        /** @var Block[] $Blocks */
         $Blocks = $qb
             ->getQuery()
             ->getResult();

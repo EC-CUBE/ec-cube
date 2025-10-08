@@ -51,9 +51,9 @@ class EventArgs extends GenericEvent
     }
 
     /**
-     * @return Request
+     * @return Request|null
      */
-    public function getRequest(): Request
+    public function getRequest(): ?Request
     {
         return $this->request;
     }

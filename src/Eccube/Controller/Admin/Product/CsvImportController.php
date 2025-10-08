@@ -1393,8 +1393,8 @@ class CsvImportController extends AbstractCsvImportController
      * @param Product $Product
      * @param CsvImportService<int,mixed> $data
      * @param array<string, mixed> $headerByKey
-     * @param null $ClassCategory1
-     * @param null $ClassCategory2
+     * @param ClassCategory|null $ClassCategory1
+     * @param ClassCategory|null $ClassCategory2
      *
      * @return ProductClass
      */

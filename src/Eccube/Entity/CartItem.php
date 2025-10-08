@@ -99,7 +99,7 @@ if (!class_exists(CartItem::class)) {
         /**
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -117,10 +117,10 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
         #[\Override]
-        public function getPrice(): string
+        public function getPrice(): ?string
         {
             return $this->price;
         }

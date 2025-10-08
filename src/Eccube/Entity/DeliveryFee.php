@@ -80,7 +80,7 @@ if (!class_exists(DeliveryFee::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -102,9 +102,9 @@ if (!class_exists(DeliveryFee::class)) {
         /**
          * Get fee.
          *
-         * @return string
+         * @return string|null
          */
-        public function getFee(): string
+        public function getFee(): ?string
         {
             return $this->fee;
         }

@@ -156,9 +156,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getMessage1(): string
+        public function getMessage1(): ?string
         {
             return $this->message1;
         }
@@ -176,9 +176,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getMessage2(): string
+        public function getMessage2(): ?string
         {
             return $this->message2;
         }
@@ -196,9 +196,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getMessage3(): string
+        public function getMessage3(): ?string
         {
             return $this->message3;
         }
@@ -216,9 +216,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getNote1(): string
+        public function getNote1(): ?string
         {
             return $this->note1;
         }
@@ -236,9 +236,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getNote2(): string
+        public function getNote2(): ?string
         {
             return $this->note2;
         }
@@ -256,9 +256,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getNote3(): string
+        public function getNote3(): ?string
         {
             return $this->note3;
         }

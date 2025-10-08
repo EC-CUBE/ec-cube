@@ -135,7 +135,7 @@ if (!class_exists(Block::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -337,9 +337,9 @@ if (!class_exists(Block::class)) {
         /**
          * Get deviceType
          *
-         * @return Master\DeviceType
+         * @return Master\DeviceType|null
          */
-        public function getDeviceType(): Master\DeviceType
+        public function getDeviceType(): ?Master\DeviceType
         {
             return $this->DeviceType;
         }

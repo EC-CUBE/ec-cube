@@ -107,7 +107,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }

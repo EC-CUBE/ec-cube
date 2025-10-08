@@ -318,7 +318,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -916,9 +916,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get trackingNumber
          *
-         * @return string
+         * @return string|null
          */
-        public function getTrackingNumber(): string
+        public function getTrackingNumber(): ?string
         {
             return $this->tracking_number;
         }

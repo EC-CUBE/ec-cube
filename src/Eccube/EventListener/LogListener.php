@@ -96,9 +96,9 @@ class LogListener implements EventSubscriberInterface
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return string
+     * @return string|null
      */
-    private function getRoute($request): string
+    private function getRoute($request): ?string
     {
         return $request->attributes->get('_route');
     }
