@@ -20,10 +20,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:composer:require')]
 class ComposerRequireCommand extends Command
 {
-    protected static $defaultName = 'eccube:composer:require';
-
     /**
      * @var ComposerApiService
      */

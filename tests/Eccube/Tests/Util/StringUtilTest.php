@@ -61,7 +61,7 @@ class StringUtilTest extends TestCase
         } catch (\RuntimeException $e) {
             $this->actual = $e->getMessage();
         }
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testQuickRandom()

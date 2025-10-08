@@ -29,11 +29,14 @@ use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithValueToAttributeRector;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\Class_\RenameAttributeRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
+use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
+use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 use Rector\ValueObject\PhpVersion;
 
@@ -82,11 +85,12 @@ return RectorConfig::configure()
                RemoveReflectionSetAccessibleCallsRector::class, // リフレクションの setAccessible 呼び出しを削除する
                NullToStrictStringFuncCallArgRector::class, // null を厳密な string 型に変換する
                NestedAnnotationToAttributeRector::class, // ネストされたアノテーションをアトリビュートに変換する
-               ])
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
-               AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する
+               AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する,
+               CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
+               CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する
            ])
            // よく使われるルールセットを有効化
            ->withSets([

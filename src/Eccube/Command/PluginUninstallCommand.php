@@ -19,10 +19,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:uninstall', description: 'Uninstall plugin.')]
 class PluginUninstallCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:uninstall';
 
     /**
      * @return void
@@ -32,8 +32,7 @@ class PluginUninstallCommand extends Command
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
-            ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
-            ->setDescription('Uninstall plugin.');
+            ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory');
     }
 
     #[\Override]

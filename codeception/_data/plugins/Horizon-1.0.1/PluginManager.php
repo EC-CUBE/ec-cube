@@ -33,7 +33,7 @@ class PluginManager extends AbstractPluginManager
         $horizon->name = 'Horizon';
 
         $entityManager->persist($horizon);
-        $entityManager->flush($horizon);
+        $entityManager->flush();
     }
 
     public function enable(array $config, ContainerInterface $container)
@@ -68,7 +68,7 @@ class PluginManager extends AbstractPluginManager
         $newHorizon->name = 'New Horizon';
 
         $entityManager->persist($newHorizon);
-        $entityManager->flush($newHorizon);
+        $entityManager->flush();
     }
 
     public function uninstall(array $config, ContainerInterface $container)

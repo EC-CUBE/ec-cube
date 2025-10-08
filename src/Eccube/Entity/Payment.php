@@ -95,8 +95,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
         #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible;

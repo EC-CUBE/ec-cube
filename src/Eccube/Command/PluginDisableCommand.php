@@ -19,10 +19,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:disable')]
 class PluginDisableCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:disable';
 
     /**
      * @return void
