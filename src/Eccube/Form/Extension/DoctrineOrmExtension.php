@@ -68,7 +68,6 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                     return;
                 }
 
-                /** @var array<string, \Doctrine\ORM\Mapping\PropertyAccessor> $accessors */
                 $accessors = $meta->getPropertyAccessors();
                 foreach ($accessors as $propName => $accessor) {
                     $prop = $accessor->getUnderlyingReflector();

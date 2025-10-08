@@ -164,7 +164,7 @@ class PaymentDispatcher
      *
      * @return Response|null
      */
-    public function getResponse(): Response
+    public function getResponse(): ?Response
     {
         return $this->response;
     }

@@ -124,6 +124,6 @@ class TraitProxyAttributeDriver extends AttributeDriver
     /** @return string[] */
     public function getExcludePaths(): array
     {
-        return $this->excludePaths ?? [];
+        return $this->excludePaths;
     }
 }

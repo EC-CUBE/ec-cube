@@ -139,6 +139,7 @@ if (!class_exists(OrderItem::class)) {
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /** @phpstan-ignore-next-line property.unusedType, property.onlyRead */
         private $id;
 
         /**
