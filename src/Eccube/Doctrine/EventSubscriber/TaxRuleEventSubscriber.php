@@ -13,13 +13,17 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
 
-class TaxRuleEventSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::postLoad)]
+#[AsDoctrineListener(event: Events::postPersist)]
+#[AsDoctrineListener(event: Events::postUpdate)]
+class TaxRuleEventSubscriber
 {
     /**
      * @var TaxRuleService
@@ -40,20 +44,6 @@ class TaxRuleEventSubscriber implements EventSubscriber
     public function getTaxRuleService(): ?object
     {
         return $this->taxRuleService;
-    }
-
-    /**
-     * @return array|string[]
-     */
-    #[\Override]
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-            Events::postLoad,
-            Events::postPersist,
-            Events::postUpdate,
-        ];
     }
 
     /**

@@ -13,36 +13,31 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\DBAL\Event\ConnectionEventArgs;
 use Doctrine\DBAL\Events;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 
-class InitSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::postConnect)]
+class InitSubscriber
 {
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getSubscribedEvents(): array
-    {
-        return [Events::postConnect];
-    }
-
     /**
      * @param ConnectionEventArgs $args
      *
      * @return void
      */
-    public function postConnect(ConnectionEventArgs $args): void
+    public function __invoke(ConnectionEventArgs $args): void
     {
         $db = $args->getConnection();
-        $platform = $args->getConnection()->getDatabasePlatform()->getName();
+        $platform = $args->getConnection()->getDatabasePlatform();
 
-        if ($platform === 'mysql') {
+        if ($platform instanceof MySQLPlatform) {
             $db->executeQuery("SET SESSION time_zone = '+00:00'");
-        } elseif ($platform === 'postgresql') {
+        } elseif ($platform instanceof PostgreSQLPlatform) {
             $db->executeQuery("SET TIME ZONE 'UTC'");
-        } elseif ($platform === 'sqlite') {
+        } elseif ($platform instanceof SqlitePlatform) {
             // FIXME schema updateが通らないので一旦コメントアウト.
             // $db->executeQuery("PRAGMA foreign_keys = ON");
         }

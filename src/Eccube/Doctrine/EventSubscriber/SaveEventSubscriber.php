@@ -13,14 +13,16 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
 use Eccube\Request\Context;
 
-class SaveEventSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::preUpdate)]
+class SaveEventSubscriber
 {
     /**
      * @var Context
@@ -39,18 +41,6 @@ class SaveEventSubscriber implements EventSubscriber
     {
         $this->requestContext = $requestContext;
         $this->eccubeConfig = $eccubeConfig;
-    }
-
-    /**
-     * @return array<int,string>
-     */
-    #[\Override]
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-        ];
     }
 
     /**
