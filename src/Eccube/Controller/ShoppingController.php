@@ -938,7 +938,7 @@ class ShoppingController extends AbstractShoppingController
         $PaymentResult = $paymentMethod->checkout();
         $response = $PaymentResult->getResponse();
         // PaymentResultがresponseを保持している場合はresponseを返す
-        if ($response->isRedirection() || $response->isSuccessful()) {
+        if ($response && ($response->isRedirection() || $response->isSuccessful())) {
             $this->entityManager->flush();
             log_info('[注文処理] PaymentMethod::checkoutが指定したレスポンスを表示します.');
 

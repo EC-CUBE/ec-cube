@@ -72,9 +72,9 @@ trait PointTrait
     /**
      * Get usePoint
      *
-     * @return string
+     * @return string|null
      */
-    public function getUsePoint(): string
+    public function getUsePoint(): ?string
     {
         return $this->use_point;
     }

@@ -119,9 +119,9 @@ interface ItemHolderInterface
     /**
      * 利用ポイントを返します.
      *
-     * @return string
+     * @return string|null
      */
-    public function getUsePoint(): string;
+    public function getUsePoint(): ?string;
 
     /**
      * @param ItemInterface $item

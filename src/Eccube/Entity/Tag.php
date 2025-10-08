@@ -39,7 +39,7 @@ if (!class_exists(Tag::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return $this->getName();
+            return $this->getName() ?? '';
         }
 
         /**
@@ -123,9 +123,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Get name.
          *
-         * @return string
+         * @return string|null
          */
-        public function getName(): string
+        public function getName(): ?string
         {
             return $this->name;
         }

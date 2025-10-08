@@ -22,7 +22,8 @@ class HelpControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $client->request('GET', $this->generateUrl('help_tradelaw'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $response = $client->getResponse();
+        $this->assertTrue($response->isSuccessful(), 'Response status: '.$response->getStatusCode().' - Content: '.$response->getContent());
     }
 
     /**
