@@ -110,7 +110,7 @@
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-rest": "^3.3",
         "codeception/module-webdriver": "^3.2",
-        "dama/doctrine-test-bundle": "^6.6",
+        "dama/doctrine-test-bundle": "^7.3",
         "fakerphp/faker": "^1.16",
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "^2.1",
