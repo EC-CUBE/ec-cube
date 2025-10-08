@@ -26,7 +26,14 @@ if (!class_exists(Customer::class)) {
     /**
      * Customer
      */
-    #[ORM\Table(name: 'dtb_customer', indexes: [new ORM\Index(columns: ['buy_times'], name: 'dtb_customer_buy_times_idx'), new ORM\Index(columns: ['buy_total'], name: 'dtb_customer_buy_total_idx'), new ORM\Index(columns: ['create_date'], name: 'dtb_customer_create_date_idx'), new ORM\Index(columns: ['update_date'], name: 'dtb_customer_update_date_idx'), new ORM\Index(name: 'dtb_customer_last_buy_date_idx', columns: ['last_buy_date']), new ORM\Index(columns: ['email'], name: 'dtb_customer_email_idx')], uniqueConstraints: [new ORM\UniqueConstraint(name: 'secret_key', columns: ['secret_key'])])]
+    #[ORM\Table(name: 'dtb_customer')]
+    #[ORM\Index(columns: ['buy_times'], name: 'dtb_customer_buy_times_idx')]
+    #[ORM\Index(columns: ['buy_total'], name: 'dtb_customer_buy_total_idx')]
+    #[ORM\Index(columns: ['create_date'], name: 'dtb_customer_create_date_idx')]
+    #[ORM\Index(columns: ['update_date'], name: 'dtb_customer_update_date_idx')]
+    #[ORM\Index(name: 'dtb_customer_last_buy_date_idx', columns: ['last_buy_date'])]
+    #[ORM\Index(columns: ['email'], name: 'dtb_customer_email_idx')]
+    #[ORM\UniqueConstraint(name: 'secret_key', columns: ['secret_key'])]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]

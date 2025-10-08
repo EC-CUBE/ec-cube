@@ -20,7 +20,9 @@ if (!class_exists(ProductClass::class)) {
     /**
      * ProductClass
      */
-    #[ORM\Table(name: 'dtb_product_class', indexes: [new ORM\Index(name: 'dtb_product_class_price02_idx', columns: ['price02']), new ORM\Index(columns: ['stock', 'stock_unlimited'], name: 'dtb_product_class_stock_stock_unlimited_idx')])]
+    #[ORM\Table(name: 'dtb_product_class')]
+    #[ORM\Index(name: 'dtb_product_class_price02_idx', columns: ['price02'])]
+    #[ORM\Index(columns: ['stock', 'stock_unlimited'], name: 'dtb_product_class_stock_stock_unlimited_idx')]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]

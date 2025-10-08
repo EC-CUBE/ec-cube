@@ -22,11 +22,9 @@ if (!class_exists(Cart::class)) {
     /**
      * Cart
      */
-    #[ORM\Table(name: 'dtb_cart', indexes: [
-        new ORM\Index(columns: ['update_date'], name: 'dtb_cart_update_date_idx'),
-    ], uniqueConstraints: [
-        new ORM\UniqueConstraint(name: 'dtb_cart_pre_order_id_idx', columns: ['pre_order_id']),
-    ])]
+    #[ORM\Table(name: 'dtb_cart')]
+    #[ORM\Index(columns: ['update_date'], name: 'dtb_cart_update_date_idx')]
+    #[ORM\UniqueConstraint(name: 'dtb_cart_pre_order_id_idx', columns: ['pre_order_id'])]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
