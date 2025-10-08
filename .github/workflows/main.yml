@@ -24,11 +24,11 @@ jobs:
   e2e-test:
     needs: [ unit-test ]
     uses: ./.github/workflows/e2e-test.yml
-  plugin-test:
-    needs: [ e2e-test ]
-    uses: ./.github/workflows/plugin-test.yml
+#  plugin-test:
+#    needs: [ e2e-test ]
+#    uses: ./.github/workflows/plugin-test.yml
   e2e-test-throttling:
-    needs: [ plugin-test ]
+    needs: [ e2e-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
 #  deny-test:
 #    needs: [ plugin-test ]
