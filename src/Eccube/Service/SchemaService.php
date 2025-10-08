@@ -15,6 +15,7 @@ namespace Eccube\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Eccube\Doctrine\ORM\Mapping\Driver\NopAttributeDriver;
@@ -86,16 +87,16 @@ class SchemaService
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
                     // Setup to AttributeDriver
-                    $paths = $oldDriver->paths ?? [];
-                    if (!empty($paths)) {
-                        $newDriver = new ReloadSafeAttributeDriver($paths);
-                        $newDriver->setFileExtension($oldDriver->fileExtension ?? '.php');
-                        $newDriver->addExcludePaths($oldDriver->excludePaths ?? []);
-                        $newDriver->setTraitProxiesDirectory($proxiesDirectory);
-                        $newDriver->setNewProxyFiles($generatedFiles);
-                        $newDriver->setOutputDir($outputDir);
-                        $driver->addDriver($newDriver, $namespace);
+                    if (!$oldDriver instanceof AttributeDriver) {
+                        continue;
                     }
+                    $newDriver = new ReloadSafeAttributeDriver($oldDriver->getPaths());
+                    $newDriver->setFileExtension($oldDriver->getFileExtension());
+                    $newDriver->addExcludePaths($oldDriver->getExcludePaths());
+                    $newDriver->setTraitProxiesDirectory($proxiesDirectory);
+                    $newDriver->setNewProxyFiles($generatedFiles);
+                    $newDriver->setOutputDir($outputDir);
+                    $driver->addDriver($newDriver, $namespace);
                 }
 
                 if ($this->pluginContext->isUninstall()) {
