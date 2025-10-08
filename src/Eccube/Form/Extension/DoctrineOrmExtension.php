@@ -68,9 +68,10 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                     return;
                 }
 
-                /** @var \ReflectionProperty[] $props */
-                $props = $meta->getReflectionProperties();
-                foreach ($props as $prop) {
+                /** @var array<string, \Doctrine\ORM\Mapping\PropertyAccessor> $accessors */
+                $accessors = $meta->getPropertyAccessors();
+                foreach ($accessors as $propName => $accessor) {
+                    $prop = $accessor->getUnderlyingReflector();
                     $attrs = $prop->getAttributes(FormAppend::class);
                     foreach ($attrs as $attr) {
                         $instance = $attr->newInstance();
@@ -80,8 +81,8 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                             'form_theme' => $instance->form_theme,
                             'style_class' => $instance->style_class ?: 'ec-select',
                         ];
-                        if (!isset($form[$prop->getName()])) {
-                            $form->add($prop->getName(), $instance->type, $options);
+                        if (!isset($form[$propName])) {
+                            $form->add($propName, $instance->type, $options);
                         }
                     }
                 }
