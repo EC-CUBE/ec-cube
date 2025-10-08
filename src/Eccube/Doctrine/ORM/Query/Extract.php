@@ -14,9 +14,10 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 /**
  * EXTRACT (field FROM [type] source)
@@ -75,34 +76,37 @@ class Extract extends FunctionNode
         'TIME',
     ];
 
+    /**
+     * @throws QueryException
+     */
     #[\Override]
     public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
-        $upperField = strtoupper((string) $lexer->lookahead['value']);
-        if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !isset($this->formats[$upperField])) {
+        $parser->match(TokenType::T_IDENTIFIER);        // ★ MONTH / YEAR / ...
+        $upperField = strtoupper((string) $lexer->token->value);
+        if ($lexer->token->type !== TokenType::T_IDENTIFIER || !isset($this->formats[$upperField])) {
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
 
-        $parser->match(Lexer::T_IDENTIFIER);
         $this->field = $upperField;
-        $parser->match(Lexer::T_FROM);
+        $parser->match(TokenType::T_FROM);
 
         $next = $lexer->glimpse();
-        if (isset($next['type']) && $next['type'] === Lexer::T_STRING) {
-            $upperType = strtoupper((string) $lexer->lookahead['value']);
+        if (isset($next->type) && $next->type === TokenType::T_STRING) {
+            $upperType = strtoupper((string) $lexer->token->value);
             if (!in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }
-            $parser->match(Lexer::T_IDENTIFIER);
+            $parser->match(TokenType::T_IDENTIFIER);
             $this->type = $upperType;
         }
 
         $this->source = $parser->ArithmeticPrimary();
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
     #[\Override]

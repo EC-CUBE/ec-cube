@@ -124,7 +124,7 @@ class CalendarController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
-     * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\Exception\ORMException
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Calendar $Calendar): \Symfony\Component\HttpFoundation\RedirectResponse

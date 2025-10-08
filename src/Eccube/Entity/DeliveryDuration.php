@@ -14,21 +14,17 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\DeliveryDurationRepository;
 
 if (!class_exists(DeliveryDuration::class)) {
     /**
      * DeliveryDuration
-     *
-     * @ORM\Table(name="dtb_delivery_duration")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDurationRepository")
      */
+    #[ORM\Table(name: 'dtb_delivery_duration')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: DeliveryDurationRepository::class)]
     class DeliveryDuration extends AbstractEntity implements \Stringable
     {
         /**
@@ -42,36 +38,29 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
         private $name;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="duration", type="smallint", options={"default":0})
          */
+        #[ORM\Column(name: 'duration', type: 'smallint', options: ['default' => 0])]
         private $duration = 0;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'integer', options: ['unsigned' => true])]
         private $sort_no;
 
         /**

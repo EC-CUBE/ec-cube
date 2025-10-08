@@ -11,13 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Doctrine\ORM\Mapping\Driver;
+namespace Eccube\Attribute;
 
-class NopAnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
+#[\Attribute(\Attribute::TARGET_CLASS)]
+final class OrderFlow
 {
-    #[\Override]
-    public function getAllClassNames(): array
-    {
-        return [];
-    }
 }

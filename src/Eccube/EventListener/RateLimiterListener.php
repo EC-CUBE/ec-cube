@@ -23,7 +23,6 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class RateLimiterListener implements EventSubscriberInterface
 {
@@ -88,11 +87,9 @@ class RateLimiterListener implements EventSubscriberInterface
             if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
                 /** @var Customer|Member $User */
                 $User = $this->requestContext->getCurrentUser();
-                if ($User instanceof UserInterface) {
-                    $limiter = $factory->create((string) $User->getId());
-                    if (!$limiter->consume()->isAccepted()) {
-                        throw new TooManyRequestsHttpException();
-                    }
+                $limiter = $factory->create((string) $User->getId());
+                if (!$limiter->consume()->isAccepted()) {
+                    throw new TooManyRequestsHttpException();
                 }
             }
             if (in_array('ip', $config['type'])) {

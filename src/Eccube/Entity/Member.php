@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -24,17 +25,12 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 if (!class_exists(Member::class)) {
     /**
      * Member
-     *
-     * @ORM\Table(name="dtb_member")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
      */
+    #[ORM\Table(name: 'dtb_member')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: MemberRepository::class)]
     class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         /**
@@ -87,136 +83,107 @@ if (!class_exists(Member::class)) {
         }
 
         /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
+         * @var int|null
          */
-        private $id;
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
         private $name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="department", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'department', type: 'string', length: 255, nullable: true)]
         private $department;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="login_id", type="string", length=255)
          */
+        #[ORM\Column(name: 'login_id', type: 'string', length: 255)]
         private $login_id;
 
         /**
-         * @Assert\NotBlank()
-         *
-         * @Assert\Length(max=4096)
-         *
          * @var string|null
          */
+        #[Assert\NotBlank]
+        #[Assert\Length(max: 4096)]
         private $plainPassword;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="password", type="string", length=255)
          */
+        #[ORM\Column(name: 'password', type: 'string', length: 255)]
         private $password;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="salt", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'salt', type: 'string', length: 255, nullable: true)]
         private $salt;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
         private $sort_no;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="two_factor_auth_key",type="string",length=255,nullable=true,options={"fixed":false})
          */
+        #[ORM\Column(name: 'two_factor_auth_key', type: 'string', length: 255, nullable: true, options: ['fixed' => false])]
         private $two_factor_auth_key;
 
         /**
-         * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
-         *
          * @var bool
+         *
+         * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
          */
+        #[ORM\Column(name: 'two_factor_auth_enabled', type: 'boolean', nullable: false, options: ['default' => false])]
         private $two_factor_auth_enabled = false;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="login_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'login_date', type: 'datetimetz', nullable: true)]
         private $login_date;
 
         /**
          * @var Master\Work|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Work::class)]
+        #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]
         private $Work;
 
         /**
          * @var Master\Authority|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
+        #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
         private $Authority;
 
         /**
          * @var Member|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
@@ -632,6 +599,21 @@ if (!class_exists(Member::class)) {
         public function getUserIdentifier(): string
         {
             return $this->login_id;
+        }
+
+        public function __serialize(): array
+        {
+            return ['p' => $this->serialize()];
+        }
+
+        /**
+         * @param array<string, mixed> $data
+         */
+        public function __unserialize(array $data): void
+        {
+            if (isset($data['p']) && is_string($data['p'])) {
+                $this->unserialize($data['p']);
+            }
         }
     }
 }

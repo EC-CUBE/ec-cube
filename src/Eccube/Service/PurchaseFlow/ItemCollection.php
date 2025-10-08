@@ -32,10 +32,10 @@ class ItemCollection extends ArrayCollection
     protected $type;
 
     /**
-     * @param array<int,ItemInterface>|array<int,OrderItem>|Collection<int, ItemInterface>|Collection<int,OrderItem>|array<int,CartItem>|Collection<int,CartItem> $Items
+     * @param array<int,ItemInterface>|array<int,OrderItem>|Collection<int, ItemInterface>|Collection<int,OrderItem>|array<int,CartItem>|Collection<int,CartItem>|null $Items
      * @param string|null $type
      */
-    public function __construct($Items, $type = null)
+    public function __construct($Items = null, $type = null)
     {
         $this->type = is_null($type) ? Order::class : $type;
 

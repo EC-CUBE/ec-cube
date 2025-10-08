@@ -14,23 +14,18 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\NewsRepository;
 
 if (!class_exists(News::class)) {
     /**
      * News
-     *
-     * @ORM\Table(name="dtb_news")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\NewsRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'dtb_news')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: NewsRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class News extends AbstractEntity implements \Stringable
     {
         /**
@@ -44,83 +39,66 @@ if (!class_exists(News::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="publish_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'publish_date', type: 'datetimetz', nullable: true)]
         private $publish_date;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="title", type="string", length=255)
          */
+        #[ORM\Column(name: 'title', type: 'string', length: 255)]
         private $title;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="description", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'description', type: 'text', nullable: true)]
         private $description;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="url", type="string", length=4000, nullable=true)
          */
+        #[ORM\Column(name: 'url', type: 'string', length: 4000, nullable: true)]
         private $url;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="link_method", type="boolean", options={"default":false})
          */
+        #[ORM\Column(name: 'link_method', type: 'boolean', options: ['default' => false])]
         private $link_method = false;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible;
 
         /**
          * @var Member|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

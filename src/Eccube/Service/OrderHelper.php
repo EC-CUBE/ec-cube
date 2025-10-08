@@ -576,15 +576,13 @@ class OrderHelper
      * - 手数料: 税込
      * - ポイント値引き: 税込
      *
-     * @param OrderItemType $OrderItemType
+     * @param OrderItemType|int $OrderItemType
      *
      * @return TaxDisplayType
      */
     public function getTaxDisplayType($OrderItemType): TaxDisplayType
     {
-        if ($OrderItemType instanceof OrderItemType) {
-            $OrderItemType = $OrderItemType->getId();
-        }
+        $OrderItemType = is_object($OrderItemType) ? $OrderItemType->getId() : $OrderItemType;
 
         return match ($OrderItemType) {
             OrderItemType::PRODUCT => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED),

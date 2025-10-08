@@ -11,11 +11,15 @@
  * file that was distributed with this source code.
  */
 
-// TODO: Change namespace Eccube\Attribute;
+namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-namespace Eccube\Annotation;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 
-#[\Attribute(\Attribute::TARGET_CLASS)]
-final class CartFlow
+class NopAttributeDriver extends AttributeDriver
 {
+    #[\Override]
+    public function getAllClassNames(): array
+    {
+        return [];
+    }
 }

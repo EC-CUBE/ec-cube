@@ -39,18 +39,6 @@ class AbstractMasterEntityTest extends EccubeTestCase
         self::assertSame(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
     }
 
-    public function testExplicitOverwriteConstant()
-    {
-        try {
-            $c = new TestSexDecorator();
-            // クラス変数を上書きしようとすると InvalidArgumentException になる
-            $c->TEST_FEMALE = 3;
-            self::fail();
-        } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
-        }
-    }
-
     public function testInvalidFields()
     {
         // id, name, sortNo は取得できない

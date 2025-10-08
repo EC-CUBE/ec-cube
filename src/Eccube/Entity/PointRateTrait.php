@@ -19,9 +19,8 @@ trait PointRateTrait
 {
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true}, nullable=true)
      */
+    #[ORM\Column(name: 'point_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true], nullable: true)]
     private $point_rate;
 
     /**

@@ -251,7 +251,12 @@ class OrderPdfService extends Fpdi
             $this->renderOrderData($Shipping);
 
             // メッセージを描画する
-            $this->renderMessageData($formData);
+            $messageData = [
+                'message1' => $formData['message1'],
+                'message2' => $formData['message2'],
+                'message3' => $formData['message3'],
+            ];
+            $this->renderMessageData($messageData);
 
             // 出荷詳細情報を描画する
             $this->renderOrderDetailData($Shipping);
@@ -395,7 +400,7 @@ class OrderPdfService extends Fpdi
     /**
      * PDFに備考を設定数.
      *
-     * @param array<string, string> $formData
+     * @param array<string, string|\DateTime> $formData
      *
      * @return void
      */

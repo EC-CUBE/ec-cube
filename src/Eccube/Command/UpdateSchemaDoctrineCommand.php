@@ -13,10 +13,11 @@
 
 namespace Eccube\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand as BaseUpdateSchemaDoctrineCommand;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as OrmUpdateCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
@@ -33,7 +34,7 @@ use Symfony\Component\Finder\Finder;
  * Command to generate the SQL needed to update the database schema to match
  * the current mapping information.
  */
-class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
+class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
 {
     /**
      * @var PluginRepository
@@ -50,12 +51,21 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
      */
     protected $schemaService;
 
+    /**
+     * @var ManagerRegistry
+     */
+    protected ManagerRegistry $managerRegistry;
+
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         SchemaService $schemaService,
+        ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct();
+        /** @var EntityManagerInterface $em */
+        $em = $managerRegistry->getManager();
+        parent::__construct(new SingleManagerProvider($em));
+
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->schemaService = $schemaService;
@@ -86,7 +96,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         $eccubeKernel = $app->getKernel();
         $em = $eccubeKernel->getContainer()->get('doctrine')->getManager($input->getOption('em'));
         assert($em instanceof EntityManagerInterface);
-        $this->getApplication()->getHelperSet()->set(new EntityManagerHelper($em), 'em');
+
         $noProxy = true === $input->getOption('no-proxy');
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');

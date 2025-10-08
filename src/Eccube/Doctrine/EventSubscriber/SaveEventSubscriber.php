@@ -14,8 +14,8 @@
 namespace Eccube\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
 use Eccube\Request\Context;
@@ -54,7 +54,7 @@ class SaveEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class SaveEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
      *
      * @return void
      */

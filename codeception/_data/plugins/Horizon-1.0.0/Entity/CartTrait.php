@@ -13,27 +13,22 @@
 
 namespace Plugin\Horizon\Entity;
 
-use Eccube\Annotation\EntityExtension;
+use Doctrine\ORM\Mapping as ORM;
+use Eccube\Attribute\EntityExtension;
 
 #[EntityExtension(\Eccube\Entity\Cart::class)]
 trait CartTrait
 {
     /**
      * @var bool
-     *
-     * @ORM\Column(name="is_horizon", type="boolean", options={"default":false})
      */
+    #[ORM\Column(name: 'is_horizon', type: 'boolean', options: ['default' => false])]
     public $is_horizon;
 
     /**
      * @var Dash
-     *
-     * @ORM\ManyToOne(targetEntity="Plugin\Horizon\Entity\Dash")
-     *
-     * @ORM\JoinColumns({
-     *
-     *     @ORM\JoinColumn(name="dash_id", referencedColumnName="id")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: Dash::class)]
+    #[ORM\JoinColumn(name: 'dash_id', referencedColumnName: 'id', nullable: true)]
     public $dash;
 }

@@ -373,13 +373,13 @@ class EccubeExtension extends AbstractExtension
     /**
      * Get currency symbol
      *
-     * @param null $currency
+     * @param string|null $currency
      *
      * @return bool|string
      */
     public function getCurrencySymbol($currency = null): bool|string
     {
-        if (is_null($currency)) {
+        if ($currency === null) {
             $currency = $this->eccubeConfig->get('currency');
         }
         $symbol = Currencies::getSymbol($currency);

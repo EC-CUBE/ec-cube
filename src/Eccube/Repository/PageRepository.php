@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
@@ -86,7 +87,7 @@ class PageRepository extends AbstractRepository
                 ->where('p.url = :url')
                 ->setParameter('url', $route)
                 ->getQuery()
-                ->useResultCache(true, $this->getCacheLifetime())
+                ->setResultCacheLifetime($this->getCacheLifetime())
                 ->getSingleResult();
         } catch (\Exception) {
             return $this->newPage();
@@ -101,7 +102,7 @@ class PageRepository extends AbstractRepository
      * @return Page
      *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getByUrl($url): Page
     {
@@ -110,7 +111,7 @@ class PageRepository extends AbstractRepository
             ->where('p.url = :route')
             ->setParameter('route', $url)
             ->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
+            ->setResultCacheLifetime($this->getCacheLifetime())
             ->getSingleResult();
 
         return $Page;

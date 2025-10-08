@@ -31,7 +31,7 @@ class PaymentResult
     private $success;
 
     /**
-     * @var Response
+     * @var Response|null
      */
     private $response;
 

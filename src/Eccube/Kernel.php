@@ -22,16 +22,16 @@ use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
+use Eccube\DependencyInjection\Compiler\StripReportFieldsArgPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
-use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
 use Eccube\DependencyInjection\Facade\LoggerFacade;
 use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
-use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
@@ -46,7 +46,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -149,20 +148,21 @@ class Kernel extends BaseKernel
         date_default_timezone_set($timezone);
 
         $Logger = $container->get('eccube.logger');
-        if ($Logger !== null && $Logger instanceof Log\Logger) {
+        if ($Logger instanceof Log\Logger) {
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator !== null && $Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
+        if ($Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
             TranslatorFacade::init($Translator);
         }
 
-        /** @var AnnotationReaderFacade $AnnotationReaderFacade */
-        $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
-        $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
-        if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
-            AnnotationReaderFacade::init($AnnotationReader);
-        }
+        // TODO:削除
+        //        /** @var AnnotationReaderFacade $AnnotationReaderFacade */
+        //        $AnnotationReaderFacade = $container->get(AnnotationReaderFacade::class);
+        //        $AnnotationReader = $AnnotationReaderFacade->getAnnotationReader();
+        //        if ($AnnotationReader !== null && $AnnotationReader instanceof \Doctrine\Common\Annotations\Reader) {
+        //            AnnotationReaderFacade::init($AnnotationReader);
+        //        }
     }
 
     /**
@@ -229,7 +229,7 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
-                $builder = $routes->import($dir, 'annotation');
+                $builder = $routes->import($dir, 'Attribute');
                 $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
@@ -301,6 +301,8 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(PurchaseProcessor::class)
             ->addTag(PurchaseFlowPass::PURCHASE_PROCESSOR_TAG);
         $container->addCompilerPass(new PurchaseFlowPass());
+        // StripReportFieldsArgPass は DoctrineOrmMappingsPass の後に実行する必要があるため、優先度を-1000に設定
+        $container->addCompilerPass(new StripReportFieldsArgPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
     }
 
     /**
@@ -315,13 +317,12 @@ class Kernel extends BaseKernel
         // Eccube
         $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
         $namespaces = ['Eccube\\Entity'];
-        $reader = new Reference('annotation_reader');
-        $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+        $driver = new Definition(TraitProxyAttributeDriver::class, [$paths]);
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
         // Customize
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createAttributeMappingDriver(
             ['Customize\\Entity'],
             ['%kernel.project_dir%/app/Customize/Entity']
         ));
@@ -341,8 +342,7 @@ class Kernel extends BaseKernel
             if (file_exists($pluginDir.'/'.$code.'/Entity')) {
                 $paths = ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity'];
                 $namespaces = ['Plugin\\'.$code.'\\Entity'];
-                $reader = new Reference('annotation_reader');
-                $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+                $driver = new Definition(TraitProxyAttributeDriver::class, [$paths]);
                 $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
                 $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
             }

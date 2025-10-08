@@ -644,8 +644,9 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('admin_order');
         }
 
+        $user = $this->getUser();
         /** @var OrderPdf|null $OrderPdf */
-        $OrderPdf = $this->orderPdfRepository->find($this->getUser());
+        $OrderPdf = $user instanceof \Eccube\Entity\Member ? $this->orderPdfRepository->find($user->getId()) : null;
 
         if (!$OrderPdf) {
             $OrderPdf = new OrderPdf();

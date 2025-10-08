@@ -16,10 +16,9 @@ namespace Eccube\Entity\Master;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AbstractMasterentity
- *
- * @ORM\MappedSuperclass
+ * AbstractMasterEntity
  */
+#[ORM\MappedSuperclass]
 abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implements \Stringable
 {
     /**
@@ -32,28 +31,23 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     }
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
-     *
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @var int|null
      */
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
      */
+    #[ORM\Column(name: 'name', type: 'string', length: 255)]
     protected $name;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
+    #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
     protected $sort_no;
 
     /**
@@ -73,7 +67,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -136,15 +130,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
     public function __get($name): mixed
     {
         return self::getConstantValue($name);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public function __set($name, $value): void
-    {
-        throw new \InvalidArgumentException();
     }
 
     /**

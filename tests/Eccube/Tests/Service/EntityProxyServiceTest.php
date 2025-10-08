@@ -13,7 +13,7 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 use Eccube\Entity\Product;
 use Eccube\Service\EntityProxyService;
 use Eccube\Tests\EccubeTestCase;

@@ -14,25 +14,20 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 
 if (!class_exists(OrderItemType::class, false)) {
     /**
      * OrderItemType
      *
      * 受注明細種別
-     *
-     * @ORM\Table(name="mtb_order_item_type")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\OrderItemTypeRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'mtb_order_item_type')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: OrderItemTypeRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class OrderItemType extends AbstractMasterEntity
     {
         /**

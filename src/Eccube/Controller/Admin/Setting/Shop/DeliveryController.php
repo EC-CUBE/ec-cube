@@ -150,6 +150,7 @@ class DeliveryController extends AbstractController
             }
         }
 
+        /** @var ArrayCollection<int, DeliveryTime> $originalDeliveryTimes */
         $originalDeliveryTimes = new ArrayCollection();
 
         foreach ($Delivery->getDeliveryTimes() as $deliveryTime) {
@@ -223,7 +224,6 @@ class DeliveryController extends AbstractController
                 $DeliveryData = $form->getData();
 
                 // 配送時間の登録
-                /** @var DeliveryTime $DeliveryTime */
                 foreach ($originalDeliveryTimes as $DeliveryTime) {
                     if (false === $Delivery->getDeliveryTimes()->contains($DeliveryTime)) {
                         $this->entityManager->remove($DeliveryTime);
@@ -426,6 +426,7 @@ class DeliveryController extends AbstractController
             ];
         }, $PaymentsData);
 
+        /** @var array<int, array{min: int, max: int}> $mergeRules */
         $mergeRules = [];
 
         foreach ($rules as $rule) {
@@ -455,7 +456,8 @@ class DeliveryController extends AbstractController
             }
         }
 
-        usort($mergeRules, function ($a, $b) {
+        // @phpstan-ignore-next-line
+        usort($mergeRules, function (array $a, array $b): int {
             if ($a['min'] == $b['min']) {
                 return 0;
             }

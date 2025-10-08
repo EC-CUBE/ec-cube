@@ -27,7 +27,7 @@ class PluginContext
     private $mode;
 
     /**
-     * @var string|int
+     * @var string
      */
     private $code;
 

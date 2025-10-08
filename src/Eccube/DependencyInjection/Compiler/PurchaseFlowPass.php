@@ -13,9 +13,9 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;

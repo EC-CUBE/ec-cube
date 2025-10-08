@@ -328,7 +328,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run composer command
      *
-     * @param array<string, string> $commands
+     * @param array<string, string|bool|array<string>|null> $commands
      * @param OutputInterface|null $output
      * @param bool $init
      *

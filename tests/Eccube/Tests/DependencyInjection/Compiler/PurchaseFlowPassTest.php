@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\DependencyInjection\Compiler;
 
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;

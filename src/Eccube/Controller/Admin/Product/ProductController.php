@@ -667,7 +667,7 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
 
                 /**
-                 * @var array<string, Product>|Product[] $admin_product
+                 * @var array<string, Product>|Product[]|null $admin_product
                  */
                 $admin_product = $request->request->all()['admin_product'] ?? null;
                 if (is_array($admin_product) && array_key_exists('product_image', $admin_product)) {
@@ -896,7 +896,7 @@ class ProductController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/{id}/copy', requirements: ['id' => '\d+'], name: 'admin_product_product_copy', methods: ['POST'])]
+    #[Route('/%eccube_admin_route%/product/product/{id}/copy', name: 'admin_product_product_copy', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function copy(Request $request, $id = null): RedirectResponse
     {
         $this->isTokenValid();
@@ -904,11 +904,19 @@ class ProductController extends AbstractController
         if (!is_null($id)) {
             $Product = $this->productRepository->find($id);
             if ($Product instanceof Product) {
-                $CopyProduct = clone $Product;
-                $CopyProduct->copy();
+                $CopyProduct = new Product();
+                $CopyProduct->copyProperties($Product, ['id']);
                 $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
                 $CopyProduct->setStatus($ProductStatus);
 
+                // 商品IDの確定
+                $this->entityManager->persist($CopyProduct);
+                $this->entityManager->flush();
+
+                // 商品関連のコピー
+                $CopyProduct->copy($Product);
+
+                // 商品カテゴリの登録
                 $CopyProductCategories = $CopyProduct->getProductCategories();
                 foreach ($CopyProductCategories as $Category) {
                     $this->entityManager->persist($Category);

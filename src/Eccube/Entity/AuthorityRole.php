@@ -18,51 +18,39 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(AuthorityRole::class)) {
     /**
      * AuthorityRole
-     *
-     * @ORM\Table(name="dtb_authority_role")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\AuthorityRoleRepository")
      */
+    #[ORM\Table(name: 'dtb_authority_role')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\AuthorityRoleRepository::class)]
     class AuthorityRole extends AbstractEntity
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="deny_url", type="string", length=4000)
          */
+        #[ORM\Column(name: 'deny_url', type: 'string', length: 4000)]
         private $deny_url;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
@@ -74,19 +62,19 @@ if (!class_exists(AuthorityRole::class)) {
          *
          *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
          * })
+         *
+         * @var Master\Authority|null
          */
+        #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
+        #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
+        /** @phpstan-ignore-next-line */
         private $Authority;
 
         /**
          * @var Member|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

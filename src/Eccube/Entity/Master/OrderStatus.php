@@ -14,23 +14,18 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\OrderStatusRepository;
 
 if (!class_exists(OrderStatus::class, false)) {
     /**
      * OrderStatus
-     *
-     * @ORM\Table(name="mtb_order_status")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\OrderStatusRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'mtb_order_status')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: OrderStatusRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class OrderStatus extends AbstractMasterEntity
     {
         /** 新規受付. */
@@ -54,9 +49,8 @@ if (!class_exists(OrderStatus::class, false)) {
          * 受注一覧画面で, ステータスごとの受注件数を表示するかどうか
          *
          * @var bool
-         *
-         * @ORM\Column(name="display_order_count", type="boolean", options={"default":false})
          */
+        #[ORM\Column(name: 'display_order_count', type: 'boolean', options: ['default' => false])]
         private $display_order_count = false;
 
         /**

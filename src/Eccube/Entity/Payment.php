@@ -14,21 +14,17 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PaymentRepository;
 
 if (!class_exists(Payment::class)) {
     /**
      * Payment
-     *
-     * @ORM\Table(name="dtb_payment")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentRepository")
      */
+    #[ORM\Table(name: 'dtb_payment')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: PaymentRepository::class)]
     class Payment extends AbstractEntity implements \Stringable
     {
         /**
@@ -42,71 +38,59 @@ if (!class_exists(Payment::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private $id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'payment_method', type: 'string', length: 255, nullable: true)]
         private $method;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'charge', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
         private $charge = '0';
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="rule_max", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
          */
+        #[ORM\Column(name: 'rule_max', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
         private $rule_max;
 
         /**
          * @var int|null
-         *
-         * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true, options: ['unsigned' => true])]
         private $sort_no;
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="fixed", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'fixed', type: 'boolean', options: ['default' => true])]
         private $fixed = true;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="payment_image", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'payment_image', type: 'string', length: 255, nullable: true)]
         private $payment_image;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="rule_min", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
          */
+        #[ORM\Column(name: 'rule_min', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
         private $rule_min;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="method_class", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'method_class', type: 'string', length: 255, nullable: true)]
         private $method_class;
 
         /**
@@ -114,39 +98,32 @@ if (!class_exists(Payment::class)) {
          *
          * @ORM\Column(name="visible", type="boolean", options={"default":true})
          */
+        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \Doctrine\Common\Collections\Collection<int,PaymentOption>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\PaymentOption", mappedBy="Payment")
          */
+        #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
         private $PaymentOptions;
 
         /**
          * @var Member|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

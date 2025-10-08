@@ -49,7 +49,7 @@ class OutputParser
      *
      * @param string $output
      *
-     * @return array<int|string,array<int,string>|string>
+     * @return array<int|string,array<string,string>|string>
      */
     public static function parseInfo($output): array
     {

@@ -50,5 +50,5 @@ framework:
     # When 'ide' is set to null the file is opened in your web browser.
     # See https://symfony.com/doc/current/reference/configuration/framework.html#ide
     ide: ~
-    validation: { enable_annotations: true }
+    validation: { enable_annotations: false }
     # templating: { engines: ['twig'] }

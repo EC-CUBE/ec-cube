@@ -14,12 +14,12 @@
 namespace Eccube\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
-use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
-use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\NopAttributeDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAttributeDriver;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -70,34 +70,39 @@ class SchemaService
         }
 
         try {
-            /** @var MappingDriver $mappingDriver */
-            $mappingDriver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
-            /** @var MappingDriverChain $driverChain */
-            $driverChain = $mappingDriver->getDriver();
-            $drivers = $driverChain->getDrivers();
-            /**
-             * @var string $namespace
-             * @var ReloadSafeAnnotationDriver $oldDriver
-             */
+            $driver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+
+            // DoctrineBundleのMappingDriverラッパーをアンラップ
+            if ($driver instanceof MappingDriver) {
+                $driver = $driver->getDriver();
+            }
+
+            if (!$driver instanceof MappingDriverChain) {
+                trigger_error('MappingDriverChain のインスタンスが必要です', E_USER_WARNING);
+
+                return;
+            }
+
+            $drivers = $driver->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', (string) $namespace)) {
-                    // Setup to AnnotationDriver
-                    $newDriver = new ReloadSafeAnnotationDriver(
-                        new AnnotationReader(),
-                        $oldDriver->getPaths()
-                    );
+                if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
+                    // Setup to AttributeDriver
+                    if (!$oldDriver instanceof AttributeDriver) {
+                        continue;
+                    }
+                    $newDriver = new ReloadSafeAttributeDriver($oldDriver->getPaths());
                     $newDriver->setFileExtension($oldDriver->getFileExtension());
                     $newDriver->addExcludePaths($oldDriver->getExcludePaths());
                     $newDriver->setTraitProxiesDirectory($proxiesDirectory);
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
-                    $driverChain->addDriver($newDriver, $namespace);
+                    $driver->addDriver($newDriver, $namespace);
                 }
 
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
                         if ($extraEntityNamespace === $namespace) {
-                            $driverChain->addDriver(new NopAnnotationDriver(new AnnotationReader()), $namespace);
+                            $driver->addDriver(new NopAttributeDriver([]), $namespace);
                         }
                     }
                 }
@@ -129,8 +134,8 @@ class SchemaService
      */
     public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false): void
     {
-        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode) {
-            $tool->updateSchema($metaData, $saveMode);
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) {
+            $tool->updateSchema($metaData);
         }, $generatedFiles, $proxiesDirectory);
     }
 
@@ -143,16 +148,25 @@ class SchemaService
      */
     public function dropTable($targetNamespace): void
     {
-        /** @var MappingDriver $mappingDriver */
-        $mappingDriver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
-        /** @var MappingDriverChain $driverChain */
-        $driverChain = $mappingDriver->getDriver();
-        $drivers = $driverChain->getDrivers();
+        $driver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+
+        // DoctrineBundleのMappingDriverラッパーをアンラップ
+        if ($driver instanceof MappingDriver) {
+            $driver = $driver->getDriver();
+        }
+
+        if (!$driver instanceof MappingDriverChain) {
+            trigger_error('MappingDriverChain のインスタンスが必要です', E_USER_WARNING);
+
+            return;
+        }
+
+        $drivers = $driver->getDrivers();
 
         $dropMetas = [];
-        foreach ($drivers as $namespace => $driver) {
+        foreach ($drivers as $namespace => $currentDriver) {
             if ($targetNamespace === $namespace) {
-                $allClassNames = $driver->getAllClassNames();
+                $allClassNames = $currentDriver->getAllClassNames();
 
                 foreach ($allClassNames as $className) {
                     $dropMetas[] = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
