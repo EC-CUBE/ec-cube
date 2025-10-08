@@ -72,7 +72,7 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
 
         while ($bucket = \stream_bucket_make_writeable($in)) {
             $data = $previousData.$bucket->data;
-            $consumed += $bucket->datalen;
+            $consumed += (int) $bucket->datalen;
 
             while ($this->needsToNarrowEncodingDataScope($data)) {
                 $deferredData = \substr($data, -1).$deferredData;
