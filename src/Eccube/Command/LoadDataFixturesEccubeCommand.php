@@ -22,10 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures to your database.')]
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
-    protected static $defaultName = 'eccube:fixtures:load';
-
     /**
      * @var EccubeConfig
      */
@@ -50,7 +49,6 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Load data fixtures to your database.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command loads data fixtures from EC-CUBE.
 

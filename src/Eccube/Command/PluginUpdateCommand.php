@@ -20,10 +20,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:update', description: 'Execute plugin update process.')]
 class PluginUpdateCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:update';
 
     /**
      * @return void
@@ -32,8 +32,7 @@ class PluginUpdateCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
-            ->setDescription('Execute plugin update process.');
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code');
     }
 
     #[\Override]

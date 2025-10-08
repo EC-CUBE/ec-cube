@@ -56,8 +56,6 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * @var Master\Authority|null
          *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
-         *
          * @ORM\JoinColumns({
          *
          *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")

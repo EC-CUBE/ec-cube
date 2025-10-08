@@ -25,10 +25,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:install', description: 'Install EC-CUBE')]
 class InstallerCommand extends Command
 {
-    protected static $defaultName = 'eccube:install';
-
     /**
      * @var EccubeConfig
      */
@@ -165,8 +164,6 @@ class InstallerCommand extends Command
     #[\Override]
     protected function configure(): void
     {
-        $this
-            ->setDescription('Install EC-CUBE');
     }
 
     /**

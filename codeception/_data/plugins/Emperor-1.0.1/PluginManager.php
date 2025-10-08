@@ -76,6 +76,6 @@ class PluginManager extends AbstractPluginManager
         $bar->id = 1;
         $bar->name = 'Emperor 1.0.1';
         $entityManager->persist($bar);
-        $entityManager->flush($bar);
+        $entityManager->flush();
     }
 }

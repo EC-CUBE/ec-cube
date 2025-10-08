@@ -52,8 +52,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="title", type="string", length=255, nullable=true)
          */
         #[ORM\Column(name: 'title', type: 'string', length: 255, nullable: true)]
         private $title;

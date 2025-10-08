@@ -22,10 +22,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:delete-carts', description: 'Delete Carts from the database')]
 class DeleteCartsCommand extends Command
 {
-    protected static $defaultName = 'eccube:delete-carts';
-
     /**
      * @var EccubeConfig
      */
@@ -76,7 +75,6 @@ class DeleteCartsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Delete Carts from the database')
             ->addArgument('date', InputArgument::REQUIRED, 'Deletes carts before the specified date');
     }
 

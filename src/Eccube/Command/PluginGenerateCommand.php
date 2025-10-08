@@ -23,10 +23,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:generate', description: 'Generate plugin skeleton.')]
 class PluginGenerateCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:generate';
-
     /**
      * @var SymfonyStyle
      */
@@ -57,8 +56,7 @@ class PluginGenerateCommand extends Command
         $this
             ->addArgument('name', InputOption::VALUE_REQUIRED, 'plugin name')
             ->addArgument('code', InputOption::VALUE_REQUIRED, 'plugin code')
-            ->addArgument('ver', InputOption::VALUE_REQUIRED, 'plugin version')
-            ->setDescription('Generate plugin skeleton.');
+            ->addArgument('ver', InputOption::VALUE_REQUIRED, 'plugin version');
     }
 
     /**

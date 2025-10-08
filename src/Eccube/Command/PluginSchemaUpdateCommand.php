@@ -20,11 +20,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:schema-update', description: 'Execute plugin schema update.')]
 class PluginSchemaUpdateCommand extends Command
 {
     use PluginCommandTrait;
-
-    protected static $defaultName = 'eccube:plugin:schema-update';
 
     /**
      * @return void
@@ -33,8 +32,7 @@ class PluginSchemaUpdateCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
-            ->setDescription('Execute plugin schema update.');
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code');
     }
 
     #[\Override]

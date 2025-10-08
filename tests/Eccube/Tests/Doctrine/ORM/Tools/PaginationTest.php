@@ -105,7 +105,7 @@ class PaginationTest extends EccubeTestCase
             foreach ($ProductClasses as $ProductClass) {
                 // product.idの昇順になるよう, product_class.price02を設定する
                 $ProductClass->setPrice02($price02 - $i);
-                $em->flush($ProductClass);
+                $em->flush();
             }
         }
     }

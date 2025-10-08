@@ -19,10 +19,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:install', description: 'Install plugin from local.')]
 class PluginInstallCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:install';
 
     /**
      * @return void
@@ -33,8 +33,7 @@ class PluginInstallCommand extends Command
         $this
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
-            ->addOption('if-not-exists', null, InputOption::VALUE_NONE, 'If plugin is already installed, skip install.')
-            ->setDescription('Install plugin from local.');
+            ->addOption('if-not-exists', null, InputOption::VALUE_NONE, 'If plugin is already installed, skip install.');
     }
 
     #[\Override]

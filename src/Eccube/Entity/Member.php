@@ -141,8 +141,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * @var bool
-         *
-         * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
          */
         #[ORM\Column(name: 'two_factor_auth_enabled', type: 'boolean', nullable: false, options: ['default' => false])]
         private $two_factor_auth_enabled = false;

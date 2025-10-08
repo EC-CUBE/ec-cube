@@ -163,8 +163,6 @@ class TaxRuleRepository extends AbstractRepository
         if (isset($this->rules[$cacheKey])) {
             return $this->rules[$cacheKey];
         }
-
-        $parameters = [];
         $apply_date = new \DateTime();
         $qb = $this->createQueryBuilder('t')
             ->where('t.apply_date < :apply_date')
