@@ -371,8 +371,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         return [
             '_token' => 'dummy',
-            'name' => $faker->word,
-            'department' => $faker->word,
+            'name' => $faker->word(),
+            'department' => $faker->word(),
             'login_id' => 'logintest',
             'plain_password' => [
                 'first' => 'password1234',

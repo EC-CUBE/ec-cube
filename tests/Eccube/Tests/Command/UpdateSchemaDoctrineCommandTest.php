@@ -481,7 +481,7 @@ EOT
 
         return [
             'name' => $config['name'],
-            'description' => $faker->word,
+            'description' => $faker->word(),
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [

@@ -93,21 +93,21 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv = [
             '商品ID' => null,
             '公開ステータス(ID)' => 1,
-            '商品名' => '商品名'.$faker->word.'商品名',
+            '商品名' => '商品名'.$faker->word().'商品名',
             'ショップ用メモ欄' => 'ショップ用メモ欄'.$faker->paragraph.'ショップ用メモ欄',
             '商品説明(一覧)' => '商品説明(一覧)'.$faker->paragraph.'商品説明(一覧)',
             '商品説明(詳細)' => '商品説明(詳細)'.$faker->realText().'商品説明(詳細)',
-            '検索ワード' => '検索ワード'.$faker->word.'検索ワード',
+            '検索ワード' => '検索ワード'.$faker->word().'検索ワード',
             'フリーエリア' => 'フリーエリア'.$faker->paragraph.'フリーエリア',
             '商品削除フラグ' => 0,
-            '商品画像' => $faker->word.'.jpg,'.$faker->word.'.jpg',
+            '商品画像' => $faker->word().'.jpg,'.$faker->word().'.jpg',
             '商品カテゴリ(ID)' => '5,6',
             'タグ(ID)' => '1,2',
             '販売種別(ID)' => 1,
             '規格分類1(ID)' => 3,
             '規格分類2(ID)' => 6,
             '発送日目安(ID)' => 1,
-            '商品コード' => $faker->word,
+            '商品コード' => $faker->word(),
             '在庫数' => 100,
             '在庫数無制限フラグ' => 0,
             '販売制限数' => null,
@@ -674,7 +674,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         // 1 product case stock_unlimited = true
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
-        $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = [1,  '商品名'.$faker->word().'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
@@ -688,7 +688,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 1 product case stock_unlimited = true
         $csv = [];
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数', '販売価格'];
-        $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = [1,  '商品名'.$faker->word().'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
@@ -737,7 +737,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         // 1 product
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
-        $csv[] = [$status, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = [$status, '商品名'.$faker->word().'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
@@ -969,7 +969,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
         $csv[] = [$Product->getId(),
-            1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+            1, '商品名'.$faker->word().'商品名', 1, 1, $faker->randomNumber(5),
             $ProductClass->getClassCategory1()->getId(),
             $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
             '0',           // 商品規格非表示
@@ -1001,7 +1001,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
         $csv[] = [$Product->getId(),
-            1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+            1, '商品名'.$faker->word().'商品名', 1, 1, $faker->randomNumber(5),
             $ProductClass->getClassCategory1()->getId(),
             $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
             '1',           // 商品規格表示

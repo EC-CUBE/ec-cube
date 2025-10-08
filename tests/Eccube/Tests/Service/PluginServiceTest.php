@@ -546,7 +546,7 @@ EOD;
 
         $faker = $this->getFaker();
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.$faker->word;
+        $tmpname = 'dummy'.$faker->word();
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -717,7 +717,7 @@ EOD;
 
         return [
             'name' => $config['name'],
-            'description' => $faker->word,
+            'description' => $faker->word(),
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [

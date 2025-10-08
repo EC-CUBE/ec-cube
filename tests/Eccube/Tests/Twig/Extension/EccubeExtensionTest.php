@@ -36,7 +36,7 @@ class EccubeExtensionTest extends EccubeTestCase
     public function testGetClassCategoriesAsJson()
     {
         $faker = $this->getFaker();
-        $Product = $this->createProduct($faker->word, 3);
+        $Product = $this->createProduct($faker->word(), 3);
 
         $actuals = json_decode($this->Extension->getClassCategoriesAsJson($Product), true);
 
