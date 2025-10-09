@@ -1,0 +1,32 @@
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['plugin', 'plugin_list'] %}
+
+{% block title %}InstallTestPlugin{% endblock %}
+{% block sub_title %}プラグインインストールテスト{% endblock %}
+
+{% block main %}
+<div class="c-contentsArea__cols">
+    <div class="c-contentsArea__primaryCol">
+        <div class="c-primaryCol">
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8">
+                            <span class="card-title">InstallTestPlugin テストページ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p>このプラグインはインストールテスト用です。</p>
+                            <p>プラグインが正常にインストールされ、動作していることを確認できます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
