@@ -14,6 +14,7 @@
 namespace Eccube\Form\Extension;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\PropertyAccessors\PropertyAccessor;
 use Eccube\Attribute\FormAppend;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -68,7 +69,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                     return;
                 }
 
-                /** @var array<string, \Doctrine\ORM\Mapping\PropertyAccessor> $accessors */
+                /** @var array<string, PropertyAccessor> $accessors */
                 $accessors = $meta->getPropertyAccessors();
                 foreach ($accessors as $propName => $accessor) {
                     $prop = $accessor->getUnderlyingReflector();
