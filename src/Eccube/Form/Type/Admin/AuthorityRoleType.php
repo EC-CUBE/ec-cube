@@ -25,10 +25,6 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class AuthorityRoleType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      *

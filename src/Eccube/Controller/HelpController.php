@@ -19,13 +19,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class HelpController extends AbstractController
 {
     /**
-     * HelpController constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * ご利用ガイド.
      *
      * @return array<empty>

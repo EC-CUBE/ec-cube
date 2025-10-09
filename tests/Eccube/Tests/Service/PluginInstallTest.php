@@ -253,9 +253,9 @@ class PluginInstallTest extends AbstractServiceTestCase
             ],
         ]);
 
-        $headers = @get_headers($this->mockServerUrl, 1, $context);
+        $headers = @get_headers($this->mockServerUrl, true, $context);
 
-        return $headers !== false && strpos($headers[0], '200') !== false;
+        return $headers !== false && str_contains($headers[0], '200');
     }
 
     /**
