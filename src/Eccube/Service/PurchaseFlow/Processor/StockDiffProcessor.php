@@ -77,19 +77,19 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
                 return $Item->getProductClass()->getId() == $id;
             });
             $toQuantity = array_reduce($Items, function ($quantity, $Item) {
-                return $quantity = bcadd($quantity, $Item->getQuantity());
+                return $quantity = bcadd((string) $quantity, $Item->getQuantity());
             }, 0);
 
             // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() != OrderStatus::CANCEL) {
-                if (bcadd((string) $stock, $toQuantity) < 0) {
+                if (bcadd((string) $stock, (string) $toQuantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             // ステータスをキャンセルから対応中に変更した場合
             } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
-                if (bcsub((string) $stock, $toQuantity) < 0) {
+                if (bcsub((string) $stock, (string) $toQuantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             } else {

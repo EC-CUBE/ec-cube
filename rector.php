@@ -16,7 +16,6 @@ declare(strict_types=1);
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector;
 use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveNullTagValueNodeRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedConstructorParamRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodParameterRector;
@@ -31,7 +30,6 @@ use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
-use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php81\Rector\MethodCall\RemoveReflectionSetAccessibleCallsRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithValueToAttributeRector;
@@ -84,9 +82,7 @@ return RectorConfig::configure()
                AnnotationWithValueToAttributeRector::class, // PHPUnitのバージョンアップ必須
                RequiresAnnotationWithValueToAttributeRector::class, // @requires アノテーションを属性に変換する。↑と同時に進める。
 
-               RecastingRemovalRector::class, // 不要な型キャストを削除する
                RemoveReflectionSetAccessibleCallsRector::class, // リフレクションの setAccessible 呼び出しを削除する
-               NullToStrictStringFuncCallArgRector::class, // null を厳密な string 型に変換する
                NestedAnnotationToAttributeRector::class, // ネストされたアノテーションをアトリビュートに変換する
            ])
            // 個別にルールを追加する場合はここに記述

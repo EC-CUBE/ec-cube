@@ -156,7 +156,7 @@ class OrderRepository extends AbstractRepository
         // multi
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', (string) $searchData['multi']);
             $multi = preg_match('/^\d{0,10}$/', (string) $clean_key_multi) ? $clean_key_multi : null;
             if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
                 $multi = null;

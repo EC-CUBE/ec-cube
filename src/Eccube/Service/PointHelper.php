@@ -187,7 +187,7 @@ class PointHelper
     {
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint(bcsub($Customer->getPoint(), $point));
+        $Customer->setPoint(bcsub((string) $Customer->getPoint(), $point));
     }
 
     /**
@@ -200,6 +200,6 @@ class PointHelper
     {
         // 利用したポイントをユーザに戻す.
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint(bcadd($Customer->getPoint(), $point));
+        $Customer->setPoint(bcadd((string) $Customer->getPoint(), $point));
     }
 }

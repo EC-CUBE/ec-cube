@@ -1243,7 +1243,7 @@ class CsvImportController extends AbstractCsvImportController
                 $fileName = StringUtil::trimAll($image);
 
                 // 商品画像名のフォーマットチェック
-                if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
+                if (strlen((string) $fileName) > 0 && preg_match($pattern, (string) $fileName)) {
                     $message = trans('admin.common.csv_invalid_image', ['%line%' => $data->key() + 1, '%name%' => $headerByKey['product_image']]);
                     $this->addErrors($message);
                 } else {

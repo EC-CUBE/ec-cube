@@ -109,7 +109,7 @@ class OutputParser
 
         foreach ($rawConfig as $path => $value) {
             $arr = &$result;
-            $keys = explode('.', $path);
+            $keys = explode('.', (string) $path);
             foreach ($keys as $key) {
                 $arr = &$arr[$key];
             }

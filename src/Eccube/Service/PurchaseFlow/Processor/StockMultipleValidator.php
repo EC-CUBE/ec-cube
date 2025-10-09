@@ -78,8 +78,8 @@ class StockMultipleValidator extends ItemHolderValidator
                 }
                 $isOver = false;
                 foreach ($Items as $Item) {
-                    if (bcsub($stock, $Item->getQuantity()) >= 0) {
-                        $stock = bcsub($stock, $Item->getQuantity());
+                    if (bcsub((string) $stock, $Item->getQuantity()) >= 0) {
+                        $stock = bcsub((string) $stock, $Item->getQuantity());
                     } else {
                         $Item->setQuantity($stock);
                         $stock = 0;
