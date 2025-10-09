@@ -2,12 +2,20 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
-use Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector;
 use Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector;
-use Rector\CodingStyle\Rector\FuncCall\ConsistentImplodeRector;
 use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveNullTagValueNodeRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedConstructorParamRector;
@@ -25,8 +33,6 @@ use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php81\Rector\MethodCall\RemoveReflectionSetAccessibleCallsRector;
-use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
@@ -37,16 +43,15 @@ use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
-           ->withPhpVersion(PhpVersion::PHP_83)
+           ->withPhpVersion(PhpVersion::PHP_82)
 
            // Rectorが解析するパスを指定
            ->withPaths([
-               __DIR__ . '/src',
+               __DIR__.'/src',
                // __DIR__ . '/app',
                __DIR__.'/tests',
                __DIR__.'/codeception',
@@ -72,12 +77,10 @@ return RectorConfig::configure()
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
                // TODO:以下を適用する
-               AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
-               AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameAttributeRector::class, // Attributeの名前を変更する。php-cs-fixerと競合する場合があるため一旦除外
                /* Rector 2系へアップデート */
                // アトリビュート系を適用
-               //AnnotationToAttributeRector::class, //RouteやTemplateなどのアノテーションをアトリビュートへ変更
+               // AnnotationToAttributeRector::class, //RouteやTemplateなどのアノテーションをアトリビュートへ変更
                AnnotationWithValueToAttributeRector::class, // PHPUnitのバージョンアップ必須
                RequiresAnnotationWithValueToAttributeRector::class, // @requires アノテーションを属性に変換する。↑と同時に進める。
 
@@ -95,7 +98,7 @@ return RectorConfig::configure()
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
-               LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
+               LevelSetList::UP_TO_PHP_82, // PHPバージョンに合わせる
                SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
