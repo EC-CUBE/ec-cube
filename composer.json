@@ -12,7 +12,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-curl": "*",
         "ext-intl": "*",
         "ext-json": "*",
@@ -110,7 +110,7 @@
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-rest": "^3.3",
         "codeception/module-webdriver": "^3.2",
-        "dama/doctrine-test-bundle": "^7.0",
+        "dama/doctrine-test-bundle": "^6.6",
         "fakerphp/faker": "^1.16",
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "^2.1",
@@ -185,7 +185,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.2.29"
+            "php": "8.3.24"
         },
         "preferred-install": {
             "*": "dist"
@@ -197,16 +197,15 @@
             "kylekatarnls/update-helper": true,
             "ec-cube/plugin-installer": true,
             "symfony/flex": true
-        },
-        "secure-http": false
+        }
     },
     "repositories": {
         "eccube": {
             "type": "composer",
-            "url": "http://127.0.0.1:9999",
+            "url": "https://package-api-c2.ec-cube.net/v43",
             "options": {
                 "http": {
-                    "header": ["X-ECCUBE-KEY: test"]
+                    "header": ["X-ECCUBE-KEY: abcxyzABCXYZ123098"]
                 }
             }
         }
