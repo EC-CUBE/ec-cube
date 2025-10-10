@@ -22,13 +22,12 @@ use Eccube\Tests\EccubeTestCase;
 class OrderNoProcessorTest extends EccubeTestCase
 {
     /**
-     * @dataProvider processDataProvider
-     *
      * @param $orderNoFormat
      * @param $expected
      *
      * @throws \ReflectionException
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('processDataProvider')]
     public function testProcess($orderNoFormat, $expected)
     {
         $Order = new Order();
@@ -49,7 +48,7 @@ class OrderNoProcessorTest extends EccubeTestCase
         self::assertMatchesRegularExpression($expected, (string) $Order->getOrderNo());
     }
 
-    public function processDataProvider()
+    public static function processDataProvider()
     {
         return [
             ['', '/^123$/'],

@@ -19,12 +19,11 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
     /**
-     * @dataProvider twigSnippetsProvider
-     * @dataProvider twigVarFreeAreaProvider
-     *
      * @param mixed $snippet
      * @param mixed $whitelisted
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('twigSnippetsProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('twigVarFreeAreaProvider')]
     public function testFreeArea($snippet, $whitelisted)
     {
         $Product = $this->createProduct();
@@ -39,12 +38,11 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     }
 
     /**
-     * @dataProvider twigSnippetsProvider
-     * @dataProvider twigVarMetaTagsProvider
-     *
      * @param mixed $snippet
      * @param mixed $whitelisted
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('twigSnippetsProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('twigVarMetaTagsProvider')]
     public function testMetatags($snippet, $whitelisted)
     {
         $Page = $this->entityManager->getRepository(Page::class)->find(1);
@@ -64,7 +62,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         self::assertStringNotContainsString('システムエラーが発生しました', $text);
     }
 
-    public function twigSnippetsProvider()
+    public static function twigSnippetsProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
@@ -89,7 +87,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         ];
     }
 
-    public function twigVarFreeAreaProvider()
+    public static function twigVarFreeAreaProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
@@ -100,7 +98,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         ];
     }
 
-    public function twigVarMetaTagsProvider()
+    public static function twigVarMetaTagsProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [

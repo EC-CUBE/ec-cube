@@ -171,7 +171,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     /**
      * ダウンロード
      */
-    public function testDownload()
+    public function testDownload(): never
     {
         $this->markTestIncomplete("See: \Eccube\Controller\Admin\Store\TemplateController::L151");
 

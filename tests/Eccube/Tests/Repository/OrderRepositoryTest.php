@@ -150,9 +150,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertEquals($Order, $actual[0]);
     }
 
-    /**
-     * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_nameProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataGetQueryBuilderBySearchDataForAdmin_nameProvider')]
     public function testGetQueryBuilderBySearchDataForAdminName(string $formName, string $searchWord, int $expected)
     {
         $this->Order
@@ -172,7 +170,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertCount($expected, $actual);
     }
 
-    public function dataGetQueryBuilderBySearchDataForAdmin_nameProvider()
+    public static function dataGetQueryBuilderBySearchDataForAdmin_nameProvider()
     {
         return [
             ['multi', '姓', 1],
@@ -223,9 +221,8 @@ class OrderRepositoryTest extends EccubeTestCase
      * AND 条件についてテストします。
      *
      * すべて一致する検索条件を、1項目ずつ一致しない値に置き換えて確認します。
-     *
-     * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_testAndCondition
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataGetQueryBuilderBySearchDataForAdmin_testAndCondition')]
     public function testGetQueryBuilderBySearchDataForAdminTestAndCondition(array $searchWord, int $expected)
     {
         // 基本の検索条件に一致するデータを作成します
@@ -305,7 +302,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertCount($expected, $actual);
     }
 
-    public function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition()
+    public static function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition()
     {
         return [
             // 基本の検索条件で検索結果が返ってくること

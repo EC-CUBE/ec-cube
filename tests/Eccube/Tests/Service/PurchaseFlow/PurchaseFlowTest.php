@@ -55,7 +55,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
-    public function testAddProcesser()
+    public function testAddProcesser(): never
     {
         // TODO: FIXME
         $this->markTestIncomplete(__METHOD__.'may be not implement');
@@ -124,11 +124,10 @@ class PurchaseFlowTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider flowTypeProvider
-     *
      * @param $flow
      * @param $message
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('flowTypeProvider')]
     public function testFlowType($flow, $message)
     {
         $this->flow->addItemHolderValidator(new PurchaseFlowTest_FlowTypeValidator());
@@ -141,7 +140,7 @@ class PurchaseFlowTest extends EccubeTestCase
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
-    public function flowTypeProvider()
+    public static function flowTypeProvider()
     {
         return [
             ['cart', 'Cart Flow'],

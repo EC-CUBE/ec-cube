@@ -34,7 +34,7 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData()
     {
         return [
             [
@@ -111,10 +111,9 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getValidTestData
-     *
      * @param mixed $data
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

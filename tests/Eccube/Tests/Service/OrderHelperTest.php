@@ -75,11 +75,10 @@ class OrderHelperTest extends EccubeTestCase
     /**
      * 税表示区分が問題ないかを確認する
      *
-     * @dataProvider taxDisplayTypeProvider
-     *
      * @param mixed $OrderItemType
      * @param mixed $TaxDisplayType
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('taxDisplayTypeProvider')]
     public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
     {
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);
@@ -87,7 +86,7 @@ class OrderHelperTest extends EccubeTestCase
         self::assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
     }
 
-    public function taxDisplayTypeProvider()
+    public static function taxDisplayTypeProvider()
     {
         // - 商品: 税抜
         // - 送料: 税込

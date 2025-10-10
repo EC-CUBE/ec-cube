@@ -55,7 +55,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testConfirm()
+    public function testConfirm(): never
     {
         $this->markTestIncomplete('FIXME title');
         $crawler = $this->client->request(

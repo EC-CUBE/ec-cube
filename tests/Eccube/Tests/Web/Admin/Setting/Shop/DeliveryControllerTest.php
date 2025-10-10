@@ -103,9 +103,8 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -141,9 +140,8 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -271,7 +269,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider()
     {
         return [
             [false, false],
@@ -281,11 +279,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @dataProvider getMergeRulesProvider
-     *
      * @param mixed $rules
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getMergeRulesProvider')]
     public function testGetMergeRules($rules, $expected)
     {
         $Payments = array_map(function ($rule) {
@@ -307,7 +304,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->assertCount($expected, $result);
     }
 
-    public function getMergeRulesProvider()
+    public static function getMergeRulesProvider()
     {
         return [
             // 利用不可の金額帯なし

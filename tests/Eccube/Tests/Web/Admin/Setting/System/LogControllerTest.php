@@ -89,9 +89,8 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * @param string|int $value
      * @param string $expected
      * @param string $message
-     *
-     * @dataProvider dataProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProvider')]
     public function testSystemLogValidate($value, $expected, $message)
     {
         $this->createTestFile(1);
@@ -117,7 +116,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array
      */
-    public function dataProvider()
+    public static function dataProvider()
     {
         return [
             // FIXME 以下のメッセージが翻訳されない

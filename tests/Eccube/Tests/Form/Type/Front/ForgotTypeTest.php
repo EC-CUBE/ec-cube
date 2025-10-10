@@ -29,7 +29,7 @@ class ForgotTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function getInvalidTestData()
+    public static function getInvalidTestData()
     {
         return [
             [
@@ -73,10 +73,9 @@ class ForgotTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getInvalidTestData
-     *
      * @param mixed $data
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getInvalidTestData')]
     public function testInvalidData($data)
     {
         $this->form->submit($data);

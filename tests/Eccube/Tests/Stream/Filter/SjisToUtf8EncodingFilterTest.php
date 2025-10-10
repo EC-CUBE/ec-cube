@@ -29,9 +29,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         SjisToUtf8EncodingFilter::setBufferSizeLimit(1024);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function encodeSmallData(): void
     {
         $utf8Value = 'あ,い,う';
@@ -40,9 +38,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         self::assertSame(['あ', 'い', 'う'], \fgetcsv($resource));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function encodeBigDataThatExceedsStreamChunkSize(): void
     {
         $utf8Value = 'かきくけこ,さしすせそ';
@@ -55,9 +51,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         self::assertSame(['かきくけこ', 'さしすせそ'], \fgetcsv($resource));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function fgetcsvDoesntOccur5cProblem(): void
     {
         $utf8Value = '"表"';
@@ -70,9 +64,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         self::assertSame(['表'], \fgetcsv($resource));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function bufferSizeShouldNotBeTooLarge(): void
     {
         SjisToUtf8EncodingFilter::setBufferSizeLimit(1);

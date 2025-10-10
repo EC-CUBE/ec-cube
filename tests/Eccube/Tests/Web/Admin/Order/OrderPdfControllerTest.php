@@ -197,9 +197,8 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @param string $field
      * @param string $message
-     *
-     * @dataProvider dataDownloadMaxLengthProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataDownloadMaxLengthProvider')]
     public function testDownloadMaxLength($field, $message)
     {
         $Order = $this->createOrderForSearch();
@@ -244,7 +243,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function dataDownloadMaxLengthProvider()
+    public static function dataDownloadMaxLengthProvider()
     {
         return [
             ['order_pdf[title]', 'この値は、255文字以内で入力してください。'],

@@ -42,11 +42,10 @@ class NavCompilerPassTest extends EccubeTestCase
     /**
      * DefaultNavにAddNavを追加
      *
-     * @dataProvider addNavProvider
-     *
      * @param $class
      * @param $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('addNavProvider')]
     public function testAddNav($class, $expected)
     {
         $container = $this->createContainer();
@@ -63,7 +62,7 @@ class NavCompilerPassTest extends EccubeTestCase
         self::assertSame($expected, $eccubeNav);
     }
 
-    public function addNavProvider()
+    public static function addNavProvider()
     {
         return [
             [AddNav1::class, AddNav1::getExpect()],

@@ -47,12 +47,11 @@ class PluginRepositoryTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider dataFormCodeProvider
-     *
      * @param mixed $code
      * @param mixed $search
      * @param mixed $isNotNull
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormCodeProvider')]
     public function testFindByCode($code, $search, $isNotNull)
     {
         $this->createPlugin($code);
@@ -67,7 +66,7 @@ class PluginRepositoryTest extends EccubeTestCase
         }
     }
 
-    public function dataFormCodeProvider()
+    public static function dataFormCodeProvider()
     {
         return [
             ['Enable1', 'Enable1', true],

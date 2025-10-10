@@ -29,14 +29,13 @@ class OrderTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider filterPaymentsProvider
-     *
      * @param mixed $charge
      * @param mixed $total
      * @param mixed $min
      * @param mixed $max
      * @param mixed $result
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('filterPaymentsProvider')]
     public function testFilterPayments($charge, $total, $min, $max, $result)
     {
         $Payment = new Payment();
@@ -52,7 +51,7 @@ class OrderTypeTest extends AbstractTypeTestCase
         self::assertCount($result, $FilterResults);
     }
 
-    public function filterPaymentsProvider()
+    public static function filterPaymentsProvider()
     {
         return [
             // charge, total, min, max, result

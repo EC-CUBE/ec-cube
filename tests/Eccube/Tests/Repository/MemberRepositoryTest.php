@@ -95,7 +95,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testDownWithException()
+    public function testDownWithException(): never
     {
         $this->expectException(\Exception::class);
         $this->Member->setSortNo(0);

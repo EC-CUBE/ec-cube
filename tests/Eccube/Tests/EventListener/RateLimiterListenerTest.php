@@ -28,12 +28,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class RateLimiterListenerTest extends EccubeTestCase
 {
     /**
-     * @dataProvider onControllerProvider
-     *
      * @param mixed $limiterId
      * @param mixed $type
      * @param mixed $params
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('onControllerProvider')]
     public function testOnController($limiterId, $type, $params)
     {
         $request = $this->createStub(Request::class);
@@ -97,7 +96,7 @@ class RateLimiterListenerTest extends EccubeTestCase
         self::assertSame(2, $i);
     }
 
-    public function onControllerProvider()
+    public static function onControllerProvider()
     {
         return [
             ['test_ip', 'ip', []],

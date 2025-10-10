@@ -36,10 +36,9 @@ class ShopControllerTest extends AbstractAdminWebTestCase
      * @param bool $isSuccess
      * @param bool $expected
      *
-     * @dataProvider dataSubmitProvider
-     *
      * @group cache-clear
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
     public function testSubmit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -98,7 +97,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider()
     {
         return [
             [false, false],

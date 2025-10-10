@@ -912,7 +912,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /**
      * Test add multi shipping
      */
-    public function testAddMultiShippingWithoutCart()
+    public function testAddMultiShippingWithoutCart(): never
     {
         $this->markTestIncomplete('カートのクリア処理');
 

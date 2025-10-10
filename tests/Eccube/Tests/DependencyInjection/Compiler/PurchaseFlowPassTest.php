@@ -42,14 +42,13 @@ class PurchaseFlowPassTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider dataProcessorProvider
-     *
      * @param $class
      * @param $id
      * @param $tagName
      *
      * @throws \Exception
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProcessorProvider')]
     public function testProcess($class, $id, $tagName)
     {
         $Customer = $this->createCustomer();
@@ -69,7 +68,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
         self::assertTrue(PurchaseFlowPassTest::$called);
     }
 
-    public function dataProcessorProvider()
+    public static function dataProcessorProvider()
     {
         return [
             [PurchaseFlowPassTest_CartFlow::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],

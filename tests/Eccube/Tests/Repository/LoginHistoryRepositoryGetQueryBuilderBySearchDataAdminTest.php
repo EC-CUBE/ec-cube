@@ -96,11 +96,10 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     }
 
     /**
-     * @dataProvider dataStatusProvider
-     *
      * @param $status
      * @param $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataStatusProvider')]
     public function testStatus($status, $expected)
     {
         $this->searchData = [
@@ -116,7 +115,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     /**
      * @return array[]
      */
-    public function dataStatusProvider()
+    public static function dataStatusProvider()
     {
         return [
             [[LoginHistoryStatus::SUCCESS], 1],
@@ -125,9 +124,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
         ];
     }
 
-    /**
-     * @dataProvider dataFormDateProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -151,7 +148,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      *
      * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider()
     {
         return [
             ['create_date_start', 'today', 3],
@@ -161,9 +158,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
         ];
     }
 
-    /**
-     * @dataProvider dataFormDateTimeProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -182,7 +177,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      *
      * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider()
     {
         return [
             ['create_datetime_start', '- 1 hour', 3],

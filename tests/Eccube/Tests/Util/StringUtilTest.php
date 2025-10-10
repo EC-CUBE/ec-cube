@@ -508,18 +508,17 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @dataProvider replaceOrAddEnvProvider
-     *
      * @param mixed $env
      * @param mixed $replacement
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('replaceOrAddEnvProvider')]
     public function testReplaceOrAddEnv($env, $replacement, $expected)
     {
         self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
     }
 
-    public function replaceOrAddEnvProvider()
+    public static function replaceOrAddEnvProvider()
     {
         return [
             ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'],
