@@ -14,6 +14,7 @@
 namespace Eccube\Log\Processor;
 
 use Eccube\Session\Session;
+use Monolog\LogRecord;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 
 class SessionProcessor
@@ -29,24 +30,22 @@ class SessionProcessor
     }
 
     /**
-     * @param array<string, array<string, mixed>> $records
+     * @param LogRecord $record
      *
-     * @return array<string, array<string, mixed>>
+     * @return LogRecord
      */
-    public function __invoke(array $records): array
+    public function __invoke(LogRecord $record): LogRecord
     {
-        $records['extra']['session_id'] = 'N/A';
+        $sessionId = 'N/A';
 
         try {
-            if (!$this->session->isStarted()) {
-                return $records;
+            if ($this->session->isStarted()) {
+                $sessionId = substr(sha1($this->session->getId()), 0, 8);
             }
         } catch (SessionNotFoundException) {
-            return $records;
+            // Keep default 'N/A'
         }
 
-        $records['extra']['session_id'] = substr(sha1($this->session->getId()), 0, 8);
-
-        return $records;
+        return $record->with(extra: array_merge($record->extra, ['session_id' => $sessionId]));
     }
 }
