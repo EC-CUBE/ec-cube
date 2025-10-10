@@ -77,6 +77,12 @@ abstract class EccubeTestCase extends WebTestCase
     {
         parent::tearDown();
 
+        // Remove all exception handlers set by Symfony to avoid "risky test" warning
+        // This ensures PHPUnit's exception handler detection doesn't flag the test as risky
+        while (set_exception_handler(null) !== null) {
+            // Keep removing until no handler exists
+        }
+
         $this->cleanUpProperties();
     }
 
