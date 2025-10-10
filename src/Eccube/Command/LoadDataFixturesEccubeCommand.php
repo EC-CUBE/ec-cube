@@ -58,7 +58,7 @@ EOF
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $em = $this->getEntityManager($this->getDoctrine()->getDefaultManagerName());
 

@@ -171,9 +171,6 @@
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.5"
-    },
     "graham-campbell/result-type": {
         "version": "v1.0.4"
     },
@@ -194,9 +191,6 @@
     },
     "knplabs/knp-paginator-bundle": {
         "version": "v2.7.1"
-    },
-    "laminas/laminas-code": {
-        "version": "3.4.1"
     },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
@@ -566,9 +560,6 @@
     "symfony/property-info": {
         "version": "v5.4.7"
     },
-    "symfony/proxy-manager-bridge": {
-        "version": "v3.4.4"
-    },
     "symfony/rate-limiter": {
         "version": "v5.4.9"
     },
@@ -613,9 +604,6 @@
     },
     "symfony/string": {
         "version": "v5.4.3"
-    },
-    "symfony/templating": {
-        "version": "v3.4.1"
     },
     "symfony/translation": {
         "version": "3.3",

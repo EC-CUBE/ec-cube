@@ -131,7 +131,7 @@ class DeleteCartsCommand extends Command
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dateStr = $input->getArgument('date');
         $timestamp = $this->formatter->parse($dateStr);

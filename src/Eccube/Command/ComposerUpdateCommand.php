@@ -42,7 +42,7 @@ class ComposerUpdateCommand extends Command
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execUpdate($input->getOption('dry-run'), $output);
 

@@ -84,7 +84,7 @@ EOF
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locale = $input->getOption('with-locale');
         $notImage = $input->getOption('without-image');

@@ -34,7 +34,7 @@ class HelpTypeExtension extends AbstractTypeExtension
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->setAttribute('help', $options['help']);
     }
@@ -49,7 +49,7 @@ class HelpTypeExtension extends AbstractTypeExtension
      * @return void
      */
     #[\Override]
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['help'] = $form->getConfig()->getAttribute('help');
     }
@@ -62,7 +62,7 @@ class HelpTypeExtension extends AbstractTypeExtension
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'help' => null,

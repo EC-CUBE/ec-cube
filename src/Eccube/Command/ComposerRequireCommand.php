@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Eccube\Exception\PluginException;
 use Eccube\Service\Composer\ComposerApiService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -45,8 +46,11 @@ class ComposerRequireCommand extends Command
             ->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Path of composer repository');
     }
 
+    /**
+     * @throws PluginException
+     */
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packageName = $input->getArgument('package');
         if ($input->getArgument('version')) {

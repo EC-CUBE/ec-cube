@@ -13,6 +13,7 @@
 
 namespace Eccube\Command;
 
+use Eccube\Exception\PluginException;
 use Eccube\Service\Composer\ComposerApiService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,8 +42,11 @@ class ComposerInstallCommand extends Command
         $this->addOption('dry-run');
     }
 
+    /**
+     * @throws PluginException
+     */
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execInstall($input->getOption('dry-run'), $output);
 
