@@ -27,10 +27,11 @@ use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\DeadCode\Rector\Switch_\RemoveDuplicatedCaseInSwitchRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
-use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php81\Rector\MethodCall\RemoveReflectionSetAccessibleCallsRector;
+use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
@@ -45,7 +46,7 @@ use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
-           ->withPhpVersion(PhpVersion::PHP_82)
+           ->withPhpVersion(PhpVersion::PHP_83)
 
            // Rectorが解析するパスを指定
            ->withPaths([
@@ -74,11 +75,12 @@ return RectorConfig::configure()
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
-               // TODO:以下を適用する
+               // 8.3以上で対応可能
+               AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
+               AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameAttributeRector::class, // Attributeの名前を変更する。php-cs-fixerと競合する場合があるため一旦除外
                /* Rector 2系へアップデート */
                // アトリビュート系を適用
-               // AnnotationToAttributeRector::class, //RouteやTemplateなどのアノテーションをアトリビュートへ変更
                AnnotationWithValueToAttributeRector::class, // PHPUnitのバージョンアップ必須
                RequiresAnnotationWithValueToAttributeRector::class, // @requires アノテーションを属性に変換する。↑と同時に進める。
 
@@ -94,7 +96,7 @@ return RectorConfig::configure()
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
-               LevelSetList::UP_TO_PHP_82, // PHPバージョンに合わせる
+               LevelSetList::UP_TO_PHP_83, // PHPバージョンに合わせる
                SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
