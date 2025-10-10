@@ -55,7 +55,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testIndexWithPostAndVerify()
+    public function testIndexWithPostAndVerify(): never
     {
         $this->markTestIncomplete('expected and actual is diff');
         $Customer = $this->createCustomer();

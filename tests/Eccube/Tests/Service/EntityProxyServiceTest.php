@@ -86,7 +86,7 @@ class EntityProxyServiceTest extends EccubeTestCase
         self::assertNotNull($sequence);
     }
 
-    public function testGenerateFromOriginalFile()
+    public function testGenerateFromOriginalFile(): never
     {
         $this->markTestIncomplete();
 

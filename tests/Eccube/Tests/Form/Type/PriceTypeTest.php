@@ -31,7 +31,7 @@ class PriceTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData()
     {
         return [
             ['data' => 0],
@@ -50,10 +50,9 @@ class PriceTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getValidTestData
-     *
      * @param mixed $data
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

@@ -38,10 +38,9 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider dataFormDateTimeProvider
-     *
      * @param string $formName
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
@@ -57,7 +56,7 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider()
     {
         return [
             ['create_datetime_start'],

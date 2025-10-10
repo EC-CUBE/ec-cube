@@ -27,10 +27,6 @@ class TagType extends AbstractType
      */
     protected $eccubeConfig;
 
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

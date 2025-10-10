@@ -372,7 +372,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function testCsvTemplateWithProduct()
+    public function testCsvTemplateWithProduct(): never
     {
         $this->markTestIncomplete('Impossible to call set("eccube.constants") on a frozen ParameterBag. => skip');
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
@@ -595,7 +595,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     //    CSV export template test
     // ======================================================================
 
-    public function testCsvTemplateWithCategory()
+    public function testCsvTemplateWithCategory(): never
     {
         $this->markTestIncomplete('Impossible to call set() on a frozen ParameterBag.');
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
@@ -704,9 +704,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @param $id
      * @param $expectedMessage
-     *
-     * @dataProvider dataProductIdProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProductIdProvider')]
     public function testImportProductWithIdIsWrong($id, $expectedMessage)
     {
         $Products = $this->productRepo->findAll();
@@ -728,9 +727,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @param $status
      * @param $expectedMessage
-     *
-     * @dataProvider dataStatusProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataStatusProvider')]
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
     {
         /** @var Generator $faker */
@@ -747,11 +745,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4177
      *
-     * @dataProvider dataDeliveryFeeProvider
-     *
      * @param mixed $optionDeliveryFee
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataDeliveryFeeProvider')]
     public function testImportDeliveryFee($optionDeliveryFee, $expected)
     {
         /** @var BaseInfo $BaseInfo */
@@ -774,7 +771,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function dataDeliveryFeeProvider()
+    public static function dataDeliveryFeeProvider()
     {
         return [
             [true, '5000'],   // 送料オプション有効時は更新
@@ -787,7 +784,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function dataProductIdProvider()
+    public static function dataProductIdProvider()
     {
         return [
             [99999, '2行目の商品IDが存在しません'],
@@ -800,7 +797,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function dataStatusProvider()
+    public static function dataStatusProvider()
     {
         return [
             [99, '2行目の公開ステータス\(ID\)が存在しません'],
@@ -876,14 +873,13 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @dataProvider dataDescriptionDetailProvider
-     *
      * @see https://github.com/EC-CUBE/ec-cube/pull/4218
      *
      * @param mixed $length
      * @param mixed $selector
      * @param mixed $pattern
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataDescriptionDetailProvider')]
     public function testImportDescriptionetail($length, $selector, $pattern)
     {
         $csv = [];
@@ -895,7 +891,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertMatchesRegularExpression($pattern, $crawler->filter($selector)->text());
     }
 
-    public function dataDescriptionDetailProvider()
+    public static function dataDescriptionDetailProvider()
     {
         return [
             [2999, 'div.alert-success', '/CSVファイルをアップロードしました/u'],
@@ -907,8 +903,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     /**
      * @see https://github.com/EC-CUBE/ec-cube/pull/4281
      *
-     * @dataProvider dataTaxRuleProvider
-     *
      * @param bool $optionTaxRule
      * @param string $preTaxRate
      * @param string|null $postTaxRate
@@ -917,6 +911,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @group decimal
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataTaxRuleProvider')]
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {
         /** @var BaseInfo $BaseInfo */
@@ -945,7 +940,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function dataTaxRuleProvider()
+    public static function dataTaxRuleProvider()
     {
         return [
             [true, '0', '0'],
@@ -1083,11 +1078,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @dataProvider splitCsvDataProvider
-     *
      * @param mixed $lineNo
      * @param mixed $expecedFileNo
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('splitCsvDataProvider')]
     public function testSplitCsv($lineNo, $expecedFileNo)
     {
         [$header, $row] = $this->createCsvAsArray();
@@ -1111,7 +1105,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertEquals($expecedFileNo, count($files), $expecedFileNo.'ファイル生成されているはず');
     }
 
-    public function splitCsvDataProvider()
+    public static function splitCsvDataProvider()
     {
         return [
             [0, 1],

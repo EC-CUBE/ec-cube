@@ -66,13 +66,12 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     /**
      * 送料無料条件(金額)が設定されている場合
      *
-     * @dataProvider deliveryFreeAmountProvider
-     *
      * @param string $amount 受注金額
      * @param string $expectedFee 期待する送料
      *
      * @group decimal
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('deliveryFreeAmountProvider')]
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
         $this->newBaseInfo('1000.00', '0');
@@ -90,7 +89,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         self::assertSame($expectedFee, $DeliveryFee->getTotalPrice());
     }
 
-    public function deliveryFreeAmountProvider()
+    public static function deliveryFreeAmountProvider()
     {
         return [
             ['1', '1000.00'],
@@ -103,13 +102,12 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     /**
      * 送料無料条件(数量)が設定されている場合
      *
-     * @dataProvider deliveryFreeQuantityProvider
-     *
      * @param $quantity int 数量
      * @param $expectedFee int 期待する送料
      *
      * @group decimal
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('deliveryFreeQuantityProvider')]
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
         $this->newBaseInfo('0', '10');
@@ -128,7 +126,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         self::assertSame($expectedFee, $DeliveryFee->getTotalPrice());
     }
 
-    public function deliveryFreeQuantityProvider()
+    public static function deliveryFreeQuantityProvider()
     {
         return [
             ['1', '1000.00'],

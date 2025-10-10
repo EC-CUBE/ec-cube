@@ -89,19 +89,18 @@ class EccubeExtensionTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider extensionProvider
-     *
      * @param mixed $ext
      * @param mixed $iconOnly
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('extensionProvider')]
     public function testGetExtensionIcon($ext, $iconOnly, $expected)
     {
         $actual = $this->Extension->getExtensionIcon($ext, [], $iconOnly);
         $this->assertEquals($expected, $actual);
     }
 
-    public function extensionProvider()
+    public static function extensionProvider()
     {
         return [
             ['jpg', false, '<i class="fa fa-file-image-o" ></i>'],

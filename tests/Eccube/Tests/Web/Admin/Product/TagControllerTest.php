@@ -66,9 +66,8 @@ class TagControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
     public function testAddNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -163,7 +162,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider()
     {
         return [
             [false, false],

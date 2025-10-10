@@ -398,13 +398,12 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider dataFormDateProvider
-     *
      * @param string $formName
      * @param string $time
      * @param int $expected
      * @param int $OrderStatusId
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
         if (!is_null($OrderStatusId)) {
@@ -433,7 +432,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider()
     {
         return [
             ['order_date_start', 'today', 2],
@@ -452,13 +451,12 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider dataFormDateTimeProvider
-     *
      * @param string $formName
      * @param string $time
      * @param int $expected
      * @param int|null $OrderStatusId
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
         if (!is_null($OrderStatusId)) {
@@ -482,7 +480,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider()
     {
         return [
             ['order_datetime_start', '- 1 hour', 2],
@@ -561,9 +559,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /**
      * @param array $searchPaymentNos
      * @param int $expected
-     *
-     * @dataProvider dataPaymentProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataPaymentProvider')]
     public function testPayment(array $searchPaymentNos, int $expected)
     {
         // データの準備
@@ -600,7 +597,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public function dataPaymentProvider()
+    public static function dataPaymentProvider()
     {
         return [
             [[1], 1],
@@ -658,9 +655,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /**
      * @param array $checks
      * @param int $expected
-     *
-     * @dataProvider dataShippingMailProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataShippingMailProvider')]
     public function testShippingMail(array $checks, int $expected)
     {
         $this->Order2->getShippings()[0]->setMailSendDate(new \DateTime());
@@ -681,7 +677,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public function dataShippingMailProvider()
+    public static function dataShippingMailProvider()
     {
         return [
             [[], 2],

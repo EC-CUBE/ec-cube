@@ -19,10 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderItemType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      *

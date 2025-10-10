@@ -160,7 +160,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     /**
      * 購入確認画面→お届け先の設定画面(非会員)へ遷移する
      */
-    public function testShippingEdit()
+    public function testShippingEdit(): never
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
         $this->markTestIncomplete('Shipping edit is not implemented.');
@@ -217,7 +217,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     /**
      * 購入確認画面→お届け先の設定(非会員)→お届け先変更→購入完了
      */
-    public function testShippingEditWithPostToComplete()
+    public function testShippingEditWithPostToComplete(): never
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
         $this->markTestIncomplete('Shipping edit is not implemented.');

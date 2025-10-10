@@ -68,9 +68,8 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -100,9 +99,8 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -292,7 +290,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider()
     {
         return [
             [false, false],

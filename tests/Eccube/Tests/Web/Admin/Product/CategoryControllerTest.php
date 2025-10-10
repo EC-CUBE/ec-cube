@@ -333,7 +333,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         return $TestCategory;
     }
 
-    public function testMoveSortNoAndShow()
+    public function testMoveSortNoAndShow(): never
     {
         // FIXME doctrine/doctrine-bundleに起因してテストが通らないため一時的にスキップ
         // https://github.com/EC-CUBE/ec-cube/issues/4592

@@ -38,7 +38,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->app['orm.em']->flush($BaseInfo);
     }
 
-    public function testRoutingAdminOrderNew()
+    public function testRoutingAdminOrderNew(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -46,7 +46,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingAdminOrderNewPost()
+    public function testRoutingAdminOrderNewPost(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -66,7 +66,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($url));
     }
 
-    public function testRoutingAdminOrderEdit()
+    public function testRoutingAdminOrderEdit(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -77,7 +77,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingAdminOrderEditPost()
+    public function testRoutingAdminOrderEditPost(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 

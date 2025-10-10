@@ -22,10 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginManagementType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      *

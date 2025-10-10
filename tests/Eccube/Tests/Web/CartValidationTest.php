@@ -186,7 +186,7 @@ class CartValidationTest extends AbstractWebTestCase
      * @NOTE:
      * No stock hidden flg -> false
      */
-    public function testProductInCartIsStockOut()
+    public function testProductInCartIsStockOut(): never
     {
         $this->markTestIncomplete('在庫がゼロの場合フォームエラーになってしまう');
 
@@ -817,7 +817,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product type change from shopping step
      */
-    public function atestProductInCartSaleTypeFromShopping()
+    public function atestProductInCartSaleTypeFromShopping(): never
     {
         $this->markTestIncomplete('複数配送が実装されるまでスキップ');
         // GIVE
@@ -1056,7 +1056,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product type is changing before plus one
      */
-    public function testProductInCartChangeSaleTypeBeforePlus()
+    public function testProductInCartChangeSaleTypeBeforePlus(): never
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
@@ -1110,7 +1110,7 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInCartChangeSaleTypeBeforePlusWithMultiShipping()
+    public function testProductInCartChangeSaleTypeBeforePlusWithMultiShipping(): never
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
@@ -1342,7 +1342,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product type is changing before Minus one
      */
-    public function testProductInCartChangeSaleTypeBeforeMinus()
+    public function testProductInCartChangeSaleTypeBeforeMinus(): never
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
@@ -1396,7 +1396,7 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInCartChangeSaleTypeBeforeMinusWithMultiShipping()
+    public function testProductInCartChangeSaleTypeBeforeMinusWithMultiShipping(): never
     {
         $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
@@ -2050,7 +2050,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product is deleting by order again function
      */
-    public function testProductInHistoryOrderDeletedFromOrderAgain()
+    public function testProductInHistoryOrderDeletedFromOrderAgain(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
@@ -2115,7 +2115,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product is private from order again function
      */
-    public function testProductInHistoryOrderIsPrivateFromOrderAgain()
+    public function testProductInHistoryOrderIsPrivateFromOrderAgain(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
@@ -2182,7 +2182,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product out of stock from order again funtion
      */
-    public function testProductInHistoryOrderOutOfStockFromOrderAgain()
+    public function testProductInHistoryOrderOutOfStockFromOrderAgain(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
@@ -2248,7 +2248,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product stock not enough from order again function
      */
-    public function testProductInHistoryOrderStockNotEnoughFromOrderAgain()
+    public function testProductInHistoryOrderStockNotEnoughFromOrderAgain(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
@@ -2314,7 +2314,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product stock is limit from order again function
      */
-    public function testProductInHistoryOrderStockLimitFromOrderAgain()
+    public function testProductInHistoryOrderStockLimitFromOrderAgain(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
@@ -2382,7 +2382,7 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product type is changed from order again function
      */
-    public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgain()
+    public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgain(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE
@@ -2457,7 +2457,7 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgainWithMultiShipping()
+    public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgainWithMultiShipping(): never
     {
         $this->markTestIncomplete('マイページ対応するまでスキップ');
         // GIVE

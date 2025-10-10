@@ -488,9 +488,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $taxRate
      * @param $expected
-     *
-     * @dataProvider dataNewProductProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataNewProductProvider')]
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
         // Give
@@ -522,7 +521,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * Test search + export product no stock
      */
-    public function testExportWithFilterNoStock()
+    public function testExportWithFilterNoStock(): never
     {
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
@@ -566,7 +565,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * Test search + export product with filter private.
      */
-    public function testExportWithFilterPrivate()
+    public function testExportWithFilterPrivate(): never
     {
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
@@ -607,7 +606,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * Test search + export product with filter public.
      */
-    public function testExportWithFilterPublic()
+    public function testExportWithFilterPublic(): never
     {
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
@@ -648,7 +647,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * Test search + export product with all
      */
-    public function testExportWithAll()
+    public function testExportWithAll(): never
     {
         $this->markTestIncomplete('FIXME expectOutputRegex');
         $this->expectOutputRegex('/[Product with status]{1}[Product with status 02]{2}/');
@@ -743,7 +742,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertSame($expectedIds, $actualIds);
     }
 
-    public function dataNewProductProvider()
+    public static function dataNewProductProvider()
     {
         return [
             [null, null],
@@ -761,9 +760,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $before 更新前の税率
      * @param string|null $after POST値
      * @param string|null $expected 期待値
-     *
-     * @dataProvider dataEditProductProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataEditProductProvider')]
     public function testEditWithPostTaxRate($before, $after, $expected)
     {
         // Give
@@ -823,9 +821,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param bool $isNew 商品を新規作成の場合 true
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
-     *
-     * @dataProvider dataEditRoundingTypeProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataEditRoundingTypeProvider')]
     public function testEditWithCurrnetRoundingType($tax_rate, $currentRoundingTypeId, $expected, $isNew)
     {
         // Give
@@ -881,7 +878,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * Product export test
      */
-    public function testProductExport()
+    public function testProductExport(): never
     {
         $this->markTestIncomplete('FIXME expectOutputRegex');
         $productName = 'test01';
@@ -1077,7 +1074,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function dataEditProductProvider()
+    public static function dataEditProductProvider()
     {
         return [
             ['0', '0', '0'],
@@ -1098,7 +1095,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function dataEditRoundingTypeProvider()
+    public static function dataEditRoundingTypeProvider()
     {
         return [
             [null, null, RoundingType::ROUND, false],
@@ -1233,11 +1230,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
      *
-     * @dataProvider purifyTarget
-     *
      * @param mixed $formName
      * @param mixed $methodName
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('purifyTarget')]
     public function testPurifyXssInput($formName, $methodName): void
     {
         $Product = $this->createProduct(null, 0);
@@ -1277,7 +1273,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $target->outerHtml());
     }
 
-    public function purifyTarget(): array
+    public static function purifyTarget(): array
     {
         return [
             ['description_list', 'getDescriptionList'],

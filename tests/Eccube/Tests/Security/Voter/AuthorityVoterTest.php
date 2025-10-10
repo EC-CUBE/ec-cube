@@ -43,11 +43,10 @@ class AuthorityVoterTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider voteProvider
-     *
      * @param mixed $accessUrl
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('voteProvider')]
     public function testVote(array $deniedUrls, $accessUrl, $expected)
     {
         $request = $this->createMock(Request::class);
@@ -74,7 +73,7 @@ class AuthorityVoterTest extends EccubeTestCase
         self::assertEquals($expected, $voter->vote($token, null, []));
     }
 
-    public function voteProvider()
+    public static function voteProvider()
     {
         return [
             [[], '/admin/content', VoterInterface::ACCESS_GRANTED],

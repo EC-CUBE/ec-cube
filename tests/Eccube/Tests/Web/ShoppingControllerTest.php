@@ -320,7 +320,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * 購入確認画面→支払い方法失敗する、レイアウトヘッダーとフッター確認
      */
-    public function testOrtderConfirmLayout()
+    public function testOrtderConfirmLayout(): never
     {
         $this->markTestIncomplete('ShoppingController is not implemented.');
         $faker = $this->getFaker();
@@ -473,7 +473,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1305
      */
-    public function testShippingShippingPost()
+    public function testShippingShippingPost(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -537,7 +537,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/1280
      */
-    public function testShippingEditTitle()
+    public function testShippingEditTitle(): never
     {
         // FIXME ShoppingController の登録チェックが実装されたら有効にする
         $this->markTestIncomplete('ShoppingController is not implemented.');

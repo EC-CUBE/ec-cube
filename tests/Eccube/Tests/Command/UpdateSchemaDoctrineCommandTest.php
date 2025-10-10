@@ -136,7 +136,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @group update-schema-doctrine-install
      */
-    public function testInstallPluginWithNoProxy()
+    public function testInstallPluginWithNoProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
@@ -178,7 +178,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @group update-schema-doctrine-install
      */
-    public function testInstallPluginWithProxy()
+    public function testInstallPluginWithProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
 
@@ -217,7 +217,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @group update-schema-doctrine-install
      */
-    public function testEnablePluginWithNoProxy()
+    public function testEnablePluginWithNoProxy(): never
     {
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
@@ -260,7 +260,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @group update-schema-doctrine-install
      */
-    public function testEnablePluginWithProxy()
+    public function testEnablePluginWithProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
 
@@ -300,7 +300,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @group update-schema-doctrine-install
      */
-    public function testDisablePluginWithNoProxy()
+    public function testDisablePluginWithNoProxy(): never
     {
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
@@ -346,7 +346,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @group update-schema-doctrine-install
      */
-    public function testDisablePluginWithProxy()
+    public function testDisablePluginWithProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
 
@@ -401,7 +401,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             static::getContainer()->get('doctrine')
         );
         $application = new Application($kernel);
-        $application->add($command);
+        $application->addCommand($command);
 
         return new CommandTester($application->find($name));
     }

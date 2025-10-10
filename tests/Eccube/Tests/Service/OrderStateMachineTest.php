@@ -34,12 +34,11 @@ class OrderStateMachineTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider canProvider
-     *
      * @param $fromId
      * @param $toId
      * @param $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('canProvider')]
     public function testCan($fromId, $toId, $expected)
     {
         $fromStatus = $this->statusOf($fromId);
@@ -51,7 +50,7 @@ class OrderStateMachineTest extends EccubeTestCase
         self::assertEquals($expected, $this->stateMachine->can($Order, $toStatus));
     }
 
-    public function canProvider()
+    public static function canProvider()
     {
         return [
             [OrderStatus::NEW,          OrderStatus::NEW,           false],

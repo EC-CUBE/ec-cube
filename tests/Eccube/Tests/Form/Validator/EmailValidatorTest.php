@@ -29,12 +29,11 @@ class EmailValidatorTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider EmailProvider
-     *
      * @param mixed $email
      * @param mixed $rfc
      * @param mixed $norfc
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('EmailProvider')]
     public function testValidateEmailStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_STRICT);
@@ -45,12 +44,11 @@ class EmailValidatorTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider EmailProvider
-     *
      * @param mixed $email
      * @param mixed $rfc
      * @param mixed $norfc
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('EmailProvider')]
     public function testValidateEmailNoStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_LOOSE);
@@ -63,7 +61,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
     /**
      * @return array[email, rfc result, no rfc result]
      */
-    public function EmailProvider()
+    public static function EmailProvider()
     {
         return [
             ['test@example.com', true, true],

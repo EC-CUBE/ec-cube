@@ -18,7 +18,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentMethodTest extends EccubeTestCase
 {
-    public function testConstructorInjection()
+    public function testConstructorInjection(): never
     {
         $this->markTestIncomplete();
 

@@ -25,7 +25,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
 {
     protected $clientIp = '192.168.56.1';
 
-    public function ipAddressParams()
+    public static function ipAddressParams()
     {
         // 第1要素：許可IPリスト
         // 第2要素：拒否IPリスト
@@ -56,12 +56,11 @@ class IpAddrListenerTest extends AbstractWebTestCase
     }
 
     /**
-     * @dataProvider ipAddressParams
-     *
      * @param mixed $allowHost
      * @param mixed $denyHost
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);
@@ -100,12 +99,11 @@ class IpAddrListenerTest extends AbstractWebTestCase
     }
 
     /**
-     * @dataProvider ipAddressParams
-     *
      * @param mixed $allowHost
      * @param mixed $denyHost
      * @param mixed $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
     public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);

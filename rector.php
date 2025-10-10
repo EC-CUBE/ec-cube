@@ -19,6 +19,7 @@ use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\DeadCode\Rector\Switch_\RemoveDuplicatedCaseInSwitchRector;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
@@ -90,20 +91,21 @@ return RectorConfig::configure()
            ->withRules([
                AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する,
                CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
-               CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する
+               CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
+               StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
            ])
            // よく使われるルールセットを有効化
            ->withSets([
                SetList::DEAD_CODE,
                LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
-               SymfonySetList::SYMFONY_64, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
+               SymfonySetList::SYMFONY_74, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                // SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
                // DoctrineSetList::DOCTRINE_CODE_QUALITY,
                // DoctrineSetList::DOCTRINE_DBAL_30, // Doctrine DBALのバージョンに合わせる
                // DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES, // Doctrine Annotations を Attributes に変換
                // PHPUnitSetList::PHPUNIT_CODE_QUALITY,
-               PHPUnitSetList::PHPUNIT_90, // PHPUnitのバージョンに合わせる
+               PHPUnitSetList::PHPUNIT_110, // PHPUnitのバージョンに合わせる
            ])
            // オプション: SymfonyのコンテナXMLパス (EC-CUBEの構成に合わせて調整が必要な場合があります)
            // $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/Eccube_KernelDevDebugContainer.xml');

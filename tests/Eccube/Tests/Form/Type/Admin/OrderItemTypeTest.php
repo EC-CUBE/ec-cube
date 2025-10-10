@@ -104,7 +104,7 @@ class OrderItemTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityNotNumeric()
+    public function testInvalidQuantityNotNumeric(): never
     {
         $this->markTestIncomplete('testInvalidQuantity_NotNumeric is not implemented.');
         $this->formData['quantity'] = 'abcde';
@@ -113,7 +113,7 @@ class OrderItemTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityHasMinus()
+    public function testInvalidQuantityHasMinus(): never
     {
         $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
         $this->formData['quantity'] = '-123456';

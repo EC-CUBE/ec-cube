@@ -204,7 +204,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(file_exists($this->getUserDataDir().'/bbb.html'));
     }
 
-    public function dataProviderUploadIgnoreFiles(): array
+    public static function dataProviderUploadIgnoreFiles(): array
     {
         return [
             ['test.php', 'x-php', 'アップロードできないファイル拡張子です', false],
@@ -243,13 +243,12 @@ class FileControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @dataProvider dataProviderUploadIgnoreFiles
-     *
      * @param mixed $fileName
      * @param mixed $mimeType
      * @param mixed $errorMessage
      * @param mixed $exists
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProviderUploadIgnoreFiles')]
     public function testUploadIgnoreFiles($fileName, $mimeType, $errorMessage, $exists)
     {
         $file = $this->getUserDataDir().'/../'.$fileName;

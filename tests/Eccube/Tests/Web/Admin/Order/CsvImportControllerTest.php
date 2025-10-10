@@ -104,11 +104,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @dataProvider loadCsvInvalidFormatProvider
-     *
      * @param mixed $csv
      * @param mixed $errorMessage
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('loadCsvInvalidFormatProvider')]
     public function testLoadCsvInvalidFormat($csv, $errorMessage)
     {
         $Shipping = $this->createOrder($this->createCustomer())->getShippings()[0];
@@ -124,7 +123,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertEquals($errors[0], $errorMessage);
     }
 
-    public function loadCsvInvalidFormatProvider()
+    public static function loadCsvInvalidFormatProvider()
     {
         return [
             [
