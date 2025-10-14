@@ -34,14 +34,14 @@ function trans($id, array $parameters = [], ?string $domain = null, ?string $loc
  * @param string|int $id
  * @param mixed $number - 不要引数
  * @param array<mixed> $parameters
- * @param null $domain
- * @param null $locale
+ * @param string|null $domain
+ * @param string|null $locale
  *
  * @return string
  *
  * @deprecated  transを使用してください。
  */
-function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+function transChoice($id, $number, array $parameters = [], ?string $domain = null, ?string $locale = null)
 {
     return trans($id, $parameters, $domain, $locale);
 }

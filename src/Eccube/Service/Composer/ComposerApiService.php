@@ -97,7 +97,7 @@ class ComposerApiService implements ComposerServiceInterface
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @param OutputInterface|null $output
-     * @param string|null $from
+     * @param string|null $from Path of composer repository
      *
      * @return string
      *
@@ -106,7 +106,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[\Override]
-    public function execRequire($packageName, $output = null, $from = null)
+    public function execRequire(string $packageName, ?OutputInterface $output = null, ?string $from = null)
     {
         $packageName = explode(' ', trim($packageName));
 

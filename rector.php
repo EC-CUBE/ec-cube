@@ -74,7 +74,9 @@ return RectorConfig::configure()
                RemoveUnusedPrivatePropertyRector::class, // 未使用のプライベートプロパティ削除は慎重に行う必要があるため除外
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
-               RemoveNullTagValueNodeRector::class, // null の @var タグを削除する
+               RemoveNullTagValueNodeRector::class => [
+                   __DIR__.'/src/Eccube/Entity/Cart.php:517', // getOrderStatusメソッドのみスキップ
+               ],
                // 8.3以上で対応可能
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効

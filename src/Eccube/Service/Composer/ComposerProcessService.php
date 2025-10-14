@@ -18,6 +18,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\BaseInfoRepository;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ComposerProcessService
@@ -61,7 +62,7 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     #[\Override]
-    public function execRequire($packageName, $output = null)
+    public function execRequire(string $packageName, ?OutputInterface $output = null, ?string $from = null)
     {
         return $this->runCommand([
             'eccube:composer:require',
@@ -80,7 +81,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * @param string[] $commands
-     * @param string[]|null $output
+     * @param OutputInterface|null $output
      * @param bool $init
      *
      * @return string
@@ -97,10 +98,10 @@ class ComposerProcessService implements ComposerServiceInterface
         try {
             // Execute command
             $returnValue = -1;
-            $output = [];
-            exec($command, $output, $returnValue);
+            $commandOutput = [];
+            exec($command, $commandOutput, $returnValue);
 
-            $outputString = implode(PHP_EOL, $output);
+            $outputString = implode(PHP_EOL, $commandOutput);
             if ($returnValue) {
                 throw new PluginException($outputString);
             }
@@ -163,8 +164,8 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * @param string $packageName
      * @param string|null $version
-     * @param string $callback
-     * @param null $typeFilter
+     * @param callable $callback
+     * @param string|null $typeFilter
      * @param int $level
      *
      * @return void

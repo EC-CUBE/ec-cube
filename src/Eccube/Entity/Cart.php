@@ -513,7 +513,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return null
          */
-        public function getOrderStatus()
+        public function getOrderStatus(): null
         {
             return null;
         }

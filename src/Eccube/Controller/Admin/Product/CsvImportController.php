@@ -1393,12 +1393,14 @@ class CsvImportController extends AbstractCsvImportController
      * @param Product $Product
      * @param CsvImportService<int,mixed> $data
      * @param array<string, mixed> $headerByKey
-     * @param null $ClassCategory1
-     * @param null $ClassCategory2
+     * @param ClassCategory|null $ClassCategory1
+     * @param ClassCategory|null $ClassCategory2
      *
      * @return ProductClass
+     *
+     * @throws \Exception
      */
-    protected function createProductClass($row, Product $Product, $data, $headerByKey, $ClassCategory1 = null, $ClassCategory2 = null)
+    protected function createProductClass(array $row, Product $Product, CsvImportService $data, array $headerByKey, ?ClassCategory $ClassCategory1 = null, ?ClassCategory $ClassCategory2 = null): ProductClass
     {
         // 規格分類1、規格分類2がnullとなる商品を作成
         $ProductClass = new ProductClass();

@@ -535,8 +535,6 @@ class OrderHelper
     }
 
     /**
-     * @param mixed $attribute
-     * @param null $subject
      * @param string $attribute
      * @param string|null $subject
      *
