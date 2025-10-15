@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
@@ -511,9 +512,11 @@ if (!class_exists(Cart::class)) {
         /**
          * 注文ではないので、nullを返します。
          *
-         * @return null
+         * Rectorのルール対策のためOrderStatus|nullとしています。
+         *
+         * @return OrderStatus|null
          */
-        public function getOrderStatus(): null
+        public function getOrderStatus(): ?OrderStatus
         {
             return null;
         }
