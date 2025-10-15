@@ -51,7 +51,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('EmailProvider')]
     public function testValidateEmailNoStrict($email, $rfc, $norfc)
     {
-        $constraint = new Email(null, null, Email::VALIDATION_MODE_LOOSE);
+        $constraint = new Email(null, null, Email::VALIDATION_MODE_HTML5);
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
