@@ -14,10 +14,8 @@
 namespace Eccube\Twig\Extension;
 
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\CoreExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityError;
 use Twig\TwigFunction;
@@ -43,6 +41,9 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * app_env = devの場合、エラーを表示する
      * app_env = prodの場合、エラーを表示しない
      *
+     * CoreExtension::include() を使用してSandbox SecurityErrorを捕捉し、
+     * 環境に応じて適切に処理します。
+     *
      * @param Environment $env
      * @param array<mixed> $context
      * @param array<mixed>|string $template
@@ -54,37 +55,11 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * @return string|null
      *
      * @throws SecurityError
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false): ?string
     {
         try {
-            $alreadySandboxed = false;
-            $sandbox = $env->getExtension(SandboxExtension::class);
-            if ($sandboxed && !$alreadySandboxed = $sandbox->isSandboxed()) {
-                $sandbox->enableSandbox();
-            }
-
-            try {
-                $loaded = null;
-                try {
-                    $loaded = $env->resolveTemplate($template);
-                } catch (LoaderError $e) {
-                    if (!$ignoreMissing) {
-                        throw $e;
-                    }
-
-                    return null;
-                }
-
-                return $loaded->render($withContext ? array_merge($context, $variables) : $variables);
-            } finally {
-                if ($sandboxed && !$alreadySandboxed) {
-                    $sandbox->disableSandbox();
-                }
-            }
+            return CoreExtension::include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
         } catch (SecurityError $e) {
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
