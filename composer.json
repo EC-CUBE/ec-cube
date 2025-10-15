@@ -130,10 +130,7 @@
             "Plugin\\": "app/Plugin"
         },
         "exclude-from-classmap": [
-            "**/Test/**",
-            "**/Tests/**",
-            "**/test/**",
-            "**/tests/**"
+            "tests/"
         ]
     },
     "autoload-dev": {
