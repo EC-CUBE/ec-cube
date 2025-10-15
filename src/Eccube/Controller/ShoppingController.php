@@ -479,11 +479,22 @@ class ShoppingController extends AbstractShoppingController
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
+                // Symfony 7対応: トランザクションを明示的に開始
+                // PurchaseFlow::prepare()およびcommit()内でentityManager->lock()を使用するため、トランザクションが必要
+                if (!$this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->beginTransaction();
+                }
+
                 /*
                  * 決済実行(前処理)
                  */
                 log_info('[注文処理] PaymentMethod::applyを実行します.');
                 if ($response = $this->executeApply($paymentMethod)) {
+                    // 成功時はトランザクションをコミット
+                    if ($this->entityManager->getConnection()->isTransactionActive()) {
+                        $this->entityManager->commit();
+                    }
+
                     return $response;
                 }
 
@@ -493,17 +504,31 @@ class ShoppingController extends AbstractShoppingController
                  * PaymentMethod::checkoutでは決済処理が行われ, 正常に処理出来た場合はPurchaseFlow::commitがコールされます.
                  */
                 log_info('[注文処理] PaymentMethod::checkoutを実行します.');
+
                 if ($response = $this->executeCheckout($paymentMethod)) {
+                    // 成功時はトランザクションをコミット
+                    if ($this->entityManager->getConnection()->isTransactionActive()) {
+                        $this->entityManager->commit();
+                    }
+
                     return $response;
                 }
 
                 $this->entityManager->flush();
 
+                // トランザクションをコミット
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->commit();
+                }
+
                 log_info('[注文処理] 注文処理が完了しました.', [$Order->getId()]);
             } catch (ShoppingException $e) {
                 log_error('[注文処理] 購入エラーが発生しました.', [$e->getMessage()]);
 
-                $this->entityManager->rollback();
+                // トランザクションをロールバック
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->rollback();
+                }
 
                 $this->addError($e->getMessage());
 
@@ -511,7 +536,10 @@ class ShoppingController extends AbstractShoppingController
             } catch (\Exception $e) {
                 log_error('[注文処理] 予期しないエラーが発生しました.', [$e->getMessage()]);
 
-                // $this->entityManager->rollback(); FIXME ユニットテストで There is no active transaction エラーになってしまう
+                // トランザクションをロールバック
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->rollback();
+                }
 
                 $this->addError('front.shopping.system_error');
 
