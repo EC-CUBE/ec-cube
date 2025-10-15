@@ -81,7 +81,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 
 * Apache 2.4.x (mod_rewrite / mod_ssl 必須)
 * PHP 8.1.x / 8.2.x / 8.3.x
-* PostgreSQL 12.x or higher / MySQL 8.0.x
+* PostgreSQL 12.x or higher / MySQL 8.4.x
 * ブラウザー：Google Chrome
 
 詳しくは開発ドキュメントの [システム要件](https://doc4.ec-cube.net/quickstart/requirement) をご確認ください。
