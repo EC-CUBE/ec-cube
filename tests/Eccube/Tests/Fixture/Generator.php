@@ -237,7 +237,9 @@ class Generator
             ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
-            ->setCreator($Creator);
+            ->setCreator($Creator)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->memberRepository->save($Member);
 
         return $Member;
@@ -640,7 +642,9 @@ class Generator
             ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
-            ->setShippingDeliveryName($Delivery->getName());
+            ->setShippingDeliveryName($Delivery->getName())
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         $Order->addShipping($Shipping);
 
@@ -780,7 +784,9 @@ class Generator
             ->setRuleMin($rule_min)
             ->setRuleMax($rule_max)
             ->setCreator($Member)
-            ->setVisible(true);
+            ->setVisible(true)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->entityManager->persist($Payment);
         $this->entityManager->flush();
 
@@ -836,7 +842,9 @@ class Generator
                 ->setDelivery($Delivery)
                 ->setDeliveryTime($faker->word())
                 ->setSortNo($i + 1)
-                ->setVisible(true);
+                ->setVisible(true)
+                ->setCreateDate(new \DateTime())
+                ->setUpdateDate(new \DateTime());
             $this->entityManager->persist($DeliveryTime);
             $this->entityManager->flush();
             $Delivery->addDeliveryTime($DeliveryTime);

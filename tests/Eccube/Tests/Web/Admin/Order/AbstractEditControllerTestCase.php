@@ -44,7 +44,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     public function createFormData(Customer $Customer, ?Product $Product = null, ?int $charge = null)
     {
         $faker = $this->getFaker();
-        $email = $faker->safeEmail;
+        $email = $faker->safeEmail();
 
         $shipping = $this->createShippingFormData();
         $orderItems = $this->createOrderItemFormData($Product, $charge);
@@ -68,7 +68,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'phone_number' => $faker->phoneNumber,
+            'phone_number' => $faker->phoneNumber(),
             'email' => $email,
             'message' => $faker->realText,
             'Payment' => 1,     // XXX ハードコーディング
@@ -93,6 +93,11 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
 
+        // 最初のDeliveryエンティティのIDを取得
+        $deliveryRepository = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class);
+        $delivery = $deliveryRepository->findOneBy(['visible' => true]);
+        $deliveryId = $delivery ? $delivery->getId() : 1;
+
         $shipping = [
             'name' => [
                 'name01' => $faker->lastName,
@@ -108,8 +113,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'phone_number' => $faker->phoneNumber,
-            'Delivery' => 1,
+            'phone_number' => $faker->phoneNumber(),
+            'Delivery' => $deliveryId,
         ];
 
         if ($Product) {
@@ -138,6 +143,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $Product->getName(),
                 'order_item_type' => OrderItemType::PRODUCT,
+                'tax_rate' => '10', // Add default tax rate
             ];
         }
         if (!is_null($charge)) {
@@ -147,6 +153,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'product_name' => '手数料',
                 'order_item_type' => OrderItemType::CHARGE,
                 'tax_type' => TaxType::TAXATION,
+                'tax_rate' => '10', // Add default tax rate
             ];
         }
 
@@ -236,7 +243,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr02' => $Shipping->getAddr02(),
             ],
             'phone_number' => $Shipping->getPhoneNumber(),
-            'Delivery' => 1,
+            'Delivery' => $Shipping->getDelivery()->getId(),
         ];
 
         if ($Shipping->getOrderItems()) {
@@ -266,6 +273,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'product_name' => is_object($Product) ? $Product->getName() : '送料',
                 // XXX v3.1 より 送料等, Product の無い明細が追加される
                 'order_item_type' => $OrderItem->getOrderItemTypeId(),
+                'tax_rate' => $OrderItem->getTaxRate() ?? '10', // Add tax rate
             ];
         }
 

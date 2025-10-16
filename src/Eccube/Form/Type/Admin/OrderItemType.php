@@ -133,9 +133,7 @@ class OrderItemType extends AbstractType
             ->add('product_name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                 ],
             ])
             ->add('price', PriceType::class, [
@@ -144,30 +142,28 @@ class OrderItemType extends AbstractType
             ->add('quantity', IntegerType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_int_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_int_len']),
                 ],
             ])
             ->add('tax_rate', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0),
+                    new Assert\Regex(
+                        pattern: "/^\d+(\.\d+)?$/u",
+                        message: 'form_error.float_only'
+                    ),
                 ],
             ])
             ->add('point_rate', HiddenType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Range(['min' => 0]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0),
+                    new Assert\Regex(
+                        pattern: "/^\d+(\.\d+)?$/u",
+                        message: 'form_error.float_only'
+                    ),
                 ],
             ])
         ;

@@ -19,7 +19,8 @@ if (!class_exists(Block::class)) {
     /**
      * Block
      */
-    #[ORM\Table(name: 'dtb_block', uniqueConstraints: [new ORM\UniqueConstraint(name: 'device_type_id', columns: ['device_type_id', 'file_name'])])]
+    #[ORM\Table(name: 'dtb_block')]
+    #[ORM\UniqueConstraint(name: 'device_type_id', columns: ['device_type_id', 'file_name'])]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]

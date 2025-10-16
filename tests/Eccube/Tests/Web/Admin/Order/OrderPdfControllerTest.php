@@ -322,7 +322,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ->setNote1($faker->text(50))
             ->setNote2($faker->text(50))
             ->setNote3($faker->text(50))
-            ->setVisible(Constant::DISABLED);
+            ->setVisible(Constant::DISABLED)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         $this->entityManager->persist($OrderPdf);
         $this->entityManager->flush($OrderPdf);

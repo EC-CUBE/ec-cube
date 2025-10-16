@@ -52,7 +52,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
      * @param mixed $user_agent
      * @param mixed $shouldSendSameSiteNone
      */
-    public function testSecureSession($fixture, $user_agent, $shouldSendSameSiteNone)
+    public function testSecureSession($fixture, $user_agent, $shouldSendSameSiteNone): void
     {
         $context = [
             'http' => [
@@ -106,7 +106,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
     /**
      * @see https://github.com/skorp/detect-incompatible-samesite-useragents/blob/master/tests/UserAgents.php
      */
-    public function provideSession()
+    public static function provideSession()
     {
         $userAgents = [
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130' => true,

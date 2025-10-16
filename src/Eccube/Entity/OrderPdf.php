@@ -23,6 +23,7 @@ if (!class_exists(OrderPdf::class)) {
     #[ORM\Table(name: 'dtb_order_pdf')]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
     #[ORM\Entity(repositoryClass: OrderPdfRepository::class)]
     class OrderPdf extends AbstractEntity
     {
@@ -322,6 +323,27 @@ if (!class_exists(OrderPdf::class)) {
         public function isVisible()
         {
             return $this->visible;
+        }
+
+        /**
+         * @ORM\PrePersist
+         */
+        public function setCreateDateAuto()
+        {
+            if ($this->create_date === null) {
+                $this->create_date = new \DateTime();
+            }
+            if ($this->update_date === null) {
+                $this->update_date = new \DateTime();
+            }
+        }
+
+        /**
+         * @ORM\PreUpdate
+         */
+        public function setUpdateDateAuto()
+        {
+            $this->update_date = new \DateTime();
         }
     }
 }

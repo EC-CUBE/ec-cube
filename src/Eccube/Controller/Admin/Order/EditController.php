@@ -300,6 +300,23 @@ class EditController extends AbstractController
                             }
                         }
 
+                        // 新規登録時はcreate_dateを設定
+                        $now = new \DateTime();
+                        if (null === $TargetOrder->getId()) {
+                            $TargetOrder->setCreateDate($now);
+                            $TargetOrder->setUpdateDate($now);
+
+                            // Shipping にも create_date を設定
+                            foreach ($TargetOrder->getShippings() as $Shipping) {
+                                if (null === $Shipping->getId()) {
+                                    $Shipping->setCreateDate($now);
+                                    $Shipping->setUpdateDate($now);
+                                }
+                            }
+                        } else {
+                            $TargetOrder->setUpdateDate($now);
+                        }
+
                         $this->entityManager->persist($TargetOrder);
                         $this->entityManager->flush();
 

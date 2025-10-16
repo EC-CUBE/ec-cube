@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventArgsrTest extends EccubeTestCase
+class EventArgsTest extends EccubeTestCase
 {
     public function testRequest()
     {

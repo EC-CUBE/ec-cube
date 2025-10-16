@@ -116,9 +116,7 @@ class OrderType extends AbstractType
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
@@ -141,9 +139,7 @@ class OrderType extends AbstractType
                 'addr01_options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => ['class' => 'p-locality p-street-address'],
                 ],
@@ -151,9 +147,7 @@ class OrderType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => ['class' => 'p-extended-address'],
                 ],
@@ -174,9 +168,7 @@ class OrderType extends AbstractType
             ->add('message', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('discount', PriceType::class, [
@@ -191,22 +183,20 @@ class OrderType extends AbstractType
             ->add('use_point', NumberType::class, [
                 'required' => true,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
-                    new Assert\Range([
-                        'min' => 0,
-                        'max' => $this->eccubeConfig['eccube_price_max'],
-                    ]),
+                    new Assert\Regex(
+                        pattern: "/^\d+$/u",
+                        message: 'form_error.numeric_only'
+                    ),
+                    new Assert\Range(
+                        min: 0,
+                        max: $this->eccubeConfig['eccube_price_max']
+                    ),
                 ],
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('Payment', EntityType::class, [

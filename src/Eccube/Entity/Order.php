@@ -28,15 +28,13 @@ if (!class_exists(Order::class)) {
     /**
      * Order
      */
-    #[ORM\Table(name: 'dtb_order', indexes: [
-        new ORM\Index(columns: ['email'], name: 'dtb_order_email_idx'),
-        new ORM\Index(columns: ['order_date'], name: 'dtb_order_order_date_idx'),
-        new ORM\Index(columns: ['payment_date'], name: 'dtb_order_payment_date_idx'),
-        new ORM\Index(columns: ['update_date'], name: 'dtb_order_update_date_idx'),
-        new ORM\Index(columns: ['order_no'], name: 'dtb_order_order_no_idx'),
-    ], uniqueConstraints: [
-        new ORM\UniqueConstraint(name: 'dtb_order_pre_order_id_idx', columns: ['pre_order_id']),
-    ])]
+    #[ORM\Table(name: 'dtb_order')]
+    #[ORM\Index(columns: ['email'], name: 'dtb_order_email_idx')]
+    #[ORM\Index(columns: ['order_date'], name: 'dtb_order_order_date_idx')]
+    #[ORM\Index(columns: ['payment_date'], name: 'dtb_order_payment_date_idx')]
+    #[ORM\Index(columns: ['update_date'], name: 'dtb_order_update_date_idx')]
+    #[ORM\Index(columns: ['order_no'], name: 'dtb_order_order_no_idx')]
+    #[ORM\UniqueConstraint(name: 'dtb_order_pre_order_id_idx', columns: ['pre_order_id'])]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]

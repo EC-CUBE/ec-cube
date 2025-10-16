@@ -676,7 +676,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
             ->setRoundingType($RoundingType)
             ->setProduct($Product)
             ->setProductClass($ProductClass)
-            ->setApplyDate(new \DateTime('yesterday'));
+            ->setApplyDate(new \DateTime('yesterday'))
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->entityManager->persist($TaxRule);
 
         $this->entityManager->flush();

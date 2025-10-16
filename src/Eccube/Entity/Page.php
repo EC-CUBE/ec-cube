@@ -20,7 +20,8 @@ if (!class_exists(Page::class)) {
     /**
      * Page
      */
-    #[ORM\Table(name: 'dtb_page', indexes: [new ORM\Index(columns: ['url'], name: 'dtb_page_url_idx')])]
+    #[ORM\Table(name: 'dtb_page')]
+    #[ORM\Index(columns: ['url'], name: 'dtb_page_url_idx')]
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
