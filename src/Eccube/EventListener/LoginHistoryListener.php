@@ -102,7 +102,9 @@ class LoginHistoryListener implements EventSubscriberInterface
                 ->setLoginUser($user)
                 ->setUserName($user->getUsername())
                 ->setStatus($Status)
-                ->setClientIp($request->getClientIp());
+                ->setClientIp($request->getClientIp())
+                ->setCreateDate(new \DateTime())
+                ->setUpdateDate(new \DateTime());
 
             $this->entityManager->persist($LoginHistory);
             $this->entityManager->flush();
@@ -141,7 +143,9 @@ class LoginHistoryListener implements EventSubscriberInterface
             ->setLoginUser($Member)
             ->setUserName($userName)
             ->setStatus($Status)
-            ->setClientIp($request->getClientIp());
+            ->setClientIp($request->getClientIp())
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         $this->entityManager->persist($LoginHistory);
         $this->entityManager->flush();

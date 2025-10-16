@@ -20,7 +20,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentChargePreprocessorTest extends EccubeTestCase
+class PaymentChargeProcessorTest extends EccubeTestCase
 {
     public function testProcess()
     {

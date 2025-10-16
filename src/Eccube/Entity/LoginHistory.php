@@ -224,5 +224,26 @@ if (!class_exists(LoginHistory::class)) {
         {
             return $this->LoginUser;
         }
+
+        /**
+         * @ORM\PrePersist
+         */
+        public function setCreateDateAuto()
+        {
+            if ($this->create_date === null) {
+                $this->create_date = new \DateTime();
+            }
+            if ($this->update_date === null) {
+                $this->update_date = new \DateTime();
+            }
+        }
+
+        /**
+         * @ORM\PreUpdate
+         */
+        public function setUpdateDateAuto()
+        {
+            $this->update_date = new \DateTime();
+        }
     }
 }

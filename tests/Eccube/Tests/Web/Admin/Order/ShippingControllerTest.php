@@ -152,6 +152,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
                 'mode' => 'register',
             ]
         );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
 
         // 出荷先が２個で登録されていることを確認
@@ -264,9 +265,8 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      * 発送管理で追加した商品明細の税額が計算されている
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4193
-     *
-     * @group decimal
      */
+    #[\PHPUnit\Framework\Attributes\Group('decimal')]
     public function testCalculateTax()
     {
         /** @var Product $Product */

@@ -115,9 +115,7 @@ class ShippingType extends AbstractType
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
@@ -134,9 +132,7 @@ class ShippingType extends AbstractType
                 'addr01_options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => [
                         'class' => 'p-locality p-street-address',
@@ -147,9 +143,7 @@ class ShippingType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => [
                         'class' => 'p-extended-address',
@@ -196,21 +190,17 @@ class ShippingType extends AbstractType
             ->add('tracking_number', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z-]+$/u',
-                        'message' => 'form_error.graph_and_hyphen_only',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
+                    new Assert\Regex(
+                        pattern: '/^[0-9a-zA-Z-]+$/u',
+                        message: 'form_error.graph_and_hyphen_only'
+                    ),
                 ],
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('OrderItems', CollectionType::class, [

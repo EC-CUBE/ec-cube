@@ -256,6 +256,11 @@ class ShippingController extends AbstractController
                     $this->entityManager->persist($Order);
 
                     foreach ($TargetShippings as $TargetShipping) {
+                        // 新しいShippingエンティティの場合、タイムスタンプを手動で設定
+                        if (null === $TargetShipping->getId()) {
+                            $TargetShipping->setCreateDate(new \DateTime());
+                            $TargetShipping->setUpdateDate(new \DateTime());
+                        }
                         $this->entityManager->persist($TargetShipping);
                     }
                     $this->entityManager->flush();

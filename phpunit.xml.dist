@@ -12,7 +12,7 @@
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_CLASS" value="Eccube\Kernel" />
-<!--        <server name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />-->
+        <server name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
     </php>
@@ -25,8 +25,10 @@
             <exclude>./tests/Eccube/Tests/Command/GenerateDummyDataCommandTest.php</exclude>
         </testsuite>
     </testsuites>
-
-    <coverage processUncoveredFiles="true">
+    <logging>
+        <junit outputFile="var/log/phpunit.xml"/>
+    </logging>
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
@@ -34,10 +36,9 @@
             <directory suffix=".php">./src/Eccube/Resource</directory>
             <directory suffix=".php">./src/Eccube/Command</directory>
         </exclude>
-    </coverage>
+    </source>
 
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
     </extensions>
-    -->
 </phpunit>
