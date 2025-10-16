@@ -26,7 +26,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
@@ -34,7 +34,7 @@
             <directory suffix=".php">./src/Eccube/Resource</directory>
             <directory suffix=".php">./src/Eccube/Command</directory>
         </exclude>
-    </coverage>
+    </source>
 
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>

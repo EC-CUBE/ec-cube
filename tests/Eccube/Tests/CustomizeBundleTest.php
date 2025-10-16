@@ -25,6 +25,9 @@ class CustomizeBundleTest extends KernelTestCase
         $fs->remove(__DIR__.'/../../../app/Customize/Bundle');
         $fs->remove(__DIR__.'/../../../app/Customize/Resource/config/bundles.php');
 
+        // Restore exception handler to prevent risky test warnings
+        restore_exception_handler();
+
         parent::tearDown();
     }
 
