@@ -74,21 +74,15 @@ class PaginationTest extends EccubeTestCase
         $this->tagRepository = $this->entityManager->getRepository(Tag::class);
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
 
-        // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
-        // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている
+        // TEMPORARY テーブルを作成（暗黙的コミットを引き起こさない）
         /** @var EntityManager $em */
         $em = $this->entityManager;
         $conn = $em->getConnection();
         if (!$conn->isConnected()) {
             $conn->connect();
         }
-        if ($conn->isTransactionActive()) {
-            $conn->rollback();
-        }
 
-        $this->dropTable($conn->getWrappedConnection());
         $this->createTable($conn->getWrappedConnection());
-        $conn->beginTransaction();
 
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
@@ -112,13 +106,13 @@ class PaginationTest extends EccubeTestCase
 
     protected function tearDown(): void
     {
+        // TEMPORARY テーブルを明示的に削除
         /** @var EntityManager $em */
         $em = $this->entityManager;
         if ($em) {
             $conn = $em->getConnection();
-            $conn->rollback();
-            $this->dropTable($conn->getWrappedConnection());
-            $conn->beginTransaction();
+            $platform = $conn->getDatabasePlatform()->getName();
+            $this->dropTable($conn->getWrappedConnection(), $platform);
         }
 
         parent::tearDown();
@@ -126,14 +120,19 @@ class PaginationTest extends EccubeTestCase
 
     protected function createTable(Connection $conn)
     {
-        $sql = 'CREATE TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
+        $sql = 'CREATE TEMPORARY TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
     }
 
-    protected function dropTable(Connection $conn)
+    protected function dropTable(Connection $conn, string $platform)
     {
-        $sql = 'DROP TABLE IF EXISTS test_entity;';
+        // MySQLでは DROP TEMPORARY TABLE、SQLite/PostgreSQLでは DROP TABLE を使用
+        $sql = match ($platform) {
+            'mysql' => 'DROP TEMPORARY TABLE IF EXISTS test_entity;',
+            default => 'DROP TABLE IF EXISTS test_entity;',
+        };
+
         $stmt = $conn->prepare($sql);
         $stmt->execute();
     }
