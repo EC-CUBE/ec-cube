@@ -24,7 +24,7 @@ use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Command\LintCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
-abstract class AbstractCommandTest extends EccubeTestCase
+abstract class CommandTestCase extends EccubeTestCase
 {
     public const LOOP_MAX_LIMIT = 5;
 
