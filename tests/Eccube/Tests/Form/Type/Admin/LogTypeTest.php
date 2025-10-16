@@ -38,8 +38,14 @@ class LogTypeTest extends AbstractTypeTestCase
 
         // Check and create the file to test if it does not exist
         if (!file_exists($this->logTest)) {
-            @mkdir(dirname($this->logTest));
+            $dir = dirname($this->logTest);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
             file_put_contents($this->logTest, 'Lorem Ipsum is simply dummy text ...');
+            // ファイルシステムキャッシュをクリア
+            clearstatcache(true, $this->logTest);
+            clearstatcache(true, $dir);
         }
 
         $this->formData = [
