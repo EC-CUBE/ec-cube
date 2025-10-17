@@ -32,7 +32,7 @@ if (!class_exists(ClassCategory::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName();
         }
 
         /**
@@ -99,7 +99,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -111,7 +111,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setBackendName($backendName)
+        public function setBackendName($backendName): ClassCategory
         {
             $this->backend_name = $backendName;
 
@@ -123,7 +123,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return string
          */
-        public function getBackendName()
+        public function getBackendName(): string
         {
             return $this->backend_name;
         }
@@ -135,7 +135,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setName($name)
+        public function setName($name): ClassCategory
         {
             $this->name = $name;
 
@@ -147,7 +147,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -159,7 +159,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): ClassCategory
         {
             $this->sort_no = $sortNo;
 
@@ -171,7 +171,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -183,7 +183,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): ClassCategory
         {
             $this->create_date = $createDate;
 
@@ -193,9 +193,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -207,7 +207,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): ClassCategory
         {
             $this->update_date = $updateDate;
 
@@ -217,9 +217,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -231,7 +231,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setClassName(?ClassName $className = null)
+        public function setClassName(?ClassName $className = null): ClassCategory
         {
             $this->ClassName = $className;
 
@@ -243,7 +243,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassName|null
          */
-        public function getClassName()
+        public function getClassName(): ?ClassName
         {
             return $this->ClassName;
         }
@@ -255,7 +255,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): ClassCategory
         {
             $this->Creator = $creator;
 
@@ -267,7 +267,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
@@ -279,7 +279,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return ClassCategory
          */
-        public function setVisible($visible)
+        public function setVisible($visible): ClassCategory
         {
             $this->visible = $visible;
 
@@ -291,7 +291,7 @@ if (!class_exists(ClassCategory::class)) {
          *
          * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
         }

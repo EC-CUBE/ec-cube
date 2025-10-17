@@ -115,7 +115,7 @@ class ProductClassMatrixType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'product_classes_exist' => false,

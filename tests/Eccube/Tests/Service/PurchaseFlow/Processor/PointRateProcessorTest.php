@@ -56,7 +56,7 @@ class PointRateProcessorTest extends EccubeTestCase
     public function testExecuteProductPointRate()
     {
         $baseRate = $this->BaseInfo->getBasicPointRate();
-        $productPointRate = $baseRate + 1;
+        $productPointRate = bcadd($baseRate, '1');
 
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
             $OrderItem->getProductClass()->setPointRate($productPointRate);
@@ -66,9 +66,9 @@ class PointRateProcessorTest extends EccubeTestCase
 
         foreach ($this->Order->getOrderItems() as $OrderItem) {
             if ($OrderItem->isProduct()) {
-                $this->assertSame($OrderItem->getPointRate(), $productPointRate);
+                $this->assertSame($productPointRate, $OrderItem->getPointRate());
             } else {
-                $this->assertSame($OrderItem->getPointRate(), $baseRate);
+                $this->assertSame($baseRate, $OrderItem->getPointRate());
             }
         }
     }

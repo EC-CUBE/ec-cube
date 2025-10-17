@@ -40,7 +40,7 @@ class Loader
      *
      * @throws \InvalidArgumentException|\Exception
      */
-    public function loadFromDirectory($dir)
+    public function loadFromDirectory($dir): array
     {
         if (!dir($dir)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $dir));
@@ -94,7 +94,7 @@ class Loader
      *
      * @return array<int,CsvFixture> fixtures.
      */
-    public function loadFromIterator(\Iterator $Iterator)
+    public function loadFromIterator(\Iterator $Iterator): array
     {
         $fixtures = [];
         foreach ($Iterator as $fixture) {
@@ -110,7 +110,7 @@ class Loader
     /**
      * @return FixtureInterface[]|CsvFixture[]
      */
-    public function getFixtures()
+    public function getFixtures(): array
     {
         return $this->fixtures;
     }
@@ -120,7 +120,7 @@ class Loader
      *
      * @return void
      */
-    public function addFixture(FixtureInterface $fixture)
+    public function addFixture(FixtureInterface $fixture): void
     {
         $this->fixtures[] = $fixture;
     }

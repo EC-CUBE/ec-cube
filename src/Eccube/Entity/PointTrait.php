@@ -36,7 +36,7 @@ trait PointTrait
      *
      * @return $this
      */
-    public function setAddPoint($addPoint)
+    public function setAddPoint($addPoint): static
     {
         $this->add_point = $addPoint;
 
@@ -48,7 +48,7 @@ trait PointTrait
      *
      * @return string
      */
-    public function getAddPoint()
+    public function getAddPoint(): string
     {
         return $this->add_point;
     }
@@ -60,7 +60,7 @@ trait PointTrait
      *
      * @return $this
      */
-    public function setUsePoint($usePoint)
+    public function setUsePoint($usePoint): static
     {
         $this->use_point = $usePoint;
 
@@ -70,9 +70,9 @@ trait PointTrait
     /**
      * Get usePoint
      *
-     * @return string
+     * @return string|null
      */
-    public function getUsePoint()
+    public function getUsePoint(): ?string
     {
         return $this->use_point;
     }

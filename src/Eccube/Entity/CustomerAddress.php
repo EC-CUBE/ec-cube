@@ -31,7 +31,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string
          */
-        public function getShippingMultipleDefaultName()
+        public function getShippingMultipleDefaultName(): string
         {
             return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
         }
@@ -43,7 +43,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setFromCustomer(Customer $Customer)
+        public function setFromCustomer(Customer $Customer): CustomerAddress
         {
             $this
             ->setCustomer($Customer)
@@ -68,7 +68,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setFromShipping(Shipping $Shipping)
+        public function setFromShipping(Shipping $Shipping): CustomerAddress
         {
             $this
             ->setName01($Shipping->getName01())
@@ -184,9 +184,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -198,7 +198,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setName01($name01 = null)
+        public function setName01($name01 = null): CustomerAddress
         {
             $this->name01 = $name01;
 
@@ -210,7 +210,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getName01()
+        public function getName01(): ?string
         {
             return $this->name01;
         }
@@ -222,7 +222,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setName02($name02 = null)
+        public function setName02($name02 = null): CustomerAddress
         {
             $this->name02 = $name02;
 
@@ -234,7 +234,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getName02()
+        public function getName02(): ?string
         {
             return $this->name02;
         }
@@ -246,7 +246,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setKana01($kana01 = null)
+        public function setKana01($kana01 = null): CustomerAddress
         {
             $this->kana01 = $kana01;
 
@@ -258,7 +258,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getKana01()
+        public function getKana01(): ?string
         {
             return $this->kana01;
         }
@@ -270,7 +270,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setKana02($kana02 = null)
+        public function setKana02($kana02 = null): CustomerAddress
         {
             $this->kana02 = $kana02;
 
@@ -282,7 +282,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getKana02()
+        public function getKana02(): ?string
         {
             return $this->kana02;
         }
@@ -294,7 +294,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setCompanyName($companyName = null)
+        public function setCompanyName($companyName = null): CustomerAddress
         {
             $this->company_name = $companyName;
 
@@ -306,7 +306,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getCompanyName()
+        public function getCompanyName(): ?string
         {
             return $this->company_name;
         }
@@ -318,7 +318,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setPostalCode($postal_code = null)
+        public function setPostalCode($postal_code = null): CustomerAddress
         {
             $this->postal_code = $postal_code;
 
@@ -330,7 +330,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getPostalCode()
+        public function getPostalCode(): ?string
         {
             return $this->postal_code;
         }
@@ -342,7 +342,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setAddr01($addr01 = null)
+        public function setAddr01($addr01 = null): CustomerAddress
         {
             $this->addr01 = $addr01;
 
@@ -354,7 +354,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getAddr01()
+        public function getAddr01(): ?string
         {
             return $this->addr01;
         }
@@ -366,7 +366,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setAddr02($addr02 = null)
+        public function setAddr02($addr02 = null): CustomerAddress
         {
             $this->addr02 = $addr02;
 
@@ -378,7 +378,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getAddr02()
+        public function getAddr02(): ?string
         {
             return $this->addr02;
         }
@@ -390,7 +390,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setPhoneNumber($phone_number = null)
+        public function setPhoneNumber($phone_number = null): CustomerAddress
         {
             $this->phone_number = $phone_number;
 
@@ -402,7 +402,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return string|null
          */
-        public function getPhoneNumber()
+        public function getPhoneNumber(): ?string
         {
             return $this->phone_number;
         }
@@ -414,7 +414,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): CustomerAddress
         {
             $this->create_date = $createDate;
 
@@ -424,9 +424,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -438,7 +438,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): CustomerAddress
         {
             $this->update_date = $updateDate;
 
@@ -448,9 +448,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -462,7 +462,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setCustomer(?Customer $customer = null)
+        public function setCustomer(?Customer $customer = null): CustomerAddress
         {
             $this->Customer = $customer;
 
@@ -474,7 +474,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return Customer|null
          */
-        public function getCustomer()
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
@@ -486,7 +486,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setCountry(?Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null): CustomerAddress
         {
             $this->Country = $country;
 
@@ -498,7 +498,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return Master\Country|null
          */
-        public function getCountry()
+        public function getCountry(): ?Master\Country
         {
             return $this->Country;
         }
@@ -510,7 +510,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return CustomerAddress
          */
-        public function setPref(?Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null): CustomerAddress
         {
             $this->Pref = $pref;
 
@@ -522,7 +522,7 @@ if (!class_exists(CustomerAddress::class)) {
          *
          * @return Master\Pref|null
          */
-        public function getPref()
+        public function getPref(): ?Master\Pref
         {
             return $this->Pref;
         }

@@ -102,7 +102,7 @@ class MypageController extends AbstractController
      */
     #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
     #[Template('Mypage/login.twig')]
-    public function login(Request $request, AuthenticationUtils $utils)
+    public function login(Request $request, AuthenticationUtils $utils): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             log_info('認証済のためログイン処理をスキップ');
@@ -149,7 +149,7 @@ class MypageController extends AbstractController
      */
     #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
     #[Template('Mypage/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator): array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
@@ -192,7 +192,7 @@ class MypageController extends AbstractController
      */
     #[Route('/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
     #[Template('Mypage/history.twig')]
-    public function history(Request $request, $order_no)
+    public function history(Request $request, $order_no): array
     {
         $this->entityManager->getFilters()
             ->enable('incomplete_order_status_hidden');
@@ -243,7 +243,7 @@ class MypageController extends AbstractController
      * @throws NotFoundHttpException
      */
     #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
-    public function order(Request $request, $order_no)
+    public function order(Request $request, $order_no): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
     {
         $this->isTokenValid();
 
@@ -339,7 +339,7 @@ class MypageController extends AbstractController
      */
     #[Route('/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
     #[Template('Mypage/favorite.twig')]
-    public function favorite(Request $request, PaginatorInterface $paginator)
+    public function favorite(Request $request, PaginatorInterface $paginator): array
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
@@ -382,7 +382,7 @@ class MypageController extends AbstractController
      * @throws BadRequestHttpException
      */
     #[Route('/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Product $Product)
+    public function delete(Request $request, Product $Product): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
         /** @var Customer $Customer */

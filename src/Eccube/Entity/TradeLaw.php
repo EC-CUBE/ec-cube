@@ -65,7 +65,7 @@ if (!class_exists(TradeLaw::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName() ?? '';
         }
 
         /**
@@ -83,7 +83,7 @@ if (!class_exists(TradeLaw::class)) {
         /**
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -101,7 +101,7 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
         public function getName(): ?string
         {
@@ -121,7 +121,7 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
         public function getDescription(): ?string
         {

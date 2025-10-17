@@ -72,7 +72,7 @@ class ProductType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             // 商品規格情報
@@ -209,7 +209,7 @@ class ProductType extends AbstractType
      *
      * @return void
      */
-    private function validateFilePath($form, $dirs)
+    private function validateFilePath($form, $dirs): void
     {
         foreach ($form->getData() as $fileName) {
             if (str_contains((string) $fileName, '..')) {
@@ -236,7 +236,7 @@ class ProductType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 
@@ -244,7 +244,7 @@ class ProductType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_product';
     }

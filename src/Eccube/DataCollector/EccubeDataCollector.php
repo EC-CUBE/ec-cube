@@ -58,7 +58,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->data['version'];
     }
@@ -66,7 +66,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @return array<string, array<string,mixed>>
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         return $this->data['plugins'];
     }
@@ -74,7 +74,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @return string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->data['currency_code'];
     }
@@ -82,7 +82,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @return string
      */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         return $this->data['locale_code'];
     }
@@ -90,7 +90,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @return string
      */
-    public function getDefaultCurrencyCode()
+    public function getDefaultCurrencyCode(): string
     {
         return $this->data['base_currency_code'];
     }
@@ -98,7 +98,7 @@ class EccubeDataCollector extends DataCollector
     /**
      * @return string
      */
-    public function getDefaultLocaleCode()
+    public function getDefaultLocaleCode(): string
     {
         return $this->data['default_locale_code'];
     }
@@ -116,6 +116,7 @@ class EccubeDataCollector extends DataCollector
 
         try {
             $this->data['locale_code'] = $this->eccubeConfig->get('locale');
+            $this->data['default_locale_code'] = $this->eccubeConfig->get('locale');
         } catch (\Exception) {
         }
 

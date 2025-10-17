@@ -29,7 +29,7 @@ class PluginUpdateCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('code', InputArgument::REQUIRED, 'Plugin code');

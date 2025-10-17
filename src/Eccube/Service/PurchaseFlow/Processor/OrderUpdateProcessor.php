@@ -46,7 +46,7 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
      * @return void
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         if (!$target instanceof Order) {
             return;

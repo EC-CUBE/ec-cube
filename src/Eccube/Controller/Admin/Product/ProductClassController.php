@@ -94,7 +94,7 @@ class ProductClassController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/product_class.twig')]
-    public function index(Request $request, $id, CacheUtil $cacheUtil)
+    public function index(Request $request, $id, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $Product = $this->findProduct($id);
         if (!$Product) {
@@ -209,7 +209,7 @@ class ProductClassController extends AbstractController
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}/clear', requirements: ['id' => '\d+'], name: 'admin_product_product_class_clear', methods: ['POST'])]
-    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
+    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$Product->hasProductClass()) {
             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -268,7 +268,7 @@ class ProductClassController extends AbstractController
      *
      * @return array|ProductClass[]
      */
-    protected function createProductClasses(ClassName $ClassName1, ?ClassName $ClassName2 = null)
+    protected function createProductClasses(ClassName $ClassName1, ?ClassName $ClassName2 = null): array
     {
         $ProductClasses = [];
         $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1], ['sort_no' => 'DESC']);
@@ -305,7 +305,7 @@ class ProductClassController extends AbstractController
      *
      * @return array|ProductClass[]
      */
-    protected function mergeProductClasses($ProductClassesForMatrix, $ProductClasses)
+    protected function mergeProductClasses($ProductClassesForMatrix, $ProductClasses): array
     {
         $mergedProductClasses = [];
         foreach ($ProductClassesForMatrix as $pcfm) {
@@ -342,7 +342,7 @@ class ProductClassController extends AbstractController
      *
      * @throws NoResultException
      */
-    protected function saveProductClasses(Product $Product, $ProductClasses = [])
+    protected function saveProductClasses(Product $Product, $ProductClasses = []): void
     {
         foreach ($ProductClasses as $pc) {
             // 新規登録時、チェックを入れていなければ更新しない
@@ -464,7 +464,7 @@ class ProductClassController extends AbstractController
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function findProduct($id)
+    protected function findProduct($id): ?Product
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->addSelect(['pc', 'cc1', 'cc2'])

@@ -30,7 +30,7 @@ class LogController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/log.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array|StreamedResponse
     {
         $formData = [];
         // default
@@ -104,7 +104,7 @@ class LogController extends AbstractController
      *
      * @return array<int,mixed>
      */
-    private function parseLogFile($logFile, $formData)
+    private function parseLogFile($logFile, $formData): array
     {
         $log = [];
 

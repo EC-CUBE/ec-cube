@@ -33,7 +33,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return int|null
          */
-        public function getTagId()
+        public function getTagId(): ?int
         {
             if (empty($this->Tag)) {
                 return null;
@@ -83,7 +83,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -95,7 +95,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return ProductTag
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): ProductTag
         {
             $this->create_date = $createDate;
 
@@ -105,9 +105,9 @@ if (!class_exists(ProductTag::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -119,7 +119,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return ProductTag
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): ProductTag
         {
             $this->Product = $product;
 
@@ -131,7 +131,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
@@ -143,7 +143,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return ProductTag
          */
-        public function setTag(?Tag $tag = null)
+        public function setTag(?Tag $tag = null): ProductTag
         {
             $this->Tag = $tag;
 
@@ -155,7 +155,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return Tag|null
          */
-        public function getTag()
+        public function getTag(): ?Tag
         {
             return $this->Tag;
         }
@@ -167,7 +167,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return ProductTag
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): ProductTag
         {
             $this->Creator = $creator;
 
@@ -179,7 +179,7 @@ if (!class_exists(ProductTag::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

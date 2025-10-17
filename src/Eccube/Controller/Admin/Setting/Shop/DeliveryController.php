@@ -97,7 +97,7 @@ class DeliveryController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
     #[Template('@admin/Setting/Shop/delivery.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $Deliveries = $this->deliveryRepository
             ->findBy([], ['sort_no' => 'DESC']);
@@ -127,7 +127,7 @@ class DeliveryController extends AbstractController
     #[Route('/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/delivery_edit.twig')]
-    public function edit(Request $request, EccubeExtension $extension, $id = null)
+    public function edit(Request $request, EccubeExtension $extension, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -306,7 +306,7 @@ class DeliveryController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Delivery $Delivery)
+    public function delete(Request $request, Delivery $Delivery): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -353,7 +353,7 @@ class DeliveryController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function visibility(Request $request, Delivery $Delivery)
+    public function visibility(Request $request, Delivery $Delivery): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -390,7 +390,7 @@ class DeliveryController extends AbstractController
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request)
+    public function moveSortNo(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -416,7 +416,7 @@ class DeliveryController extends AbstractController
      *
      * @return array<int,array<string,float|string|null>>
      */
-    private function getMergeRules(array $PaymentsData)
+    private function getMergeRules(array $PaymentsData): array
     {
         // 手数料抜きの利用条件の一覧を作成
         $rules = array_map(function (Payment $Payment) {

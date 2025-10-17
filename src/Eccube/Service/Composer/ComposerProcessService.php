@@ -62,7 +62,7 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     #[\Override]
-    public function execRequire(string $packageName, ?OutputInterface $output = null, ?string $from = null)
+    public function execRequire($packageName, ?OutputInterface $output = null, ?string $from = null): string
     {
         return $this->runCommand([
             'eccube:composer:require',
@@ -71,7 +71,7 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     #[\Override]
-    public function execRemove($packageName, $output = null)
+    public function execRemove($packageName, $output = null): string
     {
         return $this->runCommand([
             'eccube:composer:remove',
@@ -88,7 +88,7 @@ class ComposerProcessService implements ComposerServiceInterface
      *
      * @throws PluginException
      */
-    public function runCommand($commands, $output = null, $init = true)
+    public function runCommand($commands, $output = null, $init = true): string
     {
         if ($init) {
             $this->init();
@@ -124,7 +124,7 @@ class ComposerProcessService implements ComposerServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function init($BaseInfo = null)
+    private function init($BaseInfo = null): void
     {
         //        /**
         //         * Mysql lock in transaction
@@ -147,10 +147,10 @@ class ComposerProcessService implements ComposerServiceInterface
      * @param string $key
      * @param string[]|null $value
      *
-     * @return array<string, array<string, string>>|mixed
+     * @return array<int|string,array<int,string>>|null
      */
     #[\Override]
-    public function execConfig($key, $value = null)
+    public function execConfig($key, $value = null): ?array
     {
         return $this->composerApiService->execConfig($key, $value);
     }

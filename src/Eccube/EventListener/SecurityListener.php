@@ -64,7 +64,7 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event
             ->getAuthenticationToken()
@@ -92,7 +92,7 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onAuthenticationFailure(LoginFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
@@ -117,7 +117,7 @@ class SecurityListener implements EventSubscriberInterface
      * @return array<string,string> The event names to listen to
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',

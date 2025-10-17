@@ -9,7 +9,7 @@ framework:
     handle_all_throwables: true
     # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
     session:
-        handler_id: 'Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler'
+        handler_id: 'session.handler.native_file'
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
         name: '%env(ECCUBE_COOKIE_NAME)%'
         cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'

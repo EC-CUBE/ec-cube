@@ -89,6 +89,8 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
                 $conn->executeUpdate('ALTER TABLE dtb_customer DROP test_update_schema_command');
             }
         }
+        // Restore exception handler to prevent risky test warning
+        restore_exception_handler();
         // プロパティをクリア
         // parent::tearDown();
     }

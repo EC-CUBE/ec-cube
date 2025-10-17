@@ -44,7 +44,7 @@ class CustomerAddressRepository extends AbstractRepository
      * @return void
      */
     #[\Override]
-    public function delete($CustomerAddress)
+    public function delete($CustomerAddress): void
     {
         $em = $this->getEntityManager();
         $em->remove($CustomerAddress);

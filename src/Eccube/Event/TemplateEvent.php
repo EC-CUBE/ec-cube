@@ -68,9 +68,9 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getView()
+    public function getView(): ?string
     {
         return $this->view;
     }
@@ -80,15 +80,15 @@ class TemplateEvent extends Event
      *
      * @return void
      */
-    public function setView($view)
+    public function setView($view): void
     {
         $this->view = $view;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSource()
+    public function getSource(): ?string
     {
         return $this->source;
     }
@@ -98,7 +98,7 @@ class TemplateEvent extends Event
      *
      * @return void
      */
-    public function setSource($source)
+    public function setSource($source): void
     {
         $this->source = $source;
     }
@@ -108,7 +108,7 @@ class TemplateEvent extends Event
      *
      * @return mixed
      */
-    public function getParameter($key)
+    public function getParameter($key): mixed
     {
         return $this->parameters[$key];
     }
@@ -119,7 +119,7 @@ class TemplateEvent extends Event
      *
      * @return void
      */
-    public function setParameter($key, $value)
+    public function setParameter($key, $value): void
     {
         $this->parameters[$key] = $value;
     }
@@ -129,7 +129,7 @@ class TemplateEvent extends Event
      *
      * @return bool
      */
-    public function hasParameter($key)
+    public function hasParameter($key): bool
     {
         return isset($this->parameters[$key]);
     }
@@ -137,7 +137,7 @@ class TemplateEvent extends Event
     /**
      * @return array<mixed>
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -147,7 +147,7 @@ class TemplateEvent extends Event
      *
      * @return void
      */
-    public function setParameters($parameters)
+    public function setParameters($parameters): void
     {
         $this->parameters = $parameters;
     }
@@ -155,7 +155,7 @@ class TemplateEvent extends Event
     /**
      * @return Response|null
      */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
@@ -165,7 +165,7 @@ class TemplateEvent extends Event
      *
      * @return void
      */
-    public function setResponse($response)
+    public function setResponse($response): void
     {
         $this->response = $response;
     }
@@ -181,7 +181,7 @@ class TemplateEvent extends Event
      *
      * @return $this
      */
-    public function addAsset($asset, $include = true)
+    public function addAsset($asset, $include = true): static
     {
         $this->assets[$asset] = $include;
 
@@ -200,7 +200,7 @@ class TemplateEvent extends Event
      *
      * @return $this
      */
-    public function addSnippet($snippet, $include = true)
+    public function addSnippet($snippet, $include = true): static
     {
         $this->snippets[$snippet] = $include;
 

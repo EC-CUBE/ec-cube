@@ -20,14 +20,9 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
-            <exclude>./tests/Eccube/Tests/Plugin/PluginManagerTest.php</exclude>
-            <exclude>./tests/Eccube/Tests/Service/PluginServiceTest.php</exclude>
-            <exclude>./tests/Eccube/Tests/Command/GenerateDummyDataCommandTest.php</exclude>
         </testsuite>
     </testsuites>
-    <logging>
-        <junit outputFile="var/log/phpunit.xml"/>
-    </logging>
+
     <source>
         <include>
             <directory suffix=".php">src</directory>

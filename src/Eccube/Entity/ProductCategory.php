@@ -64,7 +64,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return ProductCategory
          */
-        public function setProductId($productId)
+        public function setProductId($productId): ProductCategory
         {
             $this->product_id = $productId;
 
@@ -76,7 +76,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return int
          */
-        public function getProductId()
+        public function getProductId(): int
         {
             return $this->product_id;
         }
@@ -88,7 +88,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return ProductCategory
          */
-        public function setCategoryId($categoryId)
+        public function setCategoryId($categoryId): ProductCategory
         {
             $this->category_id = $categoryId;
 
@@ -100,7 +100,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return int
          */
-        public function getCategoryId()
+        public function getCategoryId(): int
         {
             return $this->category_id;
         }
@@ -112,7 +112,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return ProductCategory
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): ProductCategory
         {
             $this->Product = $product;
 
@@ -124,7 +124,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
@@ -136,7 +136,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return ProductCategory
          */
-        public function setCategory(?Category $category = null)
+        public function setCategory(?Category $category = null): ProductCategory
         {
             $this->Category = $category;
 
@@ -148,7 +148,7 @@ if (!class_exists(ProductCategory::class)) {
          *
          * @return Category|null
          */
-        public function getCategory()
+        public function getCategory(): ?Category
         {
             return $this->Category;
         }

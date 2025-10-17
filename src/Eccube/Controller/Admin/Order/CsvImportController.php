@@ -55,7 +55,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/csv_shipping.twig')]
-    public function csvShipping(Request $request)
+    public function csvShipping(Request $request): array
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
         $columnConfig = $this->getColumnConfig();
@@ -103,7 +103,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return void
      */
-    protected function loadCsv($csv, &$errors)
+    protected function loadCsv($csv, &$errors): void
     {
         $columnConfig = $this->getColumnConfig();
 
@@ -206,7 +206,7 @@ class CsvImportController extends AbstractCsvImportController
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
-    public function csvTemplate(Request $request)
+    public function csvTemplate(Request $request): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $columns = array_column($this->getColumnConfig(), 'name');
 
@@ -216,7 +216,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @return array<string,array<string,bool|string>>
      */
-    protected function getColumnConfig()
+    protected function getColumnConfig(): array
     {
         return [
             'id' => [

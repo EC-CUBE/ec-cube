@@ -27,7 +27,7 @@ class Queries
      *
      * @return void
      */
-    public function addCustomizer(QueryCustomizer $customizer)
+    public function addCustomizer(QueryCustomizer $customizer): void
     {
         $queryKey = $customizer->getQueryKey();
         $this->customizers[$queryKey][] = $customizer;
@@ -40,7 +40,7 @@ class Queries
      *
      * @return QueryBuilder
      */
-    public function customize($queryKey, QueryBuilder $builder, $params)
+    public function customize($queryKey, QueryBuilder $builder, $params): QueryBuilder
     {
         if (isset($this->customizers[$queryKey])) {
             /* @var QueryCustomizer $customizer */

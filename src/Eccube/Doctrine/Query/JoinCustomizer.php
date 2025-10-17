@@ -28,7 +28,7 @@ abstract class JoinCustomizer implements QueryCustomizer
      * @return void
      */
     #[\Override]
-    final public function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, $params, $queryKey): void
     {
         foreach ($this->createStatements($params, $queryKey) as $joinClause) {
             $joinClause->build($builder);
@@ -44,5 +44,5 @@ abstract class JoinCustomizer implements QueryCustomizer
      *
      * @return JoinClause[]
      */
-    abstract public function createStatements($params, $queryKey);
+    abstract public function createStatements($params, $queryKey): array;
 }

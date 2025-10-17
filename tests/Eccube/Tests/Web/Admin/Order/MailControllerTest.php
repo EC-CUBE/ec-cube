@@ -48,9 +48,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate
             ->setName($faker->word())
             ->setMailSubject($faker->word())
-            ->setCreator($this->Member)
-            ->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime());
+            ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
         $this->entityManager->flush();
         for ($i = 0; $i < 3; $i++) {

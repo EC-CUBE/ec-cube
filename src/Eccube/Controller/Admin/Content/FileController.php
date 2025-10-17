@@ -62,7 +62,7 @@ class FileController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/file.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -132,7 +132,7 @@ class FileController extends AbstractController
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
-    public function view(Request $request)
+    public function view(Request $request): BinaryFileResponse
     {
         $file = $this->convertStrToServer($this->getUserDataDir($request->get('file')));
         if ($this->checkDir($file, $this->getUserDataDir())) {
@@ -153,7 +153,7 @@ class FileController extends AbstractController
      *
      * @throws IOException
      */
-    public function create(Request $request)
+    public function create(Request $request): void
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
@@ -221,7 +221,7 @@ class FileController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
-    public function delete(Request $request)
+    public function delete(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -250,14 +250,14 @@ class FileController extends AbstractController
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
-    public function download(Request $request)
+    public function download(Request $request): BinaryFileResponse
     {
         $topDir = $this->getUserDataDir();
         $file = $this->convertStrToServer($this->getUserDataDir($request->get('select_file')));
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
                 setlocale(LC_ALL, 'ja_JP.UTF-8');
-                $pathParts = pathinfo((string) $file);
+                $pathParts = pathinfo($file);
 
                 $patterns = [
                     '/[a-zA-Z0-9!"#$%&()=~^|@`:*;+{}]/',
@@ -284,7 +284,7 @@ class FileController extends AbstractController
      *
      * @return void
      */
-    public function upload(Request $request)
+    public function upload(Request $request): void
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
@@ -326,15 +326,15 @@ class FileController extends AbstractController
             $filename = $this->convertStrToServer($file->getClientOriginalName());
             try {
                 // フォルダの存在チェック
-                if (is_dir(rtrim((string) $nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
+                if (is_dir(rtrim($nowDir, '/\\').\DIRECTORY_SEPARATOR.$filename)) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.same_name_folder_exists'));
                 }
                 // 英数字, 半角スペース, _-.() のみ許可
-                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', (string) $filename)) {
+                if (!preg_match('/\A[a-zA-Z0-9_\-\.\(\) ]+\Z/', $filename)) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.folder_name_symbol_error'));
                 }
                 // dotファイルはアップロード不可
-                if (str_starts_with((string) $filename, '.')) {
+                if (str_starts_with($filename, '.')) {
                     throw new UnsupportedMediaTypeHttpException(trans('admin.content.file.dotfile_error'));
                 }
                 // 許可した拡張子以外アップロード不可
@@ -370,7 +370,7 @@ class FileController extends AbstractController
      *
      * @return array<int,array<int, mixed>>
      */
-    private function getTreeToArray($tree)
+    private function getTreeToArray($tree): array
     {
         $arrTree = [];
         foreach ($tree as $key => $val) {
@@ -392,7 +392,7 @@ class FileController extends AbstractController
      *
      * @return array<int<0,max>,mixed>
      */
-    private function getPathsToArray($tree)
+    private function getPathsToArray($tree): array
     {
         $paths = [];
         foreach ($tree as $val) {
@@ -408,7 +408,7 @@ class FileController extends AbstractController
      *
      * @return array<int,array<string,mixed>>
      */
-    private function getTree($topDir, $request)
+    private function getTree($topDir, $request): array
     {
         $finder = Finder::create()->in($topDir)
             ->directories()
@@ -449,7 +449,7 @@ class FileController extends AbstractController
      *
      * @return array<mixed>
      */
-    private function getFileList($nowDir)
+    private function getFileList($nowDir): array
     {
         $topDir = $this->getuserDataDir();
         $filter = function (\SplFileInfo $file) use ($topDir) {
@@ -522,7 +522,7 @@ class FileController extends AbstractController
      *
      * @return array|false|string|string[]
      */
-    protected function normalizePath($path)
+    protected function normalizePath($path): array|false|string
     {
         return str_replace('\\', '/', realpath($path));
     }
@@ -533,7 +533,7 @@ class FileController extends AbstractController
      *
      * @return bool
      */
-    protected function checkDir($targetDir, $topDir)
+    protected function checkDir($targetDir, $topDir): bool
     {
         if (str_contains((string) $targetDir, '..')) {
             return false;
@@ -549,7 +549,7 @@ class FileController extends AbstractController
      *
      * @return string
      */
-    private function convertStrFromServer($target)
+    private function convertStrFromServer($target): string
     {
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::UTF, self::SJIS);
@@ -563,7 +563,7 @@ class FileController extends AbstractController
      *
      * @return string
      */
-    private function convertStrToServer($target)
+    private function convertStrToServer($target): string
     {
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::SJIS, self::UTF);
@@ -577,7 +577,7 @@ class FileController extends AbstractController
      *
      * @return string
      */
-    private function getUserDataDir($nowDir = null)
+    private function getUserDataDir($nowDir = null): string
     {
         return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
     }
@@ -587,7 +587,7 @@ class FileController extends AbstractController
      *
      * @return string
      */
-    private function getJailDir($path)
+    private function getJailDir($path): string
     {
         $realpath = (string) realpath($path);
         $jailPath = str_replace((string) realpath($this->getUserDataDir()), '', $realpath);

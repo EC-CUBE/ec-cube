@@ -55,7 +55,7 @@ class TransactionListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function disable()
+    public function disable(): void
     {
         $this->isEnabled = false;
     }
@@ -67,7 +67,7 @@ class TransactionListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -97,7 +97,7 @@ class TransactionListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -128,7 +128,7 @@ class TransactionListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -158,7 +158,7 @@ class TransactionListener implements EventSubscriberInterface
      * @return array<string,mixed>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest',

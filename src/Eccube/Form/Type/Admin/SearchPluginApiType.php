@@ -32,7 +32,7 @@ class SearchPluginApiType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $category = $options['category'];
         // Todo: constant for the API key
@@ -90,7 +90,7 @@ class SearchPluginApiType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'category' => [],
@@ -101,7 +101,7 @@ class SearchPluginApiType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'search_plugin';
     }

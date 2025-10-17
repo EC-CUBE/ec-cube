@@ -28,7 +28,7 @@ class PluginInstallCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')

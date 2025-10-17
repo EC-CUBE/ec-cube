@@ -55,7 +55,7 @@ class BlockPositionRepository extends AbstractRepository
      *
      * @return void
      */
-    public function register($data, $Blocks, $UnusedBlocks, $Layout)
+    public function register($data, $Blocks, $UnusedBlocks, $Layout): void
     {
         $em = $this->getEntityManager();
 

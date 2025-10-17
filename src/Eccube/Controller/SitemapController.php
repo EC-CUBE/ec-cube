@@ -80,7 +80,7 @@ class SitemapController extends AbstractController
      * @return Response
      */
     #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
-    public function index(PaginatorInterface $paginator)
+    public function index(PaginatorInterface $paginator): Response
     {
         $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
         $Page = $pageQueryBuilder->select('p')
@@ -124,7 +124,7 @@ class SitemapController extends AbstractController
      * @return Response
      */
     #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
-    public function category()
+    public function category(): Response
     {
         $Categories = $this->categoryRepository->getList(null, true);
 
@@ -139,7 +139,7 @@ class SitemapController extends AbstractController
      * @return Response
      */
     #[Route('/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
-    public function product(Request $request, PaginatorInterface $paginator)
+    public function product(Request $request, PaginatorInterface $paginator): Response
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -171,7 +171,7 @@ class SitemapController extends AbstractController
      * @return Response
      */
     #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
-    public function page()
+    public function page(): Response
     {
         $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");
 
@@ -209,7 +209,7 @@ class SitemapController extends AbstractController
      *
      * @return Response
      */
-    private function outputXml(array $data, $template_name = 'sitemap.xml.twig')
+    private function outputXml(array $data, $template_name = 'sitemap.xml.twig'): Response
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/xml'); // Content-Typeを設定

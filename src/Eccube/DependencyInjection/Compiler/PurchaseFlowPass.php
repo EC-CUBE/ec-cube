@@ -43,7 +43,7 @@ class PurchaseFlowPass implements CompilerPassInterface
      * @throws \ReflectionException
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $flowTypes = [
             PurchaseContext::CART_FLOW => $container->findDefinition('eccube.purchase.flow.cart'),

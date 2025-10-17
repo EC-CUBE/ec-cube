@@ -56,7 +56,7 @@ if (!class_exists(OrderStatus::class, false)) {
         /**
          * @return bool
          */
-        public function isDisplayOrderCount()
+        public function isDisplayOrderCount(): bool
         {
             return $this->display_order_count;
         }
@@ -66,7 +66,7 @@ if (!class_exists(OrderStatus::class, false)) {
          *
          * @return void
          */
-        public function setDisplayOrderCount($display_order_count = false)
+        public function setDisplayOrderCount($display_order_count = false): void
         {
             $this->display_order_count = $display_order_count;
         }

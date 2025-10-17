@@ -71,7 +71,7 @@ class LoginHistoryListener implements EventSubscriberInterface
      * @return array<string,string>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
@@ -84,7 +84,7 @@ class LoginHistoryListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $request = $event->getRequest();
         $user = $event
@@ -116,7 +116,7 @@ class LoginHistoryListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onAuthenticationFailure(LoginFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
 

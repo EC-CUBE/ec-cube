@@ -87,13 +87,13 @@ if (!class_exists(Product::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName();
         }
 
         /**
          * @return void
          */
-        public function _calc()
+        public function _calc(): void
         {
             if (!$this->_calc) {
                 $i = 0;
@@ -169,7 +169,7 @@ if (!class_exists(Product::class)) {
          *
          * @deprecated
          */
-        public function isEnable()
+        public function isEnable(): bool
         {
             return $this->getStatus()->getId() === Master\ProductStatus::DISPLAY_SHOW ? true : false;
         }
@@ -179,7 +179,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getClassName1()
+        public function getClassName1(): ?string
         {
             $this->_calc();
 
@@ -191,7 +191,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getClassName2()
+        public function getClassName2(): ?string
         {
             $this->_calc();
 
@@ -203,7 +203,7 @@ if (!class_exists(Product::class)) {
          *
          * @return array<int, string|null>
          */
-        public function getClassCategories1()
+        public function getClassCategories1(): array
         {
             $this->_calc();
 
@@ -213,7 +213,7 @@ if (!class_exists(Product::class)) {
         /**
          * @return array<string,int>
          */
-        public function getClassCategories1AsFlip()
+        public function getClassCategories1AsFlip(): array
         {
             return array_flip($this->getClassCategories1());
         }
@@ -225,7 +225,7 @@ if (!class_exists(Product::class)) {
          *
          * @return array<int, string|null>
          */
-        public function getClassCategories2($class_category1)
+        public function getClassCategories2($class_category1): array
         {
             $this->_calc();
 
@@ -237,7 +237,7 @@ if (!class_exists(Product::class)) {
          *
          * @return array<string,int>
          */
-        public function getClassCategories2AsFlip($class_category1)
+        public function getClassCategories2AsFlip($class_category1): array
         {
             return array_flip($this->getClassCategories2($class_category1));
         }
@@ -247,7 +247,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool|null
          */
-        public function getStockFind()
+        public function getStockFind(): ?bool
         {
             $this->_calc();
 
@@ -261,7 +261,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getStockMin()
+        public function getStockMin(): ?string
         {
             $this->_calc();
 
@@ -275,7 +275,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getStockMax()
+        public function getStockMax(): ?string
         {
             $this->_calc();
 
@@ -289,7 +289,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool|null
          */
-        public function getStockUnlimitedMin()
+        public function getStockUnlimitedMin(): ?bool
         {
             $this->_calc();
 
@@ -303,7 +303,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool|null
          */
-        public function getStockUnlimitedMax()
+        public function getStockUnlimitedMax(): ?bool
         {
             $this->_calc();
 
@@ -317,7 +317,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice01Min()
+        public function getPrice01Min(): ?string
         {
             $this->_calc();
 
@@ -333,7 +333,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice01Max()
+        public function getPrice01Max(): ?string
         {
             $this->_calc();
 
@@ -349,7 +349,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice02Min()
+        public function getPrice02Min(): ?string
         {
             $this->_calc();
 
@@ -363,7 +363,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice02Max()
+        public function getPrice02Max(): ?string
         {
             $this->_calc();
 
@@ -377,7 +377,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice01IncTaxMin()
+        public function getPrice01IncTaxMin(): ?string
         {
             $this->_calc();
 
@@ -391,7 +391,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice01IncTaxMax()
+        public function getPrice01IncTaxMax(): ?string
         {
             $this->_calc();
 
@@ -405,7 +405,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice02IncTaxMin()
+        public function getPrice02IncTaxMin(): ?string
         {
             $this->_calc();
 
@@ -419,7 +419,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getPrice02IncTaxMax()
+        public function getPrice02IncTaxMax(): ?string
         {
             $this->_calc();
 
@@ -433,7 +433,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getCodeMin()
+        public function getCodeMin(): ?string
         {
             $this->_calc();
 
@@ -452,7 +452,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getCodeMax()
+        public function getCodeMax(): ?string
         {
             $this->_calc();
 
@@ -469,7 +469,7 @@ if (!class_exists(Product::class)) {
         /**
          * @return ProductImage|null
          */
-        public function getMainListImage()
+        public function getMainListImage(): ?ProductImage
         {
             $ProductImages = $this->getProductImage();
 
@@ -479,7 +479,7 @@ if (!class_exists(Product::class)) {
         /**
          * @return ProductImage|null
          */
-        public function getMainFileName()
+        public function getMainFileName(): ?ProductImage
         {
             if (count($this->ProductImage) > 0) {
                 return $this->ProductImage[0];
@@ -491,7 +491,7 @@ if (!class_exists(Product::class)) {
         /**
          * @return bool
          */
-        public function hasProductClass()
+        public function hasProductClass(): bool
         {
             foreach ($this->ProductClasses as $ProductClass) {
                 if (!$ProductClass->isVisible()) {
@@ -681,7 +681,7 @@ if (!class_exists(Product::class)) {
          *
          * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -693,7 +693,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setName($name)
+        public function setName($name): Product
         {
             $this->name = $name;
 
@@ -705,7 +705,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -717,7 +717,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setNote($note = null)
+        public function setNote($note = null): Product
         {
             $this->note = $note;
 
@@ -729,7 +729,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getNote()
+        public function getNote(): ?string
         {
             return $this->note;
         }
@@ -741,7 +741,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setDescriptionList($descriptionList = null)
+        public function setDescriptionList($descriptionList = null): Product
         {
             $this->description_list = $descriptionList;
 
@@ -753,7 +753,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getDescriptionList()
+        public function getDescriptionList(): ?string
         {
             return $this->description_list;
         }
@@ -765,7 +765,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setDescriptionDetail($descriptionDetail = null)
+        public function setDescriptionDetail($descriptionDetail = null): Product
         {
             $this->description_detail = $descriptionDetail;
 
@@ -777,7 +777,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getDescriptionDetail()
+        public function getDescriptionDetail(): ?string
         {
             return $this->description_detail;
         }
@@ -789,7 +789,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setSearchWord($searchWord = null)
+        public function setSearchWord($searchWord = null): Product
         {
             $this->search_word = $searchWord;
 
@@ -801,7 +801,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getSearchWord()
+        public function getSearchWord(): ?string
         {
             return $this->search_word;
         }
@@ -813,7 +813,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setFreeArea($freeArea = null)
+        public function setFreeArea($freeArea = null): Product
         {
             $this->free_area = $freeArea;
 
@@ -825,7 +825,7 @@ if (!class_exists(Product::class)) {
          *
          * @return string|null
          */
-        public function getFreeArea()
+        public function getFreeArea(): ?string
         {
             return $this->free_area;
         }
@@ -837,7 +837,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Product
         {
             $this->create_date = $createDate;
 
@@ -847,9 +847,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -861,7 +861,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Product
         {
             $this->update_date = $updateDate;
 
@@ -871,9 +871,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -885,7 +885,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function addProductCategory(ProductCategory $productCategory)
+        public function addProductCategory(ProductCategory $productCategory): Product
         {
             $this->ProductCategories[] = $productCategory;
 
@@ -899,7 +899,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductCategory(ProductCategory $productCategory)
+        public function removeProductCategory(ProductCategory $productCategory): bool
         {
             return $this->ProductCategories->removeElement($productCategory);
         }
@@ -909,7 +909,7 @@ if (!class_exists(Product::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int, ProductCategory>
          */
-        public function getProductCategories()
+        public function getProductCategories(): \Doctrine\Common\Collections\Collection
         {
             return $this->ProductCategories;
         }
@@ -921,7 +921,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function addProductClass(ProductClass $productClass)
+        public function addProductClass(ProductClass $productClass): Product
         {
             $this->ProductClasses[] = $productClass;
 
@@ -935,7 +935,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductClass(ProductClass $productClass)
+        public function removeProductClass(ProductClass $productClass): bool
         {
             return $this->ProductClasses->removeElement($productClass);
         }
@@ -945,7 +945,7 @@ if (!class_exists(Product::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int, ProductClass>|null
          */
-        public function getProductClasses()
+        public function getProductClasses(): ?\Doctrine\Common\Collections\Collection
         {
             return $this->ProductClasses;
         }
@@ -957,7 +957,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function addProductImage(ProductImage $productImage)
+        public function addProductImage(ProductImage $productImage): Product
         {
             $this->ProductImage[] = $productImage;
 
@@ -971,7 +971,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductImage(ProductImage $productImage)
+        public function removeProductImage(ProductImage $productImage): bool
         {
             return $this->ProductImage->removeElement($productImage);
         }
@@ -981,7 +981,7 @@ if (!class_exists(Product::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,ProductImage>
          */
-        public function getProductImage()
+        public function getProductImage(): \Doctrine\Common\Collections\Collection
         {
             return $this->ProductImage;
         }
@@ -993,7 +993,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function addProductTag(ProductTag $productTag)
+        public function addProductTag(ProductTag $productTag): Product
         {
             $this->ProductTag[] = $productTag;
 
@@ -1007,7 +1007,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductTag(ProductTag $productTag)
+        public function removeProductTag(ProductTag $productTag): bool
         {
             return $this->ProductTag->removeElement($productTag);
         }
@@ -1017,7 +1017,7 @@ if (!class_exists(Product::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,ProductTag>
          */
-        public function getProductTag()
+        public function getProductTag(): \Doctrine\Common\Collections\Collection
         {
             return $this->ProductTag;
         }
@@ -1028,7 +1028,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Tag[]
          */
-        public function getTags()
+        public function getTags(): array
         {
             $tags = [];
 
@@ -1050,7 +1050,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
+        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Product
         {
             $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
 
@@ -1064,7 +1064,7 @@ if (!class_exists(Product::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
+        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): bool
         {
             return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
         }
@@ -1074,7 +1074,7 @@ if (!class_exists(Product::class)) {
          *
          * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
          */
-        public function getCustomerFavoriteProducts()
+        public function getCustomerFavoriteProducts(): \Doctrine\Common\Collections\Collection
         {
             return $this->CustomerFavoriteProducts;
         }
@@ -1086,7 +1086,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Product
         {
             $this->Creator = $creator;
 
@@ -1098,7 +1098,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
@@ -1110,7 +1110,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Product
          */
-        public function setStatus(?Master\ProductStatus $status = null)
+        public function setStatus(?Master\ProductStatus $status = null): Product
         {
             $this->Status = $status;
 
@@ -1122,7 +1122,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Master\ProductStatus|null
          */
-        public function getStatus()
+        public function getStatus(): ?Master\ProductStatus
         {
             return $this->Status;
         }

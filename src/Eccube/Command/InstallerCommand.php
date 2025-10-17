@@ -119,7 +119,7 @@ class InstallerCommand extends Command
             /**
              * @return array<string,mixed>
              */
-            private function getEnvParameters()
+            private function getEnvParameters(): array
             {
                 return [
                     'APP_ENV' => $this->appEnv,
@@ -141,7 +141,7 @@ class InstallerCommand extends Command
              *
              * @return void
              */
-            public function updateEnvFile()
+            public function updateEnvFile(): void
             {
                 // $envDir = $this->eccubeConfig->get('kernel.project_dir');
                 $envFile = $this->envDir.'/.env';
@@ -162,7 +162,7 @@ class InstallerCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
     }
 
@@ -173,7 +173,7 @@ class InstallerCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
         $this->io->text([
@@ -278,7 +278,7 @@ class InstallerCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -338,7 +338,7 @@ class InstallerCommand extends Command
      *
      * @return string
      */
-    protected function getDatabaseName($databaseUrl)
+    protected function getDatabaseName($databaseUrl): string
     {
         if (str_starts_with((string) $databaseUrl, 'sqlite')) {
             return 'sqlite';
@@ -356,11 +356,11 @@ class InstallerCommand extends Command
     /**
      * @param string $databaseUrl
      *
-     * @return false|mixed|string
+     * @return false|string
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function getDatabaseServerVersion($databaseUrl)
+    protected function getDatabaseServerVersion($databaseUrl): false|string
     {
         try {
             $conn = DriverManager::getConnection([

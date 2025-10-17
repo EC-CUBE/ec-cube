@@ -72,7 +72,7 @@ class DeleteCartsCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('date', InputArgument::REQUIRED, 'Deletes carts before the specified date');
@@ -87,7 +87,7 @@ class DeleteCartsCommand extends Command
      * @throws \Exception
      */
     #[\Override]
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('date')) {
             return;
@@ -122,7 +122,7 @@ class DeleteCartsCommand extends Command
      * @throws \Exception
      */
     #[\Override]
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->locale = $this->eccubeConfig->get('locale');
@@ -149,7 +149,7 @@ class DeleteCartsCommand extends Command
      *
      * @return void
      */
-    protected function deleteCarts(\DateTime $dateTime)
+    protected function deleteCarts(\DateTime $dateTime): void
     {
         try {
             $this->entityManager->beginTransaction();
@@ -174,7 +174,7 @@ class DeleteCartsCommand extends Command
     /**
      * @return \IntlDateFormatter|null
      */
-    protected function createIntlFormatter()
+    protected function createIntlFormatter(): ?\IntlDateFormatter
     {
         return \IntlDateFormatter::create(
             $this->locale,

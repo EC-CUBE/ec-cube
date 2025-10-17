@@ -32,7 +32,7 @@ abstract class AbstractEntity implements \ArrayAccess
 {
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
         $method = $inflector->classify($offset);
@@ -45,13 +45,13 @@ abstract class AbstractEntity implements \ArrayAccess
 
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
     }
 
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
         $method = $inflector->classify($offset);
@@ -65,11 +65,13 @@ abstract class AbstractEntity implements \ArrayAccess
         } elseif (method_exists($this, "has$method")) {
             return $this->{"has$method"}();
         }
+
+        return null;
     }
 
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
     }
 
@@ -83,7 +85,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return void
      */
-    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], ?\ReflectionClass $parentClass = null)
+    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], ?\ReflectionClass $parentClass = null): void
     {
         if (is_object($parentClass)) {
             $objReflect = $parentClass;
@@ -157,7 +159,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return array<string,mixed>
      */
-    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
+    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): array
     {
         $arrResult = $this->toArray($excludeAttribute);
         foreach ($arrResult as &$value) {
@@ -188,7 +190,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return string
      */
-    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
+    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): string
     {
         return json_encode($this->toNormalizedArray($excludeAttribute));
     }
@@ -200,7 +202,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return string
      */
-    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
+    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): string
     {
         $ReflectionClass = new \ReflectionClass($this);
         $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder([XmlEncoder::ROOT_NODE_NAME => $ReflectionClass->getShortName()])]);
@@ -222,7 +224,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return AbstractEntity
      */
-    public function copyProperties($srcObject, array $excludeAttribute = [])
+    public function copyProperties($srcObject, array $excludeAttribute = []): AbstractEntity
     {
         $this->setPropertiesFromArray($srcObject->toArray($excludeAttribute), $excludeAttribute);
 
@@ -236,7 +238,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return array<mixed> associative array of [[id => value], [id => value], ...]
      */
-    public function getEntityIdentifierAsArray(AbstractEntity $Entity)
+    public function getEntityIdentifierAsArray(AbstractEntity $Entity): array
     {
         $Result = [];
         $PropReflect = new \ReflectionClass($Entity);

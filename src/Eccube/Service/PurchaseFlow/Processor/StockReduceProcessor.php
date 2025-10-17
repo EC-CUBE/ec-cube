@@ -53,7 +53,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 在庫を減らす
         $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
@@ -65,7 +65,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 在庫を戻す
         $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
@@ -83,7 +83,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\PessimisticLockException
      */
-    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
+    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback): void
     {
         // Order以外の場合は何もしない
         if (!$itemHolder instanceof Order) {

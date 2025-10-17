@@ -20,9 +20,9 @@ class ComposerServiceFactory
     /**
      * @param ContainerInterface $container
      *
-     * @return ComposerApiService|object|null
+     * @return ComposerApiService|null
      */
-    public static function createService(ContainerInterface $container)
+    public static function createService(ContainerInterface $container): ?ComposerApiService
     {
         return $container->get(ComposerApiService::class);
     }

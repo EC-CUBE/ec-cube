@@ -70,7 +70,7 @@ class ProductStatusValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame(10, $this->cartItem->getQuantity());
+        self::assertSame('10', $this->cartItem->getQuantity());
     }
 
     /**

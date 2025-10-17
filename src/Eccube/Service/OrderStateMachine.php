@@ -60,7 +60,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function apply(Order $Order, OrderStatus $OrderStatus)
+    public function apply(Order $Order, OrderStatus $OrderStatus): void
     {
         $context = $this->newContext($Order);
         $transition = $this->getTransition($context, $OrderStatus);
@@ -79,7 +79,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return bool 指定ステータスに遷移できる場合はtrue
      */
-    public function can(Order $Order, OrderStatus $OrderStatus)
+    public function can(Order $Order, OrderStatus $OrderStatus): bool
     {
         return !is_null($this->getTransition($this->newContext($Order), $OrderStatus));
     }
@@ -88,9 +88,9 @@ class OrderStateMachine implements EventSubscriberInterface
      * @param OrderStateMachineContext $context
      * @param OrderStatus $OrderStatus
      *
-     * @return mixed|\Symfony\Component\Workflow\Transition|null
+     * @return \Symfony\Component\Workflow\Transition|null
      */
-    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus)
+    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): ?\Symfony\Component\Workflow\Transition
     {
         $transitions = $this->machine->getEnabledTransitions($context);
         foreach ($transitions as $t) {
@@ -106,7 +106,7 @@ class OrderStateMachine implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.order.completed' => ['onCompleted'],
@@ -130,7 +130,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function updatePaymentDate(Event $event)
+    public function updatePaymentDate(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -146,7 +146,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @throws PurchaseFlow\PurchaseException
      */
-    public function commitUsePoint(Event $event)
+    public function commitUsePoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -160,7 +160,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function rollbackUsePoint(Event $event)
+    public function rollbackUsePoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -176,7 +176,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @throws PurchaseFlow\PurchaseException
      */
-    public function commitStock(Event $event)
+    public function commitStock(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -190,7 +190,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function rollbackStock(Event $event)
+    public function rollbackStock(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -204,7 +204,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function commitAddPoint(Event $event)
+    public function commitAddPoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -221,7 +221,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function rollbackAddPoint(Event $event)
+    public function rollbackAddPoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -239,7 +239,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onCompleted(Event $event)
+    public function onCompleted(Event $event): void
     {
         /** @var OrderStateMachineContext $context */
         $context = $event->getSubject();
@@ -253,7 +253,7 @@ class OrderStateMachine implements EventSubscriberInterface
      *
      * @return OrderStateMachineContext
      */
-    private function newContext(Order $Order)
+    private function newContext(Order $Order): OrderStateMachineContext
     {
         return new OrderStateMachineContext((string) $Order->getOrderStatus()->getId(), $Order);
     }
@@ -282,7 +282,7 @@ class OrderStateMachineContext
     /**
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -292,7 +292,7 @@ class OrderStateMachineContext
      *
      * @return void
      */
-    public function setStatus($status)
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
@@ -300,7 +300,7 @@ class OrderStateMachineContext
     /**
      * @return Order
      */
-    public function getOrder()
+    public function getOrder(): Order
     {
         return $this->Order;
     }

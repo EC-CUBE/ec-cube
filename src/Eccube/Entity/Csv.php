@@ -102,7 +102,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -114,7 +114,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setEntityName($entityName)
+        public function setEntityName($entityName): Csv
         {
             $this->entity_name = $entityName;
 
@@ -126,7 +126,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return string
          */
-        public function getEntityName()
+        public function getEntityName(): string
         {
             return $this->entity_name;
         }
@@ -138,7 +138,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setFieldName($fieldName)
+        public function setFieldName($fieldName): Csv
         {
             $this->field_name = $fieldName;
 
@@ -150,7 +150,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return string
          */
-        public function getFieldName()
+        public function getFieldName(): string
         {
             return $this->field_name;
         }
@@ -162,7 +162,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setReferenceFieldName($referenceFieldName = null)
+        public function setReferenceFieldName($referenceFieldName = null): Csv
         {
             $this->reference_field_name = $referenceFieldName;
 
@@ -174,7 +174,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return string|null
          */
-        public function getReferenceFieldName()
+        public function getReferenceFieldName(): ?string
         {
             return $this->reference_field_name;
         }
@@ -186,7 +186,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setDispName($dispName)
+        public function setDispName($dispName): Csv
         {
             $this->disp_name = $dispName;
 
@@ -198,7 +198,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return string
          */
-        public function getDispName()
+        public function getDispName(): string
         {
             return $this->disp_name;
         }
@@ -210,7 +210,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): Csv
         {
             $this->sort_no = $sortNo;
 
@@ -222,7 +222,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -234,7 +234,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setEnabled($enabled)
+        public function setEnabled($enabled): Csv
         {
             $this->enabled = $enabled;
 
@@ -246,7 +246,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return bool
          */
-        public function isEnabled()
+        public function isEnabled(): bool
         {
             return $this->enabled;
         }
@@ -258,7 +258,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Csv
         {
             $this->create_date = $createDate;
 
@@ -268,9 +268,9 @@ if (!class_exists(Csv::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -282,7 +282,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Csv
         {
             $this->update_date = $updateDate;
 
@@ -292,9 +292,9 @@ if (!class_exists(Csv::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -306,7 +306,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setCsvType(?Master\CsvType $csvType = null)
+        public function setCsvType(?Master\CsvType $csvType = null): Csv
         {
             $this->CsvType = $csvType;
 
@@ -318,7 +318,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Master\CsvType|null
          */
-        public function getCsvType()
+        public function getCsvType(): ?Master\CsvType
         {
             return $this->CsvType;
         }
@@ -330,7 +330,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Csv
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Csv
         {
             $this->Creator = $creator;
 
@@ -342,7 +342,7 @@ if (!class_exists(Csv::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

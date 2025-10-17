@@ -43,7 +43,7 @@ class GenerateProxyCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
     }
 

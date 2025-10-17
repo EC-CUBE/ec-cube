@@ -51,7 +51,7 @@ class PluginGenerateCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('name', InputOption::VALUE_REQUIRED, 'plugin name')
@@ -66,7 +66,7 @@ class PluginGenerateCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->fs = new Filesystem();
@@ -79,7 +79,7 @@ class PluginGenerateCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('name') && null !== $input->getArgument('code') && null !== $input->getArgument('ver')) {
             return;
@@ -147,7 +147,7 @@ class PluginGenerateCommand extends Command
      *
      * @return string
      */
-    public function validateCode($code)
+    public function validateCode($code): string
     {
         if (empty($code)) {
             throw new InvalidArgumentException('The code can not be empty.');
@@ -170,9 +170,9 @@ class PluginGenerateCommand extends Command
     /**
      * @param string $version
      *
-     * @return mixed
+     * @return string
      */
-    public function validateVersion($version)
+    public function validateVersion($version): string
     {
         // TODO
         return $version;
@@ -183,7 +183,7 @@ class PluginGenerateCommand extends Command
      *
      * @return void
      */
-    protected function createDirectories($pluginDir)
+    protected function createDirectories($pluginDir): void
     {
         $dirs = [
             'Controller/Admin',
@@ -210,7 +210,7 @@ class PluginGenerateCommand extends Command
      *
      * @return void
      */
-    protected function createConfig($pluginDir, $name, $code, $version)
+    protected function createConfig($pluginDir, $name, $code, $version): void
     {
         $lowerCode = mb_strtolower((string) $code);
         $source = <<<EOL
@@ -236,7 +236,7 @@ EOL;
      *
      * @return void
      */
-    protected function createGithubActions($pluginDir)
+    protected function createGithubActions($pluginDir): void
     {
         $source = '
 name: Packaging for EC-CUBE Plugin
@@ -271,7 +271,7 @@ jobs:
      *
      * @return void
      */
-    protected function createGitattributes($pluginDir)
+    protected function createGitattributes($pluginDir): void
     {
         $source = <<<EOL
 /.gitattributes             export-ignore
@@ -288,7 +288,7 @@ EOL;
      *
      * @return void
      */
-    protected function createMessages($pluginDir)
+    protected function createMessages($pluginDir): void
     {
         $this->fs->dumpFile($pluginDir.'/Resource/locale/messages.ja.yaml', '');
         $this->fs->dumpFile($pluginDir.'/Resource/locale/validators.ja.yaml', '');
@@ -300,7 +300,7 @@ EOL;
      *
      * @return void
      */
-    protected function createTwigBlock($pluginDir, $code)
+    protected function createTwigBlock($pluginDir, $code): void
     {
         $source = <<<EOL
 <?php
@@ -330,7 +330,7 @@ EOL;
      *
      * @return void
      */
-    protected function createNav($pluginDir, $code)
+    protected function createNav($pluginDir, $code): void
     {
         $source = <<<EOL
 <?php
@@ -360,7 +360,7 @@ EOL;
      *
      * @return void
      */
-    protected function createEvent($pluginDir, $code)
+    protected function createEvent($pluginDir, $code): void
     {
         $source = <<<EOL
 <?php
@@ -390,7 +390,7 @@ EOL;
      *
      * @return void
      */
-    protected function createConfigController($pluginDir, $code)
+    protected function createConfigController($pluginDir, $code): void
     {
         $snakecased = Container::underscore($code);
 

@@ -130,9 +130,9 @@ function log_debug($message, array $context = [])
  *
  * @param string $channel 設定されたchannel名
  *
- * @return mixed Returns \Symfony\Bridge\Monolog\Logger
+ * @return Monolog\Logger
  */
-function logs($channel): mixed
+function logs($channel)
 {
     return LoggerFacade::getLoggerBy($channel);
 }

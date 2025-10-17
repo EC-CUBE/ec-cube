@@ -60,7 +60,7 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
     /**
      * @param resource $in
      * @param resource $out
-     * @param int $consumed
+     * @param float|int $consumed
      * @param bool $closing
      */
     #[\Override]

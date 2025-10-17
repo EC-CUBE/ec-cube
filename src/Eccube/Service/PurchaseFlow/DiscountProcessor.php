@@ -36,7 +36,7 @@ interface DiscountProcessor
      *
      * @return void
      */
-    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context);
+    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): void;
 
     /**
      * 値引き明細の追加処理を実装します.
@@ -47,7 +47,7 @@ interface DiscountProcessor
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
      *
-     * @return ProcessResult|void|null
+     * @return ProcessResult|null
      */
-    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context);
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): ?ProcessResult;
 }

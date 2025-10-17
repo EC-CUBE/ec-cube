@@ -42,7 +42,7 @@ class MemberRepository extends AbstractRepository
      *
      * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
      */
-    public function up(Member $Member)
+    public function up(Member $Member): void
     {
         $sortNo = $Member->getSortNo();
         $Member2 = $this->findOneBy(['sort_no' => $sortNo + 1]);
@@ -69,7 +69,7 @@ class MemberRepository extends AbstractRepository
      *
      * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
      */
-    public function down(Member $Member)
+    public function down(Member $Member): void
     {
         $sortNo = $Member->getSortNo();
         $Member2 = $this->findOneBy(['sort_no' => $sortNo - 1]);
@@ -98,7 +98,7 @@ class MemberRepository extends AbstractRepository
      * @throws NonUniqueResultException
      */
     #[\Override]
-    public function save($Member)
+    public function save($Member): void
     {
         if (!$Member->getId()) {
             $sortNo = $this->createQueryBuilder('m')
@@ -122,7 +122,7 @@ class MemberRepository extends AbstractRepository
      * @return void
      */
     #[\Override]
-    public function delete($Member)
+    public function delete($Member): void
     {
         $this->createQueryBuilder('m')
             ->update()

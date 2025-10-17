@@ -30,7 +30,7 @@ class TwigIncludeExtension extends AbstractExtension
     }
 
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('include_dispatch', $this->include_dispatch(...),
@@ -47,7 +47,7 @@ class TwigIncludeExtension extends AbstractExtension
      *
      * @return string レンダリング結果
      */
-    public function include_dispatch($context, $template, $variables = [])
+    public function include_dispatch($context, $template, $variables = []): string
     {
         if (!empty($variables)) {
             $context = array_merge($context, $variables);

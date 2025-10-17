@@ -47,7 +47,7 @@ class TaxRuleService
      *
      * @return string                                 税金付与した金額
      */
-    public function getTax($price, $product = null, $productClass = null, $pref = null, $country = null)
+    public function getTax($price, $product = null, $productClass = null, $pref = null, $country = null): string
     {
         /*
          * 商品別税率が有効で商品別税率が設定されている場合は商品別税率
@@ -79,7 +79,7 @@ class TaxRuleService
      *
      * @return string
      */
-    public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
+    public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null): string
     {
         return bcadd($price, $this->getTax($price, $product, $productClass, $pref, $country), 2);
     }
@@ -94,7 +94,7 @@ class TaxRuleService
      *
      * @return string 税金額
      */
-    public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = '0')
+    public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = '0'): string
     {
         // tax = price * taxRate / 100
         $tax = bcdiv(bcmul($price, $taxRate, 4), '100', 4);
@@ -113,7 +113,7 @@ class TaxRuleService
      *
      * @return string  税金額
      */
-    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = '0')
+    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = '0'): string
     {
         // tax = (price - taxAdjust) * taxRate / (100 + taxRate)
         $priceAfterAdjust = bcsub($price, $taxAdjust, 4);
@@ -131,7 +131,7 @@ class TaxRuleService
      *
      * @return string        端数処理後の数値
      */
-    public static function roundByRoundingType($value, $RoundingType)
+    public static function roundByRoundingType($value, $RoundingType): string
     {
         $ret = match ($RoundingType) {
             // 四捨五入

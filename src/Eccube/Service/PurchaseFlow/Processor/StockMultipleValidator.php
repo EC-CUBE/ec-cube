@@ -48,7 +48,7 @@ class StockMultipleValidator extends ItemHolderValidator
      * @throws InvalidItemException
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if ($itemHolder instanceof Order) {
             $OrderItemsByProductClass = [];

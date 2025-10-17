@@ -36,7 +36,7 @@ class MaintenanceListener implements EventSubscriberInterface
     }
 
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onResponse'],
@@ -48,7 +48,7 @@ class MaintenanceListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onResponse(ResponseEvent $event)
+    public function onResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
 

@@ -82,7 +82,7 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @return TaxRule
      */
-    public function newTaxRule()
+    public function newTaxRule(): TaxRule
     {
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->getEntityManager()->getRepository(RoundingType::class)->find(RoundingType::ROUND);
@@ -111,7 +111,7 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @throws NoResultException
      */
-    public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null)
+    public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null): TaxRule
     {
         // Pref Country 設定
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
@@ -249,7 +249,7 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @return TaxRule[]|null
      */
-    public function getList()
+    public function getList(): ?array
     {
         $qb = $this->createQueryBuilder('t')
             ->orderBy('t.apply_date', 'DESC')
@@ -269,7 +269,7 @@ class TaxRuleRepository extends AbstractRepository
      * @throws NoResultException
      */
     #[\Override]
-    public function delete($TaxRule)
+    public function delete($TaxRule): void
     {
         if (!$TaxRule instanceof TaxRule) {
             $TaxRule = $this->find($TaxRule);
@@ -290,7 +290,7 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @return void
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         $this->rules = [];
     }

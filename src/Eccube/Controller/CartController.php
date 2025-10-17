@@ -79,7 +79,7 @@ class CartController extends AbstractController
      */
     #[Route('/cart', name: 'cart', methods: ['GET'])]
     #[Template('Cart/index.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
@@ -135,7 +135,7 @@ class CartController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
-    protected function execPurchaseFlow($Carts)
+    protected function execPurchaseFlow($Carts): ?\Symfony\Component\HttpFoundation\RedirectResponse
     {
         /** @var PurchaseFlowResult[] $flowResults */
         $flowResults = array_map(function ($Cart) {
@@ -194,7 +194,7 @@ class CartController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
-    public function handleCartItem($operation, $productClassId)
+    public function handleCartItem($operation, $productClassId): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
@@ -240,7 +240,7 @@ class CartController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
     #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
-    public function buystep(Request $request, $cart_key)
+    public function buystep(Request $request, $cart_key): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
     {
         $Carts = $this->cartService->getCart();
         if (!is_object($Carts)) {

@@ -104,7 +104,7 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return int
          */
-        public function getMemberId()
+        public function getMemberId(): int
         {
             return $this->member_id;
         }
@@ -114,7 +114,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setMemberId($member_id)
+        public function setMemberId($member_id): static
         {
             $this->member_id = $member_id;
 
@@ -124,7 +124,7 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return string
          */
-        public function getTitle()
+        public function getTitle(): string
         {
             return $this->title;
         }
@@ -134,7 +134,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setTitle($title)
+        public function setTitle($title): static
         {
             $this->title = $title;
 
@@ -142,9 +142,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getMessage1()
+        public function getMessage1(): ?string
         {
             return $this->message1;
         }
@@ -154,7 +154,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setMessage1($message1)
+        public function setMessage1($message1): static
         {
             $this->message1 = $message1;
 
@@ -162,9 +162,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getMessage2()
+        public function getMessage2(): ?string
         {
             return $this->message2;
         }
@@ -174,7 +174,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setMessage2($message2)
+        public function setMessage2($message2): static
         {
             $this->message2 = $message2;
 
@@ -182,9 +182,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getMessage3()
+        public function getMessage3(): ?string
         {
             return $this->message3;
         }
@@ -194,7 +194,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setMessage3($message3)
+        public function setMessage3($message3): static
         {
             $this->message3 = $message3;
 
@@ -202,9 +202,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getNote1()
+        public function getNote1(): ?string
         {
             return $this->note1;
         }
@@ -214,7 +214,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setNote1($note1)
+        public function setNote1($note1): static
         {
             $this->note1 = $note1;
 
@@ -222,9 +222,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getNote2()
+        public function getNote2(): ?string
         {
             return $this->note2;
         }
@@ -234,7 +234,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setNote2($note2)
+        public function setNote2($note2): static
         {
             $this->note2 = $note2;
 
@@ -242,9 +242,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @return string
+         * @return string|null
          */
-        public function getNote3()
+        public function getNote3(): ?string
         {
             return $this->note3;
         }
@@ -254,7 +254,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setNote3($note3)
+        public function setNote3($note3): static
         {
             $this->note3 = $note3;
 
@@ -264,7 +264,7 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -274,7 +274,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setCreateDate($create_date)
+        public function setCreateDate($create_date): static
         {
             $this->create_date = $create_date;
 
@@ -284,7 +284,7 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -294,7 +294,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return $this
          */
-        public function setUpdateDate($update_date)
+        public function setUpdateDate($update_date): static
         {
             $this->update_date = $update_date;
 
@@ -308,7 +308,7 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return OrderPdf
          */
-        public function setVisible($visible)
+        public function setVisible($visible): OrderPdf
         {
             $this->visible = $visible;
 
@@ -320,30 +320,9 @@ if (!class_exists(OrderPdf::class)) {
          *
          * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
-        }
-
-        /**
-         * @ORM\PrePersist
-         */
-        public function setCreateDateAuto()
-        {
-            if ($this->create_date === null) {
-                $this->create_date = new \DateTime();
-            }
-            if ($this->update_date === null) {
-                $this->update_date = new \DateTime();
-            }
-        }
-
-        /**
-         * @ORM\PreUpdate
-         */
-        public function setUpdateDateAuto()
-        {
-            $this->update_date = new \DateTime();
         }
     }
 }

@@ -48,7 +48,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      * @return void
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -66,7 +66,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @return string
      */
-    private function calculateAddPoint(ItemHolderInterface $itemHolder)
+    private function calculateAddPoint(ItemHolderInterface $itemHolder): string
     {
         $basicPointRate = $this->BaseInfo->getBasicPointRate();
 
@@ -82,15 +82,15 @@ class AddPointProcessor extends ItemHolderPostValidator
                 // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
                 $point = '0';
                 if ($item->isPoint()) {
-                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), (string) $item->getQuantity(), 2);
+                    $pointCalc = bcmul(bcmul($item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), $item->getQuantity(), 2);
                     $point = (string) round((float) $pointCalc);
                 // Only calc point on product
                 } elseif ($item->isProduct()) {
                     // ポイント = 単価 * ポイント付与率 * 数量
-                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), (string) $item->getQuantity(), 2);
+                    $pointCalc = bcmul(bcmul($item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), $item->getQuantity(), 2);
                     $point = (string) round((float) $pointCalc);
                 } elseif ($item->isDiscount()) {
-                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), (string) $item->getQuantity(), 2);
+                    $pointCalc = bcmul(bcmul($item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), $item->getQuantity(), 2);
                     $point = (string) round((float) $pointCalc);
                 }
 
@@ -113,7 +113,7 @@ class AddPointProcessor extends ItemHolderPostValidator
      *
      * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    private function supports(ItemHolderInterface $itemHolder): bool
     {
         if (!$this->BaseInfo->isOptionPoint()) {
             return false;

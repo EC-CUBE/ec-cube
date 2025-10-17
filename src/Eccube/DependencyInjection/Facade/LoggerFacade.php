@@ -41,7 +41,7 @@ class LoggerFacade
      *
      * @return LoggerFacade|null
      */
-    public static function init(ContainerInterface $container, Logger $Logger)
+    public static function init(ContainerInterface $container, Logger $Logger): ?LoggerFacade
     {
         if (null === self::$instance) {
             self::$instance = new self($container, $Logger);
@@ -55,7 +55,7 @@ class LoggerFacade
      *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): Logger
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');
@@ -67,9 +67,9 @@ class LoggerFacade
     /**
      * @param string $channel
      *
-     * @return mixed Returns \Symfony\Bridge\Monolog\Logger
+     * @return \Monolog\Logger
      */
-    public static function getLoggerBy($channel): mixed
+    public static function getLoggerBy($channel): \Monolog\Logger
     {
         return self::$Container->get('monolog.logger.'.$channel);
     }

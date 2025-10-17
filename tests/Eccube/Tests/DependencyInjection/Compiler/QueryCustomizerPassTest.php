@@ -49,12 +49,12 @@ class QueryCustomizerPassTest extends TestCase
 
 class TestQueryCustomizer extends WhereCustomizer
 {
-    protected function createStatements($params, $queryKey)
+    protected function createStatements($params, $queryKey): array
     {
         return [];
     }
 
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return QueryKey::CUSTOMER_SEARCH;
     }

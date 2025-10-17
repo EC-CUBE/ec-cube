@@ -150,7 +150,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($this->initialized) {
             return;
@@ -174,7 +174,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function setFrontVariables(RequestEvent $event)
+    public function setFrontVariables(RequestEvent $event): void
     {
         $request = $event->getRequest();
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
@@ -251,7 +251,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function setAdminGlobals(RequestEvent $event)
+    public function setAdminGlobals(RequestEvent $event): void
     {
         // メニュー表示用配列.
         $menus = [];
@@ -280,7 +280,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @return array<string, array<string,mixed>>
      */
-    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
+    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl): array
     {
         $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
 
@@ -319,7 +319,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [

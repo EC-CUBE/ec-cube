@@ -16,15 +16,10 @@ namespace Eccube\Tests\Command;
 use Eccube\Command\CsvLoaderCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CsvLoaderCommandTest extends AbstractCommandTest
+class CsvLoaderCommandTest extends CommandTestCase
 {
     /** @var \SplFileObject */
     protected $file;
-
-    public static function setUpBeforeClass(): void
-    {
-        self::markTestIncomplete();
-    }
 
     protected function setUp(): void
     {

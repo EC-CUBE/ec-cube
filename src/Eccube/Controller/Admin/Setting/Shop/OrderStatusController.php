@@ -59,7 +59,7 @@ class OrderStatusController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/order_status.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
         $builder = $this->formFactory->createBuilder();

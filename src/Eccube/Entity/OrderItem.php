@@ -37,7 +37,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string
          */
-        public function getPriceIncTax()
+        public function getPriceIncTax(): string
         {
             // 税表示区分が税込の場合は, priceに税込金額が入っている.
             if ($this->TaxDisplayType && $this->TaxDisplayType->getId() == TaxDisplayType::INCLUDED) {
@@ -50,7 +50,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * @return string
          */
-        public function getTotalPrice()
+        public function getTotalPrice(): string
         {
             return bcmul($this->getPriceIncTax(), $this->getQuantity(), 2);
         }
@@ -58,7 +58,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * @return int|null
          */
-        public function getOrderItemTypeId()
+        public function getOrderItemTypeId(): ?int
         {
             if (is_object($this->getOrderItemType())) {
                 return $this->getOrderItemType()->getId();
@@ -73,7 +73,7 @@ if (!class_exists(OrderItem::class)) {
          * @return bool 商品明細の場合 true
          */
         #[\Override]
-        public function isProduct()
+        public function isProduct(): bool
         {
             return $this->getOrderItemTypeId() === OrderItemType::PRODUCT;
         }
@@ -84,7 +84,7 @@ if (!class_exists(OrderItem::class)) {
          * @return bool 送料明細の場合 true
          */
         #[\Override]
-        public function isDeliveryFee()
+        public function isDeliveryFee(): bool
         {
             return $this->getOrderItemTypeId() === OrderItemType::DELIVERY_FEE;
         }
@@ -95,7 +95,7 @@ if (!class_exists(OrderItem::class)) {
          * @return bool 手数料明細の場合 true
          */
         #[\Override]
-        public function isCharge()
+        public function isCharge(): bool
         {
             return $this->getOrderItemTypeId() === OrderItemType::CHARGE;
         }
@@ -106,7 +106,7 @@ if (!class_exists(OrderItem::class)) {
          * @return bool 値引き明細の場合 true
          */
         #[\Override]
-        public function isDiscount()
+        public function isDiscount(): bool
         {
             return $this->getOrderItemTypeId() === OrderItemType::DISCOUNT;
         }
@@ -117,7 +117,7 @@ if (!class_exists(OrderItem::class)) {
          * @return bool 税額明細の場合 true
          */
         #[\Override]
-        public function isTax()
+        public function isTax(): bool
         {
             return $this->getOrderItemTypeId() === OrderItemType::TAX;
         }
@@ -128,18 +128,18 @@ if (!class_exists(OrderItem::class)) {
          * @return bool ポイント明細の場合 true
          */
         #[\Override]
-        public function isPoint()
+        public function isPoint(): bool
         {
             return $this->getOrderItemTypeId() === OrderItemType::POINT;
         }
 
         /**
-         * @var int
+         * @var int|null
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        /** @phpstan-ignore-next-line property.unusedType, property.onlyRead */
         private $id;
 
         /**
@@ -285,9 +285,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -299,7 +299,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setProductName($productName)
+        public function setProductName($productName): OrderItem
         {
             $this->product_name = $productName;
 
@@ -311,7 +311,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string
          */
-        public function getProductName()
+        public function getProductName(): string
         {
             return $this->product_name;
         }
@@ -323,7 +323,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setProductCode($productCode = null)
+        public function setProductCode($productCode = null): OrderItem
         {
             $this->product_code = $productCode;
 
@@ -335,7 +335,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string|null
          */
-        public function getProductCode()
+        public function getProductCode(): ?string
         {
             return $this->product_code;
         }
@@ -347,7 +347,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setClassName1($className1 = null)
+        public function setClassName1($className1 = null): OrderItem
         {
             $this->class_name1 = $className1;
 
@@ -359,7 +359,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string|null
          */
-        public function getClassName1()
+        public function getClassName1(): ?string
         {
             return $this->class_name1;
         }
@@ -371,7 +371,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setClassName2($className2 = null)
+        public function setClassName2($className2 = null): OrderItem
         {
             $this->class_name2 = $className2;
 
@@ -383,7 +383,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string|null
          */
-        public function getClassName2()
+        public function getClassName2(): ?string
         {
             return $this->class_name2;
         }
@@ -395,7 +395,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setClassCategoryName1($classCategoryName1 = null)
+        public function setClassCategoryName1($classCategoryName1 = null): OrderItem
         {
             $this->class_category_name1 = $classCategoryName1;
 
@@ -407,7 +407,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string|null
          */
-        public function getClassCategoryName1()
+        public function getClassCategoryName1(): ?string
         {
             return $this->class_category_name1;
         }
@@ -419,7 +419,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setClassCategoryName2($classCategoryName2 = null)
+        public function setClassCategoryName2($classCategoryName2 = null): OrderItem
         {
             $this->class_category_name2 = $classCategoryName2;
 
@@ -431,7 +431,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string|null
          */
-        public function getClassCategoryName2()
+        public function getClassCategoryName2(): ?string
         {
             return $this->class_category_name2;
         }
@@ -441,9 +441,9 @@ if (!class_exists(OrderItem::class)) {
          *
          * @param string $price
          *
-         * @return OrderItem
+         * @return $this
          */
-        public function setPrice($price)
+        public function setPrice($price): static
         {
             $this->price = $price;
 
@@ -456,7 +456,7 @@ if (!class_exists(OrderItem::class)) {
          * @return string|null
          */
         #[\Override]
-        public function getPrice()
+        public function getPrice(): ?string
         {
             return $this->price;
         }
@@ -464,12 +464,12 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set quantity.
          *
-         * @param string|int $quantity
+         * @param string $quantity
          *
-         * @return OrderItem
+         * @return $this
          */
         #[\Override]
-        public function setQuantity($quantity)
+        public function setQuantity($quantity): static
         {
             $this->quantity = $quantity;
 
@@ -479,10 +479,10 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get quantity.
          *
-         * @return string|float|int
+         * @return string
          */
         #[\Override]
-        public function getQuantity()
+        public function getQuantity(): string
         {
             return $this->quantity;
         }
@@ -490,17 +490,17 @@ if (!class_exists(OrderItem::class)) {
         /**
          * @return string
          */
-        public function getTax()
+        public function getTax(): string
         {
             return $this->tax;
         }
 
         /**
-         * @param string|float $tax
+         * @param string $tax
          *
          * @return $this
          */
-        public function setTax($tax)
+        public function setTax($tax): static
         {
             $this->tax = $tax;
 
@@ -510,11 +510,11 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param string|int $taxRate
+         * @param string $taxRate
          *
          * @return OrderItem
          */
-        public function setTaxRate($taxRate)
+        public function setTaxRate($taxRate): OrderItem
         {
             $this->tax_rate = $taxRate;
 
@@ -526,7 +526,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string
          */
-        public function getTaxRate()
+        public function getTaxRate(): string
         {
             return $this->tax_rate;
         }
@@ -538,7 +538,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setTaxAdjust($tax_adjust)
+        public function setTaxAdjust($tax_adjust): OrderItem
         {
             $this->tax_adjust = $tax_adjust;
 
@@ -548,9 +548,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxAdjust.
          *
-         * @return string|float|int
+         * @return string
          */
-        public function getTaxAdjust()
+        public function getTaxAdjust(): string
         {
             return $this->tax_adjust;
         }
@@ -564,7 +564,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setTaxRuleId($taxRuleId = null)
+        public function setTaxRuleId($taxRuleId = null): OrderItem
         {
             $this->tax_rule_id = $taxRuleId;
 
@@ -578,7 +578,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return int|null
          */
-        public function getTaxRuleId()
+        public function getTaxRuleId(): ?int
         {
             return $this->tax_rule_id;
         }
@@ -588,7 +588,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return string
          */
-        public function getCurrencyCode()
+        public function getCurrencyCode(): string
         {
             return $this->currency_code;
         }
@@ -600,7 +600,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setCurrencyCode($currencyCode = null)
+        public function setCurrencyCode($currencyCode = null): OrderItem
         {
             $this->currency_code = $currencyCode;
 
@@ -610,9 +610,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get processorName.
          *
-         * @return string
+         * @return string|null
          */
-        public function getProcessorName()
+        public function getProcessorName(): ?string
         {
             return $this->processor_name;
         }
@@ -624,7 +624,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return $this
          */
-        public function setProcessorName($processorName = null)
+        public function setProcessorName($processorName = null): static
         {
             $this->processor_name = $processorName;
 
@@ -638,7 +638,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setOrder(?Order $order = null)
+        public function setOrder(?Order $order = null): OrderItem
         {
             $this->Order = $order;
 
@@ -650,7 +650,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return Order|null
          */
-        public function getOrder()
+        public function getOrder(): ?Order
         {
             return $this->Order;
         }
@@ -658,7 +658,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * @return int|null
          */
-        public function getOrderId()
+        public function getOrderId(): ?int
         {
             if (is_object($this->getOrder())) {
                 return $this->getOrder()->getId();
@@ -674,7 +674,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): OrderItem
         {
             $this->Product = $product;
 
@@ -686,7 +686,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
@@ -698,7 +698,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setProductClass(?ProductClass $productClass = null)
+        public function setProductClass(?ProductClass $productClass = null): OrderItem
         {
             $this->ProductClass = $productClass;
 
@@ -711,7 +711,7 @@ if (!class_exists(OrderItem::class)) {
          * @return ProductClass|null
          */
         #[\Override]
-        public function getProductClass()
+        public function getProductClass(): ?ProductClass
         {
             return $this->ProductClass;
         }
@@ -723,7 +723,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setShipping(?Shipping $shipping = null)
+        public function setShipping(?Shipping $shipping = null): OrderItem
         {
             $this->Shipping = $shipping;
 
@@ -735,7 +735,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return Shipping|null
          */
-        public function getShipping()
+        public function getShipping(): ?Shipping
         {
             return $this->Shipping;
         }
@@ -743,7 +743,7 @@ if (!class_exists(OrderItem::class)) {
         /**
          * @return RoundingType|null
          */
-        public function getRoundingType()
+        public function getRoundingType(): ?RoundingType
         {
             return $this->RoundingType;
         }
@@ -753,7 +753,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return $this
          */
-        public function setRoundingType(?RoundingType $RoundingType = null)
+        public function setRoundingType(?RoundingType $RoundingType = null): static
         {
             $this->RoundingType = $RoundingType;
 
@@ -767,7 +767,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setTaxType(?Master\TaxType $taxType = null)
+        public function setTaxType(?Master\TaxType $taxType = null): OrderItem
         {
             $this->TaxType = $taxType;
 
@@ -779,7 +779,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return Master\TaxType|null
          */
-        public function getTaxType()
+        public function getTaxType(): ?Master\TaxType
         {
             return $this->TaxType;
         }
@@ -791,7 +791,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setTaxDisplayType(?TaxDisplayType $taxDisplayType = null)
+        public function setTaxDisplayType(?TaxDisplayType $taxDisplayType = null): OrderItem
         {
             $this->TaxDisplayType = $taxDisplayType;
 
@@ -803,7 +803,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return TaxDisplayType|null
          */
-        public function getTaxDisplayType()
+        public function getTaxDisplayType(): ?TaxDisplayType
         {
             return $this->TaxDisplayType;
         }
@@ -815,7 +815,7 @@ if (!class_exists(OrderItem::class)) {
          *
          * @return OrderItem
          */
-        public function setOrderItemType(?OrderItemType $orderItemType = null)
+        public function setOrderItemType(?OrderItemType $orderItemType = null): OrderItem
         {
             $this->OrderItemType = $orderItemType;
 
@@ -828,7 +828,7 @@ if (!class_exists(OrderItem::class)) {
          * @return OrderItemType|null
          */
         #[\Override]
-        public function getOrderItemType()
+        public function getOrderItemType(): ?OrderItemType
         {
             return $this->OrderItemType;
         }

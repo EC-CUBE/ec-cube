@@ -41,7 +41,7 @@ class NewsRepository extends AbstractRepository
      * @return void
      */
     #[\Override]
-    public function save($News)
+    public function save($News): void
     {
         $em = $this->getEntityManager();
         $em->persist($News);
@@ -56,7 +56,7 @@ class NewsRepository extends AbstractRepository
      * @return void
      */
     #[\Override]
-    public function delete($News)
+    public function delete($News): void
     {
         $em = $this->getEntityManager();
         $em->remove($News);
@@ -66,7 +66,7 @@ class NewsRepository extends AbstractRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderAll()
+    public function getQueryBuilderAll(): \Doctrine\ORM\QueryBuilder
     {
         $qb = $this->createQueryBuilder('n');
         $qb->orderBy('n.publish_date', 'DESC')
@@ -78,7 +78,7 @@ class NewsRepository extends AbstractRepository
     /**
      * @return ArrayCollection<int, News>
      */
-    public function getList()
+    public function getList(): ArrayCollection
     {
         // second level cacheを効かせるためfindByで取得
         $Results = $this->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);

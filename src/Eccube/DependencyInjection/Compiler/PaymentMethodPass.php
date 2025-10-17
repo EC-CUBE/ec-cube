@@ -29,7 +29,7 @@ class PaymentMethodPass implements CompilerPassInterface
      * @throws \InvalidArgumentException
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $ids = $container->findTaggedServiceIds(self::PAYMENT_METHOD_TAG);
 

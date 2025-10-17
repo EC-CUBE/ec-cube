@@ -40,7 +40,7 @@ class ConvertKanaListener implements EventSubscriberInterface
     }
 
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
@@ -52,7 +52,7 @@ class ConvertKanaListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onPreSubmit(FormEvent $event)
+    public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();
 

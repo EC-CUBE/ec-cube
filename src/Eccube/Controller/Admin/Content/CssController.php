@@ -29,7 +29,7 @@ class CssController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/content/css', name: 'admin_content_css', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/css.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 

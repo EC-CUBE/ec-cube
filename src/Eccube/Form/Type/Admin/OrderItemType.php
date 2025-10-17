@@ -127,7 +127,7 @@ class OrderItemType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('product_name', TextType::class, [
@@ -307,7 +307,7 @@ class OrderItemType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => OrderItem::class,
@@ -318,7 +318,7 @@ class OrderItemType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'order_item';
     }
@@ -329,7 +329,7 @@ class OrderItemType extends AbstractType
      *
      * @return void
      */
-    protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
+    protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         if (count($errors) < 1) {
             return;

@@ -77,7 +77,7 @@ if (!class_exists(OrderItemType::class, false)) {
          *
          * @return bool
          */
-        public function isProduct()
+        public function isProduct(): bool
         {
             if ($this->id == self::PRODUCT) {
                 return true;

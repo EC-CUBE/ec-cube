@@ -51,7 +51,7 @@ class SaleLimitOneValidator extends ItemValidator
      *
      * @throws InvalidItemException
      */
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -63,7 +63,7 @@ class SaleLimitOneValidator extends ItemValidator
         }
     }
 
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $item->setQuantity(1);
     }

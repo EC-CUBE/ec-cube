@@ -131,7 +131,7 @@ class AdminController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
     #[Template('@admin/login.twig')]
-    public function login(Request $request)
+    public function login(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_homepage');
@@ -167,7 +167,7 @@ class AdminController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
     #[Template('@admin/index.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
         $is_danger_admin_url = false;
@@ -278,7 +278,7 @@ class AdminController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
-    public function sale(Request $request)
+    public function sale(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
@@ -397,7 +397,7 @@ class AdminController extends AbstractController
      * @return Response
      */
     #[Route('/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
-    public function searchCustomer(Request $request)
+    public function searchCustomer(Request $request): Response
     {
         $searchData = [];
         $searchData['customer_status'] = [CustomerStatus::REGULAR];
@@ -414,7 +414,7 @@ class AdminController extends AbstractController
      *
      * @return array<int|string,mixed>|null
      */
-    protected function getOrderEachStatus(array $excludes)
+    protected function getOrderEachStatus(array $excludes): ?array
     {
         $sql = 'SELECT
                     t1.order_status_id as status,
@@ -444,11 +444,11 @@ class AdminController extends AbstractController
     /**
      * @param \DateTime $dateTime
      *
-     * @return array|mixed
+     * @return array<string, int>
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByDay($dateTime)
+    protected function getSalesByDay($dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -481,11 +481,11 @@ class AdminController extends AbstractController
     /**
      * @param \DateTime $dateTime
      *
-     * @return array|mixed
+     * @return array<string, int>
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByMonth($dateTime)
+    protected function getSalesByMonth($dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -520,11 +520,11 @@ class AdminController extends AbstractController
     /**
      * 在庫切れ商品数を取得
      *
-     * @return mixed
+     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countNonStockProducts()
+    protected function countNonStockProducts(): int|string|null
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(DISTINCT p.id)')
@@ -540,11 +540,11 @@ class AdminController extends AbstractController
     /**
      * 商品数を取得
      *
-     * @return mixed
+     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countProducts()
+    protected function countProducts(): int|string|null
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(p.id)')
@@ -557,11 +557,11 @@ class AdminController extends AbstractController
     /**
      * 本会員数を取得
      *
-     * @return mixed
+     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function countCustomers()
+    protected function countCustomers(): int|string|null
     {
         $qb = $this->customerRepository->createQueryBuilder('c')
             ->select('count(c.id)')
@@ -580,7 +580,7 @@ class AdminController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    protected function getData(Carbon $fromDate, Carbon $toDate, $format)
+    protected function getData(Carbon $fromDate, Carbon $toDate, $format): array
     {
         $qb = $this->orderRepository->createQueryBuilder('o')
             ->andWhere('o.order_date >= :fromDate')
@@ -606,7 +606,7 @@ class AdminController extends AbstractController
      *
      * @return array<mixed>
      */
-    protected function convert($result, Carbon $fromDate, Carbon $toDate, $format)
+    protected function convert($result, Carbon $fromDate, Carbon $toDate, $format): array
     {
         $raw = [];
         for ($date = $fromDate; $date <= $toDate; $date = $date->addDay()) {

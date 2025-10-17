@@ -45,7 +45,7 @@ class TradeLawController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/tradelaw.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $builder = $this->formFactory->createBuilder();

@@ -82,7 +82,7 @@ class ChangeController extends AbstractController
      */
     #[Route('/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
     #[Template('Mypage/change.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
@@ -162,7 +162,7 @@ class ChangeController extends AbstractController
      */
     #[Route('/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
     #[Template('Mypage/change_complete.twig')]
-    public function complete(Request $request)
+    public function complete(Request $request): array
     {
         return [];
     }

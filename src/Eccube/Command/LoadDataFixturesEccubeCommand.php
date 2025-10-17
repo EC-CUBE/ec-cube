@@ -46,7 +46,7 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setHelp(<<<EOF

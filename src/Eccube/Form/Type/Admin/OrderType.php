@@ -94,7 +94,7 @@ class OrderType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', NameType::class, [
@@ -254,7 +254,7 @@ class OrderType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
@@ -265,7 +265,7 @@ class OrderType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'order';
     }
@@ -277,7 +277,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function sortOrderItems(FormEvent $event)
+    public function sortOrderItems(FormEvent $event): void
     {
         /** @var Order|null $Order */
         $Order = $event->getData();
@@ -300,7 +300,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function addOrderStatusForm(FormEvent $event)
+    public function addOrderStatusForm(FormEvent $event): void
     {
         /** @var Order|null $Order */
         $Order = $event->getData();
@@ -345,7 +345,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function addShippingForm(FormEvent $event)
+    public function addShippingForm(FormEvent $event): void
     {
         /** @var Order|null $Order */
         $Order = $event->getData();
@@ -374,7 +374,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function copyFields(FormEvent $event)
+    public function copyFields(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -412,7 +412,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function validateOrderStatus(FormEvent $event)
+    public function validateOrderStatus(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -449,7 +449,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function validateOrderItems(FormEvent $event)
+    public function validateOrderItems(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -476,7 +476,7 @@ class OrderType extends AbstractType
      *
      * @return void
      */
-    public function associateOrderAndShipping(FormEvent $event)
+    public function associateOrderAndShipping(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();

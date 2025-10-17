@@ -43,7 +43,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function migration(Connection $connection, $pluginCode, $version = null, $migrationFilePath = null)
+    public function migration(Connection $connection, $pluginCode, $version = null, $migrationFilePath = null): void
     {
         if (null === $migrationFilePath) {
             $migrationFilePath = __DIR__.'/../../../app/Plugin/'.$pluginCode.'/DoctrineMigrations';
@@ -91,7 +91,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function install(array $meta, ContainerInterface $container)
+    public function install(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -104,7 +104,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function update(array $meta, ContainerInterface $container)
+    public function update(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -117,7 +117,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function enable(array $meta, ContainerInterface $container)
+    public function enable(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -130,7 +130,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function disable(array $meta, ContainerInterface $container)
+    public function disable(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -143,7 +143,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function uninstall(array $meta, ContainerInterface $container)
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }

@@ -57,7 +57,7 @@ class PaymentController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
     #[Template('@admin/Setting/Shop/payment.twig')]
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $Payments = $this->paymentRepository
             ->findBy(
@@ -87,7 +87,7 @@ class PaymentController extends AbstractController
     #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_payment_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/payment_edit.twig')]
-    public function edit(Request $request, ?Payment $Payment = null)
+    public function edit(Request $request, ?Payment $Payment = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if (is_null($Payment)) {
             $Payment = $this->paymentRepository->findOneBy([], ['sort_no' => 'DESC']);
@@ -178,7 +178,7 @@ class PaymentController extends AbstractController
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
-    public function imageProcess(Request $request)
+    public function imageProcess(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -232,7 +232,7 @@ class PaymentController extends AbstractController
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
-    public function imageLoad(Request $request)
+    public function imageLoad(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -269,7 +269,7 @@ class PaymentController extends AbstractController
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
-    public function imageRevert(Request $request)
+    public function imageRevert(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -293,7 +293,7 @@ class PaymentController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Payment $TargetPayment)
+    public function delete(Request $request, Payment $TargetPayment): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -332,7 +332,7 @@ class PaymentController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function visible(Payment $Payment)
+    public function visible(Payment $Payment): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -357,7 +357,7 @@ class PaymentController extends AbstractController
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request)
+    public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();

@@ -44,11 +44,15 @@ jobs:
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
       - name: Setup EC-CUBE
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           bin/console doctrine:database:create
           bin/console doctrine:schema:create
@@ -64,7 +68,7 @@ jobs:
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
-          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
+          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v4
@@ -123,6 +127,9 @@ jobs:
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: ${{ matrix.app_env }}
@@ -131,6 +138,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           TRUSTED_HOSTS: '127.0.0.1,localhost'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "DATABASE_URL=${DATABASE_URL}" >> .env
@@ -138,6 +146,7 @@ jobs:
           echo "MAILER_DSN=${MAILER_DSN}" >> .env
           echo "ECCUBE_PACKAGE_API_URL=${ECCUBE_PACKAGE_API_URL}" >> .env
           echo "TRUSTED_HOSTS=${TRUSTED_HOSTS}" >> .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev

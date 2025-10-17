@@ -65,7 +65,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
      * @return void
      */
     #[\Override]
-    public function initialize(InputInterface $input, OutputInterface $output)
+    public function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }

@@ -53,7 +53,7 @@ class Step4Type extends AbstractType
      * @throws \Exception
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $database = [];
         if (extension_loaded('pdo_pgsql')) {
@@ -135,7 +135,7 @@ class Step4Type extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'install_step4';
     }
@@ -147,7 +147,7 @@ class Step4Type extends AbstractType
      *
      * @return void
      */
-    public function validate($data, ExecutionContext $context, $param = null)
+    public function validate($data, ExecutionContext $context, $param = null): void
     {
         $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
         if ($parameters['database'] != 'pdo_sqlite') {

@@ -68,7 +68,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -80,7 +80,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return DeliveryDuration
          */
-        public function setName($name = null)
+        public function setName($name = null): DeliveryDuration
         {
             $this->name = $name;
 
@@ -92,7 +92,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
@@ -104,7 +104,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return DeliveryDuration
          */
-        public function setDuration($duration)
+        public function setDuration($duration): DeliveryDuration
         {
             $this->duration = $duration;
 
@@ -116,7 +116,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return int
          */
-        public function getDuration()
+        public function getDuration(): int
         {
             return $this->duration;
         }
@@ -128,7 +128,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return DeliveryDuration
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): DeliveryDuration
         {
             $this->sort_no = $sortNo;
 
@@ -140,7 +140,7 @@ if (!class_exists(DeliveryDuration::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }

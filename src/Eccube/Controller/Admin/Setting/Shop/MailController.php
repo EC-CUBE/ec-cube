@@ -62,7 +62,7 @@ class MailController extends AbstractController
     #[Route('/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}', requirements: ['id' => '\d+'], name: 'admin_setting_shop_mail_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/mail.twig')]
-    public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null)
+    public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null): RedirectResponse|array
     {
         $Mail ??= new MailTemplate();
         $builder = $this->formFactory
@@ -168,7 +168,7 @@ class MailController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
     #[Template('@admin/Setting/Shop/mail_view.twig')]
-    public function preview(Request $request)
+    public function preview(Request $request): array
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -196,7 +196,7 @@ class MailController extends AbstractController
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, MailTemplate $Mail)
+    public function delete(Request $request, MailTemplate $Mail): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -234,7 +234,7 @@ class MailController extends AbstractController
      *
      * @return string
      */
-    protected function getHtmlFileName($fileName)
+    protected function getHtmlFileName($fileName): string
     {
         // HTMLテンプレートファイルの取得
         $targetTemplate = pathinfo($fileName);
@@ -250,7 +250,7 @@ class MailController extends AbstractController
      *
      * @return bool
      */
-    protected function validateFilePath($path)
+    protected function validateFilePath($path): bool
     {
         $templatePath = realpath($this->getParameter('eccube_theme_front_dir'));
         $path = realpath($path);

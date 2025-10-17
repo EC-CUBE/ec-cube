@@ -38,7 +38,7 @@ if (!class_exists(Member::class)) {
          *
          * @return void
          */
-        public static function loadValidatorMetadata(ClassMetadata $metadata)
+        public static function loadValidatorMetadata(ClassMetadata $metadata): void
         {
             $metadata->addConstraint(new UniqueEntity([
                 'fields' => 'login_id',
@@ -67,7 +67,7 @@ if (!class_exists(Member::class)) {
         /**
          * @return string
          */
-        public function getUsername()
+        public function getUsername(): string
         {
             return $this->login_id;
         }
@@ -201,7 +201,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setName($name = null)
+        public function setName($name = null): Member
         {
             $this->name = $name;
 
@@ -213,7 +213,7 @@ if (!class_exists(Member::class)) {
          *
          * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
@@ -225,7 +225,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setDepartment($department = null)
+        public function setDepartment($department = null): Member
         {
             $this->department = $department;
 
@@ -237,7 +237,7 @@ if (!class_exists(Member::class)) {
          *
          * @return string|null
          */
-        public function getDepartment()
+        public function getDepartment(): ?string
         {
             return $this->department;
         }
@@ -249,7 +249,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setLoginId($loginId)
+        public function setLoginId($loginId): Member
         {
             $this->login_id = $loginId;
 
@@ -261,7 +261,7 @@ if (!class_exists(Member::class)) {
          *
          * @return string
          */
-        public function getLoginId()
+        public function getLoginId(): string
         {
             return $this->login_id;
         }
@@ -279,7 +279,7 @@ if (!class_exists(Member::class)) {
          *
          * @return $this
          */
-        public function setPlainPassword(?string $password): self
+        public function setPlainPassword(?string $password): static
         {
             $this->plainPassword = $password;
 
@@ -293,7 +293,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setPassword($password)
+        public function setPassword($password): Member
         {
             $this->password = $password;
 
@@ -306,7 +306,7 @@ if (!class_exists(Member::class)) {
          * @return string
          */
         #[\Override]
-        public function getPassword(): ?string
+        public function getPassword(): string
         {
             return $this->password;
         }
@@ -318,7 +318,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setSalt($salt)
+        public function setSalt($salt): Member
         {
             $this->salt = $salt;
 
@@ -328,7 +328,7 @@ if (!class_exists(Member::class)) {
         /**
          * Get salt.
          *
-         * @return string
+         * @return string|null
          */
         #[\Override]
         public function getSalt(): ?string
@@ -343,7 +343,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): Member
         {
             $this->sort_no = $sortNo;
 
@@ -355,7 +355,7 @@ if (!class_exists(Member::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -367,7 +367,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setTwoFactorAuthKey($two_factor_auth_key)
+        public function setTwoFactorAuthKey($two_factor_auth_key): Member
         {
             $this->two_factor_auth_key = $two_factor_auth_key;
 
@@ -379,7 +379,7 @@ if (!class_exists(Member::class)) {
          *
          * @return string
          */
-        public function getTwoFactorAuthKey()
+        public function getTwoFactorAuthKey(): string
         {
             return $this->two_factor_auth_key;
         }
@@ -391,7 +391,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setTwoFactorAuthEnabled($two_factor_auth_enabled)
+        public function setTwoFactorAuthEnabled($two_factor_auth_enabled): Member
         {
             $this->two_factor_auth_enabled = $two_factor_auth_enabled;
 
@@ -403,7 +403,7 @@ if (!class_exists(Member::class)) {
          *
          * @return bool
          */
-        public function isTwoFactorAuthEnabled()
+        public function isTwoFactorAuthEnabled(): bool
         {
             return $this->two_factor_auth_enabled;
         }
@@ -415,7 +415,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Member
         {
             $this->create_date = $createDate;
 
@@ -425,9 +425,9 @@ if (!class_exists(Member::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -439,7 +439,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Member
         {
             $this->update_date = $updateDate;
 
@@ -449,9 +449,9 @@ if (!class_exists(Member::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -463,7 +463,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setLoginDate($loginDate = null)
+        public function setLoginDate($loginDate = null): Member
         {
             $this->login_date = $loginDate;
 
@@ -475,7 +475,7 @@ if (!class_exists(Member::class)) {
          *
          * @return \DateTime|null
          */
-        public function getLoginDate()
+        public function getLoginDate(): ?\DateTime
         {
             return $this->login_date;
         }
@@ -487,7 +487,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setWork(?Master\Work $work = null)
+        public function setWork(?Master\Work $work = null): Member
         {
             $this->Work = $work;
 
@@ -499,7 +499,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Master\Work|null
          */
-        public function getWork()
+        public function getWork(): ?Master\Work
         {
             return $this->Work;
         }
@@ -511,7 +511,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setAuthority(?Master\Authority $authority = null)
+        public function setAuthority(?Master\Authority $authority = null): Member
         {
             $this->Authority = $authority;
 
@@ -523,7 +523,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Master\Authority|null
          */
-        public function getAuthority()
+        public function getAuthority(): ?Master\Authority
         {
             return $this->Authority;
         }
@@ -535,7 +535,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Member
         {
             $this->Creator = $creator;
 
@@ -547,7 +547,7 @@ if (!class_exists(Member::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
@@ -562,7 +562,7 @@ if (!class_exists(Member::class)) {
          * @since 5.1.0
          */
         #[\Override]
-        public function serialize()
+        public function serialize(): string
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
             // MemberRepository::loadUserByIdentifier() で Work をチェックしているため、ここでは不要
@@ -588,7 +588,7 @@ if (!class_exists(Member::class)) {
          * @since 5.1.0
          */
         #[\Override]
-        public function unserialize($serialized)
+        public function unserialize($serialized): void
         {
             [$this->id, $this->login_id, $this->password, $this->salt] = unserialize($serialized);
         }

@@ -49,7 +49,7 @@ class LoginHistoryRepository extends AbstractRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData)
+    public function getQueryBuilderBySearchDataForAdmin($searchData): \Doctrine\ORM\QueryBuilder
     {
         $qb = $this->createQueryBuilder('lh')
             ->select('lh');

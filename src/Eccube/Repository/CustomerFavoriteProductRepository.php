@@ -38,7 +38,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      *
      * @return void
      */
-    public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
+    public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product): void
     {
         if ($this->isFavorite($Customer, $Product)) {
             return;
@@ -59,7 +59,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      *
      * @return bool
      */
-    public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
+    public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product): bool
     {
         $qb = $this->createQueryBuilder('cf')
             ->select('COUNT(cf.Product)')
@@ -79,7 +79,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)
+    public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer): QueryBuilder
     {
         $qb = $this->createQueryBuilder('cfp')
             ->select('cfp, p')
@@ -101,7 +101,7 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      * @return void
      */
     #[\Override]
-    public function delete($CustomerFavoriteProduct)
+    public function delete($CustomerFavoriteProduct): void
     {
         $em = $this->getEntityManager();
         $em->remove($CustomerFavoriteProduct);

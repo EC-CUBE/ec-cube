@@ -102,7 +102,7 @@ class ShippingMultipleItemType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('quantity', IntegerType::class, [
@@ -190,7 +190,7 @@ class ShippingMultipleItemType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'shipping_multiple_item';
     }

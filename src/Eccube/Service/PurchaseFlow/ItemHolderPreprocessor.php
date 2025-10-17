@@ -30,5 +30,5 @@ interface ItemHolderPreprocessor
      *
      * @return void
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context);
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void;
 }

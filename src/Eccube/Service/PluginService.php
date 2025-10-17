@@ -154,7 +154,7 @@ class PluginService
      * @throws PluginException
      * @throws \Exception
      */
-    public function install($path, $source = 0, $notExists = false)
+    public function install($path, $source = 0, $notExists = false): bool
     {
         $pluginBaseDir = null;
         $tmp = null;
@@ -211,7 +211,7 @@ class PluginService
      * @throws Exception
      * @throws PluginException
      */
-    public function installWithCode($code, $notExists = false)
+    public function installWithCode($code, $notExists = false): bool
     {
         $this->pluginContext->setCode($code);
         $this->pluginContext->setInstall();
@@ -257,7 +257,7 @@ class PluginService
     /**
      * @return void
      */
-    public function preInstall()
+    public function preInstall(): void
     {
         // キャッシュの削除
         // FIXME: Please fix clearCache function (because it's clear all cache and this file just upload)
@@ -274,7 +274,7 @@ class PluginService
      * @throws ConnectionException
      * @throws Exception
      */
-    public function postInstall($config, $source)
+    public function postInstall($config, $source): void
     {
         // dbにプラグイン登録
         $this->entityManager->getConnection()->beginTransaction();
@@ -331,7 +331,7 @@ class PluginService
      *
      * @return void
      */
-    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true): void
     {
         $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
             $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
@@ -352,7 +352,7 @@ class PluginService
      *
      * @return void
      */
-    public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
+    public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null): void
     {
         if ($plugin->isEnabled()) {
             $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ?: $this->projectRoot.'/app/proxy/entity');
@@ -415,7 +415,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function createTempDir()
+    public function createTempDir(): string
     {
         $tempDir = $this->projectRoot.'/var/cache/'.$this->environment.'/Plugin';
         @mkdir($tempDir);
@@ -433,7 +433,7 @@ class PluginService
      *
      * @return void
      */
-    public function deleteDirs($arr)
+    public function deleteDirs($arr): void
     {
         foreach ($arr as $dir) {
             if (file_exists($dir)) {
@@ -451,7 +451,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function unpackPluginArchive($archive, $dir)
+    public function unpackPluginArchive($archive, $dir): void
     {
         $extension = pathinfo($archive, PATHINFO_EXTENSION);
         try {
@@ -477,7 +477,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function checkPluginArchiveContent($dir, array $config_cache = [])
+    public function checkPluginArchiveContent($dir, array $config_cache = []): void
     {
         if (!empty($config_cache)) {
             $meta = $config_cache;
@@ -505,7 +505,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function readConfig($pluginDir)
+    public function readConfig($pluginDir): array
     {
         $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
         if (file_exists($composerJsonPath) === false) {
@@ -538,7 +538,7 @@ class PluginService
      *
      * @return bool
      */
-    public function checkSymbolName($string)
+    public function checkSymbolName($string): bool
     {
         return strlen((string) $string) < 256 && preg_match('/^\w+$/', (string) $string);
         // plugin_nameやplugin_codeに使える文字のチェック
@@ -551,7 +551,7 @@ class PluginService
      *
      * @return void
      */
-    public function deleteFile($path)
+    public function deleteFile($path): void
     {
         $f = new Filesystem();
         $f->remove($path);
@@ -564,7 +564,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function checkSamePlugin($code)
+    public function checkSamePlugin($code): void
     {
         /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
@@ -578,7 +578,7 @@ class PluginService
      *
      * @return string
      */
-    public function calcPluginDir($code)
+    public function calcPluginDir($code): string
     {
         return $this->projectRoot.'/app/Plugin/'.$code;
     }
@@ -590,7 +590,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function createPluginDir($d)
+    public function createPluginDir($d): void
     {
         $b = @mkdir($d);
         if (!$b) {
@@ -606,7 +606,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function registerPlugin($meta, $source = 0)
+    public function registerPlugin($meta, $source = 0): Plugin
     {
         try {
             $p = new Plugin();
@@ -634,7 +634,7 @@ class PluginService
      *
      * @return void
      */
-    public function callPluginManagerMethod($meta, $method)
+    public function callPluginManagerMethod($meta, $method): void
     {
         $class = '\\Plugin\\'.$meta['code'].'\\PluginManager';
         if (class_exists($class)) {
@@ -653,7 +653,7 @@ class PluginService
      *
      * @throws \Exception
      */
-    public function uninstall(Plugin $plugin, $force = true)
+    public function uninstall(Plugin $plugin, $force = true): bool
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         $this->cacheUtil->clearCache();
@@ -696,7 +696,7 @@ class PluginService
      *
      * @throws \Exception
      */
-    public function unregisterPlugin(Plugin $p)
+    public function unregisterPlugin(Plugin $p): void
     {
         $em = $this->entityManager;
         $em->remove($p);
@@ -710,7 +710,7 @@ class PluginService
      *
      * @throws \Exception
      */
-    public function disable(Plugin $plugin)
+    public function disable(Plugin $plugin): true
     {
         return $this->enable($plugin, false);
     }
@@ -725,7 +725,7 @@ class PluginService
      *
      * @return array<int, string> 生成されたファイルのパス
      */
-    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null, $uninstall = false)
+    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null, $uninstall = false): array
     {
         if (is_null($outputDir)) {
             $outputDir = $this->projectRoot.'/app/proxy/entity';
@@ -773,7 +773,7 @@ class PluginService
      * @throws Exception
      * @throws PluginException
      */
-    public function enable(Plugin $plugin, $enable = true)
+    public function enable(Plugin $plugin, $enable = true): true
     {
         $em = $this->entityManager;
         try {
@@ -816,7 +816,7 @@ class PluginService
      * @throws PluginException
      * @throws \Exception
      */
-    public function update(Plugin $plugin, $path)
+    public function update(Plugin $plugin, $path): bool
     {
         $tmp = null;
         try {
@@ -860,7 +860,7 @@ class PluginService
      *
      * @throws \Exception
      */
-    public function updatePlugin(Plugin $plugin, $meta)
+    public function updatePlugin(Plugin $plugin, $meta): void
     {
         $em = $this->entityManager;
         try {
@@ -905,7 +905,7 @@ class PluginService
      *
      * @throws PluginException
      */
-    public function getPluginRequired($plugin)
+    public function getPluginRequired($plugin): array
     {
         $pluginCode = $plugin instanceof Plugin ? $plugin->getCode() : $plugin['code'];
         $pluginVersion = $plugin instanceof Plugin ? $plugin->getVersion() : $plugin['version'];
@@ -926,7 +926,7 @@ class PluginService
      *
      * @return array<int, string> plugin code
      */
-    public function findDependentPluginNeedDisable($pluginCode)
+    public function findDependentPluginNeedDisable($pluginCode): array
     {
         return $this->findDependentPlugin($pluginCode, true);
     }
@@ -940,7 +940,7 @@ class PluginService
      *
      * @return array<int, string> plugin code
      */
-    public function findDependentPlugin($pluginCode, $enableOnly = false)
+    public function findDependentPlugin($pluginCode, $enableOnly = false): array
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->neq('code', $pluginCode));
@@ -987,7 +987,7 @@ class PluginService
      *
      * @return array<string, string> format [packageName1 => version1, packageName2 => version2]
      */
-    public function getDependentByCode($pluginCode, $libraryType = null)
+    public function getDependentByCode($pluginCode, $libraryType = null): array
     {
         $pluginDir = $this->calcPluginDir($pluginCode);
         $jsonFile = $pluginDir.'/composer.json';
@@ -1018,7 +1018,7 @@ class PluginService
      *
      * @return string format if version=true: "packageName1:version1 packageName2:version2", if version=false: "packageName1 packageName2"
      */
-    public function parseToComposerCommand(array $packages, $getVersion = true)
+    public function parseToComposerCommand(array $packages, $getVersion = true): string
     {
         $result = array_keys($packages);
         if ($getVersion) {
@@ -1040,7 +1040,7 @@ class PluginService
      *
      * @return void
      */
-    public function copyAssets($pluginCode)
+    public function copyAssets($pluginCode): void
     {
         $assetsDir = $this->calcPluginDir($pluginCode).'/Resource/assets';
 
@@ -1058,7 +1058,7 @@ class PluginService
      *
      * @return void
      */
-    public function removeAssets($pluginCode)
+    public function removeAssets($pluginCode): void
     {
         $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode;
 
@@ -1077,7 +1077,7 @@ class PluginService
      *
      * @return false|int|string
      */
-    public function checkPluginExist($plugins, $pluginCode)
+    public function checkPluginExist($plugins, $pluginCode): false|int|string
     {
         if (str_contains($pluginCode, self::VENDOR_NAME.'/')) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);

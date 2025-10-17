@@ -131,7 +131,7 @@ class OwnerStoreController extends AbstractController
     #[Route('/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
     #[Route('/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Store/plugin_search.twig')]
-    public function search(Request $request, PaginatorInterface $paginator, $page_no = null)
+    public function search(Request $request, PaginatorInterface $paginator, $page_no = null): array|RedirectResponse
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('admin.store.plugin.search.not_auth', 'admin');
@@ -236,7 +236,7 @@ class OwnerStoreController extends AbstractController
      * @throws PluginException
      */
     #[Route('/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function doConfirm(Request $request, $id): Response
+    public function doConfirm(Request $request, $id): RedirectResponse|Response
     {
         try {
             $item = $this->pluginApiService->getPlugin($id);
@@ -263,7 +263,7 @@ class OwnerStoreController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
-    public function apiInstall(Request $request)
+    public function apiInstall(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -313,7 +313,7 @@ class OwnerStoreController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/delete/{id}/uninstall', requirements: ['id' => '\d+'], name: 'admin_store_plugin_api_uninstall', methods: ['DELETE'])]
-    public function apiUninstall(Plugin $Plugin)
+    public function apiUninstall(Plugin $Plugin): JsonResponse
     {
         $this->isTokenValid();
 
@@ -362,7 +362,7 @@ class OwnerStoreController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
-    public function apiUpgrade(Request $request)
+    public function apiUpgrade(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -431,7 +431,7 @@ class OwnerStoreController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
-    public function apiSchemaUpdate(Request $request)
+    public function apiSchemaUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -481,7 +481,7 @@ class OwnerStoreController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
-    public function apiUpdate(Request $request)
+    public function apiUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -521,7 +521,7 @@ class OwnerStoreController extends AbstractController
      */
     #[Route('/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('@admin/Store/plugin_confirm.twig')]
-    public function doUpdateConfirm(Plugin $Plugin)
+    public function doUpdateConfirm(Plugin $Plugin): array|RedirectResponse
     {
         try {
             $item = $this->pluginApiService->getPlugin($Plugin->getSource());

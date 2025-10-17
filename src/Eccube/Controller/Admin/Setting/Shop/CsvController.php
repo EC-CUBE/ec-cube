@@ -60,7 +60,7 @@ class CsvController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/csv.twig')]
-    public function index(Request $request, CsvType $CsvType)
+    public function index(Request $request, CsvType $CsvType): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $builder = $this->createFormBuilder();
 

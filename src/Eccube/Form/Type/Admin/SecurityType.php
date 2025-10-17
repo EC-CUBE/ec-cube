@@ -73,7 +73,7 @@ class SecurityType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $allowHosts = $this->eccubeConfig->get('eccube_admin_allow_hosts');
         $allowHosts = implode("\n", $allowHosts);
@@ -266,7 +266,7 @@ class SecurityType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_security';
     }

@@ -35,7 +35,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
     #[\Override]
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
@@ -54,7 +54,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      * @return \Symfony\Component\Config\Definition\ConfigurationInterface|null
      */
     #[\Override]
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): ?\Symfony\Component\Config\Definition\ConfigurationInterface
     {
         return parent::getConfiguration($config, $container);
     }
@@ -67,7 +67,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      * @return void
      */
     #[\Override]
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         // FrameworkBundleの設定を動的に変更する.
         $this->configureFramework($container);
@@ -81,7 +81,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @return void
      */
-    protected function configureFramework(ContainerBuilder $container)
+    protected function configureFramework(ContainerBuilder $container): void
     {
         $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
         // envから取得した内容が文字列のため, booleanに変換
@@ -150,7 +150,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function configurePlugins(ContainerBuilder $container)
+    protected function configurePlugins(ContainerBuilder $container): void
     {
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
         $pluginDirs = $this->getPluginDirectories($pluginDir);
@@ -216,7 +216,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @return void
      */
-    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir)
+    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir): void
     {
         $paths = [];
         $projectDir = $container->getParameter('kernel.project_dir');
@@ -248,7 +248,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @return void
      */
-    protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir)
+    protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir): void
     {
         $paths = [];
 
@@ -275,7 +275,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function isConnected(Connection $conn)
+    protected function isConnected(Connection $conn): bool
     {
         try {
             $conn->executeQuery('select 1');
@@ -293,7 +293,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @return array<int,string>
      */
-    protected function getPluginDirectories($pluginDir)
+    protected function getPluginDirectories($pluginDir): array
     {
         $finder = (new Finder())
             ->in($pluginDir)

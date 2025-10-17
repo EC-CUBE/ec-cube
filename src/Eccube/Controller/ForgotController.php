@@ -79,7 +79,7 @@ class ForgotController extends AbstractController
      */
     #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
     #[Template('Forgot/index.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
@@ -156,7 +156,7 @@ class ForgotController extends AbstractController
      */
     #[Route('/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
     #[Template('Forgot/complete.twig')]
-    public function complete(Request $request)
+    public function complete(Request $request): array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
@@ -177,7 +177,7 @@ class ForgotController extends AbstractController
      */
     #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
     #[Template('Forgot/reset.twig')]
-    public function reset(Request $request, $reset_key)
+    public function reset(Request $request, $reset_key): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();

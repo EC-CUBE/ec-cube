@@ -59,7 +59,7 @@ class ContactController extends AbstractController
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     #[Route('/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
     #[Template('Contact/index.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
@@ -135,7 +135,7 @@ class ContactController extends AbstractController
      */
     #[Route('/contact/complete', name: 'contact_complete', methods: ['GET'])]
     #[Template('Contact/complete.twig')]
-    public function complete()
+    public function complete(): array
     {
         return [];
     }

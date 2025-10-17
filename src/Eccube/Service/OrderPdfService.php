@@ -202,7 +202,7 @@ class OrderPdfService extends Fpdi
      * @throws PdfReaderException
      * @throws PdfTypeException
      */
-    public function makePdf(array $formData)
+    public function makePdf(array $formData): bool
     {
         // 発行日の設定
         $this->issueDate = '作成日: '.$formData['issue_date']->format('Y年m月d日');
@@ -271,9 +271,9 @@ class OrderPdfService extends Fpdi
     /**
      * PDFファイルを出力する.
      *
-     * @return string|mixed
+     * @return string
      */
-    public function outputPdf()
+    public function outputPdf(): string
     {
         return $this->Output($this->getPdfFileName(), 'S');
     }
@@ -284,7 +284,7 @@ class OrderPdfService extends Fpdi
      *
      * @return string ファイル名
      */
-    public function getPdfFileName()
+    public function getPdfFileName(): string
     {
         if (!is_null($this->downloadFileName)) {
             return $this->downloadFileName;
@@ -303,7 +303,7 @@ class OrderPdfService extends Fpdi
      * @return void
      */
     #[\Override]
-    public function Footer()
+    public function Footer(): void
     {
         $this->Cell(0, 0, $this->issueDate, 0, 0, 'R');
     }
@@ -319,7 +319,7 @@ class OrderPdfService extends Fpdi
      * @throws PdfTypeException
      * @throws PdfReaderException
      */
-    protected function addPdfPage()
+    protected function addPdfPage(): void
     {
         // ページを追加
         $this->AddPage();
@@ -338,7 +338,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function renderShopData()
+    protected function renderShopData(): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -390,7 +390,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function renderMessageData(array $formData)
+    protected function renderMessageData(array $formData): void
     {
         $this->lfText(27, 70, $formData['message1'], 8); // メッセージ1
         $this->lfText(27, 74, $formData['message2'], 8); // メッセージ2
@@ -404,7 +404,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function renderEtcData(array $formData)
+    protected function renderEtcData(array $formData): void
     {
         // フォント情報のバックアップ
         $this->backupFont();
@@ -436,7 +436,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function renderTitle($title)
+    protected function renderTitle($title): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -461,7 +461,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function renderOrderData(Shipping $Shipping)
+    protected function renderOrderData(Shipping $Shipping): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -538,7 +538,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function renderOrderDetailData(Shipping $Shipping)
+    protected function renderOrderDetailData(Shipping $Shipping): void
     {
         $arrOrder = [];
         // テーブルの微調整を行うための購入商品詳細情報をarrayに変換する
@@ -702,7 +702,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function lfText($x, $y, $text, $size = 0, $style = '')
+    protected function lfText($x, $y, $text, $size = 0, $style = ''): void
     {
         // 退避
         $bakFontStyle = $this->FontStyle;
@@ -724,7 +724,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function setFancyTable($header, $data, $w)
+    protected function setFancyTable($header, $data, $w): void
     {
         // フォント情報のバックアップ
         $this->backupFont();
@@ -823,7 +823,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function setBasePosition($x = null, $y = null)
+    protected function setBasePosition($x = null, $y = null): void
     {
         // 現在のマージンを取得する
         $result = $this->getMargins();
@@ -840,7 +840,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function backupFont()
+    protected function backupFont(): void
     {
         // フォント情報のバックアップ
         $this->bakFontFamily = $this->FontFamily;
@@ -853,7 +853,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function restoreFont()
+    protected function restoreFont(): void
     {
         $this->SetFont($this->bakFontFamily, $this->bakFontStyle, $this->bakFontSize);
     }

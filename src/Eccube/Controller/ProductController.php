@@ -117,7 +117,7 @@ class ProductController extends AbstractController
      */
     #[Route('/products/list', name: 'product_list', methods: ['GET'])]
     #[Template('Product/list.twig')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator): array
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -221,7 +221,7 @@ class ProductController extends AbstractController
      */
     #[Route('/products/detail/{id}', name: 'product_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template('Product/detail.twig')]
-    public function detail(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] Product $Product)
+    public function detail(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] Product $Product): array
     {
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
@@ -271,7 +271,7 @@ class ProductController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function addFavorite(Request $request, Product $Product)
+    public function addFavorite(Request $request, Product $Product): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->checkVisibility($Product);
 
@@ -448,7 +448,7 @@ class ProductController extends AbstractController
      *
      * @return string
      */
-    protected function getPageTitle($searchData)
+    protected function getPageTitle($searchData): string
     {
         if (isset($searchData['name']) && !empty($searchData['name'])) {
             return trans('front.product.search_result');
@@ -466,7 +466,7 @@ class ProductController extends AbstractController
      *
      * @return bool 閲覧可能な場合はtrue
      */
-    protected function checkVisibility(Product $Product)
+    protected function checkVisibility(Product $Product): bool
     {
         $is_admin = $this->session->has('_security_admin');
 

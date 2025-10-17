@@ -41,7 +41,7 @@ class PaymentRepository extends AbstractRepository
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function findAllArray()
+    public function findAllArray(): array
     {
         $query = $this
             ->getEntityManager()
@@ -61,7 +61,7 @@ class PaymentRepository extends AbstractRepository
      *
      * @return array<int, Payment>
      */
-    public function findPayments($delivery, $returnType = false)
+    public function findPayments($delivery, $returnType = false): array
     {
         $query = $this->createQueryBuilder('p')
             ->innerJoin(\Eccube\Entity\PaymentOption::class, 'po', 'WITH', 'po.payment_id = p.id')
@@ -89,7 +89,7 @@ class PaymentRepository extends AbstractRepository
      *
      * @return array<int, Payment>
      */
-    public function findAllowedPayments($deliveries, $returnType = false)
+    public function findAllowedPayments($deliveries, $returnType = false): array
     {
         $payments = [];
         $saleTypes = [];

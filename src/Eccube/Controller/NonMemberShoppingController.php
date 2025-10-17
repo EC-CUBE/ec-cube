@@ -77,7 +77,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
     #[Template('Shopping/nonmember.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|array
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
@@ -145,7 +145,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      * @throws \Exception
      */
     #[Route('/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
-    public function customer(Request $request)
+    public function customer(Request $request): \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['status' => 'NG'], 400);
@@ -234,7 +234,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface[]
      */
-    protected function customerValidation(array &$data)
+    protected function customerValidation(array &$data): array
     {
         // 入力チェック
         $errors = [];

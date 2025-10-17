@@ -39,7 +39,7 @@ class ComposerRequireCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('package', InputArgument::REQUIRED)
             ->addArgument('version', InputArgument::OPTIONAL)

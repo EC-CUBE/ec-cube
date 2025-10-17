@@ -60,7 +60,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      *
      * @throws RouteNotFoundException
      */
-    public function getPath($name, $parameters = [], $relative = false)
+    public function getPath($name, $parameters = [], $relative = false): string
     {
         try {
             return $this->generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
@@ -84,7 +84,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      *
      * @throws RouteNotFoundException
      */
-    public function getUrl($name, $parameters = [], $schemeRelative = false)
+    public function getUrl($name, $parameters = [], $schemeRelative = false): string
     {
         try {
             return $this->generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);

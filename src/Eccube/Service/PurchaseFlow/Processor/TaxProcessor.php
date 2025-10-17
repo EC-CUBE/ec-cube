@@ -76,7 +76,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      * @throws \Doctrine\ORM\NoResultException
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;
@@ -142,7 +142,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      *
      * @return TaxType 税区分
      */
-    protected function getTaxType($OrderItemType)
+    protected function getTaxType($OrderItemType): TaxType
     {
         if ($OrderItemType instanceof OrderItemType) {
             $OrderItemType = $OrderItemType->getId();
@@ -170,7 +170,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      *
      * @return TaxDisplayType 税表示区分
      */
-    protected function getTaxDisplayType($OrderItemType)
+    protected function getTaxDisplayType($OrderItemType): TaxDisplayType
     {
         return $this->orderHelper->getTaxDisplayType($OrderItemType);
     }

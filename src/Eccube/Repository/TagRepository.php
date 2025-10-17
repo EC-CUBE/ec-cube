@@ -37,7 +37,7 @@ class TagRepository extends AbstractRepository
      * @param  Tag $tag タグ
      */
     #[\Override]
-    public function save($tag)
+    public function save($tag): void
     {
         if (!$tag->getId()) {
             $sortNoTop = $this->findOneBy([], ['sort_no' => 'DESC']);
@@ -59,7 +59,7 @@ class TagRepository extends AbstractRepository
      *
      * @return Tag[] タグの配列
      */
-    public function getList()
+    public function getList(): array
     {
         $qb = $this->createQueryBuilder('t')->orderBy('t.sort_no', 'DESC');
 
@@ -72,7 +72,7 @@ class TagRepository extends AbstractRepository
      * @param  Tag $Tag 削除対象のタグ
      */
     #[\Override]
-    public function delete($Tag)
+    public function delete($Tag): void
     {
         $em = $this->getEntityManager();
         $em->beginTransaction();

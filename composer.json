@@ -107,7 +107,7 @@
         "codeception/module-asserts": "^3.0",
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-rest": "^3.3",
-        "codeception/module-webdriver": "^3.2",
+        "codeception/module-webdriver": "^4.0",
         "dama/doctrine-test-bundle": "^8.0",
         "fakerphp/faker": "^1.16",
         "mikey179/vfsstream": "^1.6",
@@ -181,7 +181,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.3.24"
+            "php": "8.3.0"
         },
         "preferred-install": {
             "*": "dist"

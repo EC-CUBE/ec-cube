@@ -44,7 +44,7 @@ class PointRateProcessor extends ItemHolderPostValidator
      * @throws \Exception
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;

@@ -20,47 +20,47 @@ interface ItemInterface
      *
      * @return bool 商品明細の場合 true
      */
-    public function isProduct();
+    public function isProduct(): bool;
 
     /**
      * 送料明細かどうか.
      *
      * @return bool 送料明細の場合 true
      */
-    public function isDeliveryFee();
+    public function isDeliveryFee(): bool;
 
     /**
      * 手数料明細かどうか.
      *
      * @return bool 手数料明細の場合 true
      */
-    public function isCharge();
+    public function isCharge(): bool;
 
     /**
      * 値引き明細かどうか.
      *
      * @return bool 値引き明細の場合 true
      */
-    public function isDiscount();
+    public function isDiscount(): bool;
 
     /**
      * ポイント明細かどうか.
      *
      * @return bool ポイント明細の場合 true
      */
-    public function isPoint();
+    public function isPoint(): bool;
 
     /**
      * 税額明細かどうか.
      *
      * @return bool 税額明細の場合 true
      */
-    public function isTax();
+    public function isTax(): bool;
 
     /**
      * @return Master\OrderItemType|null
      */
-    public function getOrderItemType();
+    public function getOrderItemType(): ?Master\OrderItemType;
 
     /**
      * @return ?ProductClass
@@ -68,41 +68,41 @@ interface ItemInterface
     public function getProductClass();
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPrice();
+    public function getPrice(): ?string;
 
     /**
      * @return string
      */
-    public function getQuantity();
+    public function getQuantity(): string;
 
     /**
      * @param string $quantity
      *
-     * @return ItemInterface
+     * @return $this
      */
-    public function setQuantity($quantity);
+    public function setQuantity($quantity): static;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId();
+    public function getId(): ?int;
 
     /**
      * @return string|null
      */
-    public function getPointRate();
+    public function getPointRate(): ?string;
 
     /**
-     * @param string $price
+     * @param string|null $price
      *
      * @return $this
      */
-    public function setPrice($price);
+    public function setPrice($price): static;
 
     /**
      * @return string
      */
-    public function getPriceIncTax();
+    public function getPriceIncTax(): string;
 }

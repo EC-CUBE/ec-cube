@@ -39,7 +39,7 @@ class CsrfExtension extends AbstractExtension
      * @return array<int,TwigFunction>
      */
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('csrf_token_for_anchor', $this->getCsrfTokenForAnchor(...), ['is_safe' => ['all']]),
@@ -49,7 +49,7 @@ class CsrfExtension extends AbstractExtension
     /**
      * @return string
      */
-    public function getCsrfTokenForAnchor()
+    public function getCsrfTokenForAnchor(): string
     {
         $token = $this->tokenManager->getToken(Constant::TOKEN_NAME)->getValue();
 
@@ -59,7 +59,7 @@ class CsrfExtension extends AbstractExtension
     /**
      * @return string
      */
-    public function getCsrfToken()
+    public function getCsrfToken(): string
     {
         return $this->tokenManager->getToken(Constant::TOKEN_NAME)->getValue();
     }

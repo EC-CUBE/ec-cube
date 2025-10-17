@@ -26,7 +26,7 @@ trait ValidatorTrait
      *
      * @throws InvalidItemException
      */
-    protected function throwInvalidItemException($errorCode, ?ProductClass $ProductClass = null, $warning = false)
+    protected function throwInvalidItemException($errorCode, ?ProductClass $ProductClass = null, $warning = false): void
     {
         if ($ProductClass) {
             $productName = $ProductClass->getProduct()->getName();

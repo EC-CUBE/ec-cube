@@ -88,7 +88,7 @@ class CustomerRepository extends AbstractRepository
     /**
      * @return Customer
      */
-    public function newCustomer()
+    public function newCustomer(): Customer
     {
         $CustomerStatus = $this->getEntityManager()
             ->find(CustomerStatus::class, CustomerStatus::PROVISIONAL);
@@ -139,7 +139,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @throws Exception
      */
-    public function getQueryBuilderBySearchData($searchData)
+    public function getQueryBuilderBySearchData($searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c');
@@ -342,7 +342,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return string
      */
-    public function getUniqueSecretKey()
+    public function getUniqueSecretKey(): string
     {
         do {
             $key = StringUtil::random(32);
@@ -357,7 +357,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return string
      */
-    public function getUniqueResetKey()
+    public function getUniqueResetKey(): string
     {
         do {
             $key = StringUtil::random(32);
@@ -374,7 +374,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getProvisionalCustomerBySecretKey($secretKey)
+    public function getProvisionalCustomerBySecretKey($secretKey): ?Customer
     {
         return $this->findOneBy([
             'secret_key' => $secretKey,
@@ -389,7 +389,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByEmail($email)
+    public function getRegularCustomerByEmail($email): ?Customer
     {
         return $this->findOneBy([
             'email' => $email,
@@ -405,7 +405,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByResetKey($resetKey, $email = null)
+    public function getRegularCustomerByResetKey($resetKey, $email = null): ?Customer
     {
         $qb = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
@@ -429,7 +429,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return string
      */
-    public function getResetPassword()
+    public function getResetPassword(): string
     {
         return StringUtil::random(8);
     }
@@ -442,7 +442,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return array<int, Customer>
      */
-    public function getNonWithdrawingCustomers(array $criteria = [])
+    public function getNonWithdrawingCustomers(array $criteria = []): array
     {
         $criteria['Status'] = [
             CustomerStatus::PROVISIONAL,

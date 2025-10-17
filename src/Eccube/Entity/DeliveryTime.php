@@ -84,7 +84,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -96,7 +96,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return DeliveryTime
          */
-        public function setDeliveryTime($deliveryTime)
+        public function setDeliveryTime($deliveryTime): DeliveryTime
         {
             $this->delivery_time = $deliveryTime;
 
@@ -108,7 +108,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return string
          */
-        public function getDeliveryTime()
+        public function getDeliveryTime(): string
         {
             return $this->delivery_time;
         }
@@ -120,7 +120,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return DeliveryTime
          */
-        public function setDelivery(?Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null): DeliveryTime
         {
             $this->Delivery = $delivery;
 
@@ -132,7 +132,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return Delivery|null
          */
-        public function getDelivery()
+        public function getDelivery(): ?Delivery
         {
             return $this->Delivery;
         }
@@ -144,7 +144,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return $this
          */
-        public function setSortNo($sort_no)
+        public function setSortNo($sort_no): static
         {
             $this->sort_no = $sort_no;
 
@@ -156,7 +156,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -168,7 +168,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return DeliveryTime
          */
-        public function setVisible($visible)
+        public function setVisible($visible): DeliveryTime
         {
             $this->visible = $visible;
 
@@ -180,7 +180,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
         }
@@ -192,7 +192,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return DeliveryTime
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): DeliveryTime
         {
             $this->create_date = $createDate;
 
@@ -202,9 +202,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -216,7 +216,7 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return DeliveryTime
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): DeliveryTime
         {
             $this->update_date = $updateDate;
 
@@ -226,9 +226,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

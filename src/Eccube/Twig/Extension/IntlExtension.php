@@ -23,7 +23,7 @@ class IntlExtension extends AbstractExtension
      * {@inheritdoc}
      */
     #[\Override]
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('date_day', $this->date_day(...), ['needs_environment' => true]),
@@ -64,7 +64,7 @@ class IntlExtension extends AbstractExtension
      *
      * @return bool|string
      */
-    public function date_min(Environment $env, $date)
+    public function date_min(Environment $env, $date): bool|string
     {
         if (!$date) {
             return '';
@@ -84,7 +84,7 @@ class IntlExtension extends AbstractExtension
      *
      * @return bool|string
      */
-    public function date_sec(Environment $env, $date)
+    public function date_sec(Environment $env, $date): bool|string
     {
         if (!$date) {
             return '';
@@ -99,7 +99,7 @@ class IntlExtension extends AbstractExtension
      *
      * @return bool|string
      */
-    public function date_day_with_weekday(Environment $env, $date)
+    public function date_day_with_weekday(Environment $env, $date): bool|string
     {
         if (!$date) {
             return '';

@@ -36,7 +36,7 @@ class ComposerUpdateCommand extends Command
      * @return void
      */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('dry-run');
     }

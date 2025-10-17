@@ -48,7 +48,7 @@ class StringUtil
      *
      * @throws \RuntimeException
      */
-    public static function random($length = 16)
+    public static function random($length = 16): string
     {
         if (function_exists('openssl_random_pseudo_bytes')) {
             $bytes = openssl_random_pseudo_bytes($length * 2);
@@ -95,7 +95,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function quickRandom($length = 16)
+    public static function quickRandom($length = 16): string
     {
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -110,7 +110,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function convertLineFeed($value, $lf = "\n")
+    public static function convertLineFeed($value, $lf = "\n"): string
     {
         if (empty($value)) {
             return '';
@@ -127,7 +127,7 @@ class StringUtil
      *
      * @return string|null
      */
-    public static function characterEncoding($value, $encoding = ['UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'])
+    public static function characterEncoding($value, $encoding = ['UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win']): ?string
     {
         foreach ($encoding as $encode) {
             if (mb_check_encoding($value, $encode)) {
@@ -148,7 +148,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function ellipsis($value, $length = 100, $end = '...')
+    public static function ellipsis($value, $length = 100, $end = '...'): string
     {
         if (mb_strlen($value) <= $length) {
             return $value;
@@ -164,7 +164,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function timeAgo($date)
+    public static function timeAgo($date): string
     {
         if (empty($date)) {
             return '';
@@ -223,7 +223,7 @@ class StringUtil
      *
      * @return bool $value が空白と判断された場合 true
      */
-    public static function isBlank($value, $greedy = false)
+    public static function isBlank($value, $greedy = false): bool
     {
         $deprecated = '\Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください';
         // テストカバレッジを上げるために return の前で trigger_error をスローしている
@@ -287,7 +287,7 @@ class StringUtil
      *
      * @return bool
      */
-    public static function isNotBlank($value, $greedy = false)
+    public static function isNotBlank($value, $greedy = false): bool
     {
         return !self::isBlank($value, $greedy);
     }
@@ -299,7 +299,7 @@ class StringUtil
      *
      * @return string|int|null
      */
-    public static function trimAll($value)
+    public static function trimAll($value): string|int|null
     {
         if ($value === '') {
             return '';
@@ -322,7 +322,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function replaceOrAddEnv($env, array $replacement)
+    public static function replaceOrAddEnv($env, array $replacement): string
     {
         foreach ($replacement as $key => $value) {
             $pattern = '/^('.$key.')=(.*)/m';

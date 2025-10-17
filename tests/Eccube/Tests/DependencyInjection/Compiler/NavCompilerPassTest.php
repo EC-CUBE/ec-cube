@@ -116,7 +116,7 @@ class NavCompilerPassTest extends EccubeTestCase
  */
 class DefaultNav implements EccubeNav
 {
-    public static function getNav()
+    public static function getNav(): array
     {
         return [
             'default' => [
@@ -153,7 +153,7 @@ class DefaultNav implements EccubeNav
  */
 class AddNav1 implements EccubeNav
 {
-    public static function getNav()
+    public static function getNav(): array
     {
         return [
             'add' => [
@@ -206,7 +206,7 @@ class AddNav1 implements EccubeNav
  */
 class AddNav2 implements EccubeNav
 {
-    public static function getNav()
+    public static function getNav(): array
     {
         return [
             'default' => [
@@ -261,7 +261,7 @@ class AddNav2 implements EccubeNav
  */
 class AddNav3 implements EccubeNav
 {
-    public static function getNav()
+    public static function getNav(): array
     {
         return [
             'default' => [
@@ -320,7 +320,7 @@ class AddNav3 implements EccubeNav
  */
 class UpdateNav implements EccubeNav
 {
-    public static function getNav()
+    public static function getNav(): array
     {
         return [
             'default' => [

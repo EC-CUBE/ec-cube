@@ -45,7 +45,7 @@ class ClassNameRepository extends AbstractRepository
      *
      * @return array<int, ClassName> 規格の配列
      */
-    public function getList()
+    public function getList(): array
     {
         $qb = $this->createQueryBuilder('cn')
             ->orderBy('cn.sort_no', 'DESC');
@@ -66,7 +66,7 @@ class ClassNameRepository extends AbstractRepository
      * @throws NonUniqueResultException
      */
     #[\Override]
-    public function save($ClassName)
+    public function save($ClassName): void
     {
         if (!$ClassName->getId()) {
             $sortNo = $this->createQueryBuilder('cn')
@@ -92,7 +92,7 @@ class ClassNameRepository extends AbstractRepository
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     #[\Override]
-    public function delete($ClassName)
+    public function delete($ClassName): void
     {
         $sortNo = $ClassName->getSortNo();
         $this->createQueryBuilder('cn')

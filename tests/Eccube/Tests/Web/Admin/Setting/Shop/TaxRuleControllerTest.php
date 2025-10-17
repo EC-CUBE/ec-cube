@@ -64,7 +64,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $now = new \DateTime();
         $form = [
             '_token' => 'dummy',
-            'tax_rate' => 10,
+            'tax_rate' => '10',
             'rounding_type' => random_int(1, 3),
             'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T'.$now->format('H').':'.$now->format('i'),
         ];
@@ -121,7 +121,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $now = new \DateTime();
         $form = [
             '_token' => 'dummy',
-            'tax_rate' => 10,
+            'tax_rate' => '10',
             'rounding_type' => random_int(1, 3),
             'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T23:01',
         ];

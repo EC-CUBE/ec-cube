@@ -52,7 +52,7 @@ class PluginContext
     /**
      * @return bool
      */
-    public function isInstall()
+    public function isInstall(): bool
     {
         return $this->mode === self::MODE_INSTALL;
     }
@@ -60,7 +60,7 @@ class PluginContext
     /**
      * @return bool
      */
-    public function isUninstall()
+    public function isUninstall(): bool
     {
         return $this->mode === self::MODE_UNINSTALL;
     }
@@ -68,7 +68,7 @@ class PluginContext
     /**
      * @return string
      */
-    public function setInstall()
+    public function setInstall(): string
     {
         return $this->mode = self::MODE_INSTALL;
     }
@@ -76,7 +76,7 @@ class PluginContext
     /**
      * @return string
      */
-    public function setUninstall()
+    public function setUninstall(): string
     {
         return $this->mode = self::MODE_UNINSTALL;
     }
@@ -86,7 +86,7 @@ class PluginContext
      *
      * @return void
      */
-    public function setCode(string $code)
+    public function setCode(string $code): void
     {
         $this->code = $code;
     }

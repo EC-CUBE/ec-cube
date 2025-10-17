@@ -43,7 +43,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * @return string
          */
-        public function getShippingMultipleDefaultName()
+        public function getShippingMultipleDefaultName(): string
         {
             return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
         }
@@ -242,7 +242,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setFromCustomerAddress(CustomerAddress $CustomerAddress)
+        public function setFromCustomerAddress(CustomerAddress $CustomerAddress): Shipping
         {
             $this
             ->setName01($CustomerAddress->getName01())
@@ -264,7 +264,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -276,7 +276,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setName01($name01)
+        public function setName01($name01): Shipping
         {
             $this->name01 = $name01;
 
@@ -288,7 +288,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string
          */
-        public function getName01()
+        public function getName01(): string
         {
             return $this->name01;
         }
@@ -300,7 +300,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setName02($name02)
+        public function setName02($name02): Shipping
         {
             $this->name02 = $name02;
 
@@ -312,7 +312,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string
          */
-        public function getName02()
+        public function getName02(): string
         {
             return $this->name02;
         }
@@ -324,7 +324,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setKana01($kana01)
+        public function setKana01($kana01): Shipping
         {
             $this->kana01 = $kana01;
 
@@ -336,7 +336,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string
          */
-        public function getKana01()
+        public function getKana01(): string
         {
             return $this->kana01;
         }
@@ -348,7 +348,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setKana02($kana02)
+        public function setKana02($kana02): Shipping
         {
             $this->kana02 = $kana02;
 
@@ -360,7 +360,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string
          */
-        public function getKana02()
+        public function getKana02(): string
         {
             return $this->kana02;
         }
@@ -372,7 +372,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setCompanyName($companyName = null)
+        public function setCompanyName($companyName = null): Shipping
         {
             $this->company_name = $companyName;
 
@@ -384,7 +384,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getCompanyName()
+        public function getCompanyName(): ?string
         {
             return $this->company_name;
         }
@@ -396,7 +396,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setPhoneNumber($phone_number = null)
+        public function setPhoneNumber($phone_number = null): Shipping
         {
             $this->phone_number = $phone_number;
 
@@ -408,7 +408,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getPhoneNumber()
+        public function getPhoneNumber(): ?string
         {
             return $this->phone_number;
         }
@@ -420,7 +420,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setPostalCode($postal_code = null)
+        public function setPostalCode($postal_code = null): Shipping
         {
             $this->postal_code = $postal_code;
 
@@ -432,7 +432,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getPostalCode()
+        public function getPostalCode(): ?string
         {
             return $this->postal_code;
         }
@@ -444,7 +444,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setAddr01($addr01 = null)
+        public function setAddr01($addr01 = null): Shipping
         {
             $this->addr01 = $addr01;
 
@@ -456,7 +456,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getAddr01()
+        public function getAddr01(): ?string
         {
             return $this->addr01;
         }
@@ -468,7 +468,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setAddr02($addr02 = null)
+        public function setAddr02($addr02 = null): Shipping
         {
             $this->addr02 = $addr02;
 
@@ -480,7 +480,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getAddr02()
+        public function getAddr02(): ?string
         {
             return $this->addr02;
         }
@@ -492,7 +492,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setShippingDeliveryName($shippingDeliveryName = null)
+        public function setShippingDeliveryName($shippingDeliveryName = null): Shipping
         {
             $this->shipping_delivery_name = $shippingDeliveryName;
 
@@ -504,7 +504,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getShippingDeliveryName()
+        public function getShippingDeliveryName(): ?string
         {
             return $this->shipping_delivery_name;
         }
@@ -516,7 +516,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setShippingDeliveryTime($shippingDeliveryTime = null)
+        public function setShippingDeliveryTime($shippingDeliveryTime = null): Shipping
         {
             $this->shipping_delivery_time = $shippingDeliveryTime;
 
@@ -528,7 +528,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getShippingDeliveryTime()
+        public function getShippingDeliveryTime(): ?string
         {
             return $this->shipping_delivery_time;
         }
@@ -540,7 +540,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setShippingDeliveryDate($shippingDeliveryDate = null)
+        public function setShippingDeliveryDate($shippingDeliveryDate = null): Shipping
         {
             $this->shipping_delivery_date = $shippingDeliveryDate;
 
@@ -552,7 +552,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return \DateTime|null
          */
-        public function getShippingDeliveryDate()
+        public function getShippingDeliveryDate(): ?\DateTime
         {
             return $this->shipping_delivery_date;
         }
@@ -564,7 +564,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setShippingDate($shippingDate = null)
+        public function setShippingDate($shippingDate = null): Shipping
         {
             $this->shipping_date = $shippingDate;
 
@@ -576,7 +576,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return \DateTime|null
          */
-        public function getShippingDate()
+        public function getShippingDate(): ?\DateTime
         {
             return $this->shipping_date;
         }
@@ -588,7 +588,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setSortNo($sortNo = null)
+        public function setSortNo($sortNo = null): Shipping
         {
             $this->sort_no = $sortNo;
 
@@ -600,7 +600,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return int|null
          */
-        public function getSortNo()
+        public function getSortNo(): ?int
         {
             return $this->sort_no;
         }
@@ -612,7 +612,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Shipping
         {
             $this->create_date = $createDate;
 
@@ -622,9 +622,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -636,7 +636,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Shipping
         {
             $this->update_date = $updateDate;
 
@@ -646,9 +646,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -660,7 +660,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setMailSendDate($mailSendDate)
+        public function setMailSendDate($mailSendDate): Shipping
         {
             $this->mail_send_date = $mailSendDate;
 
@@ -670,9 +670,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get mailSendDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getMailSendDate()
+        public function getMailSendDate(): ?\DateTime
         {
             return $this->mail_send_date;
         }
@@ -684,7 +684,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function addOrderItem(OrderItem $OrderItem)
+        public function addOrderItem(OrderItem $OrderItem): Shipping
         {
             $this->OrderItems[] = $OrderItem;
 
@@ -698,7 +698,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeOrderItem(OrderItem $OrderItem)
+        public function removeOrderItem(OrderItem $OrderItem): bool
         {
             return $this->OrderItems->removeElement($OrderItem);
         }
@@ -708,7 +708,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return ItemCollection
          */
-        public function getOrderItems()
+        public function getOrderItems(): ItemCollection
         {
             return (new ItemCollection($this->OrderItems))->sort();
         }
@@ -718,7 +718,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return OrderItem[]
          */
-        public function getProductOrderItems()
+        public function getProductOrderItems(): array
         {
             $sio = new OrderItemCollection($this->OrderItems->toArray());
 
@@ -732,7 +732,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setCountry(?Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null): Shipping
         {
             $this->Country = $country;
 
@@ -744,7 +744,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Master\Country|null
          */
-        public function getCountry()
+        public function getCountry(): ?Master\Country
         {
             return $this->Country;
         }
@@ -756,7 +756,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setPref(?Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null): Shipping
         {
             $this->Pref = $pref;
 
@@ -768,7 +768,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Master\Pref|null
          */
-        public function getPref()
+        public function getPref(): ?Master\Pref
         {
             return $this->Pref;
         }
@@ -780,7 +780,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setDelivery(?Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null): Shipping
         {
             $this->Delivery = $delivery;
 
@@ -792,7 +792,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Delivery|null
          */
-        public function getDelivery()
+        public function getDelivery(): ?Delivery
         {
             return $this->Delivery;
         }
@@ -802,7 +802,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return ProductClass
          */
-        public function getProductClassOfTemp()
+        public function getProductClassOfTemp(): ProductClass
         {
             return $this->ProductClassOfTemp;
         }
@@ -814,7 +814,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return $this
          */
-        public function setProductClassOfTemp(ProductClass $ProductClassOfTemp)
+        public function setProductClassOfTemp(ProductClass $ProductClassOfTemp): static
         {
             $this->ProductClassOfTemp = $ProductClassOfTemp;
 
@@ -828,7 +828,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return $this
          */
-        public function setOrder(Order $Order)
+        public function setOrder(Order $Order): static
         {
             $this->Order = $Order;
 
@@ -840,7 +840,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Order
          */
-        public function getOrder()
+        public function getOrder(): Order
         {
             return $this->Order;
         }
@@ -852,7 +852,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setTrackingNumber($trackingNumber)
+        public function setTrackingNumber($trackingNumber): Shipping
         {
             $this->tracking_number = $trackingNumber;
 
@@ -862,9 +862,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get trackingNumber
          *
-         * @return string
+         * @return string|null
          */
-        public function getTrackingNumber()
+        public function getTrackingNumber(): ?string
         {
             return $this->tracking_number;
         }
@@ -876,7 +876,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setNote($note = null)
+        public function setNote($note = null): Shipping
         {
             $this->note = $note;
 
@@ -888,7 +888,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return string|null
          */
-        public function getNote()
+        public function getNote(): ?string
         {
             return $this->note;
         }
@@ -898,7 +898,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return bool
          */
-        public function isShipped()
+        public function isShipped(): bool
         {
             return !is_null($this->shipping_date);
         }
@@ -910,7 +910,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setTimeId($timeId)
+        public function setTimeId($timeId): Shipping
         {
             $this->time_id = $timeId;
 
@@ -922,7 +922,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return int|null
          */
-        public function getTimeId()
+        public function getTimeId(): ?int
         {
             return $this->time_id;
         }
@@ -934,7 +934,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Shipping
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Shipping
         {
             $this->Creator = $creator;
 
@@ -946,7 +946,7 @@ if (!class_exists(Shipping::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

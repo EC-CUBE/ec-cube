@@ -27,7 +27,7 @@ class RoundingTypeType extends AbstractType
      * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => \Eccube\Entity\Master\RoundingType::class,
@@ -39,7 +39,7 @@ class RoundingTypeType extends AbstractType
      * @return string
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }
@@ -48,7 +48,7 @@ class RoundingTypeType extends AbstractType
      * @return string
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'rounding_type';
     }

@@ -41,7 +41,7 @@ class TaxExtension extends AbstractExtension
      * @return TwigFunction[] An array of functions
      */
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('is_reduced_tax_rate', $this->isReducedTaxRate(...)),
@@ -57,7 +57,7 @@ class TaxExtension extends AbstractExtension
      *
      * @return bool
      */
-    public function isReducedTaxRate(OrderItem $OrderItem)
+    public function isReducedTaxRate(OrderItem $OrderItem): bool
     {
         $Order = $OrderItem->getOrder();
 

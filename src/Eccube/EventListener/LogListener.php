@@ -42,7 +42,7 @@ class LogListener implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [
@@ -67,7 +67,7 @@ class LogListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelRequestEarly(RequestEvent $event)
+    public function onKernelRequestEarly(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -81,7 +81,7 @@ class LogListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -96,9 +96,9 @@ class LogListener implements EventSubscriberInterface
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return string
+     * @return string|null
      */
-    private function getRoute($request)
+    private function getRoute($request): ?string
     {
         return $request->attributes->get('_route');
     }
@@ -108,7 +108,7 @@ class LogListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -123,7 +123,7 @@ class LogListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -138,7 +138,7 @@ class LogListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         $route = $this->getRoute($event->getRequest());
         $this->logger->debug('PROCESS END', [$route]);
@@ -149,7 +149,7 @@ class LogListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $e = $event->getThrowable();
         if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {

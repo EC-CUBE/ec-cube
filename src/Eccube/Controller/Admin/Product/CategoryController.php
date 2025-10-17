@@ -70,7 +70,7 @@ class CategoryController extends AbstractController
     #[Route('/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/category.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
+    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($parent_id) {
             /** @var Category|null $Parent */
@@ -229,7 +229,7 @@ class CategoryController extends AbstractController
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $id, CacheUtil $cacheUtil)
+    public function delete(Request $request, $id, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $this->isTokenValid();
 
@@ -277,12 +277,12 @@ class CategoryController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return Response|void
+     * @return Response
      *
      * @throws BadRequestHttpException|\Exception
      */
     #[Route('/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request, CacheUtil $cacheUtil)
+    public function moveSortNo(Request $request, CacheUtil $cacheUtil): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -303,6 +303,8 @@ class CategoryController extends AbstractController
 
             return new Response('Successful');
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -313,7 +315,7 @@ class CategoryController extends AbstractController
      * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/category/export', name: 'admin_product_category_export', methods: ['GET'])]
-    public function export(Request $request)
+    public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);

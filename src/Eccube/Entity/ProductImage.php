@@ -33,7 +33,7 @@ if (!class_exists(ProductImage::class)) {
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getFileName();
+            return $this->getFileName();
         }
 
         /**
@@ -82,7 +82,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -94,7 +94,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return ProductImage
          */
-        public function setFileName($fileName)
+        public function setFileName($fileName): ProductImage
         {
             $this->file_name = $fileName;
 
@@ -106,7 +106,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return string
          */
-        public function getFileName()
+        public function getFileName(): string
         {
             return $this->file_name;
         }
@@ -118,7 +118,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return ProductImage
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): ProductImage
         {
             $this->sort_no = $sortNo;
 
@@ -130,7 +130,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -142,7 +142,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return ProductImage
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): ProductImage
         {
             $this->create_date = $createDate;
 
@@ -152,9 +152,9 @@ if (!class_exists(ProductImage::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -166,7 +166,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return ProductImage
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): ProductImage
         {
             $this->Product = $product;
 
@@ -178,7 +178,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
@@ -190,7 +190,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return ProductImage
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): ProductImage
         {
             $this->Creator = $creator;
 
@@ -202,7 +202,7 @@ if (!class_exists(ProductImage::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

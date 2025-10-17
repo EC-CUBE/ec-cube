@@ -52,7 +52,7 @@ class BlockRepository extends AbstractRepository
      *
      * @return Block
      */
-    public function newBlock($DeviceType)
+    public function newBlock($DeviceType): Block
     {
         $Block = new Block();
         $Block
@@ -68,15 +68,16 @@ class BlockRepository extends AbstractRepository
      *
      * @param  DeviceType $DeviceType
      *
-     * @return \Symfony\Component\HttpFoundation\Request|null
+     * @return Block[]
      */
-    public function getList($DeviceType)
+    public function getList($DeviceType): array
     {
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.id', 'DESC')
             ->where('b.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType);
 
+        /** @var Block[] $Blocks */
         $Blocks = $qb
             ->getQuery()
             ->getResult();
@@ -91,7 +92,7 @@ class BlockRepository extends AbstractRepository
      *
      * @return array<int, Block>|null
      */
-    public function getUnusedBlocks($Blocks)
+    public function getUnusedBlocks($Blocks): ?array
     {
         $UnusedBlocks = $this->createQueryBuilder('b')
             ->select('b')

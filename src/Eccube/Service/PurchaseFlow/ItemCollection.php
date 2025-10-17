@@ -27,7 +27,7 @@ use Eccube\Entity\OrderItem;
 class ItemCollection extends ArrayCollection
 {
     /**
-     * @var mixed|string
+     * @var string
      */
     protected $type;
 
@@ -51,7 +51,7 @@ class ItemCollection extends ArrayCollection
      *
      * @return mixed|null
      */
-    public function reduce(\Closure $func, $initial = null)
+    public function reduce(\Closure $func, $initial = null): mixed
     {
         return array_reduce($this->toArray(), $func, $initial);
     }
@@ -60,7 +60,7 @@ class ItemCollection extends ArrayCollection
      * @return ItemCollection<int, ItemInterface>
      */
     // 明細種別ごとに返すメソッド作る
-    public function getProductClasses()
+    public function getProductClasses(): ItemCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -71,7 +71,7 @@ class ItemCollection extends ArrayCollection
     /**
      * @return ItemCollection<int, ItemInterface>
      */
-    public function getDeliveryFees()
+    public function getDeliveryFees(): ItemCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -82,7 +82,7 @@ class ItemCollection extends ArrayCollection
     /**
      * @return ItemCollection<int, ItemInterface>
      */
-    public function getCharges()
+    public function getCharges(): ItemCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -93,7 +93,7 @@ class ItemCollection extends ArrayCollection
     /**
      * @return ItemCollection<int, ItemInterface>
      */
-    public function getDiscounts()
+    public function getDiscounts(): ItemCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -110,7 +110,7 @@ class ItemCollection extends ArrayCollection
      *
      * @return bool
      */
-    public function hasProductByName($productName)
+    public function hasProductByName($productName): bool
     {
         $OrderItems = $this->filter(
             function (ItemInterface $OrderItem) use ($productName) {
@@ -128,7 +128,7 @@ class ItemCollection extends ArrayCollection
      *
      * @return bool
      */
-    public function hasItemByOrderItemType($OrderItemType)
+    public function hasItemByOrderItemType($OrderItemType): bool
     {
         $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
             /* @var OrderItem $OrderItem */
@@ -139,9 +139,9 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -149,7 +149,7 @@ class ItemCollection extends ArrayCollection
     /**
      * @return self
      */
-    public function sort()
+    public function sort(): ItemCollection
     {
         $Items = $this->toArray();
         usort($Items, function (ItemInterface $a, ItemInterface $b) {

@@ -89,7 +89,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -101,7 +101,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setName($name)
+        public function setName($name): Plugin
         {
             $this->name = $name;
 
@@ -113,7 +113,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
@@ -125,7 +125,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setCode($code)
+        public function setCode($code): Plugin
         {
             $this->code = $code;
 
@@ -137,7 +137,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return string
          */
-        public function getCode()
+        public function getCode(): string
         {
             return $this->code;
         }
@@ -149,7 +149,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setEnabled($enabled)
+        public function setEnabled($enabled): Plugin
         {
             $this->enabled = $enabled;
 
@@ -161,7 +161,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return bool
          */
-        public function isEnabled()
+        public function isEnabled(): bool
         {
             return $this->enabled;
         }
@@ -173,7 +173,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setVersion($version)
+        public function setVersion($version): Plugin
         {
             $this->version = $version;
 
@@ -185,7 +185,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return string
          */
-        public function getVersion()
+        public function getVersion(): string
         {
             return $this->version;
         }
@@ -197,7 +197,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setSource($source)
+        public function setSource($source): Plugin
         {
             $this->source = $source;
 
@@ -209,7 +209,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return string
          */
-        public function getSource()
+        public function getSource(): string
         {
             return $this->source;
         }
@@ -231,7 +231,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setInitialized(bool $initialized)
+        public function setInitialized(bool $initialized): Plugin
         {
             $this->initialized = $initialized;
 
@@ -245,7 +245,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): Plugin
         {
             $this->create_date = $createDate;
 
@@ -255,9 +255,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -269,7 +269,7 @@ if (!class_exists(Plugin::class)) {
          *
          * @return Plugin
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): Plugin
         {
             $this->update_date = $updateDate;
 
@@ -279,9 +279,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

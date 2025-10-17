@@ -48,7 +48,7 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @return array<int, ClassCategory> 規格カテゴリの配列
      */
-    public function getList(?\Eccube\Entity\ClassName $ClassName = null)
+    public function getList(?\Eccube\Entity\ClassName $ClassName = null): array
     {
         $qb = $this->createQueryBuilder('cc')
             ->orderBy('cc.sort_no', 'DESC'); // TODO ClassName ごとにソートした方が良いかも
@@ -72,7 +72,7 @@ class ClassCategoryRepository extends AbstractRepository
      * @throws NonUniqueResultException
      */
     #[\Override]
-    public function save($ClassCategory)
+    public function save($ClassCategory): void
     {
         if (!$ClassCategory->getId()) {
             $ClassName = $ClassCategory->getClassName();
@@ -103,7 +103,7 @@ class ClassCategoryRepository extends AbstractRepository
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     #[\Override]
-    public function delete($ClassCategory)
+    public function delete($ClassCategory): void
     {
         $this->createQueryBuilder('cc')
             ->update()
@@ -126,7 +126,7 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @return void
      */
-    public function toggleVisibility($ClassCategory)
+    public function toggleVisibility($ClassCategory): void
     {
         if ($ClassCategory->isVisible()) {
             $ClassCategory->setVisible(false);

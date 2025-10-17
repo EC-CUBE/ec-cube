@@ -96,7 +96,7 @@ class WithdrawController extends AbstractController
     #[Route('/mypage/withdraw', name: 'mypage_withdraw', methods: ['GET', 'POST'])]
     #[Route('/mypage/withdraw', name: 'mypage_withdraw_confirm', methods: ['GET', 'POST'])]
     #[Template('Mypage/withdraw.twig')]
-    public function index(Request $request)
+    public function index(Request $request): \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder();
 
@@ -179,7 +179,7 @@ class WithdrawController extends AbstractController
      */
     #[Route('/mypage/withdraw_complete', name: 'mypage_withdraw_complete', methods: ['GET'])]
     #[Template('Mypage/withdraw_complete.twig')]
-    public function complete(Request $request)
+    public function complete(Request $request): array
     {
         return [];
     }

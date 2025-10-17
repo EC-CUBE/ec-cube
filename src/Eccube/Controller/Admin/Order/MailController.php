@@ -83,7 +83,7 @@ class MailController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/order/{id}/mail', requirements: ['id' => '\d+'], name: 'admin_order_mail', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/mail.twig')]
-    public function index(Request $request, Order $Order)
+    public function index(Request $request, Order $Order): \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);
 
@@ -209,7 +209,7 @@ class MailController extends AbstractController
      *
      * @return string
      */
-    private function createBody($Order, $twig = 'Mail/order.twig')
+    private function createBody($Order, $twig = 'Mail/order.twig'): string
     {
         $body = '';
         try {

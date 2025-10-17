@@ -30,7 +30,7 @@ class RepositoryExtension extends AbstractExtension
     }
 
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('repository', function ($entity) {

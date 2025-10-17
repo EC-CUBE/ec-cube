@@ -42,7 +42,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return bool
          */
-        public function isDefaultTaxRule()
+        public function isDefaultTaxRule(): bool
         {
             return self::DEFAULT_TAX_RULE_ID === $this->getId();
         }
@@ -54,7 +54,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setSortNo($sortNo)
+        public function setSortNo($sortNo): TaxRule
         {
             $this->sort_no = $sortNo;
 
@@ -66,7 +66,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -155,9 +155,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get id.
          *
-         * @return int
+         * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -169,7 +169,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setTaxRate($taxRate)
+        public function setTaxRate($taxRate): TaxRule
         {
             $this->tax_rate = $taxRate;
 
@@ -181,7 +181,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return string
          */
-        public function getTaxRate()
+        public function getTaxRate(): string
         {
             return $this->tax_rate;
         }
@@ -193,7 +193,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setTaxAdjust($taxAdjust)
+        public function setTaxAdjust($taxAdjust): TaxRule
         {
             $this->tax_adjust = $taxAdjust;
 
@@ -205,7 +205,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return string
          */
-        public function getTaxAdjust()
+        public function getTaxAdjust(): string
         {
             return $this->tax_adjust;
         }
@@ -217,7 +217,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setApplyDate($applyDate)
+        public function setApplyDate($applyDate): TaxRule
         {
             $this->apply_date = $applyDate;
 
@@ -227,9 +227,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get applyDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getApplyDate()
+        public function getApplyDate(): ?\DateTime
         {
             return $this->apply_date;
         }
@@ -241,7 +241,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate($createDate): TaxRule
         {
             $this->create_date = $createDate;
 
@@ -251,9 +251,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get createDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
@@ -265,7 +265,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate($updateDate): TaxRule
         {
             $this->update_date = $updateDate;
 
@@ -275,9 +275,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get updateDate.
          *
-         * @return \DateTime
+         * @return \DateTime|null
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -289,7 +289,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setProductClass(?ProductClass $productClass = null)
+        public function setProductClass(?ProductClass $productClass = null): TaxRule
         {
             $this->ProductClass = $productClass;
 
@@ -301,7 +301,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return ProductClass|null
          */
-        public function getProductClass()
+        public function getProductClass(): ?ProductClass
         {
             return $this->ProductClass;
         }
@@ -313,7 +313,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): TaxRule
         {
             $this->Creator = $creator;
 
@@ -325,7 +325,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
@@ -337,7 +337,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setCountry(?Master\Country $country = null)
+        public function setCountry(?Master\Country $country = null): TaxRule
         {
             $this->Country = $country;
 
@@ -349,7 +349,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return Master\Country|null
          */
-        public function getCountry()
+        public function getCountry(): ?Master\Country
         {
             return $this->Country;
         }
@@ -361,7 +361,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setPref(?Master\Pref $pref = null)
+        public function setPref(?Master\Pref $pref = null): TaxRule
         {
             $this->Pref = $pref;
 
@@ -373,7 +373,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return Master\Pref|null
          */
-        public function getPref()
+        public function getPref(): ?Master\Pref
         {
             return $this->Pref;
         }
@@ -385,7 +385,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): TaxRule
         {
             $this->Product = $product;
 
@@ -397,7 +397,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
@@ -407,7 +407,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setRoundingType(?Master\RoundingType $RoundingType = null)
+        public function setRoundingType(?Master\RoundingType $RoundingType = null): TaxRule
         {
             $this->RoundingType = $RoundingType;
 
@@ -419,7 +419,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return Master\RoundingType|null
          */
-        public function getRoundingType()
+        public function getRoundingType(): ?Master\RoundingType
         {
             return $this->RoundingType;
         }
@@ -443,7 +443,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return int
          */
-        public function compareTo(TaxRule $Target)
+        public function compareTo(TaxRule $Target): int
         {
             if ($this->isProductTaxRule() && !$Target->isProductTaxRule()) {
                 return -1;
@@ -474,7 +474,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return bool 商品別税率が適用されている場合 true
          */
-        public function isProductTaxRule()
+        public function isProductTaxRule(): bool
         {
             return $this->getProductClass() !== null || $this->getProduct() !== null;
         }

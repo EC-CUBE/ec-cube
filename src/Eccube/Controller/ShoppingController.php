@@ -136,7 +136,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping', name: 'shopping', methods: ['GET'])]
     #[Template('Shopping/index.twig')]
-    public function index(PurchaseFlow $cartPurchaseFlow)
+    public function index(PurchaseFlow $cartPurchaseFlow): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -221,7 +221,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
     #[Template('Shopping/index.twig')]
-    public function redirectTo(Request $request, RouterInterface $router)
+    public function redirectTo(Request $request, RouterInterface $router): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -305,7 +305,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
     #[Template('Shopping/confirm.twig')]
-    public function confirm(Request $request)
+    public function confirm(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|Response|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -370,7 +370,7 @@ class ShoppingController extends AbstractShoppingController
                 }
 
                 $response = $PaymentResult->getResponse();
-                if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+                if ($response->isRedirection() || $response->isSuccessful()) {
                     $this->entityManager->flush();
 
                     log_info('[注文確認] PaymentMethod::verifyが指定したレスポンスを表示します.');
@@ -419,7 +419,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
     #[Template('Shopping/confirm.twig')]
-    public function checkout(Request $request)
+    public function checkout(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array|Response
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -479,11 +479,22 @@ class ShoppingController extends AbstractShoppingController
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
+                // Symfony 7対応: トランザクションを明示的に開始
+                // PurchaseFlow::prepare()およびcommit()内でentityManager->lock()を使用するため、トランザクションが必要
+                if (!$this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->beginTransaction();
+                }
+
                 /*
                  * 決済実行(前処理)
                  */
                 log_info('[注文処理] PaymentMethod::applyを実行します.');
                 if ($response = $this->executeApply($paymentMethod)) {
+                    // 成功時はトランザクションをコミット
+                    if ($this->entityManager->getConnection()->isTransactionActive()) {
+                        $this->entityManager->commit();
+                    }
+
                     return $response;
                 }
 
@@ -493,17 +504,31 @@ class ShoppingController extends AbstractShoppingController
                  * PaymentMethod::checkoutでは決済処理が行われ, 正常に処理出来た場合はPurchaseFlow::commitがコールされます.
                  */
                 log_info('[注文処理] PaymentMethod::checkoutを実行します.');
+
                 if ($response = $this->executeCheckout($paymentMethod)) {
+                    // 成功時はトランザクションをコミット
+                    if ($this->entityManager->getConnection()->isTransactionActive()) {
+                        $this->entityManager->commit();
+                    }
+
                     return $response;
                 }
 
                 $this->entityManager->flush();
 
+                // トランザクションをコミット
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->commit();
+                }
+
                 log_info('[注文処理] 注文処理が完了しました.', [$Order->getId()]);
             } catch (ShoppingException $e) {
                 log_error('[注文処理] 購入エラーが発生しました.', [$e->getMessage()]);
 
-                $this->entityManager->rollback();
+                // トランザクションをロールバック
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->rollback();
+                }
 
                 $this->addError($e->getMessage());
 
@@ -511,7 +536,10 @@ class ShoppingController extends AbstractShoppingController
             } catch (\Exception $e) {
                 log_error('[注文処理] 予期しないエラーが発生しました.', [$e->getMessage()]);
 
-                // $this->entityManager->rollback(); FIXME ユニットテストで There is no active transaction エラーになってしまう
+                // トランザクションをロールバック
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->rollback();
+                }
 
                 $this->addError('front.shopping.system_error');
 
@@ -549,7 +577,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
     #[Template('Shopping/complete.twig')]
-    public function complete(Request $request)
+    public function complete(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|Response|array
     {
         log_info('[注文完了] 注文完了画面を表示します.');
 
@@ -602,7 +630,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping.twig')]
-    public function shipping(Request $request, Shipping $Shipping)
+    public function shipping(Request $request, Shipping $Shipping): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -680,7 +708,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('Shopping/shipping_edit.twig')]
-    public function shippingEdit(Request $request, Shipping $Shipping)
+    public function shippingEdit(Request $request, Shipping $Shipping): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -793,7 +821,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/login', name: 'shopping_login', methods: ['GET'])]
     #[Template('Shopping/login.twig')]
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): \Symfony\Component\HttpFoundation\RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('shopping');
@@ -836,7 +864,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route('/shopping/error', name: 'shopping_error', methods: ['GET'])]
     #[Template('Shopping/shopping_error.twig')]
-    public function error(Request $request, PurchaseFlow $cartPurchaseFlow)
+    public function error(Request $request, PurchaseFlow $cartPurchaseFlow): Response|array
     {
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.
         $Cart = $this->cartService->getCart();
@@ -875,7 +903,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return PaymentMethodInterface
      */
-    private function createPaymentMethod(Order $Order, FormInterface $form)
+    private function createPaymentMethod(Order $Order, FormInterface $form): PaymentMethodInterface
     {
         $PaymentMethod = $this->serviceContainer->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);
@@ -891,7 +919,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
      */
-    protected function executeApply(PaymentMethodInterface $paymentMethod)
+    protected function executeApply(PaymentMethodInterface $paymentMethod): \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
     {
         $dispatcher = $paymentMethod->apply(); // 決済処理中.
 
@@ -901,7 +929,7 @@ class ShoppingController extends AbstractShoppingController
             $this->entityManager->flush();
 
             // dispatcherがresponseを保持している場合はresponseを返す
-            if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+            if ($response->isRedirection() || $response->isSuccessful()) {
                 log_info('[注文処理] PaymentMethod::applyが指定したレスポンスを表示します.');
 
                 return $response;
@@ -933,12 +961,12 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
      */
-    protected function executeCheckout(PaymentMethodInterface $paymentMethod)
+    protected function executeCheckout(PaymentMethodInterface $paymentMethod): \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
     {
         $PaymentResult = $paymentMethod->checkout();
         $response = $PaymentResult->getResponse();
         // PaymentResultがresponseを保持している場合はresponseを返す
-        if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+        if ($response && ($response->isRedirection() || $response->isSuccessful())) {
             $this->entityManager->flush();
             log_info('[注文処理] PaymentMethod::checkoutが指定したレスポンスを表示します.');
 
