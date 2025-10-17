@@ -23,6 +23,7 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeByShippingPreprocessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 {
@@ -71,7 +72,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('deliveryFreeAmountProvider')]
+    #[DataProvider('deliveryFreeAmountProvider')]
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
         $this->newBaseInfo('1000.00', '0');
@@ -107,7 +108,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('deliveryFreeQuantityProvider')]
+    #[DataProvider('deliveryFreeQuantityProvider')]
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
         $this->newBaseInfo('0', '10');

@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Composer\CaBundle\CaBundle;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -335,7 +336,7 @@ class PluginApiService
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
+            CURLOPT_CAINFO => CaBundle::getSystemCaRootBundlePath(),
             CURLOPT_TIMEOUT_MS => 5000,
         ];
 

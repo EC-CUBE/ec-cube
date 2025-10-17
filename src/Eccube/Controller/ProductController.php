@@ -31,7 +31,10 @@ use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -268,10 +271,10 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function addFavorite(Request $request, Product $Product): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function addFavorite(Request $request, Product $Product): RedirectResponse
     {
         $this->checkVisibility($Product);
 
@@ -320,12 +323,12 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function addCart(Request $request, Product $Product): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+    public function addCart(Request $request, Product $Product): RedirectResponse|JsonResponse|Response
     {
         // エラーメッセージの配列
         $errorMessages = [];

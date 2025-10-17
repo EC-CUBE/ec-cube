@@ -26,6 +26,7 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -90,12 +91,12 @@ class PageController extends AbstractController
     /**
      * @param string|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/content/page/new', name: 'admin_content_page_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/page/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_page_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Content/page_edit.twig')]
-    public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -260,10 +261,10 @@ class PageController extends AbstractController
     /**
      * @param string|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/page/{id}/delete', name: 'admin_content_page_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CacheUtil $cacheUtil, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse
     {
         $this->isTokenValid();
 

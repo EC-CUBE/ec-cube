@@ -15,6 +15,7 @@ namespace Eccube\Tests\Form\Validator;
 
 use Eccube\Form\Validator\Email;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmailValidatorTest extends AbstractTypeTestCase
@@ -33,7 +34,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
      * @param mixed $rfc
      * @param mixed $norfc
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('EmailProvider')]
+    #[DataProvider('EmailProvider')]
     public function testValidateEmailStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_STRICT);
@@ -48,7 +49,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
      * @param mixed $rfc
      * @param mixed $norfc
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('EmailProvider')]
+    #[DataProvider('EmailProvider')]
     public function testValidateEmailNoStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_HTML5);

@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CustomerFavoriteProductRepository;
 
 if (!class_exists(CustomerFavoriteProduct::class)) {
     /**
@@ -23,7 +24,7 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CustomerFavoriteProductRepository::class)]
+    #[ORM\Entity(repositoryClass: CustomerFavoriteProductRepository::class)]
     class CustomerFavoriteProduct extends AbstractEntity
     {
         /**

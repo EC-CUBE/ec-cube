@@ -34,6 +34,8 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\PluginApiService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -127,11 +129,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
     #[Template('@admin/login.twig')]
-    public function login(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function login(Request $request): RedirectResponse|array
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_homepage');
@@ -275,10 +277,10 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
-    public function sale(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
+    public function sale(Request $request): JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
@@ -316,11 +318,11 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
     #[Template('@admin/change_password.twig')]
-    public function changePassword(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function changePassword(Request $request): RedirectResponse|array
     {
         $builder = $this->formFactory
             ->createBuilder(ChangePasswordType::class);

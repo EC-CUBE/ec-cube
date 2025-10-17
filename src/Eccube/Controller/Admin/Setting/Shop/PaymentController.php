@@ -23,6 +23,8 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Service\Payment\Method\Cash;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -82,12 +84,12 @@ class PaymentController extends AbstractController
      * @param Request $request
      * @param Payment|null $Payment
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_payment_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/payment_edit.twig')]
-    public function edit(Request $request, ?Payment $Payment = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function edit(Request $request, ?Payment $Payment = null): RedirectResponse|array
     {
         if (is_null($Payment)) {
             $Payment = $this->paymentRepository->findOneBy([], ['sort_no' => 'DESC']);
@@ -227,12 +229,12 @@ class PaymentController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return BinaryFileResponse
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
-    public function imageLoad(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function imageLoad(Request $request): BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -290,10 +292,10 @@ class PaymentController extends AbstractController
      * @param Request $request
      * @param Payment $TargetPayment
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Payment $TargetPayment): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Payment $TargetPayment): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -329,10 +331,10 @@ class PaymentController extends AbstractController
     /**
      * @param Payment $Payment
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function visible(Payment $Payment): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function visible(Payment $Payment): RedirectResponse
     {
         $this->isTokenValid();
 

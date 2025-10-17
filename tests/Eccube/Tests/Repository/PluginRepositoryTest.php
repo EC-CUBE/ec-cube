@@ -16,6 +16,7 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PluginRepositoryTest extends EccubeTestCase
 {
@@ -51,7 +52,7 @@ class PluginRepositoryTest extends EccubeTestCase
      * @param mixed $search
      * @param mixed $isNotNull
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormCodeProvider')]
+    #[DataProvider('dataFormCodeProvider')]
     public function testFindByCode($code, $search, $isNotNull)
     {
         $this->createPlugin($code);

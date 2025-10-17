@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\TemplateRepository;
 
 if (!class_exists(Template::class)) {
@@ -83,9 +84,9 @@ if (!class_exists(Template::class)) {
         private $update_date;
 
         /**
-         * @var Master\DeviceType|null
+         * @var DeviceType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
@@ -198,11 +199,11 @@ if (!class_exists(Template::class)) {
         /**
          * Set deviceType.
          *
-         * @param Master\DeviceType|null $deviceType
+         * @param DeviceType|null $deviceType
          *
          * @return Template
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null): Template
+        public function setDeviceType(?DeviceType $deviceType = null): Template
         {
             $this->DeviceType = $deviceType;
 
@@ -212,9 +213,9 @@ if (!class_exists(Template::class)) {
         /**
          * Get deviceType.
          *
-         * @return Master\DeviceType|null
+         * @return DeviceType|null
          */
-        public function getDeviceType(): ?Master\DeviceType
+        public function getDeviceType(): ?DeviceType
         {
             return $this->DeviceType;
         }

@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CalendarRepository;
 
 if (!class_exists(Calendar::class)) {
     /**
@@ -23,7 +24,7 @@ if (!class_exists(Calendar::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CalendarRepository::class)]
+    #[ORM\Entity(repositoryClass: CalendarRepository::class)]
     class Calendar extends AbstractEntity
     {
         /**

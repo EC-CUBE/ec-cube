@@ -31,7 +31,9 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -98,11 +100,11 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param AuthenticationUtils $utils
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
     #[Template('Mypage/login.twig')]
-    public function login(Request $request, AuthenticationUtils $utils): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function login(Request $request, AuthenticationUtils $utils): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             log_info('認証済のためログイン処理をスキップ');
@@ -238,12 +240,12 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param int|string $order_no
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      *
      * @throws NotFoundHttpException
      */
     #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
-    public function order(Request $request, $order_no): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+    public function order(Request $request, $order_no): RedirectResponse|Response
     {
         $this->isTokenValid();
 
@@ -377,12 +379,12 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws BadRequestHttpException
      */
     #[Route('/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Product $Product): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Product $Product): RedirectResponse
     {
         $this->isTokenValid();
         /** @var Customer $Customer */

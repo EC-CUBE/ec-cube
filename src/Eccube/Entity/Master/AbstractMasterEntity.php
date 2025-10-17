@@ -14,12 +14,13 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\AbstractEntity;
 
 /**
  * AbstractMasterEntity
  */
 #[ORM\MappedSuperclass]
-abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implements \Stringable
+abstract class AbstractMasterEntity extends AbstractEntity implements \Stringable
 {
     /**
      * @return string

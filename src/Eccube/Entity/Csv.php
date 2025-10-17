@@ -14,6 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\CsvType;
+use Eccube\Repository\CsvRepository;
 
 if (!class_exists(Csv::class)) {
     /**
@@ -23,7 +25,7 @@ if (!class_exists(Csv::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CsvRepository::class)]
+    #[ORM\Entity(repositoryClass: CsvRepository::class)]
     class Csv extends AbstractEntity
     {
         /**
@@ -84,9 +86,9 @@ if (!class_exists(Csv::class)) {
         private $update_date;
 
         /**
-         * @var Master\CsvType|null
+         * @var CsvType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\CsvType::class)]
+        #[ORM\ManyToOne(targetEntity: CsvType::class)]
         #[ORM\JoinColumn(name: 'csv_type_id', referencedColumnName: 'id')]
         private $CsvType;
 
@@ -302,11 +304,11 @@ if (!class_exists(Csv::class)) {
         /**
          * Set csvType.
          *
-         * @param Master\CsvType|null $csvType
+         * @param CsvType|null $csvType
          *
          * @return Csv
          */
-        public function setCsvType(?Master\CsvType $csvType = null): Csv
+        public function setCsvType(?CsvType $csvType = null): Csv
         {
             $this->CsvType = $csvType;
 
@@ -316,9 +318,9 @@ if (!class_exists(Csv::class)) {
         /**
          * Get csvType.
          *
-         * @return Master\CsvType|null
+         * @return CsvType|null
          */
-        public function getCsvType(): ?Master\CsvType
+        public function getCsvType(): ?CsvType
         {
             return $this->CsvType;
         }

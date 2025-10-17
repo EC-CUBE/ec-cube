@@ -25,7 +25,9 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
@@ -133,9 +135,9 @@ class CartController extends AbstractController
     /**
      * @param \Eccube\Entity\Cart[] $Carts
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
+     * @return RedirectResponse|null
      */
-    protected function execPurchaseFlow($Carts): ?\Symfony\Component\HttpFoundation\RedirectResponse
+    protected function execPurchaseFlow($Carts): ?RedirectResponse
     {
         /** @var PurchaseFlowResult[] $flowResults */
         $flowResults = array_map(function ($Cart) {
@@ -191,10 +193,10 @@ class CartController extends AbstractController
      * @param string $operation
      * @param string|int $productClassId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
-    public function handleCartItem($operation, $productClassId): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function handleCartItem($operation, $productClassId): RedirectResponse
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
@@ -237,10 +239,10 @@ class CartController extends AbstractController
      * @param Request $request
      * @param string $cart_key
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
+     * @return RedirectResponse|Response|null
      */
     #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
-    public function buystep(Request $request, $cart_key): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
+    public function buystep(Request $request, $cart_key): RedirectResponse|Response|null
     {
         $Carts = $this->cartService->getCart();
         if (!is_object($Carts)) {

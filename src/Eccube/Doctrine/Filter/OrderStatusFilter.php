@@ -16,6 +16,7 @@ namespace Eccube\Doctrine\Filter;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 
 class OrderStatusFilter extends SQLFilter
 {
@@ -23,7 +24,7 @@ class OrderStatusFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         // 決済処理中/購入処理中を除く.
-        if ($targetEntity->reflClass->getName() === \Eccube\Entity\Order::class) {
+        if ($targetEntity->reflClass->getName() === Order::class) {
             return $targetTableAlias.'.order_status_id <> '.OrderStatus::PENDING.' AND '.$targetTableAlias.'.order_status_id <> '.OrderStatus::PROCESSING;
         }
 

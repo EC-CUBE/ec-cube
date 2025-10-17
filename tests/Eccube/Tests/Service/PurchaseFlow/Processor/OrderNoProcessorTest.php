@@ -18,6 +18,7 @@ use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderNoProcessorTest extends EccubeTestCase
 {
@@ -27,7 +28,7 @@ class OrderNoProcessorTest extends EccubeTestCase
      *
      * @throws \ReflectionException
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('processDataProvider')]
+    #[DataProvider('processDataProvider')]
     public function testProcess($orderNoFormat, $expected)
     {
         $Order = new Order();

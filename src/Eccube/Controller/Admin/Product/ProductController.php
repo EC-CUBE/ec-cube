@@ -46,7 +46,9 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -386,12 +388,12 @@ class ProductController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return BinaryFileResponse
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
-    public function imageLoad(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function imageLoad(Request $request): BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -795,12 +797,12 @@ class ProductController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param int|string|null $id
      *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return RedirectResponse|JsonResponse
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse
+    public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
         $session = $request->getSession();

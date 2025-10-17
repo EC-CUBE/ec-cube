@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -93,11 +94,11 @@ class MemberController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/member/new', name: 'admin_setting_system_member_new', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/member_edit.twig')]
-    public function create(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function create(Request $request): RedirectResponse|array
     {
         $Member = new Member();
         $builder = $this->formFactory
@@ -143,11 +144,11 @@ class MemberController extends AbstractController
      * @param Request $request
      * @param Member $Member
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/edit', name: 'admin_setting_system_member_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/member_edit.twig')]
-    public function edit(Request $request, Member $Member): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function edit(Request $request, Member $Member): RedirectResponse|array
     {
         $Member->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
@@ -199,12 +200,12 @@ class MemberController extends AbstractController
      * @param Request $request
      * @param Member $Member
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/up', name: 'admin_setting_system_member_up', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function up(Request $request, Member $Member): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function up(Request $request, Member $Member): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -225,12 +226,12 @@ class MemberController extends AbstractController
      * @param Request $request
      * @param Member $Member
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/down', name: 'admin_setting_system_member_down', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function down(Request $request, Member $Member): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function down(Request $request, Member $Member): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -251,12 +252,12 @@ class MemberController extends AbstractController
      * @param Request $request
      * @param Member $Member
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/delete', name: 'admin_setting_system_member_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Member $Member): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Member $Member): RedirectResponse
     {
         $this->isTokenValid();
 

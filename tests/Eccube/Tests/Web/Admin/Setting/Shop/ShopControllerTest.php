@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class ShopControllerTest
@@ -38,7 +39,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
      *
      * @group cache-clear
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
+    #[DataProvider('dataSubmitProvider')]
     public function testSubmit($isSuccess, $expected)
     {
         $formData = $this->createFormData();

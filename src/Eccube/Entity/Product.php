@@ -14,7 +14,9 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Repository\ProductRepository;
 
 if (!class_exists(Product::class)) {
@@ -171,7 +173,7 @@ if (!class_exists(Product::class)) {
          */
         public function isEnable(): bool
         {
-            return $this->getStatus()->getId() === Master\ProductStatus::DISPLAY_SHOW ? true : false;
+            return $this->getStatus()->getId() === ProductStatus::DISPLAY_SHOW ? true : false;
         }
 
         /**
@@ -563,32 +565,32 @@ if (!class_exists(Product::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductCategory>
+         * @var Collection<int,ProductCategory>
          */
         #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductCategories;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductClass>
+         * @var Collection<int,ProductClass>
          */
         #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductClasses;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductImage>
+         * @var Collection<int,ProductImage>
          */
         #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $ProductImage;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductTag>
+         * @var Collection<int,ProductTag>
          */
         #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
         private $ProductTag;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
+         * @var Collection<int,CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
@@ -601,9 +603,9 @@ if (!class_exists(Product::class)) {
         private $Creator;
 
         /**
-         * @var Master\ProductStatus|null
+         * @var ProductStatus|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\ProductStatus::class)]
+        #[ORM\ManyToOne(targetEntity: ProductStatus::class)]
         #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
         private $Status;
 
@@ -907,9 +909,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, ProductCategory>
+         * @return Collection<int, ProductCategory>
          */
-        public function getProductCategories(): \Doctrine\Common\Collections\Collection
+        public function getProductCategories(): Collection
         {
             return $this->ProductCategories;
         }
@@ -943,9 +945,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get productClasses.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, ProductClass>|null
+         * @return Collection<int, ProductClass>|null
          */
-        public function getProductClasses(): ?\Doctrine\Common\Collections\Collection
+        public function getProductClasses(): ?Collection
         {
             return $this->ProductClasses;
         }
@@ -979,9 +981,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get productImage.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,ProductImage>
+         * @return Collection<int,ProductImage>
          */
-        public function getProductImage(): \Doctrine\Common\Collections\Collection
+        public function getProductImage(): Collection
         {
             return $this->ProductImage;
         }
@@ -1015,9 +1017,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get productTag.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,ProductTag>
+         * @return Collection<int,ProductTag>
          */
-        public function getProductTag(): \Doctrine\Common\Collections\Collection
+        public function getProductTag(): Collection
         {
             return $this->ProductTag;
         }
@@ -1072,9 +1074,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
+         * @return Collection<int,CustomerFavoriteProduct>
          */
-        public function getCustomerFavoriteProducts(): \Doctrine\Common\Collections\Collection
+        public function getCustomerFavoriteProducts(): Collection
         {
             return $this->CustomerFavoriteProducts;
         }
@@ -1106,11 +1108,11 @@ if (!class_exists(Product::class)) {
         /**
          * Set status.
          *
-         * @param Master\ProductStatus|null $status
+         * @param ProductStatus|null $status
          *
          * @return Product
          */
-        public function setStatus(?Master\ProductStatus $status = null): Product
+        public function setStatus(?ProductStatus $status = null): Product
         {
             $this->Status = $status;
 
@@ -1120,9 +1122,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get status.
          *
-         * @return Master\ProductStatus|null
+         * @return ProductStatus|null
          */
-        public function getStatus(): ?Master\ProductStatus
+        public function getStatus(): ?ProductStatus
         {
             return $this->Status;
         }

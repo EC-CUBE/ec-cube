@@ -14,6 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Authority;
+use Eccube\Repository\AuthorityRoleRepository;
 
 if (!class_exists(AuthorityRole::class)) {
     /**
@@ -23,7 +25,7 @@ if (!class_exists(AuthorityRole::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\AuthorityRoleRepository::class)]
+    #[ORM\Entity(repositoryClass: AuthorityRoleRepository::class)]
     class AuthorityRole extends AbstractEntity
     {
         /**
@@ -54,10 +56,10 @@ if (!class_exists(AuthorityRole::class)) {
         private $update_date;
 
         /**
-         * @var Master\Authority|null
-         * @var Master\Authority|null
+         * @var Authority|null
+         * @var Authority|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
+        #[ORM\ManyToOne(targetEntity: Authority::class)]
         #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
         /** @phpstan-ignore-next-line */
         private $Authority;
@@ -154,11 +156,11 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Set authority.
          *
-         * @param Master\Authority|null $authority
+         * @param Authority|null $authority
          *
          * @return AuthorityRole
          */
-        public function setAuthority(?Master\Authority $authority = null): AuthorityRole
+        public function setAuthority(?Authority $authority = null): AuthorityRole
         {
             $this->Authority = $authority;
 
@@ -168,9 +170,9 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Get authority.
          *
-         * @return Master\Authority|null
+         * @return Authority|null
          */
-        public function getAuthority(): ?Master\Authority
+        public function getAuthority(): ?Authority
         {
             return $this->Authority;
         }

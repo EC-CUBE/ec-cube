@@ -13,7 +13,11 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Repository\BlockRepository;
 
 if (!class_exists(Block::class)) {
     /**
@@ -24,7 +28,7 @@ if (!class_exists(Block::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\BlockRepository::class)]
+    #[ORM\Entity(repositoryClass: BlockRepository::class)]
     class Block extends AbstractEntity
     {
         /**
@@ -77,15 +81,15 @@ if (!class_exists(Block::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,BlockPosition>
+         * @var Collection<int,BlockPosition>
          */
         #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
         /**
-         * @var Master\DeviceType|null
+         * @var DeviceType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
@@ -94,7 +98,7 @@ if (!class_exists(Block::class)) {
          */
         public function __construct()
         {
-            $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->BlockPositions = new ArrayCollection();
         }
 
         /**
@@ -294,9 +298,9 @@ if (!class_exists(Block::class)) {
         /**
          * Get blockPositions
          *
-         * @return \Doctrine\Common\Collections\Collection<int,BlockPosition>
+         * @return Collection<int,BlockPosition>
          */
-        public function getBlockPositions(): \Doctrine\Common\Collections\Collection
+        public function getBlockPositions(): Collection
         {
             return $this->BlockPositions;
         }
@@ -304,11 +308,11 @@ if (!class_exists(Block::class)) {
         /**
          * Set deviceType
          *
-         * @param Master\DeviceType $deviceType
+         * @param DeviceType $deviceType
          *
          * @return Block
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null): Block
+        public function setDeviceType(?DeviceType $deviceType = null): Block
         {
             $this->DeviceType = $deviceType;
 
@@ -318,9 +322,9 @@ if (!class_exists(Block::class)) {
         /**
          * Get deviceType
          *
-         * @return Master\DeviceType|null
+         * @return DeviceType|null
          */
-        public function getDeviceType(): ?Master\DeviceType
+        public function getDeviceType(): ?DeviceType
         {
             return $this->DeviceType;
         }

@@ -16,6 +16,7 @@ namespace Eccube\Tests\DependencyInjection\Compiler;
 use Eccube\Common\EccubeNav;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NavCompilerPassTest extends EccubeTestCase
@@ -45,7 +46,7 @@ class NavCompilerPassTest extends EccubeTestCase
      * @param $class
      * @param $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('addNavProvider')]
+    #[DataProvider('addNavProvider')]
     public function testAddNav($class, $expected)
     {
         $container = $this->createContainer();

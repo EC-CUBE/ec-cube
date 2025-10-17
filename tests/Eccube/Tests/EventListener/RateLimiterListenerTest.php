@@ -18,6 +18,7 @@ use Eccube\Entity\Customer;
 use Eccube\EventListener\RateLimiterListener;
 use Eccube\Request\Context;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -32,7 +33,7 @@ class RateLimiterListenerTest extends EccubeTestCase
      * @param mixed $type
      * @param mixed $params
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('onControllerProvider')]
+    #[DataProvider('onControllerProvider')]
     public function testOnController($limiterId, $type, $params)
     {
         $request = $this->createStub(Request::class);

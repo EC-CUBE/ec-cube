@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\TaxType;
@@ -94,7 +95,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
 
         // 最初のDeliveryエンティティのIDを取得
-        $deliveryRepository = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class);
+        $deliveryRepository = $this->entityManager->getRepository(Delivery::class);
         $delivery = $deliveryRepository->findOneBy(['visible' => true]);
         $deliveryId = $delivery ? $delivery->getId() : 1;
 

@@ -14,6 +14,8 @@
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\EventListener\ConvertKanaListener;
+use Eccube\Form\EventListener\TruncateHyphenListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -51,8 +53,8 @@ class PostalType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\TruncateHyphenListener());
+        $builder->addEventSubscriber(new ConvertKanaListener());
+        $builder->addEventSubscriber(new TruncateHyphenListener());
     }
 
     /**

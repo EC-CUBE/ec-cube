@@ -13,7 +13,10 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ClassNameRepository;
 
 if (!class_exists(ClassName::class)) {
     /**
@@ -23,7 +26,7 @@ if (!class_exists(ClassName::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\ClassNameRepository::class)]
+    #[ORM\Entity(repositoryClass: ClassNameRepository::class)]
     class ClassName extends AbstractEntity implements \Stringable
     {
         /**
@@ -75,7 +78,7 @@ if (!class_exists(ClassName::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ClassCategory>
+         * @var Collection<int,ClassCategory>
          */
         #[ORM\OneToMany(targetEntity: ClassCategory::class, mappedBy: 'ClassName')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
@@ -93,7 +96,7 @@ if (!class_exists(ClassName::class)) {
          */
         public function __construct()
         {
-            $this->ClassCategories = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->ClassCategories = new ArrayCollection();
         }
 
         /**
@@ -255,9 +258,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Get classCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,ClassCategory>
+         * @return Collection<int,ClassCategory>
          */
-        public function getClassCategories(): \Doctrine\Common\Collections\Collection
+        public function getClassCategories(): Collection
         {
             return $this->ClassCategories;
         }

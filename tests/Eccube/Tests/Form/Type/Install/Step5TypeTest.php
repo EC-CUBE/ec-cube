@@ -15,6 +15,7 @@ namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 class Step5TypeTest extends AbstractTypeTestCase
@@ -70,7 +71,7 @@ class Step5TypeTest extends AbstractTypeTestCase
     /**
      * @param mixed $data
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('getValidTestData')]
+    #[DataProvider('getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

@@ -14,6 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Repository\CartItemRepository;
 
 if (!class_exists(CartItem::class)) {
     /**
@@ -23,7 +25,7 @@ if (!class_exists(CartItem::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CartItemRepository::class)]
+    #[ORM\Entity(repositoryClass: CartItemRepository::class)]
     class CartItem extends AbstractEntity implements ItemInterface
     {
         use PointRateTrait;
@@ -201,13 +203,13 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @return Master\OrderItemType
+         * @return OrderItemType
          */
         #[\Override]
-        public function getOrderItemType(): Master\OrderItemType
+        public function getOrderItemType(): OrderItemType
         {
             // TODO OrderItemType::PRODUCT
-            $ItemType = new Master\OrderItemType();
+            $ItemType = new OrderItemType();
 
             return $ItemType;
         }

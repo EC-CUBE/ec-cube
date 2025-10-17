@@ -19,6 +19,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\ClassCategory;
+use Eccube\Entity\ClassName;
 
 /**
  * ClasscategoryRepository
@@ -44,11 +45,11 @@ class ClassCategoryRepository extends AbstractRepository
     /**
      * 規格カテゴリの一覧を取得します.
      *
-     * @param \Eccube\Entity\ClassName|null $ClassName 検索対象の規格名オブジェクト. 指定しない場合は、すべての規格を対象に取得します.
+     * @param ClassName|null $ClassName 検索対象の規格名オブジェクト. 指定しない場合は、すべての規格を対象に取得します.
      *
      * @return array<int, ClassCategory> 規格カテゴリの配列
      */
-    public function getList(?\Eccube\Entity\ClassName $ClassName = null): array
+    public function getList(?ClassName $ClassName = null): array
     {
         $qb = $this->createQueryBuilder('cc')
             ->orderBy('cc.sort_no', 'DESC'); // TODO ClassName ごとにソートした方が良いかも

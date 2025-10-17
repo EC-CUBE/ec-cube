@@ -18,6 +18,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Member;
 use Eccube\Entity\OrderPdf;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -42,6 +43,7 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -478,10 +480,10 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param Shipping $Shipping
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/order_status', name: 'admin_shipping_update_order_status', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function updateOrderStatus(Request $request, Shipping $Shipping): \Symfony\Component\HttpFoundation\JsonResponse
+    public function updateOrderStatus(Request $request, Shipping $Shipping): JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
@@ -646,7 +648,7 @@ class OrderController extends AbstractController
 
         $user = $this->getUser();
         /** @var OrderPdf|null $OrderPdf */
-        $OrderPdf = $user instanceof \Eccube\Entity\Member ? $this->orderPdfRepository->find($user->getId()) : null;
+        $OrderPdf = $user instanceof Member ? $this->orderPdfRepository->find($user->getId()) : null;
 
         if (!$OrderPdf) {
             $OrderPdf = new OrderPdf();

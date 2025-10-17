@@ -24,6 +24,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -80,14 +81,14 @@ class DeliveryController extends AbstractController
      * @param Request $request
      * @param string|int|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws \Exception
      */
     #[Route('/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('Mypage/delivery_edit.twig')]
-    public function edit(Request $request, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
@@ -187,12 +188,12 @@ class DeliveryController extends AbstractController
      * @param Request $request
      * @param CustomerAddress $CustomerAddress
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CustomerAddress $CustomerAddress): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, CustomerAddress $CustomerAddress): RedirectResponse
     {
         $this->isTokenValid();
 

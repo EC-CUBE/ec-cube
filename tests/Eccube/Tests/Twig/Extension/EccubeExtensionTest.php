@@ -17,6 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Product;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\EccubeExtension;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EccubeExtensionTest extends EccubeTestCase
 {
@@ -93,7 +94,7 @@ class EccubeExtensionTest extends EccubeTestCase
      * @param mixed $iconOnly
      * @param mixed $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('extensionProvider')]
+    #[DataProvider('extensionProvider')]
     public function testGetExtensionIcon($ext, $iconOnly, $expected)
     {
         $actual = $this->Extension->getExtensionIcon($ext, [], $iconOnly);

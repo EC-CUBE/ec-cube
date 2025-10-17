@@ -15,6 +15,7 @@ namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\News;
 
@@ -64,9 +65,9 @@ class NewsRepository extends AbstractRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getQueryBuilderAll(): \Doctrine\ORM\QueryBuilder
+    public function getQueryBuilderAll(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('n');
         $qb->orderBy('n.publish_date', 'DESC')

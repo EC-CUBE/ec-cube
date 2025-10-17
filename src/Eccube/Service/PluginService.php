@@ -13,13 +13,16 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
+use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
@@ -377,16 +380,16 @@ class PluginService
                         $driver = $ormConfig->getMetadataDriverImpl();
 
                         // DoctrineBundleのMappingDriverラッパーをアンラップ
-                        if ($driver instanceof \Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver) {
+                        if ($driver instanceof MappingDriver) {
                             $driver = $driver->getDriver();
                         }
 
-                        if ($driver instanceof \Doctrine\Persistence\Mapping\Driver\MappingDriverChain) {
+                        if ($driver instanceof MappingDriverChain) {
                             $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                             // 既存のドライバーを取得または新しく作成
                             $drivers = $driver->getDrivers();
                             if (!isset($drivers[$namespace])) {
-                                $attributeDriver = new \Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver([$entityDir]);
+                                $attributeDriver = new TraitProxyAttributeDriver([$entityDir]);
                                 $attributeDriver->setTraitProxiesDirectory($this->projectRoot.'/app/proxy/entity');
                                 $driver->addDriver($attributeDriver, $namespace);
                             }

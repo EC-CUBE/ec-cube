@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Entity\OrderItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -44,7 +45,7 @@ class OrderItemType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => \Eccube\Entity\OrderItem::class,
+                'data_class' => OrderItem::class,
             ]
         );
     }

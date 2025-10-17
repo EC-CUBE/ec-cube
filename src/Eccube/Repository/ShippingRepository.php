@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 
 /**
@@ -42,7 +43,7 @@ class ShippingRepository extends AbstractRepository
     public function findShippingsProduct($Order, $productClass): array
     {
         $shippings = $this->createQueryBuilder('s')
-            ->innerJoin(\Eccube\Entity\OrderItem::class, 'si', 'WITH', 'si.Shipping = s.id')
+            ->innerJoin(OrderItem::class, 'si', 'WITH', 'si.Shipping = s.id')
             ->where('si.Order = (:order)')
             ->andWhere('si.ProductClass = (:productClass)')
             ->setParameter('order', $Order)

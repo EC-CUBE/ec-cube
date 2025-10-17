@@ -22,6 +22,7 @@ use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpKernel\Client;
@@ -198,7 +199,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      * @param string $field
      * @param string $message
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataDownloadMaxLengthProvider')]
+    #[DataProvider('dataDownloadMaxLengthProvider')]
     public function testDownloadMaxLength($field, $message)
     {
         $Order = $this->createOrderForSearch();

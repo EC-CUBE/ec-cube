@@ -13,8 +13,10 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\LayoutRepository;
 
 if (!class_exists(Layout::class)) {
@@ -296,9 +298,9 @@ if (!class_exists(Layout::class)) {
         private $PageLayouts;
 
         /**
-         * @var Master\DeviceType|null
+         * @var DeviceType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
@@ -307,8 +309,8 @@ if (!class_exists(Layout::class)) {
          */
         public function __construct()
         {
-            $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->PageLayouts = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->BlockPositions = new ArrayCollection();
+            $this->PageLayouts = new ArrayCollection();
         }
 
         /**
@@ -468,11 +470,11 @@ if (!class_exists(Layout::class)) {
         /**
          * Set deviceType
          *
-         * @param Master\DeviceType $deviceType
+         * @param DeviceType $deviceType
          *
          * @return Layout
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null): Layout
+        public function setDeviceType(?DeviceType $deviceType = null): Layout
         {
             $this->DeviceType = $deviceType;
 
@@ -482,9 +484,9 @@ if (!class_exists(Layout::class)) {
         /**
          * Get deviceType
          *
-         * @return Master\DeviceType|null
+         * @return DeviceType|null
          */
-        public function getDeviceType(): ?Master\DeviceType
+        public function getDeviceType(): ?DeviceType
         {
             return $this->DeviceType;
         }

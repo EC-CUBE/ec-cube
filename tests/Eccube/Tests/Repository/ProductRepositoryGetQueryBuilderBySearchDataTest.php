@@ -16,6 +16,7 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
+use Eccube\Entity\Product;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
@@ -370,7 +371,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         // 商品作成時間同じにする
         $QueryBuilder = $this->entityManager->createQueryBuilder();
-        $QueryBuilder->update(\Eccube\Entity\Product::class, 'p');
+        $QueryBuilder->update(Product::class, 'p');
         $QueryBuilder->set('p.create_date', ':createDate');
         $QueryBuilder->setParameter(':createDate', new \DateTime());
         $QueryBuilder->getQuery()->execute();

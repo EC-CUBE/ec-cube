@@ -20,6 +20,8 @@ use Codeception\Step\Assertion;
 use Codeception\Step\Condition;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
@@ -126,16 +128,16 @@ class AcceptanceTester extends Actor
         $entityManager = Fixtures::get('entityManager');
 
         if (!is_array($stock)) {
-            $pc = $entityManager->getRepository(Eccube\Entity\ProductClass::class)->findOneBy(['Product' => $pid]);
+            $pc = $entityManager->getRepository(ProductClass::class)->findOneBy(['Product' => $pid]);
             $pc->setStock($stock);
             $pc->setStockUnlimited(Constant::DISABLED);
-            $ps = $entityManager->getRepository(Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
+            $ps = $entityManager->getRepository(ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
             $ps->setStock($stock);
             $entityManager->persist($pc);
             $entityManager->persist($ps);
             $entityManager->flush();
         } else {
-            $pcs = $entityManager->getRepository(Eccube\Entity\ProductClass::class)
+            $pcs = $entityManager->getRepository(ProductClass::class)
                 ->createQueryBuilder('o')
                 ->where('o.Product = '.$pid)
                 ->andwhere('o.ClassCategory1 > 0')
@@ -145,7 +147,7 @@ class AcceptanceTester extends Actor
                 $pc->setStock($stock[$key]);
                 $pc->setStockUnlimited(Constant::DISABLED);
                 $pc->setSaleLimit(2);
-                $ps = $entityManager->getRepository(Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
+                $ps = $entityManager->getRepository(ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
                 $ps->setStock($stock[$key]);
                 $entityManager->persist($pc);
                 $entityManager->persist($ps);

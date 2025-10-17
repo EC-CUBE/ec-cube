@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Payment;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderTypeTest extends AbstractTypeTestCase
 {
@@ -35,7 +36,7 @@ class OrderTypeTest extends AbstractTypeTestCase
      * @param mixed $max
      * @param mixed $result
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('filterPaymentsProvider')]
+    #[DataProvider('filterPaymentsProvider')]
     public function testFilterPayments($charge, $total, $min, $max, $result)
     {
         $Payment = new Payment();

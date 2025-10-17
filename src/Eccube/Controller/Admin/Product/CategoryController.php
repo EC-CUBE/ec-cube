@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Category;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -23,6 +24,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -62,7 +64,7 @@ class CategoryController extends AbstractController
      * @param string|null $parent_id
      * @param string|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws NotFoundHttpException|BadRequestHttpException|\Exception
      */
@@ -70,7 +72,7 @@ class CategoryController extends AbstractController
     #[Route('/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/category.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null): RedirectResponse|array
     {
         if ($parent_id) {
             /** @var Category|null $Parent */
@@ -224,12 +226,12 @@ class CategoryController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param string $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $id, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -345,7 +347,7 @@ class CategoryController extends AbstractController
                 $Category = $entity;
 
                 // CSV出力項目と合致するデータを取得.
-                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                $ExportCsvRow = new ExportCsvRow();
                 foreach ($Csvs as $Csv) {
                     $ExportCsvRow->setData($csvService->getData($Csv, $Category));
 

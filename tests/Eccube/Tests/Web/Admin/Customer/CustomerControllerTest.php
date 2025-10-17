@@ -19,6 +19,7 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Mime\Email;
 
@@ -155,7 +156,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * testIndexWithPostSearchByProductName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('indexWithPostSearchByProductNameProvider')]
+    #[DataProvider('indexWithPostSearchByProductNameProvider')]
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);

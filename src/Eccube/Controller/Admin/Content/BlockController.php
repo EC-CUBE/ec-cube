@@ -25,6 +25,7 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -86,14 +87,14 @@ class BlockController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param int|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws NotFoundHttpException|\Twig\Error\LoaderError
      */
     #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Content/block_edit.twig')]
-    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -194,10 +195,10 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
 

@@ -15,6 +15,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 class SearchOrderTypeTest extends AbstractTypeTestCase
@@ -42,7 +43,7 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
+    #[DataProvider('dataFormDateProvider')]
     public function testDateSearch(string $formName)
     {
         $formData = [
@@ -58,7 +59,7 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
+    #[DataProvider('dataFormDateProvider')]
     public function testOutOfRangeSearch(string $formName)
     {
         $formData = [
@@ -93,7 +94,7 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider('dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [

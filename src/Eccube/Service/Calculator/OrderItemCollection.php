@@ -13,6 +13,7 @@
 
 namespace Eccube\Service\Calculator;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
@@ -21,7 +22,7 @@ use Eccube\Entity\OrderItem;
 /**
  * @extends \Doctrine\Common\Collections\ArrayCollection<int, mixed>
  */
-class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
+class OrderItemCollection extends ArrayCollection
 {
     /**
      * @var string
@@ -53,9 +54,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     /**
      * 明細種別ごとに返すメソッド作る
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
+     * @return ArrayCollection<int, OrderItem>
      */
-    public function getProductClasses(): \Doctrine\Common\Collections\ArrayCollection
+    public function getProductClasses(): ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -64,9 +65,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
+     * @return ArrayCollection<int, OrderItem>
      */
-    public function getDeliveryFees(): \Doctrine\Common\Collections\ArrayCollection
+    public function getDeliveryFees(): ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -75,9 +76,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
+     * @return ArrayCollection<int, OrderItem>
      */
-    public function getCharges(): \Doctrine\Common\Collections\ArrayCollection
+    public function getCharges(): ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {
@@ -86,9 +87,9 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, OrderItem>
+     * @return ArrayCollection<int, OrderItem>
      */
-    public function getDiscounts(): \Doctrine\Common\Collections\ArrayCollection
+    public function getDiscounts(): ArrayCollection
     {
         return $this->filter(
             function (ItemInterface $OrderItem) {

@@ -20,6 +20,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\ShippingRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Mime\Email;
 
@@ -266,7 +267,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4193
      */
-    #[\PHPUnit\Framework\Attributes\Group('decimal')]
+    #[Group('decimal')]
     public function testCalculateTax()
     {
         /** @var Product $Product */

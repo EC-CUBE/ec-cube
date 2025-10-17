@@ -15,8 +15,9 @@ namespace Plugin\Emperor\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Attribute\EntityExtension;
+use Eccube\Entity\Cart;
 
-#[EntityExtension(\Eccube\Entity\Cart::class)]
+#[EntityExtension(Cart::class)]
 trait Cart2Trait
 {
     /**

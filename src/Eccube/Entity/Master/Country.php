@@ -14,6 +14,7 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\CountryRepository;
 
 if (!class_exists(Country::class, false)) {
     /**
@@ -23,7 +24,7 @@ if (!class_exists(Country::class, false)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\Master\CountryRepository::class)]
+    #[ORM\Entity(repositoryClass: CountryRepository::class)]
     #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class Country extends AbstractMasterEntity
     {

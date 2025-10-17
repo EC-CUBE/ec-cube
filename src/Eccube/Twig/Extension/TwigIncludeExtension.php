@@ -13,6 +13,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TemplateWrapper;
 use Twig\TwigFunction;
@@ -20,11 +21,11 @@ use Twig\TwigFunction;
 class TwigIncludeExtension extends AbstractExtension
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     protected $twig;
 
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

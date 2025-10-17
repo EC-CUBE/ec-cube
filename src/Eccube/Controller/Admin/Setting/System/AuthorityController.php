@@ -20,6 +20,7 @@ use Eccube\Form\Type\Admin\AuthorityRoleType;
 use Eccube\Repository\AuthorityRoleRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -43,11 +44,11 @@ class AuthorityController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/authority.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request): RedirectResponse|array
     {
         $AuthorityRoles = $this->authorityRoleRepository->findAllSort();
 

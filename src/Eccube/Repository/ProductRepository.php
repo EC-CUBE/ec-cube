@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
@@ -145,9 +146,9 @@ class ProductRepository extends AbstractRepository
      *         orderby?:ProductListOrderBy
      *     } $searchData
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchData($searchData): \Doctrine\ORM\QueryBuilder
+    public function getQueryBuilderBySearchData($searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.Status = 1');
@@ -246,9 +247,9 @@ class ProductRepository extends AbstractRepository
      *         sorttype?:string
      *     } $searchData
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData): \Doctrine\ORM\QueryBuilder
+    public function getQueryBuilderBySearchDataForAdmin($searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('pc', 'pi', 'tr', 'ps')

@@ -17,6 +17,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -30,6 +31,7 @@ use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -190,12 +192,12 @@ class CustomerController extends AbstractController
      * @param Request $request
      * @param string $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/customer/{id}/resend', name: 'admin_customer_resend', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function resend(Request $request, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function resend(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -238,10 +240,10 @@ class CustomerController extends AbstractController
      * @param string $id
      * @param TranslatorInterface $translator
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $id, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, $id, TranslatorInterface $translator): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -322,7 +324,7 @@ class CustomerController extends AbstractController
                 /** @var \Eccube\Entity\Customer $Customer */
                 $Customer = $entity;
 
-                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                $ExportCsvRow = new ExportCsvRow();
 
                 // CSV出力項目と合致するデータを取得.
                 foreach ($Csvs as $Csv) {

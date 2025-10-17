@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Eccube\Common\EccubeConfig;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 
-#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:generate', description: 'Generate plugin skeleton.')]
+#[AsCommand(name: 'eccube:plugin:generate', description: 'Generate plugin skeleton.')]
 class PluginGenerateCommand extends Command
 {
     /**

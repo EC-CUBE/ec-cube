@@ -22,6 +22,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\CustomerAddressRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,14 +47,14 @@ class CustomerDeliveryEditController extends AbstractController
      * @param Customer $Customer
      * @param string|null $did
      *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/new', name: 'admin_customer_delivery_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/edit', name: 'admin_customer_delivery_edit', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Customer/delivery_edit.twig')]
-    public function edit(Request $request, Customer $Customer, $did = null): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function edit(Request $request, Customer $Customer, $did = null): array|RedirectResponse
     {
         // 配送先住所最大値判定
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
@@ -132,12 +133,12 @@ class CustomerDeliveryEditController extends AbstractController
      * @param Customer $Customer
      * @param string $did
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/delete', name: 'admin_customer_delivery_delete', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Customer $Customer, $did): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Customer $Customer, $did): RedirectResponse
     {
         $this->isTokenValid();
 

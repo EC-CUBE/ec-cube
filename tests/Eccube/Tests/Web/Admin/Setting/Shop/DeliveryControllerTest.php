@@ -20,6 +20,7 @@ use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class DeliveryControllerTest
@@ -104,7 +105,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      * @param bool $isSuccess
      * @param bool $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
+    #[DataProvider('dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -141,7 +142,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      * @param bool $isSuccess
      * @param bool $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataSubmitProvider')]
+    #[DataProvider('dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -282,7 +283,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      * @param mixed $rules
      * @param mixed $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('getMergeRulesProvider')]
+    #[DataProvider('getMergeRulesProvider')]
     public function testGetMergeRules($rules, $expected)
     {
         $Payments = array_map(function ($rule) {

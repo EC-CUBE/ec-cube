@@ -23,6 +23,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -705,7 +706,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $id
      * @param $expectedMessage
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataProductIdProvider')]
+    #[DataProvider('dataProductIdProvider')]
     public function testImportProductWithIdIsWrong($id, $expectedMessage)
     {
         $Products = $this->productRepo->findAll();
@@ -728,7 +729,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $status
      * @param $expectedMessage
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataStatusProvider')]
+    #[DataProvider('dataStatusProvider')]
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
     {
         /** @var Generator $faker */
@@ -748,7 +749,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $optionDeliveryFee
      * @param mixed $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataDeliveryFeeProvider')]
+    #[DataProvider('dataDeliveryFeeProvider')]
     public function testImportDeliveryFee($optionDeliveryFee, $expected)
     {
         /** @var BaseInfo $BaseInfo */
@@ -879,7 +880,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $selector
      * @param mixed $pattern
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataDescriptionDetailProvider')]
+    #[DataProvider('dataDescriptionDetailProvider')]
     public function testImportDescriptionetail($length, $selector, $pattern)
     {
         $csv = [];
@@ -911,7 +912,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataTaxRuleProvider')]
+    #[DataProvider('dataTaxRuleProvider')]
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {
         /** @var BaseInfo $BaseInfo */
@@ -1081,7 +1082,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $lineNo
      * @param mixed $expecedFileNo
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('splitCsvDataProvider')]
+    #[DataProvider('splitCsvDataProvider')]
     public function testSplitCsv($lineNo, $expecedFileNo)
     {
         [$header, $row] = $this->createCsvAsArray();

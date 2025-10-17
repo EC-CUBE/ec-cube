@@ -22,6 +22,8 @@ use Page\Admin\CacheManagePage;
 use Page\Admin\PluginLocalInstallPage;
 use Page\Admin\PluginManagePage;
 use Page\Admin\PluginSearchPage;
+use Plugin\Emperor\Entity\Cart2Trait;
+use Plugin\Horizon\Entity\CartTrait;
 
 class EA10PluginCest
 {
@@ -864,7 +866,7 @@ class Horizon_Local extends Local_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
+        $this->traits[CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public function アップデート()
@@ -889,7 +891,7 @@ class Horizon_Store extends Store_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
+        $this->traits[CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public function アップデート()
@@ -951,7 +953,7 @@ class Emperor_Store extends Store_Plugin
     {
         $this->tables = ['dtb_bar'];
         $this->columns = ['dtb_cart.bar_id'];
-        $this->traits[\Plugin\Emperor\Entity\Cart2Trait::class] = 'src/Eccube/Entity/Cart';
+        $this->traits[Cart2Trait::class] = 'src/Eccube/Entity/Cart';
 
         return parent::アップデート();
     }

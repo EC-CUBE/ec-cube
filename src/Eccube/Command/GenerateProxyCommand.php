@@ -15,11 +15,12 @@ namespace Eccube\Command;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Service\EntityProxyService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:generate:proxies', description: 'Generate entity proxies')]
+#[AsCommand(name: 'eccube:generate:proxies', description: 'Generate entity proxies')]
 class GenerateProxyCommand extends Command
 {
     /**

@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
@@ -156,7 +158,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidAuthorityInvalid()
     {
-        $Authority = $this->entityManager->getRepository(\Eccube\Entity\Master\Authority::class)
+        $Authority = $this->entityManager->getRepository(Authority::class)
             ->findOneBy([], ['id' => 'DESC']);
         $id = $Authority->getId() + 1;
 
@@ -176,7 +178,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidWorkInvalid()
     {
-        $Work = $this->entityManager->getRepository(\Eccube\Entity\Master\Work::class)
+        $Work = $this->entityManager->getRepository(Work::class)
             ->findOneBy([], ['id' => 'DESC']);
         $id = $Work->getId() + 1;
 

@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Service\PurchaseFlow\ItemCollection;
+
 interface PurchaseInterface
 {
     /**
@@ -32,7 +34,7 @@ interface PurchaseInterface
     public function getTotal(): string;
 
     /**
-     * @return \Eccube\Service\PurchaseFlow\ItemCollection<int,ItemInterface>
+     * @return ItemCollection<int,ItemInterface>
      */
-    public function getItems(): \Eccube\Service\PurchaseFlow\ItemCollection;
+    public function getItems(): ItemCollection;
 }

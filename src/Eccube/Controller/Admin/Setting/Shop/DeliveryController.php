@@ -32,6 +32,8 @@ use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\PaymentOptionRepository;
 use Eccube\Twig\Extension\EccubeExtension;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -120,14 +122,14 @@ class DeliveryController extends AbstractController
      * @param EccubeExtension $extension
      * @param string|int|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/delivery_edit.twig')]
-    public function edit(Request $request, EccubeExtension $extension, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function edit(Request $request, EccubeExtension $extension, $id = null): RedirectResponse|array
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -303,10 +305,10 @@ class DeliveryController extends AbstractController
      * @param Request $request
      * @param Delivery $Delivery
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Delivery $Delivery): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Delivery $Delivery): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -350,10 +352,10 @@ class DeliveryController extends AbstractController
      * @param Request $request
      * @param Delivery $Delivery
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function visibility(Request $request, Delivery $Delivery): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function visibility(Request $request, Delivery $Delivery): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -385,12 +387,12 @@ class DeliveryController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      *
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
+    public function moveSortNo(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();

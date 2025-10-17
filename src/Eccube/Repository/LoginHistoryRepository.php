@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\LoginHistory;
@@ -47,9 +48,9 @@ class LoginHistoryRepository extends AbstractRepository
     /**
      * @param array<string, mixed> $searchData
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData): \Doctrine\ORM\QueryBuilder
+    public function getQueryBuilderBySearchDataForAdmin($searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('lh')
             ->select('lh');

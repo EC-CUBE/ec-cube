@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\TagRepository;
 
@@ -58,7 +60,7 @@ if (!class_exists(Tag::class)) {
         protected $sort_no;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductTag>
+         * @var Collection<int,ProductTag>
          */
         #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
         protected $ProductTag;
@@ -68,7 +70,7 @@ if (!class_exists(Tag::class)) {
          */
         public function __construct()
         {
-            $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->ProductTag = new ArrayCollection();
         }
 
         /**
@@ -172,9 +174,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Get productTag.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, ProductTag>
+         * @return Collection<int, ProductTag>
          */
-        public function getProductTag(): \Doctrine\Common\Collections\Collection
+        public function getProductTag(): Collection
         {
             return $this->ProductTag;
         }

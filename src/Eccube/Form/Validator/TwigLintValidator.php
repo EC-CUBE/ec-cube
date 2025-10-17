@@ -15,6 +15,7 @@ namespace Eccube\Form\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Twig\Environment;
 use Twig\Error\Error;
 use Twig\Loader\ArrayLoader;
 use Twig\Source;
@@ -22,16 +23,16 @@ use Twig\Source;
 class TwigLintValidator extends ConstraintValidator
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     protected $twig;
 
     /**
      * TwigLintValidator constructor.
      *
-     * @param \Twig\Environment $twig
+     * @param Environment $twig
      */
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

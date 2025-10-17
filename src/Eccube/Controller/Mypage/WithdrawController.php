@@ -24,7 +24,9 @@ use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -91,12 +93,12 @@ class WithdrawController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string,mixed>
      */
     #[Route('/mypage/withdraw', name: 'mypage_withdraw', methods: ['GET', 'POST'])]
     #[Route('/mypage/withdraw', name: 'mypage_withdraw_confirm', methods: ['GET', 'POST'])]
     #[Template('Mypage/withdraw.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request): Response|RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder();
 

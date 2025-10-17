@@ -28,6 +28,11 @@ $rules = [
     'phpdoc_add_missing_param_annotation' => true,
     'phpdoc_param_order' => true,
     'phpdoc_to_comment' => false, // /** @var */ を変換してしまうため
+    'global_namespace_import' => [
+        'import_classes' => false,
+        'import_constants' => false,
+        'import_functions' => false,
+    ],
 ];
 
 $finder = \PhpCsFixer\Finder::create()

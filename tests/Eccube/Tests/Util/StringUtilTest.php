@@ -15,6 +15,7 @@ namespace Eccube\Tests\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -512,7 +513,7 @@ class StringUtilTest extends TestCase
      * @param mixed $replacement
      * @param mixed $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('replaceOrAddEnvProvider')]
+    #[DataProvider('replaceOrAddEnvProvider')]
     public function testReplaceOrAddEnv($env, $replacement, $expected)
     {
         self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));

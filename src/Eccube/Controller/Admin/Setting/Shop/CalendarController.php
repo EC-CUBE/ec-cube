@@ -18,6 +18,7 @@ use Eccube\Entity\Calendar;
 use Eccube\Form\Type\Admin\CalendarType;
 use Eccube\Repository\CalendarRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -46,12 +47,12 @@ class CalendarController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar', name: 'admin_setting_shop_calendar', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/calendar/new', name: 'admin_setting_shop_calendar_new', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/calendar.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request): RedirectResponse|array
     {
         $Calendar = new Calendar();
         $builder = $this->formFactory
@@ -122,12 +123,12 @@ class CalendarController extends AbstractController
      * @param Request $request
      * @param Calendar $Calendar
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\Exception\ORMException
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Calendar $Calendar): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Calendar $Calendar): RedirectResponse
     {
         $this->isTokenValid();
         $this->calendarRepository->delete($Calendar);

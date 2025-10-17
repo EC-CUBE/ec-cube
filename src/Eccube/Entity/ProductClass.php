@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\ProductClassRepository;
 
 if (!class_exists(ProductClass::class)) {
@@ -273,9 +274,9 @@ if (!class_exists(ProductClass::class)) {
         private $Product;
 
         /**
-         * @var Master\SaleType|null
+         * @var SaleType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\SaleType::class)]
+        #[ORM\ManyToOne(targetEntity: SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
         private $SaleType;
 
@@ -657,11 +658,11 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set saleType.
          *
-         * @param Master\SaleType|null $saleType
+         * @param SaleType|null $saleType
          *
          * @return ProductClass
          */
-        public function setSaleType(?Master\SaleType $saleType = null): ProductClass
+        public function setSaleType(?SaleType $saleType = null): ProductClass
         {
             $this->SaleType = $saleType;
 
@@ -671,9 +672,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Get saleType.
          *
-         * @return Master\SaleType|null
+         * @return SaleType|null
          */
-        public function getSaleType(): ?Master\SaleType
+        public function getSaleType(): ?SaleType
         {
             return $this->SaleType;
         }

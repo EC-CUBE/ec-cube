@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Admin\Store;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @group cache-clear
@@ -58,7 +59,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      * @param mixed $param2
      * @param mixed $message
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('OwnerStoreInstallParam')]
+    #[DataProvider('OwnerStoreInstallParam')]
     public function testFailureInstall($param1, $param2, $message)
     {
         $form = [
@@ -88,7 +89,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      * @param mixed $param2
      * @param mixed $message
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('OwnerStoreUpgradeParam')]
+    #[DataProvider('OwnerStoreUpgradeParam')]
     public function testFailureUpgrade($param1, $param2, $message)
     {
         $form = [

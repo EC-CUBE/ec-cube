@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\BlockPositionRepository;
 
 if (!class_exists(BlockPosition::class)) {
     /**
@@ -23,7 +24,7 @@ if (!class_exists(BlockPosition::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\BlockPositionRepository::class)]
+    #[ORM\Entity(repositoryClass: BlockPositionRepository::class)]
     class BlockPosition extends AbstractEntity
     {
         /**

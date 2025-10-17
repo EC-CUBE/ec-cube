@@ -16,6 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -97,7 +98,7 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('DeviceType', EntityType::class, [
-                'class' => \Eccube\Entity\Master\DeviceType::class,
+                'class' => DeviceType::class,
                 'choice_label' => 'id',
             ])
             ->add('id', HiddenType::class)

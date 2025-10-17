@@ -16,10 +16,11 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
-use Eccube\Form\DataTransformer;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -232,9 +233,9 @@ class OrderType extends AbstractType
 
         $builder
             ->add($builder->create('Customer', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
-                    \Eccube\Entity\Customer::class
+                    Customer::class
                 )));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, $this->sortOrderItems(...));

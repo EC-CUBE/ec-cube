@@ -21,9 +21,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
@@ -37,6 +40,7 @@ use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -117,12 +121,12 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     #[Route('/', name: 'homepage', methods: ['GET'])]
     #[Route('/install', name: 'install', methods: ['GET'])]
     #[Template('index.twig')]
-    public function index(): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function index(): RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -138,13 +142,13 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
     #[Template('step1.twig')]
-    public function step1(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function step1(Request $request): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -258,13 +262,13 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string, mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
     #[Template('step3.twig')]
-    public function step3(Request $request, EntityManagerInterface $entityManager): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function step3(Request $request, EntityManagerInterface $entityManager): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -330,13 +334,13 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
     #[Template('step4.twig')]
-    public function step4(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function step4(Request $request): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -380,13 +384,13 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
     #[Template('step5.twig')]
-    public function step5(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function step5(Request $request): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
             throw new NotFoundHttpException();
@@ -889,9 +893,9 @@ class InstallController extends AbstractController
         $locales = \Locale::parseLocale($locale);
         $localeDir = empty($locales) ? 'ja' : $locales['language'];
 
-        $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+        $loader = new Loader();
         $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);
-        $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
+        $executer = new DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
     }
@@ -1069,7 +1073,7 @@ class InstallController extends AbstractController
      */
     public function getDatabaseVersion(EntityManager $em): string
     {
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm = new ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
 
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
