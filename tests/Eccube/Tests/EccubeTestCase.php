@@ -285,7 +285,6 @@ abstract class EccubeTestCase extends WebTestCase
         $refl = new \ReflectionObject($this);
         foreach ($refl->getProperties() as $prop) {
             if (!$prop->isStatic() && !str_starts_with($prop->getDeclaringClass()->getName(), 'PHPUnit')) {
-                $prop->setAccessible(true);
                 $prop->setValue($this, null);
             }
         }

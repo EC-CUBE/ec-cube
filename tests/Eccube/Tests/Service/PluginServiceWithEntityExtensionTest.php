@@ -55,7 +55,6 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service = static::getContainer()->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
         $prop = $rc->getProperty('schemaService');
-        $prop->setAccessible(true);
         $prop->setValue($this->service, $this->mockSchemaService);
 
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);

@@ -172,7 +172,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
         $traitTokens = [
@@ -201,7 +200,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait');
 
         $traitTokens = [
@@ -239,7 +237,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait');
 
         $traitTokens = [
@@ -269,7 +266,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
         self::assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
@@ -289,7 +285,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
         $traitTokens = [

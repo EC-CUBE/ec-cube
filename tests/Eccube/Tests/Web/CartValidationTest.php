@@ -2688,7 +2688,7 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * @param null $productName
+     * @param string|null $productName
      * @param int  $productClassNum
      * @param int  $stock
      *

@@ -60,7 +60,6 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
         $objReflect = new \ReflectionClass($this->csvExportService);
         $Property = $objReflect->getProperty('fp');
-        $Property->setAccessible(true);
         $Property->setValue($this->csvExportService, fopen($this->url, 'w'));
 
         $Csv = $this->csvRepository->find(1);

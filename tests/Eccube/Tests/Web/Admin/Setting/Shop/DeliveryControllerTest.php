@@ -298,7 +298,6 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $controller = $class->newInstanceWithoutConstructor();
         $object = new \ReflectionObject($controller);
         $method = $object->getMethod('getMergeRules');
-        $method->setAccessible(true);
         $result = $method->invokeArgs($controller, [$Payments]);
 
         $this->assertCount($expected, $result);

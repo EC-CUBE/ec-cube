@@ -68,9 +68,9 @@ class ProductDetailPage extends AbstractFrontPage
     }
 
     /**
-     * @param $num |int
-     * @param null $category1
-     * @param null $category2
+     * @param int $num
+     * @param array|null $category1
+     * @param array|null $category2
      *
      * @return ProductDetailPage
      */

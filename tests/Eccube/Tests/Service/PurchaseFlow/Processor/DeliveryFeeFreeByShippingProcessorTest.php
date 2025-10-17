@@ -217,7 +217,6 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         $Shipping = new Shipping();
         $rc = new \ReflectionClass(Shipping::class);
         $prop = $rc->getProperty('id');
-        $prop->setAccessible(true);
         $prop->setValue($Shipping, $id);
         $Shipping->setName01("name_{$id}");
 

@@ -179,7 +179,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $controller = static::getContainer()->get(CsvImportController::class);
         $rc = new \ReflectionClass(CsvImportController::class);
         $method = $rc->getMethod('loadCsv');
-        $method->setAccessible(true);
         $errors = [];
         $method->invokeArgs($controller, [$csv, &$errors]);
 

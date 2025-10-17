@@ -83,8 +83,8 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->verify();
 
         $cleanContent = quoted_printable_decode((string) $Message->getBody());
-        $this->assertSame(1, preg_match('|http://localhost(.*)|', (string) $cleanContent, $urls));
-        $forgot_path = trim((string) $urls[1]);
+        $this->assertSame(1, preg_match('|http://localhost(.*)|', $cleanContent, $urls));
+        $forgot_path = trim($urls[1]);
 
         // メール URL クリック
         $crawler = $this->client->request(

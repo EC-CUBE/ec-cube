@@ -35,7 +35,6 @@ class OrderNoProcessorTest extends EccubeTestCase
         // order_idを123に固定
         $rc = new \ReflectionClass(Order::class);
         $prop = $rc->getProperty('id');
-        $prop->setAccessible(true);
         $prop->setValue($Order, 123);
 
         $config = $this->createMock(EccubeConfig::class);

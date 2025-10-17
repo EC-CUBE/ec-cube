@@ -38,7 +38,6 @@ class QueryCustomizerPassTest extends TestCase
         $queries = $container->get(Queries::class);
         $ref = new \ReflectionObject($queries);
         $prop = $ref->getProperty('customizers');
-        $prop->setAccessible(true);
         $customizers = $prop->getValue($queries);
 
         self::assertCount(1, $customizers);

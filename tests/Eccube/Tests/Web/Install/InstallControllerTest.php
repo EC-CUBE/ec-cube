@@ -85,7 +85,6 @@ class InstallControllerTest extends AbstractWebTestCase
 
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
-        $propContainer->setAccessible(true);
         $propContainer->setValue($this->controller, self::getContainer());
 
         $this->request = $this->createMock(Request::class);

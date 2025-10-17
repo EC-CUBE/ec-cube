@@ -201,11 +201,11 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param null $AuthorityRole
+     * @param AuthorityRole|null $AuthorityRole
      *
      * @return array
      */
-    protected function createFormData($AuthorityRole = null)
+    protected function createFormData(?AuthorityRole $AuthorityRole = null): array
     {
         if (!$AuthorityRole) {
             $AuthorityRole = $this->newTestAuthorityRole();
