@@ -450,7 +450,7 @@ class PurchaseFlow implements \Stringable
         } else {
             $total = $itemHolder->getItems()
                 ->reduce(function ($sum, ItemInterface $item) {
-                    $taxPerItem = bcsub($item->getPriceIncTax(), $item->getPrice(), 2);
+                    $taxPerItem = bcsub($item->getPriceIncTax(), (string) $item->getPrice(), 2);
                     $sum = bcadd($sum, bcmul($taxPerItem, $item->getQuantity(), 2), 2);
 
                     return $sum;

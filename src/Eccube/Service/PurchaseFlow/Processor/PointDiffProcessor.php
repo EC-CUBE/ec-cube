@@ -201,6 +201,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         }
         $toUsePoint = $itemHolder->getUsePoint();
 
-        return bcsub($toUsePoint, $fromUsePoint);
+        return bcsub((string) $toUsePoint, (string) $fromUsePoint);
     }
 }

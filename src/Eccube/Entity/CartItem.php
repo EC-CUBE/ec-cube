@@ -131,7 +131,7 @@ if (!class_exists(CartItem::class)) {
          */
         public function getTotalPrice(): string
         {
-            return bcmul($this->getPrice(), $this->getQuantity(), 2);
+            return bcmul((string) $this->getPrice(), $this->getQuantity(), 2);
         }
 
         /**

@@ -37,7 +37,7 @@ function env($key, $default = null)
         }
     }
 
-    switch (strtolower($value)) {
+    switch (strtolower((string) $value)) {
         case 'true':
             return true;
         case 'false':
@@ -50,7 +50,7 @@ function env($key, $default = null)
         return $value;
     }
 
-    $decoded = json_decode($value, true);
+    $decoded = json_decode((string) $value, true);
     if ($decoded !== null) {
         return $decoded;
     }
