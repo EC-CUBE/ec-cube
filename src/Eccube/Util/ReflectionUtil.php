@@ -28,7 +28,6 @@ class ReflectionUtil
     {
         $refObj = new \ReflectionObject($instance);
         $refProp = $refObj->getProperty($property);
-        $refProp->setAccessible(true);
         $refProp->setValue($instance, $value);
     }
 

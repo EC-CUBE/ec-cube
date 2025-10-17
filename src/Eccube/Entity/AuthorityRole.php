@@ -55,12 +55,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * @var Master\Authority|null
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
-         * })
-         *
          * @var Master\Authority|null
          */
         #[ORM\ManyToOne(targetEntity: Master\Authority::class)]

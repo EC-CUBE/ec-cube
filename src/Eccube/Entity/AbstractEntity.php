@@ -94,7 +94,6 @@ abstract class AbstractEntity implements \ArrayAccess
         }
         $arrProperties = $objReflect->getProperties();
         foreach ($arrProperties as $objProperty) {
-            $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             if (in_array($name, $excludeAttribute) || !array_key_exists($name, $arrProps)) {
                 continue;
@@ -130,7 +129,6 @@ abstract class AbstractEntity implements \ArrayAccess
         $arrProperties = $objReflect->getProperties();
         $arrResults = [];
         foreach ($arrProperties as $objProperty) {
-            $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             if (in_array($name, $excludeAttribute)) {
                 continue;
@@ -251,7 +249,6 @@ abstract class AbstractEntity implements \ArrayAccess
         foreach ($Properties as $Property) {
             $attribute = $Property->getAttributes(Id::class);
             if ($attribute) {
-                $Property->setAccessible(true);
                 $Result[$Property->getName()] = $Property->getValue($Entity);
             }
         }

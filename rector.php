@@ -80,9 +80,6 @@ return RectorConfig::configure()
                // アトリビュート系を適用
                AnnotationWithValueToAttributeRector::class, // PHPUnitのバージョンアップ必須
                RequiresAnnotationWithValueToAttributeRector::class, // @requires アノテーションを属性に変換する。↑と同時に進める。
-
-               RemoveReflectionSetAccessibleCallsRector::class, // リフレクションの setAccessible 呼び出しを削除する
-               NestedAnnotationToAttributeRector::class, // ネストされたアノテーションをアトリビュートに変換する
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([

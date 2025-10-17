@@ -32,7 +32,6 @@ class EntityUtil
         $arrProperties = $objReflect->getProperties();
         $arrResults = [];
         foreach ($arrProperties as $objProperty) {
-            $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             $value = $objProperty->getValue($entity);
             $arrResults[$name] = is_object($value) ? $value::class : $value;

@@ -164,7 +164,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity implem
         }
         // XXX $obj = new static(); とすると segmentation fault が発生するため, リフレクションで値を取得する
         $refProperty = $ref->getProperty($name);
-        $refProperty->setAccessible(true);
 
         return $refProperty->getValue($ref->newInstance());
     }
