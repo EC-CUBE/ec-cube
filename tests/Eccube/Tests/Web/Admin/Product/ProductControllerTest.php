@@ -30,6 +30,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
@@ -489,7 +490,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param $taxRate
      * @param $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataNewProductProvider')]
+    #[DataProvider('dataNewProductProvider')]
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
         // Give
@@ -761,7 +762,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $after POST値
      * @param string|null $expected 期待値
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataEditProductProvider')]
+    #[DataProvider('dataEditProductProvider')]
     public function testEditWithPostTaxRate($before, $after, $expected)
     {
         // Give
@@ -822,7 +823,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataEditRoundingTypeProvider')]
+    #[DataProvider('dataEditRoundingTypeProvider')]
     public function testEditWithCurrnetRoundingType($tax_rate, $currentRoundingTypeId, $expected, $isNew)
     {
         // Give
@@ -1233,7 +1234,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param mixed $formName
      * @param mixed $methodName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('purifyTarget')]
+    #[DataProvider('purifyTarget')]
     public function testPurifyXssInput($formName, $methodName): void
     {
         $Product = $this->createProduct(null, 0);

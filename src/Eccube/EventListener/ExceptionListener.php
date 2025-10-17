@@ -19,11 +19,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Twig\Environment;
 
 class ExceptionListener implements EventSubscriberInterface
 {
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     private $twig;
 
@@ -35,7 +36,7 @@ class ExceptionListener implements EventSubscriberInterface
     /**
      * ExceptionListener constructor.
      */
-    public function __construct(\Twig\Environment $twig, Context $requestContext)
+    public function __construct(Environment $twig, Context $requestContext)
     {
         $this->twig = $twig;
         $this->requestContext = $requestContext;

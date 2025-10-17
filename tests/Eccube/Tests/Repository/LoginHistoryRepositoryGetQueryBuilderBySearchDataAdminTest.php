@@ -17,6 +17,7 @@ use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Repository\LoginHistoryRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * LoginHistoryRepository test cases.
@@ -99,7 +100,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      * @param $status
      * @param $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataStatusProvider')]
+    #[DataProvider('dataStatusProvider')]
     public function testStatus($status, $expected)
     {
         $this->searchData = [
@@ -124,7 +125,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
+    #[DataProvider('dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -158,7 +159,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider('dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [

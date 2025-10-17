@@ -15,6 +15,7 @@ namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
@@ -22,8 +23,8 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
      * @param mixed $snippet
      * @param mixed $whitelisted
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('twigSnippetsProvider')]
-    #[\PHPUnit\Framework\Attributes\DataProvider('twigVarFreeAreaProvider')]
+    #[DataProvider('twigSnippetsProvider')]
+    #[DataProvider('twigVarFreeAreaProvider')]
     public function testFreeArea($snippet, $whitelisted)
     {
         $Product = $this->createProduct();
@@ -41,8 +42,8 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
      * @param mixed $snippet
      * @param mixed $whitelisted
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('twigSnippetsProvider')]
-    #[\PHPUnit\Framework\Attributes\DataProvider('twigVarMetaTagsProvider')]
+    #[DataProvider('twigSnippetsProvider')]
+    #[DataProvider('twigVarMetaTagsProvider')]
     public function testMetatags($snippet, $whitelisted)
     {
         $Page = $this->entityManager->getRepository(Page::class)->find(1);

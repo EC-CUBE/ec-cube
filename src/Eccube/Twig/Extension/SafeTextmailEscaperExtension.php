@@ -13,12 +13,13 @@
 
 namespace Eccube\Twig\Extension;
 
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Runtime\EscaperRuntime;
 
 class SafeTextmailEscaperExtension extends AbstractExtension
 {
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(Environment $twig)
     {
         /** @var EscaperRuntime $escaper */
         $escaper = $twig->getRuntime(EscaperRuntime::class);

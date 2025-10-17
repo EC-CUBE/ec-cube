@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Entity\Master\OrderItemType;
+
 interface ItemInterface
 {
     /**
@@ -58,9 +60,9 @@ interface ItemInterface
     public function isTax(): bool;
 
     /**
-     * @return Master\OrderItemType|null
+     * @return OrderItemType|null
      */
-    public function getOrderItemType(): ?Master\OrderItemType;
+    public function getOrderItemType(): ?OrderItemType;
 
     /**
      * @return ?ProductClass

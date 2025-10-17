@@ -13,7 +13,10 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\DeliveryRepository;
 
 if (!class_exists(Delivery::class)) {
@@ -94,19 +97,19 @@ if (!class_exists(Delivery::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,PaymentOption>
+         * @var Collection<int,PaymentOption>
          */
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $PaymentOptions;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,DeliveryFee>
+         * @var Collection<int,DeliveryFee>
          */
         #[ORM\OneToMany(targetEntity: DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $DeliveryFees;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,DeliveryTime>
+         * @var Collection<int,DeliveryTime>
          */
         #[ORM\OneToMany(targetEntity: DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
@@ -120,9 +123,9 @@ if (!class_exists(Delivery::class)) {
         private $Creator;
 
         /**
-         * @var Master\SaleType|null
+         * @var SaleType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\SaleType::class)]
+        #[ORM\ManyToOne(targetEntity: SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
         private $SaleType;
 
@@ -131,9 +134,9 @@ if (!class_exists(Delivery::class)) {
          */
         public function __construct()
         {
-            $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->DeliveryFees = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->DeliveryTimes = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->PaymentOptions = new ArrayCollection();
+            $this->DeliveryFees = new ArrayCollection();
+            $this->DeliveryTimes = new ArrayCollection();
         }
 
         /**
@@ -343,9 +346,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get paymentOptions.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, PaymentOption>
+         * @return Collection<int, PaymentOption>
          */
-        public function getPaymentOptions(): \Doctrine\Common\Collections\Collection
+        public function getPaymentOptions(): Collection
         {
             return $this->PaymentOptions;
         }
@@ -379,9 +382,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get deliveryFees.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,DeliveryFee>
+         * @return Collection<int,DeliveryFee>
          */
-        public function getDeliveryFees(): \Doctrine\Common\Collections\Collection
+        public function getDeliveryFees(): Collection
         {
             return $this->DeliveryFees;
         }
@@ -415,9 +418,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get deliveryTimes.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,DeliveryTime>
+         * @return Collection<int,DeliveryTime>
          */
-        public function getDeliveryTimes(): \Doctrine\Common\Collections\Collection
+        public function getDeliveryTimes(): Collection
         {
             return $this->DeliveryTimes;
         }
@@ -449,11 +452,11 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set saleType.
          *
-         * @param Master\SaleType|null $saleType
+         * @param SaleType|null $saleType
          *
          * @return Delivery
          */
-        public function setSaleType(?Master\SaleType $saleType = null): Delivery
+        public function setSaleType(?SaleType $saleType = null): Delivery
         {
             $this->SaleType = $saleType;
 
@@ -463,9 +466,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get saleType.
          *
-         * @return Master\SaleType|null
+         * @return SaleType|null
          */
-        public function getSaleType(): ?Master\SaleType
+        public function getSaleType(): ?SaleType
         {
             return $this->SaleType;
         }

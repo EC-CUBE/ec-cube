@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -90,7 +91,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * @param string $expected
      * @param string $message
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataProvider')]
+    #[DataProvider('dataProvider')]
     public function testSystemLogValidate($value, $expected, $message)
     {
         $this->createTestFile(1);

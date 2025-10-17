@@ -13,7 +13,10 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
@@ -195,16 +198,16 @@ if (!class_exists(Shipping::class)) {
         private $OrderItems;
 
         /**
-         * @var Master\Country|null
+         * @var Country|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
@@ -232,7 +235,7 @@ if (!class_exists(Shipping::class)) {
          */
         public function __construct()
         {
-            $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->OrderItems = new ArrayCollection();
         }
 
         /**
@@ -728,11 +731,11 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
+         * @param Country|null $country
          *
          * @return Shipping
          */
-        public function setCountry(?Master\Country $country = null): Shipping
+        public function setCountry(?Country $country = null): Shipping
         {
             $this->Country = $country;
 
@@ -742,9 +745,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get country.
          *
-         * @return Master\Country|null
+         * @return Country|null
          */
-        public function getCountry(): ?Master\Country
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
@@ -752,11 +755,11 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return Shipping
          */
-        public function setPref(?Master\Pref $pref = null): Shipping
+        public function setPref(?Pref $pref = null): Shipping
         {
             $this->Pref = $pref;
 
@@ -766,9 +769,9 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }

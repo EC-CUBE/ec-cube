@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PaymentRepository;
 
@@ -112,7 +114,7 @@ if (!class_exists(Payment::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,PaymentOption>
+         * @var Collection<int,PaymentOption>
          */
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
         private $PaymentOptions;
@@ -129,7 +131,7 @@ if (!class_exists(Payment::class)) {
          */
         public function __construct()
         {
-            $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->PaymentOptions = new ArrayCollection();
         }
 
         /**
@@ -431,9 +433,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Get paymentOptions.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,PaymentOption>
+         * @return Collection<int,PaymentOption>
          */
-        public function getPaymentOptions(): \Doctrine\Common\Collections\Collection
+        public function getPaymentOptions(): Collection
         {
             return $this->PaymentOptions;
         }

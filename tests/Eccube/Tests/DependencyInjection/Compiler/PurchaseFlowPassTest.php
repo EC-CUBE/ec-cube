@@ -30,6 +30,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PurchaseFlowPassTest extends EccubeTestCase
@@ -49,7 +50,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
      *
      * @throws \Exception
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataProcessorProvider')]
+    #[DataProvider('dataProcessorProvider')]
     public function testProcess($class, $id, $tagName)
     {
         $Customer = $this->createCustomer();

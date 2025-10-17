@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Shipping;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -167,7 +168,7 @@ class OrderPdfType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(s.id)')
-                    ->from(\Eccube\Entity\Shipping::class, 's')
+                    ->from(Shipping::class, 's')
                     ->where($qb->expr()->in('s.id', ':ids'))
                     ->setParameter('ids', $ids);
                 $actual = $qb->getQuery()->getSingleScalarResult();

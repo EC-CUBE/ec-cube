@@ -15,7 +15,9 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
+use Eccube\Entity\Product;
 
 /**
  * CustomerFavoriteProductRepository
@@ -33,12 +35,12 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param \Eccube\Entity\Customer $Customer
-     * @param \Eccube\Entity\Product  $Product
+     * @param Customer $Customer
+     * @param Product  $Product
      *
      * @return void
      */
-    public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product): void
+    public function addFavorite(Customer $Customer, Product $Product): void
     {
         if ($this->isFavorite($Customer, $Product)) {
             return;
@@ -54,12 +56,12 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  \Eccube\Entity\Product  $Product
+     * @param  Customer $Customer
+     * @param  Product  $Product
      *
      * @return bool
      */
-    public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product): bool
+    public function isFavorite(Customer $Customer, Product $Product): bool
     {
         $qb = $this->createQueryBuilder('cf')
             ->select('COUNT(cf.Product)')
@@ -75,11 +77,11 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
+     * @param  Customer $Customer
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer): QueryBuilder
+    public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder
     {
         $qb = $this->createQueryBuilder('cfp')
             ->select('cfp, p')

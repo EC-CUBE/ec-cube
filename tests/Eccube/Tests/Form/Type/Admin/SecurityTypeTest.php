@@ -15,6 +15,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 class SecurityTypeTest extends AbstractTypeTestCase
@@ -108,7 +109,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
      * @param mixed $rootDir
      * @param mixed $valid
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('adminRouteDirParams')]
+    #[DataProvider('adminRouteDirParams')]
     public function testAdminRouteDir($rootDir, $valid)
     {
         $this->formData['admin_route_dir'] = $rootDir;
@@ -332,7 +333,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
      * @param mixed $ip
      * @param mixed $valid
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
+    #[DataProvider('ipAddressParams')]
     public function testFrontAllowHost($ip, $valid)
     {
         $this->formData['front_allow_hosts'] = $ip;
@@ -344,7 +345,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
      * @param mixed $ip
      * @param mixed $valid
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
+    #[DataProvider('ipAddressParams')]
     public function testFrontDenyHost($ip, $valid)
     {
         $this->formData['front_deny_hosts'] = $ip;
@@ -356,7 +357,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
      * @param mixed $ip
      * @param mixed $valid
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
+    #[DataProvider('ipAddressParams')]
     public function testAdminAllowHost($ip, $valid)
     {
         $this->formData['admin_allow_hosts'] = $ip;
@@ -368,7 +369,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
      * @param mixed $ip
      * @param mixed $valid
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
+    #[DataProvider('ipAddressParams')]
     public function testAdminDenyHost($ip, $valid)
     {
         $this->formData['admin_deny_hosts'] = $ip;

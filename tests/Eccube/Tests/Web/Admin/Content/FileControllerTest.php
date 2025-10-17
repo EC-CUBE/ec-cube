@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -248,7 +249,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
      * @param mixed $errorMessage
      * @param mixed $exists
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataProviderUploadIgnoreFiles')]
+    #[DataProvider('dataProviderUploadIgnoreFiles')]
     public function testUploadIgnoreFiles($fileName, $mimeType, $errorMessage, $exists)
     {
         $file = $this->getUserDataDir().'/../'.$fileName;

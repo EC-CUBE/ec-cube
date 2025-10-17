@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Pref;
 use Eccube\Repository\DeliveryFeeRepository;
 
 if (!class_exists(DeliveryFee::class)) {
@@ -50,9 +51,9 @@ if (!class_exists(DeliveryFee::class)) {
         private $Delivery;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
@@ -117,11 +118,11 @@ if (!class_exists(DeliveryFee::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return DeliveryFee
          */
-        public function setPref(?Master\Pref $pref = null): DeliveryFee
+        public function setPref(?Pref $pref = null): DeliveryFee
         {
             $this->Pref = $pref;
 
@@ -131,9 +132,9 @@ if (!class_exists(DeliveryFee::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }

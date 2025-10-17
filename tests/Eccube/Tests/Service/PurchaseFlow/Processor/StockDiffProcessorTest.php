@@ -26,6 +26,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class StockDiffProcessorTest extends EccubeTestCase
 {
@@ -54,7 +55,7 @@ class StockDiffProcessorTest extends EccubeTestCase
      * @param $beforeOrderStatus int 編集前の受注ステータス
      * @param $afterOrderStatus int 編集後の受注ステータス
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('validateProvider')]
+    #[DataProvider('validateProvider')]
     public function testValidate($stock, $beforeQuantity, $afterQuantity, $isError, $beforeOrderStatus, $afterOrderStatus)
     {
         $Customer = new Customer();
@@ -154,7 +155,7 @@ class StockDiffProcessorTest extends EccubeTestCase
      *
      * @throws PurchaseException
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('prepareProvider')]
+    #[DataProvider('prepareProvider')]
     public function testPrepare($beforeStock, $afterStock, $beforeQuantity, $afterQuantity, $beforeOrderStatus, $afterOrderStatus)
     {
         $Customer = new Customer();

@@ -14,11 +14,19 @@
 use Codeception\Util\Fixtures;
 use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Category;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\News;
+use Eccube\Entity\Order;
+use Eccube\Entity\Plugin;
+use Eccube\Entity\Product;
+use Eccube\Entity\Shipping;
 use Eccube\Kernel;
+use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 
 $config = parse_ini_file(__DIR__.'/config.ini', true);
@@ -80,7 +88,7 @@ if (!getenv('NO_FIXTURES')) {
         createCustomer($container, null, false); // non-active member
     }
 
-    $num = $entityManager->getRepository(Eccube\Entity\Product::class)
+    $num = $entityManager->getRepository(Product::class)
         ->createQueryBuilder('o')
         ->select('count(o.id)')
         ->getQuery()
@@ -97,10 +105,10 @@ if (!getenv('NO_FIXTURES')) {
     }
 
     $Customers = $entityManager->getRepository(Customer::class)->findAll();
-    $Products = $entityManager->getRepository(Eccube\Entity\Product::class)->findAll();
-    $Deliveries = $entityManager->getRepository(Eccube\Entity\Delivery::class)->findAll();
+    $Products = $entityManager->getRepository(Product::class)->findAll();
+    $Deliveries = $entityManager->getRepository(Delivery::class)->findAll();
 
-    $allOrderCount = $entityManager->getRepository(Eccube\Entity\Order::class)
+    $allOrderCount = $entityManager->getRepository(Order::class)
         ->createQueryBuilder('o')
         ->select('count(o.id)')
         ->getQuery()
@@ -113,7 +121,7 @@ if (!getenv('NO_FIXTURES')) {
             $charge = $faker->randomNumber(4);
             $discount = $faker->numberBetween(0, $charge);
 
-            $orderCountPerCustomer = $entityManager->getRepository(Eccube\Entity\Order::class)
+            $orderCountPerCustomer = $entityManager->getRepository(Order::class)
                 ->createQueryBuilder('o')
                 ->select('count(o.id)')
                 ->where('o.Customer = :Customer')
@@ -143,7 +151,7 @@ if (!getenv('NO_FIXTURES')) {
 function createCustomer($container, $email = null, $active = true)
 {
     $entityManager = $container->get('doctrine')->getManager();
-    $generator = $container->get(Eccube\Tests\Fixture\Generator::class);
+    $generator = $container->get(Generator::class);
 
     $Customer = $generator->createCustomer($email);
     if ($active) {
@@ -159,7 +167,7 @@ function createCustomer($container, $email = null, $active = true)
 
 function createProduct($container, $product_name = null, $product_class_num = 3)
 {
-    $generator = $container->get(Eccube\Tests\Fixture\Generator::class);
+    $generator = $container->get(Generator::class);
 
     return $generator->createProduct($product_name, $product_class_num);
 }
@@ -167,7 +175,7 @@ function createProduct($container, $product_name = null, $product_class_num = 3)
 function createOrder($container, Customer $Customer, array $ProductClasses, $Delivery, $charge, $discount, $Status, $OrderDate)
 {
     $entityManager = $container->get('doctrine')->getManager();
-    $generator = $container->get(Eccube\Tests\Fixture\Generator::class);
+    $generator = $container->get(Generator::class);
 
     $Order = $generator->createOrder($Customer, $ProductClasses, $Delivery, $charge, $discount);
     $Order->setOrderStatus($Status);
@@ -197,11 +205,11 @@ Fixtures::add('config', $container->get(EccubeConfig::class));
 /* config.ini 情報. */
 Fixtures::add('test_config', $config);
 
-$baseinfo = $entityManager->getRepository(Eccube\Entity\BaseInfo::class)->get();
+$baseinfo = $entityManager->getRepository(BaseInfo::class)->get();
 /* BaseInfo. */
 Fixtures::add('baseinfo', $baseinfo);
 
-$categories = $entityManager->getRepository(Eccube\Entity\Category::class)
+$categories = $entityManager->getRepository(Category::class)
     ->createQueryBuilder('o')
     ->getQuery()
     ->getResult();
@@ -209,7 +217,7 @@ $categories = $entityManager->getRepository(Eccube\Entity\Category::class)
 Fixtures::add('categories', $categories);
 
 $findOrders = function () use ($entityManager) {
-    return $entityManager->getRepository(Eccube\Entity\Order::class)
+    return $entityManager->getRepository(Order::class)
         ->createQueryBuilder('o')
         ->getQuery()
         ->getResult();
@@ -218,7 +226,7 @@ $findOrders = function () use ($entityManager) {
 Fixtures::add('findOrders', $findOrders);
 
 $findShippings = function () use ($entityManager) {
-    return $entityManager->getRepository(Eccube\Entity\Shipping::class)
+    return $entityManager->getRepository(Shipping::class)
         ->createQueryBuilder('o')
         ->getQuery()
         ->getResult();
@@ -227,7 +235,7 @@ $findShippings = function () use ($entityManager) {
 Fixtures::add('findShippings', $findShippings);
 
 $resetShippingDate = function () use ($entityManager) {
-    $Shippings = $entityManager->getRepository(Eccube\Entity\Shipping::class)
+    $Shippings = $entityManager->getRepository(Shipping::class)
         ->findAll();
     foreach ($Shippings as $Shipping) {
         $Shipping->setShippingDate(null);
@@ -240,7 +248,7 @@ $resetShippingDate = function () use ($entityManager) {
 Fixtures::add('resetShippingDate', $resetShippingDate);
 
 $setShippingDate = function () use ($entityManager) {
-    $Shippings = $entityManager->getRepository(Eccube\Entity\Shipping::class)
+    $Shippings = $entityManager->getRepository(Shipping::class)
         ->findAll();
     foreach ($Shippings as $Shipping) {
         $Shipping->setShippingDate(new DateTime());
@@ -253,7 +261,7 @@ $setShippingDate = function () use ($entityManager) {
 Fixtures::add('setShippingDate', $setShippingDate);
 
 $deleteShippingNotExistsOfItem = function () use ($entityManager) {
-    $Shippings = $entityManager->getRepository(Eccube\Entity\Shipping::class)->findAll();
+    $Shippings = $entityManager->getRepository(Shipping::class)->findAll();
 
     if ($Shippings) {
         foreach ($Shippings as $Shipping) {
@@ -270,7 +278,7 @@ $deleteShippingNotExistsOfItem = function () use ($entityManager) {
 Fixtures::add('deleteShippingNotExistsOfItem', $deleteShippingNotExistsOfItem);
 
 $findProducts = function () use ($entityManager) {
-    return $entityManager->getRepository(Eccube\Entity\Product::class)
+    return $entityManager->getRepository(Product::class)
         ->createQueryBuilder('p')
         ->getQuery()
         ->getResult();
@@ -294,7 +302,7 @@ $createCustomer = function ($email = null, $active = true) use ($container, $fak
 Fixtures::add('createCustomer', $createCustomer);
 
 $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], $Status = null) use ($container, $entityManager, $faker) {
-    $generator = $container->get(Eccube\Tests\Fixture\Generator::class);
+    $generator = $container->get(Generator::class);
     $Orders = [];
     $randomOrderStatus = [
         OrderStatus::NEW,
@@ -324,13 +332,13 @@ $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], 
 Fixtures::add('createOrders', $createOrders);
 
 $findPlugins = function () use ($entityManager) {
-    return $entityManager->getRepository(Eccube\Entity\Plugin::class)->findAll();
+    return $entityManager->getRepository(Plugin::class)->findAll();
 };
 /* プラグインを検索するクロージャ */
 Fixtures::add('findPlugins', $findPlugins);
 
 $findPluginByCode = function ($code = null) use ($entityManager) {
-    return $entityManager->getRepository(Eccube\Entity\Plugin::class)->findOneBy(['code' => $code]);
+    return $entityManager->getRepository(Plugin::class)->findOneBy(['code' => $code]);
 };
 /* プラグインを検索するクロージャ */
 Fixtures::add('findPluginByCode', $findPluginByCode);

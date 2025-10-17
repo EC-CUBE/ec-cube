@@ -14,6 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Repository\BaseInfoRepository;
 
 if (!class_exists(BaseInfo::class)) {
@@ -235,17 +237,17 @@ if (!class_exists(BaseInfo::class)) {
         private $point_conversion_rate = '1';
 
         /**
-         * @var Master\Country|null
+         * @var Country|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
@@ -965,11 +967,11 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
+         * @param Country|null $country
          *
          * @return BaseInfo
          */
-        public function setCountry(?Master\Country $country = null): BaseInfo
+        public function setCountry(?Country $country = null): BaseInfo
         {
             $this->Country = $country;
 
@@ -979,9 +981,9 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Get country.
          *
-         * @return Master\Country|null
+         * @return Country|null
          */
-        public function getCountry(): ?Master\Country
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
@@ -989,11 +991,11 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return BaseInfo
          */
-        public function setPref(?Master\Pref $pref = null): BaseInfo
+        public function setPref(?Pref $pref = null): BaseInfo
         {
             $this->Pref = $pref;
 
@@ -1003,9 +1005,9 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }

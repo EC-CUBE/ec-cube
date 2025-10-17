@@ -13,7 +13,14 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\Job;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\Sex;
 use Eccube\Repository\CustomerRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
@@ -200,56 +207,56 @@ if (!class_exists(Customer::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
+         * @var Collection<int,CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(mappedBy: 'Customer', targetEntity: CustomerFavoriteProduct::class, cascade: ['remove'])]
         private $CustomerFavoriteProducts;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,CustomerAddress>
+         * @var Collection<int,CustomerAddress>
          */
         #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
         private $CustomerAddresses;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,Order>
+         * @var Collection<int,Order>
          */
         #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'Customer')]
         private $Orders;
 
         /**
-         * @var Master\CustomerStatus|null
+         * @var CustomerStatus|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\CustomerStatus::class)]
+        #[ORM\ManyToOne(targetEntity: CustomerStatus::class)]
         #[ORM\JoinColumn(name: 'customer_status_id', referencedColumnName: 'id')]
         private $Status;
 
         /**
-         * @var Master\Sex|null
+         * @var Sex|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Sex::class)]
+        #[ORM\ManyToOne(targetEntity: Sex::class)]
         #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
-         * @var Master\Job|null
+         * @var Job|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Job::class)]
+        #[ORM\ManyToOne(targetEntity: Job::class)]
         #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
         /**
-         * @var Master\Country|null
+         * @var Country|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
@@ -258,9 +265,9 @@ if (!class_exists(Customer::class)) {
          */
         public function __construct()
         {
-            $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->CustomerAddresses = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->CustomerFavoriteProducts = new ArrayCollection();
+            $this->CustomerAddresses = new ArrayCollection();
+            $this->Orders = new ArrayCollection();
 
             $this->setBuyTimes('0');
             $this->setBuyTotal('0');
@@ -930,9 +937,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
+         * @return Collection<int,CustomerFavoriteProduct>
          */
-        public function getCustomerFavoriteProducts(): \Doctrine\Common\Collections\Collection
+        public function getCustomerFavoriteProducts(): Collection
         {
             return $this->CustomerFavoriteProducts;
         }
@@ -966,9 +973,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerAddresses.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,CustomerAddress>
+         * @return Collection<int,CustomerAddress>
          */
-        public function getCustomerAddresses(): \Doctrine\Common\Collections\Collection
+        public function getCustomerAddresses(): Collection
         {
             return $this->CustomerAddresses;
         }
@@ -1002,9 +1009,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get orders.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,Order>
+         * @return Collection<int,Order>
          */
-        public function getOrders(): \Doctrine\Common\Collections\Collection
+        public function getOrders(): Collection
         {
             return $this->Orders;
         }
@@ -1012,11 +1019,11 @@ if (!class_exists(Customer::class)) {
         /**
          * Set status.
          *
-         * @param Master\CustomerStatus|null $status
+         * @param CustomerStatus|null $status
          *
          * @return Customer
          */
-        public function setStatus(?Master\CustomerStatus $status = null): Customer
+        public function setStatus(?CustomerStatus $status = null): Customer
         {
             $this->Status = $status;
 
@@ -1026,9 +1033,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get status.
          *
-         * @return Master\CustomerStatus|null
+         * @return CustomerStatus|null
          */
-        public function getStatus(): ?Master\CustomerStatus
+        public function getStatus(): ?CustomerStatus
         {
             return $this->Status;
         }
@@ -1036,11 +1043,11 @@ if (!class_exists(Customer::class)) {
         /**
          * Set sex.
          *
-         * @param Master\Sex|null $sex
+         * @param Sex|null $sex
          *
          * @return Customer
          */
-        public function setSex(?Master\Sex $sex = null): Customer
+        public function setSex(?Sex $sex = null): Customer
         {
             $this->Sex = $sex;
 
@@ -1050,9 +1057,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get sex.
          *
-         * @return Master\Sex|null
+         * @return Sex|null
          */
-        public function getSex(): ?Master\Sex
+        public function getSex(): ?Sex
         {
             return $this->Sex;
         }
@@ -1060,11 +1067,11 @@ if (!class_exists(Customer::class)) {
         /**
          * Set job.
          *
-         * @param Master\Job|null $job
+         * @param Job|null $job
          *
          * @return Customer
          */
-        public function setJob(?Master\Job $job = null): Customer
+        public function setJob(?Job $job = null): Customer
         {
             $this->Job = $job;
 
@@ -1074,9 +1081,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get job.
          *
-         * @return Master\Job|null
+         * @return Job|null
          */
-        public function getJob(): ?Master\Job
+        public function getJob(): ?Job
         {
             return $this->Job;
         }
@@ -1084,11 +1091,11 @@ if (!class_exists(Customer::class)) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
+         * @param Country|null $country
          *
          * @return Customer
          */
-        public function setCountry(?Master\Country $country = null): Customer
+        public function setCountry(?Country $country = null): Customer
         {
             $this->Country = $country;
 
@@ -1098,9 +1105,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get country.
          *
-         * @return Master\Country|null
+         * @return Country|null
          */
-        public function getCountry(): ?Master\Country
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
@@ -1108,11 +1115,11 @@ if (!class_exists(Customer::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return Customer
          */
-        public function setPref(?Master\Pref $pref = null): Customer
+        public function setPref(?Pref $pref = null): Customer
         {
             $this->Pref = $pref;
 
@@ -1122,9 +1129,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }

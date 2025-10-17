@@ -19,6 +19,8 @@ use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Twig\Environment;
+use Twig\Loader\ChainLoader;
+use Twig\Loader\FilesystemLoader;
 
 class MobileTemplatePathListener implements EventSubscriberInterface
 {
@@ -80,8 +82,8 @@ class MobileTemplatePathListener implements EventSubscriberInterface
             ];
         }
 
-        $loader = new \Twig\Loader\ChainLoader([
-            new \Twig\Loader\FilesystemLoader($paths),
+        $loader = new ChainLoader([
+            new FilesystemLoader($paths),
             $this->twig->getLoader(),
         ]);
 

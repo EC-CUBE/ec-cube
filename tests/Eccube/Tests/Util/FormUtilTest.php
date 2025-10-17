@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Util;
 
+use Eccube\Entity\Master\Pref;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\Master\SexType;
@@ -81,7 +82,7 @@ class FormUtilTest extends EccubeTestCase
         $this->assertTrue($this->form->isSubmitted());
 
         // prefはPrefエンティティに変換されている.
-        $this->assertInstanceOf(\Eccube\Entity\Master\Pref::class, $data['pref']);
+        $this->assertInstanceOf(Pref::class, $data['pref']);
         $this->assertSame(28, $data['pref']->getId());
         $this->assertSame('兵庫県', $data['pref']->getName());
 

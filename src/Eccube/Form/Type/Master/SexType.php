@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\Sex;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,7 +46,7 @@ class SexType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Master\Sex::class,
+            'class' => Sex::class,
             'expanded' => true,
             'placeholder' => false,
         ]);

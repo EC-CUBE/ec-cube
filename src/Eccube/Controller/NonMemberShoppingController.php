@@ -21,7 +21,10 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -73,11 +76,11 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|array<string,mixed>
+     * @return RedirectResponse|Response|array<string,mixed>
      */
     #[Route('/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
     #[Template('Shopping/nonmember.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|array
+    public function index(Request $request): RedirectResponse|Response|array
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
@@ -140,12 +143,12 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return JsonResponse|RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
-    public function customer(Request $request): \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function customer(Request $request): JsonResponse|RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['status' => 'NG'], 400);

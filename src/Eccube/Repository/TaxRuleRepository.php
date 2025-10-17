@@ -18,7 +18,11 @@ use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -102,10 +106,10 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * 現在有効な税率設定情報を返す
      *
-     * @param  int|\Eccube\Entity\Product|null        $Product      商品
-     * @param  int|\Eccube\Entity\ProductClass|null   $ProductClass 商品規格
-     * @param  int|\Eccube\Entity\Master\Pref|null    $Pref         都道府県
-     * @param  int|\Eccube\Entity\Master\Country|null $Country      国
+     * @param  int|Product|null        $Product      商品
+     * @param  int|ProductClass|null   $ProductClass 商品規格
+     * @param  int|Pref|null    $Pref         都道府県
+     * @param  int|Country|null $Country      国
      *
      * @return TaxRule                 税設定情報
      *
@@ -129,28 +133,28 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // Cache Key 設定
-        if ($Product instanceof \Eccube\Entity\Product) {
+        if ($Product instanceof Product) {
             $productId = $Product->getId();
         } elseif ($Product) {
             $productId = $Product;
         } else {
             $productId = '0';
         }
-        if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
+        if ($ProductClass instanceof ProductClass) {
             $productClassId = $ProductClass->getId();
         } elseif ($ProductClass) {
             $productClassId = $ProductClass;
         } else {
             $productClassId = '0';
         }
-        if ($Pref instanceof \Eccube\Entity\Master\Pref) {
+        if ($Pref instanceof Pref) {
             $prefId = $Pref->getId();
         } elseif ($Pref) {
             $prefId = $Pref;
         } else {
             $prefId = '0';
         }
-        if ($Country instanceof \Eccube\Entity\Master\Country) {
+        if ($Country instanceof Country) {
             $countryId = $Country->getId();
         } elseif ($Country) {
             $countryId = $Country;

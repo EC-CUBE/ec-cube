@@ -17,6 +17,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Page;
 use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Repository\BlockPositionRepository;
 use Eccube\Repository\BlockRepository;
@@ -218,7 +219,7 @@ class LayoutController extends AbstractController
                     throw new NotFoundHttpException();
                 }
 
-                if ($Page->getEditType() >= \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
+                if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                     if ($Page->getUrl() === 'product_detail') {
                         $product = $this->productRepository->findOneBy(['Status' => ProductStatus::DISPLAY_SHOW]);
                         if (is_null($product)) {

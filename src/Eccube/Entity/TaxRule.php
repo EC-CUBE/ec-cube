@@ -14,6 +14,9 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Repository\TaxRuleRepository;
 
 if (!class_exists(TaxRule::class)) {
@@ -125,16 +128,16 @@ if (!class_exists(TaxRule::class)) {
         private $Creator;
 
         /**
-         * @var Master\Country|null
+         * @var Country|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
@@ -146,9 +149,9 @@ if (!class_exists(TaxRule::class)) {
         private $Product;
 
         /**
-         * @var Master\RoundingType|null
+         * @var RoundingType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\RoundingType::class)]
+        #[ORM\ManyToOne(targetEntity: RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
         private $RoundingType;
 
@@ -333,11 +336,11 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
+         * @param Country|null $country
          *
          * @return TaxRule
          */
-        public function setCountry(?Master\Country $country = null): TaxRule
+        public function setCountry(?Country $country = null): TaxRule
         {
             $this->Country = $country;
 
@@ -347,9 +350,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get country.
          *
-         * @return Master\Country|null
+         * @return Country|null
          */
-        public function getCountry(): ?Master\Country
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
@@ -357,11 +360,11 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return TaxRule
          */
-        public function setPref(?Master\Pref $pref = null): TaxRule
+        public function setPref(?Pref $pref = null): TaxRule
         {
             $this->Pref = $pref;
 
@@ -371,9 +374,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }
@@ -407,7 +410,7 @@ if (!class_exists(TaxRule::class)) {
          *
          * @return TaxRule
          */
-        public function setRoundingType(?Master\RoundingType $RoundingType = null): TaxRule
+        public function setRoundingType(?RoundingType $RoundingType = null): TaxRule
         {
             $this->RoundingType = $RoundingType;
 
@@ -417,9 +420,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Get roundingType.
          *
-         * @return Master\RoundingType|null
+         * @return RoundingType|null
          */
-        public function getRoundingType(): ?Master\RoundingType
+        public function getRoundingType(): ?RoundingType
         {
             return $this->RoundingType;
         }

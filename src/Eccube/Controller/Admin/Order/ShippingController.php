@@ -35,6 +35,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -128,13 +129,13 @@ class ShippingController extends AbstractController
      * @param Request $request
      * @param Order $Order
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_shipping_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/shipping.twig')]
-    public function index(Request $request, Order $Order): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request, Order $Order): RedirectResponse|array
     {
         $OriginOrder = clone $Order;
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());

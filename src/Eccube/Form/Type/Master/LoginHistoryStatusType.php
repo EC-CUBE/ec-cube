@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,7 +31,7 @@ class LoginHistoryStatusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Master\LoginHistoryStatus::class,
+            'class' => LoginHistoryStatus::class,
             'expanded' => false,
         ]);
     }

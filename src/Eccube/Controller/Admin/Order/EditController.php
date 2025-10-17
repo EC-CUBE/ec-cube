@@ -47,6 +47,8 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -183,14 +185,14 @@ class EditController extends AbstractController
      * @param RouterInterface $router
      * @param string|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Order/edit.twig')]
-    public function index(Request $request, RouterInterface $router, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request, RouterInterface $router, $id = null): RedirectResponse|array
     {
         if (null === $id) {
             // 空のエンティティを作成.
@@ -520,10 +522,10 @@ class EditController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/order/search/customer/id', name: 'admin_order_search_customer_by_id', methods: ['POST'])]
-    public function searchCustomerById(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
+    public function searchCustomerById(Request $request): JsonResponse
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');

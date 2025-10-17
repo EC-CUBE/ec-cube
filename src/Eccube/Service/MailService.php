@@ -32,6 +32,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -69,7 +70,7 @@ class MailService
     protected $eccubeConfig;
 
     /**
-     * @var \Twig\Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -81,7 +82,7 @@ class MailService
      * @param MailHistoryRepository $mailHistoryRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param EventDispatcherInterface $eventDispatcher
-     * @param \Twig\Environment $twig
+     * @param Environment $twig
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
@@ -90,7 +91,7 @@ class MailService
         MailHistoryRepository $mailHistoryRepository,
         BaseInfoRepository $baseInfoRepository,
         EventDispatcherInterface $eventDispatcher,
-        \Twig\Environment $twig,
+        Environment $twig,
         EccubeConfig $eccubeConfig,
     ) {
         $this->mailer = $mailer;

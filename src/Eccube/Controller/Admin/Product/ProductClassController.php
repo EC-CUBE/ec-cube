@@ -30,6 +30,7 @@ use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -88,13 +89,13 @@ class ProductClassController extends AbstractController
      * @param string $id
      * @param CacheUtil $cacheUtil
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws NotFoundHttpException|\Doctrine\ORM\NonUniqueResultException
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/product_class.twig')]
-    public function index(Request $request, $id, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse|array
     {
         $Product = $this->findProduct($id);
         if (!$Product) {
@@ -204,12 +205,12 @@ class ProductClassController extends AbstractController
      * @param Product $Product
      * @param CacheUtil $cacheUtil
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}/clear', requirements: ['id' => '\d+'], name: 'admin_product_product_class_clear', methods: ['POST'])]
-    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil): RedirectResponse
     {
         if (!$Product->hasProductClass()) {
             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);

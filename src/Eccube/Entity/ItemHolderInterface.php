@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 interface ItemHolderInterface
@@ -147,9 +148,9 @@ interface ItemHolderInterface
     /**
      * 注文ステータスを返す - 注文のみ
      *
-     * @return Master\OrderStatus|null
+     * @return OrderStatus|null
      */
-    public function getOrderStatus(): ?Master\OrderStatus;
+    public function getOrderStatus(): ?OrderStatus;
 
     /**
      * 商品の受注明細を取得 - 注文のみ

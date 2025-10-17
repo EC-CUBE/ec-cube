@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PageRepository;
 
@@ -128,7 +130,7 @@ if (!class_exists(Page::class)) {
         private $meta_tags;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,PageLayout>
+         * @var Collection<int,PageLayout>
          */
         #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
         private $PageLayouts;
@@ -145,7 +147,7 @@ if (!class_exists(Page::class)) {
          */
         public function __construct()
         {
-            $this->PageLayouts = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->PageLayouts = new ArrayCollection();
         }
 
         /**
@@ -439,9 +441,9 @@ if (!class_exists(Page::class)) {
         /**
          * Get pageLayoutLayout.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,PageLayout>
+         * @return Collection<int,PageLayout>
          */
-        public function getPageLayouts(): \Doctrine\Common\Collections\Collection
+        public function getPageLayouts(): Collection
         {
             return $this->PageLayouts;
         }

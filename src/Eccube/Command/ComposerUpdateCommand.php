@@ -14,11 +14,12 @@
 namespace Eccube\Command;
 
 use Eccube\Service\Composer\ComposerApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:composer:update')]
+#[AsCommand(name: 'eccube:composer:update')]
 class ComposerUpdateCommand extends Command
 {
     /**

@@ -13,9 +13,13 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Eccube\Repository\CategoryRepository;
 
 if (!class_exists(Category::class)) {
     /**
@@ -25,7 +29,7 @@ if (!class_exists(Category::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CategoryRepository::class)]
+    #[ORM\Entity(repositoryClass: CategoryRepository::class)]
     class Category extends AbstractEntity implements \Stringable
     {
         /**
@@ -52,12 +56,12 @@ if (!class_exists(Category::class)) {
         }
 
         /**
-         * @param  \Doctrine\ORM\EntityManager $em
+         * @param  EntityManager $em
          * @param  int                     $sortNo
          *
          * @return Category
          */
-        public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo): Category
+        public function calcChildrenSortNo(EntityManager $em, $sortNo): Category
         {
             $this->setSortNo($this->getSortNo() + $sortNo);
             $em->persist($this);
@@ -199,13 +203,13 @@ if (!class_exists(Category::class)) {
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductCategory>
+         * @var Collection<int,ProductCategory>
          */
         #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
         private $ProductCategories;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,Category>
+         * @var Collection<int,Category>
          */
         #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'Parent')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
@@ -230,8 +234,8 @@ if (!class_exists(Category::class)) {
          */
         public function __construct()
         {
-            $this->ProductCategories = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->Children = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->ProductCategories = new ArrayCollection();
+            $this->Children = new ArrayCollection();
         }
 
         /**
@@ -393,9 +397,9 @@ if (!class_exists(Category::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,ProductCategory>
+         * @return Collection<int,ProductCategory>
          */
-        public function getProductCategories(): \Doctrine\Common\Collections\Collection
+        public function getProductCategories(): Collection
         {
             return $this->ProductCategories;
         }
@@ -429,9 +433,9 @@ if (!class_exists(Category::class)) {
         /**
          * Get children.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,Category>
+         * @return Collection<int,Category>
          */
-        public function getChildren(): \Doctrine\Common\Collections\Collection
+        public function getChildren(): Collection
         {
             return $this->Children;
         }

@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\DeliveryDuration;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +35,7 @@ class DeliveryDurationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\DeliveryDuration::class,
+            'class' => DeliveryDuration::class,
             'placeholder' => 'common.select__unspecified',
             'multiple' => false,
             'expanded' => false,

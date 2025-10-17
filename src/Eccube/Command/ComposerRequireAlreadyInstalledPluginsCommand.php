@@ -18,13 +18,14 @@ use Eccube\Common\Constant;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:composer:require-already-installed')]
+#[AsCommand(name: 'eccube:composer:require-already-installed')]
 class ComposerRequireAlreadyInstalledPluginsCommand extends Command
 {
     /**

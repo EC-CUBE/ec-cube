@@ -23,7 +23,9 @@ use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -75,7 +77,7 @@ class MailController extends AbstractController
      * @param Request $request
      * @param Order $Order
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string,mixed>
      *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
@@ -83,7 +85,7 @@ class MailController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/order/{id}/mail', requirements: ['id' => '\d+'], name: 'admin_order_mail', methods: ['GET', 'POST'])]
     #[Template('@admin/Order/mail.twig')]
-    public function index(Request $request, Order $Order): \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request, Order $Order): Response|RedirectResponse|array
     {
         $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);
 

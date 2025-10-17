@@ -13,6 +13,8 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -110,7 +112,7 @@ class Step4Type extends AbstractType
                     return;
                 }
                 try {
-                    $config = new \Doctrine\DBAL\Configuration();
+                    $config = new Configuration();
                     $connectionParams = [
                         'dbname' => $data['database_name'],
                         'user' => $data['database_user'],
@@ -119,11 +121,11 @@ class Step4Type extends AbstractType
                         'driver' => $data['database'],
                         'port' => $data['database_port'],
                     ];
-                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+                    $conn = DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
 
                     // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
-                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+                    $conn = DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
                 } catch (\Exception $e) {
                     $form['database']->addError(new FormError(trans('install.database_connection_error').$e->getMessage()));

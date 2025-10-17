@@ -23,6 +23,7 @@ use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Eccube\Util\StringUtil;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +35,7 @@ use Symfony\Component\Finder\Finder;
  * Command to generate the SQL needed to update the database schema to match
  * the current mapping information.
  */
-#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]
+#[AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]
 class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
 {
     /**

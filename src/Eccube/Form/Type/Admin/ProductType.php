@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
+use Eccube\Entity\Tag;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
@@ -117,7 +118,7 @@ class ProductType extends AbstractType
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
-                'class' => \Eccube\Entity\Tag::class,
+                'class' => Tag::class,
                 'query_builder' => function ($er) {
                     return $er->createQueryBuilder('t')
                     ->orderBy('t.sort_no', 'DESC');

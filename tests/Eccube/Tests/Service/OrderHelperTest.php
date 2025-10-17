@@ -19,6 +19,7 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderHelperTest extends EccubeTestCase
 {
@@ -78,7 +79,7 @@ class OrderHelperTest extends EccubeTestCase
      * @param mixed $OrderItemType
      * @param mixed $TaxDisplayType
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('taxDisplayTypeProvider')]
+    #[DataProvider('taxDisplayTypeProvider')]
     public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
     {
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);

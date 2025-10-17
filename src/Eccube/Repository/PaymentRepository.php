@@ -17,6 +17,7 @@ use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Payment;
+use Eccube\Entity\PaymentOption;
 
 /**
  * PaymentRepository
@@ -64,7 +65,7 @@ class PaymentRepository extends AbstractRepository
     public function findPayments($delivery, $returnType = false): array
     {
         $query = $this->createQueryBuilder('p')
-            ->innerJoin(\Eccube\Entity\PaymentOption::class, 'po', 'WITH', 'po.payment_id = p.id')
+            ->innerJoin(PaymentOption::class, 'po', 'WITH', 'po.payment_id = p.id')
             ->where('po.Delivery = (:delivery) AND p.visible = true')
             ->orderBy('p.sort_no', 'DESC')
             ->setParameter('delivery', $delivery)

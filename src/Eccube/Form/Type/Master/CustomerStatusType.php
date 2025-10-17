@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,7 +47,7 @@ class CustomerStatusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Master\CustomerStatus::class,
+            'class' => CustomerStatus::class,
             'expanded' => false,
         ]);
     }

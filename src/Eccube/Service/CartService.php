@@ -29,6 +29,7 @@ use Eccube\Session\Session;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CartService
 {
@@ -519,9 +520,9 @@ class CartService
     }
 
     /**
-     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     * @return UserInterface|null
      */
-    protected function getUser(): ?\Symfony\Component\Security\Core\User\UserInterface
+    protected function getUser(): ?UserInterface
     {
         if (null === $token = $this->tokenStorage->getToken()) {
             return null;

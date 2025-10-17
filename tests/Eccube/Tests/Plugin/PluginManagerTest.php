@@ -15,6 +15,7 @@ namespace Eccube\Tests\Plugin;
 
 use Eccube\Plugin\AbstractPluginManager;
 use Eccube\Tests\EccubeTestCase;
+use Plugin\MigrationSample\DoctrineMigrations\Version20181101012712;
 use Plugin\MigrationSample\PluginManager;
 
 /**
@@ -43,7 +44,7 @@ class PluginManagerTest extends EccubeTestCase
         self::assertContains($migrationTableName, $tables);
 
         // migrationが実行され、バージョンが記録されることを確認
-        $expected = \Plugin\MigrationSample\DoctrineMigrations\Version20181101012712::class;
+        $expected = Version20181101012712::class;
         $actual = $connection->fetchOne('select version from '.$migrationTableName);
         self::assertSame($expected, $actual);
     }

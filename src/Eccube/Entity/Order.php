@@ -14,10 +14,19 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\CustomerOrderStatus;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\Job;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\OrderStatusColor;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Calculator\OrderItemCollection;
@@ -564,19 +573,19 @@ if (!class_exists(Order::class)) {
         private $complete_mail_message;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,OrderItem>
+         * @var Collection<int,OrderItem>
          */
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $OrderItems;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,Shipping>
+         * @var Collection<int,Shipping>
          */
         #[ORM\OneToMany(targetEntity: Shipping::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $Shippings;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,MailHistory>
+         * @var Collection<int,MailHistory>
          */
         #[ORM\OneToMany(targetEntity: MailHistory::class, mappedBy: 'Order', cascade: ['remove'])]
         #[ORM\OrderBy(['send_date' => 'DESC'])]
@@ -590,30 +599,30 @@ if (!class_exists(Order::class)) {
         private $Customer;
 
         /**
-         * @var Master\Country|null
+         * @var Country|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
-         * @var Master\Sex|null
+         * @var Sex|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Sex::class)]
+        #[ORM\ManyToOne(targetEntity: Sex::class)]
         #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
-         * @var Master\Job|null
+         * @var Job|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Job::class)]
+        #[ORM\ManyToOne(targetEntity: Job::class)]
         #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
@@ -625,41 +634,41 @@ if (!class_exists(Order::class)) {
         private $Payment;
 
         /**
-         * @var Master\DeviceType|null
+         * @var DeviceType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
-         * @var Master\CustomerOrderStatus|null
+         * @var CustomerOrderStatus|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\CustomerOrderStatus::class)]
+        #[ORM\ManyToOne(targetEntity: CustomerOrderStatus::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $CustomerOrderStatus;
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
          *
-         * @var Master\OrderStatusColor|null
+         * @var OrderStatusColor|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\OrderStatusColor::class)]
+        #[ORM\ManyToOne(targetEntity: OrderStatusColor::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $OrderStatusColor;
 
         /**
-         * @var Master\OrderStatus|null
+         * @var OrderStatus|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\OrderStatus::class)]
+        #[ORM\ManyToOne(targetEntity: OrderStatus::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $OrderStatus;
 
         /**
          * Constructor
          */
-        public function __construct(?Master\OrderStatus $orderStatus = null)
+        public function __construct(?OrderStatus $orderStatus = null)
         {
             $this->setDiscount('0')
                 ->setSubtotal('0')
@@ -1504,9 +1513,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get orderItems.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,OrderItem>
+         * @return Collection<int,OrderItem>
          */
-        public function getOrderItems(): \Doctrine\Common\Collections\Collection
+        public function getOrderItems(): Collection
         {
             return $this->OrderItems;
         }
@@ -1551,9 +1560,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get shippings.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,Shipping>
+         * @return Collection<int,Shipping>
          */
-        public function getShippings(): \Doctrine\Common\Collections\Collection
+        public function getShippings(): Collection
         {
             $criteria = Criteria::create()
                 ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
@@ -1593,9 +1602,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get mailHistories.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,MailHistory>
+         * @return Collection<int,MailHistory>
          */
-        public function getMailHistories(): \Doctrine\Common\Collections\Collection
+        public function getMailHistories(): Collection
         {
             return $this->MailHistories;
         }
@@ -1627,11 +1636,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
+         * @param Country|null $country
          *
          * @return Order
          */
-        public function setCountry(?Master\Country $country = null): Order
+        public function setCountry(?Country $country = null): Order
         {
             $this->Country = $country;
 
@@ -1641,9 +1650,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get country.
          *
-         * @return Master\Country|null
+         * @return Country|null
          */
-        public function getCountry(): ?Master\Country
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
@@ -1651,11 +1660,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return Order
          */
-        public function setPref(?Master\Pref $pref = null): Order
+        public function setPref(?Pref $pref = null): Order
         {
             $this->Pref = $pref;
 
@@ -1665,9 +1674,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }
@@ -1675,11 +1684,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set sex.
          *
-         * @param Master\Sex|null $sex
+         * @param Sex|null $sex
          *
          * @return Order
          */
-        public function setSex(?Master\Sex $sex = null): Order
+        public function setSex(?Sex $sex = null): Order
         {
             $this->Sex = $sex;
 
@@ -1689,9 +1698,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get sex.
          *
-         * @return Master\Sex|null
+         * @return Sex|null
          */
-        public function getSex(): ?Master\Sex
+        public function getSex(): ?Sex
         {
             return $this->Sex;
         }
@@ -1699,11 +1708,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set job.
          *
-         * @param Master\Job|null $job
+         * @param Job|null $job
          *
          * @return Order
          */
-        public function setJob(?Master\Job $job = null): Order
+        public function setJob(?Job $job = null): Order
         {
             $this->Job = $job;
 
@@ -1713,9 +1722,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get job.
          *
-         * @return Master\Job|null
+         * @return Job|null
          */
-        public function getJob(): ?Master\Job
+        public function getJob(): ?Job
         {
             return $this->Job;
         }
@@ -1747,11 +1756,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set deviceType.
          *
-         * @param Master\DeviceType|null $deviceType
+         * @param DeviceType|null $deviceType
          *
          * @return Order
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null): Order
+        public function setDeviceType(?DeviceType $deviceType = null): Order
         {
             $this->DeviceType = $deviceType;
 
@@ -1761,9 +1770,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get deviceType.
          *
-         * @return Master\DeviceType|null
+         * @return DeviceType|null
          */
-        public function getDeviceType(): ?Master\DeviceType
+        public function getDeviceType(): ?DeviceType
         {
             return $this->DeviceType;
         }
@@ -1771,11 +1780,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set customerOrderStatus.
          *
-         * @param Master\CustomerOrderStatus|null $customerOrderStatus
+         * @param CustomerOrderStatus|null $customerOrderStatus
          *
          * @return Order
          */
-        public function setCustomerOrderStatus(?Master\CustomerOrderStatus $customerOrderStatus = null): Order
+        public function setCustomerOrderStatus(?CustomerOrderStatus $customerOrderStatus = null): Order
         {
             $this->CustomerOrderStatus = $customerOrderStatus;
 
@@ -1785,9 +1794,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get customerOrderStatus.
          *
-         * @return Master\CustomerOrderStatus|null
+         * @return CustomerOrderStatus|null
          */
-        public function getCustomerOrderStatus(): ?Master\CustomerOrderStatus
+        public function getCustomerOrderStatus(): ?CustomerOrderStatus
         {
             return $this->CustomerOrderStatus;
         }
@@ -1795,11 +1804,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderStatusColor.
          *
-         * @param Master\OrderStatusColor|null $orderStatusColor
+         * @param OrderStatusColor|null $orderStatusColor
          *
          * @return Order
          */
-        public function setOrderStatusColor(?Master\OrderStatusColor $orderStatusColor = null): Order
+        public function setOrderStatusColor(?OrderStatusColor $orderStatusColor = null): Order
         {
             $this->OrderStatusColor = $orderStatusColor;
 
@@ -1809,9 +1818,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get orderStatusColor.
          *
-         * @return Master\OrderStatusColor|null
+         * @return OrderStatusColor|null
          */
-        public function getOrderStatusColor(): ?Master\OrderStatusColor
+        public function getOrderStatusColor(): ?OrderStatusColor
         {
             return $this->OrderStatusColor;
         }
@@ -1819,11 +1828,11 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderStatus.
          *
-         * @param Master\OrderStatus|null $orderStatus
+         * @param OrderStatus|null $orderStatus
          *
          * @return self
          */
-        public function setOrderStatus(?Master\OrderStatus $orderStatus = null): Order
+        public function setOrderStatus(?OrderStatus $orderStatus = null): Order
         {
             $this->OrderStatus = $orderStatus;
 
@@ -1833,9 +1842,9 @@ if (!class_exists(Order::class)) {
         /**
          * Get orderStatus.
          *
-         * @return Master\OrderStatus|null
+         * @return OrderStatus|null
          */
-        public function getOrderStatus(): ?Master\OrderStatus
+        public function getOrderStatus(): ?OrderStatus
         {
             return $this->OrderStatus;
         }

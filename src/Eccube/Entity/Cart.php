@@ -14,7 +14,9 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CartRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
@@ -28,7 +30,7 @@ if (!class_exists(Cart::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CartRepository::class)]
+    #[ORM\Entity(repositoryClass: CartRepository::class)]
     class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
     {
         use PointTrait;
@@ -61,7 +63,7 @@ if (!class_exists(Cart::class)) {
         private $lock = false;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,CartItem>
+         * @var Collection<int,CartItem>
          */
         #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
@@ -224,9 +226,9 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return \Doctrine\Common\Collections\Collection<int,CartItem>
+         * @return Collection<int,CartItem>
          */
-        public function getCartItems(): \Doctrine\Common\Collections\Collection
+        public function getCartItems(): Collection
         {
             return $this->CartItems;
         }
@@ -243,7 +245,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  \Doctrine\Common\Collections\Collection<int,CartItem> $CartItems
+         * @param  Collection<int,CartItem> $CartItems
          *
          * @return Cart
          */

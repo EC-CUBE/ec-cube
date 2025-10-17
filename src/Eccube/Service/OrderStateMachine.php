@@ -21,6 +21,7 @@ use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
@@ -88,9 +89,9 @@ class OrderStateMachine implements EventSubscriberInterface
      * @param OrderStateMachineContext $context
      * @param OrderStatus $OrderStatus
      *
-     * @return \Symfony\Component\Workflow\Transition|null
+     * @return Transition|null
      */
-    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): ?\Symfony\Component\Workflow\Transition
+    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): ?Transition
     {
         $transitions = $this->machine->getEnabledTransitions($context);
         foreach ($transitions as $t) {

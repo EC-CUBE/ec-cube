@@ -17,6 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\EventListener\IpAddrListener;
 use Eccube\Request\Context;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -60,7 +61,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
      * @param mixed $denyHost
      * @param mixed $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
+    #[DataProvider('ipAddressParams')]
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);
@@ -103,7 +104,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
      * @param mixed $denyHost
      * @param mixed $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('ipAddressParams')]
+    #[DataProvider('ipAddressParams')]
     public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);

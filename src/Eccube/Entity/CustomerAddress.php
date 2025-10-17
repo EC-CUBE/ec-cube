@@ -14,6 +14,9 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
+use Eccube\Repository\CustomerAddressRepository;
 
 if (!class_exists(CustomerAddress::class)) {
     /**
@@ -23,7 +26,7 @@ if (!class_exists(CustomerAddress::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\CustomerAddressRepository::class)]
+    #[ORM\Entity(repositoryClass: CustomerAddressRepository::class)]
     class CustomerAddress extends AbstractEntity
     {
         /**
@@ -168,16 +171,16 @@ if (!class_exists(CustomerAddress::class)) {
         private $Customer;
 
         /**
-         * @var Master\Country|null
+         * @var Country|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
-         * @var Master\Pref|null
+         * @var Pref|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
@@ -482,11 +485,11 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set country.
          *
-         * @param Master\Country|null $country
+         * @param Country|null $country
          *
          * @return CustomerAddress
          */
-        public function setCountry(?Master\Country $country = null): CustomerAddress
+        public function setCountry(?Country $country = null): CustomerAddress
         {
             $this->Country = $country;
 
@@ -496,9 +499,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Get country.
          *
-         * @return Master\Country|null
+         * @return Country|null
          */
-        public function getCountry(): ?Master\Country
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
@@ -506,11 +509,11 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set pref.
          *
-         * @param Master\Pref|null $pref
+         * @param Pref|null $pref
          *
          * @return CustomerAddress
          */
-        public function setPref(?Master\Pref $pref = null): CustomerAddress
+        public function setPref(?Pref $pref = null): CustomerAddress
         {
             $this->Pref = $pref;
 
@@ -520,9 +523,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Get pref.
          *
-         * @return Master\Pref|null
+         * @return Pref|null
          */
-        public function getPref(): ?Master\Pref
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }

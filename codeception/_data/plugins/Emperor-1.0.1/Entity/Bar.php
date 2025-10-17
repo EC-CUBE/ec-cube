@@ -14,6 +14,7 @@
 namespace Plugin\Emperor\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Plugin\Emperor\Repository\BarRepository;
 
 if (!class_exists(Bar::class)) {
     /**
@@ -23,7 +24,7 @@ if (!class_exists(Bar::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Plugin\Emperor\Repository\BarRepository::class)]
+    #[ORM\Entity(repositoryClass: BarRepository::class)]
     class Bar
     {
         /**

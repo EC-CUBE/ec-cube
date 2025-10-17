@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Payment;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +32,7 @@ class PaymentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Payment::class,
+            'class' => Payment::class,
             'choice_label' => 'method',
             'placeholder' => '-',
             // fixme 何故かここはDESC

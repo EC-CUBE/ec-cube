@@ -19,6 +19,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -52,12 +53,12 @@ class UserDataController extends AbstractController
      * @param Request $request
      * @param string $route
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_user_data_route%/{route}', name: 'user_data', requirements: ['route' => '([0-9a-zA-Z_\-]+\/?)+(?<!\/)'], methods: ['GET'])]
-    public function index(Request $request, $route): \Symfony\Component\HttpFoundation\Response
+    public function index(Request $request, $route): Response
     {
         $Page = $this->pageRepository->findOneBy(
             [

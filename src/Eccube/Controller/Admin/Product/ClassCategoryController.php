@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassCategory;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -24,6 +25,7 @@ use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CsvExportService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -78,14 +80,14 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string|null $id
      *
-     * @return  \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return  RedirectResponse|array<string,mixed>
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}', name: 'admin_product_class_category', requirements: ['class_name_id' => '\d+'], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit', name: 'admin_product_class_category_edit', requirements: ['class_name_id' => "\d+", 'id' => "\d+"], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/class_category.twig')]
-    public function index(Request $request, $class_name_id, $id = null): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request, $class_name_id, $id = null): RedirectResponse|array
     {
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
@@ -178,12 +180,12 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/delete', name: 'admin_product_class_category_delete', requirements: ['class_name_id' => '\d+', 'id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $class_name_id, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, $class_name_id, $id): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -231,12 +233,12 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/visibility', name: 'admin_product_class_category_visibility', requirements: ['class_name_id' => '\d+', 'id' => '\d+'], methods: ['PUT'])]
-    public function visibility(Request $request, $class_name_id, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function visibility(Request $request, $class_name_id, $id): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -346,7 +348,7 @@ class ClassCategoryController extends AbstractController
                 $ClassCategory = $entity;
 
                 // CSV出力項目と合致するデータを取得.
-                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                $ExportCsvRow = new ExportCsvRow();
                 foreach ($Csvs as $Csv) {
                     $ExportCsvRow->setData($csvService->getData($Csv, $ClassCategory));
 

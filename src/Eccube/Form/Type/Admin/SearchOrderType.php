@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Shipping;
+use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\PhoneNumberType;
@@ -83,7 +84,7 @@ class SearchOrderType extends AbstractType
                         ]),
                     ],
                 ])
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV')
+                ->addEventSubscriber(new ConvertKanaListener('CV')
                 ))
             ->add('company_name', TextType::class, [
                 'label' => 'admin.order.orderer_company_name',

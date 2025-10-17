@@ -33,6 +33,7 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
+use Eccube\Log\Logger;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
@@ -49,6 +50,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Kernel extends BaseKernel
 {
@@ -148,11 +150,11 @@ class Kernel extends BaseKernel
         date_default_timezone_set($timezone);
 
         $Logger = $container->get('eccube.logger');
-        if ($Logger instanceof Log\Logger) {
+        if ($Logger instanceof Logger) {
             LoggerFacade::init($container, $Logger);
         }
         $Translator = $container->get('translator');
-        if ($Translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
+        if ($Translator instanceof TranslatorInterface) {
             TranslatorFacade::init($Translator);
         }
 

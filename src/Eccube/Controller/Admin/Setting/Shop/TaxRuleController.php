@@ -22,6 +22,7 @@ use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -57,12 +58,12 @@ class TaxRuleController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/tax_rule.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request): RedirectResponse|array
     {
         $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
         $builder = $this->formFactory
@@ -156,12 +157,12 @@ class TaxRuleController extends AbstractController
      * @param Request $request
      * @param TaxRule $TaxRule
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Doctrine\ORM\NoResultException
      */
     #[Route('/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, TaxRule $TaxRule): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, TaxRule $TaxRule): RedirectResponse
     {
         $this->isTokenValid();
 

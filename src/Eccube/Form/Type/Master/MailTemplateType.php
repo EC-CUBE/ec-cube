@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\MailTemplate;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +35,7 @@ class MailTemplateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\MailTemplate::class,
+            'class' => MailTemplate::class,
             'placeholder' => 'common.select',
             // なぜかsortNoを持っていない
             'query_builder' => function (EntityRepository $er) {

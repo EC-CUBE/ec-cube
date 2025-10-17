@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -360,7 +361,7 @@ class CsvExportService
         // one to one の場合は, dtb_csv.reference_field_name, 合致する結果を取得する.
         if ($data instanceof AbstractEntity) {
             return $data->offsetGet($Csv->getReferenceFieldName());
-        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
+        } elseif ($data instanceof Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
             $array = [];
             foreach ($data as $elem) {

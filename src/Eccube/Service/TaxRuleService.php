@@ -14,6 +14,7 @@
 namespace Eccube\Service;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -135,11 +136,11 @@ class TaxRuleService
     {
         $ret = match ($RoundingType) {
             // 四捨五入
-            \Eccube\Entity\Master\RoundingType::ROUND => bcround($value),
+            RoundingType::ROUND => bcround($value),
             // 切り捨て
-            \Eccube\Entity\Master\RoundingType::FLOOR => bcfloor($value),
+            RoundingType::FLOOR => bcfloor($value),
             // 切り上げ
-            \Eccube\Entity\Master\RoundingType::CEIL => bcceil($value),
+            RoundingType::CEIL => bcceil($value),
             // デフォルト:切り上げ
             default => bcceil($value),
         };

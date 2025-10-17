@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\SaleType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +34,7 @@ class SaleTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Master\SaleType::class,
+            'class' => SaleType::class,
             'label' => 'salestype.label.sales_type',
         ]);
     }

@@ -27,6 +27,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PointProcessorTest extends EccubeTestCase
 {
@@ -77,7 +78,7 @@ class PointProcessorTest extends EccubeTestCase
      * @param $customerPoint int 保有ポイント
      * @param $isError boolean エラーかどうか
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('usePointOverCustomerPointProvider')]
+    #[DataProvider('usePointOverCustomerPointProvider')]
     public function testUsePointOverCustomerPointShoppingFlow($usePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
@@ -122,7 +123,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('usePointOverPriceProvider')]
+    #[DataProvider('usePointOverPriceProvider')]
     public function testUsePointOverPrice($usePoint, $isError)
     {
         $price = 100; // 商品の値段
@@ -159,7 +160,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('usePointOverPriceProvider')]
+    #[DataProvider('usePointOverPriceProvider')]
     public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
     {
         $price = '100'; // 商品の値段
@@ -234,7 +235,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('useAddPointProvider')]
+    #[DataProvider('useAddPointProvider')]
     public function testAddPoint($price, $usePoint, $addPoint)
     {
         $Customer = new Customer();
@@ -276,7 +277,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('useAddPointExcludeShippingFeeProvider')]
+    #[DataProvider('useAddPointExcludeShippingFeeProvider')]
     public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
     {
         $Customer = new Customer();
@@ -332,7 +333,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('pointConversionRateProvider')]
+    #[DataProvider('pointConversionRateProvider')]
     public function testPointConversionRate($pointConversionRate)
     {
         $productPrice = 1000;
@@ -387,7 +388,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('basicPointRateProvider')]
+    #[DataProvider('basicPointRateProvider')]
     public function testBasicPointRate($basicPointRate)
     {
         $ProductPrice = 1000;

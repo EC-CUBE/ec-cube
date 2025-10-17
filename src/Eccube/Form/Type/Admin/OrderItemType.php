@@ -20,7 +20,7 @@ use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
-use Eccube\Form\DataTransformer;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\PriceType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
@@ -174,17 +174,17 @@ class OrderItemType extends AbstractType
 
         $builder
             ->add($builder->create('order_item_type', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
                     OrderItemTypeMaster::class
                 )))
             ->add($builder->create('tax_type', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
                     TaxType::class
                 )))
             ->add($builder->create('ProductClass', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
                     ProductClass::class
                 )));

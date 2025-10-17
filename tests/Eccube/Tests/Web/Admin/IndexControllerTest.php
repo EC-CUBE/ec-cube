@@ -18,6 +18,7 @@ use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
@@ -57,7 +58,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
      *
      * @group decimal
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('indexWithSalesProvider')]
+    #[DataProvider('indexWithSalesProvider')]
     public function testIndexWithSales($hour)
     {
         $Customer = $this->createCustomer();

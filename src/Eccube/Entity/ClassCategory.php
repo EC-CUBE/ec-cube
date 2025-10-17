@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ClassCategoryRepository;
 
 if (!class_exists(ClassCategory::class)) {
     /**
@@ -23,7 +24,7 @@ if (!class_exists(ClassCategory::class)) {
     #[ORM\InheritanceType('SINGLE_TABLE')]
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: \Eccube\Repository\ClassCategoryRepository::class)]
+    #[ORM\Entity(repositoryClass: ClassCategoryRepository::class)]
     class ClassCategory extends AbstractEntity implements \Stringable
     {
         /**

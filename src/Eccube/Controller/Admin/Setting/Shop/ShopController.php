@@ -20,6 +20,7 @@ use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -55,13 +56,13 @@ class ShopController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/shop_master.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function index(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $BaseInfo = $this->baseInfoRepository->get();
         $builder = $this->formFactory

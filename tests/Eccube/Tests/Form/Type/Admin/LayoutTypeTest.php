@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
 use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
@@ -68,7 +69,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPageInvalid()
     {
-        $PageLayout = $this->entityManager->getRepository(\Eccube\Entity\PageLayout::class)
+        $PageLayout = $this->entityManager->getRepository(PageLayout::class)
             ->findOneBy([], ['page_id' => 'DESC']);
         $id = $PageLayout->getPageId() + 1;
 

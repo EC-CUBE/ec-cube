@@ -23,6 +23,7 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * CustomerRepository test cases.
@@ -605,7 +606,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * @param string $time
      * @param int $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
+    #[DataProvider('dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());
@@ -655,7 +656,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * @param string $time
      * @param int $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider('dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());

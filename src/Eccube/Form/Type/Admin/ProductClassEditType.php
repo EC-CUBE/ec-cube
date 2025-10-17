@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ProductClass;
-use Eccube\Form\DataTransformer;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
@@ -135,7 +135,7 @@ class ProductClassEditType extends AbstractType
                 'placeholder' => 'common.select__unspecified',
             ]);
 
-        $transformer = new DataTransformer\EntityToIdTransformer($this->entityManager, ClassCategory::class);
+        $transformer = new EntityToIdTransformer($this->entityManager, ClassCategory::class);
         $builder
             ->add($builder->create('ClassCategory1', HiddenType::class)
                 ->addModelTransformer($transformer)

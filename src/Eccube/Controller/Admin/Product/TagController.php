@@ -21,6 +21,7 @@ use Eccube\Form\Type\Admin\ProductTag;
 use Eccube\Repository\TagRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -40,11 +41,11 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/product/tag', name: 'admin_product_tag', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/tag.twig')]
-    public function index(Request $request): array|\Symfony\Component\HttpFoundation\RedirectResponse
+    public function index(Request $request): array|RedirectResponse
     {
         $Tag = new Tag();
         $Tags = $this->tagRepository->getList();
@@ -126,12 +127,12 @@ class TagController extends AbstractController
      * @param Request $request
      * @param Tag $Tag
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/tag/{id}/delete', name: 'admin_product_tag_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Tag $Tag): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(Request $request, Tag $Tag): RedirectResponse
     {
         $this->isTokenValid();
 

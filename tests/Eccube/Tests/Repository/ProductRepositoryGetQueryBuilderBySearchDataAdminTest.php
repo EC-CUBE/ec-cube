@@ -19,6 +19,7 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * ProductRepository#getQueryBuilderBySearchDataAdmin test cases.
@@ -233,7 +234,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * @param string $time
      * @param int $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
+    #[DataProvider('dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -276,7 +277,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * @param string $time
      * @param int $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider('dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [

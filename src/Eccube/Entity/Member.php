@@ -14,6 +14,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Master\Work;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
@@ -164,16 +166,16 @@ if (!class_exists(Member::class)) {
         private $login_date;
 
         /**
-         * @var Master\Work|null
+         * @var Work|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Work::class)]
+        #[ORM\ManyToOne(targetEntity: Work::class)]
         #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]
         private $Work;
 
         /**
-         * @var Master\Authority|null
+         * @var Authority|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
+        #[ORM\ManyToOne(targetEntity: Authority::class)]
         #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
         private $Authority;
 
@@ -483,11 +485,11 @@ if (!class_exists(Member::class)) {
         /**
          * Set Work
          *
-         * @param Master\Work|null $work
+         * @param Work|null $work
          *
          * @return Member
          */
-        public function setWork(?Master\Work $work = null): Member
+        public function setWork(?Work $work = null): Member
         {
             $this->Work = $work;
 
@@ -497,9 +499,9 @@ if (!class_exists(Member::class)) {
         /**
          * Get work.
          *
-         * @return Master\Work|null
+         * @return Work|null
          */
-        public function getWork(): ?Master\Work
+        public function getWork(): ?Work
         {
             return $this->Work;
         }
@@ -507,11 +509,11 @@ if (!class_exists(Member::class)) {
         /**
          * Set authority.
          *
-         * @param Master\Authority|null $authority
+         * @param Authority|null $authority
          *
          * @return Member
          */
-        public function setAuthority(?Master\Authority $authority = null): Member
+        public function setAuthority(?Authority $authority = null): Member
         {
             $this->Authority = $authority;
 
@@ -521,9 +523,9 @@ if (!class_exists(Member::class)) {
         /**
          * Get authority.
          *
-         * @return Master\Authority|null
+         * @return Authority|null
          */
-        public function getAuthority(): ?Master\Authority
+        public function getAuthority(): ?Authority
         {
             return $this->Authority;
         }

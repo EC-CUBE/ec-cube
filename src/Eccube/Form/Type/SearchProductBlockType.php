@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -47,7 +48,7 @@ class SearchProductBlockType extends AbstractType
             ->getList(null, true);
 
         $builder->add('category_id', EntityType::class, [
-            'class' => \Eccube\Entity\Category::class,
+            'class' => Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',

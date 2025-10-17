@@ -403,7 +403,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             static::getContainer()->get('doctrine')
         );
         $application = new Application($kernel);
-        $application->add($command);
+        $application->addCommand($command);
 
         return new CommandTester($application->find($name));
     }

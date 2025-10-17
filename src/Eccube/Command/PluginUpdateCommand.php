@@ -14,13 +14,14 @@
 namespace Eccube\Command;
 
 use Eccube\Entity\Plugin;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[\Symfony\Component\Console\Attribute\AsCommand(name: 'eccube:plugin:update', description: 'Execute plugin update process.')]
+#[AsCommand(name: 'eccube:plugin:update', description: 'Execute plugin update process.')]
 class PluginUpdateCommand extends Command
 {
     use PluginCommandTrait;

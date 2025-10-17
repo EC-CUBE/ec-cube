@@ -20,6 +20,7 @@ use Eccube\Form\Type\Admin\TradeLawType;
 use Eccube\Repository\TradeLawRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -41,11 +42,11 @@ class TradeLawController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/Shop/tradelaw.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request): RedirectResponse|array
     {
         $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $builder = $this->formFactory->createBuilder();

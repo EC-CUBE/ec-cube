@@ -16,6 +16,7 @@ namespace Eccube\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -51,10 +52,10 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      * @param array<mixed> $config
      * @param ContainerBuilder $container
      *
-     * @return \Symfony\Component\Config\Definition\ConfigurationInterface|null
+     * @return ConfigurationInterface|null
      */
     #[\Override]
-    public function getConfiguration(array $config, ContainerBuilder $container): ?\Symfony\Component\Config\Definition\ConfigurationInterface
+    public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
     {
         return parent::getConfiguration($config, $container);
     }

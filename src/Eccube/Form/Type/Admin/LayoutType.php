@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Layout;
 use Eccube\Entity\PageLayout;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -87,7 +88,7 @@ class LayoutType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => \Eccube\Entity\Layout::class,
+            'data_class' => Layout::class,
             'layout_id' => null,
         ]);
     }

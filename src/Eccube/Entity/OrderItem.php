@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Repository\OrderItemRepository;
 
 if (!class_exists(OrderItem::class)) {
@@ -262,9 +263,9 @@ if (!class_exists(OrderItem::class)) {
         private $RoundingType;
 
         /**
-         * @var Master\TaxType|null
+         * @var TaxType|null
          */
-        #[ORM\ManyToOne(targetEntity: Master\TaxType::class)]
+        #[ORM\ManyToOne(targetEntity: TaxType::class)]
         #[ORM\JoinColumn(name: 'tax_type_id', referencedColumnName: 'id')]
         private $TaxType;
 
@@ -763,11 +764,11 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxType
          *
-         * @param Master\TaxType $taxType
+         * @param TaxType $taxType
          *
          * @return OrderItem
          */
-        public function setTaxType(?Master\TaxType $taxType = null): OrderItem
+        public function setTaxType(?TaxType $taxType = null): OrderItem
         {
             $this->TaxType = $taxType;
 
@@ -777,9 +778,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Get taxType
          *
-         * @return Master\TaxType|null
+         * @return TaxType|null
          */
-        public function getTaxType(): ?Master\TaxType
+        public function getTaxType(): ?TaxType
         {
             return $this->TaxType;
         }

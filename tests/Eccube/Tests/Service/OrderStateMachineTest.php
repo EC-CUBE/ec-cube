@@ -21,6 +21,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderStateMachineTest extends EccubeTestCase
 {
@@ -38,7 +39,7 @@ class OrderStateMachineTest extends EccubeTestCase
      * @param $toId
      * @param $expected
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('canProvider')]
+    #[DataProvider('canProvider')]
     public function testCan($fromId, $toId, $expected)
     {
         $fromStatus = $this->statusOf($fromId);

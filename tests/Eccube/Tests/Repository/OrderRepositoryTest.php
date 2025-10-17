@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\Common\Collections\Collection;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
@@ -20,6 +21,7 @@ use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * OrderRepository test cases.
@@ -87,7 +89,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
     public function testGetShippings()
     {
-        $this->assertInstanceOf(\Doctrine\Common\Collections\Collection::class, $this->Order->getShippings());
+        $this->assertInstanceOf(Collection::class, $this->Order->getShippings());
         $this->assertSame(1, $this->Order->getShippings()->count());
     }
 
@@ -150,7 +152,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertEquals($Order, $actual[0]);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataGetQueryBuilderBySearchDataForAdmin_nameProvider')]
+    #[DataProvider('dataGetQueryBuilderBySearchDataForAdmin_nameProvider')]
     public function testGetQueryBuilderBySearchDataForAdminName(string $formName, string $searchWord, int $expected)
     {
         $this->Order
@@ -222,7 +224,7 @@ class OrderRepositoryTest extends EccubeTestCase
      *
      * すべて一致する検索条件を、1項目ずつ一致しない値に置き換えて確認します。
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataGetQueryBuilderBySearchDataForAdmin_testAndCondition')]
+    #[DataProvider('dataGetQueryBuilderBySearchDataForAdmin_testAndCondition')]
     public function testGetQueryBuilderBySearchDataForAdminTestAndCondition(array $searchWord, int $expected)
     {
         // 基本の検索条件に一致するデータを作成します

@@ -14,6 +14,7 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,7 +70,7 @@ class SystemService implements EventSubscriberInterface
      */
     public function getDbversion(): string
     {
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm = new ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
         $platform = $this->entityManager->getConnection()->getDatabasePlatform()->getName();

@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -363,9 +364,9 @@ class AbstractController extends Controller
      * @param array<string,string>  $path An array of path parameters
      * @param array<string,string>  $query An array of query parameters
      *
-     * @return \Symfony\Component\HttpFoundation\Response A Response instance
+     * @return Response A Response instance
      */
-    public function forwardToRoute($route, array $path = [], array $query = []): \Symfony\Component\HttpFoundation\Response
+    public function forwardToRoute($route, array $path = [], array $query = []): Response
     {
         $Route = $this->router->getRouteCollection()->get($route);
         if (!$Route) {

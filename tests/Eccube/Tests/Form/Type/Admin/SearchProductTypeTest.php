@@ -15,6 +15,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 class SearchProductTypeTest extends AbstractTypeTestCase
@@ -42,7 +43,7 @@ class SearchProductTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateProvider')]
+    #[DataProvider('dataFormDateProvider')]
     public function testDateSearch(string $formName)
     {
         $formData = [
@@ -73,7 +74,7 @@ class SearchProductTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider('dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [

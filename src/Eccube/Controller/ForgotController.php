@@ -20,6 +20,7 @@ use Eccube\Form\Type\Front\PasswordResetType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -75,11 +76,11 @@ class ForgotController extends AbstractController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
     #[Template('Forgot/index.twig')]
-    public function index(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function index(Request $request): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
@@ -171,13 +172,13 @@ class ForgotController extends AbstractController
      * @param Request $request
      * @param string $reset_key
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string,mixed>
      *
      * @throws HttpException\NotFoundHttpException
      */
     #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
     #[Template('Forgot/reset.twig')]
-    public function reset(Request $request, $reset_key): \Symfony\Component\HttpFoundation\RedirectResponse|array
+    public function reset(Request $request, $reset_key): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();

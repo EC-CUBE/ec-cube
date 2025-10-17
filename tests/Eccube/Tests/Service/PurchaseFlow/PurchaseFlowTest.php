@@ -28,6 +28,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PurchaseFlowTest extends EccubeTestCase
 {
@@ -127,7 +128,7 @@ class PurchaseFlowTest extends EccubeTestCase
      * @param $flow
      * @param $message
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('flowTypeProvider')]
+    #[DataProvider('flowTypeProvider')]
     public function testFlowType($flow, $message)
     {
         $this->flow->addItemHolderValidator(new PurchaseFlowTest_FlowTypeValidator());

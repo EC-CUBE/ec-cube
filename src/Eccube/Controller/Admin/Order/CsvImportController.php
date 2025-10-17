@@ -22,6 +22,7 @@ use Eccube\Service\CsvImportService;
 use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CsvImportController extends AbstractCsvImportController
@@ -203,10 +204,10 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
-    public function csvTemplate(Request $request): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function csvTemplate(Request $request): StreamedResponse
     {
         $columns = array_column($this->getColumnConfig(), 'name');
 

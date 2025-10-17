@@ -50,6 +50,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -2075,10 +2076,10 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     #[Route('/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]
-    public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager): \Symfony\Component\HttpFoundation\Response
+    public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager): Response
     {
         $this->isTokenValid();
 

@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Product;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CsvControllerTest extends AbstractAdminWebTestCase
@@ -89,7 +90,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = \Eccube\Entity\Product::class, $ref = null)
+    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = Product::class, $ref = null)
     {
         $CsvType = $this->entityManager->getRepository(CsvType::class)->find($csvType);
         $Creator = $this->createMember();
