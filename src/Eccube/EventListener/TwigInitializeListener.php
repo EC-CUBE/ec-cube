@@ -14,6 +14,7 @@
 namespace Eccube\EventListener;
 
 use Detection\MobileDetect;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
@@ -32,6 +33,7 @@ use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -148,7 +150,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * @return void
      *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function onKernelRequest(RequestEvent $event): void
     {
@@ -172,12 +174,12 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @return void
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function setFrontVariables(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
+        /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {

@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use Eccube\Entity\Cart;
@@ -237,7 +238,7 @@ class CartService
     }
 
     /**
-     * @param array<int,CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
+     * @param array<int, CartItem>|Collection<int, CartItem> $cartItems
      *
      * @return CartItem[]
      */
@@ -254,8 +255,8 @@ class CartService
     }
 
     /**
-     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
-     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $allCartItems
+     * @param array<int, CartItem>|Collection<int, CartItem> $cartItems
+     * @param array<int, CartItem>|Collection<int, CartItem> $allCartItems
      *
      * @return array<mixed>
      */

@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 
 class BlockController extends AbstractController
 {
@@ -89,7 +90,7 @@ class BlockController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      *
-     * @throws NotFoundHttpException|\Twig\Error\LoaderError
+     * @throws NotFoundHttpException|LoaderError
      */
     #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]

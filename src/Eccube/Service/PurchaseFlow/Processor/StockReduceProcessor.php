@@ -15,6 +15,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\PessimisticLockException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
@@ -80,8 +82,8 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      * @return void
      *
      * @throws ShoppingException 在庫切れの場合
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\PessimisticLockException
+     * @throws OptimisticLockException
+     * @throws PessimisticLockException
      */
     private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback): void
     {

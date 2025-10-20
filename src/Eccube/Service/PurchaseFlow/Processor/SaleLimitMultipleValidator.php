@@ -16,6 +16,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -42,7 +43,7 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
      *
      * @return void
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 商品の購入数が在庫数を超えている場合
+     * @throws InvalidItemException 商品の購入数が在庫数を超えている場合
      */
     #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void

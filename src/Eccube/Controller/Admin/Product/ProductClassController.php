@@ -13,7 +13,9 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
@@ -30,6 +32,7 @@ use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -91,7 +94,7 @@ class ProductClassController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      *
-     * @throws NotFoundHttpException|\Doctrine\ORM\NonUniqueResultException
+     * @throws NotFoundHttpException|NonUniqueResultException
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template('@admin/Product/product_class.twig')]
@@ -302,7 +305,7 @@ class ProductClassController extends AbstractController
      * 商品規格の配列をマージする.
      *
      * @param array<int,ProductClass> $ProductClassesForMatrix
-     * @param \Doctrine\Common\Collections\ArrayCollection<int,ProductClass> $ProductClasses
+     * @param ArrayCollection<int, ProductClass> $ProductClasses
      *
      * @return array|ProductClass[]
      */
@@ -437,7 +440,7 @@ class ProductClassController extends AbstractController
      * @param ClassName|null $ClassName2
      * @param array<string,mixed> $options
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createMatrixForm(
         $ProductClasses = [],
@@ -463,7 +466,7 @@ class ProductClassController extends AbstractController
      *
      * @return Product|null
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function findProduct($id): ?Product
     {

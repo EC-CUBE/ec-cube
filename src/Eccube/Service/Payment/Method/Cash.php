@@ -18,6 +18,7 @@ use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\Form\FormInterface;
 
@@ -48,7 +49,7 @@ class Cash implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     #[\Override]
     public function checkout(): PaymentResult
@@ -64,7 +65,7 @@ class Cash implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     #[\Override]
     public function apply(): PaymentDispatcher|bool

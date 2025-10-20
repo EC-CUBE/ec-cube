@@ -13,6 +13,8 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
@@ -94,8 +96,8 @@ class OwnerStoreController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param ValidatorInterface $validatorInterface
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException|\Exception
+     * @throws NoResultException
+     * @throws NonUniqueResultException|\Exception
      */
     public function __construct(
         PluginRepository $pluginRepository,

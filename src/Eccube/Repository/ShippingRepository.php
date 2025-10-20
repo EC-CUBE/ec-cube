@@ -14,7 +14,9 @@
 namespace Eccube\Repository;
 
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 
 /**
@@ -35,8 +37,8 @@ class ShippingRepository extends AbstractRepository
     /**
      * 同一商品のお届け先情報を取得
      *
-     * @param \Eccube\Entity\Order|null $Order
-     * @param \Eccube\Entity\ProductClass|null $productClass
+     * @param Order|null $Order
+     * @param ProductClass|null $productClass
      *
      * @return Shipping[]
      */

@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -28,7 +29,7 @@ class ClassCategoryValidator extends ItemValidator
      *
      * @return void
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @throws InvalidItemException
      */
     #[\Override]
     protected function validate(ItemInterface $item, PurchaseContext $context): void

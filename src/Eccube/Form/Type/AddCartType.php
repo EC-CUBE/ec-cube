@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Repository\ProductClassRepository;
@@ -45,7 +46,7 @@ class AddCartType extends AbstractType
     protected $em;
 
     /**
-     * @var \Eccube\Entity\Product
+     * @var Product
      */
     protected $Product;
 
@@ -75,7 +76,7 @@ class AddCartType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var \Eccube\Entity\Product $Product */
+        /** @var Product $Product */
         $Product = $options['product'];
         $this->Product = $Product;
         $ProductClasses = $Product->getProductClasses();

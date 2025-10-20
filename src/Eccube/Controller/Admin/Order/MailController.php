@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\MailHistory;
+use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -113,7 +114,7 @@ class MailController extends AbstractController
             switch ($mode) {
                 case 'change':
                     if ($form->get('template')->isValid()) {
-                        /** @var \Eccube\Entity\MailTemplate|null $MailTemplate */
+                        /** @var MailTemplate|null $MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
 
                         if ($MailTemplate) {

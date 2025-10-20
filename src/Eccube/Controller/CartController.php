@@ -14,6 +14,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -133,7 +134,7 @@ class CartController extends AbstractController
     }
 
     /**
-     * @param \Eccube\Entity\Cart[] $Carts
+     * @param Cart[] $Carts
      *
      * @return RedirectResponse|null
      */

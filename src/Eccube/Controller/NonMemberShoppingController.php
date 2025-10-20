@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NonMemberShoppingController extends AbstractShoppingController
@@ -235,7 +236,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @param array<mixed> $data リクエストパラメータ
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface[]
+     * @return ConstraintViolationListInterface[]
      */
     protected function customerValidation(array &$data): array
     {

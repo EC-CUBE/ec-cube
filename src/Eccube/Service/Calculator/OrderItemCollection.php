@@ -20,7 +20,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 
 /**
- * @extends \Doctrine\Common\Collections\ArrayCollection<int, mixed>
+ * @extends ArrayCollection<int, mixed>
  */
 class OrderItemCollection extends ArrayCollection
 {

@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -94,8 +95,8 @@ class OrderRepository extends AbstractRepository
      *         kana?:string,
      *         email?:string,
      *         phone_number?:string,
-     *         sex?:\Doctrine\Common\Collections\ArrayCollection<int, Sex>,
-     *         payment?:\Doctrine\Common\Collections\ArrayCollection<int, Payment>,
+     *         sex?:ArrayCollection<int, Sex>,
+     *         payment?:ArrayCollection<int, Payment>,
      *         order_datetime_start?:\DateTime,
      *         order_datetime_end?:\DateTime,
      *         order_date_start?:\DateTime,
@@ -111,7 +112,7 @@ class OrderRepository extends AbstractRepository
      *         payment_total_start?:string|int,
      *         payment_total_end?:string|int,
      *         payment_product_name?:string,
-     *         shipping_mail?:Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT|\Doctrine\Common\Collections\ArrayCollection<int, int>,
+     *         shipping_mail?:Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT|ArrayCollection<int, int>,
      *         tracking_number?:string,
      *         shipping_delivery_datetime_start?:\DateTime,
      *         shipping_delivery_datetime_end?:\DateTime,

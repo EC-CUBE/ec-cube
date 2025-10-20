@@ -14,6 +14,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
@@ -31,6 +32,8 @@ use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -133,7 +136,7 @@ class ProductController extends AbstractController
         }
 
         // searchForm
-        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
 
         if ($request->getMethod() === 'GET') {
@@ -148,7 +151,7 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE);
 
-        /** @var \Symfony\Component\Form\FormInterface $searchForm */
+        /** @var FormInterface $searchForm */
         $searchForm = $builder->getForm();
 
         $searchForm->handleRequest($request);
@@ -186,7 +189,7 @@ class ProductController extends AbstractController
         // addCart form
         $forms = [];
         foreach ($pagination as $Product) {
-            /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+            /** @var FormBuilderInterface $builder */
             $builder = $this->formFactory->createNamedBuilder(
                 '',
                 AddCartType::class,
@@ -251,7 +254,7 @@ class ProductController extends AbstractController
 
         $is_favorite = false;
         if ($this->isGranted('ROLE_USER')) {
-            /** @var \Eccube\Entity\Customer $Customer */
+            /** @var Customer $Customer */
             $Customer = $this->getUser();
             $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
         }
@@ -287,7 +290,7 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE);
 
         if ($this->isGranted('ROLE_USER')) {
-            /** @var \Eccube\Entity\Customer $Customer */
+            /** @var Customer $Customer */
             $Customer = $this->getUser();
             $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
 
@@ -355,7 +358,7 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_CART_ADD_INITIALIZE);
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
+        /** @var FormInterface $form */
         $form = $builder->getForm();
         $form->handleRequest($request);
 

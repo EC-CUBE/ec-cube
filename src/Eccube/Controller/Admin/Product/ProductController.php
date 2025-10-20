@@ -17,6 +17,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Category;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\ProductStatus;
@@ -1115,7 +1116,7 @@ class ProductController extends AbstractController
      * ProductCategory作成
      *
      * @param Product $Product
-     * @param \Eccube\Entity\Category $Category
+     * @param Category $Category
      * @param int $count
      *
      * @return ProductCategory

@@ -13,7 +13,10 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Common\Constant;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\BaseInfo;
@@ -194,7 +197,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return array<mixed>|JsonResponse
      *
-     * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\ORM\NoResultException|\Doctrine\DBAL\Exception
+     * @throws ConnectionException|NoResultException|\Doctrine\DBAL\Exception
      */
     #[Route('/%eccube_admin_route%/product/product_csv_upload', name: 'admin_product_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_product.twig')]
@@ -717,7 +720,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return array<mixed>|JsonResponse
      *
-     * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\DBAL\Exception\DriverException|\Doctrine\DBAL\Exception
+     * @throws ConnectionException|DriverException|\Doctrine\DBAL\Exception
      */
     #[Route('/%eccube_admin_route%/product/category_csv_upload', name: 'admin_product_category_csv_import', methods: ['GET', 'POST'])]
     #[Template('@admin/Product/csv_category.twig')]
@@ -1180,7 +1183,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return JsonResponse|array<mixed>
      *
-     * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\DBAL\Exception
+     * @throws ConnectionException|\Doctrine\DBAL\Exception
      */
     protected function renderWithError($form, $headers, $rollback = true): JsonResponse|array
     {

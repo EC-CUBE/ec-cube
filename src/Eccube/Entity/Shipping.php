@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
@@ -192,7 +193,7 @@ if (!class_exists(Shipping::class)) {
         private $Order;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,OrderItem>
+         * @var Collection<int, OrderItem>
          */
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
         private $OrderItems;

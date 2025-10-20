@@ -13,6 +13,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Eccube\Twig\Template;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -24,13 +25,13 @@ class EccubeBlockExtension extends AbstractExtension
      */
     protected $twig;
     /**
-     * @var array<int,string|\Eccube\Twig\Template>
+     * @var array<int, string|Template>
      */
     protected $blockTemplates;
 
     /**
      * @param Environment $twig
-     * @param array<int,string|\Eccube\Twig\Template> $blockTemplates
+     * @param array<int, string|Template> $blockTemplates
      */
     public function __construct(Environment $twig, array $blockTemplates)
     {

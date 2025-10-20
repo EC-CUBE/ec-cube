@@ -19,6 +19,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
@@ -49,7 +50,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @return void
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @throws InvalidItemException
      */
     #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void

@@ -16,6 +16,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -79,7 +80,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
                     }
                 }
                 if ($isFree) {
-                    /** @var \Eccube\Entity\OrderItem $Item */
+                    /** @var OrderItem $Item */
                     foreach ($Shipping->getOrderItems() as $Item) {
                         if ($Item->getProcessorName() == DeliveryFeePreprocessor::class) {
                             $Item->setQuantity('0');
