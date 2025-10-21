@@ -93,7 +93,7 @@ class CustomerController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]

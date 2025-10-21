@@ -144,7 +144,7 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws NotFoundHttpException
      */
@@ -185,7 +185,7 @@ class InstallController extends AbstractController
     /**
      * ディレクトリとファイルの書き込み権限をチェック.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
@@ -336,7 +336,7 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws \Exception
      */
@@ -386,7 +386,7 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws \Exception
      */
@@ -469,7 +469,7 @@ class InstallController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
@@ -605,7 +605,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,mixed> $params
+     * @param array<string, mixed> $params
      *
      * @return Connection
      *
@@ -658,7 +658,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,mixed> $params
+     * @param array<string, mixed> $params
      *
      * @return string|null
      */
@@ -702,7 +702,7 @@ class InstallController extends AbstractController
     /**
      * @param string $url
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws \Exception
      */
@@ -732,7 +732,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,string> $params
+     * @param array<string, string> $params
      *
      * @return string
      *
@@ -794,7 +794,7 @@ class InstallController extends AbstractController
     /**
      * @param string $url
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     public function extractMailerUrl($url): array
     {
@@ -904,7 +904,7 @@ class InstallController extends AbstractController
 
     /**
      * @param Connection $conn
-     * @param array<string,mixed> $data
+     * @param array<string, mixed> $data
      *
      * @return void
      *
@@ -964,7 +964,7 @@ class InstallController extends AbstractController
 
     /**
      * @param Connection $conn
-     * @param array<string,mixed> $data
+     * @param array<string, mixed> $data
      *
      * @return void
      *
@@ -1015,9 +1015,9 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,string> $params
+     * @param array<string, string> $params
      *
-     * @return array<string,string>
+     * @return array<string, string>
      */
     public function createAppData($params, EntityManager $em): array
     {
@@ -1036,7 +1036,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param array<string,mixed> $params
+     * @param array<string, mixed> $params
      *
      * @return $this
      */

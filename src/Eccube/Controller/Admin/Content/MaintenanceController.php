@@ -40,7 +40,7 @@ class MaintenanceController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/maintenance', name: 'admin_content_maintenance', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Content/maintenance.twig')]

@@ -55,7 +55,7 @@ class BlockController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
     #[Template(template: '@admin/Content/block.twig')]
@@ -88,7 +88,7 @@ class BlockController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param int|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|LoaderError
      */

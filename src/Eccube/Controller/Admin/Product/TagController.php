@@ -41,7 +41,7 @@ class TagController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route(path: '/%eccube_admin_route%/product/tag', name: 'admin_product_tag', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/tag.twig')]

@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/security.twig')]

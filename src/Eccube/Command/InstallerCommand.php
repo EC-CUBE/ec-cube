@@ -118,7 +118,7 @@ class InstallerCommand extends Command
             public $envDir;
 
             /**
-             * @return array<string,mixed>
+             * @return array<string, mixed>
              */
             private function getEnvParameters(): array
             {

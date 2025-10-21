@@ -61,7 +61,7 @@ class ClassNameController extends AbstractController
      * @param Request $request
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */

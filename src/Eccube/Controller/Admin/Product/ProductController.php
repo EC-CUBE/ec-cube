@@ -155,7 +155,7 @@ class ProductController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
     #[Route(path: '/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
@@ -295,7 +295,7 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws BadRequestHttpException
      */
@@ -457,7 +457,7 @@ class ProductController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param int|string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|\Exception
      */

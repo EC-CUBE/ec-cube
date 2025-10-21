@@ -44,7 +44,7 @@ class AuthorityController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/authority.twig')]

@@ -80,7 +80,7 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string|null $id
      *
-     * @return  RedirectResponse|array<string,mixed>
+     * @return  RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */

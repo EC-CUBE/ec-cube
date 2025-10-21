@@ -129,7 +129,7 @@ class ShippingController extends AbstractController
      * @param Request $request
      * @param Order $Order
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws \Exception
      */

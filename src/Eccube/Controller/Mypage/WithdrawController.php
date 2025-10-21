@@ -94,7 +94,7 @@ class WithdrawController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response|RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/mypage/withdraw', name: 'mypage_withdraw', methods: ['GET', 'POST'])]
     #[Route(path: '/mypage/withdraw', name: 'mypage_withdraw_confirm', methods: ['GET', 'POST'])]

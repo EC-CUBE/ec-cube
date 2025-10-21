@@ -119,7 +119,7 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param PaginatorInterface $paginator
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/products/list', name: 'product_list', methods: ['GET'])]
     #[Template(template: 'Product/list.twig')]
@@ -221,7 +221,7 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $Product
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */

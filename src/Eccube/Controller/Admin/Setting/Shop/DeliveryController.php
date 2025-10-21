@@ -95,7 +95,7 @@ class DeliveryController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
     #[Template(template: '@admin/Setting/Shop/delivery.twig')]
@@ -122,7 +122,7 @@ class DeliveryController extends AbstractController
      * @param EccubeExtension $extension
      * @param string|int|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
@@ -416,7 +416,7 @@ class DeliveryController extends AbstractController
      *
      * @param Payment[] $PaymentsData
      *
-     * @return array<int,array<string,float|string|null>>
+     * @return array<int, array<string, float|string|null>>
      */
     private function getMergeRules(array $PaymentsData): array
     {

@@ -133,7 +133,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param PurchaseFlow $cartPurchaseFlow
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping', name: 'shopping', methods: ['GET'])]
     #[Template(template: 'Shopping/index.twig')]
@@ -218,7 +218,7 @@ class ShoppingController extends AbstractShoppingController
      * @param Request $request
      * @param RouterInterface $router
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
     #[Template(template: 'Shopping/index.twig')]
@@ -300,7 +300,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|Response|array<string,mixed>
+     * @return RedirectResponse|Response|array<string, mixed>
      *
      * @throws TooManyRequestsHttpException
      */
@@ -414,7 +414,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>|Response
+     * @return RedirectResponse|array<string, mixed>|Response
      *
      * @throws TooManyRequestsHttpException
      */
@@ -574,7 +574,7 @@ class ShoppingController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|Response|array<string,mixed>
+     * @return RedirectResponse|Response|array<string, mixed>
      */
     #[Route(path: '/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
     #[Template(template: 'Shopping/complete.twig')]
@@ -627,7 +627,7 @@ class ShoppingController extends AbstractShoppingController
      * @param Request $request
      * @param Shipping $Shipping
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: 'Shopping/shipping.twig')]
@@ -705,7 +705,7 @@ class ShoppingController extends AbstractShoppingController
      * @param Request $request
      * @param Shipping $Shipping
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: 'Shopping/shipping_edit.twig')]
@@ -818,7 +818,7 @@ class ShoppingController extends AbstractShoppingController
      * @param Request $request
      * @param AuthenticationUtils $authenticationUtils
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/login', name: 'shopping_login', methods: ['GET'])]
     #[Template(template: 'Shopping/login.twig')]

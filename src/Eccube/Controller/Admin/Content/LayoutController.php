@@ -101,7 +101,7 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
     #[Template(template: '@admin/Content/layout_list.twig')]
@@ -154,7 +154,7 @@ class LayoutController extends AbstractController
      * @param string|null $id
      * @param string|null $previewPageId
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
@@ -285,7 +285,7 @@ class LayoutController extends AbstractController
     /**
      * @param string $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/layout/{id}/preview', name: 'admin_content_layout_preview', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function preview(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse|array

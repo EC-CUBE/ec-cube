@@ -42,7 +42,7 @@ class TradeLawController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/Shop/tradelaw.twig')]

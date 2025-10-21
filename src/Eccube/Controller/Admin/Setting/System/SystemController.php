@@ -50,7 +50,7 @@ class SystemController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
     #[Template(template: '@admin/Setting/System/system.twig')]

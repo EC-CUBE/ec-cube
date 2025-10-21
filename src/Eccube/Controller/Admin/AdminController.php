@@ -91,7 +91,7 @@ class AdminController extends AbstractController
     protected $pluginApiService;
 
     /**
-     * @var array<int,int> 売り上げ状況用受注状況
+     * @var array<int, int> 売り上げ状況用受注状況
      */
     private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
@@ -131,7 +131,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/login.twig')]
@@ -164,7 +164,7 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -320,7 +320,7 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/change_password.twig')]
@@ -414,9 +414,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param array<int,int> $excludes
+     * @param array<int, int> $excludes
      *
-     * @return array<int|string,mixed>|null
+     * @return array<int|string, mixed>|null
      */
     protected function getOrderEachStatus(array $excludes): ?array
     {
@@ -582,7 +582,7 @@ class AdminController extends AbstractController
      * @param Carbon $toDate
      * @param string $format
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     protected function getData(Carbon $fromDate, Carbon $toDate, $format): array
     {

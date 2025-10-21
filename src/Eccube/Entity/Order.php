@@ -229,7 +229,7 @@ if (!class_exists(Order::class)) {
         /**
          * 非課税・不課税の値引き明細を返す.
          *
-         * @return array<int,OrderItem>
+         * @return array<int, OrderItem>
          */
         public function getTaxFreeDiscountItems(): array
         {
@@ -573,19 +573,19 @@ if (!class_exists(Order::class)) {
         private $complete_mail_message;
 
         /**
-         * @var Collection<int,OrderItem>
+         * @var Collection<int, OrderItem>
          */
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $OrderItems;
 
         /**
-         * @var Collection<int,Shipping>
+         * @var Collection<int, Shipping>
          */
         #[ORM\OneToMany(targetEntity: Shipping::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $Shippings;
 
         /**
-         * @var Collection<int,MailHistory>
+         * @var Collection<int, MailHistory>
          */
         #[ORM\OneToMany(targetEntity: MailHistory::class, mappedBy: 'Order', cascade: ['remove'])]
         #[ORM\OrderBy(['send_date' => 'DESC'])]
@@ -1513,7 +1513,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get orderItems.
          *
-         * @return Collection<int,OrderItem>
+         * @return Collection<int, OrderItem>
          */
         public function getOrderItems(): Collection
         {
@@ -1560,7 +1560,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get shippings.
          *
-         * @return Collection<int,Shipping>
+         * @return Collection<int, Shipping>
          */
         public function getShippings(): Collection
         {
@@ -1602,7 +1602,7 @@ if (!class_exists(Order::class)) {
         /**
          * Get mailHistories.
          *
-         * @return Collection<int,MailHistory>
+         * @return Collection<int, MailHistory>
          */
         public function getMailHistories(): Collection
         {

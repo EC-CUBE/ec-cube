@@ -51,7 +51,7 @@ class NewsController extends AbstractController
      * @param int $page_no
      * @param PaginatorInterface $paginator
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/news', name: 'admin_content_news', methods: ['GET'])]
     #[Route(path: '/%eccube_admin_route%/content/news/page/{page_no}', name: 'admin_content_news_page', requirements: ['page_no' => '\d+'], methods: ['GET'])]

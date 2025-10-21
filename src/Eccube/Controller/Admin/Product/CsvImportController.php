@@ -125,7 +125,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     protected $validator;
     /**
-     * @var array<int,mixed>
+     * @var array<int, mixed>
      */
     private $errors = [];
     /**
@@ -1217,9 +1217,9 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品画像の削除、登録
      *
-     * @param array<int,string> $row
+     * @param array<int, string> $row
      * @param Product $Product
-     * @param CsvImportService<int,mixed> $data
+     * @param CsvImportService<int, mixed> $data
      * @param array<mixed> $headerByKey
      *
      * @return void
@@ -1270,9 +1270,9 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品カテゴリの削除、登録
      *
-     * @param array<int,string> $row
+     * @param array<int, string> $row
      * @param Product $Product
-     * @param CsvImportService<int,mixed> $data
+     * @param CsvImportService<int, mixed> $data
      * @param array<mixed> $headerByKey
      *
      * @return void
@@ -1340,9 +1340,9 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * タグの登録
      *
-     * @param array<int,string> $row
+     * @param array<int, string> $row
      * @param Product $Product
-     * @param CsvImportService<int,mixed> $data
+     * @param CsvImportService<int, mixed> $data
      * @param array<string, mixed> $headerByKey
      *
      * @return void
@@ -1395,7 +1395,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param array<mixed> $row
      * @param Product $Product
-     * @param CsvImportService<int,mixed> $data
+     * @param CsvImportService<int, mixed> $data
      * @param array<string, mixed> $headerByKey
      * @param ClassCategory|null $ClassCategory1
      * @param ClassCategory|null $ClassCategory2
@@ -1553,7 +1553,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param array<mixed> $row
      * @param Product $Product
      * @param ProductClass $ProductClass
-     * @param CsvImportService<int,mixed> $data
+     * @param CsvImportService<int, mixed> $data
      * @param array<string, mixed> $headerByKey
      *
      * @return ProductClass
@@ -1759,7 +1759,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVヘッダー定義
      *
-     * @return array<string,array<string,string|bool>>
+     * @return array<string, array<string, string|bool>>
      */
     protected function getProductCsvHeader(): array
     {
@@ -1895,7 +1895,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * カテゴリCSVヘッダー定義
      *
-     * @return array<string,array<string,string|bool>>
+     * @return array<string, array<string, string|bool>>
      */
     protected function getCategoryCsvHeader(): array
     {
@@ -1926,7 +1926,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 規格CSVヘッダー定義
      *
-     * @return array<string,array<string,string|bool>>
+     * @return array<string, array<string, string|bool>>
      */
     protected function getClassNameCsvHeader(): array
     {
@@ -1957,7 +1957,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 規格分類CSVヘッダー定義
      *
-     * @return array<string,array<string,string|bool>>
+     * @return array<string, array<string, string|bool>>
      */
     protected function getClassCategoryCsvHeader(): array
     {

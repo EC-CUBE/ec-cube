@@ -77,7 +77,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|Response|array<string,mixed>
+     * @return RedirectResponse|Response|array<string, mixed>
      */
     #[Route(path: '/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
     #[Template(template: 'Shopping/nonmember.twig')]

@@ -197,7 +197,7 @@ class OrderController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/page/{page_no}', name: 'admin_order_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
@@ -632,7 +632,7 @@ class OrderController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route(path: '/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/order_pdf.twig')]

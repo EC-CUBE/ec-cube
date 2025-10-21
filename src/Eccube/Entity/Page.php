@@ -130,7 +130,7 @@ if (!class_exists(Page::class)) {
         private $meta_tags;
 
         /**
-         * @var Collection<int,PageLayout>
+         * @var Collection<int, PageLayout>
          */
         #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
         private $PageLayouts;
@@ -441,7 +441,7 @@ if (!class_exists(Page::class)) {
         /**
          * Get pageLayoutLayout.
          *
-         * @return Collection<int,PageLayout>
+         * @return Collection<int, PageLayout>
          */
         public function getPageLayouts(): Collection
         {

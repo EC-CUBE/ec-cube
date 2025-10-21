@@ -78,7 +78,7 @@ class MailController extends AbstractController
      * @param Request $request
      * @param Order $Order
      *
-     * @return Response|RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation

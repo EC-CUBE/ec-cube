@@ -66,7 +66,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/page', name: 'admin_content_page', methods: ['GET'])]
     #[Template(template: '@admin/Content/page.twig')]
@@ -91,7 +91,7 @@ class PageController extends AbstractController
     /**
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/page/new', name: 'admin_content_page_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/content/page/{id}/edit', name: 'admin_content_page_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]

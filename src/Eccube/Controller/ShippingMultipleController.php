@@ -114,7 +114,7 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
     #[Template(template: 'Shopping/shipping_multiple.twig')]
@@ -390,7 +390,7 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
     #[Template(template: 'Shopping/shipping_multiple_edit.twig')]

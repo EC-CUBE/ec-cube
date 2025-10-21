@@ -70,7 +70,7 @@ class CustomerEditController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */

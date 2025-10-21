@@ -125,7 +125,7 @@ class EntryController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response|RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/entry', name: 'entry', methods: ['GET', 'POST'])]
     #[Route(path: '/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
@@ -245,7 +245,7 @@ class EntryController extends AbstractController
      * @param string $secret_key
      * @param string|null $qtyInCart
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws HttpException\NotFoundHttpException
      */

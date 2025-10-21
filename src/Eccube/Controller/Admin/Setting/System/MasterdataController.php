@@ -31,7 +31,7 @@ class MasterdataController extends AbstractController
      * @param Request $request
      * @param class-string|null $entity
      *
-     * @return RedirectResponse|Response|array<string,mixed>
+     * @return RedirectResponse|Response|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/masterdata', name: 'admin_setting_system_masterdata', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/setting/system/masterdata/{entity}/edit', name: 'admin_setting_system_masterdata_view', methods: ['GET', 'POST'])]
@@ -117,7 +117,7 @@ class MasterdataController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/masterdata/edit', name: 'admin_setting_system_masterdata_edit', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/masterdata.twig')]

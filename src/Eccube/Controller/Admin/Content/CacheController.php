@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CacheController extends AbstractController
 {
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/cache', name: 'admin_content_cache', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Content/cache.twig')]

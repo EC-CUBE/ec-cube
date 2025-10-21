@@ -313,7 +313,7 @@ class EccubeExtension extends AbstractExtension
      * Display file extension icon
      *
      * @param string $ext
-     * @param array<string,string> $attr
+     * @param array<string, string> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string

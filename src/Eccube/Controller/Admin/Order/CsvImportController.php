@@ -51,7 +51,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws ConnectionException
      */
@@ -100,8 +100,8 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @param CsvImportService<int,mixed>|bool $csv
-     * @param array<int,string> $errors
+     * @param CsvImportService<int, mixed>|bool $csv
+     * @param array<int, string> $errors
      *
      * @return void
      */
@@ -216,7 +216,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @return array<string,array<string,bool|string>>
+     * @return array<string, array<string, bool|string>>
      */
     protected function getColumnConfig(): array
     {

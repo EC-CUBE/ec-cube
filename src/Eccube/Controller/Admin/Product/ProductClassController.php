@@ -92,7 +92,7 @@ class ProductClassController extends AbstractController
      * @param string $id
      * @param CacheUtil $cacheUtil
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|NonUniqueResultException
      */
@@ -304,7 +304,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の配列をマージする.
      *
-     * @param array<int,ProductClass> $ProductClassesForMatrix
+     * @param array<int, ProductClass> $ProductClassesForMatrix
      * @param ArrayCollection<int, ProductClass> $ProductClasses
      *
      * @return array|ProductClass[]
@@ -435,10 +435,10 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格登録フォームを生成する.
      *
-     * @param array<int,ProductClass> $ProductClasses
+     * @param array<int, ProductClass> $ProductClasses
      * @param ClassName|null $ClassName1
      * @param ClassName|null $ClassName2
-     * @param array<string,mixed> $options
+     * @param array<string, mixed> $options
      *
      * @return FormInterface
      */

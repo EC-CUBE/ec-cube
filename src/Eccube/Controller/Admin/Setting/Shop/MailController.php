@@ -56,7 +56,7 @@ class MailController extends AbstractController
      * @param CacheUtil $cacheUtil
      * @param MailTemplate|null $Mail
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws LoaderError
      */
@@ -165,7 +165,7 @@ class MailController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
     #[Template(template: '@admin/Setting/Shop/mail_view.twig')]

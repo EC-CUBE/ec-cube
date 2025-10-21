@@ -64,7 +64,7 @@ class CategoryController extends AbstractController
      * @param string|null $parent_id
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|BadRequestHttpException|\Exception
      */

@@ -60,7 +60,7 @@ class TwoFactorAuthController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/two_factor_auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/two_factor_auth.twig')]
@@ -148,7 +148,7 @@ class TwoFactorAuthController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     private function createResponse(Request $request): array|RedirectResponse
     {

@@ -64,7 +64,7 @@ class MemberController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/member', name: 'admin_setting_system_member', methods: ['GET', 'PUT'])]
     #[Template(template: '@admin/Setting/System/member.twig')]
@@ -94,7 +94,7 @@ class MemberController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/member/new', name: 'admin_setting_system_member_new', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/member_edit.twig')]
@@ -144,7 +144,7 @@ class MemberController extends AbstractController
      * @param Request $request
      * @param Member $Member
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/member/{id}/edit', name: 'admin_setting_system_member_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/member_edit.twig')]

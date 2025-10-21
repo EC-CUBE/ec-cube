@@ -107,7 +107,7 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws PluginException
      */
@@ -473,7 +473,7 @@ class PluginController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/install', name: 'admin_store_plugin_install', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/plugin_install.twig')]
@@ -539,7 +539,7 @@ class PluginController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/authentication_setting.twig')]

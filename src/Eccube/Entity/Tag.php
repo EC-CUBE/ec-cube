@@ -60,7 +60,7 @@ if (!class_exists(Tag::class)) {
         protected $sort_no;
 
         /**
-         * @var Collection<int,ProductTag>
+         * @var Collection<int, ProductTag>
          */
         #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
         protected $ProductTag;

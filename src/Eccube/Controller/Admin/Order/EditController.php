@@ -187,7 +187,7 @@ class EditController extends AbstractController
      * @param RouterInterface $router
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
@@ -426,7 +426,7 @@ class EditController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param int|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws BadRequestHttpException
      */
@@ -588,7 +588,7 @@ class EditController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/order/search/product', name: 'admin_order_search_product', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/search/product/page/{page_no}', name: 'admin_order_search_product_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]

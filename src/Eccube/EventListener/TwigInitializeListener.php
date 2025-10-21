@@ -276,11 +276,11 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * URLに対する権限有無チェックして表示するNavを返す
      *
-     * @param array<string, array<string,mixed>> $parentNav
+     * @param array<string, array<string, mixed>> $parentNav
      * @param AuthorityRole[] $AuthorityRoles
      * @param string $baseUrl
      *
-     * @return array<string, array<string,mixed>>
+     * @return array<string, array<string, mixed>>
      */
     private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl): array
     {

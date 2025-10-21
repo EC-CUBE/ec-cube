@@ -78,7 +78,7 @@ class CartController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/cart', name: 'cart', methods: ['GET'])]
     #[Template(template: 'Cart/index.twig')]

@@ -17,7 +17,7 @@ if (!class_exists(ExportCsvRow::class)) {
     class ExportCsvRow extends AbstractEntity
     {
         /**
-         * @var array<int,string|null>
+         * @var array<int, string|null>
          */
         private $row = [];
 
@@ -68,7 +68,7 @@ if (!class_exists(ExportCsvRow::class)) {
         /**
          * Get row
          *
-         * @return array<int,string|null>
+         * @return array<int, string|null>
          */
         public function getRow(): array
         {

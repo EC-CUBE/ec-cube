@@ -32,7 +32,7 @@ class PluginApiException extends \Exception
     }
 
     /**
-     * @param array<string,mixed> $info
+     * @param array<string, mixed> $info
      *
      * @return string
      */

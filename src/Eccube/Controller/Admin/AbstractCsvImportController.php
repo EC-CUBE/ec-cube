@@ -35,7 +35,7 @@ class AbstractCsvImportController extends AbstractController
      *
      * @param UploadedFile $formFile
      *
-     * @return CsvImportService<int,mixed>|bool
+     * @return CsvImportService<int, mixed>|bool
      */
     protected function getImportData(UploadedFile $formFile): CsvImportService|bool
     {
@@ -55,7 +55,7 @@ class AbstractCsvImportController extends AbstractController
 
     /**
      * @param Request $request
-     * @param array<int,mixed> $columns
+     * @param array<int, mixed> $columns
      * @param string $filename
      *
      * @return StreamedResponse

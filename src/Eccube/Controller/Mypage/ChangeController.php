@@ -82,7 +82,7 @@ class ChangeController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws LoaderError|RuntimeError|SyntaxError
      * @throws NonUniqueResultException

@@ -100,7 +100,7 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param AuthenticationUtils $utils
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
     #[Template(template: 'Mypage/login.twig')]
@@ -147,7 +147,7 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param PaginatorInterface $paginator
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/mypage/', name: 'mypage', methods: ['GET'])]
     #[Template(template: 'Mypage/index.twig')]
@@ -190,7 +190,7 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param string|int $order_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
     #[Template(template: 'Mypage/history.twig')]
@@ -335,7 +335,7 @@ class MypageController extends AbstractController
      * @param Request $request
      * @param PaginatorInterface $paginator
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */

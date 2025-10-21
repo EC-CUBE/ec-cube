@@ -63,7 +63,7 @@ class TemplateController extends AbstractController
      * @param Request $request
      * @param CacheUtil $cacheUtil
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route(path: '/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/template.twig')]
@@ -216,7 +216,7 @@ class TemplateController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     #[Route(path: '/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/template_add.twig')]

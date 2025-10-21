@@ -39,7 +39,7 @@ class FileController extends AbstractController
     public const UTF = 'UTF-8';
 
     /**
-     * @var array<int,array<string,string>>
+     * @var array<int, array<string, string>>
      */
     private $errors = [];
     /**
@@ -59,7 +59,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Content/file.twig')]
@@ -367,9 +367,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param array<int,array<string, mixed>> $tree
+     * @param array<int, array<string, mixed>> $tree
      *
-     * @return array<int,array<int, mixed>>
+     * @return array<int, array<int, mixed>>
      */
     private function getTreeToArray($tree): array
     {
@@ -389,9 +389,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param array<int,array<string, mixed>> $tree
+     * @param array<int, array<string, mixed>> $tree
      *
-     * @return array<int<0,max>,mixed>
+     * @return array<int<0, max>,mixed>
      */
     private function getPathsToArray($tree): array
     {
@@ -407,7 +407,7 @@ class FileController extends AbstractController
      * @param string $topDir
      * @param Request $request
      *
-     * @return array<int,array<string,mixed>>
+     * @return array<int, array<string, mixed>>
      */
     private function getTree($topDir, $request): array
     {

@@ -47,7 +47,7 @@ class CustomerDeliveryEditController extends AbstractController
      * @param Customer $Customer
      * @param string|null $did
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws NotFoundHttpException
      */

@@ -61,7 +61,7 @@ class CalendarType extends AbstractType
      * {@inheritdoc}
      *
      * @param FormBuilderInterface $builder
-     * @param array<string,mixed> $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */

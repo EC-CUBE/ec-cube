@@ -76,7 +76,7 @@ class ForgotController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/forgot', name: 'forgot', methods: ['GET', 'POST'])]
     #[Template(template: 'Forgot/index.twig')]
@@ -172,7 +172,7 @@ class ForgotController extends AbstractController
      * @param Request $request
      * @param string $reset_key
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws HttpException\NotFoundHttpException
      */

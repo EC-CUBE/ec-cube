@@ -58,7 +58,7 @@ class CsvController extends AbstractController
      * @param Request $request
      * @param CsvType $CsvType
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/Shop/csv.twig')]

@@ -55,7 +55,7 @@ class PaymentController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
     #[Template(template: '@admin/Setting/Shop/payment.twig')]
@@ -84,7 +84,7 @@ class PaymentController extends AbstractController
      * @param Request $request
      * @param Payment|null $Payment
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/edit', name: 'admin_setting_shop_payment_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]

@@ -56,7 +56,7 @@ class OrderStatusController extends AbstractController
      *
      * @param Request $request
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/Shop/order_status.twig')]

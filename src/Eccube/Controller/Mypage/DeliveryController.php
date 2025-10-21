@@ -62,7 +62,7 @@ class DeliveryController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
     #[Template(template: 'Mypage/delivery.twig')]
@@ -81,7 +81,7 @@ class DeliveryController extends AbstractController
      * @param Request $request
      * @param string|int|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws \Exception
      */

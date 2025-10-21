@@ -56,7 +56,7 @@ class ContactController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response|RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/contact', name: 'contact', methods: ['GET', 'POST'])]
     #[Route(path: '/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]

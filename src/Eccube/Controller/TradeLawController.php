@@ -32,7 +32,7 @@ class TradeLawController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[Route(path: '/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
     #[Template(template: 'Help/tradelaw.twig')]
