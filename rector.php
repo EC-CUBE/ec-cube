@@ -44,6 +44,7 @@ use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
+use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
@@ -61,7 +62,7 @@ return RectorConfig::configure()
            // スキップするパスやルールを指定
            ->withSkip([
                // 特定のファイルやディレクトリを除外する場合
-               // __DIR__ . '/src/Eccube/Legacy',
+               __DIR__ . '/src/Eccube/Rector',
                // 特定のルールを除外する場合
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
                //RemoveUselessParamTagRector::class, // まだ @param に頼っているケースがありそうなので除外
@@ -91,6 +92,7 @@ return RectorConfig::configure()
                CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
                StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
+               NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
            ])
            // よく使われるルールセットを有効化
            ->withSets([
