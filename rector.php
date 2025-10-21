@@ -43,6 +43,7 @@ use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
+use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
@@ -89,6 +90,7 @@ return RectorConfig::configure()
                CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
                CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
                StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
+               AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
            ])
            // よく使われるルールセットを有効化
            ->withSets([
