@@ -79,7 +79,7 @@ class OrderHelperTest extends EccubeTestCase
      * @param mixed $OrderItemType
      * @param mixed $TaxDisplayType
      */
-    #[DataProvider('taxDisplayTypeProvider')]
+    #[DataProvider(methodName: 'taxDisplayTypeProvider')]
     public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
     {
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);

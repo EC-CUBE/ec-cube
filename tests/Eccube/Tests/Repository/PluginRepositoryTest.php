@@ -52,7 +52,7 @@ class PluginRepositoryTest extends EccubeTestCase
      * @param mixed $search
      * @param mixed $isNotNull
      */
-    #[DataProvider('dataFormCodeProvider')]
+    #[DataProvider(methodName: 'dataFormCodeProvider')]
     public function testFindByCode($code, $search, $isNotNull)
     {
         $this->createPlugin($code);

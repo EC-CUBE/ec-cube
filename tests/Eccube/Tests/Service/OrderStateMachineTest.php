@@ -39,7 +39,7 @@ class OrderStateMachineTest extends EccubeTestCase
      * @param $toId
      * @param $expected
      */
-    #[DataProvider('canProvider')]
+    #[DataProvider(methodName: 'canProvider')]
     public function testCan($fromId, $toId, $expected)
     {
         $fromStatus = $this->statusOf($fromId);

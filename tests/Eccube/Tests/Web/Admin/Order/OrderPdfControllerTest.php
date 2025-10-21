@@ -199,7 +199,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      * @param string $field
      * @param string $message
      */
-    #[DataProvider('dataDownloadMaxLengthProvider')]
+    #[DataProvider(methodName: 'dataDownloadMaxLengthProvider')]
     public function testDownloadMaxLength($field, $message)
     {
         $Order = $this->createOrderForSearch();

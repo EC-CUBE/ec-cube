@@ -61,8 +61,8 @@ class FileController extends AbstractController
     /**
      * @return array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/file.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/file.twig')]
     public function index(Request $request): array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -132,7 +132,7 @@ class FileController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
     public function view(Request $request): BinaryFileResponse
     {
         $file = $this->convertStrToServer($this->getUserDataDir($request->get('file')));
@@ -221,7 +221,7 @@ class FileController extends AbstractController
     /**
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
     public function delete(Request $request): RedirectResponse
     {
         $this->isTokenValid();
@@ -250,7 +250,7 @@ class FileController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
     public function download(Request $request): BinaryFileResponse
     {
         $topDir = $this->getUserDataDir();

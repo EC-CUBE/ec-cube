@@ -58,7 +58,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
      *
      * @group decimal
      */
-    #[DataProvider('indexWithSalesProvider')]
+    #[DataProvider(methodName: 'indexWithSalesProvider')]
     public function testIndexWithSales($hour)
     {
         $Customer = $this->createCustomer();

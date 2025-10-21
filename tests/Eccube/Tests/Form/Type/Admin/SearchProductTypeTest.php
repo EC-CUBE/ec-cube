@@ -43,7 +43,7 @@ class SearchProductTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[DataProvider('dataFormDateProvider')]
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDateSearch(string $formName)
     {
         $formData = [
@@ -74,7 +74,7 @@ class SearchProductTypeTest extends AbstractTypeTestCase
      *
      * @param string $formName
      */
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [

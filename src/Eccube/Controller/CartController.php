@@ -80,8 +80,8 @@ class CartController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    #[Route('/cart', name: 'cart', methods: ['GET'])]
-    #[Template('Cart/index.twig')]
+    #[Route(path: '/cart', name: 'cart', methods: ['GET'])]
+    #[Template(template: 'Cart/index.twig')]
     public function index(Request $request): array
     {
         // カートを取得して明細の正規化を実行
@@ -196,7 +196,7 @@ class CartController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
+    #[Route(path: '/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
     public function handleCartItem($operation, $productClassId): RedirectResponse
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
@@ -242,7 +242,7 @@ class CartController extends AbstractController
      *
      * @return RedirectResponse|Response|null
      */
-    #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
+    #[Route(path: '/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
     public function buystep(Request $request, $cart_key): RedirectResponse|Response|null
     {
         $Carts = $this->cartService->getCart();

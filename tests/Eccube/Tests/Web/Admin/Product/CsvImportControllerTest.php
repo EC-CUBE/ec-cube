@@ -706,7 +706,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $id
      * @param $expectedMessage
      */
-    #[DataProvider('dataProductIdProvider')]
+    #[DataProvider(methodName: 'dataProductIdProvider')]
     public function testImportProductWithIdIsWrong($id, $expectedMessage)
     {
         $Products = $this->productRepo->findAll();
@@ -729,7 +729,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $status
      * @param $expectedMessage
      */
-    #[DataProvider('dataStatusProvider')]
+    #[DataProvider(methodName: 'dataStatusProvider')]
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
     {
         /** @var Generator $faker */
@@ -749,7 +749,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $optionDeliveryFee
      * @param mixed $expected
      */
-    #[DataProvider('dataDeliveryFeeProvider')]
+    #[DataProvider(methodName: 'dataDeliveryFeeProvider')]
     public function testImportDeliveryFee($optionDeliveryFee, $expected)
     {
         /** @var BaseInfo $BaseInfo */
@@ -880,7 +880,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $selector
      * @param mixed $pattern
      */
-    #[DataProvider('dataDescriptionDetailProvider')]
+    #[DataProvider(methodName: 'dataDescriptionDetailProvider')]
     public function testImportDescriptionetail($length, $selector, $pattern)
     {
         $csv = [];
@@ -912,7 +912,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @group decimal
      */
-    #[DataProvider('dataTaxRuleProvider')]
+    #[DataProvider(methodName: 'dataTaxRuleProvider')]
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {
         /** @var BaseInfo $BaseInfo */
@@ -1082,7 +1082,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $lineNo
      * @param mixed $expecedFileNo
      */
-    #[DataProvider('splitCsvDataProvider')]
+    #[DataProvider(methodName: 'splitCsvDataProvider')]
     public function testSplitCsv($lineNo, $expecedFileNo)
     {
         [$header, $row] = $this->createCsvAsArray();

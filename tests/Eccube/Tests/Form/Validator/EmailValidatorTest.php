@@ -34,7 +34,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
      * @param mixed $rfc
      * @param mixed $norfc
      */
-    #[DataProvider('EmailProvider')]
+    #[DataProvider(methodName: 'EmailProvider')]
     public function testValidateEmailStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_STRICT);
@@ -49,7 +49,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
      * @param mixed $rfc
      * @param mixed $norfc
      */
-    #[DataProvider('EmailProvider')]
+    #[DataProvider(methodName: 'EmailProvider')]
     public function testValidateEmailNoStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_HTML5);

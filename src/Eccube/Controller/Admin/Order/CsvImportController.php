@@ -55,8 +55,8 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @throws ConnectionException
      */
-    #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/csv_shipping.twig')]
+    #[Route(path: '/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/csv_shipping.twig')]
     public function csvShipping(Request $request): array
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -207,7 +207,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
     public function csvTemplate(Request $request): StreamedResponse
     {
         $columns = array_column($this->getColumnConfig(), 'name');

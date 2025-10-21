@@ -96,8 +96,8 @@ class ProductClassController extends AbstractController
      *
      * @throws NotFoundHttpException|NonUniqueResultException
      */
-    #[Route('/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Product/product_class.twig')]
+    #[Route(path: '/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/product_class.twig')]
     public function index(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse|array
     {
         $Product = $this->findProduct($id);
@@ -212,7 +212,7 @@ class ProductClassController extends AbstractController
      *
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/class/{id}/clear', requirements: ['id' => '\d+'], name: 'admin_product_product_class_clear', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/class/{id}/clear', name: 'admin_product_product_class_clear', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil): RedirectResponse
     {
         if (!$Product->hasProductClass()) {

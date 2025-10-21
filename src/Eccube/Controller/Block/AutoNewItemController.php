@@ -45,8 +45,8 @@ class AutoNewItemController extends AbstractController
      *
      * @return array<string, mixed>
      */
-    #[Route('/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
-    #[Template('Block/auto_new_item.twig')]
+    #[Route(path: '/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
+    #[Template(template: 'Block/auto_new_item.twig')]
     public function index(Request $request): array
     {
         $qb = $this->productRepository->getQueryBuilderBySearchData([

@@ -42,8 +42,8 @@ class MaintenanceController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/content/maintenance', name: 'admin_content_maintenance', methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/maintenance.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/maintenance', name: 'admin_content_maintenance', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/maintenance.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         $isMaintenance = $this->systemService->isMaintenanceMode();
@@ -91,7 +91,7 @@ class MaintenanceController extends AbstractController
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/disable_maintenance/{mode}', name: 'admin_disable_maintenance', requirements: ['mode' => 'manual|auto_maintenance|auto_maintenance_update'], methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/disable_maintenance/{mode}', name: 'admin_disable_maintenance', requirements: ['mode' => 'manual|auto_maintenance|auto_maintenance_update'], methods: ['POST'])]
     public function disableMaintenance(Request $request, $mode, SystemService $systemService): JsonResponse
     {
         $this->isTokenValid();

@@ -57,7 +57,7 @@ class UserDataController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_user_data_route%/{route}', name: 'user_data', requirements: ['route' => '([0-9a-zA-Z_\-]+\/?)+(?<!\/)'], methods: ['GET'])]
+    #[Route(path: '/%eccube_user_data_route%/{route}', name: 'user_data', requirements: ['route' => '([0-9a-zA-Z_\-]+\/?)+(?<!\/)'], methods: ['GET'])]
     public function index(Request $request, $route): Response
     {
         $Page = $this->pageRepository->findOneBy(

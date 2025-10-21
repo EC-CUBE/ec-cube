@@ -234,7 +234,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * @param string $time
      * @param int $expected
      */
-    #[DataProvider('dataFormDateProvider')]
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -277,7 +277,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * @param string $time
      * @param int $expected
      */
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [

@@ -95,9 +95,9 @@ class CustomerController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Customer/index.twig')]
+    #[Route(path: '/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Customer/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
     {
         $session = $this->session;
@@ -197,7 +197,7 @@ class CustomerController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/customer/{id}/resend', name: 'admin_customer_resend', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/resend', name: 'admin_customer_resend', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function resend(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
@@ -243,7 +243,7 @@ class CustomerController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, $id, TranslatorInterface $translator): RedirectResponse
     {
         $this->isTokenValid();
@@ -295,7 +295,7 @@ class CustomerController extends AbstractController
      *
      * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/customer/export', name: 'admin_customer_export', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/customer/export', name: 'admin_customer_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.

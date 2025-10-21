@@ -97,8 +97,8 @@ class DeliveryController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
-    #[Template('@admin/Setting/Shop/delivery.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
+    #[Template(template: '@admin/Setting/Shop/delivery.twig')]
     public function index(Request $request): array
     {
         $Deliveries = $this->deliveryRepository
@@ -126,9 +126,9 @@ class DeliveryController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/delivery_edit.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/edit', name: 'admin_setting_shop_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/delivery_edit.twig')]
     public function edit(Request $request, EccubeExtension $extension, $id = null): RedirectResponse|array
     {
         if (is_null($id)) {
@@ -307,7 +307,7 @@ class DeliveryController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Delivery $Delivery): RedirectResponse
     {
         $this->isTokenValid();
@@ -354,7 +354,7 @@ class DeliveryController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visibility(Request $request, Delivery $Delivery): RedirectResponse
     {
         $this->isTokenValid();
@@ -391,7 +391,7 @@ class DeliveryController extends AbstractController
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {

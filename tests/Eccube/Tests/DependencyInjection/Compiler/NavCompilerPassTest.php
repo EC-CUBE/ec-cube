@@ -46,7 +46,7 @@ class NavCompilerPassTest extends EccubeTestCase
      * @param $class
      * @param $expected
      */
-    #[DataProvider('addNavProvider')]
+    #[DataProvider(methodName: 'addNavProvider')]
     public function testAddNav($class, $expected)
     {
         $container = $this->createContainer();

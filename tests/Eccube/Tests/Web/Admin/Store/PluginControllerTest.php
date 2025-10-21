@@ -59,7 +59,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      * @param mixed $param2
      * @param mixed $message
      */
-    #[DataProvider('OwnerStoreInstallParam')]
+    #[DataProvider(methodName: 'OwnerStoreInstallParam')]
     public function testFailureInstall($param1, $param2, $message)
     {
         $form = [
@@ -89,7 +89,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      * @param mixed $param2
      * @param mixed $message
      */
-    #[DataProvider('OwnerStoreUpgradeParam')]
+    #[DataProvider(methodName: 'OwnerStoreUpgradeParam')]
     public function testFailureUpgrade($param1, $param2, $message)
     {
         $form = [

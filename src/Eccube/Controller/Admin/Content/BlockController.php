@@ -57,8 +57,8 @@ class BlockController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
-    #[Template('@admin/Content/block.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
+    #[Template(template: '@admin/Content/block.twig')]
     public function index(Request $request): array
     {
         $DeviceType = $this->deviceTypeRepository
@@ -92,9 +92,9 @@ class BlockController extends AbstractController
      *
      * @throws NotFoundHttpException|LoaderError
      */
-    #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/block_edit.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/block_edit.twig')]
     public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -198,7 +198,7 @@ class BlockController extends AbstractController
     /**
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();

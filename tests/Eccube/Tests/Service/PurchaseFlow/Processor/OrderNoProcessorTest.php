@@ -28,7 +28,7 @@ class OrderNoProcessorTest extends EccubeTestCase
      *
      * @throws \ReflectionException
      */
-    #[DataProvider('processDataProvider')]
+    #[DataProvider(methodName: 'processDataProvider')]
     public function testProcess($orderNoFormat, $expected)
     {
         $Order = new Order();

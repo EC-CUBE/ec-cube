@@ -65,9 +65,9 @@ class ClassNameController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/product/class_name/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_class_name_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Product/class_name.twig')]
+    #[Route(path: '/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/class_name/{id}/edit', name: 'admin_product_class_name_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/class_name.twig')]
     public function index(Request $request, $id = null): RedirectResponse|array
     {
         if ($id) {
@@ -162,7 +162,7 @@ class ClassNameController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/class_name/{id}/delete', name: 'admin_product_class_name_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/product/class_name/{id}/delete', name: 'admin_product_class_name_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, ClassName $ClassName): RedirectResponse
     {
         $this->isTokenValid();
@@ -195,7 +195,7 @@ class ClassNameController extends AbstractController
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
@@ -225,7 +225,7 @@ class ClassNameController extends AbstractController
      *
      * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/product/class_name/export', name: 'admin_product_class_name_export', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/product/class_name/export', name: 'admin_product_class_name_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.

@@ -61,7 +61,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
      * @param mixed $denyHost
      * @param mixed $expected
      */
-    #[DataProvider('ipAddressParams')]
+    #[DataProvider(methodName: 'ipAddressParams')]
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);
@@ -104,7 +104,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
      * @param mixed $denyHost
      * @param mixed $expected
      */
-    #[DataProvider('ipAddressParams')]
+    #[DataProvider(methodName: 'ipAddressParams')]
     public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);

@@ -606,7 +606,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * @param string $time
      * @param int $expected
      */
-    #[DataProvider('dataFormDateProvider')]
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());
@@ -656,7 +656,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * @param string $time
      * @param int $expected
      */
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());

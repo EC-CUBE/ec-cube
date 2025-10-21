@@ -33,7 +33,7 @@ class RateLimiterListenerTest extends EccubeTestCase
      * @param mixed $type
      * @param mixed $params
      */
-    #[DataProvider('onControllerProvider')]
+    #[DataProvider(methodName: 'onControllerProvider')]
     public function testOnController($limiterId, $type, $params)
     {
         $request = $this->createStub(Request::class);

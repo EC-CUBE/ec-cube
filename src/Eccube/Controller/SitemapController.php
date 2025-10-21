@@ -79,7 +79,7 @@ class SitemapController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
+    #[Route(path: '/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
     public function index(PaginatorInterface $paginator): Response
     {
         $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
@@ -123,7 +123,7 @@ class SitemapController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
+    #[Route(path: '/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
     public function category(): Response
     {
         $Categories = $this->categoryRepository->getList(null, true);
@@ -138,7 +138,7 @@ class SitemapController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
     public function product(Request $request, PaginatorInterface $paginator): Response
     {
         // Doctrine SQLFilter
@@ -170,7 +170,7 @@ class SitemapController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
+    #[Route(path: '/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
     public function page(): Response
     {
         $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");

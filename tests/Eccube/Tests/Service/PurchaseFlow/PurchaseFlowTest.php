@@ -128,7 +128,7 @@ class PurchaseFlowTest extends EccubeTestCase
      * @param $flow
      * @param $message
      */
-    #[DataProvider('flowTypeProvider')]
+    #[DataProvider(methodName: 'flowTypeProvider')]
     public function testFlowType($flow, $message)
     {
         $this->flow->addItemHolderValidator(new PurchaseFlowTest_FlowTypeValidator());

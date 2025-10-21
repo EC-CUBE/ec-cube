@@ -125,9 +125,9 @@ class InstallController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/', name: 'homepage', methods: ['GET'])]
-    #[Route('/install', name: 'install', methods: ['GET'])]
-    #[Template('index.twig')]
+    #[Route(path: '/', name: 'homepage', methods: ['GET'])]
+    #[Route(path: '/install', name: 'install', methods: ['GET'])]
+    #[Template(template: 'index.twig')]
     public function index(): RedirectResponse
     {
         if (!$this->isInstallEnv()) {
@@ -148,8 +148,8 @@ class InstallController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
-    #[Template('step1.twig')]
+    #[Route(path: '/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
+    #[Template(template: 'step1.twig')]
     public function step1(Request $request): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
@@ -189,8 +189,8 @@ class InstallController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/install/step2', name: 'install_step2', methods: ['GET'])]
-    #[Template('step2.twig')]
+    #[Route(path: '/install/step2', name: 'install_step2', methods: ['GET'])]
+    #[Template(template: 'step2.twig')]
     public function step2(): array
     {
         if (!$this->isInstallEnv()) {
@@ -268,8 +268,8 @@ class InstallController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
-    #[Template('step3.twig')]
+    #[Route(path: '/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
+    #[Template(template: 'step3.twig')]
     public function step3(Request $request, EntityManagerInterface $entityManager): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
@@ -340,8 +340,8 @@ class InstallController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
-    #[Template('step4.twig')]
+    #[Route(path: '/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
+    #[Template(template: 'step4.twig')]
     public function step4(Request $request): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
@@ -390,8 +390,8 @@ class InstallController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
-    #[Template('step5.twig')]
+    #[Route(path: '/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
+    #[Template(template: 'step5.twig')]
     public function step5(Request $request): array|RedirectResponse
     {
         if (!$this->isInstallEnv()) {
@@ -473,8 +473,8 @@ class InstallController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/install/complete', name: 'install_complete', methods: ['GET'])]
-    #[Template('complete.twig')]
+    #[Route(path: '/install/complete', name: 'install_complete', methods: ['GET'])]
+    #[Template(template: 'complete.twig')]
     public function complete(Request $request): array
     {
         if (!$this->isInstallEnv()) {

@@ -199,9 +199,9 @@ class OrderController extends AbstractController
      *
      * @return array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/order/page/{page_no}', name: 'admin_order_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/index.twig')]
+    #[Route(path: '/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/order/page/{page_no}', name: 'admin_order_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
     {
         $builder = $this->formFactory
@@ -342,7 +342,7 @@ class OrderController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
     public function bulkDelete(Request $request): RedirectResponse
     {
         $this->isTokenValid();
@@ -370,7 +370,7 @@ class OrderController extends AbstractController
      *
      * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/order/export/order', name: 'admin_order_export_order', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/order/export/order', name: 'admin_order_export_order', methods: ['GET'])]
     public function exportOrder(Request $request): StreamedResponse
     {
         $filename = 'order_'.(new \DateTime())->format('YmdHis').'.csv';
@@ -387,7 +387,7 @@ class OrderController extends AbstractController
      *
      * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/order/export/shipping', name: 'admin_order_export_shipping', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/order/export/shipping', name: 'admin_order_export_shipping', methods: ['GET'])]
     public function exportShipping(Request $request): StreamedResponse
     {
         $filename = 'shipping_'.(new \DateTime())->format('YmdHis').'.csv';
@@ -484,7 +484,7 @@ class OrderController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/%eccube_admin_route%/shipping/{id}/order_status', name: 'admin_shipping_update_order_status', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    #[Route(path: '/%eccube_admin_route%/shipping/{id}/order_status', name: 'admin_shipping_update_order_status', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function updateOrderStatus(Request $request, Shipping $Shipping): JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -582,7 +582,7 @@ class OrderController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/%eccube_admin_route%/shipping/{id}/tracking_number', name: 'admin_shipping_update_tracking_number', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    #[Route(path: '/%eccube_admin_route%/shipping/{id}/tracking_number', name: 'admin_shipping_update_tracking_number', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function updateTrackingNumber(Request $request, Shipping $shipping): Response
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -634,8 +634,8 @@ class OrderController extends AbstractController
      *
      * @return array<string,mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/order_pdf.twig')]
+    #[Route(path: '/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/order_pdf.twig')]
     public function exportPdf(Request $request): array|RedirectResponse
     {
         // requestから出荷番号IDの一覧を取得する.
@@ -682,8 +682,8 @@ class OrderController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]
-    #[Template('@admin/Order/order_pdf.twig')]
+    #[Route(path: '/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]
+    #[Template(template: '@admin/Order/order_pdf.twig')]
     public function exportPdfDownload(Request $request, OrderPdfService $orderPdfService): Response
     {
         /**

@@ -111,8 +111,8 @@ class PluginController extends AbstractController
      *
      * @throws PluginException
      */
-    #[Route('/%eccube_admin_route%/store/plugin', name: 'admin_store_plugin', methods: ['GET'])]
-    #[Template('@admin/Store/plugin.twig')]
+    #[Route(path: '/%eccube_admin_route%/store/plugin', name: 'admin_store_plugin', methods: ['GET'])]
+    #[Template(template: '@admin/Store/plugin.twig')]
     public function index(): array
     {
         $pluginForms = [];
@@ -202,7 +202,7 @@ class PluginController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
     {
         $form = $this->formFactory
@@ -268,7 +268,7 @@ class PluginController extends AbstractController
      *
      * @throws PluginException
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/enable', name: 'admin_store_plugin_enable', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/enable', name: 'admin_store_plugin_enable', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
@@ -353,7 +353,7 @@ class PluginController extends AbstractController
      *
      * @return JsonResponse|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): JsonResponse|RedirectResponse
     {
         $this->isTokenValid();
@@ -433,7 +433,7 @@ class PluginController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/uninstall', name: 'admin_store_plugin_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/uninstall', name: 'admin_store_plugin_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
@@ -475,8 +475,8 @@ class PluginController extends AbstractController
      *
      * @return array<string,mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/install', name: 'admin_store_plugin_install', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/plugin_install.twig')]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/install', name: 'admin_store_plugin_install', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/plugin_install.twig')]
     public function install(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -541,8 +541,8 @@ class PluginController extends AbstractController
      *
      * @return array<string,mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/authentication_setting.twig')]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/authentication_setting.twig')]
     public function authenticationSetting(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $builder = $this->formFactory

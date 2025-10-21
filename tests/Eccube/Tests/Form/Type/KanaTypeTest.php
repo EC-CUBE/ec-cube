@@ -96,7 +96,7 @@ class KanaTypeTest extends AbstractTypeTestCase
     /**
      * @param mixed $data
      */
-    #[DataProvider('getValidTestData')]
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

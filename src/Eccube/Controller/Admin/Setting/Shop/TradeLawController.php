@@ -44,8 +44,8 @@ class TradeLawController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/tradelaw.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/tradelaw.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);

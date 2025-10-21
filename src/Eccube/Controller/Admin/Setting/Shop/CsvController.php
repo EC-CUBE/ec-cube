@@ -60,8 +60,8 @@ class CsvController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/csv.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/csv.twig')]
     public function index(Request $request, CsvType $CsvType): RedirectResponse|array
     {
         $builder = $this->createFormBuilder();

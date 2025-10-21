@@ -33,9 +33,9 @@ class MasterdataController extends AbstractController
      *
      * @return RedirectResponse|Response|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/masterdata', name: 'admin_setting_system_masterdata', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/system/masterdata/{entity}/edit', name: 'admin_setting_system_masterdata_view', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/masterdata.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/masterdata', name: 'admin_setting_system_masterdata', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/system/masterdata/{entity}/edit', name: 'admin_setting_system_masterdata_view', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/masterdata.twig')]
     public function index(Request $request, $entity = null): RedirectResponse|Response|array
     {
         $data = [];
@@ -119,8 +119,8 @@ class MasterdataController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/masterdata/edit', name: 'admin_setting_system_masterdata_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/masterdata.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/masterdata/edit', name: 'admin_setting_system_masterdata_edit', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/masterdata.twig')]
     public function edit(Request $request): RedirectResponse|array
     {
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);

@@ -58,9 +58,9 @@ class ContactController extends AbstractController
      *
      * @return Response|RedirectResponse|array<string,mixed>
      */
-    #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
-    #[Route('/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
-    #[Template('Contact/index.twig')]
+    #[Route(path: '/contact', name: 'contact', methods: ['GET', 'POST'])]
+    #[Route(path: '/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
+    #[Template(template: 'Contact/index.twig')]
     public function index(Request $request): Response|RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
@@ -135,8 +135,8 @@ class ContactController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/contact/complete', name: 'contact_complete', methods: ['GET'])]
-    #[Template('Contact/complete.twig')]
+    #[Route(path: '/contact/complete', name: 'contact_complete', methods: ['GET'])]
+    #[Template(template: 'Contact/complete.twig')]
     public function complete(): array
     {
         return [];

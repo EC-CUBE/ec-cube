@@ -105,7 +105,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      * @param bool $isSuccess
      * @param bool $expected
      */
-    #[DataProvider('dataSubmitProvider')]
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -142,7 +142,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      * @param bool $isSuccess
      * @param bool $expected
      */
-    #[DataProvider('dataSubmitProvider')]
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -283,7 +283,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      * @param mixed $rules
      * @param mixed $expected
      */
-    #[DataProvider('getMergeRulesProvider')]
+    #[DataProvider(methodName: 'getMergeRulesProvider')]
     public function testGetMergeRules($rules, $expected)
     {
         $Payments = array_map(function ($rule) {

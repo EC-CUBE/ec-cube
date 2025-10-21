@@ -79,8 +79,8 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|Response|array<string,mixed>
      */
-    #[Route('/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
-    #[Template('Shopping/nonmember.twig')]
+    #[Route(path: '/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/nonmember.twig')]
     public function index(Request $request): RedirectResponse|Response|array
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.
@@ -148,7 +148,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @throws \Exception
      */
-    #[Route('/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
+    #[Route(path: '/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
     public function customer(Request $request): JsonResponse|RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {

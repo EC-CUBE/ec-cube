@@ -133,8 +133,8 @@ class AdminController extends AbstractController
     /**
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
-    #[Template('@admin/login.twig')]
+    #[Route(path: '/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/login.twig')]
     public function login(Request $request): RedirectResponse|array
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
@@ -169,8 +169,8 @@ class AdminController extends AbstractController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    #[Route('/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
-    #[Template('@admin/index.twig')]
+    #[Route(path: '/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
+    #[Template(template: '@admin/index.twig')]
     public function index(Request $request): array
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
@@ -281,7 +281,7 @@ class AdminController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
     public function sale(Request $request): JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -322,8 +322,8 @@ class AdminController extends AbstractController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
-    #[Template('@admin/change_password.twig')]
+    #[Route(path: '/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/change_password.twig')]
     public function changePassword(Request $request): RedirectResponse|array
     {
         $builder = $this->formFactory
@@ -379,7 +379,7 @@ class AdminController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
     public function searchNonStockProducts(Request $request): Response
     {
         // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
@@ -400,7 +400,7 @@ class AdminController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
     public function searchCustomer(Request $request): Response
     {
         $searchData = [];

@@ -116,8 +116,8 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
-    #[Template('Shopping/shipping_multiple.twig')]
+    #[Route(path: '/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_multiple.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         // ログイン状態のチェック.
@@ -392,8 +392,8 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
-    #[Template('Shopping/shipping_multiple_edit.twig')]
+    #[Route(path: '/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_multiple_edit.twig')]
     public function shippingMultipleEdit(Request $request): RedirectResponse|array
     {
         // ログイン状態のチェック.

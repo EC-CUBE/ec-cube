@@ -135,8 +135,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping', name: 'shopping', methods: ['GET'])]
-    #[Template('Shopping/index.twig')]
+    #[Route(path: '/shopping', name: 'shopping', methods: ['GET'])]
+    #[Template(template: 'Shopping/index.twig')]
     public function index(PurchaseFlow $cartPurchaseFlow): RedirectResponse|array
     {
         // ログイン状態のチェック.
@@ -220,8 +220,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
-    #[Template('Shopping/index.twig')]
+    #[Route(path: '/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
+    #[Template(template: 'Shopping/index.twig')]
     public function redirectTo(Request $request, RouterInterface $router): RedirectResponse|array
     {
         // ログイン状態のチェック.
@@ -304,8 +304,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @throws TooManyRequestsHttpException
      */
-    #[Route('/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
-    #[Template('Shopping/confirm.twig')]
+    #[Route(path: '/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
+    #[Template(template: 'Shopping/confirm.twig')]
     public function confirm(Request $request): RedirectResponse|Response|array
     {
         // ログイン状態のチェック.
@@ -418,8 +418,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @throws TooManyRequestsHttpException
      */
-    #[Route('/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
-    #[Template('Shopping/confirm.twig')]
+    #[Route(path: '/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
+    #[Template(template: 'Shopping/confirm.twig')]
     public function checkout(Request $request): RedirectResponse|array|Response
     {
         // ログイン状態のチェック.
@@ -576,8 +576,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|Response|array<string,mixed>
      */
-    #[Route('/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
-    #[Template('Shopping/complete.twig')]
+    #[Route(path: '/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
+    #[Template(template: 'Shopping/complete.twig')]
     public function complete(Request $request): RedirectResponse|Response|array
     {
         log_info('[注文完了] 注文完了画面を表示します.');
@@ -629,8 +629,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('Shopping/shipping.twig')]
+    #[Route(path: '/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping.twig')]
     public function shipping(Request $request, Shipping $Shipping): RedirectResponse|array
     {
         // ログイン状態のチェック.
@@ -707,8 +707,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('Shopping/shipping_edit.twig')]
+    #[Route(path: '/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_edit.twig')]
     public function shippingEdit(Request $request, Shipping $Shipping): RedirectResponse|array
     {
         // ログイン状態のチェック.
@@ -820,8 +820,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return RedirectResponse|array<string,mixed>
      */
-    #[Route('/shopping/login', name: 'shopping_login', methods: ['GET'])]
-    #[Template('Shopping/login.twig')]
+    #[Route(path: '/shopping/login', name: 'shopping_login', methods: ['GET'])]
+    #[Template(template: 'Shopping/login.twig')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -863,8 +863,8 @@ class ShoppingController extends AbstractShoppingController
      *
      * @return Response|array<empty>
      */
-    #[Route('/shopping/error', name: 'shopping_error', methods: ['GET'])]
-    #[Template('Shopping/shopping_error.twig')]
+    #[Route(path: '/shopping/error', name: 'shopping_error', methods: ['GET'])]
+    #[Template(template: 'Shopping/shopping_error.twig')]
     public function error(Request $request, PurchaseFlow $cartPurchaseFlow): Response|array
     {
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.

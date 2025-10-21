@@ -23,8 +23,8 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
      * @param mixed $snippet
      * @param mixed $whitelisted
      */
-    #[DataProvider('twigSnippetsProvider')]
-    #[DataProvider('twigVarFreeAreaProvider')]
+    #[DataProvider(methodName: 'twigSnippetsProvider')]
+    #[DataProvider(methodName: 'twigVarFreeAreaProvider')]
     public function testFreeArea($snippet, $whitelisted)
     {
         $Product = $this->createProduct();
@@ -42,8 +42,8 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
      * @param mixed $snippet
      * @param mixed $whitelisted
      */
-    #[DataProvider('twigSnippetsProvider')]
-    #[DataProvider('twigVarMetaTagsProvider')]
+    #[DataProvider(methodName: 'twigSnippetsProvider')]
+    #[DataProvider(methodName: 'twigVarMetaTagsProvider')]
     public function testMetatags($snippet, $whitelisted)
     {
         $Page = $this->entityManager->getRepository(Page::class)->find(1);

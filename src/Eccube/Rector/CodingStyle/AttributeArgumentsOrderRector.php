@@ -20,6 +20,7 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Attribute;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -182,19 +183,15 @@ CODE_SAMPLE
         $name = $attribute->name;
 
         // 完全修飾名の場合
-        if ($name instanceof Name\FullyQualified) {
+        if ($name instanceof FullyQualified) {
             return $name->toString();
         }
 
         // 相対名の場合は use 文を考慮して解決
-        if ($name instanceof Name) {
-            $nameString = $name->toString();
+        $name->toString();
 
-            // use 文から完全修飾名を取得
-            return $this->nodeNameResolver->getName($name);
-        }
-
-        return null;
+        // use 文から完全修飾名を取得
+        return $this->nodeNameResolver->getName($name);
     }
 
     /**
@@ -228,7 +225,7 @@ CODE_SAMPLE
             $this->constructorParameterOrderCache[$className] = $parameterOrder;
 
             return $parameterOrder;
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             // クラスが見つからない場合はスキップ
             $this->constructorParameterOrderCache[$className] = [];
 

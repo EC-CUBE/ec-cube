@@ -130,9 +130,9 @@ class OwnerStoreController extends AbstractController
      *
      * @return array<string,mixed>|RedirectResponse
      */
-    #[Route('/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
-    #[Route('/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/plugin_search.twig')]
+    #[Route(path: '/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
+    #[Route(path: '/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/plugin_search.twig')]
     public function search(Request $request, PaginatorInterface $paginator, $page_no = null): array|RedirectResponse
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
@@ -237,7 +237,7 @@ class OwnerStoreController extends AbstractController
      *
      * @throws PluginException
      */
-    #[Route('/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function doConfirm(Request $request, $id): RedirectResponse|Response
     {
         try {
@@ -264,7 +264,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
+    #[Route(path: '/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
     public function apiInstall(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -314,7 +314,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/delete/{id}/uninstall', requirements: ['id' => '\d+'], name: 'admin_store_plugin_api_uninstall', methods: ['DELETE'])]
+    #[Route(path: '/delete/{id}/uninstall', name: 'admin_store_plugin_api_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function apiUninstall(Plugin $Plugin): JsonResponse
     {
         $this->isTokenValid();
@@ -363,7 +363,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
+    #[Route(path: '/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
     public function apiUpgrade(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -432,7 +432,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
+    #[Route(path: '/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
     public function apiSchemaUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -482,7 +482,7 @@ class OwnerStoreController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
+    #[Route(path: '/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
     public function apiUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -521,8 +521,8 @@ class OwnerStoreController extends AbstractController
      *
      * @return array<string,mixed>|RedirectResponse
      */
-    #[Route('/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[Template('@admin/Store/plugin_confirm.twig')]
+    #[Route(path: '/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template(template: '@admin/Store/plugin_confirm.twig')]
     public function doUpdateConfirm(Plugin $Plugin): array|RedirectResponse
     {
         try {
