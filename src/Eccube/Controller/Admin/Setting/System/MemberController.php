@@ -46,10 +46,6 @@ class MemberController extends AbstractController
 
     /**
      * MemberController constructor.
-     *
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param MemberRepository $memberRepository
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
@@ -62,8 +58,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/member', name: 'admin_setting_system_member', methods: ['GET', 'PUT'])]
@@ -92,8 +86,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/member/new', name: 'admin_setting_system_member_new', methods: ['GET', 'POST'])]
@@ -141,9 +133,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Member $Member
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/edit', name: 'admin_setting_system_member_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
@@ -197,9 +186,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Member $Member
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -223,9 +209,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Member $Member
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -249,9 +232,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Member $Member
-     *
      * @return RedirectResponse
      *
      * @throws ForeignKeyConstraintViolationException|\Exception

@@ -57,12 +57,6 @@ class TaxRuleRepository extends AbstractRepository
 
     /**
      * TaxRuleRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -115,7 +109,7 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @throws NoResultException
      */
-    public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null): TaxRule
+    public function getByRule(int|Product|null $Product = null, int|ProductClass|null $ProductClass = null, int|Pref|null $Pref = null, int|Country|null $Country = null): TaxRule
     {
         // Pref Country 設定
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {

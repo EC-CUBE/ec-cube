@@ -88,11 +88,9 @@ if (!class_exists(LoginHistory::class)) {
         /**
          * Set user_name
          *
-         * @param string $userName
-         *
          * @return LoginHistory
          */
-        public function setUserName($userName): LoginHistory
+        public function setUserName(string $userName): LoginHistory
         {
             $this->user_name = $userName;
 
@@ -110,11 +108,9 @@ if (!class_exists(LoginHistory::class)) {
         }
 
         /**
-         * @param LoginHistoryStatus $Status
-         *
          * @return LoginHistory
          */
-        public function setStatus($Status): LoginHistory
+        public function setStatus(LoginHistoryStatus $Status): LoginHistory
         {
             $this->Status = $Status;
 
@@ -132,11 +128,9 @@ if (!class_exists(LoginHistory::class)) {
         /**
          * Set client_ip
          *
-         * @param string $clientIp
-         *
          * @return LoginHistory
          */
-        public function setClientIp($clientIp): LoginHistory
+        public function setClientIp(string $clientIp): LoginHistory
         {
             $this->client_ip = $clientIp;
 
@@ -156,11 +150,9 @@ if (!class_exists(LoginHistory::class)) {
         /**
          * Set create_date
          *
-         * @param \DateTime $createDate
-         *
          * @return LoginHistory
          */
-        public function setCreateDate($createDate): LoginHistory
+        public function setCreateDate(\DateTime $createDate): LoginHistory
         {
             $this->create_date = $createDate;
 
@@ -180,11 +172,9 @@ if (!class_exists(LoginHistory::class)) {
         /**
          * Set update_date
          *
-         * @param \DateTime $updateDate
-         *
          * @return LoginHistory
          */
-        public function setUpdateDate($updateDate): LoginHistory
+        public function setUpdateDate(\DateTime $updateDate): LoginHistory
         {
             $this->update_date = $updateDate;
 

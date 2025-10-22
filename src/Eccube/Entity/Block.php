@@ -104,11 +104,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set id
          *
-         * @param int $id
-         *
          * @return Block
          */
-        public function setId($id): Block
+        public function setId(int $id): Block
         {
             $this->id = $id;
 
@@ -128,11 +126,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set name
          *
-         * @param string $name
-         *
          * @return Block
          */
-        public function setName($name): Block
+        public function setName(string $name): Block
         {
             $this->name = $name;
 
@@ -152,11 +148,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set fileName
          *
-         * @param string $fileName
-         *
          * @return Block
          */
-        public function setFileName($fileName): Block
+        public function setFileName(string $fileName): Block
         {
             $this->file_name = $fileName;
 
@@ -176,11 +170,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set useController
          *
-         * @param bool $useController
-         *
          * @return Block
          */
-        public function setUseController($useController): Block
+        public function setUseController(bool $useController): Block
         {
             $this->use_controller = $useController;
 
@@ -200,11 +192,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set deletable
          *
-         * @param bool $deletable
-         *
          * @return Block
          */
-        public function setDeletable($deletable): Block
+        public function setDeletable(bool $deletable): Block
         {
             $this->deletable = $deletable;
 
@@ -224,11 +214,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set createDate
          *
-         * @param \DateTime $createDate
-         *
          * @return Block
          */
-        public function setCreateDate($createDate): Block
+        public function setCreateDate(\DateTime $createDate): Block
         {
             $this->create_date = $createDate;
 
@@ -248,11 +236,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set updateDate
          *
-         * @param \DateTime $updateDate
-         *
          * @return Block
          */
-        public function setUpdateDate($updateDate): Block
+        public function setUpdateDate(\DateTime $updateDate): Block
         {
             $this->update_date = $updateDate;
 
@@ -272,8 +258,6 @@ if (!class_exists(Block::class)) {
         /**
          * Add blockPosition
          *
-         * @param BlockPosition $blockPosition
-         *
          * @return Block
          */
         public function addBlockPosition(BlockPosition $blockPosition): Block
@@ -285,8 +269,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Remove blockPosition
-         *
-         * @param BlockPosition $blockPosition
          *
          * @return void
          */

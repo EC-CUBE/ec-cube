@@ -29,11 +29,7 @@ class ConvertKanaListener implements EventSubscriberInterface
      */
     protected $encoding;
 
-    /**
-     * @param string $option
-     * @param string $encoding
-     */
-    public function __construct($option = 'a', $encoding = 'utf-8')
+    public function __construct(string $option = 'a', string $encoding = 'utf-8')
     {
         $this->option = $option;
         $this->encoding = $encoding;
@@ -48,8 +44,6 @@ class ConvertKanaListener implements EventSubscriberInterface
     }
 
     /**
-     * @param FormEvent $event
-     *
      * @return void
      */
     public function onPreSubmit(FormEvent $event): void

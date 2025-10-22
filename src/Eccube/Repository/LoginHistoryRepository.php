@@ -50,7 +50,7 @@ class LoginHistoryRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData): QueryBuilder
+    public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('lh')
             ->select('lh');

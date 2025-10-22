@@ -156,7 +156,6 @@ class OrderHelper
     /**
      * 購入処理中の受注を生成する.
      *
-     * @param Customer $Customer
      * @param $CartItems
      *
      * @return Order
@@ -202,8 +201,6 @@ class OrderHelper
     }
 
     /**
-     * @param Cart $Cart
-     *
      * @return bool
      */
     public function verifyCart(Cart $Cart): bool
@@ -252,11 +249,9 @@ class OrderHelper
     /**
      * 購入処理中の受注を取得する.
      *
-     * @param string|null $preOrderId
-     *
      * @return Order|null
      */
-    public function getPurchaseProcessingOrder($preOrderId = null): ?Order
+    public function getPurchaseProcessingOrder(?string $preOrderId = null): ?Order
     {
         if (null === $preOrderId) {
             return null;
@@ -272,11 +267,9 @@ class OrderHelper
      * セッションに保持されている非会員情報を取得する.
      * 非会員購入時に入力されたお客様情報を返す.
      *
-     * @param string $session_key
-     *
      * @return Customer|null
      */
-    public function getNonMember($session_key = self::SESSION_NON_MEMBER): ?Customer
+    public function getNonMember(string $session_key = self::SESSION_NON_MEMBER): ?Customer
     {
         $data = $this->session->get($session_key);
         if (empty($data)) {
@@ -304,9 +297,6 @@ class OrderHelper
     }
 
     /**
-     * @param Cart $Cart
-     * @param Customer $Customer
-     *
      * @return Order|null
      */
     public function initializeOrder(Cart $Cart, Customer $Customer): ?Order
@@ -335,9 +325,6 @@ class OrderHelper
 
     /**
      * 会員情報の更新日時が受注の作成日時よりも新しければ, 受注の注文者情報を更新する.
-     *
-     * @param Order $Order
-     * @param Customer $Customer
      *
      * @return void
      */
@@ -368,9 +355,6 @@ class OrderHelper
     }
 
     /**
-     * @param Order $Order
-     * @param Customer $Customer
-     *
      * @return void
      */
     protected function setCustomer(Order $Order, Customer $Customer): void
@@ -395,7 +379,7 @@ class OrderHelper
      *
      * @return OrderItem[]
      */
-    protected function createOrderItemsFromCartItems($CartItems): array
+    protected function createOrderItemsFromCartItems(Collection|ArrayCollection|array $CartItems): array
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
@@ -432,8 +416,6 @@ class OrderHelper
     }
 
     /**
-     * @param Customer $Customer
-     *
      * @return Shipping
      */
     protected function createShippingFromCustomer(Customer $Customer): Shipping
@@ -455,8 +437,6 @@ class OrderHelper
     }
 
     /**
-     * @param Shipping $Shipping
-     *
      * @return void
      */
     protected function setDefaultDelivery(Shipping $Shipping): void
@@ -481,8 +461,6 @@ class OrderHelper
     }
 
     /**
-     * @param Order $Order
-     *
      * @return void
      */
     protected function setDefaultPayment(Order $Order): void
@@ -518,8 +496,6 @@ class OrderHelper
     }
 
     /**
-     * @param Order $Order
-     * @param Shipping $Shipping
      * @param array<int, OrderItem> $OrderItems
      *
      * @return void
@@ -535,14 +511,11 @@ class OrderHelper
     }
 
     /**
-     * @param string $attribute
-     * @param string|null $subject
-     *
      * @return bool
      *
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
      */
-    private function isGranted($attribute, $subject = null): bool
+    private function isGranted(string $attribute, ?string $subject = null): bool
     {
         return $this->authorizationChecker->isGranted($attribute, $subject);
     }
@@ -574,11 +547,9 @@ class OrderHelper
      * - 手数料: 税込
      * - ポイント値引き: 税込
      *
-     * @param OrderItemType|int $OrderItemType
-     *
      * @return TaxDisplayType
      */
-    public function getTaxDisplayType($OrderItemType): TaxDisplayType
+    public function getTaxDisplayType(OrderItemType|int $OrderItemType): TaxDisplayType
     {
         $OrderItemType = is_object($OrderItemType) ? $OrderItemType->getId() : $OrderItemType;
 

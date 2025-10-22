@@ -139,8 +139,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param string $cartKey
-         *
          * @return Cart
          */
         public function setCartKey(string $cartKey): Cart
@@ -161,13 +159,11 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  bool                $lock
-         *
          * @return Cart
          *
          * @deprecated 使用しないので削除予定
          */
-        public function setLock($lock): Cart
+        public function setLock(bool $lock): Cart
         {
             $this->lock = $lock;
 
@@ -183,11 +179,9 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param string|null $pre_order_id
-         *
          * @return Cart
          */
-        public function setPreOrderId($pre_order_id): Cart
+        public function setPreOrderId(?string $pre_order_id): Cart
         {
             $this->pre_order_id = $pre_order_id;
 
@@ -195,8 +189,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  CartItem            $CartItem
-         *
          * @return Cart
          */
         public function addCartItem(CartItem $CartItem): Cart
@@ -250,7 +242,7 @@ if (!class_exists(Cart::class)) {
          *
          * @return Cart
          */
-        public function setCartItems($CartItems): Cart
+        public function setCartItems(Collection $CartItems): Cart
         {
             $this->CartItems = $CartItems;
 
@@ -260,11 +252,9 @@ if (!class_exists(Cart::class)) {
         /**
          * Set total.
          *
-         * @param string $total_price
-         *
          * @return $this
          */
-        public function setTotalPrice($total_price): static
+        public function setTotalPrice(string $total_price): static
         {
             $this->total_price = $total_price;
 
@@ -317,8 +307,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param ItemInterface $item
-         *
          * @return void
          */
         #[\Override]
@@ -330,8 +318,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param ItemInterface $item
-         *
          * @return void
          */
         public function removeItem(ItemInterface $item): void
@@ -385,8 +371,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param Customer|null $Customer
-         *
          * @return Cart
          */
         public function setCustomer(?Customer $Customer = null): Cart
@@ -399,11 +383,9 @@ if (!class_exists(Cart::class)) {
         /**
          * Set sortNo.
          *
-         * @param int|null $sortNo
-         *
          * @return Cart
          */
-        public function setSortNo($sortNo = null): Cart
+        public function setSortNo(?int $sortNo = null): Cart
         {
             $this->sort_no = $sortNo;
 
@@ -423,11 +405,9 @@ if (!class_exists(Cart::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Cart
          */
-        public function setCreateDate($createDate): Cart
+        public function setCreateDate(\DateTime $createDate): Cart
         {
             $this->create_date = $createDate;
 
@@ -447,11 +427,9 @@ if (!class_exists(Cart::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Cart
          */
-        public function setUpdateDate($updateDate): Cart
+        public function setUpdateDate(\DateTime $updateDate): Cart
         {
             $this->update_date = $updateDate;
 

@@ -45,7 +45,6 @@ class BlockType extends AbstractType
      * BlockType constructor.
      *
      * @param $entityManager
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
     {
@@ -56,7 +55,6 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -132,8 +130,6 @@ class BlockType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

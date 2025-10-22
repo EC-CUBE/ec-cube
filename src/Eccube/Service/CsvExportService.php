@@ -118,17 +118,6 @@ class CsvExportService
 
     /**
      * CsvExportService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
-     * @param OrderRepository $orderRepository
-     * @param ShippingRepository $shippingRepository
-     * @param CustomerRepository $customerRepository
-     * @param ProductRepository $productRepository
-     * @param EccubeConfig $eccubeConfig
-     * @param FormFactoryInterface $formFactory
-     * @param PaginatorInterface $paginator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -155,18 +144,14 @@ class CsvExportService
     }
 
     /**
-     * @param EccubeConfig $config
-     *
      * @return void
      */
-    public function setConfig($config): void
+    public function setConfig(EccubeConfig $config): void
     {
         $this->eccubeConfig = $config;
     }
 
     /**
-     * @param CsvRepository $csvRepository
-     *
      * @return void
      */
     public function setCsvRepository(CsvRepository $csvRepository): void
@@ -175,8 +160,6 @@ class CsvExportService
     }
 
     /**
-     * @param CsvTypeRepository $csvTypeRepository
-     *
      * @return void
      */
     public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository): void
@@ -185,8 +168,6 @@ class CsvExportService
     }
 
     /**
-     * @param OrderRepository $orderRepository
-     *
      * @return void
      */
     public function setOrderRepository(OrderRepository $orderRepository): void
@@ -195,8 +176,6 @@ class CsvExportService
     }
 
     /**
-     * @param CustomerRepository $customerRepository
-     *
      * @return void
      */
     public function setCustomerRepository(CustomerRepository $customerRepository): void
@@ -205,8 +184,6 @@ class CsvExportService
     }
 
     /**
-     * @param ProductRepository $productRepository
-     *
      * @return void
      */
     public function setProductRepository(ProductRepository $productRepository): void
@@ -215,8 +192,6 @@ class CsvExportService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     *
      * @return void
      */
     public function setEntityManager(EntityManagerInterface $entityManager): void
@@ -233,8 +208,6 @@ class CsvExportService
     }
 
     /**
-     * @param QueryBuilder $qb
-     *
      * @return void
      */
     public function setExportQueryBuilder(QueryBuilder $qb): void
@@ -245,11 +218,9 @@ class CsvExportService
     /**
      * Csv種別からServiceの初期化を行う.
      *
-     * @param CsvType|int $CsvType
-     *
      * @return void
      */
-    public function initCsvType($CsvType): void
+    public function initCsvType(CsvType|int $CsvType): void
     {
         if ($CsvType instanceof CsvType) {
             $this->CsvType = $CsvType;
@@ -301,8 +272,6 @@ class CsvExportService
      * クエリビルダにもとづいてデータ行を出力する.
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
      *
-     * @param \Closure $closure
-     *
      * @return void
      */
     public function exportData(\Closure $closure): void
@@ -335,9 +304,6 @@ class CsvExportService
 
     /**
      * CSV出力項目と比較し, 合致するデータを返す.
-     *
-     * @param Csv $Csv
-     * @param AbstractEntity $entity
      *
      * @return string|null
      */
@@ -412,7 +378,7 @@ class CsvExportService
      *
      * @return void
      */
-    public function fputcsv($row): void
+    public function fputcsv(array $row): void
     {
         if (is_null($this->convertEncodingCallBack)) {
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
@@ -434,8 +400,6 @@ class CsvExportService
 
     /**
      * 受注検索用のクエリビルダを返す.
-     *
-     * @param Request $request
      *
      * @return QueryBuilder
      */
@@ -459,8 +423,6 @@ class CsvExportService
     /**
      * 会員検索用のクエリビルダを返す.
      *
-     * @param Request $request
-     *
      * @return QueryBuilder
      */
     public function getCustomerQueryBuilder(Request $request): QueryBuilder
@@ -482,8 +444,6 @@ class CsvExportService
 
     /**
      * 商品検索用のクエリビルダを返す.
-     *
-     * @param Request $request
      *
      * @return QueryBuilder
      */

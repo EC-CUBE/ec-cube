@@ -60,8 +60,6 @@ class DeliveryController extends AbstractController
     /**
      * お届け先一覧画面.
      *
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
@@ -78,7 +76,6 @@ class DeliveryController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @param Request $request
      * @param string|int|null $id
      *
      * @return RedirectResponse|array<string,mixed>
@@ -184,9 +181,6 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先を削除する.
-     *
-     * @param Request $request
-     * @param CustomerAddress $CustomerAddress
      *
      * @return RedirectResponse
      *

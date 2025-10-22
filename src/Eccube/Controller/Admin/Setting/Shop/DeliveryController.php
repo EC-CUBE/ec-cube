@@ -76,11 +76,6 @@ class DeliveryController extends AbstractController
 
     /**
      * DeliveryController constructor.
-     *
-     * @param PaymentOptionRepository $paymentOptionRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
-     * @param PrefRepository $prefRepository
-     * @param DeliveryRepository $deliveryRepository
      */
     public function __construct(PaymentOptionRepository $paymentOptionRepository, DeliveryFeeRepository $deliveryFeeRepository, PrefRepository $prefRepository, DeliveryRepository $deliveryRepository, DeliveryTimeRepository $deliveryTimeRepository, SaleTypeRepository $saleTypeRepository)
     {
@@ -93,8 +88,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
@@ -118,8 +111,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param EccubeExtension $extension
      * @param string|int|null $id
      *
      * @return RedirectResponse|array<string,mixed>
@@ -302,9 +293,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Delivery $Delivery
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -349,9 +337,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Delivery $Delivery
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
@@ -385,8 +370,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return JsonResponse
      *
      * @throws BadRequestHttpException

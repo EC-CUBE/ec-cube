@@ -28,8 +28,6 @@ class ProductTag extends AbstractType
 
     /**
      * CategoryType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -39,7 +37,6 @@ class ProductTag extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void

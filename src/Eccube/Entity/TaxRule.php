@@ -53,11 +53,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set sortNo
          *
-         * @param  int $sortNo
-         *
          * @return TaxRule
          */
-        public function setSortNo($sortNo): TaxRule
+        public function setSortNo(int $sortNo): TaxRule
         {
             $this->sort_no = $sortNo;
 
@@ -168,11 +166,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set taxRate.
          *
-         * @param string $taxRate
-         *
          * @return TaxRule
          */
-        public function setTaxRate($taxRate): TaxRule
+        public function setTaxRate(?string $taxRate): TaxRule
         {
             $this->tax_rate = $taxRate;
 
@@ -192,11 +188,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set taxAdjust.
          *
-         * @param string $taxAdjust
-         *
          * @return TaxRule
          */
-        public function setTaxAdjust($taxAdjust): TaxRule
+        public function setTaxAdjust(string $taxAdjust): TaxRule
         {
             $this->tax_adjust = $taxAdjust;
 
@@ -216,11 +210,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set applyDate.
          *
-         * @param \DateTime $applyDate
-         *
          * @return TaxRule
          */
-        public function setApplyDate($applyDate): TaxRule
+        public function setApplyDate(\DateTime $applyDate): TaxRule
         {
             $this->apply_date = $applyDate;
 
@@ -240,11 +232,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return TaxRule
          */
-        public function setCreateDate($createDate): TaxRule
+        public function setCreateDate(\DateTime $createDate): TaxRule
         {
             $this->create_date = $createDate;
 
@@ -264,11 +254,9 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return TaxRule
          */
-        public function setUpdateDate($updateDate): TaxRule
+        public function setUpdateDate(\DateTime $updateDate): TaxRule
         {
             $this->update_date = $updateDate;
 
@@ -287,8 +275,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set productClass.
-         *
-         * @param ProductClass|null $productClass
          *
          * @return TaxRule
          */
@@ -312,8 +298,6 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
-         *
          * @return TaxRule
          */
         public function setCreator(?Member $creator = null): TaxRule
@@ -335,8 +319,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set country.
-         *
-         * @param Country|null $country
          *
          * @return TaxRule
          */
@@ -360,8 +342,6 @@ if (!class_exists(TaxRule::class)) {
         /**
          * Set pref.
          *
-         * @param Pref|null $pref
-         *
          * @return TaxRule
          */
         public function setPref(?Pref $pref = null): TaxRule
@@ -383,8 +363,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
          *
          * @return TaxRule
          */

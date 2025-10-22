@@ -67,8 +67,6 @@ class AbstractController extends Controller
     protected $router;
 
     /**
-     * @param EccubeConfig $eccubeConfig
-     *
      * @return void
      */
     #[Required]
@@ -78,8 +76,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     *
      * @return void
      */
     #[Required]
@@ -89,8 +85,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param TranslatorInterface $translator
-     *
      * @return void
      */
     #[Required]
@@ -100,8 +94,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param Session $session
-     *
      * @return void
      */
     #[Required]
@@ -111,8 +103,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param FormFactoryInterface $formFactory
-     *
      * @return void
      */
     #[Required]
@@ -122,8 +112,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
      * @return void
      */
     #[Required]
@@ -133,8 +121,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param RouterInterface $router
-     *
      * @return void
      */
     #[Required]
@@ -144,133 +130,97 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addSuccess($message, $namespace = 'front'): void
+    public function addSuccess(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.success', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addSuccessOnce($message, $namespace = 'front'): void
+    public function addSuccessOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.success', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addError($message, $namespace = 'front'): void
+    public function addError(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.error', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addErrorOnce($message, $namespace = 'front'): void
+    public function addErrorOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.error', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addDanger($message, $namespace = 'front'): void
+    public function addDanger(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.danger', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addDangerOnce($message, $namespace = 'front'): void
+    public function addDangerOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.danger', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addWarning($message, $namespace = 'front'): void
+    public function addWarning(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.warning', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addWarningOnce($message, $namespace = 'front'): void
+    public function addWarningOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.warning', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addInfo($message, $namespace = 'front'): void
+    public function addInfo(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.info', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addInfoOnce($message, $namespace = 'front'): void
+    public function addInfoOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.info', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addRequestError($message, $namespace = 'front'): void
+    public function addRequestError(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.request.error', $message);
     }
 
     /**
-     * @param string $message
-     * @param string $namespace
-     *
      * @return void
      */
-    public function addRequestErrorOnce($message, $namespace = 'front'): void
+    public function addRequestErrorOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.request.error', $message);
     }
@@ -295,8 +245,6 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param string $type
-     *
      * @return bool
      */
     public function hasMessage(string $type): bool
@@ -308,12 +256,9 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param string $type
-     * @param string $message
-     *
      * @return void
      */
-    public function addFlashOnce(string $type, $message): void
+    public function addFlashOnce(string $type, string $message): void
     {
         if (!$this->hasMessage($type)) {
             $this->addFlash($type, $message);
@@ -339,12 +284,9 @@ class AbstractController extends Controller
     }
 
     /**
-     * @param string $targetPath
-     * @param string|null $namespace
-     *
      * @return void
      */
-    public function setLoginTargetPath($targetPath, $namespace = null): void
+    public function setLoginTargetPath(string $targetPath, ?string $namespace = null): void
     {
         if (is_null($namespace)) {
             /** @var Session $session */
@@ -366,7 +308,7 @@ class AbstractController extends Controller
      *
      * @return Response A Response instance
      */
-    public function forwardToRoute($route, array $path = [], array $query = []): Response
+    public function forwardToRoute(string $route, array $path = [], array $query = []): Response
     {
         $Route = $this->router->getRouteCollection()->get($route);
         if (!$Route) {

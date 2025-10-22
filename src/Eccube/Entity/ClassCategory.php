@@ -108,11 +108,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set backend_name.
          *
-         * @param string $backendName
-         *
          * @return ClassCategory
          */
-        public function setBackendName($backendName): ClassCategory
+        public function setBackendName(string $backendName): ClassCategory
         {
             $this->backend_name = $backendName;
 
@@ -132,11 +130,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return ClassCategory
          */
-        public function setName($name): ClassCategory
+        public function setName(string $name): ClassCategory
         {
             $this->name = $name;
 
@@ -156,11 +152,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set sortNo.
          *
-         * @param int $sortNo
-         *
          * @return ClassCategory
          */
-        public function setSortNo($sortNo): ClassCategory
+        public function setSortNo(int $sortNo): ClassCategory
         {
             $this->sort_no = $sortNo;
 
@@ -180,11 +174,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return ClassCategory
          */
-        public function setCreateDate($createDate): ClassCategory
+        public function setCreateDate(\DateTime $createDate): ClassCategory
         {
             $this->create_date = $createDate;
 
@@ -204,11 +196,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return ClassCategory
          */
-        public function setUpdateDate($updateDate): ClassCategory
+        public function setUpdateDate(\DateTime $updateDate): ClassCategory
         {
             $this->update_date = $updateDate;
 
@@ -227,8 +217,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set className.
-         *
-         * @param ClassName|null $className
          *
          * @return ClassCategory
          */
@@ -252,8 +240,6 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
-         *
          * @return ClassCategory
          */
         public function setCreator(?Member $creator = null): ClassCategory
@@ -276,11 +262,9 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set visible
          *
-         * @param bool $visible
-         *
          * @return ClassCategory
          */
-        public function setVisible($visible): ClassCategory
+        public function setVisible(bool $visible): ClassCategory
         {
             $this->visible = $visible;
 

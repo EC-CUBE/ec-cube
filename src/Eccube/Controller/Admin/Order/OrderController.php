@@ -128,18 +128,6 @@ class OrderController extends AbstractController
     /**
      * OrderController constructor.
      *
-     * @param PurchaseFlow $orderPurchaseFlow
-     * @param CsvExportService $csvExportService
-     * @param CustomerRepository $customerRepository
-     * @param PaymentRepository $paymentRepository
-     * @param SexRepository $sexRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param PageMaxRepository $pageMaxRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param ProductStockRepository $productStockRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderPdfRepository $orderPdfRepository
-     * @param ValidatorInterface $validator
      * @param OrderStateMachine $orderStateMachine ;
      */
     public function __construct(
@@ -191,8 +179,6 @@ class OrderController extends AbstractController
      *   - 初期表示
      *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
      * @return array<string,mixed>
@@ -336,8 +322,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
@@ -364,8 +348,6 @@ class OrderController extends AbstractController
     /**
      * 受注CSVの出力.
      *
-     * @param Request $request
-     *
      * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/export/order', name: 'admin_order_export_order', methods: ['GET'])]
@@ -381,8 +363,6 @@ class OrderController extends AbstractController
     /**
      * 配送CSVの出力.
      *
-     * @param Request $request
-     *
      * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/export/shipping', name: 'admin_order_export_shipping', methods: ['GET'])]
@@ -396,13 +376,9 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param int $csvTypeId
-     * @param string $fileName
-     *
      * @return StreamedResponse
      */
-    protected function exportCsv(Request $request, $csvTypeId, $fileName): StreamedResponse
+    protected function exportCsv(Request $request, int $csvTypeId, string $fileName): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -476,9 +452,6 @@ class OrderController extends AbstractController
 
     /**
      * Update to order status
-     *
-     * @param Request $request
-     * @param Shipping $Shipping
      *
      * @return JsonResponse
      */
@@ -575,9 +548,6 @@ class OrderController extends AbstractController
     /**
      * Update to Tracking number.
      *
-     * @param Request $request
-     * @param Shipping $shipping
-     *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/tracking_number', name: 'admin_shipping_update_tracking_number', requirements: ['id' => '\d+'], methods: ['PUT'])]
@@ -628,8 +598,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
@@ -676,8 +644,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]

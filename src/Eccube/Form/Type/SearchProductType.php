@@ -41,8 +41,6 @@ class SearchProductType extends AbstractType
 
     /**
      * SearchProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
      */
     public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
     {
@@ -53,7 +51,6 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -93,8 +90,6 @@ class SearchProductType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

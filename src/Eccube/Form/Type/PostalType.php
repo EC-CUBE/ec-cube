@@ -34,8 +34,6 @@ class PostalType extends AbstractType
 
     /**
      * ZipType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -45,7 +43,6 @@ class PostalType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -59,8 +56,6 @@ class PostalType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

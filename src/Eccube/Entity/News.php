@@ -114,11 +114,9 @@ if (!class_exists(News::class)) {
         /**
          * Set publishDate.
          *
-         * @param \DateTime|null $publishDate
-         *
          * @return News
          */
-        public function setPublishDate($publishDate = null): News
+        public function setPublishDate(?\DateTime $publishDate = null): News
         {
             $this->publish_date = $publishDate;
 
@@ -138,11 +136,9 @@ if (!class_exists(News::class)) {
         /**
          * Set title.
          *
-         * @param string $title
-         *
          * @return News
          */
-        public function setTitle($title): News
+        public function setTitle(string $title): News
         {
             $this->title = $title;
 
@@ -162,11 +158,9 @@ if (!class_exists(News::class)) {
         /**
          * Set description.
          *
-         * @param string|null $description
-         *
          * @return News
          */
-        public function setDescription($description = null): News
+        public function setDescription(?string $description = null): News
         {
             $this->description = $description;
 
@@ -186,11 +180,9 @@ if (!class_exists(News::class)) {
         /**
          * Set url.
          *
-         * @param string|null $url
-         *
          * @return News
          */
-        public function setUrl($url = null): News
+        public function setUrl(?string $url = null): News
         {
             $this->url = $url;
 
@@ -210,11 +202,9 @@ if (!class_exists(News::class)) {
         /**
          * Set linkMethod.
          *
-         * @param bool $linkMethod
-         *
          * @return News
          */
-        public function setLinkMethod($linkMethod): News
+        public function setLinkMethod(bool $linkMethod): News
         {
             $this->link_method = $linkMethod;
 
@@ -234,11 +224,9 @@ if (!class_exists(News::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return News
          */
-        public function setCreateDate($createDate): News
+        public function setCreateDate(\DateTime $createDate): News
         {
             $this->create_date = $createDate;
 
@@ -258,11 +246,9 @@ if (!class_exists(News::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return News
          */
-        public function setUpdateDate($updateDate): News
+        public function setUpdateDate(\DateTime $updateDate): News
         {
             $this->update_date = $updateDate;
 
@@ -288,11 +274,9 @@ if (!class_exists(News::class)) {
         }
 
         /**
-         * @param bool $visible
-         *
          * @return News
          */
-        public function setVisible($visible): News
+        public function setVisible(bool $visible): News
         {
             $this->visible = $visible;
 
@@ -301,8 +285,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return News
          */

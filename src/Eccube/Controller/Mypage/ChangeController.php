@@ -74,8 +74,6 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集画面.
      *
-     * @param Request $request
-     *
      * @return RedirectResponse|array<string,mixed>
      *
      * @throws \Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError
@@ -156,8 +154,6 @@ class ChangeController extends AbstractController
 
     /**
      * 会員情報編集完了画面.
-     *
-     * @param Request $request
      *
      * @return array<empty>
      */

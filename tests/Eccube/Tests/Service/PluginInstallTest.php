@@ -96,7 +96,7 @@ class PluginInstallTest extends AbstractServiceTestCase
      *
      * @param mixed $path
      */
-    private function deleteFile($path)
+    private function deleteFile(mixed $path)
     {
         $f = new Filesystem();
         $f->remove($path);

@@ -17,6 +17,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Category;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\ProductStatus;
@@ -113,17 +114,6 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     *
-     * @param CsvExportService $csvExportService
-     * @param ProductClassRepository $productClassRepository
-     * @param ProductImageRepository $productImageRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param CategoryRepository $categoryRepository
-     * @param ProductRepository $productRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PageMaxRepository $pageMaxRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param TagRepository $tagRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -150,8 +140,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
      * @return array<string,mixed>
@@ -291,7 +279,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param Product $Product
      *
      * @return array<string,mixed>
@@ -328,8 +315,6 @@ class ProductController extends AbstractController
      * 画像アップロード時にリクエストされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
-     *
-     * @param Request $request
      *
      * @return Response
      *
@@ -386,8 +371,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     * @param Request $request
-     *
      * @return BinaryFileResponse
      *
      * @throws BadRequestHttpException|NotFoundHttpException
@@ -426,8 +409,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
      *
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws BadRequestHttpException|NotFoundHttpException
@@ -451,9 +432,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param CacheUtil $cacheUtil
      * @param int|string|null $id
      *
      * @return RedirectResponse|array<string,mixed>
@@ -793,8 +771,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      * @param int|string|null $id
      *
      * @return RedirectResponse|JsonResponse
@@ -891,7 +867,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param int|string|null $id
      *
      * @return RedirectResponse
@@ -1007,8 +982,6 @@ class ProductController extends AbstractController
     /**
      * 商品CSVの出力.
      *
-     * @param Request $request
-     *
      * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/export', name: 'admin_product_export', methods: ['GET'])]
@@ -1114,13 +1087,9 @@ class ProductController extends AbstractController
     /**
      * ProductCategory作成
      *
-     * @param Product $Product
-     * @param \Eccube\Entity\Category $Category
-     * @param int $count
-     *
      * @return ProductCategory
      */
-    private function createProductCategory($Product, $Category, $count): ProductCategory
+    private function createProductCategory(Product $Product, Category $Category, int $count): ProductCategory
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);
@@ -1133,10 +1102,6 @@ class ProductController extends AbstractController
 
     /**
      * Bulk public action
-     *
-     * @param Request $request
-     * @param ProductStatus $ProductStatus
-     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse
      */

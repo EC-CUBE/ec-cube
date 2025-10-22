@@ -42,11 +42,9 @@ class PasswordEncoder
     /**
      * Set Auth Magic.
      *
-     * @param string $authMagic
-     *
      * @return void
      */
-    public function setAuthMagic($authMagic): void
+    public function setAuthMagic(string $authMagic): void
     {
         $this->auth_magic = $authMagic;
     }
@@ -60,7 +58,7 @@ class PasswordEncoder
      *
      * @return bool true if the password is valid, false otherwise
      */
-    public function isPasswordValid($encoded, $raw, $salt): bool
+    public function isPasswordValid(string $encoded, string $raw, string $salt): bool
     {
         if ($encoded == '') {
             return false;
@@ -94,7 +92,7 @@ class PasswordEncoder
      *
      * @return string The encoded password
      */
-    public function encodePassword($raw, $salt): string
+    public function encodePassword(string $raw, string $salt): string
     {
         if ($salt == '') {
             $salt = $this->auth_magic;
@@ -119,11 +117,9 @@ class PasswordEncoder
     /**
      * saltを生成する.
      *
-     * @param int $length
-     *
      * @return string
      */
-    public function createSalt($length = 5): string
+    public function createSalt(int $length = 5): string
     {
         return bin2hex(openssl_random_pseudo_bytes($length));
     }

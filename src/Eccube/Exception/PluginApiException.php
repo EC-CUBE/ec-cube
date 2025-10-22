@@ -25,7 +25,7 @@ class PluginApiException extends \Exception
      *
      * @return void
      */
-    public function __construct($curlInfo)
+    public function __construct(?array $curlInfo)
     {
         parent::__construct(self::getResponseErrorMessage($curlInfo), (int) $curlInfo['http_code']);
         $this->curlInfo = $curlInfo;
@@ -36,7 +36,7 @@ class PluginApiException extends \Exception
      *
      * @return string
      */
-    private static function getResponseErrorMessage($info): string
+    private static function getResponseErrorMessage(array $info): string
     {
         if (!empty($info)) {
             $messageId = 'admin.store.package.api.'.$info['http_code'].'.error';

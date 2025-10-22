@@ -23,17 +23,12 @@ class TranslatorFacade
     /** @var TranslatorInterface */
     private static $Translator;
 
-    /**
-     * @param TranslatorInterface $Translator
-     */
     private function __construct(TranslatorInterface $Translator)
     {
         self::$Translator = $Translator;
     }
 
     /**
-     * @param TranslatorInterface $Translator
-     *
      * @return TranslatorFacade|null
      */
     public static function init(TranslatorInterface $Translator): ?TranslatorFacade

@@ -33,8 +33,6 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]
@@ -63,7 +61,6 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void

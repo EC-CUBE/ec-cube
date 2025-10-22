@@ -53,11 +53,6 @@ class ForgotController extends AbstractController
 
     /**
      * ForgotController constructor.
-     *
-     * @param ValidatorInterface $validator
-     * @param MailService $mailService
-     * @param CustomerRepository $customerRepository
-     * @param UserPasswordHasherInterface $passwordHasher
      */
     public function __construct(
         ValidatorInterface $validator,
@@ -73,8 +68,6 @@ class ForgotController extends AbstractController
 
     /**
      * パスワードリマインダ.
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -149,8 +142,6 @@ class ForgotController extends AbstractController
     /**
      * 再設定URL送信完了画面.
      *
-     * @param Request $request
-     *
      * @return array<empty>
      *
      * @throws HttpException\NotFoundHttpException
@@ -169,7 +160,6 @@ class ForgotController extends AbstractController
     /**
      * パスワード再発行実行画面.
      *
-     * @param Request $request
      * @param string $reset_key
      *
      * @return RedirectResponse|array<string,mixed>

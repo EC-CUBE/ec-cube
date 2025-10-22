@@ -28,8 +28,6 @@ class AbstractShoppingController extends AbstractController
     protected $purchaseFlow;
 
     /**
-     * @param PurchaseFlow $shoppingPurchaseFlow
-     *
      * @return void
      */
     #[Required]
@@ -39,12 +37,11 @@ class AbstractShoppingController extends AbstractController
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
      *
      * @return PurchaseFlowResult|RedirectResponse|null
      */
-    protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true): PurchaseFlowResult|RedirectResponse|null
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder, bool $returnResponse = true): PurchaseFlowResult|RedirectResponse|null
     {
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext(clone $itemHolder, $itemHolder->getCustomer()));

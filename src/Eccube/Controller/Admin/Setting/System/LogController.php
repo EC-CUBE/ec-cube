@@ -99,12 +99,11 @@ class LogController extends AbstractController
     /**
      * parse log file
      *
-     * @param string $logFile
      * @param array<string,string> $formData
      *
      * @return array<int,mixed>
      */
-    private function parseLogFile($logFile, $formData): array
+    private function parseLogFile(string $logFile, array $formData): array
     {
         $log = [];
 

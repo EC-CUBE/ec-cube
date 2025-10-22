@@ -44,9 +44,6 @@ class CsvController extends AbstractController
 
     /**
      * CsvController constructor.
-     *
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
      */
     public function __construct(CsvRepository $csvRepository, CsvTypeRepository $csvTypeRepository)
     {
@@ -55,9 +52,6 @@ class CsvController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CsvType $CsvType
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]

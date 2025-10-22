@@ -62,10 +62,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * ProductClassEditType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ValidatorInterface $validator
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -82,7 +78,6 @@ class ProductClassEditType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -157,8 +152,6 @@ class ProductClassEditType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]
@@ -171,8 +164,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の個別税率設定の制御.
-     *
-     * @param FormBuilderInterface $builder
      *
      * @return void
      */
@@ -195,8 +186,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の登録チェックボックスの制御.
-     *
-     * @param FormBuilderInterface $builder
      *
      * @return void
      */
@@ -221,8 +210,6 @@ class ProductClassEditType extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     *
      * @return void
      */
     protected function addValidations(FormBuilderInterface $builder): void
@@ -291,13 +278,9 @@ class ProductClassEditType extends AbstractType
     }
 
     /**
-     * @param string $key
-     * @param FormInterface $form
-     * @param ConstraintViolationListInterface $errors
-     *
      * @return void
      */
-    protected function addErrors($key, FormInterface $form, ConstraintViolationListInterface $errors): void
+    protected function addErrors(string $key, FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         foreach ($errors as $error) {
             $form[$key]->addError(new FormError($error->getMessage()));

@@ -31,21 +31,17 @@ class EccubeConfig implements \ArrayAccess
     }
 
     /**
-     * @param string $key
-     *
      * @return mixed
      */
-    public function get($key): mixed
+    public function get(string $key): mixed
     {
         return $this->container->get($key);
     }
 
     /**
-     * @param string $key
-     *
      * @return bool
      */
-    public function has($key): bool
+    public function has(string $key): bool
     {
         return $this->container->has($key);
     }

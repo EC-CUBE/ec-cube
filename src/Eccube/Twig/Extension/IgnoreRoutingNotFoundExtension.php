@@ -52,15 +52,13 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * \Symfony\Bridge\Twig\Extension\RoutingExtension::getPath の処理を拡張し、
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
-     * @param string $name
      * @param array<string,mixed> $parameters
-     * @param bool $relative
      *
      * @return string
      *
      * @throws RouteNotFoundException
      */
-    public function getPath($name, $parameters = [], $relative = false): string
+    public function getPath(string $name, array $parameters = [], bool $relative = false): string
     {
         try {
             return $this->generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
@@ -76,15 +74,13 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * \Symfony\Bridge\Twig\Extension\RoutingExtension::getUrl の処理を拡張し、
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
-     * @param string $name
      * @param array<string,mixed> $parameters
-     * @param bool $schemeRelative
      *
      * @return string
      *
      * @throws RouteNotFoundException
      */
-    public function getUrl($name, $parameters = [], $schemeRelative = false): string
+    public function getUrl(string $name, array $parameters = [], bool $schemeRelative = false): string
     {
         try {
             return $this->generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);

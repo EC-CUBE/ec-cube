@@ -23,7 +23,6 @@ class OrderItemType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -35,8 +34,6 @@ class OrderItemType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

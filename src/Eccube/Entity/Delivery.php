@@ -152,11 +152,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set name.
          *
-         * @param string|null $name
-         *
          * @return Delivery
          */
-        public function setName($name = null): Delivery
+        public function setName(?string $name = null): Delivery
         {
             $this->name = $name;
 
@@ -176,11 +174,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set serviceName.
          *
-         * @param string|null $serviceName
-         *
          * @return Delivery
          */
-        public function setServiceName($serviceName = null): Delivery
+        public function setServiceName(?string $serviceName = null): Delivery
         {
             $this->service_name = $serviceName;
 
@@ -200,11 +196,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set description.
          *
-         * @param string|null $description
-         *
          * @return Delivery
          */
-        public function setDescription($description = null): Delivery
+        public function setDescription(?string $description = null): Delivery
         {
             $this->description = $description;
 
@@ -224,11 +218,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set confirmUrl.
          *
-         * @param string|null $confirmUrl
-         *
          * @return Delivery
          */
-        public function setConfirmUrl($confirmUrl = null): Delivery
+        public function setConfirmUrl(?string $confirmUrl = null): Delivery
         {
             $this->confirm_url = $confirmUrl;
 
@@ -248,11 +240,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set sortNo.
          *
-         * @param int|null $sortNo
-         *
          * @return Delivery
          */
-        public function setSortNo($sortNo = null): Delivery
+        public function setSortNo(?int $sortNo = null): Delivery
         {
             $this->sort_no = $sortNo;
 
@@ -272,11 +262,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Delivery
          */
-        public function setCreateDate($createDate): Delivery
+        public function setCreateDate(\DateTime $createDate): Delivery
         {
             $this->create_date = $createDate;
 
@@ -296,11 +284,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Delivery
          */
-        public function setUpdateDate($updateDate): Delivery
+        public function setUpdateDate(\DateTime $updateDate): Delivery
         {
             $this->update_date = $updateDate;
 
@@ -320,8 +306,6 @@ if (!class_exists(Delivery::class)) {
         /**
          * Add paymentOption.
          *
-         * @param PaymentOption $paymentOption
-         *
          * @return Delivery
          */
         public function addPaymentOption(PaymentOption $paymentOption): Delivery
@@ -333,8 +317,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Remove paymentOption.
-         *
-         * @param PaymentOption $paymentOption
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -356,8 +338,6 @@ if (!class_exists(Delivery::class)) {
         /**
          * Add deliveryFee.
          *
-         * @param DeliveryFee $deliveryFee
-         *
          * @return Delivery
          */
         public function addDeliveryFee(DeliveryFee $deliveryFee): Delivery
@@ -369,8 +349,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Remove deliveryFee.
-         *
-         * @param DeliveryFee $deliveryFee
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -392,8 +370,6 @@ if (!class_exists(Delivery::class)) {
         /**
          * Add deliveryTime.
          *
-         * @param DeliveryTime $deliveryTime
-         *
          * @return Delivery
          */
         public function addDeliveryTime(DeliveryTime $deliveryTime): Delivery
@@ -405,8 +381,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Remove deliveryTime.
-         *
-         * @param DeliveryTime $deliveryTime
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -427,8 +401,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return Delivery
          */
@@ -452,8 +424,6 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set saleType.
          *
-         * @param SaleType|null $saleType
-         *
          * @return Delivery
          */
         public function setSaleType(?SaleType $saleType = null): Delivery
@@ -476,11 +446,9 @@ if (!class_exists(Delivery::class)) {
         /**
          * Set visible
          *
-         * @param bool $visible
-         *
          * @return Delivery
          */
-        public function setVisible($visible): Delivery
+        public function setVisible(bool $visible): Delivery
         {
             $this->visible = $visible;
 

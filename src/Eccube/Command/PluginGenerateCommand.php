@@ -61,9 +61,6 @@ class PluginGenerateCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      */
     #[\Override]
@@ -74,9 +71,6 @@ class PluginGenerateCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      */
     #[\Override]
@@ -144,11 +138,9 @@ class PluginGenerateCommand extends Command
     }
 
     /**
-     * @param mixed $code
-     *
      * @return string
      */
-    public function validateCode($code): string
+    public function validateCode(mixed $code): string
     {
         if (empty($code)) {
             throw new InvalidArgumentException('The code can not be empty.');
@@ -169,22 +161,18 @@ class PluginGenerateCommand extends Command
     }
 
     /**
-     * @param string $version
-     *
      * @return string
      */
-    public function validateVersion($version): string
+    public function validateVersion(string $version): string
     {
         // TODO
         return $version;
     }
 
     /**
-     * @param string $pluginDir
-     *
      * @return void
      */
-    protected function createDirectories($pluginDir): void
+    protected function createDirectories(string $pluginDir): void
     {
         $dirs = [
             'Controller/Admin',
@@ -204,16 +192,11 @@ class PluginGenerateCommand extends Command
     }
 
     /**
-     * @param string $pluginDir
-     * @param string $name
-     * @param string $code
-     * @param string $version
-     *
      * @return void
      */
-    protected function createConfig($pluginDir, $name, $code, $version): void
+    protected function createConfig(string $pluginDir, string $name, string $code, string $version): void
     {
-        $lowerCode = mb_strtolower((string) $code);
+        $lowerCode = mb_strtolower($code);
         $source = <<<EOL
 {
   "name": "ec-cube/$lowerCode",
@@ -233,11 +216,9 @@ EOL;
     }
 
     /**
-     * @param string $pluginDir
-     *
      * @return void
      */
-    protected function createGithubActions($pluginDir): void
+    protected function createGithubActions(string $pluginDir): void
     {
         $source = '
 name: Packaging for EC-CUBE Plugin
@@ -268,11 +249,9 @@ jobs:
     }
 
     /**
-     * @param string $pluginDir
-     *
      * @return void
      */
-    protected function createGitattributes($pluginDir): void
+    protected function createGitattributes(string $pluginDir): void
     {
         $source = <<<EOL
 /.gitattributes             export-ignore
@@ -285,23 +264,18 @@ EOL;
     }
 
     /**
-     * @param string $pluginDir
-     *
      * @return void
      */
-    protected function createMessages($pluginDir): void
+    protected function createMessages(string $pluginDir): void
     {
         $this->fs->dumpFile($pluginDir.'/Resource/locale/messages.ja.yaml', '');
         $this->fs->dumpFile($pluginDir.'/Resource/locale/validators.ja.yaml', '');
     }
 
     /**
-     * @param string $pluginDir
-     * @param string $code
-     *
      * @return void
      */
-    protected function createTwigBlock($pluginDir, $code): void
+    protected function createTwigBlock(string $pluginDir, string $code): void
     {
         $source = <<<EOL
 <?php
@@ -326,12 +300,9 @@ EOL;
     }
 
     /**
-     * @param string $pluginDir
-     * @param string $code
-     *
      * @return void
      */
-    protected function createNav($pluginDir, $code): void
+    protected function createNav(string $pluginDir, string $code): void
     {
         $source = <<<EOL
 <?php
@@ -356,12 +327,9 @@ EOL;
     }
 
     /**
-     * @param string $pluginDir
-     * @param string $code
-     *
      * @return void
      */
-    protected function createEvent($pluginDir, $code): void
+    protected function createEvent(string $pluginDir, string $code): void
     {
         $source = <<<EOL
 <?php
@@ -386,12 +354,9 @@ EOL;
     }
 
     /**
-     * @param string $pluginDir
-     * @param string $code
-     *
      * @return void
      */
-    protected function createConfigController($pluginDir, $code): void
+    protected function createConfigController(string $pluginDir, string $code): void
     {
         $snakecased = Container::underscore($code);
 

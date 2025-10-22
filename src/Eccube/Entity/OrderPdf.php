@@ -110,11 +110,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param int $member_id
-         *
          * @return $this
          */
-        public function setMemberId($member_id): static
+        public function setMemberId(int $member_id): static
         {
             $this->member_id = $member_id;
 
@@ -130,11 +128,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string $title
-         *
          * @return $this
          */
-        public function setTitle($title): static
+        public function setTitle(string $title): static
         {
             $this->title = $title;
 
@@ -150,11 +146,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string $message1
-         *
          * @return $this
          */
-        public function setMessage1($message1): static
+        public function setMessage1(?string $message1): static
         {
             $this->message1 = $message1;
 
@@ -170,11 +164,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string $message2
-         *
          * @return $this
          */
-        public function setMessage2($message2): static
+        public function setMessage2(?string $message2): static
         {
             $this->message2 = $message2;
 
@@ -190,11 +182,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string|null $message3
-         *
          * @return $this
          */
-        public function setMessage3($message3): static
+        public function setMessage3(?string $message3): static
         {
             $this->message3 = $message3;
 
@@ -210,11 +200,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string $note1
-         *
          * @return $this
          */
-        public function setNote1($note1): static
+        public function setNote1(?string $note1): static
         {
             $this->note1 = $note1;
 
@@ -230,11 +218,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string $note2
-         *
          * @return $this
          */
-        public function setNote2($note2): static
+        public function setNote2(?string $note2): static
         {
             $this->note2 = $note2;
 
@@ -250,11 +236,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param string $note3
-         *
          * @return $this
          */
-        public function setNote3($note3): static
+        public function setNote3(?string $note3): static
         {
             $this->note3 = $note3;
 
@@ -270,11 +254,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param \DateTime|string $create_date
-         *
          * @return $this
          */
-        public function setCreateDate($create_date): static
+        public function setCreateDate(\DateTime|string $create_date): static
         {
             $this->create_date = $create_date;
 
@@ -290,11 +272,9 @@ if (!class_exists(OrderPdf::class)) {
         }
 
         /**
-         * @param \DateTime|string $update_date
-         *
          * @return $this
          */
-        public function setUpdateDate($update_date): static
+        public function setUpdateDate(\DateTime|string $update_date): static
         {
             $this->update_date = $update_date;
 
@@ -304,11 +284,9 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * Set visible
          *
-         * @param bool $visible
-         *
          * @return OrderPdf
          */
-        public function setVisible($visible): OrderPdf
+        public function setVisible(bool $visible): OrderPdf
         {
             $this->visible = $visible;
 

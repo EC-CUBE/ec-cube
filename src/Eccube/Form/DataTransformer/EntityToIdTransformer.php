@@ -35,7 +35,6 @@ class EntityToIdTransformer implements DataTransformerInterface
     private $className;
 
     /**
-     * @param ObjectManager $om
      * @param class-string<T> $className
      */
     public function __construct(ObjectManager $om, $className)

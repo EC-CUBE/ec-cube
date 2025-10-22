@@ -32,8 +32,6 @@ class RepeatedPasswordType extends AbstractType
 
     /**
      * RepeatedPasswordType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -42,8 +40,6 @@ class RepeatedPasswordType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

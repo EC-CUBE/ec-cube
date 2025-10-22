@@ -77,7 +77,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @see CsvImportController::getProductCsvHeader()
      */
-    public function createCsvAsArray($has_header = true)
+    public function createCsvAsArray(bool $has_header = true)
     {
         $faker = $this->getFaker();
 
@@ -131,7 +131,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @param mixed $filename
      */
-    public function createCsvFromArray(array $csv, $filename = 'products.csv')
+    public function createCsvFromArray(array $csv, mixed $filename = 'products.csv')
     {
         $dir = sys_get_temp_dir();
         $filepath = $dir.'/'.$filename;
@@ -816,7 +816,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return Crawler
      */
-    protected function scenario($bind = 'admin_product_csv_import', $original_name = 'products.csv', $isXmlHttpRequest = false)
+    protected function scenario(string $bind = 'admin_product_csv_import', string $original_name = 'products.csv', mixed $isXmlHttpRequest = false)
     {
         $file = new UploadedFile(
             $this->filepath,    // file path

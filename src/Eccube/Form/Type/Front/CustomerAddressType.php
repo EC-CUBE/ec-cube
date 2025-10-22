@@ -33,9 +33,6 @@ class CustomerAddressType extends AbstractType
      */
     protected $eccubeConfig;
 
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
@@ -44,7 +41,6 @@ class CustomerAddressType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -76,8 +72,6 @@ class CustomerAddressType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

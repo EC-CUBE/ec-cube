@@ -296,11 +296,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set productName.
          *
-         * @param string $productName
-         *
          * @return OrderItem
          */
-        public function setProductName($productName): OrderItem
+        public function setProductName(string $productName): OrderItem
         {
             $this->product_name = $productName;
 
@@ -320,11 +318,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set productCode.
          *
-         * @param string|null $productCode
-         *
          * @return OrderItem
          */
-        public function setProductCode($productCode = null): OrderItem
+        public function setProductCode(?string $productCode = null): OrderItem
         {
             $this->product_code = $productCode;
 
@@ -344,11 +340,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set className1.
          *
-         * @param string|null $className1
-         *
          * @return OrderItem
          */
-        public function setClassName1($className1 = null): OrderItem
+        public function setClassName1(?string $className1 = null): OrderItem
         {
             $this->class_name1 = $className1;
 
@@ -368,11 +362,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set className2.
          *
-         * @param string|null $className2
-         *
          * @return OrderItem
          */
-        public function setClassName2($className2 = null): OrderItem
+        public function setClassName2(?string $className2 = null): OrderItem
         {
             $this->class_name2 = $className2;
 
@@ -392,11 +384,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set classCategoryName1.
          *
-         * @param string|null $classCategoryName1
-         *
          * @return OrderItem
          */
-        public function setClassCategoryName1($classCategoryName1 = null): OrderItem
+        public function setClassCategoryName1(?string $classCategoryName1 = null): OrderItem
         {
             $this->class_category_name1 = $classCategoryName1;
 
@@ -416,11 +406,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set classCategoryName2.
          *
-         * @param string|null $classCategoryName2
-         *
          * @return OrderItem
          */
-        public function setClassCategoryName2($classCategoryName2 = null): OrderItem
+        public function setClassCategoryName2(?string $classCategoryName2 = null): OrderItem
         {
             $this->class_category_name2 = $classCategoryName2;
 
@@ -440,11 +428,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set price.
          *
-         * @param string $price
-         *
          * @return $this
          */
-        public function setPrice($price): static
+        public function setPrice(?string $price): static
         {
             $this->price = $price;
 
@@ -497,11 +483,9 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param string $tax
-         *
          * @return $this
          */
-        public function setTax($tax): static
+        public function setTax(string $tax): static
         {
             $this->tax = $tax;
 
@@ -511,11 +495,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxRate.
          *
-         * @param string $taxRate
-         *
          * @return OrderItem
          */
-        public function setTaxRate($taxRate): OrderItem
+        public function setTaxRate(string $taxRate): OrderItem
         {
             $this->tax_rate = $taxRate;
 
@@ -535,11 +517,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set taxAdjust.
          *
-         * @param string $tax_adjust
-         *
          * @return OrderItem
          */
-        public function setTaxAdjust($tax_adjust): OrderItem
+        public function setTaxAdjust(string $tax_adjust): OrderItem
         {
             $this->tax_adjust = $tax_adjust;
 
@@ -561,11 +541,9 @@ if (!class_exists(OrderItem::class)) {
          *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
          *
-         * @param int|null $taxRuleId
-         *
          * @return OrderItem
          */
-        public function setTaxRuleId($taxRuleId = null): OrderItem
+        public function setTaxRuleId(?int $taxRuleId = null): OrderItem
         {
             $this->tax_rule_id = $taxRuleId;
 
@@ -597,11 +575,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set currencyCode.
          *
-         * @param string|null $currencyCode
-         *
          * @return OrderItem
          */
-        public function setCurrencyCode($currencyCode = null): OrderItem
+        public function setCurrencyCode(?string $currencyCode = null): OrderItem
         {
             $this->currency_code = $currencyCode;
 
@@ -621,11 +597,9 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set processorName.
          *
-         * @param string|null $processorName
-         *
          * @return $this
          */
-        public function setProcessorName($processorName = null): static
+        public function setProcessorName(?string $processorName = null): static
         {
             $this->processor_name = $processorName;
 
@@ -634,8 +608,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set order.
-         *
-         * @param Order|null $order
          *
          * @return OrderItem
          */
@@ -671,8 +643,6 @@ if (!class_exists(OrderItem::class)) {
         /**
          * Set product.
          *
-         * @param Product|null $product
-         *
          * @return OrderItem
          */
         public function setProduct(?Product $product = null): OrderItem
@@ -694,8 +664,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set productClass.
-         *
-         * @param ProductClass|null $productClass
          *
          * @return OrderItem
          */
@@ -719,8 +687,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set shipping.
-         *
-         * @param Shipping|null $shipping
          *
          * @return OrderItem
          */
@@ -750,8 +716,6 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * @param RoundingType|null $RoundingType
-         *
          * @return $this
          */
         public function setRoundingType(?RoundingType $RoundingType = null): static

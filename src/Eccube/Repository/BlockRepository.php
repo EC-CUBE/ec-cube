@@ -35,9 +35,6 @@ class BlockRepository extends AbstractRepository
 
     /**
      * BlockRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -48,11 +45,9 @@ class BlockRepository extends AbstractRepository
     }
 
     /**
-     * @param DeviceType $DeviceType
-     *
      * @return Block
      */
-    public function newBlock($DeviceType): Block
+    public function newBlock(DeviceType $DeviceType): Block
     {
         $Block = new Block();
         $Block
@@ -66,11 +61,9 @@ class BlockRepository extends AbstractRepository
     /**
      * ブロック一覧の取得.
      *
-     * @param  DeviceType $DeviceType
-     *
      * @return Block[]
      */
-    public function getList($DeviceType): array
+    public function getList(DeviceType $DeviceType): array
     {
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.id', 'DESC')
@@ -92,7 +85,7 @@ class BlockRepository extends AbstractRepository
      *
      * @return array<int, Block>|null
      */
-    public function getUnusedBlocks($Blocks): ?array
+    public function getUnusedBlocks(array $Blocks): ?array
     {
         $UnusedBlocks = $this->createQueryBuilder('b')
             ->select('b')

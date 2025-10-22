@@ -70,11 +70,9 @@ if (!class_exists(DeliveryFee::class)) {
         /**
          * Set fee.
          *
-         * @param string $fee
-         *
          * @return DeliveryFee
          */
-        public function setFee($fee): DeliveryFee
+        public function setFee(string $fee): DeliveryFee
         {
             $this->fee = $fee;
 
@@ -93,8 +91,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Set delivery.
-         *
-         * @param Delivery|null $delivery
          *
          * @return DeliveryFee
          */
@@ -117,8 +113,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Set pref.
-         *
-         * @param Pref|null $pref
          *
          * @return DeliveryFee
          */

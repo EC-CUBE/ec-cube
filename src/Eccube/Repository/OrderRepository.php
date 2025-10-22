@@ -47,9 +47,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * OrderRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
      */
     public function __construct(RegistryInterface $registry, Queries $queries)
     {
@@ -58,12 +55,9 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param int $orderId
-     * @param OrderStatus $Status
-     *
      * @return void
      */
-    public function changeStatus($orderId, OrderStatus $Status): void
+    public function changeStatus(int $orderId, OrderStatus $Status): void
     {
         $Order = $this
             ->find($orderId)
@@ -124,7 +118,7 @@ class OrderRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData): QueryBuilder
+    public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
@@ -417,8 +411,6 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param  Customer $Customer
-     *
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder
@@ -436,14 +428,12 @@ class OrderRepository extends AbstractRepository
     /**
      * ステータスごとの受注件数を取得する.
      *
-     * @param int $OrderStatusOrId
-     *
      * @return int
      *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countByOrderStatus($OrderStatusOrId): int
+    public function countByOrderStatus(int $OrderStatusOrId): int
     {
         return (int) $this->createQueryBuilder('o')
             ->select('COALESCE(COUNT(o.id), 0)')
@@ -456,7 +446,6 @@ class OrderRepository extends AbstractRepository
     /**
      * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
      *
-     * @param Customer $Customer
      * @param array<int, int> $OrderStatuses
      *
      * @return void

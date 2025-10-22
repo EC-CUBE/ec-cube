@@ -21,6 +21,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -95,16 +96,6 @@ class AdminController extends AbstractController
 
     /**
      * AdminController constructor.
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param AuthenticationUtils $helper
-     * @param MemberRepository $memberRepository
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param OrderRepository $orderRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param CustomerRepository $custmerRepository
-     * @param ProductRepository $productRepository
-     * @param PluginApiService $pluginApiService
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -159,8 +150,6 @@ class AdminController extends AbstractController
 
     /**
      * 管理画面ホーム
-     *
-     * @param Request $request
      *
      * @return array<string,mixed>
      *
@@ -275,8 +264,6 @@ class AdminController extends AbstractController
     /**
      * 売上状況の取得
      *
-     * @param Request $request
-     *
      * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
@@ -315,8 +302,6 @@ class AdminController extends AbstractController
 
     /**
      * パスワード変更画面
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -373,8 +358,6 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     * @param Request $request
-     *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
@@ -393,8 +376,6 @@ class AdminController extends AbstractController
 
     /**
      * 本会員の検索結果を表示する.
-     *
-     * @param Request $request
      *
      * @return Response
      */
@@ -444,13 +425,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \DateTime $dateTime
-     *
      * @return array<string, int>
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByDay($dateTime): array
+    protected function getSalesByDay(\DateTime $dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -481,13 +460,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \DateTime $dateTime
-     *
      * @return array<string, int>
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function getSalesByMonth($dateTime): array
+    protected function getSalesByMonth(\DateTime $dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -576,13 +553,9 @@ class AdminController extends AbstractController
     /**
      * 期間指定のデータを取得
      *
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
-     * @param string $format
-     *
      * @return array<string,mixed>
      */
-    protected function getData(Carbon $fromDate, Carbon $toDate, $format): array
+    protected function getData(Carbon $fromDate, Carbon $toDate, string $format): array
     {
         $qb = $this->orderRepository->createQueryBuilder('o')
             ->andWhere('o.order_date >= :fromDate')
@@ -601,14 +574,11 @@ class AdminController extends AbstractController
     /**
      * 期間毎にデータをまとめる
      *
-     * @param float|int|mixed|string $result
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
-     * @param string $format
+     * @param array<Order>|null $result
      *
      * @return array<mixed>
      */
-    protected function convert($result, Carbon $fromDate, Carbon $toDate, $format): array
+    protected function convert(?array $result, Carbon $fromDate, Carbon $toDate, string $format): array
     {
         $raw = [];
         for ($date = $fromDate; $date <= $toDate; $date = $date->addDay()) {

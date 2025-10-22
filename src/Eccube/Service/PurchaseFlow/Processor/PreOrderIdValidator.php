@@ -29,8 +29,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * PreOrderIdValidator constructor.
-     *
-     * @param CartService $cartService
      */
     public function __construct(CartService $cartService)
     {
@@ -39,9 +37,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * 受注の仮確定処理を行います。
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @return void
      */
@@ -53,9 +48,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * 受注の確定処理を行います。
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @return void
      */

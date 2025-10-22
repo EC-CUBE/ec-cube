@@ -59,15 +59,8 @@ class JoinClause
 
     /**
      * JoinClause constructor.
-     *
-     * @param bool $leftJoin
-     * @param string $join
-     * @param string $alias
-     * @param string|null $conditionType
-     * @param string|null $condition
-     * @param string|null $indexBy
      */
-    private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    private function __construct(bool $leftJoin, string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null)
     {
         $this->leftJoin = $leftJoin;
         $this->join = $join;
@@ -84,15 +77,9 @@ class JoinClause
      *
      * @see QueryBuilder::innerJoin()
      *
-     * @param string $join
-     * @param string $alias
-     * @param string|null $conditionType
-     * @param string|null $condition
-     * @param string|null $indexBy
-     *
      * @return JoinClause
      */
-    public static function innerJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null): JoinClause
+    public static function innerJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
         return new JoinClause(false, $join, $alias, $conditionType, $condition, $indexBy);
     }
@@ -102,23 +89,15 @@ class JoinClause
      *
      * @see QueryBuilder::leftJoin()
      *
-     * @param string $join
-     * @param string $alias
-     * @param string|null $conditionType
-     * @param string|null $condition
-     * @param string|null $indexBy
-     *
      * @return JoinClause
      */
-    public static function leftJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null): JoinClause
+    public static function leftJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
         return new JoinClause(true, $join, $alias, $conditionType, $condition, $indexBy);
     }
 
     /**
      * WHERE句を追加します。
-     *
-     * @param WhereClause $whereClause
      *
      * @return $this
      */
@@ -132,8 +111,6 @@ class JoinClause
     /**
      * ORDER BY句を追加します。
      *
-     * @param OrderByClause $orderByClause
-     *
      * @return $this
      */
     public function addOrderBy(OrderByClause $orderByClause): static
@@ -144,8 +121,6 @@ class JoinClause
     }
 
     /**
-     * @param QueryBuilder $builder
-     *
      * @return void
      */
     public function build(QueryBuilder $builder): void
@@ -204,8 +179,6 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
     private $orderByClauses = [];
 
     /**
-     * @param OrderByClause $orderByClause
-     *
      * @return void
      */
     public function add(OrderByClause $orderByClause): void

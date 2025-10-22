@@ -30,8 +30,6 @@ class OrderStatusType extends AbstractType
 
     /**
      * OrderStatusType constructor.
-     *
-     * @param OrderRepository $orderRepository
      */
     public function __construct(OrderRepository $orderRepository)
     {
@@ -41,8 +39,6 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
      *
      * @return void
@@ -67,8 +63,6 @@ class OrderStatusType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

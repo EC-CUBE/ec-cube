@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\News;
 
 /**
@@ -37,12 +38,12 @@ class NewsRepository extends AbstractRepository
     /**
      * 新着情報を登録します.
      *
-     * @param $News
+     * @param News $News
      *
      * @return void
      */
     #[\Override]
-    public function save($News): void
+    public function save(AbstractEntity $News): void
     {
         $em = $this->getEntityManager();
         $em->persist($News);

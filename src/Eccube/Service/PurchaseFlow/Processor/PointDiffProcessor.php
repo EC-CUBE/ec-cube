@@ -39,9 +39,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * PointDiffProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PointHelper $pointHelper
      */
     public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
     {
@@ -127,7 +124,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /*
      * Helper methods
      */
-
     /**
      * Processorが実行出来るかどうかを返す.
      *
@@ -138,9 +134,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * - OrderStatusが新規受付、入金済み、対応中、発送済みのどれかであること
      * - 会員のOrderであること.
      * - PurchaseContextでOriginHolderが渡ってきている
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      *
      * @return bool
      */
@@ -186,9 +179,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * 使用ポイントが増えた場合プラスとなる
      * 50 -> 100 : 50
      * 100 -> 50 : -50
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      *
      * @return string
      */

@@ -66,11 +66,9 @@ if (!class_exists(PageLayout::class)) {
         /**
          * Set pageId
          *
-         * @param int $pageId
-         *
          * @return PageLayout
          */
-        public function setPageId($pageId): PageLayout
+        public function setPageId(int $pageId): PageLayout
         {
             $this->page_id = $pageId;
 
@@ -90,11 +88,9 @@ if (!class_exists(PageLayout::class)) {
         /**
          * Set layoutId
          *
-         * @param int $layoutId
-         *
          * @return PageLayout
          */
-        public function setLayoutId($layoutId): PageLayout
+        public function setLayoutId(int $layoutId): PageLayout
         {
             $this->layout_id = $layoutId;
 
@@ -114,11 +110,9 @@ if (!class_exists(PageLayout::class)) {
         /**
          * Set sort_no
          *
-         * @param int $sortNo
-         *
          * @return PageLayout
          */
-        public function setSortNo($sortNo): PageLayout
+        public function setSortNo(int $sortNo): PageLayout
         {
             $this->sort_no = $sortNo;
 

@@ -103,11 +103,9 @@ if (!class_exists(Template::class)) {
         /**
          * Set code.
          *
-         * @param string $code
-         *
          * @return Template
          */
-        public function setCode($code): Template
+        public function setCode(string $code): Template
         {
             $this->code = $code;
 
@@ -127,11 +125,9 @@ if (!class_exists(Template::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return Template
          */
-        public function setName($name): Template
+        public function setName(string $name): Template
         {
             $this->name = $name;
 
@@ -151,11 +147,9 @@ if (!class_exists(Template::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Template
          */
-        public function setCreateDate($createDate): Template
+        public function setCreateDate(\DateTime $createDate): Template
         {
             $this->create_date = $createDate;
 
@@ -175,11 +169,9 @@ if (!class_exists(Template::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Template
          */
-        public function setUpdateDate($updateDate): Template
+        public function setUpdateDate(\DateTime $updateDate): Template
         {
             $this->update_date = $updateDate;
 
@@ -198,8 +190,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Set deviceType.
-         *
-         * @param DeviceType|null $deviceType
          *
          * @return Template
          */

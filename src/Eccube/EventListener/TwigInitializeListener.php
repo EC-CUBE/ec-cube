@@ -143,8 +143,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      *
      * @throws NoResultException
@@ -168,8 +166,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -247,8 +243,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      */
     public function setAdminGlobals(RequestEvent $event): void
@@ -276,11 +270,10 @@ class TwigInitializeListener implements EventSubscriberInterface
      *
      * @param array<string, array<string,mixed>> $parentNav
      * @param AuthorityRole[] $AuthorityRoles
-     * @param string $baseUrl
      *
      * @return array<string, array<string,mixed>>
      */
-    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl): array
+    private function getDisplayEccubeNav(array $parentNav, array $AuthorityRoles, string $baseUrl): array
     {
         $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
 

@@ -23,8 +23,6 @@ class RoundingTypeType extends AbstractType
     /**
      * {@inheritDoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]

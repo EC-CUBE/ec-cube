@@ -36,6 +36,7 @@ use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithV
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
@@ -62,7 +63,7 @@ return RectorConfig::configure()
                // __DIR__ . '/src/Eccube/Legacy',
                // 特定のルールを除外する場合
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
-               RemoveUselessParamTagRector::class, // まだ @param に頼っているケースがありそうなので除外
+               //RemoveUselessParamTagRector::class, // まだ @param に頼っているケースがありそうなので除外
                RemoveUselessReturnTagRector::class, // まだ @return に頼っているケースがありそうなので除外
                RemoveUselessVarTagRector::class, // まだ @var に頼っているケースがありそうなので除外
                SimplifyUselessVariableRector::class, // まだ不要な変数が多いので除外
@@ -80,6 +81,7 @@ return RectorConfig::configure()
                // アトリビュート系を適用
                AnnotationWithValueToAttributeRector::class, // PHPUnitのバージョンアップ必須
                RequiresAnnotationWithValueToAttributeRector::class, // @requires アノテーションを属性に変換する。↑と同時に進める。
+               RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([

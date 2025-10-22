@@ -100,13 +100,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     protected $duplicateHeadersFlag;
 
-    /**
-     * @param \SplFileObject $file
-     * @param string $delimiter
-     * @param string $enclosure
-     * @param string $escape
-     */
-    public function __construct(\SplFileObject $file, $delimiter = ',', $enclosure = '"', $escape = '\\')
+    public function __construct(\SplFileObject $file, string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
     {
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
@@ -206,7 +200,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return bool
      */
-    public function setHeaderRowNumber($rowNumber, $duplicates = null): bool
+    public function setHeaderRowNumber(int $rowNumber, ?int $duplicates = null): bool
     {
         $this->duplicateHeadersFlag = $duplicates;
         $this->headerRowNumber = $rowNumber;
@@ -312,7 +306,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string>|null
      */
-    public function getRow($number): ?array
+    public function getRow(int $number): ?array
     {
         $this->seek($number);
 
@@ -382,7 +376,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string>|string|false
      */
-    protected function readHeaderRow($rowNumber): array|string|false
+    protected function readHeaderRow(int $rowNumber): array|string|false
     {
         $this->file->seek($rowNumber);
         $headers = $this->file->current();

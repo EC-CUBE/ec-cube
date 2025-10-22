@@ -294,11 +294,9 @@ if (!class_exists(Order::class)) {
         /**
          * 対象となるお届け先情報を取得
          *
-         * @param int $shippingId
-         *
          * @return Shipping|null
          */
-        public function findShipping($shippingId): ?Shipping
+        public function findShipping(int $shippingId): ?Shipping
         {
             foreach ($this->getShippings() as $Shipping) {
                 if ($Shipping->getId() == $shippingId) {
@@ -726,11 +724,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set preOrderId.
          *
-         * @param string|null $preOrderId
-         *
          * @return Order
          */
-        public function setPreOrderId($preOrderId = null): Order
+        public function setPreOrderId(?string $preOrderId = null): Order
         {
             $this->pre_order_id = $preOrderId;
 
@@ -750,11 +746,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderNo
          *
-         * @param string|null $orderNo
-         *
          * @return Order
          */
-        public function setOrderNo($orderNo = null): Order
+        public function setOrderNo(?string $orderNo = null): Order
         {
             $this->order_no = $orderNo;
 
@@ -774,11 +768,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set message.
          *
-         * @param string|null $message
-         *
          * @return Order
          */
-        public function setMessage($message = null): Order
+        public function setMessage(?string $message = null): Order
         {
             $this->message = $message;
 
@@ -798,11 +790,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set name01.
          *
-         * @param string|null $name01
-         *
          * @return Order
          */
-        public function setName01($name01 = null): Order
+        public function setName01(?string $name01 = null): Order
         {
             $this->name01 = $name01;
 
@@ -822,11 +812,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set name02.
          *
-         * @param string|null $name02
-         *
          * @return Order
          */
-        public function setName02($name02 = null): Order
+        public function setName02(?string $name02 = null): Order
         {
             $this->name02 = $name02;
 
@@ -846,11 +834,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set kana01.
          *
-         * @param string|null $kana01
-         *
          * @return Order
          */
-        public function setKana01($kana01 = null): Order
+        public function setKana01(?string $kana01 = null): Order
         {
             $this->kana01 = $kana01;
 
@@ -870,11 +856,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set kana02.
          *
-         * @param string|null $kana02
-         *
          * @return Order
          */
-        public function setKana02($kana02 = null): Order
+        public function setKana02(?string $kana02 = null): Order
         {
             $this->kana02 = $kana02;
 
@@ -894,11 +878,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set companyName.
          *
-         * @param string|null $companyName
-         *
          * @return Order
          */
-        public function setCompanyName($companyName = null): Order
+        public function setCompanyName(?string $companyName = null): Order
         {
             $this->company_name = $companyName;
 
@@ -918,11 +900,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set email.
          *
-         * @param string|null $email
-         *
          * @return Order
          */
-        public function setEmail($email = null): Order
+        public function setEmail(?string $email = null): Order
         {
             $this->email = $email;
 
@@ -942,11 +922,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set phone_number.
          *
-         * @param string|null $phone_number
-         *
          * @return Order
          */
-        public function setPhoneNumber($phone_number = null): Order
+        public function setPhoneNumber(?string $phone_number = null): Order
         {
             $this->phone_number = $phone_number;
 
@@ -966,11 +944,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set postal_code.
          *
-         * @param string|null $postal_code
-         *
          * @return Order
          */
-        public function setPostalCode($postal_code = null): Order
+        public function setPostalCode(?string $postal_code = null): Order
         {
             $this->postal_code = $postal_code;
 
@@ -990,11 +966,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set addr01.
          *
-         * @param string|null $addr01
-         *
          * @return Order
          */
-        public function setAddr01($addr01 = null): Order
+        public function setAddr01(?string $addr01 = null): Order
         {
             $this->addr01 = $addr01;
 
@@ -1014,11 +988,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set addr02.
          *
-         * @param string|null $addr02
-         *
          * @return Order
          */
-        public function setAddr02($addr02 = null): Order
+        public function setAddr02(?string $addr02 = null): Order
         {
             $this->addr02 = $addr02;
 
@@ -1038,11 +1010,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set birth.
          *
-         * @param \DateTime|null $birth
-         *
          * @return Order
          */
-        public function setBirth($birth = null): Order
+        public function setBirth(?\DateTime $birth = null): Order
         {
             $this->birth = $birth;
 
@@ -1062,11 +1032,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set subtotal.
          *
-         * @param string $subtotal
-         *
          * @return Order
          */
-        public function setSubtotal($subtotal): Order
+        public function setSubtotal(string $subtotal): Order
         {
             $this->subtotal = $subtotal;
 
@@ -1219,11 +1187,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set paymentTotal.
          *
-         * @param string $paymentTotal
-         *
          * @return Order
          */
-        public function setPaymentTotal($paymentTotal): Order
+        public function setPaymentTotal(string $paymentTotal): Order
         {
             $this->payment_total = $paymentTotal;
 
@@ -1243,11 +1209,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set paymentMethod.
          *
-         * @param string|null $paymentMethod
-         *
          * @return Order
          */
-        public function setPaymentMethod($paymentMethod = null): Order
+        public function setPaymentMethod(?string $paymentMethod = null): Order
         {
             $this->payment_method = $paymentMethod;
 
@@ -1267,11 +1231,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set note.
          *
-         * @param string|null $note
-         *
          * @return Order
          */
-        public function setNote($note = null): Order
+        public function setNote(?string $note = null): Order
         {
             $this->note = $note;
 
@@ -1291,11 +1253,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Order
          */
-        public function setCreateDate($createDate): Order
+        public function setCreateDate(\DateTime $createDate): Order
         {
             $this->create_date = $createDate;
 
@@ -1315,11 +1275,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Order
          */
-        public function setUpdateDate($updateDate): Order
+        public function setUpdateDate(\DateTime $updateDate): Order
         {
             $this->update_date = $updateDate;
 
@@ -1339,11 +1297,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderDate.
          *
-         * @param \DateTime|null $orderDate
-         *
          * @return Order
          */
-        public function setOrderDate($orderDate = null): Order
+        public function setOrderDate(?\DateTime $orderDate = null): Order
         {
             $this->order_date = $orderDate;
 
@@ -1363,11 +1319,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set paymentDate.
          *
-         * @param \DateTime|null $paymentDate
-         *
          * @return Order
          */
-        public function setPaymentDate($paymentDate = null): Order
+        public function setPaymentDate(?\DateTime $paymentDate = null): Order
         {
             $this->payment_date = $paymentDate;
 
@@ -1397,11 +1351,9 @@ if (!class_exists(Order::class)) {
         /**
          * Set currencyCode.
          *
-         * @param string|null $currencyCode
-         *
          * @return $this
          */
-        public function setCurrencyCode($currencyCode = null): static
+        public function setCurrencyCode(?string $currencyCode = null): static
         {
             $this->currency_code = $currencyCode;
 
@@ -1417,11 +1369,9 @@ if (!class_exists(Order::class)) {
         }
 
         /**
-         * @param string|null $complete_message
-         *
          * @return $this
          */
-        public function setCompleteMessage($complete_message = null): static
+        public function setCompleteMessage(?string $complete_message = null): static
         {
             $this->complete_message = $complete_message;
 
@@ -1429,11 +1379,9 @@ if (!class_exists(Order::class)) {
         }
 
         /**
-         * @param string|null $complete_message
-         *
          * @return $this
          */
-        public function appendCompleteMessage($complete_message = null): static
+        public function appendCompleteMessage(?string $complete_message = null): static
         {
             $this->complete_message .= $complete_message;
 
@@ -1449,11 +1397,9 @@ if (!class_exists(Order::class)) {
         }
 
         /**
-         * @param string|null $complete_mail_message
-         *
          * @return self
          */
-        public function setCompleteMailMessage($complete_mail_message = null): Order
+        public function setCompleteMailMessage(?string $complete_mail_message = null): Order
         {
             $this->complete_mail_message = $complete_mail_message;
 
@@ -1461,11 +1407,9 @@ if (!class_exists(Order::class)) {
         }
 
         /**
-         * @param string|null $complete_mail_message
-         *
          * @return self
          */
-        public function appendCompleteMailMessage($complete_mail_message = null): Order
+        public function appendCompleteMailMessage(?string $complete_mail_message = null): Order
         {
             $this->complete_mail_message .= $complete_mail_message;
 
@@ -1487,8 +1431,6 @@ if (!class_exists(Order::class)) {
         /**
          * Add orderItem.
          *
-         * @param OrderItem $OrderItem
-         *
          * @return Order
          */
         public function addOrderItem(OrderItem $OrderItem): Order
@@ -1500,8 +1442,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Remove orderItem.
-         *
-         * @param OrderItem $OrderItem
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1534,8 +1474,6 @@ if (!class_exists(Order::class)) {
         /**
          * Add shipping.
          *
-         * @param Shipping $Shipping
-         *
          * @return Order
          */
         public function addShipping(Shipping $Shipping): Order
@@ -1547,8 +1485,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Remove shipping.
-         *
-         * @param Shipping $Shipping
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1576,8 +1512,6 @@ if (!class_exists(Order::class)) {
         /**
          * Add mailHistory.
          *
-         * @param MailHistory $mailHistory
-         *
          * @return Order
          */
         public function addMailHistory(MailHistory $mailHistory): Order
@@ -1589,8 +1523,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Remove mailHistory.
-         *
-         * @param MailHistory $mailHistory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1611,8 +1543,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set customer.
-         *
-         * @param Customer|null $customer
          *
          * @return Order
          */
@@ -1636,8 +1566,6 @@ if (!class_exists(Order::class)) {
         /**
          * Set country.
          *
-         * @param Country|null $country
-         *
          * @return Order
          */
         public function setCountry(?Country $country = null): Order
@@ -1659,8 +1587,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set pref.
-         *
-         * @param Pref|null $pref
          *
          * @return Order
          */
@@ -1684,8 +1610,6 @@ if (!class_exists(Order::class)) {
         /**
          * Set sex.
          *
-         * @param Sex|null $sex
-         *
          * @return Order
          */
         public function setSex(?Sex $sex = null): Order
@@ -1707,8 +1631,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set job.
-         *
-         * @param Job|null $job
          *
          * @return Order
          */
@@ -1732,8 +1654,6 @@ if (!class_exists(Order::class)) {
         /**
          * Set payment.
          *
-         * @param Payment|null $payment
-         *
          * @return Order
          */
         public function setPayment(?Payment $payment = null): Order
@@ -1755,8 +1675,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set deviceType.
-         *
-         * @param DeviceType|null $deviceType
          *
          * @return Order
          */
@@ -1780,8 +1698,6 @@ if (!class_exists(Order::class)) {
         /**
          * Set customerOrderStatus.
          *
-         * @param CustomerOrderStatus|null $customerOrderStatus
-         *
          * @return Order
          */
         public function setCustomerOrderStatus(?CustomerOrderStatus $customerOrderStatus = null): Order
@@ -1803,8 +1719,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set orderStatusColor.
-         *
-         * @param OrderStatusColor|null $orderStatusColor
          *
          * @return Order
          */
@@ -1828,8 +1742,6 @@ if (!class_exists(Order::class)) {
         /**
          * Set orderStatus.
          *
-         * @param OrderStatus|null $orderStatus
-         *
          * @return self
          */
         public function setOrderStatus(?OrderStatus $orderStatus = null): Order
@@ -1850,8 +1762,6 @@ if (!class_exists(Order::class)) {
         }
 
         /**
-         * @param ItemInterface $item
-         *
          * @return void
          */
         #[\Override]

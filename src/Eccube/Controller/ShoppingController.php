@@ -131,8 +131,6 @@ class ShoppingController extends AbstractShoppingController
      *
      * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
      *
-     * @param PurchaseFlow $cartPurchaseFlow
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping', name: 'shopping', methods: ['GET'])]
@@ -215,9 +213,6 @@ class ShoppingController extends AbstractShoppingController
      * data-triggerは, click/change/blur等のイベント名を指定してください。
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
      *
-     * @param Request $request
-     * @param RouterInterface $router
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
@@ -297,8 +292,6 @@ class ShoppingController extends AbstractShoppingController
      * ここではPaymentMethod::verifyがコールされます.
      * PaymentMethod::verifyではクレジットカードの有効性チェック等, 注文手続きを進められるかどうかのチェック処理を行う事を想定しています.
      * PaymentMethod::verifyでエラーが発生した場合は, 注文手続き画面へリダイレクトします.
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|Response|array<string,mixed>
      *
@@ -411,8 +404,6 @@ class ShoppingController extends AbstractShoppingController
      * 注文処理を行う.
      *
      * 決済プラグインによる決済処理および注文の確定処理を行います.
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>|Response
      *
@@ -572,8 +563,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入完了画面を表示する.
      *
-     * @param Request $request
-     *
      * @return RedirectResponse|Response|array<string,mixed>
      */
     #[Route('/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
@@ -623,9 +612,6 @@ class ShoppingController extends AbstractShoppingController
      *
      * 会員ログイン時, お届け先を選択する画面を表示する
      * 非会員の場合はこの画面は使用しない。
-     *
-     * @param Request $request
-     * @param Shipping $Shipping
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -701,9 +687,6 @@ class ShoppingController extends AbstractShoppingController
      *
      * 会員時は新しいお届け先を作成し, 作成したお届け先を選択状態にして注文手続き画面へ遷移する.
      * 非会員時は選択されたお届け先の編集を行う.
-     *
-     * @param Request $request
-     * @param Shipping $Shipping
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -815,9 +798,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * ログイン画面.
      *
-     * @param Request $request
-     * @param AuthenticationUtils $authenticationUtils
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/shopping/login', name: 'shopping_login', methods: ['GET'])]
@@ -858,9 +838,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入エラー画面.
      *
-     * @param Request $request
-     * @param PurchaseFlow $cartPurchaseFlow
-     *
      * @return Response|array<empty>
      */
     #[Route('/shopping/error', name: 'shopping_error', methods: ['GET'])]
@@ -899,9 +876,6 @@ class ShoppingController extends AbstractShoppingController
     /**
      * PaymentMethodをコンテナから取得する.
      *
-     * @param Order $Order
-     * @param FormInterface $form
-     *
      * @return PaymentMethodInterface
      */
     private function createPaymentMethod(Order $Order, FormInterface $form): PaymentMethodInterface
@@ -915,8 +889,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::applyを実行する.
-     *
-     * @param PaymentMethodInterface $paymentMethod
      *
      * @return RedirectResponse|Response|null
      */
@@ -957,8 +929,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::checkoutを実行する.
-     *
-     * @param PaymentMethodInterface $paymentMethod
      *
      * @return RedirectResponse|Response|null
      */

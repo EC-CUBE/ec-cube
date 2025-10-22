@@ -25,8 +25,6 @@ class PurchaseFlowResult
 
     /**
      * PurchaseFlowResult constructor.
-     *
-     * @param ItemHolderInterface $itemHolder
      */
     public function __construct(ItemHolderInterface $itemHolder)
     {
@@ -34,8 +32,6 @@ class PurchaseFlowResult
     }
 
     /**
-     * @param ProcessResult $processResult
-     *
      * @return void
      */
     public function addProcessResult(ProcessResult $processResult): void

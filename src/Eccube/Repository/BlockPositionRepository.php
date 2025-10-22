@@ -35,9 +35,6 @@ class BlockPositionRepository extends AbstractRepository
 
     /**
      * BlockPositionRepository constructor.
-     *
-     * @param BlockRepository $blockRepository
-     * @param RegistryInterface $registry
      */
     public function __construct(BlockRepository $blockRepository, RegistryInterface $registry)
     {
@@ -51,11 +48,10 @@ class BlockPositionRepository extends AbstractRepository
      * @param  array<mixed>|null $data
      * @param  Block[] $Blocks
      * @param  Block[]|null $UnusedBlocks
-     * @param  Layout|null $Layout
      *
      * @return void
      */
-    public function register($data, $Blocks, $UnusedBlocks, $Layout): void
+    public function register(?array $data, array $Blocks, ?array $UnusedBlocks, ?Layout $Layout): void
     {
         $em = $this->getEntityManager();
 

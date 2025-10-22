@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use Eccube\Entity\Cart;
@@ -124,7 +125,7 @@ class CartService
      *
      * @return Cart[]
      */
-    public function getCarts($empty_delete = false): array
+    public function getCarts(bool $empty_delete = false): array
     {
         if (null !== $this->carts) {
             if ($empty_delete) {
@@ -237,11 +238,11 @@ class CartService
     }
 
     /**
-     * @param array<int,CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
+     * @param array<int,CartItem>|Collection<int,CartItem> $cartItems
      *
      * @return CartItem[]
      */
-    protected function mergeAllCartItems($cartItems = []): array
+    protected function mergeAllCartItems(array|Collection $cartItems = []): array
     {
         /** @var CartItem[] $allCartItems */
         $allCartItems = [];
@@ -254,12 +255,12 @@ class CartService
     }
 
     /**
-     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $cartItems
-     * @param array<int, CartItem>|\Doctrine\Common\Collections\Collection<int,CartItem> $allCartItems
+     * @param array<int, CartItem>|Collection<int,CartItem> $cartItems
+     * @param array<int, CartItem>|Collection<int,CartItem> $allCartItems
      *
      * @return array<mixed>
      */
-    protected function mergeCartItems($cartItems, $allCartItems): array
+    protected function mergeCartItems(array|Collection $cartItems, array|Collection $allCartItems): array
     {
         foreach ($cartItems as $item) {
             $itemExists = false;
@@ -284,7 +285,7 @@ class CartService
      *
      * @return void
      */
-    protected function restoreCarts($cartItems): void
+    protected function restoreCarts(array $cartItems): void
     {
         foreach ($this->getCarts() as $Cart) {
             foreach ($Cart->getCartItems() as $i) {
@@ -339,13 +340,12 @@ class CartService
      *
      * @return bool 商品を追加できた場合はtrue
      */
-    public function addProduct($ProductClass, $quantity = '1'): bool
+    public function addProduct(ProductClass|int $ProductClass, string $quantity = '1'): bool
     {
         if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
             $ProductClass = $this->entityManager
                 ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
+                ->find($ProductClass);
             if (is_null($ProductClass)) {
                 return false;
             }
@@ -372,17 +372,14 @@ class CartService
     }
 
     /**
-     * @param int|ProductClass $ProductClass
-     *
      * @return bool
      */
-    public function removeProduct($ProductClass): bool
+    public function removeProduct(int|ProductClass $ProductClass): bool
     {
         if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
             $ProductClass = $this->entityManager
                 ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
+                ->find($ProductClass);
             if (is_null($ProductClass)) {
                 return false;
             }
@@ -429,11 +426,9 @@ class CartService
     }
 
     /**
-     * @param  string|null $pre_order_id
-     *
      * @return CartService
      */
-    public function setPreOrderId($pre_order_id): CartService
+    public function setPreOrderId(?string $pre_order_id): CartService
     {
         $this->getCart()->setPreOrderId($pre_order_id);
 
@@ -484,11 +479,9 @@ class CartService
     }
 
     /**
-     * @param CartItemComparator $cartItemComparator
-     *
      * @return void
      */
-    public function setCartItemComparator($cartItemComparator): void
+    public function setCartItemComparator(CartItemComparator $cartItemComparator): void
     {
         $this->cartItemComparator = $cartItemComparator;
     }
@@ -500,7 +493,7 @@ class CartService
      *
      * @return void
      */
-    public function setPrimary($cartKey): void
+    public function setPrimary(string $cartKey): void
     {
         $Carts = $this->getCarts();
         $primary = $Carts[0];
@@ -537,12 +530,9 @@ class CartService
     }
 
     /**
-     * @param string $allocatedId
-     * @param Customer|null $Customer
-     *
      * @return string
      */
-    protected function createCartKey($allocatedId, ?Customer $Customer = null): string
+    protected function createCartKey(string $allocatedId, ?Customer $Customer = null): string
     {
         if ($Customer instanceof Customer) {
             return $Customer->getId().'_'.$allocatedId;

@@ -31,8 +31,6 @@ class NameType extends AbstractType
 
     /**
      * NameType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -43,7 +41,6 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -88,8 +85,6 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
      *
      * @return void
@@ -104,8 +99,6 @@ class NameType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

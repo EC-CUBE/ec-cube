@@ -74,7 +74,7 @@ class ProductDetailPage extends AbstractFrontPage
      *
      * @return ProductDetailPage
      */
-    public function カートに入れる($num, $category1 = null, $category2 = null)
+    public function カートに入れる(int $num, ?array $category1 = null, ?array $category2 = null)
     {
         $this->tester->fillField(['id' => 'quantity'], $num);
         if (!is_null($category1)) {

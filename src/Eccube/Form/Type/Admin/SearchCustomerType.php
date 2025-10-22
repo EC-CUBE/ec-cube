@@ -49,9 +49,6 @@ class SearchCustomerType extends AbstractType
 
     /**
      * SearchCustomerType constructor.
-     *
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,
@@ -64,7 +61,6 @@ class SearchCustomerType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void

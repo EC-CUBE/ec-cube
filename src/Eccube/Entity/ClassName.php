@@ -112,11 +112,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set backend_name.
          *
-         * @param string $backendName
-         *
          * @return ClassName
          */
-        public function setBackendName($backendName): ClassName
+        public function setBackendName(string $backendName): ClassName
         {
             $this->backend_name = $backendName;
 
@@ -136,11 +134,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return ClassName
          */
-        public function setName($name): ClassName
+        public function setName(string $name): ClassName
         {
             $this->name = $name;
 
@@ -160,11 +156,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set sortNo.
          *
-         * @param int $sortNo
-         *
          * @return ClassName
          */
-        public function setSortNo($sortNo): ClassName
+        public function setSortNo(int $sortNo): ClassName
         {
             $this->sort_no = $sortNo;
 
@@ -184,11 +178,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return ClassName
          */
-        public function setCreateDate($createDate): ClassName
+        public function setCreateDate(\DateTime $createDate): ClassName
         {
             $this->create_date = $createDate;
 
@@ -208,11 +200,9 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return ClassName
          */
-        public function setUpdateDate($updateDate): ClassName
+        public function setUpdateDate(\DateTime $updateDate): ClassName
         {
             $this->update_date = $updateDate;
 
@@ -232,8 +222,6 @@ if (!class_exists(ClassName::class)) {
         /**
          * Add classCategory.
          *
-         * @param ClassCategory $classCategory
-         *
          * @return ClassName
          */
         public function addClassCategory(ClassCategory $classCategory): ClassName
@@ -245,8 +233,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Remove classCategory.
-         *
-         * @param ClassCategory $classCategory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -267,8 +253,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return ClassName
          */

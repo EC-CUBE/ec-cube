@@ -46,9 +46,6 @@ class CategoryController extends AbstractController
 
     /**
      * CategoryController constructor.
-     *
-     * @param CsvExportService $csvExportService
-     * @param CategoryRepository $categoryRepository
      */
     public function __construct(
         CsvExportService $csvExportService,
@@ -59,8 +56,6 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      * @param string|null $parent_id
      * @param string|null $id
      *
@@ -222,8 +217,6 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      * @param string $id
      *
      * @return RedirectResponse
@@ -276,9 +269,6 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
-     *
      * @return Response
      *
      * @throws BadRequestHttpException|\Exception
@@ -311,8 +301,6 @@ class CategoryController extends AbstractController
 
     /**
      * カテゴリCSVの出力.
-     *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

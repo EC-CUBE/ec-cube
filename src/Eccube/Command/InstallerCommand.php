@@ -168,9 +168,6 @@ class InstallerCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      */
     #[\Override]
@@ -273,9 +270,6 @@ class InstallerCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      */
     #[\Override]
@@ -335,19 +329,17 @@ class InstallerCommand extends Command
     }
 
     /**
-     * @param string $databaseUrl
-     *
      * @return string
      */
-    protected function getDatabaseName($databaseUrl): string
+    protected function getDatabaseName(string $databaseUrl): string
     {
-        if (str_starts_with((string) $databaseUrl, 'sqlite')) {
+        if (str_starts_with($databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (str_starts_with((string) $databaseUrl, 'postgres') || str_starts_with((string) $databaseUrl, 'pgsql')) {
+        if (str_starts_with($databaseUrl, 'postgres') || str_starts_with($databaseUrl, 'pgsql')) {
             return 'postgres';
         }
-        if (str_starts_with((string) $databaseUrl, 'mysql')) {
+        if (str_starts_with($databaseUrl, 'mysql')) {
             return 'mysql';
         }
 
@@ -355,13 +347,11 @@ class InstallerCommand extends Command
     }
 
     /**
-     * @param string $databaseUrl
-     *
      * @return false|string
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function getDatabaseServerVersion($databaseUrl): false|string
+    protected function getDatabaseServerVersion(string $databaseUrl): false|string
     {
         try {
             $conn = DriverManager::getConnection([

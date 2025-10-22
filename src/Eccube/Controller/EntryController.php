@@ -85,15 +85,6 @@ class EntryController extends AbstractController
 
     /**
      * EntryController constructor.
-     *
-     * @param CartService $cartService
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param MailService $mailService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param CustomerRepository $customerRepository
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param ValidatorInterface $validatorInterface
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         CartService $cartService,
@@ -119,8 +110,6 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録画面.
-     *
-     * @param Request $request
      *
      * @return Response|RedirectResponse|array<string,mixed>
      */
@@ -238,7 +227,6 @@ class EntryController extends AbstractController
     /**
      * 会員のアクティベート（本会員化）を行う.
      *
-     * @param Request $request
      * @param string $secret_key
      * @param string|null $qtyInCart
      *
@@ -285,12 +273,9 @@ class EntryController extends AbstractController
     /**
      * 会員登録処理を行う
      *
-     * @param Request $request
-     * @param string $secret_key
-     *
      * @return int
      */
-    private function entryActivate(Request $request, $secret_key): int
+    private function entryActivate(Request $request, string $secret_key): int
     {
         log_info('本会員登録開始');
         $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);

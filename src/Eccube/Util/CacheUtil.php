@@ -48,9 +48,6 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * CacheUtil constructor.
-     *
-     * @param KernelInterface $kernel
-     * @param ContainerInterface $container
      */
     public function __construct(KernelInterface $kernel, ContainerInterface $container)
     {
@@ -63,14 +60,12 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @return void
      */
-    public function clearCache($env = null): void
+    public function clearCache(?string $env = null): void
     {
         $this->clearCacheAfterResponse = $env;
     }
 
     /**
-     * @param TerminateEvent $event
-     *
      * @return string
      *
      * @throws \Exception
@@ -173,7 +168,7 @@ class CacheUtil implements EventSubscriberInterface
      * doctrine, profiler, twig によって生成されたキャッシュディレクトリを削除する.
      * キャッシュは $app['config']['root_dir'].'/app/cache' に生成されます.
      *
-     * @param Application $app
+     * @param Application|array{config: array{root_dir: string}} $app
      * @param bool $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
      * @param bool $isTwig Twigキャッシュファイルのみ削除する場合 true
      *
@@ -181,7 +176,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @deprecated CacheUtil::clearCacheを利用すること
      */
-    public static function clear($app, $isAll, $isTwig = false): bool
+    public static function clear(Application|array $app, bool $isAll, bool $isTwig = false): bool
     {
         $cacheDir = $app['config']['root_dir'].'/app/cache';
 

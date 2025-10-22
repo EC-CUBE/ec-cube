@@ -69,8 +69,6 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @param int $id
-         *
          * @return TradeLaw
          */
         public function setId(int $id): TradeLaw
@@ -129,8 +127,6 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @param int $sortNo
-         *
          * @return TradeLaw
          */
         public function setSortNo(int $sortNo): TradeLaw
@@ -149,8 +145,6 @@ if (!class_exists(TradeLaw::class)) {
         }
 
         /**
-         * @param bool $displayOrderScreen
-         *
          * @return TradeLaw
          */
         public function setDisplayOrderScreen(bool $displayOrderScreen): TradeLaw

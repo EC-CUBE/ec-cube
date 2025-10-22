@@ -153,11 +153,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set id
          *
-         * @param int $id
-         *
          * @return Page
          */
-        public function setId($id): Page
+        public function setId(int $id): Page
         {
             $this->id = $id;
 
@@ -177,11 +175,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set name.
          *
-         * @param string|null $name
-         *
          * @return Page
          */
-        public function setName($name = null): Page
+        public function setName(?string $name = null): Page
         {
             $this->name = $name;
 
@@ -201,11 +197,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set url.
          *
-         * @param string $url
-         *
          * @return Page
          */
-        public function setUrl($url): Page
+        public function setUrl(?string $url): Page
         {
             $this->url = $url;
 
@@ -225,11 +219,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set fileName.
          *
-         * @param string|null $fileName
-         *
          * @return Page
          */
-        public function setFileName($fileName = null): Page
+        public function setFileName(?string $fileName = null): Page
         {
             $this->file_name = $fileName;
 
@@ -249,11 +241,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set editType.
          *
-         * @param int $editType
-         *
          * @return Page
          */
-        public function setEditType($editType): Page
+        public function setEditType(int $editType): Page
         {
             $this->edit_type = $editType;
 
@@ -273,11 +263,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set author.
          *
-         * @param string|null $author
-         *
          * @return Page
          */
-        public function setAuthor($author = null): Page
+        public function setAuthor(?string $author = null): Page
         {
             $this->author = $author;
 
@@ -297,11 +285,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set description.
          *
-         * @param string|null $description
-         *
          * @return Page
          */
-        public function setDescription($description = null): Page
+        public function setDescription(?string $description = null): Page
         {
             $this->description = $description;
 
@@ -321,11 +307,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set keyword.
          *
-         * @param string|null $keyword
-         *
          * @return Page
          */
-        public function setKeyword($keyword = null): Page
+        public function setKeyword(?string $keyword = null): Page
         {
             $this->keyword = $keyword;
 
@@ -345,11 +329,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Page
          */
-        public function setCreateDate($createDate): Page
+        public function setCreateDate(\DateTime $createDate): Page
         {
             $this->create_date = $createDate;
 
@@ -369,11 +351,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Page
          */
-        public function setUpdateDate($updateDate): Page
+        public function setUpdateDate(\DateTime $updateDate): Page
         {
             $this->update_date = $updateDate;
 
@@ -393,11 +373,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set metaRobots.
          *
-         * @param string|null $metaRobots
-         *
          * @return Page
          */
-        public function setMetaRobots($metaRobots = null): Page
+        public function setMetaRobots(?string $metaRobots = null): Page
         {
             $this->meta_robots = $metaRobots;
 
@@ -417,11 +395,9 @@ if (!class_exists(Page::class)) {
         /**
          * Set meta_tags
          *
-         * @param string $metaTags
-         *
          * @return Page
          */
-        public function setMetaTags($metaTags): Page
+        public function setMetaTags(?string $metaTags): Page
         {
             $this->meta_tags = $metaTags;
 
@@ -451,8 +427,6 @@ if (!class_exists(Page::class)) {
         /**
          * Add pageLayoutLayout
          *
-         * @param PageLayout $PageLayout
-         *
          * @return Page
          */
         public function addPageLayout(PageLayout $PageLayout): Page
@@ -465,8 +439,6 @@ if (!class_exists(Page::class)) {
         /**
          * Remove pageLayoutLayout
          *
-         * @param PageLayout $PageLayout
-         *
          * @return void
          */
         public function removePageLayout(PageLayout $PageLayout): void
@@ -476,8 +448,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set MasterPage.
-         *
-         * @param Page|null $page
          *
          * @return Page
          */
@@ -499,11 +469,9 @@ if (!class_exists(Page::class)) {
         }
 
         /**
-         * @param int $layoutId
-         *
          * @return int|null
          */
-        public function getSortNo($layoutId): ?int
+        public function getSortNo(int $layoutId): ?int
         {
             $pageLayouts = $this->getPageLayouts();
 

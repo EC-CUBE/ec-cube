@@ -74,11 +74,9 @@ if (!class_exists(BlockPosition::class)) {
         /**
          * Set section.
          *
-         * @param int $section
-         *
          * @return BlockPosition
          */
-        public function setSection($section): BlockPosition
+        public function setSection(int $section): BlockPosition
         {
             $this->section = $section;
 
@@ -98,11 +96,9 @@ if (!class_exists(BlockPosition::class)) {
         /**
          * Set blockId.
          *
-         * @param int $blockId
-         *
          * @return BlockPosition
          */
-        public function setBlockId($blockId): BlockPosition
+        public function setBlockId(int $blockId): BlockPosition
         {
             $this->block_id = $blockId;
 
@@ -122,11 +118,9 @@ if (!class_exists(BlockPosition::class)) {
         /**
          * Set layoutId.
          *
-         * @param int $layoutId
-         *
          * @return BlockPosition
          */
-        public function setLayoutId($layoutId): BlockPosition
+        public function setLayoutId(int $layoutId): BlockPosition
         {
             $this->layout_id = $layoutId;
 
@@ -146,11 +140,9 @@ if (!class_exists(BlockPosition::class)) {
         /**
          * Set blockRow.
          *
-         * @param int|null $blockRow
-         *
          * @return BlockPosition
          */
-        public function setBlockRow($blockRow = null): BlockPosition
+        public function setBlockRow(?int $blockRow = null): BlockPosition
         {
             $this->block_row = $blockRow;
 
@@ -169,8 +161,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set block.
-         *
-         * @param Block|null $block
          *
          * @return BlockPosition
          */
@@ -193,8 +183,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set layout.
-         *
-         * @param Layout|null $Layout
          *
          * @return BlockPosition
          */

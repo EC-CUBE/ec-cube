@@ -148,8 +148,6 @@ class FileController extends AbstractController
     /**
      * Create directory
      *
-     * @param Request $request
-     *
      * @return void
      *
      * @throws IOException
@@ -281,8 +279,6 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return void
      */
     public function upload(Request $request): void
@@ -371,7 +367,7 @@ class FileController extends AbstractController
      *
      * @return array<int,array<int, mixed>>
      */
-    private function getTreeToArray($tree): array
+    private function getTreeToArray(array $tree): array
     {
         $arrTree = [];
         foreach ($tree as $key => $val) {
@@ -393,7 +389,7 @@ class FileController extends AbstractController
      *
      * @return array<int<0,max>,mixed>
      */
-    private function getPathsToArray($tree): array
+    private function getPathsToArray(array $tree): array
     {
         $paths = [];
         foreach ($tree as $val) {
@@ -404,12 +400,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param string $topDir
-     * @param Request $request
-     *
      * @return array<int,array<string,mixed>>
      */
-    private function getTree($topDir, $request): array
+    private function getTree(string $topDir, Request $request): array
     {
         $finder = Finder::create()->in($topDir)
             ->directories()
@@ -446,11 +439,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param string $nowDir
-     *
      * @return array<mixed>
      */
-    private function getFileList($nowDir): array
+    private function getFileList(string $nowDir): array
     {
         $topDir = $this->getuserDataDir();
         $filter = function (\SplFileInfo $file) use ($topDir) {
@@ -519,24 +510,19 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param string $path
-     *
      * @return array|false|string|string[]
      */
-    protected function normalizePath($path): array|false|string
+    protected function normalizePath(string $path): array|false|string
     {
         return str_replace('\\', '/', realpath($path));
     }
 
     /**
-     * @param string $targetDir
-     * @param string $topDir
-     *
      * @return bool
      */
-    protected function checkDir($targetDir, $topDir): bool
+    protected function checkDir(string $targetDir, string $topDir): bool
     {
-        if (str_contains((string) $targetDir, '..')) {
+        if (str_contains($targetDir, '..')) {
             return false;
         }
         $targetDir = realpath($targetDir);
@@ -546,11 +532,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param string $target
-     *
      * @return string
      */
-    private function convertStrFromServer($target): string
+    private function convertStrFromServer(string $target): string
     {
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::UTF, self::SJIS);
@@ -560,11 +544,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param string $target
-     *
      * @return string
      */
-    private function convertStrToServer($target): string
+    private function convertStrToServer(string $target): string
     {
         if ($this->encode == self::SJIS) {
             return mb_convert_encoding($target, self::SJIS, self::UTF);
@@ -574,21 +556,17 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param string|null $nowDir
-     *
      * @return string
      */
-    private function getUserDataDir($nowDir = null): string
+    private function getUserDataDir(?string $nowDir = null): string
     {
         return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
     }
 
     /**
-     * @param string $path
-     *
      * @return string
      */
-    private function getJailDir($path): string
+    private function getJailDir(string $path): string
     {
         $realpath = (string) realpath($path);
         $jailPath = str_replace((string) realpath($this->getUserDataDir()), '', $realpath);

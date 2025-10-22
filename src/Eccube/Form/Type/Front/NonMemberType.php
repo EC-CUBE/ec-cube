@@ -34,8 +34,6 @@ class NonMemberType extends AbstractType
 
     /**
      * NonMemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -45,7 +43,6 @@ class NonMemberType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void

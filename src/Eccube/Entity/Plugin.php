@@ -97,11 +97,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return Plugin
          */
-        public function setName($name): Plugin
+        public function setName(string $name): Plugin
         {
             $this->name = $name;
 
@@ -121,11 +119,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set code.
          *
-         * @param string $code
-         *
          * @return Plugin
          */
-        public function setCode($code): Plugin
+        public function setCode(string $code): Plugin
         {
             $this->code = $code;
 
@@ -145,11 +141,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set enabled.
          *
-         * @param bool $enabled
-         *
          * @return Plugin
          */
-        public function setEnabled($enabled): Plugin
+        public function setEnabled(bool $enabled): Plugin
         {
             $this->enabled = $enabled;
 
@@ -169,11 +163,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set version.
          *
-         * @param string $version
-         *
          * @return Plugin
          */
-        public function setVersion($version): Plugin
+        public function setVersion(string $version): Plugin
         {
             $this->version = $version;
 
@@ -193,11 +185,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set source.
          *
-         * @param string|int $source
-         *
          * @return Plugin
          */
-        public function setSource($source): Plugin
+        public function setSource(string|int $source): Plugin
         {
             $this->source = $source;
 
@@ -227,8 +217,6 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set initialized.
          *
-         * @param bool $initialized
-         *
          * @return Plugin
          */
         public function setInitialized(bool $initialized): Plugin
@@ -241,11 +229,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Plugin
          */
-        public function setCreateDate($createDate): Plugin
+        public function setCreateDate(\DateTime $createDate): Plugin
         {
             $this->create_date = $createDate;
 
@@ -265,11 +251,9 @@ if (!class_exists(Plugin::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Plugin
          */
-        public function setUpdateDate($updateDate): Plugin
+        public function setUpdateDate(\DateTime $updateDate): Plugin
         {
             $this->update_date = $updateDate;
 

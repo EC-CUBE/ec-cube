@@ -42,7 +42,6 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<mixed> $options
      *
      * @return void
@@ -90,8 +89,6 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<mixed> $options
      *
      * @return void
@@ -117,8 +114,6 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]

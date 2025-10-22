@@ -43,8 +43,6 @@ class ExceptionListener implements EventSubscriberInterface
     }
 
     /**
-     * @param ExceptionEvent $event
-     *
      * @return void
      */
     public function onKernelException(ExceptionEvent $event): void

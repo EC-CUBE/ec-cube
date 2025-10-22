@@ -34,13 +34,11 @@ class Loader
      *
      * 同一階層に, Fixture のロード順を定義した definition.yml が必要.
      *
-     * @param string $dir
-     *
      * @return array<mixed> fixtures.
      *
      * @throws \InvalidArgumentException|\Exception
      */
-    public function loadFromDirectory($dir): array
+    public function loadFromDirectory(string $dir): array
     {
         if (!dir($dir)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $dir));
@@ -116,8 +114,6 @@ class Loader
     }
 
     /**
-     * @param FixtureInterface $fixture
-     *
      * @return void
      */
     public function addFixture(FixtureInterface $fixture): void

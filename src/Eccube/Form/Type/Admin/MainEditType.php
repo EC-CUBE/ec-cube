@@ -51,10 +51,6 @@ class MainEditType extends AbstractType
 
     /**
      * MainEditType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -69,7 +65,6 @@ class MainEditType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -288,8 +283,6 @@ class MainEditType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

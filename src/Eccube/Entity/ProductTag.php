@@ -91,11 +91,9 @@ if (!class_exists(ProductTag::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return ProductTag
          */
-        public function setCreateDate($createDate): ProductTag
+        public function setCreateDate(\DateTime $createDate): ProductTag
         {
             $this->create_date = $createDate;
 
@@ -114,8 +112,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
          *
          * @return ProductTag
          */
@@ -139,8 +135,6 @@ if (!class_exists(ProductTag::class)) {
         /**
          * Set tag.
          *
-         * @param Tag|null $tag
-         *
          * @return ProductTag
          */
         public function setTag(?Tag $tag = null): ProductTag
@@ -162,8 +156,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return ProductTag
          */

@@ -34,8 +34,6 @@ class PhoneNumberType extends AbstractType
 
     /**
      * PhoneNumberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -45,7 +43,6 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -60,8 +57,6 @@ class PhoneNumberType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

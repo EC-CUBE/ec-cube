@@ -28,7 +28,6 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void
@@ -42,8 +41,6 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<mixed> $options
      *
      * @return void
@@ -56,8 +53,6 @@ class HelpTypeExtension extends AbstractTypeExtension
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

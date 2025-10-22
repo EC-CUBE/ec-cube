@@ -49,8 +49,6 @@ class AuthorityVoter implements VoterInterface
     }
 
     /**
-     * @param TokenInterface $token
-     * @param mixed $subject
      * @param array<mixed> $attributes
      *
      * @return int

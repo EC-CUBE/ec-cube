@@ -95,7 +95,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see https://github.com/fzaninotto/Faker
      */
-    public function getFaker($locale = 'ja_JP')
+    public function getFaker(string $locale = 'ja_JP')
     {
         return Faker::create($locale);
     }
@@ -107,7 +107,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see http://objectclub.jp/community/memorial/homepage3.nifty.com/masarl/article/junit/scenario-based-testcase.html#verify%20%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89
      */
-    public function verify($message = '')
+    public function verify(string $message = '')
     {
         $this->assertSame($this->expected, $this->actual, $message);
     }
@@ -119,7 +119,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Member
      */
-    public function createMember($username = null)
+    public function createMember(?string $username = null)
     {
         return static::getContainer()->get(Generator::class)->createMember($username);
     }
@@ -131,7 +131,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Customer
      */
-    public function createCustomer($email = null)
+    public function createCustomer(?string $email = null)
     {
         return static::getContainer()->get(Generator::class)->createCustomer($email);
     }
@@ -144,7 +144,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return CustomerAddress
      */
-    public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
+    public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false)
     {
         return static::getContainer()->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
     }
@@ -156,7 +156,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Customer
      */
-    public function createNonMember($email = null)
+    public function createNonMember(?string $email = null)
     {
         return static::getContainer()->get(Generator::class)->createNonMember($email);
     }
@@ -169,7 +169,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3)
+    public function createProduct(?string $product_name = null, int $product_class_num = 3)
     {
         return static::getContainer()->get(Generator::class)->createProduct($product_name, $product_class_num);
     }
@@ -214,7 +214,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Payment
      */
-    public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999)
     {
         return static::getContainer()->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
@@ -239,7 +239,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return LoginHistory
      */
-    public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)
+    public function createLoginHistory(mixed $user_name, mixed $client_ip = null, mixed $status = 0, mixed $Member = null)
     {
         return static::getContainer()->get(Generator::class)->createLoginHistory($user_name, $client_ip, $status, $Member);
     }
@@ -302,7 +302,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @see UrlGeneratorInterface
      * @see \Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait::generateUrl
      */
-    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return static::getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
@@ -320,7 +320,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @see \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
      * @see https://stackoverflow.com/a/38661340/4956633
      */
-    protected function getCsrfToken($csrfTokenId)
+    protected function getCsrfToken(string $csrfTokenId)
     {
         return static::getContainer()->get('security.csrf.token_manager')->getToken($csrfTokenId);
     }

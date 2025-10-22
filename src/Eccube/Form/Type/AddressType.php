@@ -34,8 +34,6 @@ class AddressType extends AbstractType
      * {@inheritdoc}
      *
      * AddressType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -45,7 +43,6 @@ class AddressType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -90,8 +87,6 @@ class AddressType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
      *
      * @return void
@@ -107,8 +102,6 @@ class AddressType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

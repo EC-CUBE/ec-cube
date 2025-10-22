@@ -34,9 +34,6 @@ class SaveEventSubscriber
      */
     protected $eccubeConfig;
 
-    /**
-     * @param Context $requestContext
-     */
     public function __construct(Context $requestContext, EccubeConfig $eccubeConfig)
     {
         $this->requestContext = $requestContext;

@@ -64,13 +64,6 @@ class WithdrawController extends AbstractController
 
     /**
      * WithdrawController constructor.
-     *
-     * @param MailService $mailService
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param TokenStorageInterface $tokenStorage
-     * @param CartService $cartService
-     * @param OrderHelper $orderHelper
-     * @param PageRepository $pageRepository
      */
     public function __construct(
         MailService $mailService,
@@ -90,8 +83,6 @@ class WithdrawController extends AbstractController
 
     /**
      * 退会画面.
-     *
-     * @param Request $request
      *
      * @return Response|RedirectResponse|array<string,mixed>
      */
@@ -174,8 +165,6 @@ class WithdrawController extends AbstractController
 
     /**
      * 退会完了画面.
-     *
-     * @param Request $request
      *
      * @return array<empty>
      */

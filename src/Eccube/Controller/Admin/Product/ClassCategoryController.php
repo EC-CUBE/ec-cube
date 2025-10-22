@@ -57,11 +57,6 @@ class ClassCategoryController extends AbstractController
 
     /**
      * ClassCategoryController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
-     * @param ClassNameRepository $classNameRepository
-     * @param CsvExportService $csvExportService
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
@@ -76,7 +71,6 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string $class_name_id
      * @param string|null $id
      *
@@ -176,7 +170,6 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string $class_name_id
      * @param string $id
      *
@@ -229,7 +222,6 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string $class_name_id
      * @param string $id
      *
@@ -279,8 +271,6 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws BadRequestHttpException
@@ -311,7 +301,6 @@ class ClassCategoryController extends AbstractController
     /**
      * 規格分類CSVの出力.
      *
-     * @param Request $request
      * @param string $class_name_id
      *
      * @return StreamedResponse

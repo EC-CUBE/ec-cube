@@ -81,13 +81,6 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * ShippingMultipleController constructor.
-     *
-     * @param PrefRepository $prefRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
      */
     public function __construct(
         PrefRepository $prefRepository,
@@ -111,8 +104,6 @@ class ShippingMultipleController extends AbstractShoppingController
 
     /**
      * 複数配送処理
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -387,8 +378,6 @@ class ShippingMultipleController extends AbstractShoppingController
      *
      * 会員ログイン時は会員のお届け先に追加する
      * 非会員時はセッションに追加する
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */

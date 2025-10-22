@@ -33,9 +33,8 @@ class ItemCollection extends ArrayCollection
 
     /**
      * @param array<int,ItemInterface>|array<int,OrderItem>|Collection<int, ItemInterface>|Collection<int,OrderItem>|array<int,CartItem>|Collection<int,CartItem>|null $Items
-     * @param string|null $type
      */
-    public function __construct($Items = null, $type = null)
+    public function __construct(array|Collection|null $Items = null, ?string $type = null)
     {
         $this->type = is_null($type) ? Order::class : $type;
 
@@ -46,12 +45,11 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @param \Closure $func
      * @param mixed|null $initial
      *
      * @return mixed|null
      */
-    public function reduce(\Closure $func, $initial = null): mixed
+    public function reduce(\Closure $func, mixed $initial = null): mixed
     {
         return array_reduce($this->toArray(), $func, $initial);
     }
@@ -106,11 +104,9 @@ class ItemCollection extends ArrayCollection
      *
      * TODO 暫定対応. 本来は明細種別でチェックする.
      *
-     * @param string $productName
-     *
      * @return bool
      */
-    public function hasProductByName($productName): bool
+    public function hasProductByName(string $productName): bool
     {
         $OrderItems = $this->filter(
             function (ItemInterface $OrderItem) use ($productName) {
@@ -128,7 +124,7 @@ class ItemCollection extends ArrayCollection
      *
      * @return bool
      */
-    public function hasItemByOrderItemType($OrderItemType): bool
+    public function hasItemByOrderItemType(OrderItemType $OrderItemType): bool
     {
         $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
             /* @var OrderItem $OrderItem */

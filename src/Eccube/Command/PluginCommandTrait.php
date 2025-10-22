@@ -33,8 +33,6 @@ trait PluginCommandTrait
     protected $pluginRepository;
 
     /**
-     * @param PluginService $pluginService
-     *
      * @return void
      */
     #[Required]
@@ -44,8 +42,6 @@ trait PluginCommandTrait
     }
 
     /**
-     * @param PluginRepository $pluginRepository
-     *
      * @return void
      */
     #[Required]
@@ -55,8 +51,6 @@ trait PluginCommandTrait
     }
 
     /**
-     * @param SymfonyStyle $io
-     *
      * @return void
      */
     protected function clearCache(SymfonyStyle $io): void

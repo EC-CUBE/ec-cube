@@ -87,15 +87,6 @@ class OrderItemType extends AbstractType
     /**
      * OrderItemType constructor.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param ProductClassRepository $productClassRepository
-     * @param OrderItemRepository $orderItemRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param ValidatorInterface $validator
-     *
      * @throws \Exception
      */
     public function __construct(
@@ -121,7 +112,6 @@ class OrderItemType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -302,8 +292,6 @@ class OrderItemType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]
@@ -324,9 +312,6 @@ class OrderItemType extends AbstractType
     }
 
     /**
-     * @param FormInterface $form
-     * @param ConstraintViolationListInterface $errors
-     *
      * @return void
      */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors): void

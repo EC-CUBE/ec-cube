@@ -178,7 +178,7 @@ class AcceptanceTester extends Actor
      *
      * @throws FileNotFoundException 指定したパターンにマッチするファイルがない場合
      */
-    public function getLastDownloadFile($fileNameRegex, $retryCount = 3)
+    public function getLastDownloadFile($fileNameRegex, mixed $retryCount = 3)
     {
         $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);
@@ -267,7 +267,7 @@ class AcceptanceTester extends Actor
      * @param mixed $text
      * @param mixed|null $selector
      */
-    public function see($text, $selector = null): void
+    public function see(mixed $text, mixed $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $this->getScenario()->runStep(new Assertion('see', func_get_args()));
@@ -281,7 +281,7 @@ class AcceptanceTester extends Actor
      * @param mixed $field
      * @param mixed $value
      */
-    public function seeInField($field, $value): void
+    public function seeInField(mixed $field, mixed $value): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $this->getScenario()->runStep(new Assertion('seeInField', func_get_args()));
@@ -294,7 +294,7 @@ class AcceptanceTester extends Actor
      *
      * @param mixed|null $selector
      */
-    public function waitForText(string $text, int $timeout = 10, $selector = null): void
+    public function waitForText(string $text, int $timeout = 10, mixed $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $this->getScenario()->runStep(new Action('waitForText', func_get_args()));
@@ -307,7 +307,7 @@ class AcceptanceTester extends Actor
      *
      * @param mixed $page
      */
-    public function amOnPage($page): void
+    public function amOnPage(mixed $page): void
     {
         $this->wait(1); // XXX WebDriver::amOnPage() の前に wait を入れないと画面遷移しない場合がある
         $this->getScenario()->runStep(new Condition('amOnPage', func_get_args()));
@@ -322,7 +322,7 @@ class AcceptanceTester extends Actor
      *
      * @see \Codeception\Module\WebDriver::click()
      */
-    public function click($link, $context = null): void
+    public function click(string|array $link, mixed $context = null): void
     {
         $this->getScenario()->runStep(new Action('click', func_get_args()));
         $this->wait(1); // XXX click 直後は selector の参照に失敗するため wait を入れる

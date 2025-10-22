@@ -35,8 +35,6 @@ class MasterdataType extends AbstractType
 
     /**
      * MasterdataType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -46,7 +44,6 @@ class MasterdataType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void

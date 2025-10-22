@@ -212,7 +212,7 @@ class Generator
      *
      * @return Member
      */
-    public function createMember($username = null)
+    public function createMember(?string $username = null)
     {
         $faker = $this->getFaker();
         $Member = new Member();
@@ -252,7 +252,7 @@ class Generator
      *
      * @return Customer
      */
-    public function createCustomer($email = null)
+    public function createCustomer(?string $email = null)
     {
         /** @var Generator_Faker $faker */
         $faker = $this->getFaker();
@@ -304,7 +304,7 @@ class Generator
      *
      * @return CustomerAddress
      */
-    public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
+    public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false)
     {
         $faker = $this->getFaker();
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
@@ -347,7 +347,7 @@ class Generator
      *
      * @return Customer
      */
-    public function createNonMember($email = null)
+    public function createNonMember(?string $email = null)
     {
         $sessionKey = 'eccube.front.shopping.nonmember';
         $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
@@ -395,7 +395,7 @@ class Generator
      *
      * @return Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3, $with_image = false)
+    public function createProduct(?string $product_name = null, int $product_class_num = 3, bool $with_image = false)
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(Member::class, 2);
@@ -585,7 +585,7 @@ class Generator
      *
      * @return Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
+    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, int $add_charge = 0, int $add_discount = 0, ?int $statusTypeId = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
@@ -774,7 +774,7 @@ class Generator
      *
      * @return Payment
      */
-    public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999)
     {
         $Member = $this->entityManager->find(Member::class, 2);
         $Payment = new Payment();
@@ -814,7 +814,7 @@ class Generator
      *
      * @return Delivery
      */
-    public function createDelivery($delivery_time_max_pattern = 5)
+    public function createDelivery(int $delivery_time_max_pattern = 5)
     {
         $Member = $this->entityManager->find(Member::class, 2);
         $SaleType = $this->entityManager->find(SaleType::class, 1);
@@ -905,12 +905,16 @@ class Generator
      *
      * @param string $user_name
      * @param string|null $client_ip
-     * @param int|null $status
+     * @param int|LoginHistoryStatus|null $status
      * @param Member|null $Member
      *
      * @return LoginHistory
      */
-    public function createLoginHistory($user_name, $client_ip = null, $status = null, $Member = null)
+    public function createLoginHistory(
+        string $user_name,
+        ?string $client_ip = null,
+        int|LoginHistoryStatus|null $status = null,
+        ?Member $Member = null)
     {
         $faker = $this->getFaker();
         $LoginHistory = new LoginHistory();

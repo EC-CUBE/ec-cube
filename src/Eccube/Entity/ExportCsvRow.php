@@ -33,7 +33,7 @@ if (!class_exists(ExportCsvRow::class)) {
          *
          * @return ExportCsvRow
          */
-        public function setData($data = null): ExportCsvRow
+        public function setData(?string $data = null): ExportCsvRow
         {
             $this->data = $data;
 

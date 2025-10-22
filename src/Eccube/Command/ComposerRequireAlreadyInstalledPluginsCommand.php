@@ -60,9 +60,6 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      */
     #[\Override]

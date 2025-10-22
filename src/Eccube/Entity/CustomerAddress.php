@@ -42,8 +42,6 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set from customer.
          *
-         * @param Customer $Customer
-         *
          * @return CustomerAddress
          */
         public function setFromCustomer(Customer $Customer): CustomerAddress
@@ -66,8 +64,6 @@ if (!class_exists(CustomerAddress::class)) {
 
         /**
          * Set from Shipping.
-         *
-         * @param Shipping $Shipping
          *
          * @return CustomerAddress
          */
@@ -197,11 +193,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set name01.
          *
-         * @param string|null $name01
-         *
          * @return CustomerAddress
          */
-        public function setName01($name01 = null): CustomerAddress
+        public function setName01(?string $name01 = null): CustomerAddress
         {
             $this->name01 = $name01;
 
@@ -221,11 +215,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set name02.
          *
-         * @param string|null $name02
-         *
          * @return CustomerAddress
          */
-        public function setName02($name02 = null): CustomerAddress
+        public function setName02(?string $name02 = null): CustomerAddress
         {
             $this->name02 = $name02;
 
@@ -245,11 +237,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set kana01.
          *
-         * @param string|null $kana01
-         *
          * @return CustomerAddress
          */
-        public function setKana01($kana01 = null): CustomerAddress
+        public function setKana01(?string $kana01 = null): CustomerAddress
         {
             $this->kana01 = $kana01;
 
@@ -269,11 +259,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set kana02.
          *
-         * @param string|null $kana02
-         *
          * @return CustomerAddress
          */
-        public function setKana02($kana02 = null): CustomerAddress
+        public function setKana02(?string $kana02 = null): CustomerAddress
         {
             $this->kana02 = $kana02;
 
@@ -293,11 +281,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set companyName.
          *
-         * @param string|null $companyName
-         *
          * @return CustomerAddress
          */
-        public function setCompanyName($companyName = null): CustomerAddress
+        public function setCompanyName(?string $companyName = null): CustomerAddress
         {
             $this->company_name = $companyName;
 
@@ -317,11 +303,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set postal_code.
          *
-         * @param string|null $postal_code
-         *
          * @return CustomerAddress
          */
-        public function setPostalCode($postal_code = null): CustomerAddress
+        public function setPostalCode(?string $postal_code = null): CustomerAddress
         {
             $this->postal_code = $postal_code;
 
@@ -341,11 +325,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set addr01.
          *
-         * @param string|null $addr01
-         *
          * @return CustomerAddress
          */
-        public function setAddr01($addr01 = null): CustomerAddress
+        public function setAddr01(?string $addr01 = null): CustomerAddress
         {
             $this->addr01 = $addr01;
 
@@ -365,11 +347,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set addr02.
          *
-         * @param string|null $addr02
-         *
          * @return CustomerAddress
          */
-        public function setAddr02($addr02 = null): CustomerAddress
+        public function setAddr02(?string $addr02 = null): CustomerAddress
         {
             $this->addr02 = $addr02;
 
@@ -389,11 +369,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set phone_number.
          *
-         * @param string|null $phone_number
-         *
          * @return CustomerAddress
          */
-        public function setPhoneNumber($phone_number = null): CustomerAddress
+        public function setPhoneNumber(?string $phone_number = null): CustomerAddress
         {
             $this->phone_number = $phone_number;
 
@@ -413,11 +391,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return CustomerAddress
          */
-        public function setCreateDate($createDate): CustomerAddress
+        public function setCreateDate(\DateTime $createDate): CustomerAddress
         {
             $this->create_date = $createDate;
 
@@ -437,11 +413,9 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return CustomerAddress
          */
-        public function setUpdateDate($updateDate): CustomerAddress
+        public function setUpdateDate(\DateTime $updateDate): CustomerAddress
         {
             $this->update_date = $updateDate;
 
@@ -460,8 +434,6 @@ if (!class_exists(CustomerAddress::class)) {
 
         /**
          * Set customer.
-         *
-         * @param Customer|null $customer
          *
          * @return CustomerAddress
          */
@@ -485,8 +457,6 @@ if (!class_exists(CustomerAddress::class)) {
         /**
          * Set country.
          *
-         * @param Country|null $country
-         *
          * @return CustomerAddress
          */
         public function setCountry(?Country $country = null): CustomerAddress
@@ -508,8 +478,6 @@ if (!class_exists(CustomerAddress::class)) {
 
         /**
          * Set pref.
-         *
-         * @param Pref|null $pref
          *
          * @return CustomerAddress
          */

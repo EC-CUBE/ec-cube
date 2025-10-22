@@ -45,10 +45,6 @@ class PurchaseContext extends \SplObjectStorage
 
     public const CART_FLOW = 'cart';
 
-    /**
-     * @param ItemHolderInterface|null $originHolder
-     * @param UserInterface|Customer|null $user
-     */
     public function __construct(?ItemHolderInterface $originHolder = null, UserInterface|Customer|null $user = null)
     {
         $this->originHolder = $originHolder;
@@ -76,11 +72,9 @@ class PurchaseContext extends \SplObjectStorage
     }
 
     /**
-     * @param string $flowType
-     *
      * @return void
      */
-    public function setFlowType($flowType): void
+    public function setFlowType(?string $flowType): void
     {
         $this->flowType = $flowType;
     }

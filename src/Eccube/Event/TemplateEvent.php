@@ -22,12 +22,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 class TemplateEvent extends Event
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $view;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $source;
 
@@ -54,12 +54,9 @@ class TemplateEvent extends Event
     /**
      * TemplateEvent constructor.
      *
-     * @param string $view
-     * @param string $source
      * @param array<mixed> $parameters
-     * @param Response|null $response
      */
-    public function __construct($view, $source, array $parameters = [], ?Response $response = null)
+    public function __construct(?string $view, ?string $source, array $parameters = [], ?Response $response = null)
     {
         $this->view = $view;
         $this->source = $source;
@@ -76,11 +73,9 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param string $view
-     *
      * @return void
      */
-    public function setView($view): void
+    public function setView(string $view): void
     {
         $this->view = $view;
     }
@@ -94,42 +89,33 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param string $source
-     *
      * @return void
      */
-    public function setSource($source): void
+    public function setSource(string $source): void
     {
         $this->source = $source;
     }
 
     /**
-     * @param string $key
-     *
      * @return mixed
      */
-    public function getParameter($key): mixed
+    public function getParameter(string $key): mixed
     {
         return $this->parameters[$key];
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
-     *
      * @return void
      */
-    public function setParameter($key, $value): void
+    public function setParameter(string $key, mixed $value): void
     {
         $this->parameters[$key] = $value;
     }
 
     /**
-     * @param string $key
-     *
      * @return bool
      */
-    public function hasParameter($key): bool
+    public function hasParameter(string $key): bool
     {
         return isset($this->parameters[$key]);
     }
@@ -147,7 +133,7 @@ class TemplateEvent extends Event
      *
      * @return void
      */
-    public function setParameters($parameters): void
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
@@ -161,11 +147,9 @@ class TemplateEvent extends Event
     }
 
     /**
-     * @param Response|null $response
-     *
      * @return void
      */
-    public function setResponse($response): void
+    public function setResponse(?Response $response): void
     {
         $this->response = $response;
     }
@@ -176,12 +160,11 @@ class TemplateEvent extends Event
      * ここで追加したコードは, <head></head>内に出力される
      * javascriptの読み込みやcssの読み込みに利用する.
      *
-     * @param string $asset
      * @param bool $include twigファイルとしてincludeするかどうか
      *
      * @return $this
      */
-    public function addAsset($asset, $include = true): static
+    public function addAsset(string $asset, bool $include = true): static
     {
         $this->assets[$asset] = $include;
 
@@ -195,12 +178,11 @@ class TemplateEvent extends Event
      *
      * ここで追加したコードは, </body>タグ直前に出力される
      *
-     * @param string $snippet
      * @param bool $include twigファイルとしてincludeするかどうか
      *
      * @return $this
      */
-    public function addSnippet($snippet, $include = true): static
+    public function addSnippet(string $snippet, bool $include = true): static
     {
         $this->snippets[$snippet] = $include;
 

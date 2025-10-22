@@ -34,8 +34,6 @@ class CalendarController extends AbstractController
 
     /**
      * CalendarController constructor.
-     *
-     *  @param CalendarRepository $calendarRepository
      */
     public function __construct(CalendarRepository $calendarRepository)
     {
@@ -44,8 +42,6 @@ class CalendarController extends AbstractController
 
     /**
      * カレンダー設定の初期表示・登録
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -119,9 +115,6 @@ class CalendarController extends AbstractController
 
     /**
      * カレンダー設定の削除
-     *
-     * @param Request $request
-     * @param Calendar $Calendar
      *
      * @return RedirectResponse
      *

@@ -33,6 +33,12 @@ $rules = [
         'import_constants' => false,
         'import_functions' => false,
     ],
+    // PHPDocの型をネイティブ型へ
+    'phpdoc_to_param_type'   => true,
+    //'phpdoc_to_return_type'  => true,
+    //'phpdoc_to_property_type'=> true,
+
+    'phpdoc_trim' => true,
 ];
 
 $finder = \PhpCsFixer\Finder::create()

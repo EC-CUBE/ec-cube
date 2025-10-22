@@ -45,9 +45,6 @@ class TemplateController extends AbstractController
 
     /**
      * TemplateController constructor.
-     *
-     * @param TemplateRepository $templateRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         TemplateRepository $templateRepository,
@@ -59,9 +56,6 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレート一覧画面
-     *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      *
      * @return array<string,mixed>|RedirectResponse
      */
@@ -105,9 +99,6 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレート一覧からのダウンロード
-     *
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
      *
      * @return BinaryFileResponse
      */
@@ -169,9 +160,6 @@ class TemplateController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -213,8 +201,6 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレートの追加画面.
-     *
-     * @param Request $request
      *
      * @return array<string,mixed>|RedirectResponse
      */

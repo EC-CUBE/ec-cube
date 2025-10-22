@@ -53,11 +53,6 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * NonMemberShoppingController constructor.
-     *
-     * @param ValidatorInterface $validator
-     * @param PrefRepository $prefRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
      */
     public function __construct(
         ValidatorInterface $validator,
@@ -73,8 +68,6 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * 非会員処理
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|Response|array<string,mixed>
      */
@@ -140,8 +133,6 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * お客様情報の変更(非会員)
-     *
-     * @param Request $request
      *
      * @return JsonResponse|RedirectResponse
      *

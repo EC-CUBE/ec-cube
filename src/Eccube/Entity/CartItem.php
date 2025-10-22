@@ -86,11 +86,9 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param string $price
-         *
          * @return static
          */
-        public function setPrice($price): static
+        public function setPrice(?string $price): static
         {
             $this->price = $price;
 
@@ -215,8 +213,6 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param ProductClass $ProductClass
-         *
          * @return $this
          */
         public function setProductClass(ProductClass $ProductClass): static
@@ -263,8 +259,6 @@ if (!class_exists(CartItem::class)) {
         }
 
         /**
-         * @param Cart $Cart
-         *
          * @return $this
          */
         public function setCart(Cart $Cart): static

@@ -168,9 +168,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param LoaderInterface $loader
-     *
      * @return void
      *
      * @throws \Exception
@@ -197,8 +194,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param RoutingConfigurator $routes
-     *
      * @return void
      */
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -242,8 +237,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param ContainerBuilder $container
-     *
      * @return void
      */
     #[\Override]
@@ -308,8 +301,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param ContainerBuilder $container
-     *
      * @return void
      */
     protected function addEntityExtensionPass(ContainerBuilder $container): void

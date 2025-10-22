@@ -25,9 +25,6 @@ interface PurchaseProcessor
     /**
      * 受注の仮確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @return void
      * @return void
      *
@@ -38,9 +35,6 @@ interface PurchaseProcessor
     /**
      * 受注の確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext     $context
-     *
      * @return void
      * @return void
      *
@@ -50,9 +44,6 @@ interface PurchaseProcessor
 
     /**
      * 仮確定した受注データの取り消し処理を行います。
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
      *
      * @return void
      */

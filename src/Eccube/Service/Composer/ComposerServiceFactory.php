@@ -18,8 +18,6 @@ use Psr\Container\ContainerInterface;
 class ComposerServiceFactory
 {
     /**
-     * @param ContainerInterface $container
-     *
      * @return ComposerApiService|null
      */
     public static function createService(ContainerInterface $container): ?ComposerApiService

@@ -39,8 +39,6 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      *
      * @throws AccessDeniedHttpException|\Exception
@@ -85,11 +83,10 @@ class IpAddrListener implements EventSubscriberInterface
 
     /**
      * @param array<int,string> $hostList
-     * @param string|null $clientIp
      *
      * @return bool
      */
-    private function isClientIpInList($hostList, $clientIp): bool
+    private function isClientIpInList(array $hostList, ?string $clientIp): bool
     {
         log_debug('Host List: '.implode(',', $hostList));
         if ($hostList) {

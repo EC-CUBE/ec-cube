@@ -54,11 +54,6 @@ class CartController extends AbstractController
 
     /**
      * CartController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
@@ -74,8 +69,6 @@ class CartController extends AbstractController
 
     /**
      * カート画面.
-     *
-     * @param Request $request
      *
      * @return array<string,mixed>
      */
@@ -137,7 +130,7 @@ class CartController extends AbstractController
      *
      * @return RedirectResponse|null
      */
-    protected function execPurchaseFlow($Carts): ?RedirectResponse
+    protected function execPurchaseFlow(array $Carts): ?RedirectResponse
     {
         /** @var PurchaseFlowResult[] $flowResults */
         $flowResults = array_map(function ($Cart) {
@@ -236,7 +229,6 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @param Request $request
      * @param string $cart_key
      *
      * @return RedirectResponse|Response|null

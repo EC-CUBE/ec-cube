@@ -70,10 +70,6 @@ class TwoFactorAuthService
 
     /**
      * constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param PasswordHasherFactoryInterface $passwordHasherFactory
-     * @param RequestStack $requestStack
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -97,11 +93,9 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param Member $Member
-     *
      * @return bool
      */
-    public function isAuth($Member): bool
+    public function isAuth(Member $Member): bool
     {
         if ($json = $this->request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
@@ -126,11 +120,9 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param Member $Member
-     *
      * @return Cookie
      */
-    public function createAuthedCookie($Member): Cookie
+    public function createAuthedCookie(Member $Member): Cookie
     {
         $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
         $encodedString = $hasher->hash($Member->getId().$Member->getTwoFactorAuthKey());
@@ -160,12 +152,9 @@ class TwoFactorAuthService
     }
 
     /**
-     * @param string $authKey
-     * @param string $token
-     *
      * @return bool
      */
-    public function verifyCode($authKey, $token): bool
+    public function verifyCode(string $authKey, string $token): bool
     {
         return $this->tfa->verifyCode($authKey, $token, 2);
     }

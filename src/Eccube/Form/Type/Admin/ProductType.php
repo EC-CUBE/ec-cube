@@ -52,9 +52,6 @@ class ProductType extends AbstractType
 
     /**
      * ProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -67,7 +64,6 @@ class ProductType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void
@@ -205,12 +201,11 @@ class ProductType extends AbstractType
     /**
      * 指定された複数ディレクトリのうち、いずれかのディレクトリ以下にファイルが存在するかを確認。
      *
-     * @param FormInterface $form
      * @param array<int,string> $dirs
      *
      * @return void
      */
-    private function validateFilePath($form, $dirs): void
+    private function validateFilePath(FormInterface $form, array $dirs): void
     {
         foreach ($form->getData() as $fileName) {
             if (str_contains((string) $fileName, '..')) {
@@ -231,8 +226,6 @@ class ProductType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

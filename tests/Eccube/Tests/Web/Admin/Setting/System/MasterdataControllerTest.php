@@ -404,7 +404,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    protected function createFormData($entity = 'Eccube-Entity-Master-Sex')
+    protected function createFormData(string $entity = 'Eccube-Entity-Master-Sex')
     {
         return [
             '_token' => 'dummy',
@@ -417,7 +417,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    protected function createFormDataEdit($entity = 'Eccube-Entity-Master-Sex')
+    protected function createFormDataEdit(string $entity = 'Eccube-Entity-Master-Sex')
     {
         $entityName = str_replace('-', '\\', $entity);
         $masterData = $this->entityManager->getRepository($entityName)->findBy([], ['sort_no' => 'ASC']);

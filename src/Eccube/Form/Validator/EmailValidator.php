@@ -32,7 +32,6 @@ class EmailValidator extends ConstraintValidator
      * {@inheritdoc}
      *
      * @param mixed $value
-     * @param Constraint $constraint
      *
      * @return void
      *

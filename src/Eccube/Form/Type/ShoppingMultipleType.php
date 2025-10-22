@@ -26,7 +26,6 @@ class ShoppingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -61,8 +60,6 @@ class ShoppingMultipleType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

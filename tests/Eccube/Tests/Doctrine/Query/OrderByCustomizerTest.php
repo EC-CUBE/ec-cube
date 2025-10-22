@@ -102,7 +102,7 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
      *
      * @return OrderByClause[]
      */
-    public function createStatements($params, $queryKey): array
+    public function createStatements(array $params, $queryKey): array
     {
         $callback = $this->closure;
 

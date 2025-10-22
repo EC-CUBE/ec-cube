@@ -41,8 +41,6 @@ class AutoNewItemController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string, mixed>
      */
     #[Route('/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]

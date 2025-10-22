@@ -48,8 +48,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     * @param Request $request
-     *
      * @return array<string,mixed>
      *
      * @throws \Doctrine\DBAL\ConnectionException
@@ -104,7 +102,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return void
      */
-    protected function loadCsv($csv, &$errors): void
+    protected function loadCsv(CsvImportService|bool $csv, array &$errors): void
     {
         $columnConfig = $this->getColumnConfig();
 
@@ -153,7 +151,7 @@ class CsvImportController extends AbstractCsvImportController
 
             if (isset($row[$columnNames['tracking_number']])) {
                 // 半角英数字ハイフン以外エラー
-                if (!preg_match('/^[0-9a-zA-Z-]*$/u', (string) $row[$columnNames['tracking_number']])) {
+                if (!preg_match('/^[0-9a-zA-Z-]*$/u', $row[$columnNames['tracking_number']])) {
                     $errors[] = trans('admin.common.csv_invalid_format_line_name', ['%line%' => $line + 1, '%name%' => $columnNames['tracking_number']]);
                     continue;
                 }
@@ -201,8 +199,6 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
-     *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

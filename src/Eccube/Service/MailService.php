@@ -76,14 +76,6 @@ class MailService
 
     /**
      * MailService constructor.
-     *
-     * @param MailerInterface $mailer
-     * @param MailTemplateRepository $mailTemplateRepository
-     * @param MailHistoryRepository $mailHistoryRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Environment $twig
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         MailerInterface $mailer,
@@ -115,7 +107,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl): void
+    public function sendCustomerConfirmMail(Customer $Customer, string $activateUrl): void
     {
         log_info('仮会員登録メール送信開始');
 
@@ -309,7 +301,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendContactMail($formData): void
+    public function sendContactMail(array $formData): void
     {
         log_info('お問い合わせ受付メール送信開始');
 
@@ -449,7 +441,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendAdminCustomerConfirmMail(Customer $Customer, $activateUrl): void
+    public function sendAdminCustomerConfirmMail(Customer $Customer, string $activateUrl): void
     {
         log_info('仮会員登録再送メール送信開始');
 
@@ -519,7 +511,7 @@ class MailService
      * @throws RuntimeError When an error occurred during rendering
      * @throws TransportExceptionInterface
      */
-    public function sendAdminOrderMail(Order $Order, $formData): Email
+    public function sendAdminOrderMail(Order $Order, array $formData): Email
     {
         log_info('受注管理通知メール送信開始');
 
@@ -557,7 +549,6 @@ class MailService
      * Send password reset notification mail.
      *
      * @param Customer $Customer 会員情報
-     * @param string $reset_url
      *
      * @return void
      *
@@ -565,7 +556,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendPasswordResetNotificationMail(Customer $Customer, $reset_url): void
+    public function sendPasswordResetNotificationMail(Customer $Customer, string $reset_url): void
     {
         log_info('パスワード再発行メール送信開始');
 
@@ -625,7 +616,6 @@ class MailService
      * Send password reset notification mail.
      *
      * @param Customer $Customer 会員情報
-     * @param string $password
      *
      * @return void
      *
@@ -633,7 +623,7 @@ class MailService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendPasswordResetCompleteMail(Customer $Customer, $password): void
+    public function sendPasswordResetCompleteMail(Customer $Customer, string $password): void
     {
         log_info('パスワード変更完了メール送信開始');
 
@@ -691,8 +681,6 @@ class MailService
     /**
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
-     *
-     * @param Shipping $Shipping
      *
      * @return void
      *
@@ -754,18 +742,13 @@ class MailService
     }
 
     /**
-     * @param Shipping $Shipping
-     * @param Order $Order
-     * @param string|null $templateName
-     * @param bool $is_html
-     *
      * @return string
      *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
      */
-    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false): string
+    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, ?string $templateName = null, bool $is_html = false): string
     {
         /** @var OrderItem[] $OrderItems */
         $OrderItems = $Shipping->getOrderItems()->toArray();
@@ -796,9 +779,7 @@ class MailService
     /**
      * 会員情報変更時にメール通知
      *
-     * @param Customer $Customer
      * @param array{userAgent: string, ipAddress: string, preEmail: string|null}|array{userAgent:string|null,ipAddress:string|null} $userData
-     * @param string $eventName
      *
      * @return void
      *
@@ -882,7 +863,7 @@ class MailService
      *
      * @return string|null  存在する場合はファイル名を返す
      */
-    public function getHtmlTemplate($templateName): ?string
+    public function getHtmlTemplate(string $templateName): ?string
     {
         // メールテンプレート名からHTMLメール用テンプレート名を生成
         $fileName = explode('.', $templateName);
@@ -901,8 +882,6 @@ class MailService
      * RFC違反のメールの local part を "" で囲む.
      *
      * パラメータ eccube_rfc_email_check == true の場合は変換しない
-     *
-     * @param string $email
      *
      * @return Address
      */

@@ -26,8 +26,6 @@ class SaleTypeType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]

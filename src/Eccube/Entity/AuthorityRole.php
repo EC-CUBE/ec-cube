@@ -84,11 +84,9 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Set denyUrl.
          *
-         * @param string $denyUrl
-         *
          * @return AuthorityRole
          */
-        public function setDenyUrl($denyUrl): AuthorityRole
+        public function setDenyUrl(?string $denyUrl): AuthorityRole
         {
             $this->deny_url = $denyUrl;
 
@@ -108,11 +106,9 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return AuthorityRole
          */
-        public function setCreateDate($createDate): AuthorityRole
+        public function setCreateDate(\DateTime $createDate): AuthorityRole
         {
             $this->create_date = $createDate;
 
@@ -132,11 +128,9 @@ if (!class_exists(AuthorityRole::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return AuthorityRole
          */
-        public function setUpdateDate($updateDate): AuthorityRole
+        public function setUpdateDate(\DateTime $updateDate): AuthorityRole
         {
             $this->update_date = $updateDate;
 
@@ -155,8 +149,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set authority.
-         *
-         * @param Authority|null $authority
          *
          * @return AuthorityRole
          */
@@ -179,8 +171,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return AuthorityRole
          */

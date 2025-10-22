@@ -53,8 +53,6 @@ class MobileTemplatePathListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      */
     public function onKernelRequest(RequestEvent $event): void

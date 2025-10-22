@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
@@ -64,9 +65,6 @@ class ProductClassController extends AbstractController
 
     /**
      * ProductClassController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
      */
     public function __construct(
         ProductRepository $productRepository,
@@ -85,9 +83,7 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格が登録されていなければ新規登録, 登録されていれば更新画面を表示する
      *
-     * @param Request $request
      * @param string $id
-     * @param CacheUtil $cacheUtil
      *
      * @return RedirectResponse|array<string,mixed>
      *
@@ -201,10 +197,6 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を初期化する.
      *
-     * @param Request $request
-     * @param Product $Product
-     * @param CacheUtil $cacheUtil
-     *
      * @return RedirectResponse
      *
      * @throws ForeignKeyConstraintViolationException|\Exception
@@ -264,9 +256,6 @@ class ProductClassController extends AbstractController
     /**
      * 規格名1/2から, 商品規格の組み合わせを生成する.
      *
-     * @param ClassName $ClassName1
-     * @param ClassName|null $ClassName2
-     *
      * @return array|ProductClass[]
      */
     protected function createProductClasses(ClassName $ClassName1, ?ClassName $ClassName2 = null): array
@@ -302,11 +291,11 @@ class ProductClassController extends AbstractController
      * 商品規格の配列をマージする.
      *
      * @param array<int,ProductClass> $ProductClassesForMatrix
-     * @param \Doctrine\Common\Collections\ArrayCollection<int,ProductClass> $ProductClasses
+     * @param ArrayCollection<int,ProductClass> $ProductClasses
      *
      * @return array|ProductClass[]
      */
-    protected function mergeProductClasses($ProductClassesForMatrix, $ProductClasses): array
+    protected function mergeProductClasses(array $ProductClassesForMatrix, ArrayCollection $ProductClasses): array
     {
         $mergedProductClasses = [];
         foreach ($ProductClassesForMatrix as $pcfm) {
@@ -336,14 +325,13 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を登録, 更新する.
      *
-     * @param Product $Product
      * @param array|ProductClass[] $ProductClasses
      *
      * @return void
      *
      * @throws NoResultException
      */
-    protected function saveProductClasses(Product $Product, $ProductClasses = []): void
+    protected function saveProductClasses(Product $Product, array $ProductClasses = []): void
     {
         foreach ($ProductClasses as $pc) {
             // 新規登録時、チェックを入れていなければ更新しない
@@ -433,14 +421,12 @@ class ProductClassController extends AbstractController
      * 商品規格登録フォームを生成する.
      *
      * @param array<int,ProductClass> $ProductClasses
-     * @param ClassName|null $ClassName1
-     * @param ClassName|null $ClassName2
      * @param array<string,mixed> $options
      *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createMatrixForm(
-        $ProductClasses = [],
+        array $ProductClasses = [],
         ?ClassName $ClassName1 = null,
         ?ClassName $ClassName2 = null,
         array $options = [],
@@ -459,13 +445,11 @@ class ProductClassController extends AbstractController
      * 商品を取得する.
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
      *
-     * @param string|int $id
-     *
      * @return Product|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function findProduct($id): ?Product
+    protected function findProduct(string|int $id): ?Product
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->addSelect(['pc', 'cc1', 'cc2'])

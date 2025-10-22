@@ -69,10 +69,6 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderStateMachine $orderStateMachine
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -89,7 +85,6 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -250,8 +245,6 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]
@@ -274,8 +267,6 @@ class OrderType extends AbstractType
     /**
      * 受注明細をソートする.
      *
-     * @param FormEvent $event
-     *
      * @return void
      */
     public function sortOrderItems(FormEvent $event): void
@@ -296,8 +287,6 @@ class OrderType extends AbstractType
      * 新規登録の際は, ユーザ編集不可のため追加しない.
      *
      * ステータスのプルダウンは, ステートマシンで遷移可能なステータスのみ表示する.
-     *
-     * @param FormEvent $event
      *
      * @return void
      */
@@ -342,8 +331,6 @@ class OrderType extends AbstractType
      * 単一配送時に, Shippingのフォームを追加する.
      * 複数配送時はShippingの編集は行わない.
      *
-     * @param FormEvent $event
-     *
      * @return void
      */
     public function addShippingForm(FormEvent $event): void
@@ -370,8 +357,6 @@ class OrderType extends AbstractType
      * - 支払方法の名称
      * - 会員の性別/職業/誕生日
      * - 受注ステータス(新規登録時)
-     *
-     * @param FormEvent $event
      *
      * @return void
      */
@@ -409,8 +394,6 @@ class OrderType extends AbstractType
     /**
      * 受注ステータスのバリデーションを行う.
      *
-     * @param FormEvent $event
-     *
      * @return void
      */
     public function validateOrderStatus(FormEvent $event): void
@@ -446,8 +429,6 @@ class OrderType extends AbstractType
      * 受注明細のバリデーションを行う.
      * 商品明細が1件も登録されていない場合はエラーとする.
      *
-     * @param FormEvent $event
-     *
      * @return void
      */
     public function validateOrderItems(FormEvent $event): void
@@ -472,8 +453,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注明細と, Order/Shippingの紐付けを行う.
-     *
-     * @param FormEvent $event
      *
      * @return void
      */

@@ -36,8 +36,6 @@ if (!class_exists(Member::class)) {
     class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         /**
-         * @param ClassMetadata $metadata
-         *
          * @return void
          */
         public static function loadValidatorMetadata(ClassMetadata $metadata): void
@@ -199,11 +197,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set name.
          *
-         * @param string|null $name
-         *
          * @return Member
          */
-        public function setName($name = null): Member
+        public function setName(?string $name = null): Member
         {
             $this->name = $name;
 
@@ -223,11 +219,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set department.
          *
-         * @param string|null $department
-         *
          * @return Member
          */
-        public function setDepartment($department = null): Member
+        public function setDepartment(?string $department = null): Member
         {
             $this->department = $department;
 
@@ -247,11 +241,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set loginId.
          *
-         * @param string $loginId
-         *
          * @return Member
          */
-        public function setLoginId($loginId): Member
+        public function setLoginId(string $loginId): Member
         {
             $this->login_id = $loginId;
 
@@ -291,11 +283,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set password.
          *
-         * @param string $password
-         *
          * @return Member
          */
-        public function setPassword($password): Member
+        public function setPassword(string $password): Member
         {
             $this->password = $password;
 
@@ -316,11 +306,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set salt.
          *
-         * @param string $salt
-         *
          * @return Member
          */
-        public function setSalt($salt): Member
+        public function setSalt(?string $salt): Member
         {
             $this->salt = $salt;
 
@@ -341,11 +329,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set sortNo.
          *
-         * @param int $sortNo
-         *
          * @return Member
          */
-        public function setSortNo($sortNo): Member
+        public function setSortNo(int $sortNo): Member
         {
             $this->sort_no = $sortNo;
 
@@ -365,11 +351,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set twoFactorAuthKey.
          *
-         * @param string $two_factor_auth_key
-         *
          * @return Member
          */
-        public function setTwoFactorAuthKey($two_factor_auth_key): Member
+        public function setTwoFactorAuthKey(string $two_factor_auth_key): Member
         {
             $this->two_factor_auth_key = $two_factor_auth_key;
 
@@ -389,11 +373,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set twoFactorAuthEnabled.
          *
-         * @param bool $two_factor_auth_enabled
-         *
          * @return Member
          */
-        public function setTwoFactorAuthEnabled($two_factor_auth_enabled): Member
+        public function setTwoFactorAuthEnabled(bool $two_factor_auth_enabled): Member
         {
             $this->two_factor_auth_enabled = $two_factor_auth_enabled;
 
@@ -413,11 +395,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Member
          */
-        public function setCreateDate($createDate): Member
+        public function setCreateDate(\DateTime $createDate): Member
         {
             $this->create_date = $createDate;
 
@@ -437,11 +417,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Member
          */
-        public function setUpdateDate($updateDate): Member
+        public function setUpdateDate(\DateTime $updateDate): Member
         {
             $this->update_date = $updateDate;
 
@@ -461,11 +439,9 @@ if (!class_exists(Member::class)) {
         /**
          * Set loginDate.
          *
-         * @param \DateTime|null $loginDate
-         *
          * @return Member
          */
-        public function setLoginDate($loginDate = null): Member
+        public function setLoginDate(?\DateTime $loginDate = null): Member
         {
             $this->login_date = $loginDate;
 
@@ -484,8 +460,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set Work
-         *
-         * @param Work|null $work
          *
          * @return Member
          */
@@ -509,8 +483,6 @@ if (!class_exists(Member::class)) {
         /**
          * Set authority.
          *
-         * @param Authority|null $authority
-         *
          * @return Member
          */
         public function setAuthority(?Authority $authority = null): Member
@@ -532,8 +504,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return Member
          */

@@ -43,8 +43,6 @@ class CustomerDeliveryEditController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @param Request $request
-     * @param Customer $Customer
      * @param string|null $did
      *
      * @return array<string,mixed>|RedirectResponse
@@ -129,8 +127,6 @@ class CustomerDeliveryEditController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Customer $Customer
      * @param string $did
      *
      * @return RedirectResponse

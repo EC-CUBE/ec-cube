@@ -38,8 +38,6 @@ class RateLimiterListener implements EventSubscriberInterface
     }
 
     /**
-     * @param ControllerEvent $event
-     *
      * @return void
      *
      * @throws \Psr\Container\ContainerExceptionInterface

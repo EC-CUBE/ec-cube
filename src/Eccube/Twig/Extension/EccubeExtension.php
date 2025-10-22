@@ -40,9 +40,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * EccubeExtension constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param ProductRepository $productRepository
      */
     public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
     {
@@ -115,7 +112,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return array<mixed>
      */
-    public function getActiveMenus($menus = []): array
+    public function getActiveMenus(array $menus = []): array
     {
         $count = count($menus);
         for ($i = $count; $i <= 2; $i++) {
@@ -128,12 +125,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * return No Image filename
      *
-     * @param string|null $image
-     * @param string $image
-     *
      * @return string
      */
-    public function getNoImageProduct($image): string
+    public function getNoImageProduct(?string $image): string
     {
         return empty($image) ? 'no_image_product.png' : $image;
     }
@@ -141,13 +135,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param \DateTimeInterface|null $date
-     * @param string $value
-     * @param string $format
-     *
      * @return string
      */
-    public function getDateFormatFilter($date, $value = '', $format = 'Y/m/d'): string
+    public function getDateFormatFilter(?\DateTimeInterface $date, string $value = '', string $format = 'Y/m/d'): string
     {
         if (is_null($date)) {
             return $value;
@@ -159,14 +149,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param float|string|null $number
-     * @param int $decimals
-     * @param string $decPoint
-     * @param string $thousandsSep
-     *
      * @return string
      */
-    public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ','): string
+    public function getPriceFilter(float|string|null $number, int $decimals = 0, string $decPoint = '.', string $thousandsSep = ','): string
     {
         /** @var string $locale */
         $locale = $this->eccubeConfig['locale'];
@@ -180,13 +165,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param string $value
-     * @param int $length
-     * @param string $end
-     *
      * @return string
      */
-    public function getEllipsis($value, $length = 100, $end = '...'): string
+    public function getEllipsis(string $value, int $length = 100, string $end = '...'): string
     {
         return StringUtil::ellipsis($value, $length, $end);
     }
@@ -194,11 +175,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param string|\DateTimeInterface $date
-     *
      * @return string
      */
-    public function getTimeAgo($date): string
+    public function getTimeAgo(string|\DateTimeInterface $date): string
     {
         return StringUtil::timeAgo($date);
     }
@@ -231,11 +210,9 @@ class EccubeExtension extends AbstractExtension
      * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
      * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
      *
-     * @param int|float|string $id
-     *
      * @return Product|null
      */
-    public function getProduct($id): ?Product
+    public function getProduct(int|float|string $id): ?Product
     {
         try {
             $Product = $this->productRepository->findWithSortedClassCategories($id);
@@ -252,8 +229,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Get the ClassCategories as JSON.
-     *
-     * @param Product $Product
      *
      * @return string
      */
@@ -312,13 +287,12 @@ class EccubeExtension extends AbstractExtension
     /**
      * Display file extension icon
      *
-     * @param string $ext
      * @param array<string,string> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
      *
      * @return string
      */
-    public function getExtensionIcon($ext, $attr = [], $iconOnly = false): string
+    public function getExtensionIcon(string $ext, array $attr = [], bool $iconOnly = false): string
     {
         $classes = [
             'txt' => 'fa-file-text-o',
@@ -349,7 +323,7 @@ class EccubeExtension extends AbstractExtension
             'mov' => 'fa-file-video-o',
             'mkv' => 'fa-file-video-o',
         ];
-        $ext = strtolower((string) $ext);
+        $ext = strtolower($ext);
 
         $class = $classes[$ext] ?? 'fa-file-o';
 
@@ -373,11 +347,9 @@ class EccubeExtension extends AbstractExtension
     /**
      * Get currency symbol
      *
-     * @param string|null $currency
-     *
      * @return bool|string
      */
-    public function getCurrencySymbol($currency = null): bool|string
+    public function getCurrencySymbol(?string $currency = null): bool|string
     {
         if ($currency === null) {
             $currency = $this->eccubeConfig->get('currency');

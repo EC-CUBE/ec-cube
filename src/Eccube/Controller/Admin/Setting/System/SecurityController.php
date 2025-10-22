@@ -32,8 +32,6 @@ class SecurityController extends AbstractController
 
     /**
      * SecurityController constructor.
-     *
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
@@ -41,9 +39,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]

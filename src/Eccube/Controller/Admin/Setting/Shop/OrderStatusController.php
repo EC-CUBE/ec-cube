@@ -54,8 +54,6 @@ class OrderStatusController extends AbstractController
     /**
      * 受注ステータス編集画面.
      *
-     * @param Request $request
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]

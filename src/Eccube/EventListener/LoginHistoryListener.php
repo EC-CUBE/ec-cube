@@ -80,8 +80,6 @@ class LoginHistoryListener implements EventSubscriberInterface
     }
 
     /**
-     * @param InteractiveLoginEvent $event
-     *
      * @return void
      */
     public function onInteractiveLogin(InteractiveLoginEvent $event): void
@@ -112,8 +110,6 @@ class LoginHistoryListener implements EventSubscriberInterface
     }
 
     /**
-     * @param LoginFailureEvent $event
-     *
      * @return void
      */
     public function onAuthenticationFailure(LoginFailureEvent $event): void

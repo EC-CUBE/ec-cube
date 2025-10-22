@@ -40,7 +40,7 @@ class DeliveryRepository extends AbstractRepository
      *
      * @return array<int, Delivery>
      */
-    public function getDeliveries($saleTypes): array
+    public function getDeliveries(array $saleTypes): array
     {
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.SaleType in (:saleTypes)')
@@ -62,7 +62,7 @@ class DeliveryRepository extends AbstractRepository
      *
      * @return array<int, Delivery>
      */
-    public function findAllowedDeliveries($saleTypes, $payments): array
+    public function findAllowedDeliveries(array $saleTypes, array $payments): array
     {
         $d = $this->getDeliveries($saleTypes);
         $arr = [];

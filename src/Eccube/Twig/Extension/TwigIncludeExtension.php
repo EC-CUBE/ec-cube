@@ -48,7 +48,7 @@ class TwigIncludeExtension extends AbstractExtension
      *
      * @return string レンダリング結果
      */
-    public function include_dispatch($context, $template, $variables = []): string
+    public function include_dispatch(array $context, string|TemplateWrapper $template, array $variables = []): string
     {
         if (!empty($variables)) {
             $context = array_merge($context, $variables);

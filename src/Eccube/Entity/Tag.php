@@ -76,11 +76,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Set id.
          *
-         * @param int $id
-         *
          * @return $this
          */
-        public function setId($id): static
+        public function setId(int $id): static
         {
             $this->id = $id;
 
@@ -100,11 +98,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return $this
          */
-        public function setName($name): static
+        public function setName(?string $name): static
         {
             $this->name = $name;
 
@@ -124,11 +120,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Set sort_no.
          *
-         * @param int $sort_no
-         *
          * @return $this
          */
-        public function setSortNo($sort_no): static
+        public function setSortNo(int $sort_no): static
         {
             $this->sort_no = $sort_no;
 
@@ -148,8 +142,6 @@ if (!class_exists(Tag::class)) {
         /**
          * Add productTag.
          *
-         * @param ProductTag $productTag
-         *
          * @return Tag
          */
         public function addProductTag(ProductTag $productTag): Tag
@@ -161,8 +153,6 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Remove productTag.
-         *
-         * @param ProductTag $productTag
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */

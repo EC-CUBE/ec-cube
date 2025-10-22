@@ -28,7 +28,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class MasterdataController extends AbstractController
 {
     /**
-     * @param Request $request
      * @param class-string|null $entity
      *
      * @return RedirectResponse|Response|array<string,mixed>
@@ -115,8 +114,6 @@ class MasterdataController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/masterdata/edit', name: 'admin_setting_system_masterdata_edit', methods: ['GET', 'POST'])]

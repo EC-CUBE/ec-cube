@@ -88,11 +88,9 @@ if (!class_exists(Calendar::class)) {
         /**
          * Set title.
          *
-         * @param string $title
-         *
          * @return Calendar
          */
-        public function setTitle($title): Calendar
+        public function setTitle(string $title): Calendar
         {
             $this->title = $title;
 
@@ -112,11 +110,9 @@ if (!class_exists(Calendar::class)) {
         /**
          * Set holiday.
          *
-         * @param \DateTime $holiday
-         *
          * @return Calendar
          */
-        public function setHoliday($holiday): Calendar
+        public function setHoliday(\DateTime $holiday): Calendar
         {
             $this->holiday = $holiday;
 
@@ -136,11 +132,9 @@ if (!class_exists(Calendar::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Calendar
          */
-        public function setCreateDate($createDate): Calendar
+        public function setCreateDate(\DateTime $createDate): Calendar
         {
             $this->create_date = $createDate;
 
@@ -160,11 +154,9 @@ if (!class_exists(Calendar::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Calendar
          */
-        public function setUpdateDate($updateDate): Calendar
+        public function setUpdateDate(\DateTime $updateDate): Calendar
         {
             $this->update_date = $updateDate;
 

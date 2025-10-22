@@ -75,11 +75,9 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return CustomerFavoriteProduct
          */
-        public function setCreateDate($createDate): CustomerFavoriteProduct
+        public function setCreateDate(\DateTime $createDate): CustomerFavoriteProduct
         {
             $this->create_date = $createDate;
 
@@ -99,11 +97,9 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return CustomerFavoriteProduct
          */
-        public function setUpdateDate($updateDate): CustomerFavoriteProduct
+        public function setUpdateDate(\DateTime $updateDate): CustomerFavoriteProduct
         {
             $this->update_date = $updateDate;
 
@@ -122,8 +118,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Set customer.
-         *
-         * @param Customer|null $customer
          *
          * @return CustomerFavoriteProduct
          */
@@ -146,8 +140,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
          *
          * @return CustomerFavoriteProduct
          */

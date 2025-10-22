@@ -73,12 +73,6 @@ class MypageController extends AbstractController
 
     /**
      * MypageController constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PurchaseFlow $purchaseFlow
      */
     public function __construct(
         OrderRepository $orderRepository,
@@ -96,9 +90,6 @@ class MypageController extends AbstractController
 
     /**
      * ログイン画面.
-     *
-     * @param Request $request
-     * @param AuthenticationUtils $utils
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -144,9 +135,6 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     *
      * @return array<string,mixed>
      */
     #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
@@ -187,7 +175,6 @@ class MypageController extends AbstractController
     /**
      * 購入履歴詳細を表示する.
      *
-     * @param Request $request
      * @param string|int $order_no
      *
      * @return array<string,mixed>
@@ -237,7 +224,6 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @param Request $request
      * @param int|string $order_no
      *
      * @return RedirectResponse|Response
@@ -332,9 +318,6 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を表示する.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     *
      * @return array<string,mixed>
      *
      * @throws NotFoundHttpException
@@ -375,9 +358,6 @@ class MypageController extends AbstractController
 
     /**
      * お気に入り商品を削除する.
-     *
-     * @param Request $request
-     * @param Product $Product
      *
      * @return RedirectResponse
      *

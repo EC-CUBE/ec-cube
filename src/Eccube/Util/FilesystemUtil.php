@@ -19,11 +19,10 @@ class FilesystemUtil
      * Format file size to human readable
      *
      * @param int|false $size
-     * @param int $decimals
      *
      * @return string
      */
-    public static function sizeToHumanReadable($size, $decimals = 0): string
+    public static function sizeToHumanReadable(int|bool $size, int $decimals = 0): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 

@@ -37,9 +37,6 @@ class UserDataController extends AbstractController
 
     /**
      * UserDataController constructor.
-     *
-     * @param PageRepository $pageRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         PageRepository $pageRepository,
@@ -50,7 +47,6 @@ class UserDataController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string $route
      *
      * @return Response

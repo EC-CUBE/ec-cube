@@ -66,8 +66,6 @@ class CustomerEditController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param string|null $id
      *
      * @return RedirectResponse|array<string,mixed>

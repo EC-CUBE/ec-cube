@@ -54,11 +54,9 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
     /**
      * Set id.
      *
-     * @param int $id
-     *
      * @return $this
      */
-    public function setId($id): static
+    public function setId(int $id): static
     {
         $this->id = $id;
 
@@ -78,11 +76,9 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
     /**
      * Set name.
      *
-     * @param string $name
-     *
      * @return $this
      */
-    public function setName($name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -102,11 +98,9 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
     /**
      * Set sortNo.
      *
-     * @param int $sortNo
-     *
      * @return $this
      */
-    public function setSortNo($sortNo): static
+    public function setSortNo(int $sortNo): static
     {
         $this->sort_no = $sortNo;
 
@@ -124,34 +118,27 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      */
-    public function __get($name): mixed
+    public function __get(string $name): mixed
     {
         return self::getConstantValue($name);
     }
 
     /**
-     * @param string $name
-     * @param mixed $arguments
-     *
      * @return mixed
      */
-    public static function __callStatic($name, $arguments): mixed
+    public static function __callStatic(string $name, mixed $arguments): mixed
     {
         return self::getConstantValue($name);
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      *
      * @throws \ReflectionException
      */
-    protected static function getConstantValue($name): mixed
+    protected static function getConstantValue(string $name): mixed
     {
         if (in_array($name, ['id', 'name', 'sortNo'])) {
             throw new \InvalidArgumentException();

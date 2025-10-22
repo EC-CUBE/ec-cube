@@ -31,8 +31,6 @@ class OrderStatusRepository extends AbstractRepository
 {
     /**
      * OrderStatusRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -53,7 +51,7 @@ class OrderStatusRepository extends AbstractRepository
      *
      * @see EntityRepository::findBy()
      */
-    public function findNotContainsBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
+    public function findNotContainsBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
     {
         $qb = $this->createQueryBuilder('o');
 

@@ -24,8 +24,6 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]

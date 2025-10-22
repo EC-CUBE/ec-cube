@@ -77,7 +77,7 @@ abstract class CommandTestCase extends EccubeTestCase
      *
      * @param Command $PluginCommand
      */
-    protected function initCommand($PluginCommand)
+    protected function initCommand(Command $PluginCommand)
     {
         $this->command = $PluginCommand;
         $this->addCommand($this->command);
@@ -89,7 +89,7 @@ abstract class CommandTestCase extends EccubeTestCase
      * @param array $callback
      * @param array $commandArg
      */
-    protected function executeTester($callback, $commandArg)
+    protected function executeTester(array $callback, array $commandArg)
     {
         $cmd = $this->app['console']->find($this->command->getName());
         $this->assertEquals($this->command->getName(), $cmd->getName());
@@ -134,7 +134,7 @@ abstract class CommandTestCase extends EccubeTestCase
      *
      * @param Command $command
      */
-    protected function addCommand($command)
+    protected function addCommand(Command $command)
     {
         $this->assertInstanceOf('\Knp\Command\Command', $command);
         $this->app['console']->add($command);
@@ -146,7 +146,7 @@ abstract class CommandTestCase extends EccubeTestCase
      * @param Command $cmd
      * @param callable $mockHandler
      */
-    protected function mockQuestionHelper(Command $cmd, $mockHandler)
+    protected function mockQuestionHelper(Command $cmd, callable $mockHandler)
     {
         $helper = new QuestionHelperMock();
         $helper->setMockHandler($mockHandler);
@@ -160,7 +160,7 @@ abstract class CommandTestCase extends EccubeTestCase
      *
      * @return string
      */
-    protected function getQuestionMark($no)
+    protected function getQuestionMark(int $no)
     {
         return AbstractPluginGenerator::INPUT_OPEN.$no.AbstractPluginGenerator::INPUT_CLOSE;
     }

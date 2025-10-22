@@ -35,8 +35,6 @@ class Step4Type extends AbstractType
 
     /**
      * Step4Type constructor.
-     *
-     * @param RequestStack $requestStack
      */
     public function __construct(
         RequestStack $requestStack,
@@ -47,7 +45,6 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -144,12 +141,11 @@ class Step4Type extends AbstractType
 
     /**
      * @param array<mixed> $data
-     * @param ExecutionContext $context
      * @param mixed|null $param
      *
      * @return void
      */
-    public function validate($data, ExecutionContext $context, $param = null): void
+    public function validate(array $data, ExecutionContext $context, mixed $param = null): void
     {
         $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
         if ($parameters['database'] != 'pdo_sqlite') {

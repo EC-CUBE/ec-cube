@@ -43,9 +43,6 @@ class TaxRuleController extends AbstractController
 
     /**
      * TaxRuleController constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param TaxRuleRepository $taxRuleRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository, TaxRuleRepository $taxRuleRepository)
     {
@@ -55,8 +52,6 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の初期表示・登録
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */
@@ -153,9 +148,6 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の削除
-     *
-     * @param Request $request
-     * @param TaxRule $TaxRule
      *
      * @return RedirectResponse
      *

@@ -33,8 +33,6 @@ class PasswordResetType extends AbstractType
 
     /**
      * EntryType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -44,7 +42,6 @@ class PasswordResetType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void

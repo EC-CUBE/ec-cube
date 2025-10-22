@@ -22,7 +22,7 @@
  *
  * @return mixed The environment variable value or the default value
  */
-function env($key, $default = null)
+function env(string $key, mixed $default = null)
 {
     // Symfony Dotenv は $_ENV と $_SERVER に環境変数を設定するため、これらを優先
     if (isset($_ENV[$key])) {

@@ -81,7 +81,7 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
      *
      * @return WhereClause[]
      */
-    protected function createStatements($params, $queryKey): array
+    protected function createStatements(array $params, $queryKey): array
     {
         $callback = $this->callback;
 

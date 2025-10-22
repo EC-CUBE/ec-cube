@@ -35,7 +35,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      *
      * @return PluginManagePage
      */
-    public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
+    public function ストアプラグイン_有効化($pluginCode, string $message = '有効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
         $this->tester->see($message, self::完了メーッセージ);
@@ -49,7 +49,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      *
      * @return PluginManagePage
      */
-    public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
+    public function ストアプラグイン_無効化($pluginCode, string $message = '無効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
         $this->tester->see($message, self::完了メーッセージ);
@@ -65,7 +65,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
      *
      * @throws \Exception
      */
-    public function ストアプラグイン_削除($pluginCode, $message = '削除が完了しました。')
+    public function ストアプラグイン_削除($pluginCode, string $message = '削除が完了しました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton'], 60);

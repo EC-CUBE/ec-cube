@@ -36,8 +36,6 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/block/calendar', name: 'block_calendar', methods: ['GET'])]
@@ -92,7 +90,7 @@ class CalendarController extends AbstractController
      *
      * @return array<int,array<string,string>> カレンダーの配列
      */
-    private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate): array
+    private function setHolidayAndTodayFlag(array $targetMonthCalendar, array $holidayListOfTwoMonths, Carbon $targetDate): array
     {
         for ($i = 0; $i < count($targetMonthCalendar); $i++) {
             // カレンダー配列の日が空の場合は処理をスキップ
@@ -188,7 +186,7 @@ class CalendarController extends AbstractController
      *
      * @return string 曜日の文字 : Sun(日曜)からSat(土曜)
      */
-    private function getDayOfWeekString($dayOfWeekNumber): string
+    private function getDayOfWeekString(int $dayOfWeekNumber): string
     {
         $weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

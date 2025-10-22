@@ -31,8 +31,6 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
 
     /**
      * OrderUpdateProcessor constructor.
-     *
-     * @param OrderStatusRepository $orderStatusRepository
      */
     public function __construct(OrderStatusRepository $orderStatusRepository)
     {

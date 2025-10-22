@@ -40,11 +40,9 @@ class PaymentResult
      *
      * 決済が成功した場合は true, 失敗した場合は false を設定します.
      *
-     * @param bool $success
-     *
      * @return PaymentResult
      */
-    public function setSuccess($success): PaymentResult
+    public function setSuccess(bool $success): PaymentResult
     {
         $this->success = $success;
 
@@ -91,8 +89,6 @@ class PaymentResult
      * Response を設定します.
      *
      * 3Dセキュアなど, 決済中に他のサイトへリダイレクトが必要な特殊な用途に使用します.
-     *
-     * @param Response $response
      *
      * @return PaymentResult
      */

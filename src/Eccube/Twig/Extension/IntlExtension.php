@@ -39,12 +39,9 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28のように、日までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
-     * @param \DateTimeInterface|string|null $date
-     *
      * @return bool|string
      */
-    public function date_day(Environment $env, $date): bool|string
+    public function date_day(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
             return '';
@@ -59,12 +56,9 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13のように、分までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
-     * @param \DateTimeInterface|string|null $date
-     *
      * @return bool|string
      */
-    public function date_min(Environment $env, $date): bool|string
+    public function date_min(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
             return '';
@@ -79,12 +73,9 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13:05(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      *
-     * @param Environment $env
-     * @param \DateTimeInterface|string|null $date
-     *
      * @return bool|string
      */
-    public function date_sec(Environment $env, $date): bool|string
+    public function date_sec(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
             return '';
@@ -94,12 +85,9 @@ class IntlExtension extends AbstractExtension
     }
 
     /**
-     * @param Environment $env
-     * @param \DateTimeInterface|string|null $date
-     *
      * @return bool|string
      */
-    public function date_day_with_weekday(Environment $env, $date): bool|string
+    public function date_day_with_weekday(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
             return '';

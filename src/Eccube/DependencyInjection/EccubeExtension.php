@@ -29,7 +29,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      * Loads a specific configuration.
      *
      * @param array<mixed> $configs
-     * @param ContainerBuilder $container
      *
      * @return void
      *
@@ -50,7 +49,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     /**
      * @param array<mixed> $config
-     * @param ContainerBuilder $container
      *
      * @return ConfigurationInterface|null
      */
@@ -62,8 +60,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     /**
      * Allow an extension to prepend the extension configurations.
-     *
-     * @param ContainerBuilder $container
      *
      * @return void
      */
@@ -78,8 +74,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param ContainerBuilder $container
-     *
      * @return void
      */
     protected function configureFramework(ContainerBuilder $container): void
@@ -145,8 +139,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param ContainerBuilder $container
-     *
      * @return void
      *
      * @throws \Doctrine\DBAL\Exception
@@ -211,13 +203,11 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param ContainerBuilder $container
      * @param string[] $enabled
-     * @param string $pluginDir
      *
      * @return void
      */
-    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir): void
+    protected function configureTwigPaths(ContainerBuilder $container, array $enabled, string $pluginDir): void
     {
         $paths = [];
         $projectDir = $container->getParameter('kernel.project_dir');
@@ -243,13 +233,11 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param ContainerBuilder $container
      * @param string[] $enabled
-     * @param string $pluginDir
      *
      * @return void
      */
-    protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir): void
+    protected function configureTranslations(ContainerBuilder $container, array $enabled, string $pluginDir): void
     {
         $paths = [];
 
@@ -270,8 +258,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param Connection $conn
-     *
      * @return bool
      *
      * @throws \Doctrine\DBAL\Exception
@@ -290,11 +276,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param string $pluginDir
-     *
      * @return array<int,string>
      */
-    protected function getPluginDirectories($pluginDir): array
+    protected function getPluginDirectories(string $pluginDir): array
     {
         $finder = (new Finder())
             ->in($pluginDir)

@@ -38,9 +38,6 @@ class EccubeDataCollector extends DataCollector
      */
     protected $pluginRepository;
 
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
     public function __construct(EccubeConfig $eccubeConfig, PluginRepository $pluginRepository)
     {
         $this->data = [

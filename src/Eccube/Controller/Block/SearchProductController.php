@@ -35,8 +35,6 @@ class SearchProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/block/search_product', name: 'block_search_product', methods: ['GET'])]

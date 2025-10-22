@@ -49,11 +49,6 @@ class TaxProcessor implements ItemHolderPreprocessor
 
     /**
      * TaxProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param TaxRuleService $taxRuleService
-     * @param OrderHelper $orderHelper
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -142,7 +137,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      *
      * @return TaxType 税区分
      */
-    protected function getTaxType($OrderItemType): TaxType
+    protected function getTaxType(OrderItemType|int $OrderItemType): TaxType
     {
         if ($OrderItemType instanceof OrderItemType) {
             $OrderItemType = $OrderItemType->getId();
@@ -170,7 +165,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      *
      * @return TaxDisplayType 税表示区分
      */
-    protected function getTaxDisplayType($OrderItemType): TaxDisplayType
+    protected function getTaxDisplayType(OrderItemType|int $OrderItemType): TaxDisplayType
     {
         return $this->orderHelper->getTaxDisplayType($OrderItemType);
     }

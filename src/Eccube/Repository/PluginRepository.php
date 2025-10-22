@@ -48,7 +48,7 @@ class PluginRepository extends AbstractRepository
      *
      * @return Plugin|null
      */
-    public function findByCode($code): ?Plugin
+    public function findByCode(string $code): ?Plugin
     {
         $qb = $this->createQueryBuilder('p')
             ->where('LOWER(p.code) = :code')

@@ -27,8 +27,6 @@ class TaxExtension extends AbstractExtension
 
     /**
      * TaxExtension constructor.
-     *
-     * @param TaxRuleRepository $taxRuleRepository
      */
     public function __construct(TaxRuleRepository $taxRuleRepository)
     {
@@ -52,8 +50,6 @@ class TaxExtension extends AbstractExtension
      * 明細が軽減税率対象かどうかを返す.
      *
      * 受注作成時点での標準税率と比較し, 異なれば軽減税率として判定する.
-     *
-     * @param OrderItem $OrderItem
      *
      * @return bool
      */

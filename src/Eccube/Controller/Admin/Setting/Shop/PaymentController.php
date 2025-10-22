@@ -44,8 +44,6 @@ class PaymentController extends AbstractController
 
     /**
      * PaymentController constructor.
-     *
-     * @param PaymentRepository $paymentRepository
      */
     public function __construct(PaymentRepository $paymentRepository)
     {
@@ -53,8 +51,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
@@ -81,9 +77,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Payment|null $Payment
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
@@ -173,8 +166,6 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
      *
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
@@ -227,8 +218,6 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     * @param Request $request
-     *
      * @return BinaryFileResponse
      *
      * @throws BadRequestHttpException|NotFoundHttpException
@@ -264,8 +253,6 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
      *
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws BadRequestHttpException|NotFoundHttpException
@@ -289,9 +276,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Payment $TargetPayment
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -329,8 +313,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Payment $Payment
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
@@ -352,8 +334,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws BadRequestHttpException

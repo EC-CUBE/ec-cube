@@ -52,8 +52,6 @@ class InstallPluginController extends InstallController
     /**
      * 有効化可能なプラグイン一覧を返します.
      *
-     * @param Request $request
-     *
      * @return JsonResponse
      */
     #[Route('/install/plugins', name: 'install_plugins', methods: ['GET'])]
@@ -77,11 +75,7 @@ class InstallPluginController extends InstallController
     /**
      * プラグインを有効にします。
      *
-     * @param Request $request
-     * @param SystemService $systemService
-     * @param PluginService $pluginService
      * @param string $code
-     * @param EventDispatcherInterface $dispatcher
      *
      * @return JsonResponse
      *
@@ -168,11 +162,9 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションチェックファイルの有効期限を確認する
      *
-     * @param string $token
-     *
      * @return bool
      */
-    public function isValidTransaction($token): bool
+    public function isValidTransaction(string $token): bool
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
@@ -191,10 +183,6 @@ class InstallPluginController extends InstallController
     /**
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
-     *
-     * @param Request $request
-     * @param ComposerApiService $composerApiService
-     * @param EventDispatcherInterface $dispatcher
      *
      * @return JsonResponse
      *

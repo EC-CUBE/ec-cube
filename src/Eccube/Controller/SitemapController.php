@@ -75,8 +75,6 @@ class SitemapController extends AbstractController
     /**
      * Output sitemap index
      *
-     * @param PaginatorInterface $paginator
-     *
      * @return Response
      */
     #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
@@ -205,11 +203,10 @@ class SitemapController extends AbstractController
      * Output XML response by data.
      *
      * @param array<string,mixed> $data
-     * @param string $template_name
      *
      * @return Response
      */
-    private function outputXml(array $data, $template_name = 'sitemap.xml.twig'): Response
+    private function outputXml(array $data, string $template_name = 'sitemap.xml.twig'): Response
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/xml'); // Content-Typeを設定

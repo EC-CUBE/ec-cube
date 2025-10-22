@@ -36,8 +36,6 @@ class NewsController extends AbstractController
 
     /**
      * NewsController constructor.
-     *
-     * @param NewsRepository $newsRepository
      */
     public function __construct(NewsRepository $newsRepository)
     {
@@ -47,9 +45,7 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
-     * @param Request $request
      * @param int $page_no
-     * @param PaginatorInterface $paginator
      *
      * @return array<string,mixed>
      */
@@ -82,7 +78,6 @@ class NewsController extends AbstractController
     /**
      * 新着情報を登録・編集する。
      *
-     * @param Request $request
      * @param int|null $id
      *
      * @return array<string, mixed>|RedirectResponse
@@ -148,9 +143,6 @@ class NewsController extends AbstractController
 
     /**
      * 指定した新着情報を削除する。
-     *
-     * @param Request $request
-     * @param News $News
      *
      * @return RedirectResponse
      */

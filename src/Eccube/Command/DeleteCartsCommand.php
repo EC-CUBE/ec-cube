@@ -80,9 +80,6 @@ class DeleteCartsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      *
      * @throws \Exception
@@ -115,9 +112,6 @@ class DeleteCartsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @return void
      *
      * @throws \Exception
@@ -146,8 +140,6 @@ class DeleteCartsCommand extends Command
     }
 
     /**
-     * @param \DateTime $dateTime
-     *
      * @return void
      */
     protected function deleteCarts(\DateTime $dateTime): void

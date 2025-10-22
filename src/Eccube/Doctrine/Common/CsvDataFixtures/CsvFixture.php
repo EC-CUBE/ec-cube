@@ -32,8 +32,6 @@ class CsvFixture implements FixtureInterface
 
     /**
      * CsvFixture constructor.
-     *
-     * @param \SplFileObject|null $file
      */
     public function __construct(?\SplFileObject $file = null)
     {
@@ -145,7 +143,7 @@ class CsvFixture implements FixtureInterface
      *
      * @return string INSERT 文
      */
-    public function getSql($table_name, array $headers): string
+    public function getSql(string $table_name, array $headers): string
     {
         return 'INSERT INTO '.$table_name.' ('.implode(', ', $headers).') VALUES ('.implode(', ', array_fill(0, count($headers), '?')).')';
     }

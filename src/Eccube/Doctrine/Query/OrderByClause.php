@@ -30,11 +30,8 @@ class OrderByClause
 
     /**
      * OrderByClause constructor.
-     *
-     * @param string $sort
-     * @param string $order
      */
-    public function __construct($sort, $order = 'asc')
+    public function __construct(string $sort, string $order = 'asc')
     {
         $this->sort = $sort;
         $this->order = $order;

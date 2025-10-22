@@ -39,8 +39,6 @@ class TagController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/product/tag', name: 'admin_product_tag', methods: ['GET', 'POST'])]
@@ -124,9 +122,6 @@ class TagController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Tag $Tag
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -162,8 +157,6 @@ class TagController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/product/tag/sort_no/move', name: 'admin_product_tag_sort_no_move', methods: ['POST'])]
@@ -185,10 +178,6 @@ class TagController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param FormInterface $form
-     * @param Tag $Tag
-     *
      * @return void
      */
     protected function dispatchComplete(Request $request, FormInterface $form, Tag $Tag): void

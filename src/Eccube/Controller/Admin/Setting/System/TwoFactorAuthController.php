@@ -42,9 +42,6 @@ class TwoFactorAuthController extends AbstractController
 
     /**
      * TwoFactorAuthController constructor.
-     *
-     * @param MemberRepository $memberRepository
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         MemberRepository $memberRepository,
@@ -57,8 +54,6 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/two_factor_auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
@@ -104,8 +99,6 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
@@ -123,8 +116,6 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
@@ -145,8 +136,6 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>|RedirectResponse
      */
     private function createResponse(Request $request): array|RedirectResponse

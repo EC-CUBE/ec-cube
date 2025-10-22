@@ -117,7 +117,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
      *
      * @return TaxRule
      */
-    public function createTaxRule($tax_rate = 8, $apply_date = null)
+    public function createTaxRule(int $tax_rate = 8, ?\DateTime $apply_date = null)
     {
         $TaxRule = new TaxRule();
         $RoundingType = $this->entityManager->find(RoundingType::class, 1);

@@ -24,8 +24,6 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 class InitSubscriber
 {
     /**
-     * @param ConnectionEventArgs $args
-     *
      * @return void
      */
     public function __invoke(ConnectionEventArgs $args): void

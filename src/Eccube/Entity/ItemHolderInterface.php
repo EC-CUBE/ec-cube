@@ -34,11 +34,9 @@ interface ItemHolderInterface
     /**
      * 合計金額を設定します。
      *
-     * @param string $total
-     *
      * @return $this
      */
-    public function setTotal($total): static;
+    public function setTotal(string $total): static;
 
     /**
      * 個数の合計を返します。
@@ -50,11 +48,9 @@ interface ItemHolderInterface
     /**
      * 送料合計を設定します。
      *
-     * @param string $total
-     *
      * @return $this
      */
-    public function setDeliveryFeeTotal($total): static;
+    public function setDeliveryFeeTotal(string $total): static;
 
     /**
      * 送料合計を返します。
@@ -66,40 +62,32 @@ interface ItemHolderInterface
     /**
      * 値引き合計を設定します。
      *
-     * @param string $total
-     *
      * @return $this
      */
-    public function setDiscount($total): static;
+    public function setDiscount(string $total): static;
 
     /**
      * 手数料合計を設定します。
      *
-     * @param string $total
-     *
      * @return $this
      */
-    public function setCharge($total): static;
+    public function setCharge(string $total): static;
 
     /**
      * 税額合計を設定します。
-     *
-     * @param string $total
      *
      * @return $this
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
-    public function setTax($total): static;
+    public function setTax(string $total): static;
 
     /**
      * 加算ポイントを設定します。
      *
-     * @param string $addPoint
-     *
      * @return $this
      */
-    public function setAddPoint($addPoint): static;
+    public function setAddPoint(string $addPoint): static;
 
     /**
      * 加算ポイントを返します.
@@ -111,11 +99,9 @@ interface ItemHolderInterface
     /**
      * 利用ポイントを設定します。
      *
-     * @param string $usePoint
-     *
      * @return $this
      */
-    public function setUsePoint($usePoint): static;
+    public function setUsePoint(string $usePoint): static;
 
     /**
      * 利用ポイントを返します.
@@ -125,8 +111,6 @@ interface ItemHolderInterface
     public function getUsePoint(): ?string;
 
     /**
-     * @param ItemInterface $item
-     *
      * @return void
      */
     public function addItem(ItemInterface $item): void;

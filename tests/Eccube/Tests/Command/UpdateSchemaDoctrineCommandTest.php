@@ -393,7 +393,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      *
      * @return CommandTester
      */
-    private function getCommandTester($name)
+    private function getCommandTester(string $name)
     {
         $kernel = static::createKernel();
         $command = new UpdateSchemaDoctrineCommand(
@@ -403,7 +403,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             static::getContainer()->get('doctrine')
         );
         $application = new Application($kernel);
-        $application->addCommand($command);
+        $application->add($command);
 
         return new CommandTester($application->find($name));
     }
@@ -507,7 +507,7 @@ EOT
      *
      * @return string output
      */
-    private function executeExternalProcess($command)
+    private function executeExternalProcess(string $command)
     {
         StaticDriver::commit();
         StaticDriver::beginTransaction();

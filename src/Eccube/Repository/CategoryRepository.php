@@ -38,9 +38,6 @@ class CategoryRepository extends AbstractRepository
 
     /**
      * CategoryRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -74,7 +71,7 @@ class CategoryRepository extends AbstractRepository
      *
      * @return Category[] カテゴリの配列
      */
-    public function getList(?Category $Parent = null, $flat = false): array
+    public function getList(?Category $Parent = null, bool $flat = false): array
     {
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')

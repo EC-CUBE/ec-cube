@@ -39,13 +39,11 @@ class CalendarRepository extends AbstractRepository
     }
 
     /**
-     * @param int $id
-     *
      * @return Calendar
      *
      * @throws \Exception
      */
-    public function get($id = 1): Calendar
+    public function get(int $id = 1): Calendar
     {
         $calendar = $this->find($id);
 

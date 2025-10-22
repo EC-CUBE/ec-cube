@@ -35,8 +35,6 @@ class PaymentValidator extends ItemHolderPostValidator
 
     /**
      * PaymentProcessor constructor.
-     *
-     * @param DeliveryRepository $deliveryRepository
      */
     public function __construct(DeliveryRepository $deliveryRepository)
     {
@@ -100,8 +98,6 @@ class PaymentValidator extends ItemHolderPostValidator
     }
 
     /**
-     * @param SaleType $SaleType
-     *
      * @return array<int, Delivery>
      */
     private function getDeliveries(SaleType $SaleType): array
@@ -122,7 +118,7 @@ class PaymentValidator extends ItemHolderPostValidator
      *
      * @return ArrayCollection<int, Payment>
      */
-    private function getPayments($Deliveries): ArrayCollection
+    private function getPayments(array $Deliveries): ArrayCollection
     {
         $Payments = new ArrayCollection();
         foreach ($Deliveries as $Delivery) {

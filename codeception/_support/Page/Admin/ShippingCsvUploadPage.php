@@ -25,7 +25,7 @@ class ShippingCsvUploadPage extends AbstractAdminPageStyleGuide
     /**
      * @param \AcceptanceTester $I
      */
-    public static function go($I)
+    public static function go(\AcceptanceTester $I)
     {
         $page = new ProductCsvUploadPage($I);
 

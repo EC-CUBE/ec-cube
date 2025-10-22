@@ -57,9 +57,6 @@ class PageRepository extends AbstractRepository
 
     /**
      * PageRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig)
     {
@@ -71,11 +68,9 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param string $route
-     *
      * @return Page
      */
-    public function getPageByRoute($route): Page
+    public function getPageByRoute(?string $route): Page
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -97,14 +92,12 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param string $url
-     *
      * @return Page
      *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getByUrl($url): Page
+    public function getByUrl(string $url): Page
     {
         $qb = $this->createQueryBuilder('p');
         $Page = $qb->select('p')
@@ -138,7 +131,7 @@ class PageRepository extends AbstractRepository
      *
      * @return array<int, mixed> ページ属性の配列
      */
-    public function getPageList($where = null, $parameters = []): array
+    public function getPageList(?string $where = null, array $parameters = []): array
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.id <> 0')

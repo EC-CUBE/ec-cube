@@ -42,9 +42,8 @@ class TransactionListener implements EventSubscriberInterface
      * TransactionListener constructor.
      *
      * @param EntityManager $em
-     * @param bool $isEnabled
      */
-    public function __construct(EntityManagerInterface $em, $isEnabled = true)
+    public function __construct(EntityManagerInterface $em, bool $isEnabled = true)
     {
         $this->em = $em;
         $this->isEnabled = $isEnabled;
@@ -62,8 +61,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel request listener callback.
-     *
-     * @param RequestEvent $event
      *
      * @return void
      */
@@ -93,8 +90,6 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * Kernel exception listener callback.
      *
-     * @param ExceptionEvent $event
-     *
      * @return void
      */
     public function onKernelException(ExceptionEvent $event): void
@@ -123,8 +118,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      *  Kernel terminate listener callback.
-     *
-     * @param TerminateEvent $event
      *
      * @return void
      */

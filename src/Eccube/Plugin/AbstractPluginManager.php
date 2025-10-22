@@ -43,7 +43,7 @@ abstract class AbstractPluginManager
      *
      * @return void
      */
-    public function migration(Connection $connection, $pluginCode, $version = null, $migrationFilePath = null): void
+    public function migration(Connection $connection, string $pluginCode, ?string $version = null, ?string $migrationFilePath = null): void
     {
         if (null === $migrationFilePath) {
             $migrationFilePath = __DIR__.'/../../../app/Plugin/'.$pluginCode.'/DoctrineMigrations';
@@ -87,7 +87,6 @@ abstract class AbstractPluginManager
      * Install the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
      *
      * @return void
      */
@@ -100,7 +99,6 @@ abstract class AbstractPluginManager
      * Update the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
      *
      * @return void
      */
@@ -113,7 +111,6 @@ abstract class AbstractPluginManager
      * Enable the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
      *
      * @return void
      */
@@ -126,7 +123,6 @@ abstract class AbstractPluginManager
      * Disable the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
      *
      * @return void
      */
@@ -139,7 +135,6 @@ abstract class AbstractPluginManager
      * Uninstall the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
      *
      * @return void
      */

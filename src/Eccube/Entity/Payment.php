@@ -147,11 +147,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set method.
          *
-         * @param string|null $method
-         *
          * @return Payment
          */
-        public function setMethod($method = null): Payment
+        public function setMethod(?string $method = null): Payment
         {
             $this->method = $method;
 
@@ -171,11 +169,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set charge.
          *
-         * @param string|null $charge
-         *
          * @return Payment
          */
-        public function setCharge($charge = null): Payment
+        public function setCharge(?string $charge = null): Payment
         {
             $this->charge = $charge;
 
@@ -195,11 +191,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set ruleMax.
          *
-         * @param string|null $ruleMax
-         *
          * @return Payment
          */
-        public function setRuleMax($ruleMax = null): Payment
+        public function setRuleMax(?string $ruleMax = null): Payment
         {
             $this->rule_max = $ruleMax;
 
@@ -219,11 +213,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set sortNo.
          *
-         * @param int|null $sortNo
-         *
          * @return Payment
          */
-        public function setSortNo($sortNo = null): Payment
+        public function setSortNo(?int $sortNo = null): Payment
         {
             $this->sort_no = $sortNo;
 
@@ -243,11 +235,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set fixed.
          *
-         * @param bool $fixed
-         *
          * @return Payment
          */
-        public function setFixed($fixed): Payment
+        public function setFixed(?bool $fixed): Payment
         {
             $this->fixed = $fixed;
 
@@ -267,11 +257,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set paymentImage.
          *
-         * @param string|null $paymentImage
-         *
          * @return Payment
          */
-        public function setPaymentImage($paymentImage = null): Payment
+        public function setPaymentImage(?string $paymentImage = null): Payment
         {
             $this->payment_image = $paymentImage;
 
@@ -291,11 +279,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set ruleMin.
          *
-         * @param string|null $ruleMin
-         *
          * @return Payment
          */
-        public function setRuleMin($ruleMin = null): Payment
+        public function setRuleMin(?string $ruleMin = null): Payment
         {
             $this->rule_min = $ruleMin;
 
@@ -315,11 +301,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set methodClass.
          *
-         * @param string|null $methodClass
-         *
          * @return Payment
          */
-        public function setMethodClass($methodClass = null): Payment
+        public function setMethodClass(?string $methodClass = null): Payment
         {
             $this->method_class = $methodClass;
 
@@ -345,11 +329,9 @@ if (!class_exists(Payment::class)) {
         }
 
         /**
-         * @param bool $visible
-         *
          * @return Payment
          */
-        public function setVisible($visible): Payment
+        public function setVisible(bool $visible): Payment
         {
             $this->visible = $visible;
 
@@ -359,11 +341,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Payment
          */
-        public function setCreateDate($createDate): Payment
+        public function setCreateDate(\DateTime $createDate): Payment
         {
             $this->create_date = $createDate;
 
@@ -383,11 +363,9 @@ if (!class_exists(Payment::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Payment
          */
-        public function setUpdateDate($updateDate): Payment
+        public function setUpdateDate(\DateTime $updateDate): Payment
         {
             $this->update_date = $updateDate;
 
@@ -407,8 +385,6 @@ if (!class_exists(Payment::class)) {
         /**
          * Add paymentOption.
          *
-         * @param PaymentOption $paymentOption
-         *
          * @return Payment
          */
         public function addPaymentOption(PaymentOption $paymentOption): Payment
@@ -420,8 +396,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Remove paymentOption.
-         *
-         * @param PaymentOption $paymentOption
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -442,8 +416,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return Payment
          */

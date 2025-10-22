@@ -31,8 +31,6 @@ class RepeatedEmailType extends AbstractType
 
     /**
      * ContactType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -41,8 +39,6 @@ class RepeatedEmailType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

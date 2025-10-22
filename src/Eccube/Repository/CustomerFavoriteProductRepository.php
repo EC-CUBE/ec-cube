@@ -35,9 +35,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param Customer $Customer
-     * @param Product  $Product
-     *
      * @return void
      */
     public function addFavorite(Customer $Customer, Product $Product): void
@@ -56,9 +53,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param  Customer $Customer
-     * @param  Product  $Product
-     *
      * @return bool
      */
     public function isFavorite(Customer $Customer, Product $Product): bool
@@ -77,8 +71,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     }
 
     /**
-     * @param  Customer $Customer
-     *
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder

@@ -39,11 +39,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティを削除します。
      *
-     * @param T $entity
-     *
      * @return void
      */
-    public function delete($entity): void
+    public function delete(AbstractEntity $entity): void
     {
         $this->getEntityManager()->remove($entity);
     }
@@ -51,11 +49,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * エンティティの登録/保存します。
      *
-     * @param T $entity
-     *
      * @return void
      */
-    public function save($entity): void
+    public function save(AbstractEntity $entity): void
     {
         $this->getEntityManager()->persist($entity);
     }

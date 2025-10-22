@@ -24,7 +24,6 @@ class SexType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -37,8 +36,6 @@ class SexType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

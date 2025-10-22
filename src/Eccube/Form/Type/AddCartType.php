@@ -67,7 +67,6 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -164,8 +163,6 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]
@@ -183,8 +180,6 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
      *
      * @return void

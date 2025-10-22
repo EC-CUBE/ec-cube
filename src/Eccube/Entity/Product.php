@@ -223,11 +223,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get getClassCategories2
          *
-         * @param string $class_category1
-         *
          * @return array<int, string|null>
          */
-        public function getClassCategories2($class_category1): array
+        public function getClassCategories2(string $class_category1): array
         {
             $this->_calc();
 
@@ -235,11 +233,9 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @param string $class_category1
-         *
          * @return array<string,int>
          */
-        public function getClassCategories2AsFlip($class_category1): array
+        public function getClassCategories2AsFlip(string $class_category1): array
         {
             return array_flip($this->getClassCategories2($class_category1));
         }
@@ -632,8 +628,6 @@ if (!class_exists(Product::class)) {
          * コピー元のProductを受け取り,
          * 関連エンティティも再帰的にコピーする.
          *
-         * @param Product $Product
-         *
          * @return Product
          */
         public function copy(Product $Product): Product
@@ -691,11 +685,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return Product
          */
-        public function setName($name): Product
+        public function setName(string $name): Product
         {
             $this->name = $name;
 
@@ -715,11 +707,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set note.
          *
-         * @param string|null $note
-         *
          * @return Product
          */
-        public function setNote($note = null): Product
+        public function setNote(?string $note = null): Product
         {
             $this->note = $note;
 
@@ -739,11 +729,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set descriptionList.
          *
-         * @param string|null $descriptionList
-         *
          * @return Product
          */
-        public function setDescriptionList($descriptionList = null): Product
+        public function setDescriptionList(?string $descriptionList = null): Product
         {
             $this->description_list = $descriptionList;
 
@@ -763,11 +751,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set descriptionDetail.
          *
-         * @param string|null $descriptionDetail
-         *
          * @return Product
          */
-        public function setDescriptionDetail($descriptionDetail = null): Product
+        public function setDescriptionDetail(?string $descriptionDetail = null): Product
         {
             $this->description_detail = $descriptionDetail;
 
@@ -787,11 +773,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set searchWord.
          *
-         * @param string|null $searchWord
-         *
          * @return Product
          */
-        public function setSearchWord($searchWord = null): Product
+        public function setSearchWord(?string $searchWord = null): Product
         {
             $this->search_word = $searchWord;
 
@@ -811,11 +795,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set freeArea.
          *
-         * @param string|null $freeArea
-         *
          * @return Product
          */
-        public function setFreeArea($freeArea = null): Product
+        public function setFreeArea(?string $freeArea = null): Product
         {
             $this->free_area = $freeArea;
 
@@ -835,11 +817,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Product
          */
-        public function setCreateDate($createDate): Product
+        public function setCreateDate(\DateTime $createDate): Product
         {
             $this->create_date = $createDate;
 
@@ -859,11 +839,9 @@ if (!class_exists(Product::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Product
          */
-        public function setUpdateDate($updateDate): Product
+        public function setUpdateDate(\DateTime $updateDate): Product
         {
             $this->update_date = $updateDate;
 
@@ -883,8 +861,6 @@ if (!class_exists(Product::class)) {
         /**
          * Add productCategory.
          *
-         * @param ProductCategory $productCategory
-         *
          * @return Product
          */
         public function addProductCategory(ProductCategory $productCategory): Product
@@ -896,8 +872,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Remove productCategory.
-         *
-         * @param ProductCategory $productCategory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -919,8 +893,6 @@ if (!class_exists(Product::class)) {
         /**
          * Add productClass.
          *
-         * @param ProductClass $productClass
-         *
          * @return Product
          */
         public function addProductClass(ProductClass $productClass): Product
@@ -932,8 +904,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Remove productClass.
-         *
-         * @param ProductClass $productClass
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -955,8 +925,6 @@ if (!class_exists(Product::class)) {
         /**
          * Add productImage.
          *
-         * @param ProductImage $productImage
-         *
          * @return Product
          */
         public function addProductImage(ProductImage $productImage): Product
@@ -968,8 +936,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Remove productImage.
-         *
-         * @param ProductImage $productImage
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -991,8 +957,6 @@ if (!class_exists(Product::class)) {
         /**
          * Add productTag.
          *
-         * @param ProductTag $productTag
-         *
          * @return Product
          */
         public function addProductTag(ProductTag $productTag): Product
@@ -1004,8 +968,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Remove productTag.
-         *
-         * @param ProductTag $productTag
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1048,8 +1010,6 @@ if (!class_exists(Product::class)) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
-         *
          * @return Product
          */
         public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Product
@@ -1061,8 +1021,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Remove customerFavoriteProduct.
-         *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1083,8 +1041,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return Product
          */
@@ -1107,8 +1063,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set status.
-         *
-         * @param ProductStatus|null $status
          *
          * @return Product
          */

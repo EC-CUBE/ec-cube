@@ -62,11 +62,9 @@ if (!class_exists(OrderStatus::class, false)) {
         }
 
         /**
-         * @param bool $display_order_count
-         *
          * @return void
          */
-        public function setDisplayOrderCount($display_order_count = false): void
+        public function setDisplayOrderCount(bool $display_order_count = false): void
         {
             $this->display_order_count = $display_order_count;
         }

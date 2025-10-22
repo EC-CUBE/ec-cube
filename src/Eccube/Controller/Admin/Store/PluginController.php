@@ -77,12 +77,6 @@ class PluginController extends AbstractController
     /**
      * PluginController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginApiService $pluginApiService
-     * @param ComposerServiceInterface $composerService
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -194,10 +188,6 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグインからのアップデート
      *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
@@ -259,8 +249,6 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを有効にします。
-     *
-     * @param Plugin $Plugin
      *
      * @return RedirectResponse|JsonResponse
      *
@@ -345,10 +333,6 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを無効にします。
      *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
      * @return JsonResponse|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
@@ -424,9 +408,6 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを削除します。
      *
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -467,9 +448,6 @@ class PluginController extends AbstractController
 
     /**
      * プラグインファイルアップロード画面
-     *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      *
      * @return array<string,mixed>|RedirectResponse
      */
@@ -533,9 +511,6 @@ class PluginController extends AbstractController
 
     /**
      * 認証キー設定画面
-     *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      *
      * @return array<string,mixed>|RedirectResponse
      */

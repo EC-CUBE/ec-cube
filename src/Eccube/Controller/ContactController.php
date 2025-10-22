@@ -39,9 +39,6 @@ class ContactController extends AbstractController
 
     /**
      * ContactController constructor.
-     *
-     * @param MailService $mailService
-     * @param PageRepository $pageRepository
      */
     public function __construct(
         MailService $mailService,
@@ -53,8 +50,6 @@ class ContactController extends AbstractController
 
     /**
      * お問い合わせ画面.
-     *
-     * @param Request $request
      *
      * @return Response|RedirectResponse|array<string,mixed>
      */

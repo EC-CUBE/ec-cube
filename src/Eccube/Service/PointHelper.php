@@ -37,9 +37,6 @@ class PointHelper
 
     /**
      * PointHelper constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(BaseInfoRepository $baseInfoRepository, EntityManagerInterface $entityManager)
     {
@@ -72,7 +69,7 @@ class PointHelper
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function pointToPrice($point): string
+    public function pointToPrice(string $point): string
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -89,7 +86,7 @@ class PointHelper
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function pointToDiscount($point): string
+    public function pointToDiscount(string $point): string
     {
         return bcmul($this->pointToPrice($point), '-1', 0);
     }
@@ -97,14 +94,12 @@ class PointHelper
     /**
      * 金額をポイントに変換する.
      *
-     * @param string $price
-     *
      * @return string ポイント
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function priceToPoint($price): string
+    public function priceToPoint(string $price): string
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -114,14 +109,11 @@ class PointHelper
     /**
      * 明細追加処理.
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param string $discount
-     *
      * @return void
      *
      * @throws \Exception
      */
-    public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount): void
+    public function addPointDiscountItem(ItemHolderInterface $itemHolder, string $discount): void
     {
         // 注文明細以外は処理しない.
         if ($itemHolder instanceof Order === false) {
@@ -161,8 +153,6 @@ class PointHelper
     /**
      * 既存のポイント明細を削除する.
      *
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     public function removePointDiscountItem(ItemHolderInterface $itemHolder): void
@@ -178,12 +168,9 @@ class PointHelper
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param string $point
-     *
      * @return void
      */
-    public function prepare(ItemHolderInterface $itemHolder, $point): void
+    public function prepare(ItemHolderInterface $itemHolder, string $point): void
     {
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
@@ -191,12 +178,9 @@ class PointHelper
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param string $point
-     *
      * @return void
      */
-    public function rollback(ItemHolderInterface $itemHolder, $point): void
+    public function rollback(ItemHolderInterface $itemHolder, string $point): void
     {
         // 利用したポイントをユーザに戻す.
         $Customer = $itemHolder->getCustomer();

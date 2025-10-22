@@ -318,7 +318,7 @@ class OrderStateMachineTest extends EccubeTestCase
      *
      * @return OrderStatus
      */
-    private function statusOf($statusId)
+    private function statusOf(int $statusId)
     {
         return $this->entityManager->find(OrderStatus::class, $statusId);
     }

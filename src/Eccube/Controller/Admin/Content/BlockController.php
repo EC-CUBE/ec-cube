@@ -52,8 +52,6 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
@@ -81,10 +79,6 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Environment $twig
-     * @param Filesystem $fs
-     * @param CacheUtil $cacheUtil
      * @param int|null $id
      *
      * @return RedirectResponse|array<string,mixed>

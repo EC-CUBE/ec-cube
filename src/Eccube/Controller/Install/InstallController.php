@@ -140,8 +140,6 @@ class InstallController extends AbstractController
     /**
      * ようこそ.
      *
-     * @param Request $request
-     *
      * @return array<string,mixed>|RedirectResponse
      *
      * @throws NotFoundHttpException
@@ -260,8 +258,6 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
-     * @param Request $request
-     *
      * @return array<string, mixed>|RedirectResponse
      *
      * @throws \Exception
@@ -332,8 +328,6 @@ class InstallController extends AbstractController
     /**
      * データベースの設定.
      *
-     * @param Request $request
-     *
      * @return array<string,mixed>|RedirectResponse
      *
      * @throws \Exception
@@ -381,8 +375,6 @@ class InstallController extends AbstractController
 
     /**
      * データベースの初期化.
-     *
-     * @param Request $request
      *
      * @return array<string,mixed>|RedirectResponse
      *
@@ -465,8 +457,6 @@ class InstallController extends AbstractController
     /**
      * インストール完了
      *
-     * @param Request $request
-     *
      * @return array<string,mixed>
      *
      * @throws NotFoundHttpException
@@ -531,8 +521,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param SessionInterface $session
-     *
      * @return mixed
      */
     protected function getSessionData(SessionInterface $session): mixed
@@ -541,8 +529,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param SessionInterface $session
-     *
      * @return void
      */
     protected function removeSessionData(SessionInterface $session): void
@@ -551,12 +537,11 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param SessionInterface $session
      * @param array<mixed> $data
      *
      * @return void
      */
-    protected function setSessionData(SessionInterface $session, $data = []): void
+    protected function setSessionData(SessionInterface $session, array $data = []): void
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
@@ -633,8 +618,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param Connection $conn
-     *
      * @return EntityManager
      *
      * @throws \Doctrine\ORM\Exception\ORMException
@@ -698,13 +681,11 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param string $url
-     *
      * @return array<string,mixed>
      *
      * @throws \Exception
      */
-    public function extractDatabaseUrl($url): array
+    public function extractDatabaseUrl(string $url): array
     {
         if (preg_match('|^sqlite://(.*)$|', $url, $matches)) {
             return [
@@ -790,11 +771,9 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param string $url
-     *
      * @return array<string,mixed>
      */
-    public function extractMailerUrl($url): array
+    public function extractMailerUrl(string $url): array
     {
         $options = [
             'transport' => null,
@@ -852,8 +831,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return void
      *
      * @throws \Doctrine\DBAL\Exception
@@ -867,8 +844,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return void
      *
      * @throws \Doctrine\ORM\Tools\ToolsException
@@ -881,8 +856,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return void
      */
     protected function importCsv(EntityManager $em): void
@@ -901,7 +874,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param Connection $conn
      * @param array<string,mixed> $data
      *
      * @return void
@@ -961,7 +933,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param Connection $conn
      * @param array<string,mixed> $data
      *
      * @return void
@@ -1017,7 +988,7 @@ class InstallController extends AbstractController
      *
      * @return array<string,string>
      */
-    public function createAppData($params, EntityManager $em): array
+    public function createAppData(array $params, EntityManager $em): array
     {
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
         $version = $this->getDatabaseVersion($em);
@@ -1038,7 +1009,7 @@ class InstallController extends AbstractController
      *
      * @return $this
      */
-    protected function sendAppData($params, EntityManager $em): static
+    protected function sendAppData(array $params, EntityManager $em): static
     {
         try {
             $query = http_build_query($this->createAppData($params, $em));
@@ -1065,8 +1036,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param EntityManager $em
-     *
      * @return string
      *
      * @throws \Exception
@@ -1096,11 +1065,9 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @param string $adminAllowHosts
-     *
      * @return string
      */
-    public function convertAdminAllowHosts($adminAllowHosts): string
+    public function convertAdminAllowHosts(string $adminAllowHosts): string
     {
         if (empty($adminAllowHosts)) {
             return '[]';

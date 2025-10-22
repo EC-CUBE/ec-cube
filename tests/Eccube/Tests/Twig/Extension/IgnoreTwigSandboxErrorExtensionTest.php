@@ -17,6 +17,9 @@ use Eccube\Entity\Page;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+/**
+ * @group twig-sandbox-extension
+ */
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
     /**

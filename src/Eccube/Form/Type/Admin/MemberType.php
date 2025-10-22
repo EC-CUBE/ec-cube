@@ -44,9 +44,6 @@ class MemberType extends AbstractType
 
     /**
      * MemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param MemberRepository $memberRepository
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -59,7 +56,6 @@ class MemberType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -176,8 +172,6 @@ class MemberType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

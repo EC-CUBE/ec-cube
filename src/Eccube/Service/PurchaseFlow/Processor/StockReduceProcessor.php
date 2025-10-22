@@ -39,9 +39,6 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
 
     /**
      * StockReduceProcessor constructor.
-     *
-     * @param ProductStockRepository $productStockRepository
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(ProductStockRepository $productStockRepository, EntityManagerInterface $entityManager)
     {

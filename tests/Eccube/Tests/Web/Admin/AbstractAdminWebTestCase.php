@@ -28,7 +28,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
      *
      * @param mixed|null $user
      */
-    public function logIn($user = null)
+    public function logIn(mixed $user = null)
     {
         if (!is_object($user)) {
             $user = $this->createMember();

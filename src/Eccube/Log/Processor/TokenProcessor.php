@@ -31,8 +31,6 @@ class TokenProcessor
     }
 
     /**
-     * @param LogRecord $record
-     *
      * @return LogRecord
      */
     public function __invoke(LogRecord $record): LogRecord

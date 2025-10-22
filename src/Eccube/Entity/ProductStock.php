@@ -38,11 +38,9 @@ if (!class_exists(ProductStock::class)) {
         /**
          * Set product_class_id
          *
-         * @param int|null $productClassId
-         *
          * @return ProductStock
          */
-        public function setProductClassId($productClassId): ProductStock
+        public function setProductClassId(?int $productClassId): ProductStock
         {
             $this->product_class_id = $productClassId;
 
@@ -113,11 +111,9 @@ if (!class_exists(ProductStock::class)) {
         /**
          * Set stock.
          *
-         * @param string|null $stock
-         *
          * @return ProductStock
          */
-        public function setStock($stock = null): ProductStock
+        public function setStock(?string $stock = null): ProductStock
         {
             $this->stock = $stock;
 
@@ -137,11 +133,9 @@ if (!class_exists(ProductStock::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return ProductStock
          */
-        public function setCreateDate($createDate): ProductStock
+        public function setCreateDate(\DateTime $createDate): ProductStock
         {
             $this->create_date = $createDate;
 
@@ -161,11 +155,9 @@ if (!class_exists(ProductStock::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return ProductStock
          */
-        public function setUpdateDate($updateDate): ProductStock
+        public function setUpdateDate(\DateTime $updateDate): ProductStock
         {
             $this->update_date = $updateDate;
 
@@ -184,8 +176,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set productClass.
-         *
-         * @param ProductClass|null $productClass
          *
          * @return ProductStock
          */
@@ -208,8 +198,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return ProductStock
          */

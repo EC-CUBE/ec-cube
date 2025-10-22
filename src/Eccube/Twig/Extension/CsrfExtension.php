@@ -27,8 +27,6 @@ class CsrfExtension extends AbstractExtension
 
     /**
      * CsrfExtension constructor.
-     *
-     * @param CsrfTokenManagerInterface $tokenManager
      */
     public function __construct(CsrfTokenManagerInterface $tokenManager)
     {

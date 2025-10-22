@@ -81,13 +81,6 @@ class LayoutController extends AbstractController
 
     /**
      * LayoutController constructor.
-     *
-     * @param BlockRepository $blockRepository
-     * @param LayoutRepository $layoutRepository
-     * @param PageLayoutRepository $pageLayoutRepository
-     * @param PageRepository $pageRepository
-     * @param ProductRepository $productRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
     {
@@ -121,8 +114,6 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @param Layout $Layout
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -149,8 +140,6 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      * @param string|null $id
      * @param string|null $previewPageId
      *
@@ -248,9 +237,6 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Twig $twig
-     *
      * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/content/layout/view_block', name: 'admin_content_layout_view_block', methods: ['GET'])]

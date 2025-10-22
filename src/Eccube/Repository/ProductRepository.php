@@ -53,10 +53,6 @@ class ProductRepository extends AbstractRepository
 
     /**
      * ProductRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -71,11 +67,9 @@ class ProductRepository extends AbstractRepository
     /**
      * Find the Product with sorted ClassCategories.
      *
-     * @param int $productId
-     *
      * @return Product|null
      */
-    public function findWithSortedClassCategories($productId): ?Product
+    public function findWithSortedClassCategories(int $productId): ?Product
     {
         $qb = $this->createQueryBuilder('p');
         $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
@@ -106,7 +100,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return ArrayCollection<int, mixed>|array<int, mixed>|null
      */
-    public function findProductsWithSortedClassCategories(array $ids, $indexBy = null): ArrayCollection|array|null
+    public function findProductsWithSortedClassCategories(array $ids, ?string $indexBy = null): ArrayCollection|array|null
     {
         if (count($ids) < 1) {
             return [];
@@ -148,7 +142,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchData($searchData): QueryBuilder
+    public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.Status = 1');
@@ -249,7 +243,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData): QueryBuilder
+    public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('pc', 'pi', 'tr', 'ps')

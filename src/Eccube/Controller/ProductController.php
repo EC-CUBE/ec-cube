@@ -83,14 +83,6 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     *
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param ProductRepository $productRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param AuthenticationUtils $helper
-     * @param ProductListMaxRepository $productListMaxRepository
      */
     public function __construct(
         PurchaseFlow $cartPurchaseFlow,
@@ -112,9 +104,6 @@ class ProductController extends AbstractController
 
     /**
      * 商品一覧画面.
-     *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      *
      * @return array<string,mixed>
      */
@@ -215,9 +204,6 @@ class ProductController extends AbstractController
     /**
      * 商品詳細画面.
      *
-     * @param Request $request
-     * @param Product $Product
-     *
      * @return array<string,mixed>
      *
      * @throws NotFoundHttpException
@@ -268,9 +254,6 @@ class ProductController extends AbstractController
     /**
      * お気に入り追加.
      *
-     * @param Request $request
-     * @param Product $Product
-     *
      * @return RedirectResponse
      */
     #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
@@ -319,9 +302,6 @@ class ProductController extends AbstractController
 
     /**
      * カートに追加.
-     *
-     * @param Request $request
-     * @param Product $Product
      *
      * @return Response|RedirectResponse
      *
@@ -451,7 +431,7 @@ class ProductController extends AbstractController
      *
      * @return string
      */
-    protected function getPageTitle($searchData): string
+    protected function getPageTitle(?array $searchData): string
     {
         if (isset($searchData['name']) && !empty($searchData['name'])) {
             return trans('front.product.search_result');
@@ -464,8 +444,6 @@ class ProductController extends AbstractController
 
     /**
      * 閲覧可能な商品かどうかを判定
-     *
-     * @param Product $Product
      *
      * @return bool 閲覧可能な場合はtrue
      */

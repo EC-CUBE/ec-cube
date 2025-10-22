@@ -90,16 +90,6 @@ class ShippingController extends AbstractController
 
     /**
      * EditController constructor.
-     *
-     * @param MailService $mailService
-     * @param OrderItemRepository $orderItemRepository
-     * @param CategoryRepository $categoryRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param TaxRuleService $taxRuleService
-     * @param ShippingRepository $shippingRepository
-     * @param SerializerInterface $serializer
-     * @param OrderStateMachine $orderStateMachine
-     * @param PurchaseFlow $orderPurchaseFlow
      */
     public function __construct(
         MailService $mailService,
@@ -125,9 +115,6 @@ class ShippingController extends AbstractController
 
     /**
      * 出荷登録/編集画面.
-     *
-     * @param Request $request
-     * @param Order $Order
      *
      * @return RedirectResponse|array<string,mixed>
      *
@@ -305,8 +292,6 @@ class ShippingController extends AbstractController
     }
 
     /**
-     * @param Shipping $Shipping
-     *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/shipping/preview_notify_mail/{id}', requirements: ['id' => '\d+'], name: 'admin_shipping_preview_notify_mail', methods: ['GET'])]
@@ -316,8 +301,6 @@ class ShippingController extends AbstractController
     }
 
     /**
-     * @param Shipping $Shipping
-     *
      * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]

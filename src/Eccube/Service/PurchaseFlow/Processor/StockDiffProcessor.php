@@ -35,8 +35,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
     public function __construct(ProductClassRepository $productClassRepository)
     {
@@ -44,9 +42,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @return void
      *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
@@ -101,9 +96,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     }
 
     /**
-     * @param ItemHolderInterface $From
-     * @param ItemHolderInterface $To
-     *
      * @return array<int, string> 商品クラスIDをキーとした商品の数量の差分
      */
     protected function getDiffOfQuantities(ItemHolderInterface $From, ItemHolderInterface $To): array

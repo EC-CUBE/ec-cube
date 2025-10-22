@@ -33,8 +33,6 @@ class AuthorityController extends AbstractController
 
     /**
      * AuthorityController constructor.
-     *
-     * @param AuthorityRoleRepository $authorityRoleRepository
      */
     public function __construct(AuthorityRoleRepository $authorityRoleRepository)
     {
@@ -42,8 +40,6 @@ class AuthorityController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse|array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]

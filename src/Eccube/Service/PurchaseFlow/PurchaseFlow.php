@@ -72,11 +72,9 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param string $flowType
-     *
      * @return void
      */
-    public function setFlowType($flowType): void
+    public function setFlowType(string $flowType): void
     {
         $this->flowType = $flowType;
     }
@@ -152,9 +150,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @return PurchaseFlowResult
      */
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): PurchaseFlowResult
@@ -221,9 +216,6 @@ class PurchaseFlow implements \Stringable
     /**
      * 購入フロー仮確定処理.
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @return void
      *
      * @throws PurchaseException
@@ -239,9 +231,6 @@ class PurchaseFlow implements \Stringable
 
     /**
      * 購入フロー確定処理.
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
      *
      * @return void
      *
@@ -259,9 +248,6 @@ class PurchaseFlow implements \Stringable
     /**
      * 購入フロー仮確定取り消し処理.
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
      * @return void
      */
     public function rollback(ItemHolderInterface $target, PurchaseContext $context): void
@@ -274,8 +260,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param PurchaseProcessor $purchaseProcessor
-     *
      * @return void
      */
     public function addPurchaseProcessor(PurchaseProcessor $purchaseProcessor): void
@@ -284,8 +268,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderPreprocessor $itemHolderPreprocessor
-     *
      * @return void
      */
     public function addItemHolderPreprocessor(ItemHolderPreprocessor $itemHolderPreprocessor): void
@@ -294,8 +276,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemPreprocessor $itemPreprocessor
-     *
      * @return void
      */
     public function addItemPreprocessor(ItemPreprocessor $itemPreprocessor): void
@@ -304,8 +284,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemValidator $itemValidator
-     *
      * @return void
      */
     public function addItemValidator(ItemValidator $itemValidator): void
@@ -314,8 +292,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderValidator $itemHolderValidator
-     *
      * @return void
      */
     public function addItemHolderValidator(ItemHolderValidator $itemHolderValidator): void
@@ -324,8 +300,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderPostValidator $itemHolderPostValidator
-     *
      * @return void
      */
     public function addItemHolderPostValidator(ItemHolderPostValidator $itemHolderPostValidator): void
@@ -334,8 +308,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param DiscountProcessor $discountProcessor
-     *
      * @return void
      */
     public function addDiscountProcessor(DiscountProcessor $discountProcessor): void
@@ -344,8 +316,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateTotal(ItemHolderInterface $itemHolder): void
@@ -364,8 +334,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateSubTotal(ItemHolderInterface $itemHolder): void
@@ -385,8 +353,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateDeliveryFeeTotal(ItemHolderInterface $itemHolder): void
@@ -402,8 +368,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateDiscount(ItemHolderInterface $itemHolder): void
@@ -420,8 +384,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateCharge(ItemHolderInterface $itemHolder): void
@@ -437,8 +399,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateTax(ItemHolderInterface $itemHolder): void
@@ -460,8 +420,6 @@ class PurchaseFlow implements \Stringable
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
      * @return void
      */
     protected function calculateAll(ItemHolderInterface $itemHolder): void

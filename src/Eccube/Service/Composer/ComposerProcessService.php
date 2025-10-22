@@ -48,10 +48,6 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * ComposerProcessService constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
-     * @param ComposerApiService $composerApiService
      */
     public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, ComposerApiService $composerApiService, BaseInfoRepository $baseInfoRepository)
     {
@@ -71,7 +67,7 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     #[\Override]
-    public function execRemove($packageName, $output = null): string
+    public function execRemove($packageName, ?OutputInterface $output = null): string
     {
         return $this->runCommand([
             'eccube:composer:remove',
@@ -81,14 +77,12 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * @param string[] $commands
-     * @param OutputInterface|null $output
-     * @param bool $init
      *
      * @return string
      *
      * @throws PluginException
      */
-    public function runCommand($commands, $output = null, $init = true): string
+    public function runCommand(array $commands, ?OutputInterface $output = null, bool $init = true): string
     {
         if ($init) {
             $this->init();
@@ -116,15 +110,13 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * Set init
      *
-     * @param BaseInfo|null $BaseInfo
-     *
      * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function init($BaseInfo = null): void
+    private function init(?BaseInfo $BaseInfo = null): void
     {
         //        /**
         //         * Mysql lock in transaction

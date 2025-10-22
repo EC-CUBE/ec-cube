@@ -18,7 +18,7 @@ class ShoppingLoginPage extends AbstractFrontPage
     /**
      * @param \AcceptanceTester $I
      */
-    public static function at($I)
+    public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
         $page->tester->see('ログイン', 'div.ec-pageHeader h1');

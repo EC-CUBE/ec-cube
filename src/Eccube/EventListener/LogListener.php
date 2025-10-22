@@ -15,6 +15,7 @@ namespace Eccube\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -63,8 +64,6 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      */
     public function onKernelRequestEarly(RequestEvent $event): void
@@ -77,8 +76,6 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
      * @return void
      */
     public function onKernelRequest(RequestEvent $event): void
@@ -94,18 +91,14 @@ class LogListener implements EventSubscriberInterface
     /**
      * ルーティング名を取得する.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return string|null
      */
-    private function getRoute($request): ?string
+    private function getRoute(Request $request): ?string
     {
         return $request->attributes->get('_route');
     }
 
     /**
-     * @param ControllerEvent $event
-     *
      * @return void
      */
     public function onKernelController(ControllerEvent $event): void
@@ -119,8 +112,6 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * @param ResponseEvent $event
-     *
      * @return void
      */
     public function onKernelResponse(ResponseEvent $event): void
@@ -134,8 +125,6 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * @param TerminateEvent $event
-     *
      * @return void
      */
     public function onKernelTerminate(TerminateEvent $event): void
@@ -145,8 +134,6 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * @param ExceptionEvent $event
-     *
      * @return void
      */
     public function onKernelException(ExceptionEvent $event): void

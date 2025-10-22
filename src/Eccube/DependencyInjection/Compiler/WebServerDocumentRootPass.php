@@ -23,17 +23,12 @@ class WebServerDocumentRootPass implements CompilerPassInterface
      */
     protected $docroot;
 
-    /**
-     * @param string $docroot
-     */
-    public function __construct($docroot = '%kernel.project_dir%/')
+    public function __construct(string $docroot = '%kernel.project_dir%/')
     {
         $this->docroot = $docroot;
     }
 
     /**
-     * @param ContainerBuilder $container
-     *
      * @return void
      */
     #[\Override]

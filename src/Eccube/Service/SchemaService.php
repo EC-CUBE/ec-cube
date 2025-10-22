@@ -37,9 +37,6 @@ class SchemaService
 
     /**
      * SchemaService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PluginContext $pluginContext
      */
     public function __construct(EntityManagerInterface $entityManager, PluginContext $pluginContext)
     {
@@ -60,7 +57,7 @@ class SchemaService
      *
      * @return void
      */
-    public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null): void
+    public function executeCallback(callable $callback, array $generatedFiles, string $proxiesDirectory, ?string $outputDir = null): void
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
@@ -132,7 +129,7 @@ class SchemaService
      *
      * @return void
      */
-    public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false): void
+    public function updateSchema(array $generatedFiles, string $proxiesDirectory, bool $saveMode = false): void
     {
         $this->executeCallback(function (SchemaTool $tool, array $metaData) {
             $tool->updateSchema($metaData);
@@ -146,7 +143,7 @@ class SchemaService
      *
      * @return void
      */
-    public function dropTable($targetNamespace): void
+    public function dropTable(string $targetNamespace): void
     {
         $driver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
 

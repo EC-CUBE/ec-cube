@@ -46,8 +46,6 @@ class ProductClassType extends AbstractType
 
     /**
      * ProductClassType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -60,7 +58,6 @@ class ProductClassType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void
@@ -156,8 +153,6 @@ class ProductClassType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

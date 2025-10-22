@@ -30,8 +30,6 @@ class AuthenticationType extends AbstractType
 
     /**
      * AuthenticationType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -41,7 +39,6 @@ class AuthenticationType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string,mixed> $options
      *
      * @return void
@@ -72,8 +69,6 @@ class AuthenticationType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

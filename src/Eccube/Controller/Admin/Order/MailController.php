@@ -55,11 +55,6 @@ class MailController extends AbstractController
 
     /**
      * MailController constructor.
-     *
-     * @param MailService $mailService
-     * @param MailHistoryRepository $mailHistoryRepository
-     * @param OrderRepository $orderRepository
-     * @param Environment $twig
      */
     public function __construct(
         MailService $mailService,
@@ -74,9 +69,6 @@ class MailController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Order $Order
-     *
      * @return Response|RedirectResponse|array<string,mixed>
      *
      * @throws LoaderError  When the template cannot be found
@@ -206,12 +198,9 @@ class MailController extends AbstractController
     }
 
     /**
-     * @param Order $Order
-     * @param string $twig
-     *
      * @return string
      */
-    private function createBody($Order, $twig = 'Mail/order.twig'): string
+    private function createBody(Order $Order, string $twig = 'Mail/order.twig'): string
     {
         $body = '';
         try {

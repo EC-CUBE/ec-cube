@@ -76,11 +76,9 @@ if (!class_exists(DeliveryDuration::class)) {
         /**
          * Set name.
          *
-         * @param string|null $name
-         *
          * @return DeliveryDuration
          */
-        public function setName($name = null): DeliveryDuration
+        public function setName(?string $name = null): DeliveryDuration
         {
             $this->name = $name;
 
@@ -100,11 +98,9 @@ if (!class_exists(DeliveryDuration::class)) {
         /**
          * Set duration.
          *
-         * @param int $duration
-         *
          * @return DeliveryDuration
          */
-        public function setDuration($duration): DeliveryDuration
+        public function setDuration(int $duration): DeliveryDuration
         {
             $this->duration = $duration;
 
@@ -124,11 +120,9 @@ if (!class_exists(DeliveryDuration::class)) {
         /**
          * Set sortNo.
          *
-         * @param int $sortNo
-         *
          * @return DeliveryDuration
          */
-        public function setSortNo($sortNo): DeliveryDuration
+        public function setSortNo(int $sortNo): DeliveryDuration
         {
             $this->sort_no = $sortNo;
 

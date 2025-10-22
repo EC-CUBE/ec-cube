@@ -60,11 +60,9 @@ if (!class_exists(PaymentOption::class)) {
         /**
          * Set deliveryId.
          *
-         * @param int $deliveryId
-         *
          * @return PaymentOption
          */
-        public function setDeliveryId($deliveryId): PaymentOption
+        public function setDeliveryId(int $deliveryId): PaymentOption
         {
             $this->delivery_id = $deliveryId;
 
@@ -84,11 +82,9 @@ if (!class_exists(PaymentOption::class)) {
         /**
          * Set paymentId.
          *
-         * @param int $paymentId
-         *
          * @return PaymentOption
          */
-        public function setPaymentId($paymentId): PaymentOption
+        public function setPaymentId(int $paymentId): PaymentOption
         {
             $this->payment_id = $paymentId;
 
@@ -107,8 +103,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Set delivery.
-         *
-         * @param Delivery|null $delivery
          *
          * @return PaymentOption
          */
@@ -131,8 +125,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Set payment.
-         *
-         * @param Payment|null $payment
          *
          * @return PaymentOption
          */

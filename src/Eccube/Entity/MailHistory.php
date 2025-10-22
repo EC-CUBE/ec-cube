@@ -96,11 +96,9 @@ if (!class_exists(MailHistory::class)) {
         /**
          * Set sendDate.
          *
-         * @param \DateTime|null $sendDate
-         *
          * @return MailHistory
          */
-        public function setSendDate($sendDate = null): MailHistory
+        public function setSendDate(?\DateTime $sendDate = null): MailHistory
         {
             $this->send_date = $sendDate;
 
@@ -120,11 +118,9 @@ if (!class_exists(MailHistory::class)) {
         /**
          * Set mailSubject.
          *
-         * @param string|null $mailSubject
-         *
          * @return MailHistory
          */
-        public function setMailSubject($mailSubject = null): MailHistory
+        public function setMailSubject(?string $mailSubject = null): MailHistory
         {
             $this->mail_subject = $mailSubject;
 
@@ -144,11 +140,9 @@ if (!class_exists(MailHistory::class)) {
         /**
          * Set mailBody.
          *
-         * @param string|null $mailBody
-         *
          * @return MailHistory
          */
-        public function setMailBody($mailBody = null): MailHistory
+        public function setMailBody(?string $mailBody = null): MailHistory
         {
             $this->mail_body = $mailBody;
 
@@ -168,11 +162,9 @@ if (!class_exists(MailHistory::class)) {
         /**
          * Set mailHtmlBody.
          *
-         * @param string|null $mailHtmlBody
-         *
          * @return MailHistory
          */
-        public function setMailHtmlBody($mailHtmlBody = null): MailHistory
+        public function setMailHtmlBody(?string $mailHtmlBody = null): MailHistory
         {
             $this->mail_html_body = $mailHtmlBody;
 
@@ -191,8 +183,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set order.
-         *
-         * @param Order|null $order
          *
          * @return MailHistory
          */
@@ -215,8 +205,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return MailHistory
          */

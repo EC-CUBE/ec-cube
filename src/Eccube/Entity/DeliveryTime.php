@@ -92,11 +92,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Set deliveryTime.
          *
-         * @param string $deliveryTime
-         *
          * @return DeliveryTime
          */
-        public function setDeliveryTime($deliveryTime): DeliveryTime
+        public function setDeliveryTime(string $deliveryTime): DeliveryTime
         {
             $this->delivery_time = $deliveryTime;
 
@@ -115,8 +113,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Set delivery.
-         *
-         * @param Delivery|null $delivery
          *
          * @return DeliveryTime
          */
@@ -140,11 +136,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Set sort_no.
          *
-         * @param int $sort_no
-         *
          * @return $this
          */
-        public function setSortNo($sort_no): static
+        public function setSortNo(int $sort_no): static
         {
             $this->sort_no = $sort_no;
 
@@ -164,11 +158,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Set visible
          *
-         * @param bool $visible
-         *
          * @return DeliveryTime
          */
-        public function setVisible($visible): DeliveryTime
+        public function setVisible(bool $visible): DeliveryTime
         {
             $this->visible = $visible;
 
@@ -188,11 +180,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return DeliveryTime
          */
-        public function setCreateDate($createDate): DeliveryTime
+        public function setCreateDate(\DateTime $createDate): DeliveryTime
         {
             $this->create_date = $createDate;
 
@@ -212,11 +202,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return DeliveryTime
          */
-        public function setUpdateDate($updateDate): DeliveryTime
+        public function setUpdateDate(\DateTime $updateDate): DeliveryTime
         {
             $this->update_date = $updateDate;
 

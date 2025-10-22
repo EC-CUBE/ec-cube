@@ -41,9 +41,6 @@ class PluginContext
      */
     private $eccubeConfig;
 
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
     public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
@@ -82,8 +79,6 @@ class PluginContext
     }
 
     /**
-     * @param string $code
-     *
      * @return void
      */
     public function setCode(string $code): void

@@ -28,9 +28,6 @@ class TradeLawController extends AbstractController
 {
     protected TradeLawRepository $tradeLawRepository;
 
-    /**
-     * @param TradeLawRepository $tradeLawRepository
-     */
     public function __construct(
         TradeLawRepository $tradeLawRepository,
     ) {
@@ -39,8 +36,6 @@ class TradeLawController extends AbstractController
 
     /**
      * 特定商取引法設定の初期表示・登録
-     *
-     * @param Request $request
      *
      * @return RedirectResponse|array<string,mixed>
      */

@@ -31,8 +31,6 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
 
     /**
      * DeliveryFeeProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
@@ -40,9 +38,6 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     *
      * @return void
      */
     #[\Override]

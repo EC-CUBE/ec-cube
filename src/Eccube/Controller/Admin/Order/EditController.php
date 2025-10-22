@@ -130,21 +130,6 @@ class EditController extends AbstractController
 
     /**
      * EditController constructor.
-     *
-     * @param TaxRuleService $taxRuleService
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param ProductRepository $productRepository
-     * @param CategoryRepository $categoryRepository
-     * @param CustomerRepository $customerRepository
-     * @param SerializerInterface $serializer
-     * @param DeliveryRepository $deliveryRepository
-     * @param PurchaseFlow $orderPurchaseFlow
-     * @param OrderRepository $orderRepository
-     * @param OrderNoProcessor $orderNoProcessor
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param OrderStateMachine $orderStateMachine
-     * @param OrderHelper $orderHelper
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -181,8 +166,6 @@ class EditController extends AbstractController
     /**
      * 受注登録/編集画面.
      *
-     * @param Request $request
-     * @param RouterInterface $router
      * @param string|null $id
      *
      * @return RedirectResponse|array<string,mixed>
@@ -437,8 +420,6 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param int|null $page_no
      *
      * @return array<string,mixed>
@@ -537,8 +518,6 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @param Request $request
-     *
      * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/order/search/customer/id', name: 'admin_order_search_customer_by_id', methods: ['POST'])]
@@ -599,8 +578,6 @@ class EditController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
      * @return array<string,mixed>
@@ -697,8 +674,6 @@ class EditController extends AbstractController
 
     /**
      * その他明細情報を取得
-     *
-     * @param Request $request
      *
      * @return array<string, array<int, array<string, OrderItemType|TaxType|null>>>
      *

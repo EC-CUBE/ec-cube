@@ -33,13 +33,11 @@ class LayoutRepository extends AbstractRepository
     }
 
     /**
-     * @param int|string $id
-     *
      * @return Layout|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function get($id): ?Layout
+    public function get(int|string $id): ?Layout
     {
         try {
             $Layout = $this->createQueryBuilder('l')

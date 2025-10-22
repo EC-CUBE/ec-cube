@@ -18,7 +18,7 @@ use Eccube\Entity\ProductClass;
 class InvalidItemException extends \Exception
 {
     /**
-     * @var array<int, string>|mixed
+     * @var array<int|string, string>|mixed
      */
     private $messageArgs;
 
@@ -28,11 +28,9 @@ class InvalidItemException extends \Exception
     private $warning;
 
     /**
-     * @param string|null $message
-     * @param array<int, string>|mixed $messageArgs
-     * @param bool $warning
+     * @param array<int|string, string>|null $messageArgs
      */
-    public function __construct($message = null, $messageArgs = [], $warning = false)
+    public function __construct(?string $message = null, ?array $messageArgs = [], bool $warning = false)
     {
         parent::__construct($message);
         $this->messageArgs = $messageArgs;
@@ -40,7 +38,7 @@ class InvalidItemException extends \Exception
     }
 
     /**
-     * @return array<int, string>
+     * @return array<int|string, string>
      */
     public function getMessageArgs(): array
     {
@@ -56,12 +54,9 @@ class InvalidItemException extends \Exception
     }
 
     /**
-     * @param string|null $errorMessage
-     * @param ProductClass $ProductClass
-     *
      * @return InvalidItemException
      */
-    public static function fromProductClass($errorMessage, ProductClass $ProductClass): InvalidItemException
+    public static function fromProductClass(?string $errorMessage, ProductClass $ProductClass): InvalidItemException
     {
         $productName = $ProductClass->getProduct()->getName();
         if ($ProductClass->hasClassCategory1()) {

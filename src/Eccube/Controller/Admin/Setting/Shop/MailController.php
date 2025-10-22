@@ -41,8 +41,6 @@ class MailController extends AbstractController
 
     /**
      * MailController constructor.
-     *
-     * @param MailTemplateRepository $mailTemplateRepository
      */
     public function __construct(MailTemplateRepository $mailTemplateRepository)
     {
@@ -50,11 +48,6 @@ class MailController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Environment $twig
-     * @param CacheUtil $cacheUtil
-     * @param MailTemplate|null $Mail
-     *
      * @return RedirectResponse|array<string,mixed>
      *
      * @throws \Twig\Error\LoaderError
@@ -162,8 +155,6 @@ class MailController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
@@ -190,9 +181,6 @@ class MailController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param MailTemplate $Mail
-     *
      * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -230,11 +218,9 @@ class MailController extends AbstractController
     /**
      * HTML用テンプレート名を取得する
      *
-     * @param  string $fileName
-     *
      * @return string
      */
-    protected function getHtmlFileName($fileName): string
+    protected function getHtmlFileName(string $fileName): string
     {
         // HTMLテンプレートファイルの取得
         $targetTemplate = pathinfo($fileName);
@@ -246,11 +232,9 @@ class MailController extends AbstractController
     /**
      * テンプレートディレクトリ配下のパスかどうかを検証する
      *
-     * @param string $path
-     *
      * @return bool
      */
-    protected function validateFilePath($path): bool
+    protected function validateFilePath(string $path): bool
     {
         $templatePath = realpath($this->getParameter('eccube_theme_front_dir'));
         $path = realpath($path);

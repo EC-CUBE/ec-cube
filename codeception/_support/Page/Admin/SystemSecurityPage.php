@@ -18,7 +18,7 @@ class SystemSecurityPage extends AbstractAdminPageStyleGuide
     /**
      * @param \AcceptanceTester $I
      */
-    public static function go($I)
+    public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);
 
@@ -28,7 +28,7 @@ class SystemSecurityPage extends AbstractAdminPageStyleGuide
     /**
      * @param \AcceptanceTester $I
      */
-    public static function at($I)
+    public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
         $page->atPage('セキュリティ管理システム設定');

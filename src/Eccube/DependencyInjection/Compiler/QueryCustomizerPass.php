@@ -24,8 +24,6 @@ class QueryCustomizerPass implements CompilerPassInterface
     public const QUERY_CUSTOMIZER_TAG = 'eccube.query_customizer';
 
     /**
-     * @param ContainerBuilder $container
-     *
      * @return void
      */
     #[\Override]

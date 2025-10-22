@@ -85,15 +85,6 @@ class OwnerStoreController extends AbstractController
     /**
      * OwnerStoreController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param ComposerServiceInterface $composerService
-     * @param SystemService $systemService
-     * @param PluginApiService $pluginApiService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param CacheUtil $cacheUtil
-     * @param ValidatorInterface $validatorInterface
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException|\Exception
      */
@@ -122,9 +113,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @param Request     $request
      * @param int $page_no
-     * @param PaginatorInterface $paginator
      *
      * @return array<string,mixed>|RedirectResponse
      */
@@ -228,7 +217,6 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @param Request $request
      * @param string|int $id
      *
      * @return RedirectResponse|Response
@@ -257,8 +245,6 @@ class OwnerStoreController extends AbstractController
 
     /**
      * Api Install plugin by composer connect with package repo
-     *
-     * @param Request $request
      *
      * @return JsonResponse
      */
@@ -308,8 +294,6 @@ class OwnerStoreController extends AbstractController
     /**
      * New ways to remove plugin: using composer command
      *
-     * @param Plugin $Plugin
-     *
      * @return JsonResponse
      */
     #[Route('/delete/{id}/uninstall', requirements: ['id' => '\d+'], name: 'admin_store_plugin_api_uninstall', methods: ['DELETE'])]
@@ -356,8 +340,6 @@ class OwnerStoreController extends AbstractController
 
     /**
      * オーナーズブラグインインストール、アップデート
-     *
-     * @param Request $request
      *
      * @return JsonResponse
      */
@@ -426,8 +408,6 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、スキーマ更新
      *
-     * @param Request $request
-     *
      * @return JsonResponse
      */
     #[Route('/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
@@ -476,8 +456,6 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、更新処理
      *
-     * @param Request $request
-     *
      * @return JsonResponse
      */
     #[Route('/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
@@ -514,8 +492,6 @@ class OwnerStoreController extends AbstractController
 
     /**
      * Do confirm update page
-     *
-     * @param Plugin $Plugin
      *
      * @return array<string,mixed>|RedirectResponse
      */

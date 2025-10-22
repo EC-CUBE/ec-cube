@@ -28,8 +28,6 @@ class BaseInfoRepository extends AbstractRepository
 {
     /**
      * BaseInfoRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -37,11 +35,9 @@ class BaseInfoRepository extends AbstractRepository
     }
 
     /**
-     * @param int $id
-     *
      * @return BaseInfo
      */
-    public function get($id = 1): BaseInfo
+    public function get(int $id = 1): BaseInfo
     {
         $BaseInfo = $this->find($id);
 

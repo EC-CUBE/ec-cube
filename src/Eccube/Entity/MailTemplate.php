@@ -103,11 +103,9 @@ if (!class_exists(MailTemplate::class)) {
         /**
          * Set name.
          *
-         * @param string|null $name
-         *
          * @return MailTemplate
          */
-        public function setName($name = null): MailTemplate
+        public function setName(?string $name = null): MailTemplate
         {
             $this->name = $name;
 
@@ -127,11 +125,9 @@ if (!class_exists(MailTemplate::class)) {
         /**
          * Set fileName.
          *
-         * @param string|null $fileName
-         *
          * @return MailTemplate
          */
-        public function setFileName($fileName = null): MailTemplate
+        public function setFileName(?string $fileName = null): MailTemplate
         {
             $this->file_name = $fileName;
 
@@ -151,11 +147,9 @@ if (!class_exists(MailTemplate::class)) {
         /**
          * Set mailSubject.
          *
-         * @param string|null $mailSubject
-         *
          * @return MailTemplate
          */
-        public function setMailSubject($mailSubject = null): MailTemplate
+        public function setMailSubject(?string $mailSubject = null): MailTemplate
         {
             $this->mail_subject = $mailSubject;
 
@@ -175,11 +169,9 @@ if (!class_exists(MailTemplate::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return MailTemplate
          */
-        public function setCreateDate($createDate): MailTemplate
+        public function setCreateDate(\DateTime $createDate): MailTemplate
         {
             $this->create_date = $createDate;
 
@@ -199,11 +191,9 @@ if (!class_exists(MailTemplate::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return MailTemplate
          */
-        public function setUpdateDate($updateDate): MailTemplate
+        public function setUpdateDate(\DateTime $updateDate): MailTemplate
         {
             $this->update_date = $updateDate;
 
@@ -222,8 +212,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return MailTemplate
          */
@@ -253,8 +241,6 @@ if (!class_exists(MailTemplate::class)) {
         }
 
         /**
-         * @param bool $deletable
-         *
          * @return $this
          */
         public function setDeletable(bool $deletable): static

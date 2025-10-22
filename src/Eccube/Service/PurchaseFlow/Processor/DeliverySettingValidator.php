@@ -31,8 +31,6 @@ class DeliverySettingValidator extends ItemValidator
 
     /**
      * DeliverySettingValidator constructor.
-     *
-     * @param DeliveryRepository $deliveryRepository
      */
     public function __construct(DeliveryRepository $deliveryRepository)
     {

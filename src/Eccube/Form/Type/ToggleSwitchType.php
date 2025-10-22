@@ -24,8 +24,6 @@ class ToggleSwitchType extends AbstractType
     /**
      * {@inheritDoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
      *
      * @return void
@@ -39,8 +37,6 @@ class ToggleSwitchType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolver $resolver
      *
      * @return void
      */

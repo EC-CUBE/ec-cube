@@ -141,11 +141,9 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     }
 
     /**
-     * @param string $outputDir
-     *
      * @return void
      */
-    protected function removeOutputDir($outputDir): void
+    protected function removeOutputDir(string $outputDir): void
     {
         if (file_exists($outputDir)) {
             $files = Finder::create()

@@ -124,14 +124,6 @@ class OrderPdfService extends Fpdi
     /**
      * OrderPdfService constructor.
      *
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderRepository $orderRepository
-     * @param ShippingRepository $shippingRepository
-     * @param TaxRuleService $taxRuleService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EccubeExtension $eccubeExtension
-     * @param TaxExtension $taxExtension
-     *
      * @throws \Exception
      */
     public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension, TaxExtension $taxExtension)
@@ -432,11 +424,9 @@ class OrderPdfService extends Fpdi
     /**
      * タイトルをPDFに描画する.
      *
-     * @param string $title
-     *
      * @return void
      */
-    protected function renderTitle($title): void
+    protected function renderTitle(string $title): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -456,8 +446,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入者情報を設定する.
-     *
-     * @param Shipping $Shipping
      *
      * @return void
      */
@@ -533,8 +521,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入商品詳細情報を設定する.
-     *
-     * @param Shipping $Shipping
      *
      * @return void
      */
@@ -696,20 +682,20 @@ class OrderPdfService extends Fpdi
      *
      * @param int $x X座標
      * @param int $y Y座標
-     * @param string $text テキスト
+     * @param string|null $text テキスト
      * @param int $size フォントサイズ
      * @param string $style フォントスタイル
      *
      * @return void
      */
-    protected function lfText($x, $y, $text, $size = 0, $style = ''): void
+    protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // 退避
         $bakFontStyle = $this->FontStyle;
         $bakFontSize = $this->FontSizePt;
 
         $this->SetFont('', $style, $size);
-        $this->Text($x + $this->baseOffsetX, $y + $this->baseOffsetY, $text);
+        $this->Text($x + $this->baseOffsetX, $y + $this->baseOffsetY, $text ?? '');
 
         // 復元
         $this->SetFont('', $bakFontStyle, $bakFontSize);
@@ -724,7 +710,7 @@ class OrderPdfService extends Fpdi
      *
      * @return void
      */
-    protected function setFancyTable($header, $data, $w): void
+    protected function setFancyTable(array $header, array $data, array $w): void
     {
         // フォント情報のバックアップ
         $this->backupFont();
@@ -818,12 +804,9 @@ class OrderPdfService extends Fpdi
     /**
      * 基準座標を設定する.
      *
-     * @param int|float|null $x
-     * @param int|float|null $y
-     *
      * @return void
      */
-    protected function setBasePosition($x = null, $y = null): void
+    protected function setBasePosition(int|float|null $x = null, int|float|null $y = null): void
     {
         // 現在のマージンを取得する
         $result = $this->getMargins();

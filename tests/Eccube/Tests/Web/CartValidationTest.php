@@ -2533,7 +2533,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return mixed
      */
-    protected function scenarioCartIn(Customer $Customer, ProductClass $ProductClass, $num = 1)
+    protected function scenarioCartIn(Customer $Customer, ProductClass $ProductClass, int $num = 1)
     {
         $this->loginTo($Customer);
 
@@ -2569,7 +2569,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return mixed
      */
-    protected function scenarioComplete(Customer $Customer, $confirmUrl = '', $arrShopping = [])
+    protected function scenarioComplete(Customer $Customer, string $confirmUrl = '', array $arrShopping = [])
     {
         $faker = $this->getFaker();
         if (strlen($confirmUrl) == 0) {
@@ -2636,7 +2636,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return Product
      */
-    protected function changeStatus(Product $Product, $display = ProductStatus::DISPLAY_SHOW)
+    protected function changeStatus(Product $Product, int $display = ProductStatus::DISPLAY_SHOW)
     {
         $Product = $this->entityManager->find(Product::class, $Product->getId());
         $ProductStatus = $this->productStatusRepository->find($display);
@@ -2654,7 +2654,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return ProductClass
      */
-    protected function changeStock(ProductClass $ProductClass, $stock = 0)
+    protected function changeStock(ProductClass $ProductClass, int $stock = 0)
     {
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $ProductClass->setStock($stock);
@@ -2694,7 +2694,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return Product
      */
-    public function createProduct($productName = null, $productClassNum = 3, $stock = 0)
+    public function createProduct(?string $productName = null, int $productClassNum = 3, int $stock = 0)
     {
         $Product = parent::createProduct($productName, $productClassNum);
         $ProductClass = $Product->getProductClasses()->first();

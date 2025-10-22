@@ -45,9 +45,6 @@ class ClassNameController extends AbstractController
 
     /**
      * ClassNameController constructor.
-     *
-     * @param ClassNameRepository $classNameRepository
-     * @param CsvExportService $csvExportService
      */
     public function __construct(
         ClassNameRepository $classNameRepository,
@@ -58,7 +55,6 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string|null $id
      *
      * @return RedirectResponse|array<string,mixed>
@@ -155,9 +151,6 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param ClassName $ClassName
-     *
      * @return RedirectResponse
      *
      * @throws \Exception
@@ -189,8 +182,6 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws BadRequestHttpException
@@ -220,8 +211,6 @@ class ClassNameController extends AbstractController
 
     /**
      * 規格CSVの出力.
-     *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

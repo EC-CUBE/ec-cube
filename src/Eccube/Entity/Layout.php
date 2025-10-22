@@ -92,11 +92,9 @@ if (!class_exists(Layout::class)) {
         }
 
         /**
-         * @param int|null $targetId
-         *
          * @return Block[]
          */
-        public function getBlocks($targetId = null): array
+        public function getBlocks(?int $targetId = null): array
         {
             /** @var BlockPosition[] $TargetBlockPositions */
             $TargetBlockPositions = [];
@@ -127,11 +125,9 @@ if (!class_exists(Layout::class)) {
         }
 
         /**
-         * @param int $targetId
-         *
          * @return Collection<int,BlockPosition>
          */
-        public function getBlockPositionsByTargetId($targetId): Collection
+        public function getBlockPositionsByTargetId(int $targetId): Collection
         {
             return $this->BlockPositions->filter(
                 function ($BlockPosition) use ($targetId) {
@@ -326,11 +322,9 @@ if (!class_exists(Layout::class)) {
         /**
          * Set name
          *
-         * @param string $name
-         *
          * @return Layout
          */
-        public function setName($name): Layout
+        public function setName(string $name): Layout
         {
             $this->name = $name;
 
@@ -350,11 +344,9 @@ if (!class_exists(Layout::class)) {
         /**
          * Set createDate
          *
-         * @param \DateTime $createDate
-         *
          * @return Layout
          */
-        public function setCreateDate($createDate): Layout
+        public function setCreateDate(\DateTime $createDate): Layout
         {
             $this->create_date = $createDate;
 
@@ -374,11 +366,9 @@ if (!class_exists(Layout::class)) {
         /**
          * Set updateDate
          *
-         * @param \DateTime $updateDate
-         *
          * @return Layout
          */
-        public function setUpdateDate($updateDate): Layout
+        public function setUpdateDate(\DateTime $updateDate): Layout
         {
             $this->update_date = $updateDate;
 
@@ -398,8 +388,6 @@ if (!class_exists(Layout::class)) {
         /**
          * Add blockPosition
          *
-         * @param BlockPosition $blockPosition
-         *
          * @return Layout
          */
         public function addBlockPosition(BlockPosition $blockPosition): Layout
@@ -411,8 +399,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Remove blockPosition
-         *
-         * @param BlockPosition $blockPosition
          *
          * @return void
          */
@@ -434,8 +420,6 @@ if (!class_exists(Layout::class)) {
         /**
          * Add pageLayoutLayout
          *
-         * @param PageLayout $PageLayout
-         *
          * @return Layout
          */
         public function addPageLayout(PageLayout $PageLayout): Layout
@@ -447,8 +431,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
          *
          * @return void
          */

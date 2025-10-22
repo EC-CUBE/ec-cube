@@ -79,7 +79,7 @@ class JoinCustomizerTest_Customizer extends JoinCustomizer
      *
      * @return JoinClause[]
      */
-    public function createStatements($params, $queryKey): array
+    public function createStatements(array $params, $queryKey): array
     {
         $callback = $this->callback;
 

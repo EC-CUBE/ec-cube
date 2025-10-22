@@ -36,8 +36,6 @@ class MemberRepository extends AbstractRepository
     /**
      * 管理ユーザの表示順を一つ上げる.
      *
-     * @param Member $Member
-     *
      * @return void
      *
      * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
@@ -62,8 +60,6 @@ class MemberRepository extends AbstractRepository
 
     /**
      * 管理ユーザの表示順を一つ下げる.
-     *
-     * @param Member $Member
      *
      * @return void
      *

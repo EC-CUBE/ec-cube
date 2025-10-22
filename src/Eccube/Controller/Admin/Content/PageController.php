@@ -51,9 +51,6 @@ class PageController extends AbstractController
 
     /**
      * PageController constructor.
-     *
-     * @param PageRepository $pageRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
         PageRepository $pageRepository,

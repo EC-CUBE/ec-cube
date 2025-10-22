@@ -37,9 +37,6 @@ class EntityProxyService
 
     /**
      * EntityProxyService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -61,7 +58,7 @@ class EntityProxyService
      *
      * @throws \ReflectionException
      */
-    public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null): array
+    public function generate(array $includesDirs, array $excludeDirs, string $outputDir, ?OutputInterface $output = null): array
     {
         if (is_null($output)) {
             $output = new ConsoleOutput();
@@ -158,7 +155,7 @@ class EntityProxyService
      *
      * @throws \ReflectionException
      */
-    private function scanTraits($dirSets): array
+    private function scanTraits(array $dirSets): array
     {
         // ディレクトリセットごとのファイルをロードしつつ一覧を作成
         $includedFileSets = [];
@@ -223,7 +220,7 @@ class EntityProxyService
      *
      * @return void
      */
-    private function addTrait($entityTokens, $trait): void
+    private function addTrait(Tokens $entityTokens, string $trait): void
     {
         $newTraitTokens = $this->convertTraitNameToTokens($trait);
 
@@ -267,7 +264,7 @@ class EntityProxyService
      *
      * @return void
      */
-    private function removeTrait($entityTokens, $trait): void
+    private function removeTrait(Tokens $entityTokens, string $trait): void
     {
         $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
         if ($useTraitIndex > 0) {
@@ -305,15 +302,13 @@ class EntityProxyService
      * - プラグインのTrait -> \Plugin\Xxx\Entity\XxxTrait
      * - 本体でuseされているTrait -> PointTrait
      *
-     * @param string $name
-     *
      * @return array<int, Token>|Token[]
      */
-    private function convertTraitNameToTokens($name): array
+    private function convertTraitNameToTokens(string $name): array
     {
         $result = [];
         $i = 0;
-        foreach (explode('\\', (string) $name) as $part) {
+        foreach (explode('\\', $name) as $part) {
             // プラグインのtraitの場合は、0番目は空文字
             // 本体でuseされているtraitは0番目にtrait名がくる
             if ($part) {
@@ -331,8 +326,6 @@ class EntityProxyService
 
     /**
      * remove block to 'if (!class_exists(<class name>)) { }'
-     *
-     * @param Tokens $entityTokens
      *
      * @return void
      */

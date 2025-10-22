@@ -66,12 +66,6 @@ class OrderType extends AbstractType
 
     /**
      * OrderType constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param PaymentRepository $paymentRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param Context $requestContext
      */
     public function __construct(
         OrderRepository $orderRepository,
@@ -90,7 +84,6 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      *
      * @return void
@@ -188,8 +181,6 @@ class OrderType extends AbstractType
     /**
      * {@inheritDoc}
      *
-     * @param OptionsResolver $resolver
-     *
      * @return void
      */
     #[\Override]
@@ -210,9 +201,7 @@ class OrderType extends AbstractType
     }
 
     /**
-     * @param FormInterface $form
      * @param Payment[] $choices
-     * @param Payment|null $data
      *
      * @return void
      */
@@ -242,8 +231,6 @@ class OrderType extends AbstractType
     /**
      * 出荷に紐づく配送方法を取得する.
      *
-     * @param Order $Order
-     *
      * @return Delivery[]
      */
     private function getDeliveries(Order $Order): array
@@ -267,7 +254,7 @@ class OrderType extends AbstractType
      *
      * @return ArrayCollection<int, Payment>
      */
-    private function getPayments($Deliveries): ArrayCollection
+    private function getPayments(array $Deliveries): ArrayCollection
     {
         $PaymentsByDeliveries = [];
         foreach ($Deliveries as $Delivery) {
@@ -303,16 +290,20 @@ class OrderType extends AbstractType
      * 支払い方法の利用条件でフィルタをかける.
      *
      * @param ArrayCollection<int, Payment> $Payments
-     * @param string $total
      *
      * @return Payment[]
      */
-    private function filterPayments(ArrayCollection $Payments, $total): array
+    private function filterPayments(ArrayCollection $Payments, ?string $total): array
     {
         $PaymentArrays = $Payments->filter(function (Payment $Payment) use ($total) {
             $charge = $Payment->getCharge();
             $min = $Payment->getRuleMin();
             $max = $Payment->getRuleMax();
+
+            // $totalがnullの場合は制限チェックをスキップ
+            if ($total === null) {
+                return true;
+            }
 
             if (null !== $min && bcadd($total, $charge) < $min) {
                 return false;

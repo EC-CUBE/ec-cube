@@ -34,8 +34,6 @@ class CartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     #[Route('/block/cart', name: 'block_cart', methods: ['GET'])]

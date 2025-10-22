@@ -90,11 +90,9 @@ if (!class_exists(ProductImage::class)) {
         /**
          * Set fileName.
          *
-         * @param string $fileName
-         *
          * @return ProductImage
          */
-        public function setFileName($fileName): ProductImage
+        public function setFileName(string $fileName): ProductImage
         {
             $this->file_name = $fileName;
 
@@ -114,11 +112,9 @@ if (!class_exists(ProductImage::class)) {
         /**
          * Set sortNo.
          *
-         * @param int $sortNo
-         *
          * @return ProductImage
          */
-        public function setSortNo($sortNo): ProductImage
+        public function setSortNo(int $sortNo): ProductImage
         {
             $this->sort_no = $sortNo;
 
@@ -138,11 +134,9 @@ if (!class_exists(ProductImage::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return ProductImage
          */
-        public function setCreateDate($createDate): ProductImage
+        public function setCreateDate(\DateTime $createDate): ProductImage
         {
             $this->create_date = $createDate;
 
@@ -161,8 +155,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
          *
          * @return ProductImage
          */
@@ -185,8 +177,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return ProductImage
          */

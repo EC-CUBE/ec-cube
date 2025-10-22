@@ -35,9 +35,6 @@ class SystemController
 
     /**
      * SystemController constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param SystemService $systemService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
@@ -48,8 +45,6 @@ class SystemController
     }
 
     /**
-     * @param Request $request
-     *
      * @return array<string,mixed>
      */
     #[Route('/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
@@ -73,8 +68,6 @@ class SystemController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]

@@ -70,11 +70,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price01 IncTax
          *
-         * @param  string       $price01_inc_tax
-         *
          * @return ProductClass
          */
-        public function setPrice01IncTax($price01_inc_tax): ProductClass
+        public function setPrice01IncTax(string $price01_inc_tax): ProductClass
         {
             $this->price01_inc_tax = $price01_inc_tax;
 
@@ -94,11 +92,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price02 IncTax
          *
-         * @param string $price02_inc_tax
-         *
          * @return ProductClass
          */
-        public function setPrice02IncTax($price02_inc_tax): ProductClass
+        public function setPrice02IncTax(string $price02_inc_tax): ProductClass
         {
             $this->price02_inc_tax = $price02_inc_tax;
 
@@ -132,11 +128,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set tax_rate
          *
-         * @param  string|null $tax_rate
-         *
          * @return ProductClass
          */
-        public function setTaxRate($tax_rate): ProductClass
+        public function setTaxRate(?string $tax_rate): ProductClass
         {
             $this->tax_rate = $tax_rate;
 
@@ -326,11 +320,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set code.
          *
-         * @param string|null $code
-         *
          * @return ProductClass
          */
-        public function setCode($code = null): ProductClass
+        public function setCode(?string $code = null): ProductClass
         {
             $this->code = $code;
 
@@ -350,11 +342,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set stock.
          *
-         * @param string|null $stock
-         *
          * @return ProductClass
          */
-        public function setStock($stock = null): ProductClass
+        public function setStock(?string $stock = null): ProductClass
         {
             $this->stock = $stock;
 
@@ -374,11 +364,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set stockUnlimited.
          *
-         * @param bool $stockUnlimited
-         *
          * @return ProductClass
          */
-        public function setStockUnlimited($stockUnlimited): ProductClass
+        public function setStockUnlimited(bool $stockUnlimited): ProductClass
         {
             $this->stock_unlimited = $stockUnlimited;
 
@@ -398,11 +386,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set saleLimit.
          *
-         * @param string|null $saleLimit
-         *
          * @return ProductClass
          */
-        public function setSaleLimit($saleLimit = null): ProductClass
+        public function setSaleLimit(?string $saleLimit = null): ProductClass
         {
             $this->sale_limit = $saleLimit;
 
@@ -422,11 +408,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price01.
          *
-         * @param string|null $price01
-         *
          * @return ProductClass
          */
-        public function setPrice01($price01 = null): ProductClass
+        public function setPrice01(?string $price01 = null): ProductClass
         {
             $this->price01 = $price01;
 
@@ -446,11 +430,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set price02.
          *
-         * @param string $price02
-         *
          * @return ProductClass
          */
-        public function setPrice02($price02): ProductClass
+        public function setPrice02(string $price02): ProductClass
         {
             $this->price02 = $price02;
 
@@ -470,11 +452,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set deliveryFee.
          *
-         * @param string|null $deliveryFee
-         *
          * @return ProductClass
          */
-        public function setDeliveryFee($deliveryFee = null): ProductClass
+        public function setDeliveryFee(?string $deliveryFee = null): ProductClass
         {
             $this->delivery_fee = $deliveryFee;
 
@@ -500,11 +480,9 @@ if (!class_exists(ProductClass::class)) {
         }
 
         /**
-         * @param bool $visible
-         *
          * @return ProductClass
          */
-        public function setVisible($visible): ProductClass
+        public function setVisible(bool $visible): ProductClass
         {
             $this->visible = $visible;
 
@@ -514,11 +492,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return ProductClass
          */
-        public function setCreateDate($createDate): ProductClass
+        public function setCreateDate(\DateTime $createDate): ProductClass
         {
             $this->create_date = $createDate;
 
@@ -538,11 +514,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return ProductClass
          */
-        public function setUpdateDate($updateDate): ProductClass
+        public function setUpdateDate(\DateTime $updateDate): ProductClass
         {
             $this->update_date = $updateDate;
 
@@ -572,11 +546,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set currencyCode.
          *
-         * @param string|null $currencyCode
-         *
          * @return $this
          */
-        public function setCurrencyCode($currencyCode = null): static
+        public function setCurrencyCode(?string $currencyCode = null): static
         {
             $this->currency_code = $currencyCode;
 
@@ -585,8 +557,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set productStock.
-         *
-         * @param ProductStock|null $productStock
          *
          * @return ProductClass
          */
@@ -610,8 +580,6 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set taxRule.
          *
-         * @param TaxRule|null $taxRule
-         *
          * @return ProductClass
          */
         public function setTaxRule(?TaxRule $taxRule = null): ProductClass
@@ -633,8 +601,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
          *
          * @return ProductClass
          */
@@ -658,8 +624,6 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set saleType.
          *
-         * @param SaleType|null $saleType
-         *
          * @return ProductClass
          */
         public function setSaleType(?SaleType $saleType = null): ProductClass
@@ -681,8 +645,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set classCategory1.
-         *
-         * @param ClassCategory|null $classCategory1
          *
          * @return ProductClass
          */
@@ -706,8 +668,6 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set classCategory2.
          *
-         * @param ClassCategory|null $classCategory2
-         *
          * @return ProductClass
          */
         public function setClassCategory2(?ClassCategory $classCategory2 = null): ProductClass
@@ -729,8 +689,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set deliveryDuration.
-         *
-         * @param DeliveryDuration|null $deliveryDuration
          *
          * @return ProductClass
          */
@@ -754,8 +712,6 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set creator.
          *
-         * @param Member|null $creator
-         *
          * @return ProductClass
          */
         public function setCreator(?Member $creator = null): ProductClass
@@ -778,11 +734,9 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Set pointRate
          *
-         * @param string $pointRate
-         *
          * @return ProductClass
          */
-        public function setPointRate($pointRate): ProductClass
+        public function setPointRate(string $pointRate): ProductClass
         {
             $this->point_rate = $pointRate;
 

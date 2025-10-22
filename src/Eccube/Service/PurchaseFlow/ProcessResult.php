@@ -35,11 +35,9 @@ class ProcessResult
     protected $class;
 
     /**
-     * @param string $type
-     * @param string|null $message
      * @param string|null $class 呼び出し元クラス
      */
-    private function __construct($type, ?string $message = null, $class = null)
+    private function __construct(string $type, ?string $message = null, ?string $class = null)
     {
         $this->type = $type;
         $this->message = $message;
@@ -47,34 +45,25 @@ class ProcessResult
     }
 
     /**
-     * @param string|null $message
-     * @param string|null $class
-     *
      * @return ProcessResult
      */
-    public static function warn($message = null, $class = null): ProcessResult
+    public static function warn(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::WARNING, $message, $class);
     }
 
     /**
-     * @param string|null $message
-     * @param string|null $class
-     *
      * @return ProcessResult
      */
-    public static function error($message = null, $class = null): ProcessResult
+    public static function error(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::ERROR, $message, $class);
     }
 
     /**
-     * @param string|null $message
-     * @param string|null $class
-     *
      * @return ProcessResult
      */
-    public static function success($message = null, $class = null): ProcessResult
+    public static function success(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::SUCCESS, $message, $class);
     }

@@ -189,7 +189,7 @@ if (!class_exists(Customer::class)) {
         private $reset_expire;
 
         /**
-         * @var string
+         * @var string|null
          */
         #[ORM\Column(name: 'point', type: 'decimal', precision: 12, scale: 0, options: ['unsigned' => false, 'default' => 0])]
         private $point = '0';
@@ -310,8 +310,6 @@ if (!class_exists(Customer::class)) {
         }
 
         /**
-         * @param ClassMetadata $metadata
-         *
          * @return void
          */
         // TODO: できればFormTypeで行いたい
@@ -337,11 +335,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set name01.
          *
-         * @param string $name01
-         *
          * @return Customer
          */
-        public function setName01($name01): Customer
+        public function setName01(?string $name01): Customer
         {
             $this->name01 = $name01;
 
@@ -361,11 +357,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set name02.
          *
-         * @param string $name02
-         *
          * @return Customer
          */
-        public function setName02($name02): Customer
+        public function setName02(?string $name02): Customer
         {
             $this->name02 = $name02;
 
@@ -385,11 +379,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set kana01.
          *
-         * @param string|null $kana01
-         *
          * @return Customer
          */
-        public function setKana01($kana01 = null): Customer
+        public function setKana01(?string $kana01 = null): Customer
         {
             $this->kana01 = $kana01;
 
@@ -409,11 +401,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set kana02.
          *
-         * @param string|null $kana02
-         *
          * @return Customer
          */
-        public function setKana02($kana02 = null): Customer
+        public function setKana02(?string $kana02 = null): Customer
         {
             $this->kana02 = $kana02;
 
@@ -433,11 +423,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set companyName.
          *
-         * @param string|null $companyName
-         *
          * @return Customer
          */
-        public function setCompanyName($companyName = null): Customer
+        public function setCompanyName(?string $companyName = null): Customer
         {
             $this->company_name = $companyName;
 
@@ -457,11 +445,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set postal_code.
          *
-         * @param string|null $postal_code
-         *
          * @return Customer
          */
-        public function setPostalCode($postal_code = null): Customer
+        public function setPostalCode(?string $postal_code = null): Customer
         {
             $this->postal_code = $postal_code;
 
@@ -481,11 +467,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set addr01.
          *
-         * @param string|null $addr01
-         *
          * @return Customer
          */
-        public function setAddr01($addr01 = null): Customer
+        public function setAddr01(?string $addr01 = null): Customer
         {
             $this->addr01 = $addr01;
 
@@ -505,11 +489,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set addr02.
          *
-         * @param string|null $addr02
-         *
          * @return Customer
          */
-        public function setAddr02($addr02 = null): Customer
+        public function setAddr02(?string $addr02 = null): Customer
         {
             $this->addr02 = $addr02;
 
@@ -529,11 +511,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set email.
          *
-         * @param string $email
-         *
          * @return Customer
          */
-        public function setEmail($email): Customer
+        public function setEmail(?string $email): Customer
         {
             $this->email = $email;
 
@@ -553,11 +533,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set phone_number.
          *
-         * @param string|null $phone_number
-         *
          * @return Customer
          */
-        public function setPhoneNumber($phone_number = null): Customer
+        public function setPhoneNumber(?string $phone_number = null): Customer
         {
             $this->phone_number = $phone_number;
 
@@ -577,11 +555,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set birth.
          *
-         * @param \DateTime|null $birth
-         *
          * @return Customer
          */
-        public function setBirth($birth = null): Customer
+        public function setBirth(?\DateTime $birth = null): Customer
         {
             $this->birth = $birth;
 
@@ -599,8 +575,6 @@ if (!class_exists(Customer::class)) {
         }
 
         /**
-         * @param string|null $password
-         *
          * @return $this
          */
         public function setPlainPassword(?string $password): static
@@ -621,11 +595,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set password.
          *
-         * @param string|null $password
-         *
          * @return Customer
          */
-        public function setPassword($password = null): Customer
+        public function setPassword(?string $password = null): Customer
         {
             $this->password = $password;
 
@@ -646,11 +618,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set salt.
          *
-         * @param string|null $salt
-         *
          * @return Customer
          */
-        public function setSalt($salt = null): Customer
+        public function setSalt(?string $salt = null): Customer
         {
             $this->salt = $salt;
 
@@ -671,11 +641,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set secretKey.
          *
-         * @param string $secretKey
-         *
          * @return Customer
          */
-        public function setSecretKey($secretKey): Customer
+        public function setSecretKey(string $secretKey): Customer
         {
             $this->secret_key = $secretKey;
 
@@ -695,11 +663,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set firstBuyDate.
          *
-         * @param \DateTime|null $firstBuyDate
-         *
          * @return Customer
          */
-        public function setFirstBuyDate($firstBuyDate = null): Customer
+        public function setFirstBuyDate(?\DateTime $firstBuyDate = null): Customer
         {
             $this->first_buy_date = $firstBuyDate;
 
@@ -719,11 +685,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set lastBuyDate.
          *
-         * @param \DateTime|null $lastBuyDate
-         *
          * @return Customer
          */
-        public function setLastBuyDate($lastBuyDate = null): Customer
+        public function setLastBuyDate(?\DateTime $lastBuyDate = null): Customer
         {
             $this->last_buy_date = $lastBuyDate;
 
@@ -743,11 +707,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set buyTimes.
          *
-         * @param string|null $buyTimes
-         *
          * @return Customer
          */
-        public function setBuyTimes($buyTimes = null): Customer
+        public function setBuyTimes(?string $buyTimes = null): Customer
         {
             $this->buy_times = $buyTimes;
 
@@ -767,11 +729,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set buyTotal.
          *
-         * @param string|null $buyTotal
-         *
          * @return Customer
          */
-        public function setBuyTotal($buyTotal = null): Customer
+        public function setBuyTotal(?string $buyTotal = null): Customer
         {
             $this->buy_total = $buyTotal;
 
@@ -791,11 +751,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set note.
          *
-         * @param string|null $note
-         *
          * @return Customer
          */
-        public function setNote($note = null): Customer
+        public function setNote(?string $note = null): Customer
         {
             $this->note = $note;
 
@@ -815,11 +773,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set resetKey.
          *
-         * @param string|null $resetKey
-         *
          * @return Customer
          */
-        public function setResetKey($resetKey = null): Customer
+        public function setResetKey(?string $resetKey = null): Customer
         {
             $this->reset_key = $resetKey;
 
@@ -839,11 +795,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set resetExpire.
          *
-         * @param \DateTime|null $resetExpire
-         *
          * @return Customer
          */
-        public function setResetExpire($resetExpire = null): Customer
+        public function setResetExpire(?\DateTime $resetExpire = null): Customer
         {
             $this->reset_expire = $resetExpire;
 
@@ -863,11 +817,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Customer
          */
-        public function setCreateDate($createDate): Customer
+        public function setCreateDate(\DateTime $createDate): Customer
         {
             $this->create_date = $createDate;
 
@@ -887,11 +839,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Customer
          */
-        public function setUpdateDate($updateDate): Customer
+        public function setUpdateDate(\DateTime $updateDate): Customer
         {
             $this->update_date = $updateDate;
 
@@ -911,8 +861,6 @@ if (!class_exists(Customer::class)) {
         /**
          * Add customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
-         *
          * @return Customer
          */
         public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Customer
@@ -924,8 +872,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Remove customerFavoriteProduct.
-         *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -947,8 +893,6 @@ if (!class_exists(Customer::class)) {
         /**
          * Add customerAddress.
          *
-         * @param CustomerAddress $customerAddress
-         *
          * @return Customer
          */
         public function addCustomerAddress(CustomerAddress $customerAddress): Customer
@@ -960,8 +904,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Remove customerAddress.
-         *
-         * @param CustomerAddress $customerAddress
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -983,8 +925,6 @@ if (!class_exists(Customer::class)) {
         /**
          * Add order.
          *
-         * @param Order $order
-         *
          * @return Customer
          */
         public function addOrder(Order $order): Customer
@@ -996,8 +936,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Remove order.
-         *
-         * @param Order $order
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -1018,8 +956,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set status.
-         *
-         * @param CustomerStatus|null $status
          *
          * @return Customer
          */
@@ -1043,8 +979,6 @@ if (!class_exists(Customer::class)) {
         /**
          * Set sex.
          *
-         * @param Sex|null $sex
-         *
          * @return Customer
          */
         public function setSex(?Sex $sex = null): Customer
@@ -1066,8 +1000,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set job.
-         *
-         * @param Job|null $job
          *
          * @return Customer
          */
@@ -1091,8 +1023,6 @@ if (!class_exists(Customer::class)) {
         /**
          * Set country.
          *
-         * @param Country|null $country
-         *
          * @return Customer
          */
         public function setCountry(?Country $country = null): Customer
@@ -1114,8 +1044,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set pref.
-         *
-         * @param Pref|null $pref
          *
          * @return Customer
          */
@@ -1139,11 +1067,9 @@ if (!class_exists(Customer::class)) {
         /**
          * Set point
          *
-         * @param string $point
-         *
          * @return Customer
          */
-        public function setPoint($point): Customer
+        public function setPoint(?string $point): Customer
         {
             $this->point = $point;
 

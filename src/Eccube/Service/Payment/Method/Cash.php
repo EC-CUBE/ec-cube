@@ -37,8 +37,6 @@ class Cash implements PaymentMethodInterface
 
     /**
      * Cash constructor.
-     *
-     * @param PurchaseFlow $shoppingPurchaseFlow
      */
     public function __construct(PurchaseFlow $shoppingPurchaseFlow)
     {

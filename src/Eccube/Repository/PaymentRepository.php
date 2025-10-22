@@ -31,8 +31,6 @@ class PaymentRepository extends AbstractRepository
 {
     /**
      * PaymentRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -57,12 +55,11 @@ class PaymentRepository extends AbstractRepository
      * 支払方法を取得
      * 条件によってはDoctrineのキャッシュが返されるため、arrayで結果を返すパターンも用意
      *
-     * @param Delivery $delivery
      * @param bool $returnType true : Object、false: arrayが戻り値
      *
      * @return array<int, Payment>
      */
-    public function findPayments($delivery, $returnType = false): array
+    public function findPayments(Delivery $delivery, bool $returnType = false): array
     {
         $query = $this->createQueryBuilder('p')
             ->innerJoin(PaymentOption::class, 'po', 'WITH', 'po.payment_id = p.id')
@@ -86,11 +83,10 @@ class PaymentRepository extends AbstractRepository
      * 共通の支払方法を取得
      *
      * @param array<int, Delivery> $deliveries
-     * @param bool $returnType
      *
      * @return array<int, Payment>
      */
-    public function findAllowedPayments($deliveries, $returnType = false): array
+    public function findAllowedPayments(array $deliveries, bool $returnType = false): array
     {
         $payments = [];
         $saleTypes = [];

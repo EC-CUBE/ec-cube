@@ -63,12 +63,6 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * CustomerRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
-     * @param EntityManagerInterface $entityManager
-     * @param OrderRepository $orderRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -139,7 +133,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @throws Exception
      */
-    public function getQueryBuilderBySearchData($searchData): QueryBuilder
+    public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c');
@@ -370,11 +364,9 @@ class CustomerRepository extends AbstractRepository
     /**
      * 仮会員をシークレットキーで検索する.
      *
-     * @param string $secretKey
-     *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getProvisionalCustomerBySecretKey($secretKey): ?Customer
+    public function getProvisionalCustomerBySecretKey(string $secretKey): ?Customer
     {
         return $this->findOneBy([
             'secret_key' => $secretKey,
@@ -385,11 +377,9 @@ class CustomerRepository extends AbstractRepository
     /**
      * 本会員をemailで検索する.
      *
-     * @param string $email
-     *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByEmail($email): ?Customer
+    public function getRegularCustomerByEmail(string $email): ?Customer
     {
         return $this->findOneBy([
             'email' => $email,
@@ -400,12 +390,9 @@ class CustomerRepository extends AbstractRepository
     /**
      * 本会員をリセットキー、またはリセットキーとメールアドレスで検索する.
      *
-     * @param string $resetKey
-     * @param string|null $email
-     *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByResetKey($resetKey, $email = null): ?Customer
+    public function getRegularCustomerByResetKey(string $resetKey, ?string $email = null): ?Customer
     {
         $qb = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')

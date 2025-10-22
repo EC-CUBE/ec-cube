@@ -53,11 +53,6 @@ class PluginApiService
 
     /**
      * PluginApiService constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param RequestStack $requestStack
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginRepository $pluginRepository
      */
     public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
     {
@@ -80,11 +75,9 @@ class PluginApiService
     }
 
     /**
-     * @param string $apiUrl
-     *
      * @return void
      */
-    public function setApiUrl($apiUrl): void
+    public function setApiUrl(string $apiUrl): void
     {
         $this->apiUrl = $apiUrl;
     }
@@ -114,7 +107,7 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getPlugins($data): array
+    public function getPlugins(array $data): array
     {
         $url = $this->getApiUrl().'/plugins';
         $params['category_id'] = $data['category_id'];
@@ -173,7 +166,7 @@ class PluginApiService
      *
      * @return array<int, array<string, string|int>>
      */
-    private function buildPlugins(&$plugins): array
+    private function buildPlugins(array &$plugins): array
     {
         /** @var Plugin[] $pluginInstalled */
         $pluginInstalled = $this->pluginRepository->findAll();
@@ -205,12 +198,9 @@ class PluginApiService
     /**
      * Is update
      *
-     * @param string $pluginVersion
-     * @param string $remoteVersion
-     *
      * @return bool
      */
-    private function isUpdate($pluginVersion, $remoteVersion): bool
+    private function isUpdate(string $pluginVersion, string $remoteVersion): bool
     {
         return version_compare($pluginVersion, $remoteVersion, '<');
     }
@@ -224,7 +214,7 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getPlugin($id): array
+    public function getPlugin(int|string $id): array
     {
         $url = $this->getApiUrl().'/plugin/'.$id;
 
@@ -235,8 +225,6 @@ class PluginApiService
     }
 
     /**
-     * @param Plugin $Plugin
-     *
      * @return void
      */
     public function pluginInstalled(Plugin $Plugin): void
@@ -245,8 +233,6 @@ class PluginApiService
     }
 
     /**
-     * @param Plugin $Plugin
-     *
      * @return void
      */
     public function pluginEnabled(Plugin $Plugin): void
@@ -255,8 +241,6 @@ class PluginApiService
     }
 
     /**
-     * @param Plugin $Plugin
-     *
      * @return void
      */
     public function pluginDisabled(Plugin $Plugin): void
@@ -265,8 +249,6 @@ class PluginApiService
     }
 
     /**
-     * @param Plugin $Plugin
-     *
      * @return void
      */
     public function pluginUninstalled(Plugin $Plugin): void
@@ -275,12 +257,9 @@ class PluginApiService
     }
 
     /**
-     * @param string $url
-     * @param Plugin $Plugin
-     *
      * @return void
      */
-    private function updatePluginStatus($url, Plugin $Plugin): void
+    private function updatePluginStatus(string $url, Plugin $Plugin): void
     {
         if ($Plugin->getSource()) {
             try {
@@ -293,15 +272,13 @@ class PluginApiService
     /**
      * API request processing
      *
-     * @param string $url
      * @param array<string, mixed> $data
-     * @param bool $post
      *
      * @return string|bool
      *
      * @throws PluginApiException
      */
-    public function requestApi($url, $data = [], $post = false): string|bool
+    public function requestApi(string $url, array $data = [], bool $post = false): string|bool
     {
         if ($post === false && count($data) > 0) {
             $url .= '?'.http_build_query($data);
@@ -364,7 +341,7 @@ class PluginApiService
      *
      * @return array<string, string|int|array<int, string|float>|bool>
      */
-    public function buildInfo(&$plugin): array
+    public function buildInfo(array &$plugin): array
     {
         $this->supportedVersion($plugin);
 
@@ -378,7 +355,7 @@ class PluginApiService
      *
      * @return void
      */
-    public function supportedVersion(&$plugin): void
+    public function supportedVersion(array &$plugin): void
     {
         // Check the eccube version that the plugin supports.
         $plugin['version_check'] = false;

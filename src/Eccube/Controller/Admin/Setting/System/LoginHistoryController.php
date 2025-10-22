@@ -54,8 +54,6 @@ class LoginHistoryController extends AbstractController
      * ログイン履歴検索画面を表示する.
      * 左ナビゲーションの選択はGETで遷移する.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param int|null $page_no
      *
      * @return Response|array<string,mixed>

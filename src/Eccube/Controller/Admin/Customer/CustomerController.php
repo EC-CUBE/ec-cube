@@ -88,8 +88,6 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
      * @return array<string,mixed>
@@ -189,7 +187,6 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string $id
      *
      * @return RedirectResponse
@@ -236,9 +233,7 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param string $id
-     * @param TranslatorInterface $translator
      *
      * @return RedirectResponse
      */
@@ -289,8 +284,6 @@ class CustomerController extends AbstractController
 
     /**
      * 会員CSVの出力.
-     *
-     * @param Request $request
      *
      * @return StreamedResponse
      */

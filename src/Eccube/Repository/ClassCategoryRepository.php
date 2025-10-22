@@ -33,8 +33,6 @@ class ClassCategoryRepository extends AbstractRepository
 {
     /**
      * ClassCategoryRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(
         RegistryInterface $registry,
@@ -123,11 +121,9 @@ class ClassCategoryRepository extends AbstractRepository
     /**
      * 規格カテゴリの表示/非表示を切り替える.
      *
-     * @param ClassCategory $ClassCategory
-     *
      * @return void
      */
-    public function toggleVisibility($ClassCategory): void
+    public function toggleVisibility(ClassCategory $ClassCategory): void
     {
         if ($ClassCategory->isVisible()) {
             $ClassCategory->setVisible(false);

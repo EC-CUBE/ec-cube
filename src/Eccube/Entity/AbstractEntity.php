@@ -222,7 +222,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return AbstractEntity
      */
-    public function copyProperties($srcObject, array $excludeAttribute = []): AbstractEntity
+    public function copyProperties(object $srcObject, array $excludeAttribute = []): AbstractEntity
     {
         $this->setPropertiesFromArray($srcObject->toArray($excludeAttribute), $excludeAttribute);
 
@@ -231,8 +231,6 @@ abstract class AbstractEntity implements \ArrayAccess
 
     /**
      * Convert to Entity of Identity value to associative array.
-     *
-     * @param AbstractEntity $Entity
      *
      * @return array<mixed> associative array of [[id => value], [id => value], ...]
      */

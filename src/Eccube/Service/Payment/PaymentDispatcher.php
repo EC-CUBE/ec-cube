@@ -60,11 +60,9 @@ class PaymentDispatcher
      *
      * Forward を使用する場合は true, Redirect を使用する場合は false を設定します.
      *
-     * @param bool $forward
-     *
      * @return self
      */
-    public function setForward($forward): PaymentDispatcher
+    public function setForward(bool $forward): PaymentDispatcher
     {
         $this->forward = $forward;
 
@@ -84,11 +82,9 @@ class PaymentDispatcher
     /**
      * 処理を移譲するルート名を設定します.
      *
-     * @param string $route
-     *
      * @return self
      */
-    public function setRoute($route): PaymentDispatcher
+    public function setRoute(string $route): PaymentDispatcher
     {
         $this->route = $route;
 
@@ -147,8 +143,6 @@ class PaymentDispatcher
      * Response を設定します.
      *
      * 外部のサイトへリダイレクトする等, 特殊な用途に使用してください.
-     *
-     * @param Response $response
      *
      * @return self
      */

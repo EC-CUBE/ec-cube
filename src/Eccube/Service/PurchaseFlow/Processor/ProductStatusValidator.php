@@ -26,7 +26,6 @@ class ProductStatusValidator extends ItemValidator
 {
     /**
      * @param ItemInterface $item 明細アイテム
-     * @param PurchaseContext $context
      *
      * @return void
      *

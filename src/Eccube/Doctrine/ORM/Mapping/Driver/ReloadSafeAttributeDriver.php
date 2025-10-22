@@ -40,7 +40,7 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
      *
      * @return void
      */
-    public function setNewProxyFiles($newProxyFiles): void
+    public function setNewProxyFiles(array $newProxyFiles): void
     {
         $this->newProxyFiles = array_map(function ($file) {
             return realpath($file);
@@ -48,11 +48,9 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
     }
 
     /**
-     * @param string $outputDir
-     *
      * @return void
      */
-    public function setOutputDir($outputDir): void
+    public function setOutputDir(string $outputDir): void
     {
         $this->outputDir = $outputDir;
     }
@@ -132,7 +130,7 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
      *
      * @return array<int,string> ソースファイルに含まれるクラス名のリスト
      */
-    private function getClassNamesFromTokens($sourceFile): array
+    private function getClassNamesFromTokens(string $sourceFile): array
     {
         $tokens = Tokens::fromCode(file_get_contents($sourceFile));
         $results = [];

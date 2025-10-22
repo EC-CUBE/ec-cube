@@ -56,12 +56,9 @@ if (!class_exists(Category::class)) {
         }
 
         /**
-         * @param  EntityManager $em
-         * @param  int                     $sortNo
-         *
          * @return Category
          */
-        public function calcChildrenSortNo(EntityManager $em, $sortNo): Category
+        public function calcChildrenSortNo(EntityManager $em, int $sortNo): Category
         {
             $this->setSortNo($this->getSortNo() + $sortNo);
             $em->persist($this);
@@ -251,11 +248,9 @@ if (!class_exists(Category::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return Category
          */
-        public function setName($name): Category
+        public function setName(string $name): Category
         {
             $this->name = $name;
 
@@ -275,11 +270,9 @@ if (!class_exists(Category::class)) {
         /**
          * Set hierarchy.
          *
-         * @param int $hierarchy
-         *
          * @return Category
          */
-        public function setHierarchy($hierarchy): Category
+        public function setHierarchy(int $hierarchy): Category
         {
             $this->hierarchy = $hierarchy;
 
@@ -299,11 +292,9 @@ if (!class_exists(Category::class)) {
         /**
          * Set sortNo.
          *
-         * @param int $sortNo
-         *
          * @return Category
          */
-        public function setSortNo($sortNo): Category
+        public function setSortNo(int $sortNo): Category
         {
             $this->sort_no = $sortNo;
 
@@ -323,11 +314,9 @@ if (!class_exists(Category::class)) {
         /**
          * Set createDate.
          *
-         * @param \DateTime $createDate
-         *
          * @return Category
          */
-        public function setCreateDate($createDate): Category
+        public function setCreateDate(\DateTime $createDate): Category
         {
             $this->create_date = $createDate;
 
@@ -347,11 +336,9 @@ if (!class_exists(Category::class)) {
         /**
          * Set updateDate.
          *
-         * @param \DateTime $updateDate
-         *
          * @return Category
          */
-        public function setUpdateDate($updateDate): Category
+        public function setUpdateDate(\DateTime $updateDate): Category
         {
             $this->update_date = $updateDate;
 
@@ -371,8 +358,6 @@ if (!class_exists(Category::class)) {
         /**
          * Add productCategory.
          *
-         * @param ProductCategory $productCategory
-         *
          * @return Category
          */
         public function addProductCategory(ProductCategory $productCategory): Category
@@ -384,8 +369,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Remove productCategory.
-         *
-         * @param ProductCategory $productCategory
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -407,8 +390,6 @@ if (!class_exists(Category::class)) {
         /**
          * Add child.
          *
-         * @param Category $child
-         *
          * @return Category
          */
         public function addChild(Category $child): Category
@@ -420,8 +401,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Remove child.
-         *
-         * @param Category $child
          *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
@@ -442,8 +421,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set parent.
-         *
-         * @param Category|null $parent
          *
          * @return Category
          */
@@ -466,8 +443,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
          *
          * @return Category
          */
