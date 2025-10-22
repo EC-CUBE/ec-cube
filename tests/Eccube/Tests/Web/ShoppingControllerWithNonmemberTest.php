@@ -52,7 +52,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $session->set(OrderHelper::SESSION_NON_MEMBER, new Customer());
         $session->save();
 
-        $crawl =  $this->client->request('GET', '/shopping');
+        $crawl = $this->client->request('GET', '/shopping');
         $crawl->text();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
