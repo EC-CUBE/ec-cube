@@ -72,7 +72,7 @@ if (!class_exists(ProductClass::class)) {
          *
          * @return ProductClass
          */
-        public function setPrice01IncTax(string $price01_inc_tax): ProductClass
+        public function setPrice01IncTax(?string $price01_inc_tax): ProductClass
         {
             $this->price01_inc_tax = $price01_inc_tax;
 
@@ -94,7 +94,7 @@ if (!class_exists(ProductClass::class)) {
          *
          * @return ProductClass
          */
-        public function setPrice02IncTax(string $price02_inc_tax): ProductClass
+        public function setPrice02IncTax(?string $price02_inc_tax): ProductClass
         {
             $this->price02_inc_tax = $price02_inc_tax;
 
@@ -432,7 +432,7 @@ if (!class_exists(ProductClass::class)) {
          *
          * @return ProductClass
          */
-        public function setPrice02(string $price02): ProductClass
+        public function setPrice02(?string $price02): ProductClass
         {
             $this->price02 = $price02;
 
@@ -736,7 +736,7 @@ if (!class_exists(ProductClass::class)) {
          *
          * @return ProductClass
          */
-        public function setPointRate(string $pointRate): ProductClass
+        public function setPointRate(?string $pointRate): ProductClass
         {
             $this->point_rate = $pointRate;
 
