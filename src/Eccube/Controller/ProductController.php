@@ -253,8 +253,6 @@ class ProductController extends AbstractController
 
     /**
      * お気に入り追加.
-     *
-     * @return RedirectResponse
      */
     #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addFavorite(Request $request, Product $Product): RedirectResponse
@@ -302,8 +300,6 @@ class ProductController extends AbstractController
 
     /**
      * カートに追加.
-     *
-     * @return Response|RedirectResponse
      *
      * @throws NotFoundHttpException
      */
@@ -428,8 +424,6 @@ class ProductController extends AbstractController
      * ページタイトルの設定
      *
      * @param  array<mixed>|null $searchData
-     *
-     * @return string
      */
     protected function getPageTitle(?array $searchData): string
     {

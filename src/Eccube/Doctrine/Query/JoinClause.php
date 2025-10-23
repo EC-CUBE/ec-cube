@@ -76,8 +76,6 @@ class JoinClause
      * INNER JOIN用のファクトリメソッド。
      *
      * @see QueryBuilder::innerJoin()
-     *
-     * @return JoinClause
      */
     public static function innerJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
@@ -88,8 +86,6 @@ class JoinClause
      * LEFT JOIN用のファクトリメソッド。
      *
      * @see QueryBuilder::leftJoin()
-     *
-     * @return JoinClause
      */
     public static function leftJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
@@ -120,9 +116,6 @@ class JoinClause
         return $this;
     }
 
-    /**
-     * @return void
-     */
     public function build(QueryBuilder $builder): void
     {
         if ($this->leftJoin) {
@@ -161,8 +154,6 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     #[\Override]
     public function getQueryKey(): string
@@ -178,9 +169,6 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
      */
     private $orderByClauses = [];
 
-    /**
-     * @return void
-     */
     public function add(OrderByClause $orderByClause): void
     {
         $this->orderByClauses[] = $orderByClause;
@@ -200,8 +188,6 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     #[\Override]
     public function getQueryKey(): string

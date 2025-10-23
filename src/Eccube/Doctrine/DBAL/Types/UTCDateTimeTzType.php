@@ -71,9 +71,6 @@ class UTCDateTimeTzType extends DateTimeTzType
         return $converted;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
     protected static function getUtcTimeZone(): \DateTimeZone
     {
         if (is_null(self::$utc)) {
@@ -83,9 +80,6 @@ class UTCDateTimeTzType extends DateTimeTzType
         return self::$utc;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
     public static function getTimezone(): \DateTimeZone
     {
         if (is_null(self::$timezone)) {
@@ -95,17 +89,11 @@ class UTCDateTimeTzType extends DateTimeTzType
         return self::$timezone;
     }
 
-    /**
-     * @return void
-     */
     public static function setTimeZone(string $timezone = 'Asia/Tokyo'): void
     {
         self::$timezone = new \DateTimeZone($timezone);
     }
 
-    /**
-     * @return true
-     */
     #[\Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform): true
     {

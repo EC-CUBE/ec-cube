@@ -43,9 +43,6 @@ class ConvertKanaListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @return void
-     */
     public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();

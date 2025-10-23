@@ -53,8 +53,6 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
      */
     #[\Override]
@@ -71,8 +69,6 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      * Whether this provider supports the given user class.
      *
      * @param string $class
-     *
-     * @return bool
      */
     #[\Override]
     public function supportsClass($class): bool

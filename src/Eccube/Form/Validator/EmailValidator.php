@@ -33,8 +33,6 @@ class EmailValidator extends ConstraintValidator
      *
      * @param mixed $value
      *
-     * @return void
-     *
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
     #[\Override]

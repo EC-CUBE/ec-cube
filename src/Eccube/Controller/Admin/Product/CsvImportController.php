@@ -1121,8 +1121,6 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @param string $type
      *
-     * @return StreamedResponse
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/csv_template/{type}', name: 'admin_product_csv_template', requirements: ['type' => '\w+'], methods: ['GET'])]
@@ -1191,8 +1189,6 @@ class CsvImportController extends AbstractCsvImportController
      * @param array<int,string> $row
      * @param CsvImportService<int,mixed> $data
      * @param array<mixed> $headerByKey
-     *
-     * @return void
      */
     protected function createProductImage(array $row, Product $Product, CsvImportService $data, array $headerByKey): void
     {
@@ -1243,8 +1239,6 @@ class CsvImportController extends AbstractCsvImportController
      * @param array<int,string> $row
      * @param CsvImportService<int,mixed> $data
      * @param array<mixed> $headerByKey
-     *
-     * @return void
      */
     protected function createProductCategory(array $row, Product $Product, CsvImportService $data, array $headerByKey): void
     {
@@ -1312,8 +1306,6 @@ class CsvImportController extends AbstractCsvImportController
      * @param array<int,string> $row
      * @param CsvImportService<int,mixed> $data
      * @param array<string, mixed> $headerByKey
-     *
-     * @return void
      */
     protected function createProductTag(array $row, Product $Product, CsvImportService $data, array $headerByKey): void
     {
@@ -1364,8 +1356,6 @@ class CsvImportController extends AbstractCsvImportController
      * @param array<mixed> $row
      * @param CsvImportService<int,mixed> $data
      * @param array<string, mixed> $headerByKey
-     *
-     * @return ProductClass
      *
      * @throws \Exception
      */
@@ -1520,8 +1510,6 @@ class CsvImportController extends AbstractCsvImportController
      * @param array<mixed> $row
      * @param CsvImportService<int,mixed> $data
      * @param array<string, mixed> $headerByKey
-     *
-     * @return ProductClass
      */
     protected function updateProductClass(array $row, Product $Product, ProductClass $ProductClass, CsvImportService $data, array $headerByKey): ProductClass
     {
@@ -1695,8 +1683,6 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 登録、更新時のエラー画面表示
-     *
-     * @return void
      */
     protected function addErrors(string $message): void
     {
@@ -1711,9 +1697,6 @@ class CsvImportController extends AbstractCsvImportController
         return $this->errors;
     }
 
-    /**
-     * @return bool
-     */
     protected function hasErrors(): bool
     {
         return count($this->getErrors()) > 0;
@@ -1955,8 +1938,6 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * ProductCategory作成
-     *
-     * @return ProductCategory
      */
     private function makeProductCategory(Product $Product, Category $Category, int $sortNo): ProductCategory
     {
@@ -1969,9 +1950,6 @@ class CsvImportController extends AbstractCsvImportController
         return $ProductCategory;
     }
 
-    /**
-     * @return JsonResponse
-     */
     #[Route('/%eccube_admin_route%/product/csv_split', name: 'admin_product_csv_split', methods: ['POST'])]
     public function splitCsv(Request $request): JsonResponse
     {
@@ -2033,9 +2011,6 @@ class CsvImportController extends AbstractCsvImportController
         return $this->json(['success' => false, 'message' => $form->getErrors(true, true)]);
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager): Response
     {
@@ -2071,9 +2046,6 @@ class CsvImportController extends AbstractCsvImportController
         return $this->forwardToRoute('admin_product_csv_import');
     }
 
-    /**
-     * @return JsonResponse
-     */
     #[Route('/%eccube_admin_route%/product/csv_split_cleanup', name: 'admin_product_csv_split_cleanup', methods: ['POST'])]
     public function cleanupSplitCsv(Request $request): JsonResponse
     {
@@ -2115,9 +2087,6 @@ class CsvImportController extends AbstractCsvImportController
         return $choices;
     }
 
-    /**
-     * @return float|int
-     */
     protected function convertLineNo(int $currentLineNo): float|int
     {
         if ($this->isSplitCsv) {

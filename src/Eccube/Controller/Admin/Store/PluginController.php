@@ -187,8 +187,6 @@ class PluginController extends AbstractController
 
     /**
      * インストール済プラグインからのアップデート
-     *
-     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
@@ -249,8 +247,6 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを有効にします。
-     *
-     * @return RedirectResponse|JsonResponse
      *
      * @throws PluginException
      */
@@ -332,8 +328,6 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを無効にします。
-     *
-     * @return JsonResponse|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): JsonResponse|RedirectResponse
@@ -407,8 +401,6 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを削除します。
-     *
-     * @return RedirectResponse
      *
      * @throws \Exception
      */

@@ -38,8 +38,6 @@ class MailHistoryRepository extends AbstractRepository
     }
 
     /**
-     * @return MailHistory
-     *
      * @throws \Exception
      * @throws NoResultException
      * @throws NonUniqueResultException

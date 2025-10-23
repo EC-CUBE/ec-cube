@@ -67,9 +67,6 @@ class PageRepository extends AbstractRepository
         $this->templateDefaultRealDir = $eccubeConfig->get('eccube_theme_src_dir');
     }
 
-    /**
-     * @return Page
-     */
     public function getPageByRoute(?string $route): Page
     {
         $qb = $this->createQueryBuilder('p');
@@ -92,8 +89,6 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @return Page
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -110,9 +105,6 @@ class PageRepository extends AbstractRepository
         return $Page;
     }
 
-    /**
-     * @return Page
-     */
     public function newPage(): Page
     {
         $Page = new Page();

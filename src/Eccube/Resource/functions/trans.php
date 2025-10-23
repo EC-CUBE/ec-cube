@@ -16,7 +16,6 @@ use Eccube\DependencyInjection\Facade\TranslatorFacade;
 /**
  * @param array<string, mixed> $parameters
  *
- *
  * @throws Exception
  */
 function trans(string|int $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
@@ -29,7 +28,6 @@ function trans(string|int $id, array $parameters = [], ?string $domain = null, ?
 /**
  * @param mixed $number - 不要引数
  * @param array<mixed> $parameters
- *
  *
  * @deprecated  transを使用してください。
  */

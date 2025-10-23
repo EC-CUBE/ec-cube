@@ -26,8 +26,6 @@ class StockValidator extends ItemValidator
      * @param ItemInterface $item 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 在庫切れの場合
      */
     #[\Override]
@@ -52,8 +50,6 @@ class StockValidator extends ItemValidator
     /**
      * @param ItemInterface $item 商品
      * @param PurchaseContext $context  購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context): void

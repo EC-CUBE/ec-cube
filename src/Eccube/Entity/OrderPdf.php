@@ -101,9 +101,6 @@ if (!class_exists(OrderPdf::class)) {
         #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
         private $visible = true;
 
-        /**
-         * @return int
-         */
         public function getMemberId(): int
         {
             return $this->member_id;
@@ -119,9 +116,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string
-         */
         public function getTitle(): string
         {
             return $this->title;
@@ -137,9 +131,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getMessage1(): ?string
         {
             return $this->message1;
@@ -155,9 +146,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getMessage2(): ?string
         {
             return $this->message2;
@@ -173,9 +161,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getMessage3(): ?string
         {
             return $this->message3;
@@ -191,9 +176,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getNote1(): ?string
         {
             return $this->note1;
@@ -209,9 +191,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getNote2(): ?string
         {
             return $this->note2;
@@ -227,9 +206,6 @@ if (!class_exists(OrderPdf::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getNote3(): ?string
         {
             return $this->note3;
@@ -283,8 +259,6 @@ if (!class_exists(OrderPdf::class)) {
 
         /**
          * Set visible
-         *
-         * @return OrderPdf
          */
         public function setVisible(bool $visible): OrderPdf
         {
@@ -295,8 +269,6 @@ if (!class_exists(OrderPdf::class)) {
 
         /**
          * Is the visibility visible?
-         *
-         * @return bool
          */
         public function isVisible(): bool
         {

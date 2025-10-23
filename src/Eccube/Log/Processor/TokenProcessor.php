@@ -30,9 +30,6 @@ class TokenProcessor
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * @return LogRecord
-     */
     public function __invoke(LogRecord $record): LogRecord
     {
         $userId = 'N/A';

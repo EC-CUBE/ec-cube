@@ -173,8 +173,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * - ポイント設定が有効であること.
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
-     *
-     * @return bool
      */
     private function supports(ItemHolderInterface $itemHolder): bool
     {

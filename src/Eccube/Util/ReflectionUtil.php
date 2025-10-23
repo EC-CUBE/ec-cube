@@ -16,8 +16,6 @@ namespace Eccube\Util;
 class ReflectionUtil
 {
     /**
-     * @return void
-     *
      * @throws \ReflectionException
      */
     public static function setValue(object $instance, string $property, mixed $value): void
@@ -29,8 +27,6 @@ class ReflectionUtil
 
     /**
      * @param array<mixed> $values
-     *
-     * @return void
      *
      * @throws \ReflectionException
      */

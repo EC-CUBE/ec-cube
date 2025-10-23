@@ -36,8 +36,6 @@ class PurchaseFlowPass implements CompilerPassInterface
     public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
     /**
-     * @return void
-     *
      * @throws \ReflectionException
      */
     #[\Override]
@@ -139,8 +137,6 @@ class PurchaseFlowPass implements CompilerPassInterface
 
     /**
      * 既に同一メソッド・同一サービスIDが登録済みかを定義から判定し、二重登録を防ぐ。
-     *
-     * @return bool
      */
     private function alreadyWired(Definition $flowDef, string $methodName, string $serviceId): bool
     {

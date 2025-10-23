@@ -39,8 +39,6 @@ class PaymentResult
      * 決済が成功したかどうかを設定します.
      *
      * 決済が成功した場合は true, 失敗した場合は false を設定します.
-     *
-     * @return PaymentResult
      */
     public function setSuccess(bool $success): PaymentResult
     {
@@ -53,8 +51,6 @@ class PaymentResult
      * 決済が成功したかどうか.
      *
      * 決済が成功した場合 true
-     *
-     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -75,8 +71,6 @@ class PaymentResult
      * 決済が失敗した場合のエラーの配列を設定します.
      *
      * @param array<int, string> $errors
-     *
-     * @return PaymentResult
      */
     public function setErrors(array $errors): PaymentResult
     {
@@ -89,8 +83,6 @@ class PaymentResult
      * Response を設定します.
      *
      * 3Dセキュアなど, 決済中に他のサイトへリダイレクトが必要な特殊な用途に使用します.
-     *
-     * @return PaymentResult
      */
     public function setResponse(Response $response): PaymentResult
     {
@@ -101,8 +93,6 @@ class PaymentResult
 
     /**
      * Response を返します.
-     *
-     * @return Response|null
      */
     public function getResponse(): ?Response
     {

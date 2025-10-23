@@ -64,57 +64,36 @@ class TemplateEvent extends Event
         $this->response = $response;
     }
 
-    /**
-     * @return string|null
-     */
     public function getView(): ?string
     {
         return $this->view;
     }
 
-    /**
-     * @return void
-     */
     public function setView(string $view): void
     {
         $this->view = $view;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSource(): ?string
     {
         return $this->source;
     }
 
-    /**
-     * @return void
-     */
     public function setSource(string $source): void
     {
         $this->source = $source;
     }
 
-    /**
-     * @return mixed
-     */
     public function getParameter(string $key): mixed
     {
         return $this->parameters[$key];
     }
 
-    /**
-     * @return void
-     */
     public function setParameter(string $key, mixed $value): void
     {
         $this->parameters[$key] = $value;
     }
 
-    /**
-     * @return bool
-     */
     public function hasParameter(string $key): bool
     {
         return isset($this->parameters[$key]);
@@ -130,25 +109,17 @@ class TemplateEvent extends Event
 
     /**
      * @param array<mixed> $parameters
-     *
-     * @return void
      */
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return Response|null
-     */
     public function getResponse(): ?Response
     {
         return $this->response;
     }
 
-    /**
-     * @return void
-     */
     public function setResponse(?Response $response): void
     {
         $this->response = $response;

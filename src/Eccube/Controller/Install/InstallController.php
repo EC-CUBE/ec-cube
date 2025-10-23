@@ -120,8 +120,6 @@ class InstallController extends AbstractController
 
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
-     *
-     * @return RedirectResponse
      */
     #[Route('/', name: 'homepage', methods: ['GET'])]
     #[Route('/install', name: 'install', methods: ['GET'])]
@@ -520,17 +518,11 @@ class InstallController extends AbstractController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     protected function getSessionData(SessionInterface $session): mixed
     {
         return $session->get('eccube.session.install', []);
     }
 
-    /**
-     * @return void
-     */
     protected function removeSessionData(SessionInterface $session): void
     {
         $session->clear();
@@ -538,8 +530,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<mixed> $data
-     *
-     * @return void
      */
     protected function setSessionData(SessionInterface $session, array $data = []): void
     {
@@ -547,9 +537,6 @@ class InstallController extends AbstractController
         $session->set('eccube.session.install', $data);
     }
 
-    /**
-     * @return void
-     */
     protected function checkModules(): void
     {
         foreach ($this->requiredModules as $module) {
@@ -590,8 +577,6 @@ class InstallController extends AbstractController
     /**
      * @param array<string,mixed> $params
      *
-     * @return Connection
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function createConnection(array $params): Connection
@@ -618,8 +603,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @return EntityManager
-     *
      * @throws \Doctrine\ORM\Exception\ORMException
      */
     protected function createEntityManager(Connection $conn): EntityManager
@@ -640,8 +623,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<string,mixed> $params
-     *
-     * @return string|null
      */
     public function createDatabaseUrl(array $params): ?string
     {
@@ -712,8 +693,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<string,string> $params
-     *
-     * @return string
      *
      * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
      */
@@ -831,8 +810,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @return void
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function dropTables(EntityManager $em): void
@@ -844,8 +821,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @return void
-     *
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
     protected function createTables(EntityManager $em): void
@@ -855,9 +830,6 @@ class InstallController extends AbstractController
         $schemaTool->createSchema($metadatas);
     }
 
-    /**
-     * @return void
-     */
     protected function importCsv(EntityManager $em): void
     {
         // for full locale code cases
@@ -875,8 +847,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<string,mixed> $data
-     *
-     * @return void
      *
      * @throws \Doctrine\DBAL\Exception
      */
@@ -934,8 +904,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<string,mixed> $data
-     *
-     * @return void
      *
      * @throws \Doctrine\DBAL\Exception
      */
@@ -1036,8 +1004,6 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
     public function getDatabaseVersion(EntityManager $em): string
@@ -1064,9 +1030,6 @@ class InstallController extends AbstractController
         return $version;
     }
 
-    /**
-     * @return string
-     */
     public function convertAdminAllowHosts(string $adminAllowHosts): string
     {
         if (empty($adminAllowHosts)) {
@@ -1080,17 +1043,11 @@ class InstallController extends AbstractController
         return "'$adminAllowHosts'";
     }
 
-    /**
-     * @return bool
-     */
     protected function isInstalled(): bool
     {
         return self::DEFAULT_AUTH_MAGIC !== $this->getParameter('eccube_auth_magic');
     }
 
-    /**
-     * @return bool
-     */
     protected function isInstallEnv(): bool
     {
         $env = $this->getParameter('kernel.environment');

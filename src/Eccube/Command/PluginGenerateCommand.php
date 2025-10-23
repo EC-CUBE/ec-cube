@@ -48,9 +48,6 @@ class PluginGenerateCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function configure(): void
     {
@@ -60,9 +57,6 @@ class PluginGenerateCommand extends Command
             ->addArgument('ver', InputOption::VALUE_REQUIRED, 'plugin version');
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -70,9 +64,6 @@ class PluginGenerateCommand extends Command
         $this->fs = new Filesystem();
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
@@ -137,9 +128,6 @@ class PluginGenerateCommand extends Command
         return 0;
     }
 
-    /**
-     * @return string
-     */
     public function validateCode(mixed $code): string
     {
         if (empty($code)) {
@@ -160,18 +148,12 @@ class PluginGenerateCommand extends Command
         return $code;
     }
 
-    /**
-     * @return string
-     */
     public function validateVersion(string $version): string
     {
         // TODO
         return $version;
     }
 
-    /**
-     * @return void
-     */
     protected function createDirectories(string $pluginDir): void
     {
         $dirs = [
@@ -191,9 +173,6 @@ class PluginGenerateCommand extends Command
         }
     }
 
-    /**
-     * @return void
-     */
     protected function createConfig(string $pluginDir, string $name, string $code, string $version): void
     {
         $lowerCode = mb_strtolower($code);
@@ -215,9 +194,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
 
-    /**
-     * @return void
-     */
     protected function createGithubActions(string $pluginDir): void
     {
         $source = '
@@ -248,9 +224,6 @@ jobs:
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
 
-    /**
-     * @return void
-     */
     protected function createGitattributes(string $pluginDir): void
     {
         $source = <<<EOL
@@ -263,18 +236,12 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/.gitattributes', $source);
     }
 
-    /**
-     * @return void
-     */
     protected function createMessages(string $pluginDir): void
     {
         $this->fs->dumpFile($pluginDir.'/Resource/locale/messages.ja.yaml', '');
         $this->fs->dumpFile($pluginDir.'/Resource/locale/validators.ja.yaml', '');
     }
 
-    /**
-     * @return void
-     */
     protected function createTwigBlock(string $pluginDir, string $code): void
     {
         $source = <<<EOL
@@ -299,9 +266,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/TwigBlock.php', $source);
     }
 
-    /**
-     * @return void
-     */
     protected function createNav(string $pluginDir, string $code): void
     {
         $source = <<<EOL
@@ -326,9 +290,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Nav.php', $source);
     }
 
-    /**
-     * @return void
-     */
     protected function createEvent(string $pluginDir, string $code): void
     {
         $source = <<<EOL
@@ -353,9 +314,6 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Event.php', $source);
     }
 
-    /**
-     * @return void
-     */
     protected function createConfigController(string $pluginDir, string $code): void
     {
         $snakecased = Container::underscore($code);

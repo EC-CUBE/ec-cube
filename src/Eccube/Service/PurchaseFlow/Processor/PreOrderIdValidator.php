@@ -37,8 +37,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * 受注の仮確定処理を行います。
-     *
-     * @return void
      */
     #[\Override]
     public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
@@ -48,8 +46,6 @@ class PreOrderIdValidator implements PurchaseProcessor
 
     /**
      * 受注の確定処理を行います。
-     *
-     * @return void
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context): void
@@ -65,8 +61,6 @@ class PreOrderIdValidator implements PurchaseProcessor
      *
      * @param ItemHolderInterface $itemHolder 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      *
      * @throws BadRequestHttpException pre_order_idが一致しない場合 OR Cartがない場合 OR $itemHolderが受注でない場合
      */

@@ -92,9 +92,6 @@ class TwoFactorAuthService
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isAuth(Member $Member): bool
     {
         if ($json = $this->request->cookies->get($this->cookieName)) {
@@ -119,9 +116,6 @@ class TwoFactorAuthService
         return false;
     }
 
-    /**
-     * @return Cookie
-     */
     public function createAuthedCookie(Member $Member): Cookie
     {
         $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
@@ -151,25 +145,16 @@ class TwoFactorAuthService
         return $cookie;
     }
 
-    /**
-     * @return bool
-     */
     public function verifyCode(string $authKey, string $token): bool
     {
         return $this->tfa->verifyCode($authKey, $token, 2);
     }
 
-    /**
-     * @return string
-     */
     public function createSecret(): string
     {
         return $this->tfa->createSecret();
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         $enabled = $this->eccubeConfig->get('eccube_2fa_enabled');

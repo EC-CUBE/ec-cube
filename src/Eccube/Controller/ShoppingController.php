@@ -875,8 +875,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethodをコンテナから取得する.
-     *
-     * @return PaymentMethodInterface
      */
     private function createPaymentMethod(Order $Order, FormInterface $form): PaymentMethodInterface
     {
@@ -889,8 +887,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::applyを実行する.
-     *
-     * @return RedirectResponse|Response|null
      */
     protected function executeApply(PaymentMethodInterface $paymentMethod): RedirectResponse|Response|null
     {
@@ -929,8 +925,6 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::checkoutを実行する.
-     *
-     * @return RedirectResponse|Response|null
      */
     protected function executeCheckout(PaymentMethodInterface $paymentMethod): RedirectResponse|Response|null
     {

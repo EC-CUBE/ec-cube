@@ -83,8 +83,6 @@ class MaintenanceController extends AbstractController
      *
      * @param string $mode
      *
-     * @return JsonResponse
-     *
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/disable_maintenance/{mode}', name: 'admin_disable_maintenance', requirements: ['mode' => 'manual|auto_maintenance|auto_maintenance_update'], methods: ['POST'])]

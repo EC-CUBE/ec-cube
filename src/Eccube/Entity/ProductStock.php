@@ -37,8 +37,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set product_class_id
-         *
-         * @return ProductStock
          */
         public function setProductClassId(?int $productClassId): ProductStock
         {
@@ -49,8 +47,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Get product_class_id
-         *
-         * @return int|null
          */
         public function getProductClassId(): ?int
         {
@@ -110,8 +106,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set stock.
-         *
-         * @return ProductStock
          */
         public function setStock(?string $stock = null): ProductStock
         {
@@ -122,8 +116,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Get stock.
-         *
-         * @return string|null
          */
         public function getStock(): ?string
         {
@@ -132,8 +124,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return ProductStock
          */
         public function setCreateDate(\DateTime $createDate): ProductStock
         {
@@ -144,8 +134,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -154,8 +142,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return ProductStock
          */
         public function setUpdateDate(\DateTime $updateDate): ProductStock
         {
@@ -166,8 +152,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -176,8 +160,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set productClass.
-         *
-         * @return ProductStock
          */
         public function setProductClass(?ProductClass $productClass = null): ProductStock
         {
@@ -188,8 +170,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Get productClass.
-         *
-         * @return ProductClass|null
          */
         public function getProductClass(): ?ProductClass
         {
@@ -198,8 +178,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Set creator.
-         *
-         * @return ProductStock
          */
         public function setCreator(?Member $creator = null): ProductStock
         {
@@ -210,8 +188,6 @@ if (!class_exists(ProductStock::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

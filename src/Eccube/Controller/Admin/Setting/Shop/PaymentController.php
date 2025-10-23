@@ -166,8 +166,6 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
      *
-     * @return Response
-     *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
@@ -218,8 +216,6 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     * @return BinaryFileResponse
-     *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
@@ -253,8 +249,6 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
      *
-     * @return Response
-     *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
@@ -275,9 +269,6 @@ class PaymentController extends AbstractController
         throw new NotFoundHttpException();
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Payment $TargetPayment): RedirectResponse
     {
@@ -312,9 +303,6 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visible(Payment $Payment): RedirectResponse
     {
@@ -334,8 +322,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @return Response
-     *
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]

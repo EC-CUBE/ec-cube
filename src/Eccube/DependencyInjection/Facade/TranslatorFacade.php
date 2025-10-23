@@ -28,9 +28,6 @@ class TranslatorFacade
         self::$Translator = $Translator;
     }
 
-    /**
-     * @return TranslatorFacade|null
-     */
     public static function init(TranslatorInterface $Translator): ?TranslatorFacade
     {
         if (null === self::$instance) {
@@ -41,8 +38,6 @@ class TranslatorFacade
     }
 
     /**
-     * @return TranslatorInterface
-     *
      * @throws \Exception
      */
     public static function create(): TranslatorInterface

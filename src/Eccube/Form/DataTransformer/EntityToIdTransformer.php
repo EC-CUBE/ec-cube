@@ -45,8 +45,6 @@ class EntityToIdTransformer implements DataTransformerInterface
 
     /**
      * @param T|null $entity
-     *
-     * @return string|int|null
      */
     #[\Override]
     public function transform(mixed $entity): string|int|null

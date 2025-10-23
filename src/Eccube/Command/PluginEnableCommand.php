@@ -25,9 +25,6 @@ class PluginEnableCommand extends Command
 {
     use PluginCommandTrait;
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function configure(): void
     {

@@ -42,8 +42,6 @@ class SaveEventSubscriber
 
     /**
      * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
-     *
-     * @return void
      */
     public function prePersist(LifecycleEventArgs $args): void
     {
@@ -69,8 +67,6 @@ class SaveEventSubscriber
 
     /**
      * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
-     *
-     * @return void
      */
     public function preUpdate(LifecycleEventArgs $args): void
     {

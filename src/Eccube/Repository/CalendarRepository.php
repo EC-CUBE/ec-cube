@@ -39,8 +39,6 @@ class CalendarRepository extends AbstractRepository
     }
 
     /**
-     * @return Calendar
-     *
      * @throws \Exception
      */
     public function get(int $id = 1): Calendar
@@ -96,8 +94,6 @@ class CalendarRepository extends AbstractRepository
      * delete.
      *
      * @param int|Calendar $Calendar
-     *
-     * @return void
      *
      * @throws NoResultException
      * @throws ORMException

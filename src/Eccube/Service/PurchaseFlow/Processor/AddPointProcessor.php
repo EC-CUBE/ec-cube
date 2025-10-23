@@ -39,9 +39,6 @@ class AddPointProcessor extends ItemHolderPostValidator
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
@@ -56,8 +53,6 @@ class AddPointProcessor extends ItemHolderPostValidator
 
     /**
      * 付与ポイントを計算.
-     *
-     * @return string
      */
     private function calculateAddPoint(ItemHolderInterface $itemHolder): string
     {
@@ -101,8 +96,6 @@ class AddPointProcessor extends ItemHolderPostValidator
      * - ポイント設定が有効であること.
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
-     *
-     * @return bool
      */
     private function supports(ItemHolderInterface $itemHolder): bool
     {

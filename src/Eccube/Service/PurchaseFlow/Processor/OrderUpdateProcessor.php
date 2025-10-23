@@ -40,8 +40,6 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
     /**
      * @param ItemHolderInterface $target 注文 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context): void

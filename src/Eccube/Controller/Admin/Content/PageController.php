@@ -257,8 +257,6 @@ class PageController extends AbstractController
 
     /**
      * @param string|null $id
-     *
-     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/page/{id}/delete', name: 'admin_content_page_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse

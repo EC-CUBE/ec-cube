@@ -19,8 +19,6 @@ abstract class WhereCustomizer implements QueryCustomizer
 {
     /**
      * @param array<string,mixed>|null $params
-     *
-     * @return void
      */
     #[\Override]
     final public function customize(QueryBuilder $builder, ?array $params, string $queryKey): void

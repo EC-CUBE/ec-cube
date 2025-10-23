@@ -272,8 +272,6 @@ class EntryController extends AbstractController
 
     /**
      * 会員登録処理を行う
-     *
-     * @return int
      */
     private function entryActivate(Request $request, string $secret_key): int
     {

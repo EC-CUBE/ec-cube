@@ -127,8 +127,6 @@ class CartController extends AbstractController
 
     /**
      * @param \Eccube\Entity\Cart[] $Carts
-     *
-     * @return RedirectResponse|null
      */
     protected function execPurchaseFlow(array $Carts): ?RedirectResponse
     {
@@ -185,8 +183,6 @@ class CartController extends AbstractController
      *
      * @param string $operation
      * @param string|int $productClassId
-     *
-     * @return RedirectResponse
      */
     #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
     public function handleCartItem($operation, $productClassId): RedirectResponse
@@ -230,8 +226,6 @@ class CartController extends AbstractController
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
      * @param string $cart_key
-     *
-     * @return RedirectResponse|Response|null
      */
     #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
     public function buystep(Request $request, $cart_key): RedirectResponse|Response|null

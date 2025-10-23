@@ -22,9 +22,6 @@ class Queries
      */
     private $customizers = [];
 
-    /**
-     * @return void
-     */
     public function addCustomizer(QueryCustomizer $customizer): void
     {
         $queryKey = $customizer->getQueryKey();
@@ -33,8 +30,6 @@ class Queries
 
     /**
      * @param array<mixed>|null $params
-     *
-     * @return QueryBuilder
      */
     public function customize(string $queryKey, QueryBuilder $builder, ?array $params): QueryBuilder
     {

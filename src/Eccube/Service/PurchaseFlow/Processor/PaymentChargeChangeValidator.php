@@ -28,8 +28,6 @@ class PaymentChargeChangeValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 手数料が変更されている場合
      */
     #[\Override]

@@ -134,8 +134,6 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * お客様情報の変更(非会員)
      *
-     * @return JsonResponse|RedirectResponse
-     *
      * @throws \Exception
      */
     #[Route('/shopping/customer', name: 'shopping_customer', methods: ['POST'])]

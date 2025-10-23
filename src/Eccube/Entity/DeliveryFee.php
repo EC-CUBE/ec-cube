@@ -69,8 +69,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Set fee.
-         *
-         * @return DeliveryFee
          */
         public function setFee(string $fee): DeliveryFee
         {
@@ -81,8 +79,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Get fee.
-         *
-         * @return string|null
          */
         public function getFee(): ?string
         {
@@ -91,8 +87,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Set delivery.
-         *
-         * @return DeliveryFee
          */
         public function setDelivery(?Delivery $delivery = null): DeliveryFee
         {
@@ -103,8 +97,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Get delivery.
-         *
-         * @return Delivery|null
          */
         public function getDelivery(): ?Delivery
         {
@@ -113,8 +105,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Set pref.
-         *
-         * @return DeliveryFee
          */
         public function setPref(?Pref $pref = null): DeliveryFee
         {
@@ -125,8 +115,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Pref|null
          */
         public function getPref(): ?Pref
         {

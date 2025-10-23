@@ -46,41 +46,26 @@ class PluginContext
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return bool
-     */
     public function isInstall(): bool
     {
         return $this->mode === self::MODE_INSTALL;
     }
 
-    /**
-     * @return bool
-     */
     public function isUninstall(): bool
     {
         return $this->mode === self::MODE_UNINSTALL;
     }
 
-    /**
-     * @return string
-     */
     public function setInstall(): string
     {
         return $this->mode = self::MODE_INSTALL;
     }
 
-    /**
-     * @return string
-     */
     public function setUninstall(): string
     {
         return $this->mode = self::MODE_UNINSTALL;
     }
 
-    /**
-     * @return void
-     */
     public function setCode(string $code): void
     {
         $this->code = $code;

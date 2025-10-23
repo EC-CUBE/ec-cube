@@ -42,9 +42,6 @@ class ExceptionListener implements EventSubscriberInterface
         $this->requestContext = $requestContext;
     }
 
-    /**
-     * @return void
-     */
     public function onKernelException(ExceptionEvent $event): void
     {
         $title = trans('exception.error_title');

@@ -31,9 +31,6 @@ class PurchaseFlowResult
         $this->itemHolder = $itemHolder;
     }
 
-    /**
-     * @return void
-     */
     public function addProcessResult(ProcessResult $processResult): void
     {
         $this->processResults[] = $processResult;
@@ -59,25 +56,16 @@ class PurchaseFlowResult
         });
     }
 
-    /**
-     * @return bool
-     */
     public function hasError(): bool
     {
         return !empty($this->getErrors());
     }
 
-    /**
-     * @return bool
-     */
     public function hasWarning(): bool
     {
         return !empty($this->getWarning());
     }
 
-    /**
-     * @return ItemHolderInterface
-     */
     public function getItemHolder(): ItemHolderInterface
     {
         return $this->itemHolder;

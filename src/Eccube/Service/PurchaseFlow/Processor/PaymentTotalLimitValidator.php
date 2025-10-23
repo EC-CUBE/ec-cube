@@ -40,8 +40,6 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 合計金額が上限を超えている場合
      */
     #[\Override]

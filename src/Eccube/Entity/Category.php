@@ -32,18 +32,12 @@ if (!class_exists(Category::class)) {
     #[ORM\Entity(repositoryClass: CategoryRepository::class)]
     class Category extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
             return $this->getName();
         }
 
-        /**
-         * @return int
-         */
         public function countBranches(): int
         {
             $count = 1;
@@ -55,9 +49,6 @@ if (!class_exists(Category::class)) {
             return $count;
         }
 
-        /**
-         * @return Category
-         */
         public function calcChildrenSortNo(EntityManager $em, int $sortNo): Category
         {
             $this->setSortNo($this->getSortNo() + $sortNo);
@@ -102,9 +93,6 @@ if (!class_exists(Category::class)) {
             return array_reverse($path);
         }
 
-        /**
-         * @return string
-         */
         public function getNameWithLevel(): string
         {
             return str_repeat('　', $this->getHierarchy() - 1).$this->getName();
@@ -144,8 +132,6 @@ if (!class_exists(Category::class)) {
          * COUNT自体が重いので, LIMIT 1で取得し存在チェックを行う.
          *
          * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#filtering-collections
-         *
-         * @return bool
          */
         public function hasProductCategories(): bool
         {
@@ -237,8 +223,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -247,8 +231,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set name.
-         *
-         * @return Category
          */
         public function setName(string $name): Category
         {
@@ -259,8 +241,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -269,8 +249,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set hierarchy.
-         *
-         * @return Category
          */
         public function setHierarchy(int $hierarchy): Category
         {
@@ -281,8 +259,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get hierarchy.
-         *
-         * @return int
          */
         public function getHierarchy(): int
         {
@@ -291,8 +267,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Category
          */
         public function setSortNo(int $sortNo): Category
         {
@@ -303,8 +277,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -313,8 +285,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Category
          */
         public function setCreateDate(\DateTime $createDate): Category
         {
@@ -325,8 +295,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -335,8 +303,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Category
          */
         public function setUpdateDate(\DateTime $updateDate): Category
         {
@@ -347,8 +313,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -357,8 +321,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Add productCategory.
-         *
-         * @return Category
          */
         public function addProductCategory(ProductCategory $productCategory): Category
         {
@@ -389,8 +351,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Add child.
-         *
-         * @return Category
          */
         public function addChild(Category $child): Category
         {
@@ -421,8 +381,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set parent.
-         *
-         * @return Category
          */
         public function setParent(?Category $parent = null): Category
         {
@@ -433,8 +391,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get parent.
-         *
-         * @return Category|null
          */
         public function getParent(): ?Category
         {
@@ -443,8 +399,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Category
          */
         public function setCreator(?Member $creator = null): Category
         {
@@ -455,8 +409,6 @@ if (!class_exists(Category::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

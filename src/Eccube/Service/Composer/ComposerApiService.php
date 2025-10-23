@@ -98,8 +98,6 @@ class ComposerApiService implements ComposerServiceInterface
      * @param OutputInterface|null $output
      * @param string|null $from
      *
-     * @return string
-     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -134,8 +132,6 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @param OutputInterface|null $output
      *
-     * @return string
-     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -168,8 +164,6 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run update command
      *
-     * @return void
-     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -195,8 +189,6 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Run install command
-     *
-     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -229,8 +221,6 @@ class ComposerApiService implements ComposerServiceInterface
      * @param callable $callback
      * @param string|null $typeFilter
      * @param int $level
-     *
-     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -308,8 +298,6 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Set work dir
-     *
-     * @return void
      */
     public function setWorkingDir(string $workingDir): void
     {
@@ -320,8 +308,6 @@ class ComposerApiService implements ComposerServiceInterface
      * Run composer command
      *
      * @param array<string, string|bool|array<string>|null> $commands
-     *
-     * @return string|null
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -371,8 +357,6 @@ class ComposerApiService implements ComposerServiceInterface
      * Init composer console application
      *
      * @param string[] $packageName
-     *
-     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -434,9 +418,6 @@ class ComposerApiService implements ComposerServiceInterface
         $this->initConsole();
     }
 
-    /**
-     * @return void
-     */
     private function initConsole(): void
     {
         $consoleApplication = new Application();
@@ -446,8 +427,6 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
-     * @return void
-     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -459,8 +438,6 @@ class ComposerApiService implements ComposerServiceInterface
     }
 
     /**
-     * @return void
-     *
      * @throws PluginException
      * @throws \Doctrine\Persistence\Mapping\MappingException
      * @throws \ReflectionException

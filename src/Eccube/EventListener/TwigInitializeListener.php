@@ -143,8 +143,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @return void
-     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -166,8 +164,6 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @return void
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function setFrontVariables(RequestEvent $event): void
@@ -242,9 +238,6 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
     }
 
-    /**
-     * @return void
-     */
     public function setAdminGlobals(RequestEvent $event): void
     {
         // メニュー表示用配列.

@@ -37,8 +37,6 @@ class TwigLintValidator extends ConstraintValidator
 
     /**
      * @param mixed $value
-     *
-     * @return void
      */
     #[\Override]
     public function validate($value, Constraint $constraint): void

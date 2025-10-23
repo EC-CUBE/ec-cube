@@ -22,8 +22,6 @@ class NavCompilerPass implements CompilerPassInterface
     public const NAV_TAG = 'eccube.nav';
 
     /**
-     * @return void
-     *
      * @throws \InvalidArgumentException
      */
     #[\Override]

@@ -152,8 +152,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set id
-         *
-         * @return Page
          */
         public function setId(int $id): Page
         {
@@ -164,8 +162,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get id
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -174,8 +170,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set name.
-         *
-         * @return Page
          */
         public function setName(?string $name = null): Page
         {
@@ -186,8 +180,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
         public function getName(): ?string
         {
@@ -196,8 +188,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set url.
-         *
-         * @return Page
          */
         public function setUrl(?string $url): Page
         {
@@ -208,8 +198,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get url.
-         *
-         * @return string|null
          */
         public function getUrl(): ?string
         {
@@ -218,8 +206,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set fileName.
-         *
-         * @return Page
          */
         public function setFileName(?string $fileName = null): Page
         {
@@ -230,8 +216,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get fileName.
-         *
-         * @return string|null
          */
         public function getFileName(): ?string
         {
@@ -240,8 +224,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set editType.
-         *
-         * @return Page
          */
         public function setEditType(int $editType): Page
         {
@@ -252,8 +234,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get editType.
-         *
-         * @return int
          */
         public function getEditType(): int
         {
@@ -262,8 +242,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set author.
-         *
-         * @return Page
          */
         public function setAuthor(?string $author = null): Page
         {
@@ -274,8 +252,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get author.
-         *
-         * @return string|null
          */
         public function getAuthor(): ?string
         {
@@ -284,8 +260,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set description.
-         *
-         * @return Page
          */
         public function setDescription(?string $description = null): Page
         {
@@ -296,8 +270,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get description.
-         *
-         * @return string|null
          */
         public function getDescription(): ?string
         {
@@ -306,8 +278,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set keyword.
-         *
-         * @return Page
          */
         public function setKeyword(?string $keyword = null): Page
         {
@@ -318,8 +288,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get keyword.
-         *
-         * @return string|null
          */
         public function getKeyword(): ?string
         {
@@ -328,8 +296,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Page
          */
         public function setCreateDate(\DateTime $createDate): Page
         {
@@ -340,8 +306,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -350,8 +314,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Page
          */
         public function setUpdateDate(\DateTime $updateDate): Page
         {
@@ -362,8 +324,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -372,8 +332,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set metaRobots.
-         *
-         * @return Page
          */
         public function setMetaRobots(?string $metaRobots = null): Page
         {
@@ -384,8 +342,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get metaRobots.
-         *
-         * @return string|null
          */
         public function getMetaRobots(): ?string
         {
@@ -394,8 +350,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set meta_tags
-         *
-         * @return Page
          */
         public function setMetaTags(?string $metaTags): Page
         {
@@ -406,8 +360,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get meta_tags
-         *
-         * @return string|null
          */
         public function getMetaTags(): ?string
         {
@@ -426,8 +378,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Add pageLayoutLayout
-         *
-         * @return Page
          */
         public function addPageLayout(PageLayout $PageLayout): Page
         {
@@ -438,8 +388,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @return void
          */
         public function removePageLayout(PageLayout $PageLayout): void
         {
@@ -448,8 +396,6 @@ if (!class_exists(Page::class)) {
 
         /**
          * Set MasterPage.
-         *
-         * @return Page
          */
         public function setMasterPage(?Page $page = null): Page
         {
@@ -460,17 +406,12 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get MasterPage.
-         *
-         * @return Page|null
          */
         public function getMasterPage(): ?Page
         {
             return $this->MasterPage;
         }
 
-        /**
-         * @return int|null
-         */
         public function getSortNo(int $layoutId): ?int
         {
             $pageLayouts = $this->getPageLayouts();

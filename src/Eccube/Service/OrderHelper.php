@@ -157,8 +157,6 @@ class OrderHelper
      * 購入処理中の受注を生成する.
      *
      * @param $CartItems
-     *
-     * @return Order
      */
     public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer): Order
     {
@@ -200,9 +198,6 @@ class OrderHelper
         return $Order;
     }
 
-    /**
-     * @return bool
-     */
     public function verifyCart(Cart $Cart): bool
     {
         if (count($Cart->getCartItems()) > 0) {
@@ -223,8 +218,6 @@ class OrderHelper
 
     /**
      * 注文手続き画面でログインが必要かどうかの判定
-     *
-     * @return bool
      */
     public function isLoginRequired(): bool
     {
@@ -248,8 +241,6 @@ class OrderHelper
 
     /**
      * 購入処理中の受注を取得する.
-     *
-     * @return Order|null
      */
     public function getPurchaseProcessingOrder(?string $preOrderId = null): ?Order
     {
@@ -266,8 +257,6 @@ class OrderHelper
     /**
      * セッションに保持されている非会員情報を取得する.
      * 非会員購入時に入力されたお客様情報を返す.
-     *
-     * @return Customer|null
      */
     public function getNonMember(string $session_key = self::SESSION_NON_MEMBER): ?Customer
     {
@@ -296,9 +285,6 @@ class OrderHelper
         return $Customer;
     }
 
-    /**
-     * @return Order|null
-     */
     public function initializeOrder(Cart $Cart, Customer $Customer): ?Order
     {
         // 購入処理中の受注情報を取得
@@ -313,9 +299,6 @@ class OrderHelper
         return $Order;
     }
 
-    /**
-     * @return void
-     */
     public function removeSession(): void
     {
         $this->session->remove(self::SESSION_ORDER_ID);
@@ -325,8 +308,6 @@ class OrderHelper
 
     /**
      * 会員情報の更新日時が受注の作成日時よりも新しければ, 受注の注文者情報を更新する.
-     *
-     * @return void
      */
     public function updateCustomerInfo(Order $Order, Customer $Customer): void
     {
@@ -335,9 +316,6 @@ class OrderHelper
         }
     }
 
-    /**
-     * @return string
-     */
     public function createPreOrderId(): string
     {
         // ランダムなpre_order_idを作成
@@ -354,9 +332,6 @@ class OrderHelper
         return $preOrderId;
     }
 
-    /**
-     * @return void
-     */
     protected function setCustomer(Order $Order, Customer $Customer): void
     {
         if ($Customer->getId()) {
@@ -415,9 +390,6 @@ class OrderHelper
         }, $CartItems instanceof Collection ? $CartItems->toArray() : $CartItems);
     }
 
-    /**
-     * @return Shipping
-     */
     protected function createShippingFromCustomer(Customer $Customer): Shipping
     {
         $Shipping = new Shipping();
@@ -436,9 +408,6 @@ class OrderHelper
         return $Shipping;
     }
 
-    /**
-     * @return void
-     */
     protected function setDefaultDelivery(Shipping $Shipping): void
     {
         // 配送商品に含まれる販売種別を抽出.
@@ -460,9 +429,6 @@ class OrderHelper
         $Shipping->setShippingDeliveryName($Delivery->getName());
     }
 
-    /**
-     * @return void
-     */
     protected function setDefaultPayment(Order $Order): void
     {
         $OrderItems = $Order->getOrderItems();
@@ -497,8 +463,6 @@ class OrderHelper
 
     /**
      * @param array<int, OrderItem> $OrderItems
-     *
-     * @return void
      */
     protected function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems): void
     {
@@ -511,8 +475,6 @@ class OrderHelper
     }
 
     /**
-     * @return bool
-     *
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
      */
     private function isGranted(string $attribute, ?string $subject = null): bool
@@ -522,8 +484,6 @@ class OrderHelper
 
     /**
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
-     *
-     * @return UserInterface|null
      */
     private function getUser(): ?UserInterface
     {
@@ -546,8 +506,6 @@ class OrderHelper
      * - 値引き: 税抜
      * - 手数料: 税込
      * - ポイント値引き: 税込
-     *
-     * @return TaxDisplayType
      */
     public function getTaxDisplayType(OrderItemType|int $OrderItemType): TaxDisplayType
     {

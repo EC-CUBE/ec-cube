@@ -173,7 +173,6 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string $id
      *
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/delete', name: 'admin_product_class_category_delete', requirements: ['class_name_id' => '\d+', 'id' => '\d+'], methods: ['DELETE'])]
@@ -223,7 +222,6 @@ class ClassCategoryController extends AbstractController
     /**
      * @param string $class_name_id
      * @param string $id
-     *
      *
      * @throws NotFoundHttpException
      */

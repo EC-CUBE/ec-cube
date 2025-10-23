@@ -73,8 +73,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -83,8 +81,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set denyUrl.
-         *
-         * @return AuthorityRole
          */
         public function setDenyUrl(?string $denyUrl): AuthorityRole
         {
@@ -95,8 +91,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Get denyUrl.
-         *
-         * @return string|null
          */
         public function getDenyUrl(): ?string
         {
@@ -105,8 +99,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return AuthorityRole
          */
         public function setCreateDate(\DateTime $createDate): AuthorityRole
         {
@@ -117,8 +109,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -127,8 +117,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return AuthorityRole
          */
         public function setUpdateDate(\DateTime $updateDate): AuthorityRole
         {
@@ -139,8 +127,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -149,8 +135,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set authority.
-         *
-         * @return AuthorityRole
          */
         public function setAuthority(?Authority $authority = null): AuthorityRole
         {
@@ -161,8 +145,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Get authority.
-         *
-         * @return Authority|null
          */
         public function getAuthority(): ?Authority
         {
@@ -171,8 +153,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Set creator.
-         *
-         * @return AuthorityRole
          */
         public function setCreator(?Member $creator = null): AuthorityRole
         {
@@ -183,8 +163,6 @@ if (!class_exists(AuthorityRole::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

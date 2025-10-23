@@ -18,8 +18,6 @@ final class ForwardOnly
 {
     /**
      * Returns the alias name for an annotated configuration.
-     *
-     * @return string
      */
     public function getAliasName(): string
     {
@@ -28,8 +26,6 @@ final class ForwardOnly
 
     /**
      * Returns whether multiple annotations of this type are allowed.
-     *
-     * @return bool
      */
     public function allowArray(): bool
     {

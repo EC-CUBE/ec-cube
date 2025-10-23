@@ -30,17 +30,11 @@ class EccubeConfig implements \ArrayAccess
         $this->container = $container;
     }
 
-    /**
-     * @return mixed
-     */
     public function get(string $key): mixed
     {
         return $this->container->get($key);
     }
 
-    /**
-     * @return bool
-     */
     public function has(string $key): bool
     {
         return $this->container->has($key);
@@ -48,8 +42,6 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -60,8 +52,6 @@ class EccubeConfig implements \ArrayAccess
 
     /**
      * @param mixed $offset
-     *
-     * @return mixed
      */
     #[\ReturnTypeWillChange]
     #[\Override]

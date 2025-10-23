@@ -97,8 +97,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -124,8 +122,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * return No Image filename
-     *
-     * @return string
      */
     public function getNoImageProduct(?string $image): string
     {
@@ -134,8 +130,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
     public function getDateFormatFilter(?\DateTimeInterface $date, string $value = '', string $format = 'Y/m/d'): string
     {
@@ -148,8 +142,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
     public function getPriceFilter(float|string|null $number, int $decimals = 0, string $decPoint = '.', string $thousandsSep = ','): string
     {
@@ -164,8 +156,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
     public function getEllipsis(string $value, int $length = 100, string $end = '...'): string
     {
@@ -174,8 +164,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
     public function getTimeAgo(string|\DateTimeInterface $date): string
     {
@@ -184,8 +172,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * FormView にエラーが含まれるかを返す.
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {
@@ -209,8 +195,6 @@ class EccubeExtension extends AbstractExtension
      * product_idで指定したProductを取得
      * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
      * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
-     *
-     * @return Product|null
      */
     public function getProduct(int|float|string $id): ?Product
     {
@@ -229,8 +213,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Get the ClassCategories as JSON.
-     *
-     * @return string
      */
     public function getClassCategoriesAsJson(Product $Product): string
     {
@@ -289,8 +271,6 @@ class EccubeExtension extends AbstractExtension
      *
      * @param array<string,string> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
-     *
-     * @return string
      */
     public function getExtensionIcon(string $ext, array $attr = [], bool $iconOnly = false): string
     {
@@ -346,8 +326,6 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Get currency symbol
-     *
-     * @return bool|string
      */
     public function getCurrencySymbol(?string $currency = null): bool|string
     {

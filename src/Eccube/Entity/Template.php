@@ -33,17 +33,11 @@ if (!class_exists(Template::class)) {
          */
         public const DEFAULT_TEMPLATE_CODE = 'default';
 
-        /**
-         * @return bool
-         */
         public function isDefaultTemplate(): bool
         {
             return self::DEFAULT_TEMPLATE_CODE === $this->getCode();
         }
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -102,8 +96,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Set code.
-         *
-         * @return Template
          */
         public function setCode(string $code): Template
         {
@@ -114,8 +106,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Get code.
-         *
-         * @return string
          */
         public function getCode(): string
         {
@@ -124,8 +114,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Set name.
-         *
-         * @return Template
          */
         public function setName(string $name): Template
         {
@@ -136,8 +124,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -146,8 +132,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Template
          */
         public function setCreateDate(\DateTime $createDate): Template
         {
@@ -158,8 +142,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -168,8 +150,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Template
          */
         public function setUpdateDate(\DateTime $updateDate): Template
         {
@@ -180,8 +160,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -190,8 +168,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Set deviceType.
-         *
-         * @return Template
          */
         public function setDeviceType(?DeviceType $deviceType = null): Template
         {
@@ -202,8 +178,6 @@ if (!class_exists(Template::class)) {
 
         /**
          * Get deviceType.
-         *
-         * @return DeviceType|null
          */
         public function getDeviceType(): ?DeviceType
         {

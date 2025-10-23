@@ -110,8 +110,6 @@ class CategoryRepository extends AbstractRepository
      *
      * @param Category $Category カテゴリ
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -150,8 +148,6 @@ class CategoryRepository extends AbstractRepository
      * カテゴリを削除する.
      *
      * @param  Category $Category 削除対象のカテゴリ
-     *
-     * @return void
      *
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.

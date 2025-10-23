@@ -83,18 +83,12 @@ if (!class_exists(Product::class)) {
          */
         private $className2;
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
             return $this->getName();
         }
 
-        /**
-         * @return void
-         */
         public function _calc(): void
         {
             if (!$this->_calc) {
@@ -167,8 +161,6 @@ if (!class_exists(Product::class)) {
         /**
          * Is Enable
          *
-         * @return bool
-         *
          * @deprecated
          */
         public function isEnable(): bool
@@ -178,8 +170,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get ClassName1
-         *
-         * @return string|null
          */
         public function getClassName1(): ?string
         {
@@ -190,8 +180,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get ClassName2
-         *
-         * @return string|null
          */
         public function getClassName2(): ?string
         {
@@ -242,8 +230,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get StockFind
-         *
-         * @return bool|null
          */
         public function getStockFind(): ?bool
         {
@@ -256,8 +242,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Stock min
-         *
-         * @return string|null
          */
         public function getStockMin(): ?string
         {
@@ -270,8 +254,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Stock max
-         *
-         * @return string|null
          */
         public function getStockMax(): ?string
         {
@@ -284,8 +266,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get StockUnlimited min
-         *
-         * @return bool|null
          */
         public function getStockUnlimitedMin(): ?bool
         {
@@ -298,8 +278,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get StockUnlimited max
-         *
-         * @return bool|null
          */
         public function getStockUnlimitedMax(): ?bool
         {
@@ -312,8 +290,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01 min
-         *
-         * @return string|null
          */
         public function getPrice01Min(): ?string
         {
@@ -328,8 +304,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01 max
-         *
-         * @return string|null
          */
         public function getPrice01Max(): ?string
         {
@@ -344,8 +318,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02 min
-         *
-         * @return string|null
          */
         public function getPrice02Min(): ?string
         {
@@ -358,8 +330,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02 max
-         *
-         * @return string|null
          */
         public function getPrice02Max(): ?string
         {
@@ -372,8 +342,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01IncTax min
-         *
-         * @return string|null
          */
         public function getPrice01IncTaxMin(): ?string
         {
@@ -386,8 +354,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01IncTax max
-         *
-         * @return string|null
          */
         public function getPrice01IncTaxMax(): ?string
         {
@@ -400,8 +366,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02IncTax min
-         *
-         * @return string|null
          */
         public function getPrice02IncTaxMin(): ?string
         {
@@ -414,8 +378,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02IncTax max
-         *
-         * @return string|null
          */
         public function getPrice02IncTaxMax(): ?string
         {
@@ -428,8 +390,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Product_code min
-         *
-         * @return string|null
          */
         public function getCodeMin(): ?string
         {
@@ -447,8 +407,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Product_code max
-         *
-         * @return string|null
          */
         public function getCodeMax(): ?string
         {
@@ -464,9 +422,6 @@ if (!class_exists(Product::class)) {
             return count($codes) ? max($codes) : null;
         }
 
-        /**
-         * @return ProductImage|null
-         */
         public function getMainListImage(): ?ProductImage
         {
             $ProductImages = $this->getProductImage();
@@ -474,9 +429,6 @@ if (!class_exists(Product::class)) {
             return $ProductImages->isEmpty() ? null : $ProductImages[0];
         }
 
-        /**
-         * @return ProductImage|null
-         */
         public function getMainFileName(): ?ProductImage
         {
             if (count($this->ProductImage) > 0) {
@@ -486,9 +438,6 @@ if (!class_exists(Product::class)) {
             }
         }
 
-        /**
-         * @return bool
-         */
         public function hasProductClass(): bool
         {
             foreach ($this->ProductClasses as $ProductClass) {
@@ -627,8 +576,6 @@ if (!class_exists(Product::class)) {
          *
          * コピー元のProductを受け取り,
          * 関連エンティティも再帰的にコピーする.
-         *
-         * @return Product
          */
         public function copy(Product $Product): Product
         {
@@ -674,8 +621,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -684,8 +629,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set name.
-         *
-         * @return Product
          */
         public function setName(string $name): Product
         {
@@ -696,8 +639,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -706,8 +647,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set note.
-         *
-         * @return Product
          */
         public function setNote(?string $note = null): Product
         {
@@ -718,8 +657,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get note.
-         *
-         * @return string|null
          */
         public function getNote(): ?string
         {
@@ -728,8 +665,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set descriptionList.
-         *
-         * @return Product
          */
         public function setDescriptionList(?string $descriptionList = null): Product
         {
@@ -740,8 +675,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get descriptionList.
-         *
-         * @return string|null
          */
         public function getDescriptionList(): ?string
         {
@@ -750,8 +683,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set descriptionDetail.
-         *
-         * @return Product
          */
         public function setDescriptionDetail(?string $descriptionDetail = null): Product
         {
@@ -762,8 +693,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get descriptionDetail.
-         *
-         * @return string|null
          */
         public function getDescriptionDetail(): ?string
         {
@@ -772,8 +701,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set searchWord.
-         *
-         * @return Product
          */
         public function setSearchWord(?string $searchWord = null): Product
         {
@@ -784,8 +711,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get searchWord.
-         *
-         * @return string|null
          */
         public function getSearchWord(): ?string
         {
@@ -794,8 +719,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set freeArea.
-         *
-         * @return Product
          */
         public function setFreeArea(?string $freeArea = null): Product
         {
@@ -806,8 +729,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get freeArea.
-         *
-         * @return string|null
          */
         public function getFreeArea(): ?string
         {
@@ -816,8 +737,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Product
          */
         public function setCreateDate(\DateTime $createDate): Product
         {
@@ -828,8 +747,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -838,8 +755,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Product
          */
         public function setUpdateDate(\DateTime $updateDate): Product
         {
@@ -850,8 +765,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -860,8 +773,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Add productCategory.
-         *
-         * @return Product
          */
         public function addProductCategory(ProductCategory $productCategory): Product
         {
@@ -892,8 +803,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Add productClass.
-         *
-         * @return Product
          */
         public function addProductClass(ProductClass $productClass): Product
         {
@@ -924,8 +833,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Add productImage.
-         *
-         * @return Product
          */
         public function addProductImage(ProductImage $productImage): Product
         {
@@ -956,8 +863,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Add productTag.
-         *
-         * @return Product
          */
         public function addProductTag(ProductTag $productTag): Product
         {
@@ -1009,8 +914,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Add customerFavoriteProduct.
-         *
-         * @return Product
          */
         public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Product
         {
@@ -1041,8 +944,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Product
          */
         public function setCreator(?Member $creator = null): Product
         {
@@ -1053,8 +954,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
@@ -1063,8 +962,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Set status.
-         *
-         * @return Product
          */
         public function setStatus(?ProductStatus $status = null): Product
         {
@@ -1075,8 +972,6 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get status.
-         *
-         * @return ProductStatus|null
          */
         public function getStatus(): ?ProductStatus
         {

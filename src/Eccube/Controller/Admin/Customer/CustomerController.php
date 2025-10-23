@@ -189,7 +189,6 @@ class CustomerController extends AbstractController
     /**
      * @param string $id
      *
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/customer/{id}/resend', name: 'admin_customer_resend', requirements: ['id' => '\d+'], methods: ['GET'])]

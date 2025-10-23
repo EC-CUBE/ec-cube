@@ -47,7 +47,6 @@ class Step4Type extends AbstractType
      *
      * @param array<string, mixed> $options
      *
-     *
      * @throws \Exception
      */
     #[\Override]

@@ -36,8 +36,6 @@ class MemberRepository extends AbstractRepository
     /**
      * 管理ユーザの表示順を一つ上げる.
      *
-     * @return void
-     *
      * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
      */
     public function up(Member $Member): void
@@ -60,8 +58,6 @@ class MemberRepository extends AbstractRepository
 
     /**
      * 管理ユーザの表示順を一つ下げる.
-     *
-     * @return void
      *
      * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
      */
@@ -88,8 +84,6 @@ class MemberRepository extends AbstractRepository
      *
      * @param Member $Member
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -114,8 +108,6 @@ class MemberRepository extends AbstractRepository
      * 管理ユーザを削除します.
      *
      * @param Member $Member
-     *
-     * @return void
      */
     #[\Override]
     public function delete($Member): void

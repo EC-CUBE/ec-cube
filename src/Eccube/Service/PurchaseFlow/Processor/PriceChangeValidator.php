@@ -27,8 +27,6 @@ class PriceChangeValidator extends ItemValidator
      * @param ItemInterface $item 明細アイテム
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 販売価格が変更されている場合
      */
     #[\Override]

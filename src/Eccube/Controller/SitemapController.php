@@ -74,8 +74,6 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap index
-     *
-     * @return Response
      */
     #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
     public function index(PaginatorInterface $paginator): Response
@@ -118,8 +116,6 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap of product categories
-     *
-     * @return Response
      */
     #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
     public function category(): Response
@@ -133,8 +129,6 @@ class SitemapController extends AbstractController
      * Output sitemap of products
      *
      * Output sitemap of products as status is 1
-     *
-     * @return Response
      */
     #[Route('/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
     public function product(Request $request, PaginatorInterface $paginator): Response
@@ -165,8 +159,6 @@ class SitemapController extends AbstractController
      * Output sitemap of pages
      *
      * Output sitemap of pages without 'noindex' in meta robots.
-     *
-     * @return Response
      */
     #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
     public function page(): Response
@@ -203,8 +195,6 @@ class SitemapController extends AbstractController
      * Output XML response by data.
      *
      * @param array<string,mixed> $data
-     *
-     * @return Response
      */
     private function outputXml(array $data, string $template_name = 'sitemap.xml.twig'): Response
     {

@@ -82,8 +82,6 @@ abstract class AbstractEntity implements \ArrayAccess
      * @param array<string,mixed> $arrProps プロパティの情報を格納した連想配列
      * @param string[] $excludeAttribute 除外したいフィールド名の配列
      * @param \ReflectionClass<self>|null $parentClass 親のクラス. 本メソッドの内部的に使用します.
-     *
-     * @return void
      */
     public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], ?\ReflectionClass $parentClass = null): void
     {
@@ -185,8 +183,6 @@ abstract class AbstractEntity implements \ArrayAccess
      * Convert to JSON.
      *
      * @param array|string[] $excludeAttribute Array of field names to exclusion.
-     *
-     * @return string
      */
     public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): string
     {
@@ -197,8 +193,6 @@ abstract class AbstractEntity implements \ArrayAccess
      * Convert to XML.
      *
      * @param string[] $excludeAttribute Array of field names to exclusion.
-     *
-     * @return string
      */
     public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): string
     {
@@ -219,8 +213,6 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param object $srcObject コピー元のオブジェクト
      * @param string[] $excludeAttribute 除外したいフィールド名の配列
-     *
-     * @return AbstractEntity
      */
     public function copyProperties(object $srcObject, array $excludeAttribute = []): AbstractEntity
     {

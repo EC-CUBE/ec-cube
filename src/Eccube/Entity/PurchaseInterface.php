@@ -19,15 +19,11 @@ interface PurchaseInterface
 {
     /**
      * 合計金額を設定します。
-     *
-     * @return ItemHolderInterface
      */
     public function setTotal(int|float|string $total): ItemHolderInterface;
 
     /**
      * 合計金額を返す。
-     *
-     * @return string
      */
     public function getTotal(): string;
 

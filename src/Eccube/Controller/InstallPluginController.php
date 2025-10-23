@@ -75,7 +75,6 @@ class InstallPluginController extends InstallController
      *
      * @param string $code
      *
-     *
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      * @throws PluginException
@@ -176,7 +175,6 @@ class InstallPluginController extends InstallController
     /**
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
-     *
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */

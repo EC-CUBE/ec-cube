@@ -22,8 +22,6 @@ class MasterType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -42,8 +40,6 @@ class MasterType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getBlockPrefix(): string
@@ -53,8 +49,6 @@ class MasterType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getParent(): string

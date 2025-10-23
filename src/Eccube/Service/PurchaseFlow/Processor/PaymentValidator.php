@@ -45,8 +45,6 @@ class PaymentValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder カート or 受注
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 支払い方法が異なる場合
      */
     #[\Override]

@@ -22,9 +22,6 @@ use Eccube\Entity\AbstractEntity;
 #[ORM\MappedSuperclass]
 abstract class AbstractMasterEntity extends AbstractEntity implements \Stringable
 {
-    /**
-     * @return string
-     */
     #[\Override]
     public function __toString(): string
     {
@@ -65,8 +62,6 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
 
     /**
      * Get id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -87,8 +82,6 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
 
     /**
      * Get name.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -109,33 +102,23 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
 
     /**
      * Get sortNo.
-     *
-     * @return int
      */
     public function getSortNo(): int
     {
         return $this->sort_no;
     }
 
-    /**
-     * @return mixed
-     */
     public function __get(string $name): mixed
     {
         return self::getConstantValue($name);
     }
 
-    /**
-     * @return mixed
-     */
     public static function __callStatic(string $name, mixed $arguments): mixed
     {
         return self::getConstantValue($name);
     }
 
     /**
-     * @return mixed
-     *
      * @throws \ReflectionException
      */
     protected static function getConstantValue(string $name): mixed

@@ -58,8 +58,6 @@ class ClassNameRepository extends AbstractRepository
      *
      * @param ClassName $ClassName
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -83,8 +81,6 @@ class ClassNameRepository extends AbstractRepository
      * 規格を削除する.
      *
      * @param ClassName $ClassName
-     *
-     * @return void
      *
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.

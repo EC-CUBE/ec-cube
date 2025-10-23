@@ -24,8 +24,6 @@ class OrderItemType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -34,8 +32,6 @@ class OrderItemType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -47,9 +43,6 @@ class OrderItemType extends AbstractType
         );
     }
 
-    /**
-     * @return string
-     */
     #[\Override]
     public function getBlockPrefix(): string
     {

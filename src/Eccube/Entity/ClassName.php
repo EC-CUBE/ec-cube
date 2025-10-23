@@ -29,9 +29,6 @@ if (!class_exists(ClassName::class)) {
     #[ORM\Entity(repositoryClass: ClassNameRepository::class)]
     class ClassName extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -101,8 +98,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -111,8 +106,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set backend_name.
-         *
-         * @return ClassName
          */
         public function setBackendName(string $backendName): ClassName
         {
@@ -123,8 +116,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get backend_name.
-         *
-         * @return string|null
          */
         public function getBackendName(): ?string
         {
@@ -133,8 +124,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set name.
-         *
-         * @return ClassName
          */
         public function setName(string $name): ClassName
         {
@@ -145,8 +134,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -155,8 +142,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return ClassName
          */
         public function setSortNo(int $sortNo): ClassName
         {
@@ -167,8 +152,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -177,8 +160,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return ClassName
          */
         public function setCreateDate(\DateTime $createDate): ClassName
         {
@@ -189,8 +170,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -199,8 +178,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return ClassName
          */
         public function setUpdateDate(\DateTime $updateDate): ClassName
         {
@@ -211,8 +188,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -221,8 +196,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Add classCategory.
-         *
-         * @return ClassName
          */
         public function addClassCategory(ClassCategory $classCategory): ClassName
         {
@@ -253,8 +226,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Set creator.
-         *
-         * @return ClassName
          */
         public function setCreator(?Member $creator = null): ClassName
         {
@@ -265,8 +236,6 @@ if (!class_exists(ClassName::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

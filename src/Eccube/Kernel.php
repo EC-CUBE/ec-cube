@@ -129,8 +129,6 @@ class Kernel extends BaseKernel
      * {@inheritdoc}
      *
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
-     *
-     * @return void
      */
     #[\Override]
     public function boot(): void
@@ -168,8 +166,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @return void
-     *
      * @throws \Exception
      */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
@@ -193,9 +189,6 @@ class Kernel extends BaseKernel
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
-    /**
-     * @return void
-     */
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $container = $this->getContainer();
@@ -236,9 +229,6 @@ class Kernel extends BaseKernel
         }
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function build(ContainerBuilder $container): void
     {
@@ -300,9 +290,6 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new StripReportFieldsArgPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
     }
 
-    /**
-     * @return void
-     */
     protected function addEntityExtensionPass(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
@@ -342,9 +329,6 @@ class Kernel extends BaseKernel
         }
     }
 
-    /**
-     * @return void
-     */
     protected function loadEntityProxies(): void
     {
         // see https://github.com/EC-CUBE/ec-cube/issues/4727

@@ -31,8 +31,6 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
      * @param array<mixed> $filters
      * @param array<mixed> $functions
      *
-     * @return void
-     *
      * @throws \Twig\Sandbox\SecurityError
      */
     #[\Override]
@@ -44,8 +42,6 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
     /**
      * @param mixed $obj
      * @param string $method
-     *
-     * @return void
      *
      * @throws \Twig\Sandbox\SecurityNotAllowedMethodError
      */
@@ -62,8 +58,6 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
     /**
      * @param mixed $obj
      * @param string $method
-     *
-     * @return void
      *
      * @throws \Twig\Sandbox\SecurityNotAllowedPropertyError
      */

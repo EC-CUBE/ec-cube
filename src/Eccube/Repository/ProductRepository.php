@@ -66,8 +66,6 @@ class ProductRepository extends AbstractRepository
 
     /**
      * Find the Product with sorted ClassCategories.
-     *
-     * @return Product|null
      */
     public function findWithSortedClassCategories(int $productId): ?Product
     {
@@ -139,8 +137,6 @@ class ProductRepository extends AbstractRepository
      *         disp_number?:ProductListMax,
      *         orderby?:ProductListOrderBy
      *     } $searchData
-     *
-     * @return QueryBuilder
      */
     public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
@@ -240,8 +236,6 @@ class ProductRepository extends AbstractRepository
      *         sortkey?:string,
      *         sorttype?:string
      *     } $searchData
-     *
-     * @return QueryBuilder
      */
     public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {

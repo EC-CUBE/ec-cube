@@ -113,9 +113,6 @@ class Loader
         return $this->fixtures;
     }
 
-    /**
-     * @return void
-     */
     public function addFixture(FixtureInterface $fixture): void
     {
         $this->fixtures[] = $fixture;

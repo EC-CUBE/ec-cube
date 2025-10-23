@@ -37,17 +37,11 @@ class OrderByClause
         $this->order = $order;
     }
 
-    /**
-     * @return string
-     */
     public function getSort(): string
     {
         return $this->sort;
     }
 
-    /**
-     * @return string
-     */
     public function getOrder(): string
     {
         return $this->order;

@@ -180,9 +180,6 @@ class MailController extends AbstractController
         ];
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, MailTemplate $Mail): RedirectResponse
     {
@@ -217,8 +214,6 @@ class MailController extends AbstractController
 
     /**
      * HTML用テンプレート名を取得する
-     *
-     * @return string
      */
     protected function getHtmlFileName(string $fileName): string
     {
@@ -231,8 +226,6 @@ class MailController extends AbstractController
 
     /**
      * テンプレートディレクトリ配下のパスかどうかを検証する
-     *
-     * @return bool
      */
     protected function validateFilePath(string $path): bool
     {

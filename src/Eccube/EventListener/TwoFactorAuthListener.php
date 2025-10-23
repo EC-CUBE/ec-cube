@@ -65,9 +65,6 @@ class TwoFactorAuthListener implements EventSubscriberInterface
         $this->twoFactorAuthService = $twoFactorAuthService;
     }
 
-    /**
-     * @return void
-     */
     public function onKernelController(ControllerArgumentsEvent $event): void
     {
         if (!$event->isMainRequest()) {

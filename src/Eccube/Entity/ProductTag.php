@@ -30,8 +30,6 @@ if (!class_exists(ProductTag::class)) {
         /**
          * Get tag_id
          * use csv export
-         *
-         * @return int|null
          */
         public function getTagId(): ?int
         {
@@ -90,8 +88,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return ProductTag
          */
         public function setCreateDate(\DateTime $createDate): ProductTag
         {
@@ -102,8 +98,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -112,8 +106,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Set product.
-         *
-         * @return ProductTag
          */
         public function setProduct(?Product $product = null): ProductTag
         {
@@ -124,8 +116,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {
@@ -134,8 +124,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Set tag.
-         *
-         * @return ProductTag
          */
         public function setTag(?Tag $tag = null): ProductTag
         {
@@ -146,8 +134,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get tag.
-         *
-         * @return Tag|null
          */
         public function getTag(): ?Tag
         {
@@ -156,8 +142,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Set creator.
-         *
-         * @return ProductTag
          */
         public function setCreator(?Member $creator = null): ProductTag
         {
@@ -168,8 +152,6 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

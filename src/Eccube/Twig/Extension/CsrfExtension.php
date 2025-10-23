@@ -44,9 +44,6 @@ class CsrfExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getCsrfTokenForAnchor(): string
     {
         $token = $this->tokenManager->getToken(Constant::TOKEN_NAME)->getValue();
@@ -54,9 +51,6 @@ class CsrfExtension extends AbstractExtension
         return 'token-for-anchor=\''.$token.'\'';
     }
 
-    /**
-     * @return string
-     */
     public function getCsrfToken(): string
     {
         return $this->tokenManager->getToken(Constant::TOKEN_NAME)->getValue();

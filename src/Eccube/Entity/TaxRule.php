@@ -42,8 +42,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * is default
-         *
-         * @return bool
          */
         public function isDefaultTaxRule(): bool
         {
@@ -52,8 +50,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set sortNo
-         *
-         * @return TaxRule
          */
         public function setSortNo(int $sortNo): TaxRule
         {
@@ -64,8 +60,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get sortNo
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -155,8 +149,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -165,8 +157,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set taxRate.
-         *
-         * @return TaxRule
          */
         public function setTaxRate(?string $taxRate): TaxRule
         {
@@ -177,8 +167,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get taxRate.
-         *
-         * @return string
          */
         public function getTaxRate(): string
         {
@@ -187,8 +175,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set taxAdjust.
-         *
-         * @return TaxRule
          */
         public function setTaxAdjust(string $taxAdjust): TaxRule
         {
@@ -199,8 +185,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get taxAdjust.
-         *
-         * @return string
          */
         public function getTaxAdjust(): string
         {
@@ -209,8 +193,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set applyDate.
-         *
-         * @return TaxRule
          */
         public function setApplyDate(\DateTime $applyDate): TaxRule
         {
@@ -221,8 +203,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get applyDate.
-         *
-         * @return \DateTime|null
          */
         public function getApplyDate(): ?\DateTime
         {
@@ -231,8 +211,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return TaxRule
          */
         public function setCreateDate(\DateTime $createDate): TaxRule
         {
@@ -243,8 +221,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -253,8 +229,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return TaxRule
          */
         public function setUpdateDate(\DateTime $updateDate): TaxRule
         {
@@ -265,8 +239,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -275,8 +247,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set productClass.
-         *
-         * @return TaxRule
          */
         public function setProductClass(?ProductClass $productClass = null): TaxRule
         {
@@ -287,8 +257,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get productClass.
-         *
-         * @return ProductClass|null
          */
         public function getProductClass(): ?ProductClass
         {
@@ -297,8 +265,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set creator.
-         *
-         * @return TaxRule
          */
         public function setCreator(?Member $creator = null): TaxRule
         {
@@ -309,8 +275,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
@@ -319,8 +283,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set country.
-         *
-         * @return TaxRule
          */
         public function setCountry(?Country $country = null): TaxRule
         {
@@ -331,8 +293,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get country.
-         *
-         * @return Country|null
          */
         public function getCountry(): ?Country
         {
@@ -341,8 +301,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set pref.
-         *
-         * @return TaxRule
          */
         public function setPref(?Pref $pref = null): TaxRule
         {
@@ -353,8 +311,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Pref|null
          */
         public function getPref(): ?Pref
         {
@@ -363,8 +319,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set product.
-         *
-         * @return TaxRule
          */
         public function setProduct(?Product $product = null): TaxRule
         {
@@ -375,8 +329,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {
@@ -385,8 +337,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Set roundingType.
-         *
-         * @return TaxRule
          */
         public function setRoundingType(?RoundingType $RoundingType = null): TaxRule
         {
@@ -397,8 +347,6 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * Get roundingType.
-         *
-         * @return RoundingType|null
          */
         public function getRoundingType(): ?RoundingType
         {
@@ -421,8 +369,6 @@ if (!class_exists(TaxRule::class)) {
          * このメソッドは usort() 関数などで使用する.
          *
          * @param TaxRule $Target 比較対象の TaxRule
-         *
-         * @return int
          */
         public function compareTo(TaxRule $Target): int
         {

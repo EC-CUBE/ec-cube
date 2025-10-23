@@ -64,8 +64,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -74,8 +72,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return CustomerFavoriteProduct
          */
         public function setCreateDate(\DateTime $createDate): CustomerFavoriteProduct
         {
@@ -86,8 +82,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -96,8 +90,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return CustomerFavoriteProduct
          */
         public function setUpdateDate(\DateTime $updateDate): CustomerFavoriteProduct
         {
@@ -108,8 +100,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -118,8 +108,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Set customer.
-         *
-         * @return CustomerFavoriteProduct
          */
         public function setCustomer(?Customer $customer = null): CustomerFavoriteProduct
         {
@@ -130,8 +118,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get customer.
-         *
-         * @return Customer|null
          */
         public function getCustomer(): ?Customer
         {
@@ -140,8 +126,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Set product.
-         *
-         * @return CustomerFavoriteProduct
          */
         public function setProduct(?Product $product = null): CustomerFavoriteProduct
         {
@@ -152,8 +136,6 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {

@@ -23,8 +23,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class ClassCategoryValidator extends ItemValidator
 {
     /**
-     * @return void
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     #[\Override]
@@ -47,9 +45,6 @@ class ClassCategoryValidator extends ItemValidator
         }
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context): void
     {

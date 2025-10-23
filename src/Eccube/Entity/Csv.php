@@ -111,8 +111,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set entityName.
-         *
-         * @return Csv
          */
         public function setEntityName(string $entityName): Csv
         {
@@ -123,8 +121,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get entityName.
-         *
-         * @return string
          */
         public function getEntityName(): string
         {
@@ -133,8 +129,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set fieldName.
-         *
-         * @return Csv
          */
         public function setFieldName(string $fieldName): Csv
         {
@@ -145,8 +139,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get fieldName.
-         *
-         * @return string
          */
         public function getFieldName(): string
         {
@@ -155,8 +147,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set referenceFieldName.
-         *
-         * @return Csv
          */
         public function setReferenceFieldName(?string $referenceFieldName = null): Csv
         {
@@ -167,8 +157,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get referenceFieldName.
-         *
-         * @return string|null
          */
         public function getReferenceFieldName(): ?string
         {
@@ -177,8 +165,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set dispName.
-         *
-         * @return Csv
          */
         public function setDispName(string $dispName): Csv
         {
@@ -189,8 +175,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get dispName.
-         *
-         * @return string
          */
         public function getDispName(): string
         {
@@ -199,8 +183,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Csv
          */
         public function setSortNo(int $sortNo): Csv
         {
@@ -211,8 +193,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -221,8 +201,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set enabled.
-         *
-         * @return Csv
          */
         public function setEnabled(bool $enabled): Csv
         {
@@ -233,8 +211,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get enabled.
-         *
-         * @return bool
          */
         public function isEnabled(): bool
         {
@@ -243,8 +219,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Csv
          */
         public function setCreateDate(\DateTime $createDate): Csv
         {
@@ -255,8 +229,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -265,8 +237,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Csv
          */
         public function setUpdateDate(\DateTime $updateDate): Csv
         {
@@ -277,8 +247,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -287,8 +255,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set csvType.
-         *
-         * @return Csv
          */
         public function setCsvType(?CsvType $csvType = null): Csv
         {
@@ -299,8 +265,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get csvType.
-         *
-         * @return CsvType|null
          */
         public function getCsvType(): ?CsvType
         {
@@ -309,8 +273,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Csv
          */
         public function setCreator(?Member $creator = null): Csv
         {
@@ -321,8 +283,6 @@ if (!class_exists(Csv::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

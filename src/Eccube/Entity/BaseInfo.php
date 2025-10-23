@@ -270,8 +270,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set companyName.
-         *
-         * @return BaseInfo
          */
         public function setCompanyName(?string $companyName = null): BaseInfo
         {
@@ -282,8 +280,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get companyName.
-         *
-         * @return string|null
          */
         public function getCompanyName(): ?string
         {
@@ -292,8 +288,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set companyKana.
-         *
-         * @return BaseInfo
          */
         public function setCompanyKana(?string $companyKana = null): BaseInfo
         {
@@ -304,8 +298,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get companyKana.
-         *
-         * @return string|null
          */
         public function getCompanyKana(): ?string
         {
@@ -314,8 +306,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set postal_code.
-         *
-         * @return BaseInfo
          */
         public function setPostalCode(?string $postal_code = null): BaseInfo
         {
@@ -326,8 +316,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get postal_code.
-         *
-         * @return string|null
          */
         public function getPostalCode(): ?string
         {
@@ -336,8 +324,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set addr01.
-         *
-         * @return BaseInfo
          */
         public function setAddr01(?string $addr01 = null): BaseInfo
         {
@@ -348,8 +334,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get addr01.
-         *
-         * @return string|null
          */
         public function getAddr01(): ?string
         {
@@ -358,8 +342,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set addr02.
-         *
-         * @return BaseInfo
          */
         public function setAddr02(?string $addr02 = null): BaseInfo
         {
@@ -370,8 +352,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get addr02.
-         *
-         * @return string|null
          */
         public function getAddr02(): ?string
         {
@@ -380,8 +360,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set phone_number.
-         *
-         * @return BaseInfo
          */
         public function setPhoneNumber(?string $phone_number = null): BaseInfo
         {
@@ -392,8 +370,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get phone_number.
-         *
-         * @return string|null
          */
         public function getPhoneNumber(): ?string
         {
@@ -402,8 +378,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set businessHour.
-         *
-         * @return BaseInfo
          */
         public function setBusinessHour(?string $businessHour = null): BaseInfo
         {
@@ -414,8 +388,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get businessHour.
-         *
-         * @return string|null
          */
         public function getBusinessHour(): ?string
         {
@@ -424,8 +396,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set email01.
-         *
-         * @return BaseInfo
          */
         public function setEmail01(?string $email01 = null): BaseInfo
         {
@@ -436,8 +406,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email01.
-         *
-         * @return string|null
          */
         public function getEmail01(): ?string
         {
@@ -446,8 +414,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set email02.
-         *
-         * @return BaseInfo
          */
         public function setEmail02(?string $email02 = null): BaseInfo
         {
@@ -458,8 +424,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email02.
-         *
-         * @return string|null
          */
         public function getEmail02(): ?string
         {
@@ -468,8 +432,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set email03.
-         *
-         * @return BaseInfo
          */
         public function setEmail03(?string $email03 = null): BaseInfo
         {
@@ -480,8 +442,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email03.
-         *
-         * @return string|null
          */
         public function getEmail03(): ?string
         {
@@ -490,8 +450,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set email04.
-         *
-         * @return BaseInfo
          */
         public function setEmail04(?string $email04 = null): BaseInfo
         {
@@ -502,8 +460,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email04.
-         *
-         * @return string|null
          */
         public function getEmail04(): ?string
         {
@@ -512,8 +468,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set shopName.
-         *
-         * @return BaseInfo
          */
         public function setShopName(?string $shopName = null): BaseInfo
         {
@@ -524,8 +478,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get shopName.
-         *
-         * @return string|null
          */
         public function getShopName(): ?string
         {
@@ -534,8 +486,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set shopKana.
-         *
-         * @return BaseInfo
          */
         public function setShopKana(?string $shopKana = null): BaseInfo
         {
@@ -546,8 +496,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get shopKana.
-         *
-         * @return string|null
          */
         public function getShopKana(): ?string
         {
@@ -556,8 +504,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set shopNameEng.
-         *
-         * @return BaseInfo
          */
         public function setShopNameEng(?string $shopNameEng = null): BaseInfo
         {
@@ -568,8 +514,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get shopNameEng.
-         *
-         * @return string|null
          */
         public function getShopNameEng(): ?string
         {
@@ -578,8 +522,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return BaseInfo
          */
         public function setUpdateDate(\DateTime $updateDate): BaseInfo
         {
@@ -590,8 +532,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -600,8 +540,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set goodTraded.
-         *
-         * @return BaseInfo
          */
         public function setGoodTraded(?string $goodTraded = null): BaseInfo
         {
@@ -612,8 +550,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get goodTraded.
-         *
-         * @return string|null
          */
         public function getGoodTraded(): ?string
         {
@@ -622,8 +558,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set message.
-         *
-         * @return BaseInfo
          */
         public function setMessage(?string $message = null): BaseInfo
         {
@@ -634,8 +568,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get message.
-         *
-         * @return string|null
          */
         public function getMessage(): ?string
         {
@@ -644,8 +576,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set deliveryFreeAmount.
-         *
-         * @return BaseInfo
          */
         public function setDeliveryFreeAmount(?string $deliveryFreeAmount = null): BaseInfo
         {
@@ -656,8 +586,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get deliveryFreeAmount.
-         *
-         * @return string|null
          */
         public function getDeliveryFreeAmount(): ?string
         {
@@ -666,8 +594,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set deliveryFreeQuantity.
-         *
-         * @return BaseInfo
          */
         public function setDeliveryFreeQuantity(?int $deliveryFreeQuantity = null): BaseInfo
         {
@@ -678,8 +604,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get deliveryFreeQuantity.
-         *
-         * @return int|null
          */
         public function getDeliveryFreeQuantity(): ?int
         {
@@ -688,8 +612,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionMypageOrderStatusDisplay.
-         *
-         * @return BaseInfo
          */
         public function setOptionMypageOrderStatusDisplay(bool $optionMypageOrderStatusDisplay): BaseInfo
         {
@@ -700,8 +622,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionMypageOrderStatusDisplay.
-         *
-         * @return bool
          */
         public function isOptionMypageOrderStatusDisplay(): bool
         {
@@ -710,8 +630,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionNostockHidden.
-         *
-         * @return BaseInfo
          */
         public function setOptionNostockHidden(bool $optionNostockHidden): BaseInfo
         {
@@ -722,8 +640,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionNostockHidden.
-         *
-         * @return bool
          */
         public function isOptionNostockHidden(): bool
         {
@@ -732,8 +648,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionFavoriteProduct.
-         *
-         * @return BaseInfo
          */
         public function setOptionFavoriteProduct(bool $optionFavoriteProduct): BaseInfo
         {
@@ -744,8 +658,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionFavoriteProduct.
-         *
-         * @return bool
          */
         public function isOptionFavoriteProduct(): bool
         {
@@ -754,8 +666,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionProductDeliveryFee.
-         *
-         * @return BaseInfo
          */
         public function setOptionProductDeliveryFee(bool $optionProductDeliveryFee): BaseInfo
         {
@@ -766,8 +676,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionProductDeliveryFee.
-         *
-         * @return bool
          */
         public function isOptionProductDeliveryFee(): bool
         {
@@ -776,8 +684,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set invoiceRegistrationNumber.
-         *
-         * @return BaseInfo
          */
         public function setInvoiceRegistrationNumber(string $invoiceRegistrationNumber): BaseInfo
         {
@@ -788,8 +694,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get invoiceRegistrationNumber.
-         *
-         * @return string|null
          */
         public function getInvoiceRegistrationNumber(): ?string
         {
@@ -798,8 +702,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionProductTaxRule.
-         *
-         * @return BaseInfo
          */
         public function setOptionProductTaxRule(bool $optionProductTaxRule): BaseInfo
         {
@@ -810,8 +712,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionProductTaxRule.
-         *
-         * @return bool
          */
         public function isOptionProductTaxRule(): bool
         {
@@ -820,8 +720,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionCustomerActivate.
-         *
-         * @return BaseInfo
          */
         public function setOptionCustomerActivate(bool $optionCustomerActivate): BaseInfo
         {
@@ -832,8 +730,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionCustomerActivate.
-         *
-         * @return bool
          */
         public function isOptionCustomerActivate(): bool
         {
@@ -842,8 +738,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionRememberMe.
-         *
-         * @return BaseInfo
          */
         public function setOptionRememberMe(bool $optionRememberMe): BaseInfo
         {
@@ -854,8 +748,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionRememberMe.
-         *
-         * @return bool
          */
         public function isOptionRememberMe(): bool
         {
@@ -864,8 +756,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionMailNotifier.
-         *
-         * @return BaseInfo
          */
         public function setOptionMailNotifier(bool $optionRememberMe): BaseInfo
         {
@@ -876,8 +766,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionRememberMe.
-         *
-         * @return bool
          */
         public function isOptionMailNotifier(): bool
         {
@@ -886,8 +774,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set authenticationKey.
-         *
-         * @return BaseInfo
          */
         public function setAuthenticationKey(?string $authenticationKey = null): BaseInfo
         {
@@ -898,8 +784,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get authenticationKey.
-         *
-         * @return string|null
          */
         public function getAuthenticationKey(): ?string
         {
@@ -908,8 +792,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set country.
-         *
-         * @return BaseInfo
          */
         public function setCountry(?Country $country = null): BaseInfo
         {
@@ -920,8 +802,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get country.
-         *
-         * @return Country|null
          */
         public function getCountry(): ?Country
         {
@@ -930,8 +810,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set pref.
-         *
-         * @return BaseInfo
          */
         public function setPref(?Pref $pref = null): BaseInfo
         {
@@ -942,8 +820,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Pref|null
          */
         public function getPref(): ?Pref
         {
@@ -952,8 +828,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set optionPoint
-         *
-         * @return BaseInfo
          */
         public function setOptionPoint(bool $optionPoint): BaseInfo
         {
@@ -964,8 +838,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionPoint
-         *
-         * @return bool
          */
         public function isOptionPoint(): bool
         {
@@ -974,8 +846,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set pointConversionRate
-         *
-         * @return BaseInfo
          */
         public function setPointConversionRate(?string $pointConversionRate): BaseInfo
         {
@@ -986,8 +856,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get pointConversionRate
-         *
-         * @return string|null
          */
         public function getPointConversionRate(): ?string
         {
@@ -996,8 +864,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set basicPointRate
-         *
-         * @return BaseInfo
          */
         public function setBasicPointRate(?string $basicPointRate): BaseInfo
         {
@@ -1008,8 +874,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get basicPointRate
-         *
-         * @return string
          */
         public function getBasicPointRate(): string
         {
@@ -1017,8 +881,6 @@ if (!class_exists(BaseInfo::class)) {
         }
 
         /**
-         * @return string|null
-         *
          * @deprecated 使用していないため、削除予定
          */
         public function getPhpPath(): ?string
@@ -1040,8 +902,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set gaId.
-         *
-         * @return BaseInfo
          */
         public function setGaId(?string $gaId = null): BaseInfo
         {
@@ -1052,8 +912,6 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get gaId.
-         *
-         * @return string|null
          */
         public function getGaId(): ?string
         {

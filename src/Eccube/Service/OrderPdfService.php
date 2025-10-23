@@ -186,8 +186,6 @@ class OrderPdfService extends Fpdi
      *  note2: 備考2行目
      *  note3: 備考3行目
      *
-     * @return bool
-     *
      * @throws CrossReferenceException
      * @throws FilterException
      * @throws PdfParserException
@@ -262,8 +260,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * PDFファイルを出力する.
-     *
-     * @return string
      */
     public function outputPdf(): string
     {
@@ -291,8 +287,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * フッターに発行日を出力する.
-     *
-     * @return void
      */
     #[\Override]
     public function Footer(): void
@@ -302,8 +296,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 作成するPDFのテンプレートファイルを指定する.
-     *
-     * @return void
      *
      * @throws CrossReferenceException
      * @throws FilterException
@@ -327,8 +319,6 @@ class OrderPdfService extends Fpdi
     /**
      * PDFに店舗情報を設定する
      * ショップ名、ロゴ画像以外はdtb_helpに登録されたデータを使用する.
-     *
-     * @return void
      */
     protected function renderShopData(): void
     {
@@ -379,8 +369,6 @@ class OrderPdfService extends Fpdi
      * メッセージを設定する.
      *
      * @param array<string, string> $formData
-     *
-     * @return void
      */
     protected function renderMessageData(array $formData): void
     {
@@ -393,8 +381,6 @@ class OrderPdfService extends Fpdi
      * PDFに備考を設定数.
      *
      * @param array<string, string|\DateTime> $formData
-     *
-     * @return void
      */
     protected function renderEtcData(array $formData): void
     {
@@ -423,8 +409,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * タイトルをPDFに描画する.
-     *
-     * @return void
      */
     protected function renderTitle(string $title): void
     {
@@ -446,8 +430,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入者情報を設定する.
-     *
-     * @return void
      */
     protected function renderOrderData(Shipping $Shipping): void
     {
@@ -521,8 +503,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入商品詳細情報を設定する.
-     *
-     * @return void
      */
     protected function renderOrderDetailData(Shipping $Shipping): void
     {
@@ -685,8 +665,6 @@ class OrderPdfService extends Fpdi
      * @param string|null $text テキスト
      * @param int $size フォントサイズ
      * @param string $style フォントスタイル
-     *
-     * @return void
      */
     protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
     {
@@ -707,8 +685,6 @@ class OrderPdfService extends Fpdi
      * @param array<int, string> $header 出力するラベル名一覧
      * @param array<int, array<int, string>> $data 出力するデータ
      * @param array<int, int> $w 出力するセル幅一覧
-     *
-     * @return void
      */
     protected function setFancyTable(array $header, array $data, array $w): void
     {
@@ -803,8 +779,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * 基準座標を設定する.
-     *
-     * @return void
      */
     protected function setBasePosition(int|float|null $x = null, int|float|null $y = null): void
     {
@@ -820,8 +794,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * Font情報のバックアップ.
-     *
-     * @return void
      */
     protected function backupFont(): void
     {
@@ -833,8 +805,6 @@ class OrderPdfService extends Fpdi
 
     /**
      * Font情報の復元.
-     *
-     * @return void
      */
     protected function restoreFont(): void
     {

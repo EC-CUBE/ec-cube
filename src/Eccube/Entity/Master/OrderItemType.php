@@ -74,8 +74,6 @@ if (!class_exists(OrderItemType::class, false)) {
 
         /**
          * 商品かどうか
-         *
-         * @return bool
          */
         public function isProduct(): bool
         {

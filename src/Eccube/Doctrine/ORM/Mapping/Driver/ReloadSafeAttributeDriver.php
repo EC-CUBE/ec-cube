@@ -37,8 +37,6 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
 
     /**
      * @param array<int,string> $newProxyFiles
-     *
-     * @return void
      */
     public function setNewProxyFiles(array $newProxyFiles): void
     {
@@ -47,9 +45,6 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
         }, $newProxyFiles);
     }
 
-    /**
-     * @return void
-     */
     public function setOutputDir(string $outputDir): void
     {
         $this->outputDir = $outputDir;

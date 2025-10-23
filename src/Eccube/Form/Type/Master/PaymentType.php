@@ -23,8 +23,6 @@ class PaymentType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -43,8 +41,6 @@ class PaymentType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getBlockPrefix(): string
@@ -54,8 +50,6 @@ class PaymentType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getParent(): string

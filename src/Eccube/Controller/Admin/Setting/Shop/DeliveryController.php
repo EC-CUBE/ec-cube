@@ -292,9 +292,6 @@ class DeliveryController extends AbstractController
         ];
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Delivery $Delivery): RedirectResponse
     {
@@ -336,9 +333,6 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visibility(Request $request, Delivery $Delivery): RedirectResponse
     {
@@ -370,8 +364,6 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @return JsonResponse
-     *
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]

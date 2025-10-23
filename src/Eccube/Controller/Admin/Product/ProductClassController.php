@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\NoResultException;
@@ -32,6 +31,7 @@ use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -199,7 +199,6 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を初期化する.
      *
-     *
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route('/%eccube_admin_route%/product/product/class/{id}/clear', requirements: ['id' => '\d+'], name: 'admin_product_product_class_clear', methods: ['POST'])]
@@ -328,7 +327,6 @@ class ProductClassController extends AbstractController
      *
      * @param array|ProductClass[] $ProductClasses
      *
-     *
      * @throws NoResultException
      */
     protected function saveProductClasses(Product $Product, array $ProductClasses = []): void
@@ -442,7 +440,6 @@ class ProductClassController extends AbstractController
     /**
      * 商品を取得する.
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
-     *
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

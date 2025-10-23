@@ -184,8 +184,6 @@ class CartService
 
     /**
      * 会員が保持する永続化されたカートと、非会員時のカートをマージする.
-     *
-     * @return void
      */
     public function mergeFromPersistedCart(): void
     {
@@ -210,9 +208,6 @@ class CartService
         $this->restoreCarts($CartItems);
     }
 
-    /**
-     * @return Cart|null
-     */
     public function getCart(): ?Cart
     {
         $Carts = $this->getCarts();
@@ -282,8 +277,6 @@ class CartService
 
     /**
      * @param array<int, CartItem> $cartItems
-     *
-     * @return void
      */
     protected function restoreCarts(array $cartItems): void
     {
@@ -371,9 +364,6 @@ class CartService
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function removeProduct(int|ProductClass $ProductClass): bool
     {
         if (!$ProductClass instanceof ProductClass) {
@@ -404,9 +394,6 @@ class CartService
         return true;
     }
 
-    /**
-     * @return void
-     */
     public function save(): void
     {
         $cartKeys = [];
@@ -425,9 +412,6 @@ class CartService
         $this->session->set('cart_keys', $cartKeys);
     }
 
-    /**
-     * @return CartService
-     */
     public function setPreOrderId(?string $pre_order_id): CartService
     {
         $this->getCart()->setPreOrderId($pre_order_id);
@@ -435,9 +419,6 @@ class CartService
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPreOrderId(): ?string
     {
         $Cart = $this->getCart();
@@ -448,9 +429,6 @@ class CartService
         return null;
     }
 
-    /**
-     * @return CartService
-     */
     public function clear(): CartService
     {
         $Carts = $this->getCarts();
@@ -478,9 +456,6 @@ class CartService
         return $this;
     }
 
-    /**
-     * @return void
-     */
     public function setCartItemComparator(CartItemComparator $cartItemComparator): void
     {
         $this->cartItemComparator = $cartItemComparator;
@@ -490,8 +465,6 @@ class CartService
      * カートキーで指定したインデックスにあるカートを優先にする
      *
      * @param string $cartKey カートキー
-     *
-     * @return void
      */
     public function setPrimary(string $cartKey): void
     {
@@ -512,9 +485,6 @@ class CartService
         $this->save();
     }
 
-    /**
-     * @return UserInterface|null
-     */
     protected function getUser(): ?UserInterface
     {
         if (null === $token = $this->tokenStorage->getToken()) {
@@ -529,9 +499,6 @@ class CartService
         return $user;
     }
 
-    /**
-     * @return string
-     */
     protected function createCartKey(string $allocatedId, ?Customer $Customer = null): string
     {
         if ($Customer instanceof Customer) {

@@ -139,7 +139,6 @@ class PluginService
      *
      * @param string $path   path to tar.gz/zip plugin file
      *
-     *
      * @throws PluginException
      * @throws \Exception
      */
@@ -192,7 +191,6 @@ class PluginService
 
     /**
      * @param string $code プラグインコード
-     *
      *
      * @throws ConnectionException
      * @throws Exception
@@ -249,7 +247,6 @@ class PluginService
 
     /**
      * @param array<string, string|int> $config
-     *
      *
      * @throws PluginException
      * @throws ConnectionException
@@ -440,7 +437,6 @@ class PluginService
     /**
      * @param array<string, string|int> $config_cache
      *
-     *
      * @throws PluginException
      */
     public function checkPluginArchiveContent(string $dir, array $config_cache = []): void
@@ -541,7 +537,6 @@ class PluginService
 
     /**
      * @param array<string, string|int> $meta
-     *
      *
      * @throws PluginException
      */
@@ -688,7 +683,6 @@ class PluginService
     }
 
     /**
-     *
      * @throws Exception
      * @throws PluginException
      */
@@ -726,7 +720,6 @@ class PluginService
 
     /**
      * Update plugin
-     *
      *
      * @throws PluginException
      * @throws \Exception
@@ -769,7 +762,6 @@ class PluginService
      * Update plugin
      *
      * @param array<string, string|int>  $meta     Config data
-     *
      *
      * @throws \Exception
      */

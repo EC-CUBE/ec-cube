@@ -40,8 +40,6 @@ class CsvFixture implements FixtureInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function load(ObjectManager $manager): void
@@ -150,8 +148,6 @@ class CsvFixture implements FixtureInterface
 
     /**
      * 保持している \SplFileObject を返す.
-     *
-     * @return \SplFileObject
      */
     public function getFile(): \SplFileObject
     {

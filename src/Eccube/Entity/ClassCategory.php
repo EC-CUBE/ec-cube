@@ -27,9 +27,6 @@ if (!class_exists(ClassCategory::class)) {
     #[ORM\Entity(repositoryClass: ClassCategoryRepository::class)]
     class ClassCategory extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -107,8 +104,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set backend_name.
-         *
-         * @return ClassCategory
          */
         public function setBackendName(string $backendName): ClassCategory
         {
@@ -119,8 +114,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get backend_name.
-         *
-         * @return string
          */
         public function getBackendName(): string
         {
@@ -129,8 +122,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set name.
-         *
-         * @return ClassCategory
          */
         public function setName(string $name): ClassCategory
         {
@@ -141,8 +132,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -151,8 +140,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return ClassCategory
          */
         public function setSortNo(int $sortNo): ClassCategory
         {
@@ -163,8 +150,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -173,8 +158,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return ClassCategory
          */
         public function setCreateDate(\DateTime $createDate): ClassCategory
         {
@@ -185,8 +168,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -195,8 +176,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return ClassCategory
          */
         public function setUpdateDate(\DateTime $updateDate): ClassCategory
         {
@@ -207,8 +186,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -217,8 +194,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set className.
-         *
-         * @return ClassCategory
          */
         public function setClassName(?ClassName $className = null): ClassCategory
         {
@@ -229,8 +204,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get className.
-         *
-         * @return ClassName|null
          */
         public function getClassName(): ?ClassName
         {
@@ -239,8 +212,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set creator.
-         *
-         * @return ClassCategory
          */
         public function setCreator(?Member $creator = null): ClassCategory
         {
@@ -251,8 +222,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
@@ -261,8 +230,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Set visible
-         *
-         * @return ClassCategory
          */
         public function setVisible(bool $visible): ClassCategory
         {
@@ -273,8 +240,6 @@ if (!class_exists(ClassCategory::class)) {
 
         /**
          * Is the visibility visible?
-         *
-         * @return bool
          */
         public function isVisible(): bool
         {

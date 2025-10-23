@@ -42,8 +42,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     }
 
     /**
-     * @return void
-     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     #[\Override]
@@ -152,8 +150,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @param ItemHolderInterface $target 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
@@ -188,8 +184,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @param ItemHolderInterface $target 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context): void
@@ -201,8 +195,6 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      *
      * @param ItemHolderInterface $itemHolder 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void

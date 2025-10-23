@@ -32,9 +32,6 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
         $this->context = $context;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -43,9 +40,6 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
         }
     }
 
-    /**
-     * @return string
-     */
     public function getExtendedType(): string
     {
         return TextType::class;
@@ -62,8 +56,6 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
 
     /**
      * @param array<string,mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

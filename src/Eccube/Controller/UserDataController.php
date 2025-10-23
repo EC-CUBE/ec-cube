@@ -49,8 +49,6 @@ class UserDataController extends AbstractController
     /**
      * @param string $route
      *
-     * @return Response
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_user_data_route%/{route}', name: 'user_data', requirements: ['route' => '([0-9a-zA-Z_\-]+\/?)+(?<!\/)'], methods: ['GET'])]

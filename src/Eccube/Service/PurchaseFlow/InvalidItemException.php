@@ -45,17 +45,11 @@ class InvalidItemException extends \Exception
         return $this->messageArgs;
     }
 
-    /**
-     * @return bool
-     */
     public function isWarning(): bool
     {
         return $this->warning;
     }
 
-    /**
-     * @return InvalidItemException
-     */
     public static function fromProductClass(?string $errorMessage, ProductClass $ProductClass): InvalidItemException
     {
         $productName = $ProductClass->getProduct()->getName();

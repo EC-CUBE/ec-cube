@@ -78,8 +78,6 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * @param string[] $commands
      *
-     * @return string
-     *
      * @throws PluginException
      */
     public function runCommand(array $commands, ?OutputInterface $output = null, bool $init = true): string
@@ -109,8 +107,6 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Set init
-     *
-     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
@@ -159,8 +155,6 @@ class ComposerProcessService implements ComposerServiceInterface
      * @param callable $callback
      * @param string|null $typeFilter
      * @param int $level
-     *
-     * @return void
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException

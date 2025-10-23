@@ -98,9 +98,6 @@ class TwoFactorAuthController extends AbstractController
         ];
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
     #[Template('@admin/two_factor_auth_set.twig')]
     public function set(Request $request): RedirectResponse
@@ -115,9 +112,6 @@ class TwoFactorAuthController extends AbstractController
         return $res;
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
     #[Template('@admin/Setting/System/two_factor_auth_edit.twig')]
     public function edit(Request $request): RedirectResponse

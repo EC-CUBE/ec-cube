@@ -27,9 +27,6 @@ if (!class_exists(DeliveryDuration::class)) {
     #[ORM\Entity(repositoryClass: DeliveryDurationRepository::class)]
     class DeliveryDuration extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -75,8 +72,6 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Set name.
-         *
-         * @return DeliveryDuration
          */
         public function setName(?string $name = null): DeliveryDuration
         {
@@ -87,8 +82,6 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
         public function getName(): ?string
         {
@@ -97,8 +90,6 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Set duration.
-         *
-         * @return DeliveryDuration
          */
         public function setDuration(int $duration): DeliveryDuration
         {
@@ -109,8 +100,6 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Get duration.
-         *
-         * @return int
          */
         public function getDuration(): int
         {
@@ -119,8 +108,6 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return DeliveryDuration
          */
         public function setSortNo(int $sortNo): DeliveryDuration
         {
@@ -131,8 +118,6 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {

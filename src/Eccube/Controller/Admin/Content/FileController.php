@@ -128,8 +128,6 @@ class FileController extends AbstractController
     }
 
     /**
-     * @return BinaryFileResponse
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
@@ -147,8 +145,6 @@ class FileController extends AbstractController
 
     /**
      * Create directory
-     *
-     * @return void
      *
      * @throws IOException
      */
@@ -216,9 +212,6 @@ class FileController extends AbstractController
         }
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
     public function delete(Request $request): RedirectResponse
     {
@@ -244,8 +237,6 @@ class FileController extends AbstractController
     }
 
     /**
-     * @return BinaryFileResponse
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
@@ -278,9 +269,6 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
-    /**
-     * @return void
-     */
     public function upload(Request $request): void
     {
         $form = $this->formFactory->createBuilder(FormType::class)
@@ -517,9 +505,6 @@ class FileController extends AbstractController
         return str_replace('\\', '/', realpath($path));
     }
 
-    /**
-     * @return bool
-     */
     protected function checkDir(string $targetDir, string $topDir): bool
     {
         if (str_contains($targetDir, '..')) {
@@ -531,9 +516,6 @@ class FileController extends AbstractController
         return str_starts_with($targetDir, (string) $topDir);
     }
 
-    /**
-     * @return string
-     */
     private function convertStrFromServer(string $target): string
     {
         if ($this->encode == self::SJIS) {
@@ -543,9 +525,6 @@ class FileController extends AbstractController
         return $target;
     }
 
-    /**
-     * @return string
-     */
     private function convertStrToServer(string $target): string
     {
         if ($this->encode == self::SJIS) {
@@ -555,17 +534,11 @@ class FileController extends AbstractController
         return $target;
     }
 
-    /**
-     * @return string
-     */
     private function getUserDataDir(?string $nowDir = null): string
     {
         return rtrim($this->getParameter('kernel.project_dir').'/html/user_data'.$nowDir, '/');
     }
 
-    /**
-     * @return string
-     */
     private function getJailDir(string $path): string
     {
         $realpath = (string) realpath($path);

@@ -188,9 +188,6 @@ class BlockController extends AbstractController
         ];
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): RedirectResponse
     {

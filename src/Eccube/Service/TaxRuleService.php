@@ -80,8 +80,6 @@ class TaxRuleService
      * @param  int|ProductClass|null   $productClass 商品規格
      * @param  int|Pref|null    $pref         都道府県
      * @param  int|Country|null $country      国
-     *
-     * @return string
      */
     public function getPriceIncTax(string $price, int|Product|null $product = null, int|ProductClass|null $productClass = null, int|Pref|null $pref = null, int|Country|null $country = null): string
     {

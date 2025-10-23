@@ -33,9 +33,6 @@ class LoggerFacade
         self::$Logger = $Logger;
     }
 
-    /**
-     * @return LoggerFacade|null
-     */
     public static function init(ContainerInterface $container, Logger $Logger): ?LoggerFacade
     {
         if (null === self::$instance) {
@@ -46,8 +43,6 @@ class LoggerFacade
     }
 
     /**
-     * @return Logger
-     *
      * @throws \Exception
      */
     public static function create(): Logger
@@ -59,9 +54,6 @@ class LoggerFacade
         return self::$Logger;
     }
 
-    /**
-     * @return \Monolog\Logger
-     */
     public static function getLoggerBy(string $channel): \Monolog\Logger
     {
         return self::$Container->get('monolog.logger.'.$channel);

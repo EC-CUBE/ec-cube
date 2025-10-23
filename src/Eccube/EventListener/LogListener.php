@@ -63,9 +63,6 @@ class LogListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @return void
-     */
     public function onKernelRequestEarly(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -75,9 +72,6 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('INIT');
     }
 
-    /**
-     * @return void
-     */
     public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -90,17 +84,12 @@ class LogListener implements EventSubscriberInterface
 
     /**
      * ルーティング名を取得する.
-     *
-     * @return string|null
      */
     private function getRoute(Request $request): ?string
     {
         return $request->attributes->get('_route');
     }
 
-    /**
-     * @return void
-     */
     public function onKernelController(ControllerEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -111,9 +100,6 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('LOGIC START', [$route]);
     }
 
-    /**
-     * @return void
-     */
     public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -124,18 +110,12 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('LOGIC END', [$route]);
     }
 
-    /**
-     * @return void
-     */
     public function onKernelTerminate(TerminateEvent $event): void
     {
         $route = $this->getRoute($event->getRequest());
         $this->logger->debug('PROCESS END', [$route]);
     }
 
-    /**
-     * @return void
-     */
     public function onKernelException(ExceptionEvent $event): void
     {
         $e = $event->getThrowable();

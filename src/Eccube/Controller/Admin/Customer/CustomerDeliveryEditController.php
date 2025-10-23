@@ -129,8 +129,6 @@ class CustomerDeliveryEditController extends AbstractController
     /**
      * @param string $did
      *
-     * @return RedirectResponse
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/delete', name: 'admin_customer_delivery_delete', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['DELETE'])]

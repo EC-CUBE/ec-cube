@@ -65,8 +65,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Set pageId
-         *
-         * @return PageLayout
          */
         public function setPageId(int $pageId): PageLayout
         {
@@ -77,8 +75,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get pageId
-         *
-         * @return int
          */
         public function getPageId(): int
         {
@@ -87,8 +83,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Set layoutId
-         *
-         * @return PageLayout
          */
         public function setLayoutId(int $layoutId): PageLayout
         {
@@ -99,8 +93,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get layoutId
-         *
-         * @return int
          */
         public function getLayoutId(): int
         {
@@ -109,8 +101,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Set sort_no
-         *
-         * @return PageLayout
          */
         public function setSortNo(int $sortNo): PageLayout
         {
@@ -121,8 +111,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get sort_no
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -133,8 +121,6 @@ if (!class_exists(PageLayout::class)) {
          * Set pageLayout
          *
          * @param Page $Page
-         *
-         * @return PageLayout
          */
         public function setPage(?Page $Page = null): PageLayout
         {
@@ -145,8 +131,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get pageLayout
-         *
-         * @return Page
          */
         public function getPage(): Page
         {
@@ -157,8 +141,6 @@ if (!class_exists(PageLayout::class)) {
          * Set layout
          *
          * @param Layout $layout
-         *
-         * @return PageLayout
          */
         public function setLayout(?Layout $layout = null): PageLayout
         {
@@ -169,8 +151,6 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get layout
-         *
-         * @return Layout
          */
         public function getLayout(): Layout
         {
@@ -180,8 +160,6 @@ if (!class_exists(PageLayout::class)) {
         /**
          * DeviceTypeがあればDeviceTypeIdを返す
          * DeviceTypeがなければnullを返す
-         *
-         * @return int|null
          */
         public function getDeviceTypeId(): ?int
         {

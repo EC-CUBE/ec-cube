@@ -35,8 +35,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get price IncTax
-         *
-         * @return string
          */
         public function getPriceIncTax(): string
         {
@@ -48,17 +46,11 @@ if (!class_exists(OrderItem::class)) {
             return bcadd($this->price, $this->tax, 2);
         }
 
-        /**
-         * @return string
-         */
         public function getTotalPrice(): string
         {
             return bcmul($this->getPriceIncTax(), $this->getQuantity(), 2);
         }
 
-        /**
-         * @return int|null
-         */
         public function getOrderItemTypeId(): ?int
         {
             if (is_object($this->getOrderItemType())) {
@@ -285,8 +277,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -295,8 +285,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set productName.
-         *
-         * @return OrderItem
          */
         public function setProductName(string $productName): OrderItem
         {
@@ -307,8 +295,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get productName.
-         *
-         * @return string
          */
         public function getProductName(): string
         {
@@ -317,8 +303,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set productCode.
-         *
-         * @return OrderItem
          */
         public function setProductCode(?string $productCode = null): OrderItem
         {
@@ -329,8 +313,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get productCode.
-         *
-         * @return string|null
          */
         public function getProductCode(): ?string
         {
@@ -339,8 +321,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set className1.
-         *
-         * @return OrderItem
          */
         public function setClassName1(?string $className1 = null): OrderItem
         {
@@ -351,8 +331,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get className1.
-         *
-         * @return string|null
          */
         public function getClassName1(): ?string
         {
@@ -361,8 +339,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set className2.
-         *
-         * @return OrderItem
          */
         public function setClassName2(?string $className2 = null): OrderItem
         {
@@ -373,8 +349,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get className2.
-         *
-         * @return string|null
          */
         public function getClassName2(): ?string
         {
@@ -383,8 +357,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set classCategoryName1.
-         *
-         * @return OrderItem
          */
         public function setClassCategoryName1(?string $classCategoryName1 = null): OrderItem
         {
@@ -395,8 +367,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get classCategoryName1.
-         *
-         * @return string|null
          */
         public function getClassCategoryName1(): ?string
         {
@@ -405,8 +375,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set classCategoryName2.
-         *
-         * @return OrderItem
          */
         public function setClassCategoryName2(?string $classCategoryName2 = null): OrderItem
         {
@@ -417,8 +385,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get classCategoryName2.
-         *
-         * @return string|null
          */
         public function getClassCategoryName2(): ?string
         {
@@ -439,8 +405,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get price.
-         *
-         * @return string|null
          */
         #[\Override]
         public function getPrice(): ?string
@@ -465,8 +429,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get quantity.
-         *
-         * @return string
          */
         #[\Override]
         public function getQuantity(): string
@@ -474,9 +436,6 @@ if (!class_exists(OrderItem::class)) {
             return $this->quantity;
         }
 
-        /**
-         * @return string
-         */
         public function getTax(): string
         {
             return $this->tax;
@@ -494,8 +453,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set taxRate.
-         *
-         * @return OrderItem
          */
         public function setTaxRate(string $taxRate): OrderItem
         {
@@ -506,8 +463,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get taxRate.
-         *
-         * @return string
          */
         public function getTaxRate(): string
         {
@@ -516,8 +471,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set taxAdjust.
-         *
-         * @return OrderItem
          */
         public function setTaxAdjust(string $tax_adjust): OrderItem
         {
@@ -528,8 +481,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get taxAdjust.
-         *
-         * @return string
          */
         public function getTaxAdjust(): string
         {
@@ -540,8 +491,6 @@ if (!class_exists(OrderItem::class)) {
          * Set taxRuleId.
          *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
-         *
-         * @return OrderItem
          */
         public function setTaxRuleId(?int $taxRuleId = null): OrderItem
         {
@@ -554,8 +503,6 @@ if (!class_exists(OrderItem::class)) {
          * Get taxRuleId.
          *
          * @deprecated 税率設定は受注作成時に決定するため廃止予定
-         *
-         * @return int|null
          */
         public function getTaxRuleId(): ?int
         {
@@ -564,8 +511,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get currencyCode.
-         *
-         * @return string
          */
         public function getCurrencyCode(): string
         {
@@ -574,8 +519,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set currencyCode.
-         *
-         * @return OrderItem
          */
         public function setCurrencyCode(?string $currencyCode = null): OrderItem
         {
@@ -586,8 +529,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get processorName.
-         *
-         * @return string|null
          */
         public function getProcessorName(): ?string
         {
@@ -608,8 +549,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set order.
-         *
-         * @return OrderItem
          */
         public function setOrder(?Order $order = null): OrderItem
         {
@@ -620,17 +559,12 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get order.
-         *
-         * @return Order|null
          */
         public function getOrder(): ?Order
         {
             return $this->Order;
         }
 
-        /**
-         * @return int|null
-         */
         public function getOrderId(): ?int
         {
             if (is_object($this->getOrder())) {
@@ -642,8 +576,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set product.
-         *
-         * @return OrderItem
          */
         public function setProduct(?Product $product = null): OrderItem
         {
@@ -654,8 +586,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {
@@ -664,8 +594,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set productClass.
-         *
-         * @return OrderItem
          */
         public function setProductClass(?ProductClass $productClass = null): OrderItem
         {
@@ -676,8 +604,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get productClass.
-         *
-         * @return ProductClass|null
          */
         #[\Override]
         public function getProductClass(): ?ProductClass
@@ -687,8 +613,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Set shipping.
-         *
-         * @return OrderItem
          */
         public function setShipping(?Shipping $shipping = null): OrderItem
         {
@@ -699,17 +623,12 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get shipping.
-         *
-         * @return Shipping|null
          */
         public function getShipping(): ?Shipping
         {
             return $this->Shipping;
         }
 
-        /**
-         * @return RoundingType|null
-         */
         public function getRoundingType(): ?RoundingType
         {
             return $this->RoundingType;
@@ -729,8 +648,6 @@ if (!class_exists(OrderItem::class)) {
          * Set taxType
          *
          * @param TaxType $taxType
-         *
-         * @return OrderItem
          */
         public function setTaxType(?TaxType $taxType = null): OrderItem
         {
@@ -741,8 +658,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get taxType
-         *
-         * @return TaxType|null
          */
         public function getTaxType(): ?TaxType
         {
@@ -753,8 +668,6 @@ if (!class_exists(OrderItem::class)) {
          * Set taxDisplayType
          *
          * @param TaxDisplayType $taxDisplayType
-         *
-         * @return OrderItem
          */
         public function setTaxDisplayType(?TaxDisplayType $taxDisplayType = null): OrderItem
         {
@@ -765,8 +678,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get taxDisplayType
-         *
-         * @return TaxDisplayType|null
          */
         public function getTaxDisplayType(): ?TaxDisplayType
         {
@@ -777,8 +688,6 @@ if (!class_exists(OrderItem::class)) {
          * Set orderItemType
          *
          * @param OrderItemType $orderItemType
-         *
-         * @return OrderItem
          */
         public function setOrderItemType(?OrderItemType $orderItemType = null): OrderItem
         {
@@ -789,8 +698,6 @@ if (!class_exists(OrderItem::class)) {
 
         /**
          * Get orderItemType
-         *
-         * @return OrderItemType|null
          */
         #[\Override]
         public function getOrderItemType(): ?OrderItemType

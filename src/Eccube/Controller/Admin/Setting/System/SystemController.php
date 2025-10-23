@@ -67,9 +67,6 @@ class SystemController
         ];
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
     public function phpinfo(Request $request): Response
     {

@@ -83,9 +83,6 @@ class Cash implements PaymentMethodInterface
         return $this;
     }
 
-    /**
-     * @return FormInterface
-     */
     public function getFormType(): FormInterface
     {
         return $this->form;

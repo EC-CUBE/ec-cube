@@ -24,8 +24,6 @@ class SaleTypeCartAllocator implements CartItemAllocator
      * 商品の振り分け先となるカートの識別子を決定します。
      *
      * @param CartItem $Item カート商品
-     *
-     * @return string
      */
     #[\Override]
     public function allocate(CartItem $Item): string

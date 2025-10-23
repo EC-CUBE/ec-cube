@@ -69,9 +69,6 @@ class DeleteCartsCommand extends Command
         $this->cartRepository = $cartRepository;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function configure(): void
     {
@@ -80,8 +77,6 @@ class DeleteCartsCommand extends Command
     }
 
     /**
-     * @return void
-     *
      * @throws \Exception
      */
     #[\Override]
@@ -112,8 +107,6 @@ class DeleteCartsCommand extends Command
     }
 
     /**
-     * @return void
-     *
      * @throws \Exception
      */
     #[\Override]
@@ -139,9 +132,6 @@ class DeleteCartsCommand extends Command
         return 0;
     }
 
-    /**
-     * @return void
-     */
     protected function deleteCarts(\DateTime $dateTime): void
     {
         try {
@@ -164,9 +154,6 @@ class DeleteCartsCommand extends Command
         }
     }
 
-    /**
-     * @return \IntlDateFormatter|null
-     */
     protected function createIntlFormatter(): ?\IntlDateFormatter
     {
         return \IntlDateFormatter::create(

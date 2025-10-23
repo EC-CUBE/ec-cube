@@ -139,8 +139,6 @@ class OutputParser
 
     /**
      * Parse to composer version
-     *
-     * @return string|null
      */
     public static function parseComposerVersion(string $output): ?string
     {

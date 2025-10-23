@@ -65,8 +65,6 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @param ClassCategory $ClassCategory
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -96,8 +94,6 @@ class ClassCategoryRepository extends AbstractRepository
      *
      * @param ClassCategory $ClassCategory
      *
-     * @return void
-     *
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
@@ -120,8 +116,6 @@ class ClassCategoryRepository extends AbstractRepository
 
     /**
      * 規格カテゴリの表示/非表示を切り替える.
-     *
-     * @return void
      */
     public function toggleVisibility(ClassCategory $ClassCategory): void
     {

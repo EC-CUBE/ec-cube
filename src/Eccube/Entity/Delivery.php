@@ -30,9 +30,6 @@ if (!class_exists(Delivery::class)) {
     #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
     class Delivery extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -141,8 +138,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -151,8 +146,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set name.
-         *
-         * @return Delivery
          */
         public function setName(?string $name = null): Delivery
         {
@@ -163,8 +156,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
         public function getName(): ?string
         {
@@ -173,8 +164,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set serviceName.
-         *
-         * @return Delivery
          */
         public function setServiceName(?string $serviceName = null): Delivery
         {
@@ -185,8 +174,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get serviceName.
-         *
-         * @return string|null
          */
         public function getServiceName(): ?string
         {
@@ -195,8 +182,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set description.
-         *
-         * @return Delivery
          */
         public function setDescription(?string $description = null): Delivery
         {
@@ -207,8 +192,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get description.
-         *
-         * @return string|null
          */
         public function getDescription(): ?string
         {
@@ -217,8 +200,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set confirmUrl.
-         *
-         * @return Delivery
          */
         public function setConfirmUrl(?string $confirmUrl = null): Delivery
         {
@@ -229,8 +210,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get confirmUrl.
-         *
-         * @return string|null
          */
         public function getConfirmUrl(): ?string
         {
@@ -239,8 +218,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Delivery
          */
         public function setSortNo(?int $sortNo = null): Delivery
         {
@@ -251,8 +228,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int|null
          */
         public function getSortNo(): ?int
         {
@@ -261,8 +236,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Delivery
          */
         public function setCreateDate(\DateTime $createDate): Delivery
         {
@@ -273,8 +246,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -283,8 +254,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Delivery
          */
         public function setUpdateDate(\DateTime $updateDate): Delivery
         {
@@ -295,8 +264,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -305,8 +272,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Add paymentOption.
-         *
-         * @return Delivery
          */
         public function addPaymentOption(PaymentOption $paymentOption): Delivery
         {
@@ -337,8 +302,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Add deliveryFee.
-         *
-         * @return Delivery
          */
         public function addDeliveryFee(DeliveryFee $deliveryFee): Delivery
         {
@@ -369,8 +332,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Add deliveryTime.
-         *
-         * @return Delivery
          */
         public function addDeliveryTime(DeliveryTime $deliveryTime): Delivery
         {
@@ -401,8 +362,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Delivery
          */
         public function setCreator(?Member $creator = null): Delivery
         {
@@ -413,8 +372,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
@@ -423,8 +380,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set saleType.
-         *
-         * @return Delivery
          */
         public function setSaleType(?SaleType $saleType = null): Delivery
         {
@@ -435,8 +390,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Get saleType.
-         *
-         * @return SaleType|null
          */
         public function getSaleType(): ?SaleType
         {
@@ -445,8 +398,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Set visible
-         *
-         * @return Delivery
          */
         public function setVisible(bool $visible): Delivery
         {
@@ -457,8 +408,6 @@ if (!class_exists(Delivery::class)) {
 
         /**
          * Is the visibility visible?
-         *
-         * @return bool
          */
         public function isVisible(): bool
         {

@@ -226,8 +226,6 @@ class MypageController extends AbstractController
      *
      * @param int|string $order_no
      *
-     * @return RedirectResponse|Response
-     *
      * @throws NotFoundHttpException
      */
     #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
@@ -358,8 +356,6 @@ class MypageController extends AbstractController
 
     /**
      * お気に入り商品を削除する.
-     *
-     * @return RedirectResponse
      *
      * @throws BadRequestHttpException
      */

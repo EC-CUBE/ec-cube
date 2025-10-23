@@ -38,8 +38,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * エンティティを削除します。
-     *
-     * @return void
      */
     public function delete(AbstractEntity $entity): void
     {
@@ -48,17 +46,12 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * エンティティの登録/保存します。
-     *
-     * @return void
      */
     public function save(AbstractEntity $entity): void
     {
         $this->getEntityManager()->persist($entity);
     }
 
-    /**
-     * @return int|string|null
-     */
     protected function getCacheLifetime(): int|string|null
     {
         if ($this->eccubeConfig !== null) {
@@ -70,8 +63,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * PostgreSQL環境かどうかを判定します。
-     *
-     * @return bool
      */
     protected function isPostgreSQL(): bool
     {
@@ -80,8 +71,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * MySQL環境かどうかを判定します。
-     *
-     * @return bool
      */
     protected function isMySQL(): bool
     {

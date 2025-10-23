@@ -25,8 +25,6 @@ class ToggleSwitchType extends AbstractType
      * {@inheritDoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options): void
@@ -37,8 +35,6 @@ class ToggleSwitchType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -50,9 +46,6 @@ class ToggleSwitchType extends AbstractType
         ]);
     }
 
-    /**
-     * @return string
-     */
     #[\Override]
     public function getParent(): string
     {

@@ -33,8 +33,6 @@ class PluginApiException extends \Exception
 
     /**
      * @param array<string,mixed> $info
-     *
-     * @return string
      */
     private static function getResponseErrorMessage(array $info): string
     {
@@ -73,9 +71,6 @@ class PluginApiException extends \Exception
         ];
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return parent::__toString().', CURL_INFO:'.json_encode($this->curlInfo ?? []);

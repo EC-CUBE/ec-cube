@@ -19,8 +19,6 @@ class FilesystemUtil
      * Format file size to human readable
      *
      * @param int|false $size
-     *
-     * @return string
      */
     public static function sizeToHumanReadable(int|bool $size, int $decimals = 0): string
     {

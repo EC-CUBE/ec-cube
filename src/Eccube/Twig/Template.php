@@ -31,8 +31,6 @@ class Template extends \Twig\Template
      * @param array<string, AppVariable|BaseInfo|EccubeConfig|TraceableEventDispatcher|Layout|Page|string|bool> $context
      * @param array<string, array<int, string|object>>  $blocks
      *
-     * @return void
-     *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\SyntaxError
      */

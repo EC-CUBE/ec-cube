@@ -33,8 +33,6 @@ class LayoutRepository extends AbstractRepository
     }
 
     /**
-     * @return Layout|null
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function get(int|string $id): ?Layout

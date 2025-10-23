@@ -186,8 +186,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse
-     *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/up', name: 'admin_setting_system_member_up', requirements: ['id' => '\d+'], methods: ['PUT'])]
@@ -209,8 +207,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse
-     *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/down', name: 'admin_setting_system_member_down', requirements: ['id' => '\d+'], methods: ['PUT'])]
@@ -232,8 +228,6 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse
-     *
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route('/%eccube_admin_route%/setting/system/member/{id}/delete', name: 'admin_setting_system_member_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]

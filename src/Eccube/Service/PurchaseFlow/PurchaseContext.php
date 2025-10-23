@@ -53,8 +53,6 @@ class PurchaseContext extends \SplObjectStorage
 
     /**
      * PurchaseFlow実行前の{@link ItemHolderInterface}を取得.
-     *
-     * @return ItemHolderInterface|null
      */
     public function getOriginHolder(): ?ItemHolderInterface
     {
@@ -63,41 +61,27 @@ class PurchaseContext extends \SplObjectStorage
 
     /**
      * 会員情報を取得.
-     *
-     * @return Customer|UserInterface|null
      */
     public function getUser(): Customer|UserInterface|null
     {
         return $this->user;
     }
 
-    /**
-     * @return void
-     */
     public function setFlowType(?string $flowType): void
     {
         $this->flowType = $flowType;
     }
 
-    /**
-     * @return bool
-     */
     public function isOrderFlow(): bool
     {
         return $this->flowType === self::ORDER_FLOW;
     }
 
-    /**
-     * @return bool
-     */
     public function isShoppingFlow(): bool
     {
         return $this->flowType === self::SHOPPING_FLOW;
     }
 
-    /**
-     * @return bool
-     */
     public function isCartFlow(): bool
     {
         return $this->flowType === self::CART_FLOW;

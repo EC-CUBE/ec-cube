@@ -50,8 +50,6 @@ class AuthorityVoter implements VoterInterface
 
     /**
      * @param array<mixed> $attributes
-     *
-     * @return int
      */
     #[\Override]
     public function vote(TokenInterface $token, mixed $subject, array $attributes, ?Vote $vote = null): int

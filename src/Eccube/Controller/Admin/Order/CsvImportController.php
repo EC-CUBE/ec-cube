@@ -99,8 +99,6 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @param CsvImportService<int,mixed>|bool $csv
      * @param array<int,string> $errors
-     *
-     * @return void
      */
     protected function loadCsv(CsvImportService|bool $csv, array &$errors): void
     {
@@ -199,8 +197,6 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
     public function csvTemplate(Request $request): StreamedResponse

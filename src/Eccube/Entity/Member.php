@@ -35,9 +35,6 @@ if (!class_exists(Member::class)) {
     #[ORM\Entity(repositoryClass: MemberRepository::class)]
     class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
-        /**
-         * @return void
-         */
         public static function loadValidatorMetadata(ClassMetadata $metadata): void
         {
             $metadata->addConstraint(new UniqueEntity([
@@ -46,9 +43,6 @@ if (!class_exists(Member::class)) {
             ]));
         }
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -64,9 +58,6 @@ if (!class_exists(Member::class)) {
             return ['ROLE_ADMIN'];
         }
 
-        /**
-         * @return string
-         */
         public function getUsername(): string
         {
             return $this->login_id;
@@ -74,8 +65,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * {@inheritdoc}
-         *
-         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
@@ -186,8 +175,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -196,8 +183,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set name.
-         *
-         * @return Member
          */
         public function setName(?string $name = null): Member
         {
@@ -208,8 +193,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
         public function getName(): ?string
         {
@@ -218,8 +201,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set department.
-         *
-         * @return Member
          */
         public function setDepartment(?string $department = null): Member
         {
@@ -230,8 +211,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get department.
-         *
-         * @return string|null
          */
         public function getDepartment(): ?string
         {
@@ -240,8 +219,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set loginId.
-         *
-         * @return Member
          */
         public function setLoginId(string $loginId): Member
         {
@@ -252,17 +229,12 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get loginId.
-         *
-         * @return string
          */
         public function getLoginId(): string
         {
             return $this->login_id;
         }
 
-        /**
-         * @return string|null
-         */
         public function getPlainPassword(): ?string
         {
             return $this->plainPassword;
@@ -282,8 +254,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set password.
-         *
-         * @return Member
          */
         public function setPassword(string $password): Member
         {
@@ -294,8 +264,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get password.
-         *
-         * @return string
          */
         #[\Override]
         public function getPassword(): string
@@ -305,8 +273,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set salt.
-         *
-         * @return Member
          */
         public function setSalt(?string $salt): Member
         {
@@ -317,8 +283,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get salt.
-         *
-         * @return string|null
          */
         #[\Override]
         public function getSalt(): ?string
@@ -328,8 +292,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Member
          */
         public function setSortNo(int $sortNo): Member
         {
@@ -340,8 +302,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -350,8 +310,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set twoFactorAuthKey.
-         *
-         * @return Member
          */
         public function setTwoFactorAuthKey(string $two_factor_auth_key): Member
         {
@@ -362,8 +320,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get twoFactorAuthKey.
-         *
-         * @return string
          */
         public function getTwoFactorAuthKey(): string
         {
@@ -372,8 +328,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set twoFactorAuthEnabled.
-         *
-         * @return Member
          */
         public function setTwoFactorAuthEnabled(bool $two_factor_auth_enabled): Member
         {
@@ -384,8 +338,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get twoFactorAuthEnabled.
-         *
-         * @return bool
          */
         public function isTwoFactorAuthEnabled(): bool
         {
@@ -394,8 +346,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Member
          */
         public function setCreateDate(\DateTime $createDate): Member
         {
@@ -406,8 +356,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -416,8 +364,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Member
          */
         public function setUpdateDate(\DateTime $updateDate): Member
         {
@@ -428,8 +374,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -438,8 +382,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set loginDate.
-         *
-         * @return Member
          */
         public function setLoginDate(?\DateTime $loginDate = null): Member
         {
@@ -450,8 +392,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get loginDate.
-         *
-         * @return \DateTime|null
          */
         public function getLoginDate(): ?\DateTime
         {
@@ -460,8 +400,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set Work
-         *
-         * @return Member
          */
         public function setWork(?Work $work = null): Member
         {
@@ -472,8 +410,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get work.
-         *
-         * @return Work|null
          */
         public function getWork(): ?Work
         {
@@ -482,8 +418,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set authority.
-         *
-         * @return Member
          */
         public function setAuthority(?Authority $authority = null): Member
         {
@@ -494,8 +428,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get authority.
-         *
-         * @return Authority|null
          */
         public function getAuthority(): ?Authority
         {
@@ -504,8 +436,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Member
          */
         public function setCreator(?Member $creator = null): Member
         {
@@ -516,8 +446,6 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
@@ -554,8 +482,6 @@ if (!class_exists(Member::class)) {
          * @param string $serialized <p>
          * The string representation of the object.
          * </p>
-         *
-         * @return void
          *
          * @since 5.1.0
          */

@@ -30,8 +30,6 @@ if (!class_exists(ExportCsvRow::class)) {
          * Set data
          *
          * @param string $data
-         *
-         * @return ExportCsvRow
          */
         public function setData(?string $data = null): ExportCsvRow
         {
@@ -42,8 +40,6 @@ if (!class_exists(ExportCsvRow::class)) {
 
         /**
          * Is data null
-         *
-         * @return bool
          */
         public function isDataNull(): bool
         {
@@ -56,8 +52,6 @@ if (!class_exists(ExportCsvRow::class)) {
 
         /**
          * Push data
-         *
-         * @return void
          */
         public function pushData(): void
         {

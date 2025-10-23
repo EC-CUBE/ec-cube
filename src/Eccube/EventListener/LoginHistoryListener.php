@@ -79,9 +79,6 @@ class LoginHistoryListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @return void
-     */
     public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $request = $event->getRequest();
@@ -109,9 +106,6 @@ class LoginHistoryListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return void
-     */
     public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();

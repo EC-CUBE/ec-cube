@@ -27,9 +27,6 @@ if (!class_exists(MailHistory::class)) {
     #[ORM\Entity(repositoryClass: MailHistoryRepository::class)]
     class MailHistory extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -95,8 +92,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set sendDate.
-         *
-         * @return MailHistory
          */
         public function setSendDate(?\DateTime $sendDate = null): MailHistory
         {
@@ -107,8 +102,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get sendDate.
-         *
-         * @return \DateTime|null
          */
         public function getSendDate(): ?\DateTime
         {
@@ -117,8 +110,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set mailSubject.
-         *
-         * @return MailHistory
          */
         public function setMailSubject(?string $mailSubject = null): MailHistory
         {
@@ -129,8 +120,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get mailSubject.
-         *
-         * @return string|null
          */
         public function getMailSubject(): ?string
         {
@@ -139,8 +128,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set mailBody.
-         *
-         * @return MailHistory
          */
         public function setMailBody(?string $mailBody = null): MailHistory
         {
@@ -151,8 +138,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get mailBody.
-         *
-         * @return string|null
          */
         public function getMailBody(): ?string
         {
@@ -161,8 +146,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set mailHtmlBody.
-         *
-         * @return MailHistory
          */
         public function setMailHtmlBody(?string $mailHtmlBody = null): MailHistory
         {
@@ -173,8 +156,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get mailHtmlBody.
-         *
-         * @return string|null
          */
         public function getMailHtmlBody(): ?string
         {
@@ -183,8 +164,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set order.
-         *
-         * @return MailHistory
          */
         public function setOrder(?Order $order = null): MailHistory
         {
@@ -195,8 +174,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get order.
-         *
-         * @return Order|null
          */
         public function getOrder(): ?Order
         {
@@ -205,8 +182,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Set creator.
-         *
-         * @return MailHistory
          */
         public function setCreator(?Member $creator = null): MailHistory
         {
@@ -217,8 +192,6 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

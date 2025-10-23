@@ -116,8 +116,6 @@ class CalendarController extends AbstractController
     /**
      * カレンダー設定の削除
      *
-     * @return RedirectResponse
-     *
      * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\Exception\ORMException
      */
     #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]

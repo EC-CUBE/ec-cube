@@ -66,168 +66,108 @@ class AbstractController extends Controller
      */
     protected $router;
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setEccubeConfig(EccubeConfig $eccubeConfig): void
     {
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setSession(Session $session): void
     {
         $this->session = $session;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
-    /**
-     * @return void
-     */
     public function addSuccess(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.success', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addSuccessOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.success', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addError(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.error', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addErrorOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.error', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addDanger(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.danger', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addDangerOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.danger', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addWarning(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.warning', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addWarningOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.warning', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addInfo(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.info', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addInfoOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.info', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addRequestError(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.request.error', $message);
     }
 
-    /**
-     * @return void
-     */
     public function addRequestErrorOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.request.error', $message);
     }
 
-    /**
-     * @return void
-     */
     public function clearMessage(): void
     {
         /** @var Session $session */
@@ -235,18 +175,12 @@ class AbstractController extends Controller
         $session->getFlashBag()->clear();
     }
 
-    /**
-     * @return void
-     */
     public function deleteMessage(): void
     {
         $this->clearMessage();
         $this->addWarning('admin.common.delete_error_already_deleted', 'admin');
     }
 
-    /**
-     * @return bool
-     */
     public function hasMessage(string $type): bool
     {
         /** @var Session $session */
@@ -255,9 +189,6 @@ class AbstractController extends Controller
         return $session->getFlashBag()->has($type);
     }
 
-    /**
-     * @return void
-     */
     public function addFlashOnce(string $type, string $message): void
     {
         if (!$this->hasMessage($type)) {
@@ -283,9 +214,6 @@ class AbstractController extends Controller
         }
     }
 
-    /**
-     * @return void
-     */
     public function setLoginTargetPath(string $targetPath, ?string $namespace = null): void
     {
         if (is_null($namespace)) {
@@ -322,8 +250,6 @@ class AbstractController extends Controller
      * Checks the validity of a CSRF token.
      *
      * if token is invalid, throws AccessDeniedHttpException.
-     *
-     * @return bool
      *
      * @throws AccessDeniedHttpException
      */

@@ -28,9 +28,6 @@ if (!class_exists(News::class)) {
     #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class News extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -103,8 +100,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -113,8 +108,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set publishDate.
-         *
-         * @return News
          */
         public function setPublishDate(?\DateTime $publishDate = null): News
         {
@@ -125,8 +118,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get publishDate.
-         *
-         * @return \DateTime|null
          */
         public function getPublishDate(): ?\DateTime
         {
@@ -135,8 +126,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set title.
-         *
-         * @return News
          */
         public function setTitle(string $title): News
         {
@@ -147,8 +136,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get title.
-         *
-         * @return string
          */
         public function getTitle(): string
         {
@@ -157,8 +144,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set description.
-         *
-         * @return News
          */
         public function setDescription(?string $description = null): News
         {
@@ -169,8 +154,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get description.
-         *
-         * @return string|null
          */
         public function getDescription(): ?string
         {
@@ -179,8 +162,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set url.
-         *
-         * @return News
          */
         public function setUrl(?string $url = null): News
         {
@@ -191,8 +172,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get url.
-         *
-         * @return string|null
          */
         public function getUrl(): ?string
         {
@@ -201,8 +180,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set linkMethod.
-         *
-         * @return News
          */
         public function setLinkMethod(bool $linkMethod): News
         {
@@ -213,8 +190,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get linkMethod.
-         *
-         * @return bool
          */
         public function isLinkMethod(): bool
         {
@@ -223,8 +198,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return News
          */
         public function setCreateDate(\DateTime $createDate): News
         {
@@ -235,8 +208,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -245,8 +216,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return News
          */
         public function setUpdateDate(\DateTime $updateDate): News
         {
@@ -257,25 +226,17 @@ if (!class_exists(News::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
-        /**
-         * @return bool
-         */
         public function isVisible(): bool
         {
             return $this->visible;
         }
 
-        /**
-         * @return News
-         */
         public function setVisible(bool $visible): News
         {
             $this->visible = $visible;
@@ -285,8 +246,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Set creator.
-         *
-         * @return News
          */
         public function setCreator(?Member $creator = null): News
         {
@@ -297,8 +256,6 @@ if (!class_exists(News::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

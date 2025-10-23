@@ -59,18 +59,12 @@ if (!class_exists(TradeLaw::class)) {
         #[ORM\Column(name: 'display_order_screen', type: 'boolean')]
         private bool $displayOrderScreen = false;
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
             return $this->getName() ?? '';
         }
 
-        /**
-         * @return TradeLaw
-         */
         public function setId(int $id): TradeLaw
         {
             $this->id = $id;
@@ -88,8 +82,6 @@ if (!class_exists(TradeLaw::class)) {
 
         /**
          * @param string $name
-         *
-         * @return TradeLaw
          */
         public function setName(?string $name): TradeLaw
         {
@@ -98,9 +90,6 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getName(): ?string
         {
             return $this->name;
@@ -108,8 +97,6 @@ if (!class_exists(TradeLaw::class)) {
 
         /**
          * @param string $description
-         *
-         * @return TradeLaw
          */
         public function setDescription(?string $description): TradeLaw
         {
@@ -118,17 +105,11 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getDescription(): ?string
         {
             return $this->description;
         }
 
-        /**
-         * @return TradeLaw
-         */
         public function setSortNo(int $sortNo): TradeLaw
         {
             $this->sortNo = $sortNo;
@@ -136,17 +117,11 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return int
-         */
         public function getSortNo(): int
         {
             return $this->sortNo;
         }
 
-        /**
-         * @return TradeLaw
-         */
         public function setDisplayOrderScreen(bool $displayOrderScreen): TradeLaw
         {
             $this->displayOrderScreen = $displayOrderScreen;
@@ -154,9 +129,6 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return bool
-         */
         public function isDisplayOrderScreen(): bool
         {
             return $this->displayOrderScreen;

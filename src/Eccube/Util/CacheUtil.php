@@ -57,8 +57,6 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * @param string $env
-     *
-     * @return void
      */
     public function clearCache(?string $env = null): void
     {
@@ -66,8 +64,6 @@ class CacheUtil implements EventSubscriberInterface
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
     public function forceClearCache(TerminateEvent $event): string
@@ -117,8 +113,6 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * Doctrineのキャッシュを削除します.
      *
-     * @return string|null
-     *
      * @throws \Exception
      */
     public function clearDoctrineCache(): ?string
@@ -152,8 +146,6 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * Twigキャッシュを削除します.
-     *
-     * @return void
      */
     public function clearTwigCache(): void
     {

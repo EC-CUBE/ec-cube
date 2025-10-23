@@ -50,7 +50,6 @@ class Step3Type extends AbstractType
      *
      * @param array<string, mixed> $options
      *
-     *
      * @throws \Exception
      */
     #[\Override]

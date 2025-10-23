@@ -44,57 +44,36 @@ class ProcessResult
         $this->class = $class;
     }
 
-    /**
-     * @return ProcessResult
-     */
     public static function warn(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::WARNING, $message, $class);
     }
 
-    /**
-     * @return ProcessResult
-     */
     public static function error(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::ERROR, $message, $class);
     }
 
-    /**
-     * @return ProcessResult
-     */
     public static function success(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::SUCCESS, $message, $class);
     }
 
-    /**
-     * @return bool
-     */
     public function isError(): bool
     {
         return $this->type === self::ERROR;
     }
 
-    /**
-     * @return bool
-     */
     public function isWarning(): bool
     {
         return $this->type === self::WARNING;
     }
 
-    /**
-     * @return bool
-     */
     public function isSuccess(): bool
     {
         return $this->type === self::SUCCESS;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMessage(): ?string
     {
         return $this->message;

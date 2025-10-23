@@ -219,7 +219,6 @@ class CategoryController extends AbstractController
     /**
      * @param string $id
      *
-     *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]

@@ -86,8 +86,6 @@ class OrderType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -244,8 +242,6 @@ class OrderType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -266,8 +262,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注明細をソートする.
-     *
-     * @return void
      */
     public function sortOrderItems(FormEvent $event): void
     {
@@ -287,8 +281,6 @@ class OrderType extends AbstractType
      * 新規登録の際は, ユーザ編集不可のため追加しない.
      *
      * ステータスのプルダウンは, ステートマシンで遷移可能なステータスのみ表示する.
-     *
-     * @return void
      */
     public function addOrderStatusForm(FormEvent $event): void
     {
@@ -330,8 +322,6 @@ class OrderType extends AbstractType
     /**
      * 単一配送時に, Shippingのフォームを追加する.
      * 複数配送時はShippingの編集は行わない.
-     *
-     * @return void
      */
     public function addShippingForm(FormEvent $event): void
     {
@@ -357,8 +347,6 @@ class OrderType extends AbstractType
      * - 支払方法の名称
      * - 会員の性別/職業/誕生日
      * - 受注ステータス(新規登録時)
-     *
-     * @return void
      */
     public function copyFields(FormEvent $event): void
     {
@@ -393,8 +381,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注ステータスのバリデーションを行う.
-     *
-     * @return void
      */
     public function validateOrderStatus(FormEvent $event): void
     {
@@ -428,8 +414,6 @@ class OrderType extends AbstractType
     /**
      * 受注明細のバリデーションを行う.
      * 商品明細が1件も登録されていない場合はエラーとする.
-     *
-     * @return void
      */
     public function validateOrderItems(FormEvent $event): void
     {
@@ -453,8 +437,6 @@ class OrderType extends AbstractType
 
     /**
      * 受注明細と, Order/Shippingの紐付けを行う.
-     *
-     * @return void
      */
     public function associateOrderAndShipping(FormEvent $event): void
     {

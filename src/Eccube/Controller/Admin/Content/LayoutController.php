@@ -113,9 +113,6 @@ class LayoutController extends AbstractController
         ];
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Layout $Layout, CacheUtil $cacheUtil): RedirectResponse
     {
@@ -236,9 +233,6 @@ class LayoutController extends AbstractController
         ];
     }
 
-    /**
-     * @return JsonResponse
-     */
     #[Route('/%eccube_admin_route%/content/layout/view_block', name: 'admin_content_layout_view_block', methods: ['GET'])]
     public function viewBlock(Request $request, Twig $twig): JsonResponse
     {

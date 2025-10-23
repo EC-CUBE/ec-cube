@@ -58,8 +58,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
@@ -84,8 +82,6 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * Add charge item to item holder
-     *
-     * @return void
      */
     protected function addChargeItem(ItemHolderInterface $itemHolder): void
     {

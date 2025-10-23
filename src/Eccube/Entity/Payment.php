@@ -29,9 +29,6 @@ if (!class_exists(Payment::class)) {
     #[ORM\Entity(repositoryClass: PaymentRepository::class)]
     class Payment extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -136,8 +133,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -146,8 +141,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set method.
-         *
-         * @return Payment
          */
         public function setMethod(?string $method = null): Payment
         {
@@ -158,8 +151,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get method.
-         *
-         * @return string|null
          */
         public function getMethod(): ?string
         {
@@ -168,8 +159,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set charge.
-         *
-         * @return Payment
          */
         public function setCharge(?string $charge = null): Payment
         {
@@ -180,8 +169,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get charge.
-         *
-         * @return string|null
          */
         public function getCharge(): ?string
         {
@@ -190,8 +177,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set ruleMax.
-         *
-         * @return Payment
          */
         public function setRuleMax(?string $ruleMax = null): Payment
         {
@@ -202,8 +187,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get ruleMax.
-         *
-         * @return string|null
          */
         public function getRuleMax(): ?string
         {
@@ -212,8 +195,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Payment
          */
         public function setSortNo(?int $sortNo = null): Payment
         {
@@ -224,8 +205,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int|null
          */
         public function getSortNo(): ?int
         {
@@ -234,8 +213,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set fixed.
-         *
-         * @return Payment
          */
         public function setFixed(?bool $fixed): Payment
         {
@@ -246,8 +223,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get fixed.
-         *
-         * @return bool
          */
         public function isFixed(): bool
         {
@@ -256,8 +231,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set paymentImage.
-         *
-         * @return Payment
          */
         public function setPaymentImage(?string $paymentImage = null): Payment
         {
@@ -268,8 +241,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get paymentImage.
-         *
-         * @return string|null
          */
         public function getPaymentImage(): ?string
         {
@@ -278,8 +249,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set ruleMin.
-         *
-         * @return Payment
          */
         public function setRuleMin(?string $ruleMin = null): Payment
         {
@@ -290,8 +259,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get ruleMin.
-         *
-         * @return string|null
          */
         public function getRuleMin(): ?string
         {
@@ -300,8 +267,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set methodClass.
-         *
-         * @return Payment
          */
         public function setMethodClass(?string $methodClass = null): Payment
         {
@@ -312,25 +277,17 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get methodClass.
-         *
-         * @return string|null
          */
         public function getMethodClass(): ?string
         {
             return $this->method_class;
         }
 
-        /**
-         * @return bool
-         */
         public function isVisible(): bool
         {
             return $this->visible;
         }
 
-        /**
-         * @return Payment
-         */
         public function setVisible(bool $visible): Payment
         {
             $this->visible = $visible;
@@ -340,8 +297,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Payment
          */
         public function setCreateDate(\DateTime $createDate): Payment
         {
@@ -352,8 +307,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -362,8 +315,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Payment
          */
         public function setUpdateDate(\DateTime $updateDate): Payment
         {
@@ -374,8 +325,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -384,8 +333,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Add paymentOption.
-         *
-         * @return Payment
          */
         public function addPaymentOption(PaymentOption $paymentOption): Payment
         {
@@ -416,8 +363,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Payment
          */
         public function setCreator(?Member $creator = null): Payment
         {
@@ -428,8 +373,6 @@ if (!class_exists(Payment::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

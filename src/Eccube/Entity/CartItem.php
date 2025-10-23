@@ -85,9 +85,6 @@ if (!class_exists(CartItem::class)) {
             return $this->id;
         }
 
-        /**
-         * @return static
-         */
         public function setPrice(?string $price): static
         {
             $this->price = $price;
@@ -95,9 +92,6 @@ if (!class_exists(CartItem::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         #[\Override]
         public function getPrice(): ?string
         {
@@ -106,8 +100,6 @@ if (!class_exists(CartItem::class)) {
 
         /**
          * @param  string  $quantity
-         *
-         * @return static
          */
         #[\Override]
         public function setQuantity($quantity): static
@@ -117,18 +109,12 @@ if (!class_exists(CartItem::class)) {
             return $this;
         }
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function getQuantity(): string
         {
             return $this->quantity;
         }
 
-        /**
-         * @return string
-         */
         public function getTotalPrice(): string
         {
             return bcmul((string) $this->getPrice(), $this->getQuantity(), 2);
@@ -200,9 +186,6 @@ if (!class_exists(CartItem::class)) {
             return false;
         }
 
-        /**
-         * @return OrderItemType
-         */
         #[\Override]
         public function getOrderItemType(): OrderItemType
         {
@@ -224,35 +207,23 @@ if (!class_exists(CartItem::class)) {
             return $this;
         }
 
-        /**
-         * @return ProductClass|null
-         */
         #[\Override]
         public function getProductClass(): ?ProductClass
         {
             return $this->ProductClass;
         }
 
-        /**
-         * @return int|null
-         */
         public function getProductClassId(): ?int
         {
             return $this->product_class_id;
         }
 
-        /**
-         * @return string
-         */
         public function getPriceIncTax(): string
         {
             // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
             return $this->price;
         }
 
-        /**
-         * @return Cart|null
-         */
         public function getCart(): ?Cart
         {
             return $this->Cart;

@@ -59,9 +59,6 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     public function initialize(InputInterface $input, OutputInterface $output): void
     {

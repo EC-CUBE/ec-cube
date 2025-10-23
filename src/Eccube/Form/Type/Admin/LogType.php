@@ -48,8 +48,6 @@ class LogType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

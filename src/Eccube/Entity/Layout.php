@@ -61,18 +61,12 @@ if (!class_exists(Layout::class)) {
          */
         public const DEFAULT_LAYOUT_UNDERLAYER_PAGE = 2;
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
             return (string) $this->name;
         }
 
-        /**
-         * @return bool
-         */
         public function isDefault(): bool
         {
             return in_array($this->id, [self::DEFAULT_LAYOUT_PREVIEW_PAGE, self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
@@ -242,8 +236,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Get ColumnNum
-         *
-         * @return int
          */
         public function getColumnNum(): int
         {
@@ -321,8 +313,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Set name
-         *
-         * @return Layout
          */
         public function setName(string $name): Layout
         {
@@ -333,8 +323,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Get name
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -343,8 +331,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Set createDate
-         *
-         * @return Layout
          */
         public function setCreateDate(\DateTime $createDate): Layout
         {
@@ -365,8 +351,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Set updateDate
-         *
-         * @return Layout
          */
         public function setUpdateDate(\DateTime $updateDate): Layout
         {
@@ -387,8 +371,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Add blockPosition
-         *
-         * @return Layout
          */
         public function addBlockPosition(BlockPosition $blockPosition): Layout
         {
@@ -399,8 +381,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Remove blockPosition
-         *
-         * @return void
          */
         public function removeBlockPosition(BlockPosition $blockPosition): void
         {
@@ -419,8 +399,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Add pageLayoutLayout
-         *
-         * @return Layout
          */
         public function addPageLayout(PageLayout $PageLayout): Layout
         {
@@ -431,8 +409,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @return void
          */
         public function removePageLayout(PageLayout $PageLayout): void
         {
@@ -453,8 +429,6 @@ if (!class_exists(Layout::class)) {
          * Set deviceType
          *
          * @param DeviceType $deviceType
-         *
-         * @return Layout
          */
         public function setDeviceType(?DeviceType $deviceType = null): Layout
         {
@@ -465,8 +439,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Get deviceType
-         *
-         * @return DeviceType|null
          */
         public function getDeviceType(): ?DeviceType
         {
@@ -475,8 +447,6 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Check layout can delete or not
-         *
-         * @return bool
          */
         public function isDeletable(): bool
         {

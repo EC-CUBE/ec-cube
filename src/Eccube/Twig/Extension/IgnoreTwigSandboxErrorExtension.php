@@ -49,8 +49,6 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * @param array<mixed>|string|TemplateWrapper $template
      * @param array<mixed> $variables
      *
-     * @return string|null
-     *
      * @throws SecurityError
      */
     public function twig_include(Environment $env, array $context, array|string|TemplateWrapper $template, array $variables = [], bool $withContext = true, bool $ignoreMissing = false, bool $sandboxed = false): ?string

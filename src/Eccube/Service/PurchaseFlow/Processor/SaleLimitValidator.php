@@ -27,8 +27,6 @@ class SaleLimitValidator extends ItemValidator
      * @param ItemInterface $item 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 販売制限数を超えている場合
      */
     #[\Override]
@@ -52,8 +50,6 @@ class SaleLimitValidator extends ItemValidator
     /**
      * @param ItemInterface $item 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context): void

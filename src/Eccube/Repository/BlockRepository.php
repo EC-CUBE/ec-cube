@@ -44,9 +44,6 @@ class BlockRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return Block
-     */
     public function newBlock(DeviceType $DeviceType): Block
     {
         $Block = new Block();

@@ -178,8 +178,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Set column headers
      *
      * @param array<int, string> $columnHeaders
-     *
-     * @return void
      */
     public function setColumnHeaders(array $columnHeaders): void
     {
@@ -197,8 +195,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
      *                        values for duplicate headers into an array
      *                        (dup => [value1, value2, value3])
-     *
-     * @return bool
      */
     public function setHeaderRowNumber(int $rowNumber, ?int $duplicates = null): bool
     {
@@ -220,8 +216,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * If a header row has been set, the pointer is set just below the header
      * row. That way, when you iterate over the rows, that header row is
      * skipped.
-     *
-     * @return void
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -331,8 +325,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
     /**
      * Does the reader contain any invalid rows?
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {

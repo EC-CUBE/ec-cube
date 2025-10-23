@@ -65,8 +65,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * get DB version
-     *
-     * @return string
      */
     public function getDbversion(): string
     {
@@ -102,8 +100,6 @@ class SystemService implements EventSubscriberInterface
      * Try to set new values memory_limit | return true
      *
      * @param string $memory | EX: 1536M
-     *
-     * @return bool
      */
     public function canSetMemoryLimit(string $memory): bool
     {
@@ -118,8 +114,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * Get memory_limit | Megabyte
-     *
-     * @return float|int
      */
     public function getMemoryLimit(): float|int
     {
@@ -137,8 +131,6 @@ class SystemService implements EventSubscriberInterface
      *
      * - $isEnable = true の場合, $mode の文字列が記載された .maintenance ファイルを生成する
      * - $isEnable = false の場合, $mode の文字列が記載された .maintenance ファイルを削除する
-     *
-     * @return void
      */
     public function switchMaintenance(bool $isEnable = false, string $mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
@@ -149,9 +141,6 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return string|null
-     */
     public function getMaintenanceToken(): ?string
     {
         $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
@@ -166,8 +155,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * KernelEvents::TERMINATE で設定されるEvent
-     *
-     * @return void
      */
     public function disableMaintenanceEvent(TerminateEvent $event): void
     {
@@ -176,9 +163,6 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return void
-     */
     public function enableMaintenance(string $mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
         if ($force || !$this->isMaintenanceMode()) {
@@ -192,8 +176,6 @@ class SystemService implements EventSubscriberInterface
      * メンテナンスモードを解除する
      *
      * KernelEvents::TERMINATE で解除のEventを設定し、メンテナンスモードを解除する
-     *
-     * @return void
      */
     public function disableMaintenance(string $mode = self::AUTO_MAINTENANCE): void
     {
@@ -201,9 +183,6 @@ class SystemService implements EventSubscriberInterface
         $this->maintenanceMode = $mode;
     }
 
-    /**
-     * @return void
-     */
     public function disableMaintenanceNow(string $mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
         if (!$this->isMaintenanceMode()) {
@@ -221,8 +200,6 @@ class SystemService implements EventSubscriberInterface
 
     /**
      *　メンテナンスモードの状態を判定する
-     *
-     * @return bool
      */
     public function isMaintenanceMode(): bool
     {

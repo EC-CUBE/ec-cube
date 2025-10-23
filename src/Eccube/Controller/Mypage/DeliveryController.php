@@ -182,8 +182,6 @@ class DeliveryController extends AbstractController
     /**
      * お届け先を削除する.
      *
-     * @return RedirectResponse
-     *
      * @throws \Exception
      */
     #[Route('/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]

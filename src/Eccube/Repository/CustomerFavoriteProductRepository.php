@@ -34,9 +34,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
         parent::__construct($registry, CustomerFavoriteProduct::class);
     }
 
-    /**
-     * @return void
-     */
     public function addFavorite(Customer $Customer, Product $Product): void
     {
         if ($this->isFavorite($Customer, $Product)) {
@@ -52,9 +49,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isFavorite(Customer $Customer, Product $Product): bool
     {
         $qb = $this->createQueryBuilder('cf')
@@ -70,9 +64,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
         return $count > 0;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder
     {
         $qb = $this->createQueryBuilder('cfp')
@@ -91,8 +82,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
      * お気に入りを削除します.
      *
      * @param CustomerFavoriteProduct $CustomerFavoriteProduct
-     *
-     * @return void
      */
     #[\Override]
     public function delete($CustomerFavoriteProduct): void

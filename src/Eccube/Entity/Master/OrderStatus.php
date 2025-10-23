@@ -53,17 +53,11 @@ if (!class_exists(OrderStatus::class, false)) {
         #[ORM\Column(name: 'display_order_count', type: 'boolean', options: ['default' => false])]
         private $display_order_count = false;
 
-        /**
-         * @return bool
-         */
         public function isDisplayOrderCount(): bool
         {
             return $this->display_order_count;
         }
 
-        /**
-         * @return void
-         */
         public function setDisplayOrderCount(bool $display_order_count = false): void
         {
             $this->display_order_count = $display_order_count;

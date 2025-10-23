@@ -26,8 +26,6 @@ class NoRFCEmailValidator extends EmailValidator
 {
     /**
      * @param $email
-     *
-     * @return bool
      */
     #[\Override]
     public function isValid($email, ?EmailValidation $emailValidation = null): bool

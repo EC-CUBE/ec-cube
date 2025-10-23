@@ -47,8 +47,6 @@ class LoginHistoryRepository extends AbstractRepository
 
     /**
      * @param array<string, mixed> $searchData
-     *
-     * @return QueryBuilder
      */
     public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {

@@ -149,8 +149,6 @@ class TaxRuleController extends AbstractController
     /**
      * 税率設定の削除
      *
-     * @return RedirectResponse
-     *
      * @throws \Doctrine\ORM\NoResultException
      */
     #[Route('/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]

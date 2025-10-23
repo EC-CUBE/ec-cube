@@ -103,8 +103,6 @@ class ItemCollection extends ArrayCollection
      * 同名の明細が存在するかどうか.
      *
      * TODO 暫定対応. 本来は明細種別でチェックする.
-     *
-     * @return bool
      */
     public function hasProductByName(string $productName): bool
     {
@@ -121,8 +119,6 @@ class ItemCollection extends ArrayCollection
      * 指定した受注明細区分の明細が存在するかどうか.
      *
      * @param OrderItemType $OrderItemType 受注区分
-     *
-     * @return bool
      */
     public function hasItemByOrderItemType(OrderItemType $OrderItemType): bool
     {
@@ -134,17 +130,11 @@ class ItemCollection extends ArrayCollection
         return !$filteredItems->isEmpty();
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return self
-     */
     public function sort(): ItemCollection
     {
         $Items = $this->toArray();

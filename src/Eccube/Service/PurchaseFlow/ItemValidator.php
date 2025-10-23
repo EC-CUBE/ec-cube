@@ -22,9 +22,6 @@ abstract class ItemValidator
 {
     use ValidatorTrait;
 
-    /**
-     * @return ProcessResult
-     */
     final public function execute(ItemInterface $item, PurchaseContext $context): ProcessResult
     {
         try {
@@ -40,15 +37,11 @@ abstract class ItemValidator
 
     /**
      * 妥当性検証を行う.
-     *
-     * @return void
      */
     abstract protected function validate(ItemInterface $item, PurchaseContext $context): void;
 
     /**
      * 検証エラー時に後処理を行う.
-     *
-     * @return void
      */
     protected function handle(ItemInterface $item, PurchaseContext $context): void
     {

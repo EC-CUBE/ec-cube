@@ -101,8 +101,6 @@ class MailService
      * @param Customer $Customer 会員情報
      * @param string $activateUrl アクティベート用url
      *
-     * @return void
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -167,8 +165,6 @@ class MailService
      *
      * @param Customer $Customer 会員情報
      *
-     * @return void
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -230,8 +226,6 @@ class MailService
      *
      * @param $Customer Customer
      * @param $email string
-     *
-     * @return void
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -295,8 +289,6 @@ class MailService
      *
      * @param array<string, string> $formData お問い合わせ内容
      *
-     * @return void
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -358,8 +350,6 @@ class MailService
      * Send order mail.
      *
      * @param Order $Order 受注情報
-     *
-     * @return Email
      */
     public function sendOrderMail(Order $Order): Email
     {
@@ -435,8 +425,6 @@ class MailService
      * @param Customer $Customer 会員情報
      * @param string $activateUrl アクティベート用url
      *
-     * @return void
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -504,8 +492,6 @@ class MailService
      * @param Order $Order 受注情報
      * @param array<string, string> $formData 入力内容
      *
-     * @return Email
-     *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
@@ -549,8 +535,6 @@ class MailService
      * Send password reset notification mail.
      *
      * @param Customer $Customer 会員情報
-     *
-     * @return void
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -617,8 +601,6 @@ class MailService
      *
      * @param Customer $Customer 会員情報
      *
-     * @return void
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -682,8 +664,6 @@ class MailService
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
-     * @return void
-     *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
@@ -742,8 +722,6 @@ class MailService
     }
 
     /**
-     * @return string
-     *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
@@ -780,8 +758,6 @@ class MailService
      * 会員情報変更時にメール通知
      *
      * @param array{userAgent: string, ipAddress: string, preEmail: string|null}|array{userAgent:string|null,ipAddress:string|null} $userData
-     *
-     * @return void
      *
      * @throws LoaderError
      * @throws NonUniqueResultException
@@ -882,8 +858,6 @@ class MailService
      * RFC違反のメールの local part を "" で囲む.
      *
      * パラメータ eccube_rfc_email_check == true の場合は変換しない
-     *
-     * @return Address
      */
     public function convertRFCViolatingEmail(string $email): Address
     {

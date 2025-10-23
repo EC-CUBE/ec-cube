@@ -217,8 +217,6 @@ class EntityProxyService
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
      * @param string $trait 追加するTraitのFQCN
-     *
-     * @return void
      */
     private function addTrait(Tokens $entityTokens, string $trait): void
     {
@@ -261,8 +259,6 @@ class EntityProxyService
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
      * @param string $trait  削除するTraitのFQCN
-     *
-     * @return void
      */
     private function removeTrait(Tokens $entityTokens, string $trait): void
     {
@@ -326,8 +322,6 @@ class EntityProxyService
 
     /**
      * remove block to 'if (!class_exists(<class name>)) { }'
-     *
-     * @return void
      */
     private function removeClassExistsBlock(Tokens $entityTokens): void
     {

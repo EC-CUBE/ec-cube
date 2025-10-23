@@ -43,9 +43,6 @@ class MaintenanceListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @return void
-     */
     public function onResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();

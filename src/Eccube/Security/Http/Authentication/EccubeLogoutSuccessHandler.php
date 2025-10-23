@@ -28,9 +28,6 @@ class EccubeLogoutSuccessHandler implements EventSubscriberInterface
         $this->context = $context;
     }
 
-    /**
-     * @return void
-     */
     public function onLogout(LogoutEvent $event): void
     {
         if ($this->context->isAdmin()) {

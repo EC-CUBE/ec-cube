@@ -23,9 +23,6 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 #[AsDoctrineListener(event: Events::postConnect)]
 class InitSubscriber
 {
-    /**
-     * @return void
-     */
     public function __invoke(ConnectionEventArgs $args): void
     {
         $db = $args->getConnection();

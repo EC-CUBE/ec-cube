@@ -62,9 +62,6 @@ class PluginApiService
         $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return string
-     */
     public function getApiUrl(): string
     {
         if (empty($this->apiUrl)) {
@@ -74,9 +71,6 @@ class PluginApiService
         return $this->apiUrl;
     }
 
-    /**
-     * @return void
-     */
     public function setApiUrl(string $apiUrl): void
     {
         $this->apiUrl = $apiUrl;
@@ -197,8 +191,6 @@ class PluginApiService
 
     /**
      * Is update
-     *
-     * @return bool
      */
     private function isUpdate(string $pluginVersion, string $remoteVersion): bool
     {
@@ -224,41 +216,26 @@ class PluginApiService
         return $this->buildInfo($json);
     }
 
-    /**
-     * @return void
-     */
     public function pluginInstalled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/installed', $Plugin);
     }
 
-    /**
-     * @return void
-     */
     public function pluginEnabled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/enabled', $Plugin);
     }
 
-    /**
-     * @return void
-     */
     public function pluginDisabled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/disabled', $Plugin);
     }
 
-    /**
-     * @return void
-     */
     public function pluginUninstalled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/uninstalled', $Plugin);
     }
 
-    /**
-     * @return void
-     */
     private function updatePluginStatus(string $url, Plugin $Plugin): void
     {
         if ($Plugin->getSource()) {
@@ -273,8 +250,6 @@ class PluginApiService
      * API request processing
      *
      * @param array<string, mixed> $data
-     *
-     * @return string|bool
      *
      * @throws PluginApiException
      */
@@ -352,8 +327,6 @@ class PluginApiService
      * Check support version
      *
      * @param array<string, string|int|array<int, string|float>|bool> $plugin
-     *
-     * @return void
      */
     public function supportedVersion(array &$plugin): void
     {

@@ -27,9 +27,6 @@ if (!class_exists(ProductImage::class)) {
     #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
     class ProductImage extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -89,8 +86,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set fileName.
-         *
-         * @return ProductImage
          */
         public function setFileName(string $fileName): ProductImage
         {
@@ -101,8 +96,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get fileName.
-         *
-         * @return string
          */
         public function getFileName(): string
         {
@@ -111,8 +104,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return ProductImage
          */
         public function setSortNo(int $sortNo): ProductImage
         {
@@ -123,8 +114,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -133,8 +122,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return ProductImage
          */
         public function setCreateDate(\DateTime $createDate): ProductImage
         {
@@ -145,8 +132,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -155,8 +140,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set product.
-         *
-         * @return ProductImage
          */
         public function setProduct(?Product $product = null): ProductImage
         {
@@ -167,8 +150,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {
@@ -177,8 +158,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Set creator.
-         *
-         * @return ProductImage
          */
         public function setCreator(?Member $creator = null): ProductImage
         {
@@ -189,8 +168,6 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

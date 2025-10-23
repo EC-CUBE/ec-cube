@@ -28,9 +28,6 @@ class WebServerDocumentRootPass implements CompilerPassInterface
         $this->docroot = $docroot;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     public function process(ContainerBuilder $container): void
     {

@@ -66,8 +66,6 @@ class TaxProcessor implements ItemHolderPreprocessor
      * @param ItemHolderInterface $itemHolder 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Doctrine\ORM\NoResultException
      */
     #[\Override]

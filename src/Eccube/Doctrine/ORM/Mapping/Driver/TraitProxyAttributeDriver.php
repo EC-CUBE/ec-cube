@@ -23,9 +23,6 @@ class TraitProxyAttributeDriver extends AttributeDriver
      */
     protected $trait_proxies_directory;
 
-    /**
-     * @return void
-     */
     public function setTraitProxiesDirectory(string $dir): void
     {
         $this->trait_proxies_directory = $dir;

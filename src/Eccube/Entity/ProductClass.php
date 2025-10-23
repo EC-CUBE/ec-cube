@@ -39,8 +39,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * 商品規格名を含めた商品名を返す.
-         *
-         * @return string
          */
         public function formattedProductName(): string
         {
@@ -58,8 +56,6 @@ if (!class_exists(ProductClass::class)) {
         /**
          * Is Enable
          *
-         * @return bool
-         *
          * @deprecated
          */
         public function isEnable(): bool
@@ -69,8 +65,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set price01 IncTax
-         *
-         * @return ProductClass
          */
         public function setPrice01IncTax(?string $price01_inc_tax): ProductClass
         {
@@ -81,8 +75,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get price01 IncTax
-         *
-         * @return string
          */
         public function getPrice01IncTax(): string
         {
@@ -91,8 +83,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set price02 IncTax
-         *
-         * @return ProductClass
          */
         public function setPrice02IncTax(?string $price02_inc_tax): ProductClass
         {
@@ -103,8 +93,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get price02 IncTax
-         *
-         * @return string
          */
         public function getPrice02IncTax(): string
         {
@@ -113,8 +101,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get StockFind
-         *
-         * @return bool
          */
         public function getStockFind(): bool
         {
@@ -127,8 +113,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set tax_rate
-         *
-         * @return ProductClass
          */
         public function setTaxRate(?string $tax_rate): ProductClass
         {
@@ -139,8 +123,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get tax_rate
-         *
-         * @return string|null
          */
         public function getTaxRate(): ?string
         {
@@ -149,8 +131,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Has ClassCategory1
-         *
-         * @return bool
          */
         public function hasClassCategory1(): bool
         {
@@ -159,8 +139,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Has ClassCategory1
-         *
-         * @return bool
          */
         public function hasClassCategory2(): bool
         {
@@ -309,8 +287,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -319,8 +295,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set code.
-         *
-         * @return ProductClass
          */
         public function setCode(?string $code = null): ProductClass
         {
@@ -331,8 +305,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get code.
-         *
-         * @return string|null
          */
         public function getCode(): ?string
         {
@@ -341,8 +313,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set stock.
-         *
-         * @return ProductClass
          */
         public function setStock(?string $stock = null): ProductClass
         {
@@ -353,8 +323,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get stock.
-         *
-         * @return string|null
          */
         public function getStock(): ?string
         {
@@ -363,8 +331,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set stockUnlimited.
-         *
-         * @return ProductClass
          */
         public function setStockUnlimited(bool $stockUnlimited): ProductClass
         {
@@ -375,8 +341,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get stockUnlimited.
-         *
-         * @return bool
          */
         public function isStockUnlimited(): bool
         {
@@ -385,8 +349,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set saleLimit.
-         *
-         * @return ProductClass
          */
         public function setSaleLimit(?string $saleLimit = null): ProductClass
         {
@@ -397,8 +359,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get saleLimit.
-         *
-         * @return string|null
          */
         public function getSaleLimit(): ?string
         {
@@ -407,8 +367,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set price01.
-         *
-         * @return ProductClass
          */
         public function setPrice01(?string $price01 = null): ProductClass
         {
@@ -419,8 +377,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get price01.
-         *
-         * @return string|null
          */
         public function getPrice01(): ?string
         {
@@ -429,8 +385,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set price02.
-         *
-         * @return ProductClass
          */
         public function setPrice02(?string $price02): ProductClass
         {
@@ -441,8 +395,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get price02.
-         *
-         * @return string|null
          */
         public function getPrice02(): ?string
         {
@@ -451,8 +403,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set deliveryFee.
-         *
-         * @return ProductClass
          */
         public function setDeliveryFee(?string $deliveryFee = null): ProductClass
         {
@@ -463,25 +413,17 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get deliveryFee.
-         *
-         * @return string|null
          */
         public function getDeliveryFee(): ?string
         {
             return $this->delivery_fee;
         }
 
-        /**
-         * @return bool
-         */
         public function isVisible(): bool
         {
             return $this->visible;
         }
 
-        /**
-         * @return ProductClass
-         */
         public function setVisible(bool $visible): ProductClass
         {
             $this->visible = $visible;
@@ -491,8 +433,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return ProductClass
          */
         public function setCreateDate(\DateTime $createDate): ProductClass
         {
@@ -503,8 +443,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -513,8 +451,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return ProductClass
          */
         public function setUpdateDate(\DateTime $updateDate): ProductClass
         {
@@ -525,8 +461,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -535,8 +469,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get currencyCode.
-         *
-         * @return string
          */
         public function getCurrencyCode(): string
         {
@@ -557,8 +489,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set productStock.
-         *
-         * @return ProductClass
          */
         public function setProductStock(?ProductStock $productStock = null): ProductClass
         {
@@ -569,8 +499,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get productStock.
-         *
-         * @return ProductStock|null
          */
         public function getProductStock(): ?ProductStock
         {
@@ -579,8 +507,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set taxRule.
-         *
-         * @return ProductClass
          */
         public function setTaxRule(?TaxRule $taxRule = null): ProductClass
         {
@@ -591,8 +517,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get taxRule.
-         *
-         * @return TaxRule|null
          */
         public function getTaxRule(): ?TaxRule
         {
@@ -601,8 +525,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set product.
-         *
-         * @return ProductClass
          */
         public function setProduct(?Product $product = null): ProductClass
         {
@@ -613,8 +535,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {
@@ -623,8 +543,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set saleType.
-         *
-         * @return ProductClass
          */
         public function setSaleType(?SaleType $saleType = null): ProductClass
         {
@@ -635,8 +553,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get saleType.
-         *
-         * @return SaleType|null
          */
         public function getSaleType(): ?SaleType
         {
@@ -645,8 +561,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set classCategory1.
-         *
-         * @return ProductClass
          */
         public function setClassCategory1(?ClassCategory $classCategory1 = null): ProductClass
         {
@@ -657,8 +571,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get classCategory1.
-         *
-         * @return ClassCategory|null
          */
         public function getClassCategory1(): ?ClassCategory
         {
@@ -667,8 +579,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set classCategory2.
-         *
-         * @return ProductClass
          */
         public function setClassCategory2(?ClassCategory $classCategory2 = null): ProductClass
         {
@@ -679,8 +589,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get classCategory2.
-         *
-         * @return ClassCategory|null
          */
         public function getClassCategory2(): ?ClassCategory
         {
@@ -689,8 +597,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set deliveryDuration.
-         *
-         * @return ProductClass
          */
         public function setDeliveryDuration(?DeliveryDuration $deliveryDuration = null): ProductClass
         {
@@ -701,8 +607,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get deliveryDuration.
-         *
-         * @return DeliveryDuration|null
          */
         public function getDeliveryDuration(): ?DeliveryDuration
         {
@@ -711,8 +615,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set creator.
-         *
-         * @return ProductClass
          */
         public function setCreator(?Member $creator = null): ProductClass
         {
@@ -723,8 +625,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
@@ -733,8 +633,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Set pointRate
-         *
-         * @return ProductClass
          */
         public function setPointRate(?string $pointRate): ProductClass
         {
@@ -745,8 +643,6 @@ if (!class_exists(ProductClass::class)) {
 
         /**
          * Get pointRate
-         *
-         * @return string|null
          */
         public function getPointRate(): ?string
         {

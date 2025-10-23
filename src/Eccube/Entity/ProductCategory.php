@@ -59,8 +59,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Set productId.
-         *
-         * @return ProductCategory
          */
         public function setProductId(int $productId): ProductCategory
         {
@@ -71,8 +69,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Get productId.
-         *
-         * @return int
          */
         public function getProductId(): int
         {
@@ -81,8 +77,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Set categoryId.
-         *
-         * @return ProductCategory
          */
         public function setCategoryId(int $categoryId): ProductCategory
         {
@@ -93,8 +87,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Get categoryId.
-         *
-         * @return int
          */
         public function getCategoryId(): int
         {
@@ -103,8 +95,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Set product.
-         *
-         * @return ProductCategory
          */
         public function setProduct(?Product $product = null): ProductCategory
         {
@@ -115,8 +105,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
         public function getProduct(): ?Product
         {
@@ -125,8 +113,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Set category.
-         *
-         * @return ProductCategory
          */
         public function setCategory(?Category $category = null): ProductCategory
         {
@@ -137,8 +123,6 @@ if (!class_exists(ProductCategory::class)) {
 
         /**
          * Get category.
-         *
-         * @return Category|null
          */
         public function getCategory(): ?Category
         {

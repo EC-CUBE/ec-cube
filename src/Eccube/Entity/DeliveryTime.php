@@ -91,8 +91,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Set deliveryTime.
-         *
-         * @return DeliveryTime
          */
         public function setDeliveryTime(string $deliveryTime): DeliveryTime
         {
@@ -103,8 +101,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get deliveryTime.
-         *
-         * @return string
          */
         public function getDeliveryTime(): string
         {
@@ -113,8 +109,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Set delivery.
-         *
-         * @return DeliveryTime
          */
         public function setDelivery(?Delivery $delivery = null): DeliveryTime
         {
@@ -125,8 +119,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get delivery.
-         *
-         * @return Delivery|null
          */
         public function getDelivery(): ?Delivery
         {
@@ -147,8 +139,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get sort_no.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -157,8 +147,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Set visible
-         *
-         * @return DeliveryTime
          */
         public function setVisible(bool $visible): DeliveryTime
         {
@@ -169,8 +157,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Is the visibility visible?
-         *
-         * @return bool
          */
         public function isVisible(): bool
         {
@@ -179,8 +165,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return DeliveryTime
          */
         public function setCreateDate(\DateTime $createDate): DeliveryTime
         {
@@ -191,8 +175,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -201,8 +183,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return DeliveryTime
          */
         public function setUpdateDate(\DateTime $updateDate): DeliveryTime
         {
@@ -213,8 +193,6 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {

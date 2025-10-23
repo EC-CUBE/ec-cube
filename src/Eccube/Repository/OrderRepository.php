@@ -54,9 +54,6 @@ class OrderRepository extends AbstractRepository
         $this->queries = $queries;
     }
 
-    /**
-     * @return void
-     */
     public function changeStatus(int $orderId, OrderStatus $Status): void
     {
         $Order = $this
@@ -115,8 +112,6 @@ class OrderRepository extends AbstractRepository
      *         sorttype?:string,
      *         buy_product_name?:string
      *     } $searchData
-     *
-     * @return QueryBuilder
      */
     public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
@@ -410,9 +405,6 @@ class OrderRepository extends AbstractRepository
         return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder
     {
         $qb = $this->createQueryBuilder('o')
@@ -427,8 +419,6 @@ class OrderRepository extends AbstractRepository
 
     /**
      * ステータスごとの受注件数を取得する.
-     *
-     * @return int
      *
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -447,8 +437,6 @@ class OrderRepository extends AbstractRepository
      * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
      *
      * @param array<int, int> $OrderStatuses
-     *
-     * @return void
      *
      * @throws NonUniqueResultException
      */

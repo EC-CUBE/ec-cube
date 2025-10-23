@@ -47,8 +47,6 @@ class PointHelper
     /**
      * ポイント設定が有効かどうか.
      *
-     * @return bool
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -109,8 +107,6 @@ class PointHelper
     /**
      * 明細追加処理.
      *
-     * @return void
-     *
      * @throws \Exception
      */
     public function addPointDiscountItem(ItemHolderInterface $itemHolder, string $discount): void
@@ -152,8 +148,6 @@ class PointHelper
 
     /**
      * 既存のポイント明細を削除する.
-     *
-     * @return void
      */
     public function removePointDiscountItem(ItemHolderInterface $itemHolder): void
     {
@@ -167,9 +161,6 @@ class PointHelper
         }
     }
 
-    /**
-     * @return void
-     */
     public function prepare(ItemHolderInterface $itemHolder, string $point): void
     {
         // ユーザの保有ポイントを減算
@@ -177,9 +168,6 @@ class PointHelper
         $Customer->setPoint(bcsub((string) $Customer->getPoint(), $point));
     }
 
-    /**
-     * @return void
-     */
     public function rollback(ItemHolderInterface $itemHolder, string $point): void
     {
         // 利用したポイントをユーザに戻す.

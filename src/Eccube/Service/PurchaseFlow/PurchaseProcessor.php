@@ -25,9 +25,6 @@ interface PurchaseProcessor
     /**
      * 受注の仮確定処理を行います。
      *
-     * @return void
-     * @return void
-     *
      * @throws PurchaseException
      */
     public function prepare(ItemHolderInterface $target, PurchaseContext $context): void;
@@ -35,17 +32,12 @@ interface PurchaseProcessor
     /**
      * 受注の確定処理を行います。
      *
-     * @return void
-     * @return void
-     *
      * @throws PurchaseException
      */
     public function commit(ItemHolderInterface $target, PurchaseContext $context): void;
 
     /**
      * 仮確定した受注データの取り消し処理を行います。
-     *
-     * @return void
      */
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void;
 }

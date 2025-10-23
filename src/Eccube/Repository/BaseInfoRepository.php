@@ -34,9 +34,6 @@ class BaseInfoRepository extends AbstractRepository
         parent::__construct($registry, BaseInfo::class);
     }
 
-    /**
-     * @return BaseInfo
-     */
     public function get(int $id = 1): BaseInfo
     {
         $BaseInfo = $this->find($id);

@@ -44,8 +44,6 @@ class Context
 
     /**
      * 管理画面へのアクセスかどうか.
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {
@@ -64,8 +62,6 @@ class Context
 
     /**
      * フロント画面へのアクセスかどうか.
-     *
-     * @return bool
      */
     public function isFront(): bool
     {
@@ -78,9 +74,6 @@ class Context
         return false === $this->isAdmin();
     }
 
-    /**
-     * @return UserInterface|null
-     */
     public function getCurrentUser(): ?UserInterface
     {
         $request = $this->requestStack->getMainRequest();

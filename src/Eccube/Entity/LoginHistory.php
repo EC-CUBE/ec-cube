@@ -87,8 +87,6 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Set user_name
-         *
-         * @return LoginHistory
          */
         public function setUserName(string $userName): LoginHistory
         {
@@ -99,17 +97,12 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Get user_name
-         *
-         * @return string
          */
         public function getUserName(): string
         {
             return $this->user_name;
         }
 
-        /**
-         * @return LoginHistory
-         */
         public function setStatus(LoginHistoryStatus $Status): LoginHistory
         {
             $this->Status = $Status;
@@ -117,9 +110,6 @@ if (!class_exists(LoginHistory::class)) {
             return $this;
         }
 
-        /**
-         * @return LoginHistoryStatus
-         */
         public function getStatus(): LoginHistoryStatus
         {
             return $this->Status;
@@ -127,8 +117,6 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Set client_ip
-         *
-         * @return LoginHistory
          */
         public function setClientIp(string $clientIp): LoginHistory
         {
@@ -139,8 +127,6 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Get client_ip
-         *
-         * @return string
          */
         public function getClientIp(): string
         {
@@ -149,8 +135,6 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Set create_date
-         *
-         * @return LoginHistory
          */
         public function setCreateDate(\DateTime $createDate): LoginHistory
         {
@@ -171,8 +155,6 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Set update_date
-         *
-         * @return LoginHistory
          */
         public function setUpdateDate(\DateTime $updateDate): LoginHistory
         {
@@ -195,8 +177,6 @@ if (!class_exists(LoginHistory::class)) {
          * Set LoginUser
          *
          * @param Member $loginUser
-         *
-         * @return LoginHistory
          */
         public function setLoginUser(?Member $loginUser = null): LoginHistory
         {
@@ -207,8 +187,6 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Get LoginUser
-         *
-         * @return Member
          */
         public function getLoginUser(): Member
         {

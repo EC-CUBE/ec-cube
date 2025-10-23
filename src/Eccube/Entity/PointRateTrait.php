@@ -37,8 +37,6 @@ trait PointRateTrait
 
     /**
      * Get pointRate
-     *
-     * @return string|null
      */
     public function getPointRate(): ?string
     {

@@ -39,9 +39,6 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {

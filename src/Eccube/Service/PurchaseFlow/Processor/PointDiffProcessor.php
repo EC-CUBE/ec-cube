@@ -49,11 +49,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /*
      * ItemHolderValidator
      */
-
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
@@ -74,11 +71,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /*
      * PurchaseProcessor
      */
-
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
@@ -95,8 +89,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function commit(ItemHolderInterface $target, PurchaseContext $context): void
@@ -106,8 +98,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
@@ -134,8 +124,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * - OrderStatusが新規受付、入金済み、対応中、発送済みのどれかであること
      * - 会員のOrderであること.
      * - PurchaseContextでOriginHolderが渡ってきている
-     *
-     * @return bool
      */
     private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context): bool
     {
@@ -179,8 +167,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * 使用ポイントが増えた場合プラスとなる
      * 50 -> 100 : 50
      * 100 -> 50 : -50
-     *
-     * @return string
      */
     protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context): string
     {

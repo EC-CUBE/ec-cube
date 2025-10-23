@@ -143,8 +143,6 @@ class NewsController extends AbstractController
 
     /**
      * 指定した新着情報を削除する。
-     *
-     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/news/{id}/delete', name: 'admin_content_news_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, News $News, CacheUtil $cacheUtil): RedirectResponse

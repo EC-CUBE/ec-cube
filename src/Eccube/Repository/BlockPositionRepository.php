@@ -48,8 +48,6 @@ class BlockPositionRepository extends AbstractRepository
      * @param  array<mixed>|null $data
      * @param  Block[] $Blocks
      * @param  Block[]|null $UnusedBlocks
-     *
-     * @return void
      */
     public function register(?array $data, array $Blocks, ?array $UnusedBlocks, ?Layout $Layout): void
     {

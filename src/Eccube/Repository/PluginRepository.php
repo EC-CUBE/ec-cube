@@ -45,8 +45,6 @@ class PluginRepository extends AbstractRepository
      * このメソッドは、プラグインコードをすべて小文字に正規化してから検索します.
      *
      * @param string $code プラグインコード
-     *
-     * @return Plugin|null
      */
     public function findByCode(string $code): ?Plugin
     {

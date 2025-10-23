@@ -78,8 +78,6 @@ if (!class_exists(Order::class)) {
         /**
          * 課税対象の明細の合計金額を返す.
          * 商品合計 + 送料 + 手数料 + 値引き(課税).
-         *
-         * @return string
          */
         public function getTaxableTotal(): string
         {
@@ -216,8 +214,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * 課税対象の値引き金額合計を返す.
-         *
-         * @return string
          */
         public function getTaxableDiscount(): string
         {
@@ -243,8 +239,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * 非課税・不課税の値引き額を返す.
-         *
-         * @return string
          */
         public function getTaxFreeDiscount(): string
         {
@@ -270,8 +264,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * 複数配送かどうかの判定を行う.
-         *
-         * @return bool
          */
         public function isMultiple(): bool
         {
@@ -293,8 +285,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * 対象となるお届け先情報を取得
-         *
-         * @return Shipping|null
          */
         public function findShipping(int $shippingId): ?Shipping
         {
@@ -356,8 +346,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * 合計金額を計算
-         *
-         * @return string
          *
          * @deprecated
          */
@@ -713,8 +701,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -723,8 +709,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set preOrderId.
-         *
-         * @return Order
          */
         public function setPreOrderId(?string $preOrderId = null): Order
         {
@@ -735,8 +719,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get preOrderId.
-         *
-         * @return string|null
          */
         public function getPreOrderId(): ?string
         {
@@ -745,8 +727,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set orderNo
-         *
-         * @return Order
          */
         public function setOrderNo(?string $orderNo = null): Order
         {
@@ -757,8 +737,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get orderNo
-         *
-         * @return string|null
          */
         public function getOrderNo(): ?string
         {
@@ -767,8 +745,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set message.
-         *
-         * @return Order
          */
         public function setMessage(?string $message = null): Order
         {
@@ -779,8 +755,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get message.
-         *
-         * @return string|null
          */
         public function getMessage(): ?string
         {
@@ -789,8 +763,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set name01.
-         *
-         * @return Order
          */
         public function setName01(?string $name01 = null): Order
         {
@@ -801,8 +773,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get name01.
-         *
-         * @return string|null
          */
         public function getName01(): ?string
         {
@@ -811,8 +781,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set name02.
-         *
-         * @return Order
          */
         public function setName02(?string $name02 = null): Order
         {
@@ -823,8 +791,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get name02.
-         *
-         * @return string|null
          */
         public function getName02(): ?string
         {
@@ -833,8 +799,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set kana01.
-         *
-         * @return Order
          */
         public function setKana01(?string $kana01 = null): Order
         {
@@ -845,8 +809,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get kana01.
-         *
-         * @return string|null
          */
         public function getKana01(): ?string
         {
@@ -855,8 +817,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set kana02.
-         *
-         * @return Order
          */
         public function setKana02(?string $kana02 = null): Order
         {
@@ -867,8 +827,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get kana02.
-         *
-         * @return string|null
          */
         public function getKana02(): ?string
         {
@@ -877,8 +835,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set companyName.
-         *
-         * @return Order
          */
         public function setCompanyName(?string $companyName = null): Order
         {
@@ -889,8 +845,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get companyName.
-         *
-         * @return string|null
          */
         public function getCompanyName(): ?string
         {
@@ -899,8 +853,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set email.
-         *
-         * @return Order
          */
         public function setEmail(?string $email = null): Order
         {
@@ -911,8 +863,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get email.
-         *
-         * @return string|null
          */
         public function getEmail(): ?string
         {
@@ -921,8 +871,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set phone_number.
-         *
-         * @return Order
          */
         public function setPhoneNumber(?string $phone_number = null): Order
         {
@@ -933,8 +881,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get phone_number.
-         *
-         * @return string|null
          */
         public function getPhoneNumber(): ?string
         {
@@ -943,8 +889,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set postal_code.
-         *
-         * @return Order
          */
         public function setPostalCode(?string $postal_code = null): Order
         {
@@ -955,8 +899,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get postal_code.
-         *
-         * @return string|null
          */
         public function getPostalCode(): ?string
         {
@@ -965,8 +907,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set addr01.
-         *
-         * @return Order
          */
         public function setAddr01(?string $addr01 = null): Order
         {
@@ -977,8 +917,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get addr01.
-         *
-         * @return string|null
          */
         public function getAddr01(): ?string
         {
@@ -987,8 +925,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set addr02.
-         *
-         * @return Order
          */
         public function setAddr02(?string $addr02 = null): Order
         {
@@ -999,8 +935,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get addr02.
-         *
-         * @return string|null
          */
         public function getAddr02(): ?string
         {
@@ -1009,8 +943,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set birth.
-         *
-         * @return Order
          */
         public function setBirth(?\DateTime $birth = null): Order
         {
@@ -1021,8 +953,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get birth.
-         *
-         * @return \DateTime|null
          */
         public function getBirth(): ?\DateTime
         {
@@ -1031,8 +961,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set subtotal.
-         *
-         * @return Order
          */
         public function setSubtotal(string $subtotal): Order
         {
@@ -1043,8 +971,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get subtotal.
-         *
-         * @return string
          */
         public function getSubtotal(): string
         {
@@ -1055,8 +981,6 @@ if (!class_exists(Order::class)) {
          * Set discount.
          *
          * @param string $discount
-         *
-         * @return static
          */
         #[\Override]
         public function setDiscount($discount): static
@@ -1068,8 +992,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get discount.
-         *
-         * @return string
          *
          * @deprecated 4.0.3 から値引きは課税値引きと 非課税・不課税の値引きの2種に分かれる. 課税値引きについてはgetTaxableDiscountを利用してください.
          */
@@ -1095,8 +1017,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get deliveryFeeTotal.
-         *
-         * @return string
          */
         #[\Override]
         public function getDeliveryFeeTotal(): string
@@ -1121,8 +1041,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get charge.
-         *
-         * @return string
          */
         public function getCharge(): string
         {
@@ -1149,8 +1067,6 @@ if (!class_exists(Order::class)) {
         /**
          * Get tax.
          *
-         * @return string
-         *
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         public function getTax(): string
@@ -1162,8 +1078,6 @@ if (!class_exists(Order::class)) {
          * Set total.
          *
          * @param string $total
-         *
-         * @return static
          */
         #[\Override]
         public function setTotal($total): static
@@ -1175,8 +1089,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get total.
-         *
-         * @return string
          */
         #[\Override]
         public function getTotal(): string
@@ -1186,8 +1098,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set paymentTotal.
-         *
-         * @return Order
          */
         public function setPaymentTotal(string $paymentTotal): Order
         {
@@ -1198,8 +1108,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get paymentTotal.
-         *
-         * @return string
          */
         public function getPaymentTotal(): string
         {
@@ -1208,8 +1116,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set paymentMethod.
-         *
-         * @return Order
          */
         public function setPaymentMethod(?string $paymentMethod = null): Order
         {
@@ -1220,8 +1126,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get paymentMethod.
-         *
-         * @return string|null
          */
         public function getPaymentMethod(): ?string
         {
@@ -1230,8 +1134,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set note.
-         *
-         * @return Order
          */
         public function setNote(?string $note = null): Order
         {
@@ -1242,8 +1144,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get note.
-         *
-         * @return string|null
          */
         public function getNote(): ?string
         {
@@ -1252,8 +1152,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Order
          */
         public function setCreateDate(\DateTime $createDate): Order
         {
@@ -1264,8 +1162,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -1274,8 +1170,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Order
          */
         public function setUpdateDate(\DateTime $updateDate): Order
         {
@@ -1286,8 +1180,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -1296,8 +1188,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set orderDate.
-         *
-         * @return Order
          */
         public function setOrderDate(?\DateTime $orderDate = null): Order
         {
@@ -1308,8 +1198,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get orderDate.
-         *
-         * @return \DateTime|null
          */
         public function getOrderDate(): ?\DateTime
         {
@@ -1318,8 +1206,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set paymentDate.
-         *
-         * @return Order
          */
         public function setPaymentDate(?\DateTime $paymentDate = null): Order
         {
@@ -1330,8 +1216,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get paymentDate.
-         *
-         * @return \DateTime|null
          */
         public function getPaymentDate(): ?\DateTime
         {
@@ -1340,8 +1224,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get currencyCode.
-         *
-         * @return string
          */
         public function getCurrencyCode(): string
         {
@@ -1360,9 +1242,6 @@ if (!class_exists(Order::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getCompleteMessage(): ?string
         {
             return $this->complete_message;
@@ -1388,17 +1267,11 @@ if (!class_exists(Order::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getCompleteMailMessage(): ?string
         {
             return $this->complete_mail_message;
         }
 
-        /**
-         * @return self
-         */
         public function setCompleteMailMessage(?string $complete_mail_message = null): Order
         {
             $this->complete_mail_message = $complete_mail_message;
@@ -1406,9 +1279,6 @@ if (!class_exists(Order::class)) {
             return $this;
         }
 
-        /**
-         * @return self
-         */
         public function appendCompleteMailMessage(?string $complete_mail_message = null): Order
         {
             $this->complete_mail_message .= $complete_mail_message;
@@ -1430,8 +1300,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Add orderItem.
-         *
-         * @return Order
          */
         public function addOrderItem(OrderItem $OrderItem): Order
         {
@@ -1462,8 +1330,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Sorted to getOrderItems()
-         *
-         * @return ItemCollection
          */
         #[\Override]
         public function getItems(): ItemCollection
@@ -1473,8 +1339,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Add shipping.
-         *
-         * @return Order
          */
         public function addShipping(Shipping $Shipping): Order
         {
@@ -1511,8 +1375,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Add mailHistory.
-         *
-         * @return Order
          */
         public function addMailHistory(MailHistory $mailHistory): Order
         {
@@ -1543,8 +1405,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set customer.
-         *
-         * @return Order
          */
         public function setCustomer(?Customer $customer = null): Order
         {
@@ -1555,8 +1415,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get customer.
-         *
-         * @return Customer|null
          */
         public function getCustomer(): ?Customer
         {
@@ -1565,8 +1423,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set country.
-         *
-         * @return Order
          */
         public function setCountry(?Country $country = null): Order
         {
@@ -1577,8 +1433,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get country.
-         *
-         * @return Country|null
          */
         public function getCountry(): ?Country
         {
@@ -1587,8 +1441,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set pref.
-         *
-         * @return Order
          */
         public function setPref(?Pref $pref = null): Order
         {
@@ -1599,8 +1451,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Pref|null
          */
         public function getPref(): ?Pref
         {
@@ -1609,8 +1459,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set sex.
-         *
-         * @return Order
          */
         public function setSex(?Sex $sex = null): Order
         {
@@ -1621,8 +1469,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get sex.
-         *
-         * @return Sex|null
          */
         public function getSex(): ?Sex
         {
@@ -1631,8 +1477,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set job.
-         *
-         * @return Order
          */
         public function setJob(?Job $job = null): Order
         {
@@ -1643,8 +1487,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get job.
-         *
-         * @return Job|null
          */
         public function getJob(): ?Job
         {
@@ -1653,8 +1495,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set payment.
-         *
-         * @return Order
          */
         public function setPayment(?Payment $payment = null): Order
         {
@@ -1665,8 +1505,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get payment.
-         *
-         * @return Payment|null
          */
         public function getPayment(): ?Payment
         {
@@ -1675,8 +1513,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set deviceType.
-         *
-         * @return Order
          */
         public function setDeviceType(?DeviceType $deviceType = null): Order
         {
@@ -1687,8 +1523,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get deviceType.
-         *
-         * @return DeviceType|null
          */
         public function getDeviceType(): ?DeviceType
         {
@@ -1697,8 +1531,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set customerOrderStatus.
-         *
-         * @return Order
          */
         public function setCustomerOrderStatus(?CustomerOrderStatus $customerOrderStatus = null): Order
         {
@@ -1709,8 +1541,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get customerOrderStatus.
-         *
-         * @return CustomerOrderStatus|null
          */
         public function getCustomerOrderStatus(): ?CustomerOrderStatus
         {
@@ -1719,8 +1549,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set orderStatusColor.
-         *
-         * @return Order
          */
         public function setOrderStatusColor(?OrderStatusColor $orderStatusColor = null): Order
         {
@@ -1731,8 +1559,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get orderStatusColor.
-         *
-         * @return OrderStatusColor|null
          */
         public function getOrderStatusColor(): ?OrderStatusColor
         {
@@ -1741,8 +1567,6 @@ if (!class_exists(Order::class)) {
 
         /**
          * Set orderStatus.
-         *
-         * @return self
          */
         public function setOrderStatus(?OrderStatus $orderStatus = null): Order
         {
@@ -1753,17 +1577,12 @@ if (!class_exists(Order::class)) {
 
         /**
          * Get orderStatus.
-         *
-         * @return OrderStatus|null
          */
         public function getOrderStatus(): ?OrderStatus
         {
             return $this->OrderStatus;
         }
 
-        /**
-         * @return void
-         */
         #[\Override]
         public function addItem(ItemInterface $item): void
         {

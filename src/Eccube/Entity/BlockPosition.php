@@ -73,8 +73,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set section.
-         *
-         * @return BlockPosition
          */
         public function setSection(int $section): BlockPosition
         {
@@ -85,8 +83,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Get section.
-         *
-         * @return int
          */
         public function getSection(): int
         {
@@ -95,8 +91,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set blockId.
-         *
-         * @return BlockPosition
          */
         public function setBlockId(int $blockId): BlockPosition
         {
@@ -107,8 +101,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Get blockId.
-         *
-         * @return int
          */
         public function getBlockId(): int
         {
@@ -117,8 +109,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set layoutId.
-         *
-         * @return BlockPosition
          */
         public function setLayoutId(int $layoutId): BlockPosition
         {
@@ -129,8 +119,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Get layoutId.
-         *
-         * @return int
          */
         public function getLayoutId(): int
         {
@@ -139,8 +127,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set blockRow.
-         *
-         * @return BlockPosition
          */
         public function setBlockRow(?int $blockRow = null): BlockPosition
         {
@@ -151,8 +137,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Get blockRow.
-         *
-         * @return int|null
          */
         public function getBlockRow(): ?int
         {
@@ -161,8 +145,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set block.
-         *
-         * @return BlockPosition
          */
         public function setBlock(?Block $block = null): BlockPosition
         {
@@ -173,8 +155,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Get block.
-         *
-         * @return Block|null
          */
         public function getBlock(): ?Block
         {
@@ -183,8 +163,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Set layout.
-         *
-         * @return BlockPosition
          */
         public function setLayout(?Layout $Layout = null): BlockPosition
         {
@@ -195,8 +173,6 @@ if (!class_exists(BlockPosition::class)) {
 
         /**
          * Get Layout.
-         *
-         * @return Layout|null
          */
         public function getLayout(): ?Layout
         {

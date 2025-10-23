@@ -26,8 +26,6 @@ interface ItemHolderInterface
 
     /**
      * 合計金額を返します。
-     *
-     * @return string
      */
     public function getTotal(): string;
 
@@ -40,8 +38,6 @@ interface ItemHolderInterface
 
     /**
      * 個数の合計を返します。
-     *
-     * @return string
      */
     public function getQuantity(): string;
 
@@ -54,8 +50,6 @@ interface ItemHolderInterface
 
     /**
      * 送料合計を返します。
-     *
-     * @return string
      */
     public function getDeliveryFeeTotal(): string;
 
@@ -91,8 +85,6 @@ interface ItemHolderInterface
 
     /**
      * 加算ポイントを返します.
-     *
-     * @return string
      */
     public function getAddPoint(): string;
 
@@ -105,20 +97,13 @@ interface ItemHolderInterface
 
     /**
      * 利用ポイントを返します.
-     *
-     * @return string|null
      */
     public function getUsePoint(): ?string;
 
-    /**
-     * @return void
-     */
     public function addItem(ItemInterface $item): void;
 
     /**
      * Get customer.
-     *
-     * @return Customer|null
      */
     public function getCustomer(): ?Customer;
 
@@ -131,8 +116,6 @@ interface ItemHolderInterface
 
     /**
      * 注文ステータスを返す - 注文のみ
-     *
-     * @return OrderStatus|null
      */
     public function getOrderStatus(): ?OrderStatus;
 

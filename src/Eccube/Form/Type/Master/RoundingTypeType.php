@@ -22,8 +22,6 @@ class RoundingTypeType extends AbstractType
 {
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -34,18 +32,12 @@ class RoundingTypeType extends AbstractType
         ]);
     }
 
-    /**
-     * @return string
-     */
     #[\Override]
     public function getParent(): string
     {
         return MasterType::class;
     }
 
-    /**
-     * @return string
-     */
     #[\Override]
     public function getBlockPrefix(): string
     {

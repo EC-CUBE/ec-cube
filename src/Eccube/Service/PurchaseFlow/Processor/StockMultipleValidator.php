@@ -41,8 +41,6 @@ class StockMultipleValidator extends ItemHolderValidator
      * @param ItemHolderInterface $itemHolder 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException
      */
     #[\Override]

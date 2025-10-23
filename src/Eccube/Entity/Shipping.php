@@ -43,9 +43,6 @@ if (!class_exists(Shipping::class)) {
          */
         public const SHIPPING_MAIL_SENT = 2;
 
-        /**
-         * @return string
-         */
         public function getShippingMultipleDefaultName(): string
         {
             return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
@@ -240,8 +237,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * CustomerAddress から個人情報を設定.
-         *
-         * @return Shipping
          */
         public function setFromCustomerAddress(CustomerAddress $CustomerAddress): Shipping
         {
@@ -272,8 +267,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set name01.
-         *
-         * @return Shipping
          */
         public function setName01(?string $name01): Shipping
         {
@@ -284,8 +277,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get name01.
-         *
-         * @return string
          */
         public function getName01(): string
         {
@@ -294,8 +285,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set name02.
-         *
-         * @return Shipping
          */
         public function setName02(?string $name02): Shipping
         {
@@ -306,8 +295,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get name02.
-         *
-         * @return string
          */
         public function getName02(): string
         {
@@ -316,8 +303,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set kana01.
-         *
-         * @return Shipping
          */
         public function setKana01(string $kana01): Shipping
         {
@@ -328,8 +313,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get kana01.
-         *
-         * @return string
          */
         public function getKana01(): string
         {
@@ -338,8 +321,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set kana02.
-         *
-         * @return Shipping
          */
         public function setKana02(string $kana02): Shipping
         {
@@ -350,8 +331,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get kana02.
-         *
-         * @return string
          */
         public function getKana02(): string
         {
@@ -360,8 +339,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set companyName.
-         *
-         * @return Shipping
          */
         public function setCompanyName(?string $companyName = null): Shipping
         {
@@ -372,8 +349,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get companyName.
-         *
-         * @return string|null
          */
         public function getCompanyName(): ?string
         {
@@ -382,8 +357,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set phone_number.
-         *
-         * @return Shipping
          */
         public function setPhoneNumber(?string $phone_number = null): Shipping
         {
@@ -394,8 +367,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get phone_number.
-         *
-         * @return string|null
          */
         public function getPhoneNumber(): ?string
         {
@@ -404,8 +375,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set postal_code.
-         *
-         * @return Shipping
          */
         public function setPostalCode(?string $postal_code = null): Shipping
         {
@@ -416,8 +385,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get postal_code.
-         *
-         * @return string|null
          */
         public function getPostalCode(): ?string
         {
@@ -426,8 +393,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set addr01.
-         *
-         * @return Shipping
          */
         public function setAddr01(?string $addr01 = null): Shipping
         {
@@ -438,8 +403,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get addr01.
-         *
-         * @return string|null
          */
         public function getAddr01(): ?string
         {
@@ -448,8 +411,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set addr02.
-         *
-         * @return Shipping
          */
         public function setAddr02(?string $addr02 = null): Shipping
         {
@@ -460,8 +421,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get addr02.
-         *
-         * @return string|null
          */
         public function getAddr02(): ?string
         {
@@ -470,8 +429,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set shippingDeliveryName.
-         *
-         * @return Shipping
          */
         public function setShippingDeliveryName(?string $shippingDeliveryName = null): Shipping
         {
@@ -482,8 +439,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get shippingDeliveryName.
-         *
-         * @return string|null
          */
         public function getShippingDeliveryName(): ?string
         {
@@ -492,8 +447,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set shippingDeliveryTime.
-         *
-         * @return Shipping
          */
         public function setShippingDeliveryTime(?string $shippingDeliveryTime = null): Shipping
         {
@@ -504,8 +457,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get shippingDeliveryTime.
-         *
-         * @return string|null
          */
         public function getShippingDeliveryTime(): ?string
         {
@@ -514,8 +465,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set shippingDeliveryDate.
-         *
-         * @return Shipping
          */
         public function setShippingDeliveryDate(?\DateTime $shippingDeliveryDate = null): Shipping
         {
@@ -526,8 +475,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get shippingDeliveryDate.
-         *
-         * @return \DateTime|null
          */
         public function getShippingDeliveryDate(): ?\DateTime
         {
@@ -536,8 +483,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set shippingDate.
-         *
-         * @return Shipping
          */
         public function setShippingDate(?\DateTime $shippingDate = null): Shipping
         {
@@ -548,8 +493,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get shippingDate.
-         *
-         * @return \DateTime|null
          */
         public function getShippingDate(): ?\DateTime
         {
@@ -558,8 +501,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Shipping
          */
         public function setSortNo(?int $sortNo = null): Shipping
         {
@@ -570,8 +511,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int|null
          */
         public function getSortNo(): ?int
         {
@@ -580,8 +519,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Shipping
          */
         public function setCreateDate(\DateTime $createDate): Shipping
         {
@@ -592,8 +529,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -602,8 +537,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Shipping
          */
         public function setUpdateDate(\DateTime $updateDate): Shipping
         {
@@ -614,8 +547,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -624,8 +555,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set mailSendDate.
-         *
-         * @return Shipping
          */
         public function setMailSendDate(?\DateTime $mailSendDate): Shipping
         {
@@ -636,8 +565,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get mailSendDate.
-         *
-         * @return \DateTime|null
          */
         public function getMailSendDate(): ?\DateTime
         {
@@ -646,8 +573,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Add orderItem.
-         *
-         * @return Shipping
          */
         public function addOrderItem(OrderItem $OrderItem): Shipping
         {
@@ -668,8 +593,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get orderItems.
-         *
-         * @return ItemCollection
          */
         public function getOrderItems(): ItemCollection
         {
@@ -690,8 +613,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set country.
-         *
-         * @return Shipping
          */
         public function setCountry(?Country $country = null): Shipping
         {
@@ -702,8 +623,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get country.
-         *
-         * @return Country|null
          */
         public function getCountry(): ?Country
         {
@@ -712,8 +631,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set pref.
-         *
-         * @return Shipping
          */
         public function setPref(?Pref $pref = null): Shipping
         {
@@ -724,8 +641,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Pref|null
          */
         public function getPref(): ?Pref
         {
@@ -734,8 +649,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set delivery.
-         *
-         * @return Shipping
          */
         public function setDelivery(?Delivery $delivery = null): Shipping
         {
@@ -746,8 +659,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get delivery.
-         *
-         * @return Delivery|null
          */
         public function getDelivery(): ?Delivery
         {
@@ -756,8 +667,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Product class of shipment item (temp)
-         *
-         * @return ProductClass
          */
         public function getProductClassOfTemp(): ProductClass
         {
@@ -790,8 +699,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get order.
-         *
-         * @return Order
          */
         public function getOrder(): Order
         {
@@ -800,8 +707,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set trackingNumber
-         *
-         * @return Shipping
          */
         public function setTrackingNumber(string $trackingNumber): Shipping
         {
@@ -812,8 +717,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get trackingNumber
-         *
-         * @return string|null
          */
         public function getTrackingNumber(): ?string
         {
@@ -822,8 +725,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set note.
-         *
-         * @return Shipping
          */
         public function setNote(?string $note = null): Shipping
         {
@@ -834,8 +735,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get note.
-         *
-         * @return string|null
          */
         public function getNote(): ?string
         {
@@ -844,8 +743,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * 出荷済みの場合はtrue, 未出荷の場合はfalseを返す
-         *
-         * @return bool
          */
         public function isShipped(): bool
         {
@@ -854,8 +751,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set timeId
-         *
-         * @return Shipping
          */
         public function setTimeId(?int $timeId): Shipping
         {
@@ -866,8 +761,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get timeId
-         *
-         * @return int|null
          */
         public function getTimeId(): ?int
         {
@@ -876,8 +769,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Set creator.
-         *
-         * @return Shipping
          */
         public function setCreator(?Member $creator = null): Shipping
         {
@@ -888,8 +779,6 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {

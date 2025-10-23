@@ -27,8 +27,6 @@ class ProductStatusValidator extends ItemValidator
     /**
      * @param ItemInterface $item 明細アイテム
      *
-     * @return void
-     *
      * @throws InvalidItemException 商品が公開されていない場合
      */
     #[\Override]
@@ -50,8 +48,6 @@ class ProductStatusValidator extends ItemValidator
     /**
      * @param ItemInterface $item 明細アイテム
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
     protected function handle(ItemInterface $item, PurchaseContext $context): void

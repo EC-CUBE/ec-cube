@@ -51,8 +51,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Disable transaction listener.
-     *
-     * @return void
      */
     public function disable(): void
     {
@@ -61,8 +59,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel request listener callback.
-     *
-     * @return void
      */
     public function onKernelRequest(RequestEvent $event): void
     {
@@ -89,8 +85,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel exception listener callback.
-     *
-     * @return void
      */
     public function onKernelException(ExceptionEvent $event): void
     {
@@ -118,8 +112,6 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      *  Kernel terminate listener callback.
-     *
-     * @return void
      */
     public function onKernelTerminate(TerminateEvent $event): void
     {

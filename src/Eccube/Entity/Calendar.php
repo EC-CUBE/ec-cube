@@ -34,8 +34,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * is default
-         *
-         * @return bool
          */
         public function isDefaultCalendar(): bool
         {
@@ -77,8 +75,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -87,8 +83,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Set title.
-         *
-         * @return Calendar
          */
         public function setTitle(string $title): Calendar
         {
@@ -99,8 +93,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get title.
-         *
-         * @return string
          */
         public function getTitle(): string
         {
@@ -109,8 +101,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Set holiday.
-         *
-         * @return Calendar
          */
         public function setHoliday(\DateTime $holiday): Calendar
         {
@@ -121,8 +111,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get holiday.
-         *
-         * @return \DateTime|null
          */
         public function getHoliday(): ?\DateTime
         {
@@ -131,8 +119,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Calendar
          */
         public function setCreateDate(\DateTime $createDate): Calendar
         {
@@ -143,8 +129,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -153,8 +137,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Calendar
          */
         public function setUpdateDate(\DateTime $updateDate): Calendar
         {
@@ -165,8 +147,6 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {

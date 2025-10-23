@@ -59,8 +59,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Set deliveryId.
-         *
-         * @return PaymentOption
          */
         public function setDeliveryId(int $deliveryId): PaymentOption
         {
@@ -71,8 +69,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Get deliveryId.
-         *
-         * @return int
          */
         public function getDeliveryId(): int
         {
@@ -81,8 +77,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Set paymentId.
-         *
-         * @return PaymentOption
          */
         public function setPaymentId(int $paymentId): PaymentOption
         {
@@ -93,8 +87,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Get paymentId.
-         *
-         * @return int
          */
         public function getPaymentId(): int
         {
@@ -103,8 +95,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Set delivery.
-         *
-         * @return PaymentOption
          */
         public function setDelivery(?Delivery $delivery = null): PaymentOption
         {
@@ -115,8 +105,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Get delivery.
-         *
-         * @return Delivery|null
          */
         public function getDelivery(): ?Delivery
         {
@@ -125,8 +113,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Set payment.
-         *
-         * @return PaymentOption
          */
         public function setPayment(?Payment $payment = null): PaymentOption
         {
@@ -137,8 +123,6 @@ if (!class_exists(PaymentOption::class)) {
 
         /**
          * Get payment.
-         *
-         * @return Payment|null
          */
         public function getPayment(): ?Payment
         {

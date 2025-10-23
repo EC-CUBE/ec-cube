@@ -30,8 +30,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
      *
      * @param array<mixed> $configs
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
     #[\Override]
@@ -49,8 +47,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     /**
      * @param array<mixed> $config
-     *
-     * @return ConfigurationInterface|null
      */
     #[\Override]
     public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
@@ -60,8 +56,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     /**
      * Allow an extension to prepend the extension configurations.
-     *
-     * @return void
      */
     #[\Override]
     public function prepend(ContainerBuilder $container): void
@@ -73,9 +67,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $this->configurePlugins($container);
     }
 
-    /**
-     * @return void
-     */
     protected function configureFramework(ContainerBuilder $container): void
     {
         $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
@@ -139,8 +130,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @return void
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function configurePlugins(ContainerBuilder $container): void
@@ -204,8 +193,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     /**
      * @param string[] $enabled
-     *
-     * @return void
      */
     protected function configureTwigPaths(ContainerBuilder $container, array $enabled, string $pluginDir): void
     {
@@ -234,8 +221,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
     /**
      * @param string[] $enabled
-     *
-     * @return void
      */
     protected function configureTranslations(ContainerBuilder $container, array $enabled, string $pluginDir): void
     {
@@ -258,8 +243,6 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @return bool
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function isConnected(Connection $conn): bool

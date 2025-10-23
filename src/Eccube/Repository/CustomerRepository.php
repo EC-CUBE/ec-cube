@@ -79,9 +79,6 @@ class CustomerRepository extends AbstractRepository
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return Customer
-     */
     public function newCustomer(): Customer
     {
         $CustomerStatus = $this->getEntityManager()
@@ -128,8 +125,6 @@ class CustomerRepository extends AbstractRepository
      *         sortkey?:string,
      *         sorttype?:string
      *     } $searchData
-     *
-     * @return QueryBuilder
      *
      * @throws Exception
      */
@@ -333,8 +328,6 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * ユニークなシークレットキーを返す.
-     *
-     * @return string
      */
     public function getUniqueSecretKey(): string
     {
@@ -348,8 +341,6 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * ユニークなパスワードリセットキーを返す
-     *
-     * @return string
      */
     public function getUniqueResetKey(): string
     {
@@ -413,8 +404,6 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * リセット用パスワードを生成する.
-     *
-     * @return string
      */
     public function getResetPassword(): string
     {

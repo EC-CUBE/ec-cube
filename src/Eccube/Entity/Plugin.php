@@ -96,8 +96,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set name.
-         *
-         * @return Plugin
          */
         public function setName(string $name): Plugin
         {
@@ -108,8 +106,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -118,8 +114,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set code.
-         *
-         * @return Plugin
          */
         public function setCode(string $code): Plugin
         {
@@ -130,8 +124,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get code.
-         *
-         * @return string
          */
         public function getCode(): string
         {
@@ -140,8 +132,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set enabled.
-         *
-         * @return Plugin
          */
         public function setEnabled(bool $enabled): Plugin
         {
@@ -152,8 +142,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get enabled.
-         *
-         * @return bool
          */
         public function isEnabled(): bool
         {
@@ -162,8 +150,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set version.
-         *
-         * @return Plugin
          */
         public function setVersion(string $version): Plugin
         {
@@ -174,8 +160,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get version.
-         *
-         * @return string
          */
         public function getVersion(): string
         {
@@ -184,8 +168,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set source.
-         *
-         * @return Plugin
          */
         public function setSource(string|int $source): Plugin
         {
@@ -196,8 +178,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get source.
-         *
-         * @return string
          */
         public function getSource(): string
         {
@@ -206,8 +186,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get initialized.
-         *
-         * @return bool
          */
         public function isInitialized(): bool
         {
@@ -216,8 +194,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set initialized.
-         *
-         * @return Plugin
          */
         public function setInitialized(bool $initialized): Plugin
         {
@@ -228,8 +204,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Plugin
          */
         public function setCreateDate(\DateTime $createDate): Plugin
         {
@@ -240,8 +214,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -250,8 +222,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Plugin
          */
         public function setUpdateDate(\DateTime $updateDate): Plugin
         {
@@ -262,8 +232,6 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {

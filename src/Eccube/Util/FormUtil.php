@@ -19,8 +19,6 @@ class FormUtil
 {
     /**
      * formオブジェクトからviewDataを取得する.
-     *
-     * @return mixed
      */
     public static function getViewData(FormInterface $form): mixed
     {
@@ -45,8 +43,6 @@ class FormUtil
 
     /**
      * formオブジェクトにviewdataをsubmitし, マッピングした結果を返す.
-     *
-     * @return mixed
      */
     public static function submitAndGetData(FormInterface $form, mixed $viewData): mixed
     {

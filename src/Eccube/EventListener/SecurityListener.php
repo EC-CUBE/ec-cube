@@ -59,9 +59,6 @@ class SecurityListener implements EventSubscriberInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @return void
-     */
     public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event
@@ -85,9 +82,6 @@ class SecurityListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return void
-     */
     public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();

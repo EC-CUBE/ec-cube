@@ -197,9 +197,6 @@ class MailController extends AbstractController
         ];
     }
 
-    /**
-     * @return string
-     */
     private function createBody(Order $Order, string $twig = 'Mail/order.twig'): string
     {
         $body = '';

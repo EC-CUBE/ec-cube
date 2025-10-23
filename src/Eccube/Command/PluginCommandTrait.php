@@ -32,27 +32,18 @@ trait PluginCommandTrait
      */
     protected $pluginRepository;
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setPluginService(PluginService $pluginService): void
     {
         $this->pluginService = $pluginService;
     }
 
-    /**
-     * @return void
-     */
     #[Required]
     public function setPluginRepository(PluginRepository $pluginRepository): void
     {
         $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return void
-     */
     protected function clearCache(SymfonyStyle $io): void
     {
         $command = ['bin/console', 'cache:clear', '--no-warmup'];

@@ -39,8 +39,6 @@ class PointRateProcessor extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder 注文 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Exception
      */
     #[\Override]

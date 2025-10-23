@@ -40,8 +40,6 @@ class OrderStatusType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildView(FormView $view, FormInterface $form, array $options): void
@@ -63,8 +61,6 @@ class OrderStatusType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -76,8 +72,6 @@ class OrderStatusType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getBlockPrefix(): string
@@ -87,8 +81,6 @@ class OrderStatusType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getParent(): string

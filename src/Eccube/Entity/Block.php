@@ -103,8 +103,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set id
-         *
-         * @return Block
          */
         public function setId(int $id): Block
         {
@@ -125,8 +123,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set name
-         *
-         * @return Block
          */
         public function setName(string $name): Block
         {
@@ -137,8 +133,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get name
-         *
-         * @return string
          */
         public function getName(): string
         {
@@ -147,8 +141,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set fileName
-         *
-         * @return Block
          */
         public function setFileName(string $fileName): Block
         {
@@ -159,8 +151,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get fileName
-         *
-         * @return string
          */
         public function getFileName(): string
         {
@@ -169,8 +159,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set useController
-         *
-         * @return Block
          */
         public function setUseController(bool $useController): Block
         {
@@ -181,8 +169,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get useController
-         *
-         * @return bool
          */
         public function isUseController(): bool
         {
@@ -191,8 +177,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set deletable
-         *
-         * @return Block
          */
         public function setDeletable(bool $deletable): Block
         {
@@ -203,8 +187,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get deletable
-         *
-         * @return bool
          */
         public function isDeletable(): bool
         {
@@ -213,8 +195,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set createDate
-         *
-         * @return Block
          */
         public function setCreateDate(\DateTime $createDate): Block
         {
@@ -235,8 +215,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Set updateDate
-         *
-         * @return Block
          */
         public function setUpdateDate(\DateTime $updateDate): Block
         {
@@ -257,8 +235,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Add blockPosition
-         *
-         * @return Block
          */
         public function addBlockPosition(BlockPosition $blockPosition): Block
         {
@@ -269,8 +245,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Remove blockPosition
-         *
-         * @return void
          */
         public function removeBlockPosition(BlockPosition $blockPosition): void
         {
@@ -291,8 +265,6 @@ if (!class_exists(Block::class)) {
          * Set deviceType
          *
          * @param DeviceType $deviceType
-         *
-         * @return Block
          */
         public function setDeviceType(?DeviceType $deviceType = null): Block
         {
@@ -303,8 +275,6 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get deviceType
-         *
-         * @return DeviceType|null
          */
         public function getDeviceType(): ?DeviceType
         {

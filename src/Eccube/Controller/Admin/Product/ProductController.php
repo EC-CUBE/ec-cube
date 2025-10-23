@@ -316,7 +316,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
      *
-     *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
     #[Route('/%eccube_admin_route%/product/product/image/process', name: 'admin_product_image_process', methods: ['POST'])]
@@ -370,7 +369,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route('/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
@@ -406,7 +404,6 @@ class ProductController extends AbstractController
      * アップロード画像をすぐ削除する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
-     *
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
@@ -770,7 +767,6 @@ class ProductController extends AbstractController
     /**
      * @param int|string|null $id
      *
-     *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -864,7 +860,6 @@ class ProductController extends AbstractController
 
     /**
      * @param int|string|null $id
-     *
      *
      * @throws \Exception
      */

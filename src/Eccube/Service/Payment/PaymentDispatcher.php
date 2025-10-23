@@ -47,8 +47,6 @@ class PaymentDispatcher
 
     /**
      * Forward を使用するかどうか.
-     *
-     * @return bool
      */
     public function isForward(): bool
     {
@@ -59,8 +57,6 @@ class PaymentDispatcher
      * Forward を使用するかどうかを設定します.
      *
      * Forward を使用する場合は true, Redirect を使用する場合は false を設定します.
-     *
-     * @return self
      */
     public function setForward(bool $forward): PaymentDispatcher
     {
@@ -71,8 +67,6 @@ class PaymentDispatcher
 
     /**
      * 処理を移譲するルート名を返します.
-     *
-     * @return string
      */
     public function getRoute(): string
     {
@@ -81,8 +75,6 @@ class PaymentDispatcher
 
     /**
      * 処理を移譲するルート名を設定します.
-     *
-     * @return self
      */
     public function setRoute(string $route): PaymentDispatcher
     {
@@ -105,8 +97,6 @@ class PaymentDispatcher
      * クエリパラメータの配列を設定します.
      *
      * @param array<string, string> $queryParameters
-     *
-     * @return self
      */
     public function setQueryParameters(array $queryParameters): PaymentDispatcher
     {
@@ -129,8 +119,6 @@ class PaymentDispatcher
      * パスパラメータの配列を設定します.
      *
      * @param array<string, string> $pathParameters
-     *
-     * @return PaymentDispatcher
      */
     public function setPathParameters(array $pathParameters): PaymentDispatcher
     {
@@ -143,8 +131,6 @@ class PaymentDispatcher
      * Response を設定します.
      *
      * 外部のサイトへリダイレクトする等, 特殊な用途に使用してください.
-     *
-     * @return self
      */
     public function setResponse(Response $response): PaymentDispatcher
     {
@@ -155,8 +141,6 @@ class PaymentDispatcher
 
     /**
      * Response を返します.
-     *
-     * @return Response|null
      */
     public function getResponse(): ?Response
     {

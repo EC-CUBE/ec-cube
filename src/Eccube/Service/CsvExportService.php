@@ -143,73 +143,46 @@ class CsvExportService
         $this->paginator = $paginator;
     }
 
-    /**
-     * @return void
-     */
     public function setConfig(EccubeConfig $config): void
     {
         $this->eccubeConfig = $config;
     }
 
-    /**
-     * @return void
-     */
     public function setCsvRepository(CsvRepository $csvRepository): void
     {
         $this->csvRepository = $csvRepository;
     }
 
-    /**
-     * @return void
-     */
     public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository): void
     {
         $this->csvTypeRepository = $csvTypeRepository;
     }
 
-    /**
-     * @return void
-     */
     public function setOrderRepository(OrderRepository $orderRepository): void
     {
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @return void
-     */
     public function setCustomerRepository(CustomerRepository $customerRepository): void
     {
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * @return void
-     */
     public function setProductRepository(ProductRepository $productRepository): void
     {
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * @return void
-     */
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
     }
 
-    /**
-     * @return void
-     */
     public function setExportQueryBuilder(QueryBuilder $qb): void
     {
         $this->qb = $qb;
@@ -217,8 +190,6 @@ class CsvExportService
 
     /**
      * Csv種別からServiceの初期化を行う.
-     *
-     * @return void
      */
     public function initCsvType(CsvType|int $CsvType): void
     {
@@ -249,8 +220,6 @@ class CsvExportService
     /**
      * ヘッダ行を出力する.
      * このメソッドを使う場合は, 事前にinitCsvType($CsvType)で初期化しておく必要がある.
-     *
-     * @return void
      */
     public function exportHeader(): void
     {
@@ -271,8 +240,6 @@ class CsvExportService
     /**
      * クエリビルダにもとづいてデータ行を出力する.
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
-     *
-     * @return void
      */
     public function exportData(\Closure $closure): void
     {
@@ -304,8 +271,6 @@ class CsvExportService
 
     /**
      * CSV出力項目と比較し, 合致するデータを返す.
-     *
-     * @return string|null
      */
     public function getData(Csv $Csv, AbstractEntity $entity): ?string
     {
@@ -349,8 +314,6 @@ class CsvExportService
 
     /**
      * 文字エンコーディングの変換を行うコールバック関数を返す.
-     *
-     * @return \Closure
      */
     public function getConvertEncodingCallback(): \Closure
     {
@@ -363,9 +326,6 @@ class CsvExportService
         };
     }
 
-    /**
-     * @return void
-     */
     public function fopen(): void
     {
         if (is_null($this->fp) || $this->closed) {
@@ -375,8 +335,6 @@ class CsvExportService
 
     /**
      * @param array<int, string|int> $row
-     *
-     * @return void
      */
     public function fputcsv(array $row): void
     {
@@ -387,9 +345,6 @@ class CsvExportService
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
     }
 
-    /**
-     * @return void
-     */
     public function fclose(): void
     {
         if (!$this->closed) {
@@ -400,8 +355,6 @@ class CsvExportService
 
     /**
      * 受注検索用のクエリビルダを返す.
-     *
-     * @return QueryBuilder
      */
     public function getOrderQueryBuilder(Request $request): QueryBuilder
     {
@@ -422,8 +375,6 @@ class CsvExportService
 
     /**
      * 会員検索用のクエリビルダを返す.
-     *
-     * @return QueryBuilder
      */
     public function getCustomerQueryBuilder(Request $request): QueryBuilder
     {
@@ -444,8 +395,6 @@ class CsvExportService
 
     /**
      * 商品検索用のクエリビルダを返す.
-     *
-     * @return QueryBuilder
      */
     public function getProductQueryBuilder(Request $request): QueryBuilder
     {

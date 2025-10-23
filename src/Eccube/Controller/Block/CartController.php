@@ -33,9 +33,6 @@ class CartController extends AbstractController
         $this->cartService = $cartService;
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/block/cart', name: 'block_cart', methods: ['GET'])]
     #[Route('/block/cart_sp', name: 'block_cart_sp', methods: ['GET'])]
     public function index(Request $request): Response

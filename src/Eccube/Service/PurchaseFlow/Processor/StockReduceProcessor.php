@@ -74,8 +74,6 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
      * @param ItemHolderInterface $itemHolder 受注 or カート
      * @param callable $callback 在庫数を計算するコールバック関数
      *
-     * @return void
-     *
      * @throws ShoppingException 在庫切れの場合
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\PessimisticLockException

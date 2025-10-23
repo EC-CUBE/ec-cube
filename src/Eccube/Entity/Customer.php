@@ -273,9 +273,6 @@ if (!class_exists(Customer::class)) {
             $this->setBuyTotal('0');
         }
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -291,9 +288,6 @@ if (!class_exists(Customer::class)) {
             return ['ROLE_USER'];
         }
 
-        /**
-         * @return string
-         */
         public function getUsername(): string
         {
             return $this->email;
@@ -301,17 +295,12 @@ if (!class_exists(Customer::class)) {
 
         /**
          * {@inheritdoc}
-         *
-         * @return void
          */
         #[\Override]
         public function eraseCredentials(): void
         {
         }
 
-        /**
-         * @return void
-         */
         // TODO: できればFormTypeで行いたい
         public static function loadValidatorMetadata(ClassMetadata $metadata): void
         {
@@ -324,8 +313,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -334,8 +321,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set name01.
-         *
-         * @return Customer
          */
         public function setName01(?string $name01): Customer
         {
@@ -346,8 +331,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get name01.
-         *
-         * @return string|null
          */
         public function getName01(): ?string
         {
@@ -356,8 +339,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set name02.
-         *
-         * @return Customer
          */
         public function setName02(?string $name02): Customer
         {
@@ -368,8 +349,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get name02.
-         *
-         * @return string|null
          */
         public function getName02(): ?string
         {
@@ -378,8 +357,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set kana01.
-         *
-         * @return Customer
          */
         public function setKana01(?string $kana01 = null): Customer
         {
@@ -390,8 +367,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get kana01.
-         *
-         * @return string|null
          */
         public function getKana01(): ?string
         {
@@ -400,8 +375,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set kana02.
-         *
-         * @return Customer
          */
         public function setKana02(?string $kana02 = null): Customer
         {
@@ -412,8 +385,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get kana02.
-         *
-         * @return string|null
          */
         public function getKana02(): ?string
         {
@@ -422,8 +393,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set companyName.
-         *
-         * @return Customer
          */
         public function setCompanyName(?string $companyName = null): Customer
         {
@@ -434,8 +403,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get companyName.
-         *
-         * @return string|null
          */
         public function getCompanyName(): ?string
         {
@@ -444,8 +411,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set postal_code.
-         *
-         * @return Customer
          */
         public function setPostalCode(?string $postal_code = null): Customer
         {
@@ -456,8 +421,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get postal_code.
-         *
-         * @return string|null
          */
         public function getPostalCode(): ?string
         {
@@ -466,8 +429,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set addr01.
-         *
-         * @return Customer
          */
         public function setAddr01(?string $addr01 = null): Customer
         {
@@ -478,8 +439,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get addr01.
-         *
-         * @return string|null
          */
         public function getAddr01(): ?string
         {
@@ -488,8 +447,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set addr02.
-         *
-         * @return Customer
          */
         public function setAddr02(?string $addr02 = null): Customer
         {
@@ -500,8 +457,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get addr02.
-         *
-         * @return string|null
          */
         public function getAddr02(): ?string
         {
@@ -510,8 +465,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set email.
-         *
-         * @return Customer
          */
         public function setEmail(?string $email): Customer
         {
@@ -522,8 +475,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get email.
-         *
-         * @return string|null
          */
         public function getEmail(): ?string
         {
@@ -532,8 +483,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set phone_number.
-         *
-         * @return Customer
          */
         public function setPhoneNumber(?string $phone_number = null): Customer
         {
@@ -544,8 +493,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get phone_number.
-         *
-         * @return string|null
          */
         public function getPhoneNumber(): ?string
         {
@@ -554,8 +501,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set birth.
-         *
-         * @return Customer
          */
         public function setBirth(?\DateTime $birth = null): Customer
         {
@@ -566,8 +511,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get birth.
-         *
-         * @return \DateTime|null
          */
         public function getBirth(): ?\DateTime
         {
@@ -584,9 +527,6 @@ if (!class_exists(Customer::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getPlainPassword(): ?string
         {
             return $this->plain_password;
@@ -594,8 +534,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set password.
-         *
-         * @return Customer
          */
         public function setPassword(?string $password = null): Customer
         {
@@ -606,8 +544,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get password.
-         *
-         * @return string|null
          */
         #[\Override]
         public function getPassword(): ?string
@@ -617,8 +553,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set salt.
-         *
-         * @return Customer
          */
         public function setSalt(?string $salt = null): Customer
         {
@@ -629,8 +563,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get salt.
-         *
-         * @return string|null
          */
         #[\Override]
         public function getSalt(): ?string
@@ -640,8 +572,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set secretKey.
-         *
-         * @return Customer
          */
         public function setSecretKey(string $secretKey): Customer
         {
@@ -652,8 +582,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get secretKey.
-         *
-         * @return string
          */
         public function getSecretKey(): string
         {
@@ -662,8 +590,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set firstBuyDate.
-         *
-         * @return Customer
          */
         public function setFirstBuyDate(?\DateTime $firstBuyDate = null): Customer
         {
@@ -674,8 +600,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get firstBuyDate.
-         *
-         * @return \DateTime|null
          */
         public function getFirstBuyDate(): ?\DateTime
         {
@@ -684,8 +608,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set lastBuyDate.
-         *
-         * @return Customer
          */
         public function setLastBuyDate(?\DateTime $lastBuyDate = null): Customer
         {
@@ -696,8 +618,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get lastBuyDate.
-         *
-         * @return \DateTime|null
          */
         public function getLastBuyDate(): ?\DateTime
         {
@@ -706,8 +626,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set buyTimes.
-         *
-         * @return Customer
          */
         public function setBuyTimes(?string $buyTimes = null): Customer
         {
@@ -718,8 +636,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get buyTimes.
-         *
-         * @return string|null
          */
         public function getBuyTimes(): ?string
         {
@@ -728,8 +644,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set buyTotal.
-         *
-         * @return Customer
          */
         public function setBuyTotal(?string $buyTotal = null): Customer
         {
@@ -740,8 +654,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get buyTotal.
-         *
-         * @return string|null
          */
         public function getBuyTotal(): ?string
         {
@@ -750,8 +662,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set note.
-         *
-         * @return Customer
          */
         public function setNote(?string $note = null): Customer
         {
@@ -762,8 +672,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get note.
-         *
-         * @return string|null
          */
         public function getNote(): ?string
         {
@@ -772,8 +680,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set resetKey.
-         *
-         * @return Customer
          */
         public function setResetKey(?string $resetKey = null): Customer
         {
@@ -784,8 +690,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get resetKey.
-         *
-         * @return string|null
          */
         public function getResetKey(): ?string
         {
@@ -794,8 +698,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set resetExpire.
-         *
-         * @return Customer
          */
         public function setResetExpire(?\DateTime $resetExpire = null): Customer
         {
@@ -806,8 +708,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get resetExpire.
-         *
-         * @return \DateTime|null
          */
         public function getResetExpire(): ?\DateTime
         {
@@ -816,8 +716,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Customer
          */
         public function setCreateDate(\DateTime $createDate): Customer
         {
@@ -828,8 +726,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -838,8 +734,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Customer
          */
         public function setUpdateDate(\DateTime $updateDate): Customer
         {
@@ -850,8 +744,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -860,8 +752,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Add customerFavoriteProduct.
-         *
-         * @return Customer
          */
         public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Customer
         {
@@ -892,8 +782,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Add customerAddress.
-         *
-         * @return Customer
          */
         public function addCustomerAddress(CustomerAddress $customerAddress): Customer
         {
@@ -924,8 +812,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Add order.
-         *
-         * @return Customer
          */
         public function addOrder(Order $order): Customer
         {
@@ -956,8 +842,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set status.
-         *
-         * @return Customer
          */
         public function setStatus(?CustomerStatus $status = null): Customer
         {
@@ -968,8 +852,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get status.
-         *
-         * @return CustomerStatus|null
          */
         public function getStatus(): ?CustomerStatus
         {
@@ -978,8 +860,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set sex.
-         *
-         * @return Customer
          */
         public function setSex(?Sex $sex = null): Customer
         {
@@ -990,8 +870,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get sex.
-         *
-         * @return Sex|null
          */
         public function getSex(): ?Sex
         {
@@ -1000,8 +878,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set job.
-         *
-         * @return Customer
          */
         public function setJob(?Job $job = null): Customer
         {
@@ -1012,8 +888,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get job.
-         *
-         * @return Job|null
          */
         public function getJob(): ?Job
         {
@@ -1022,8 +896,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set country.
-         *
-         * @return Customer
          */
         public function setCountry(?Country $country = null): Customer
         {
@@ -1034,8 +906,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get country.
-         *
-         * @return Country|null
          */
         public function getCountry(): ?Country
         {
@@ -1044,8 +914,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set pref.
-         *
-         * @return Customer
          */
         public function setPref(?Pref $pref = null): Customer
         {
@@ -1056,8 +924,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Pref|null
          */
         public function getPref(): ?Pref
         {
@@ -1066,8 +932,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Set point
-         *
-         * @return Customer
          */
         public function setPoint(?string $point): Customer
         {
@@ -1078,8 +942,6 @@ if (!class_exists(Customer::class)) {
 
         /**
          * Get point
-         *
-         * @return string|null
          */
         public function getPoint(): ?string
         {
@@ -1116,8 +978,6 @@ if (!class_exists(Customer::class)) {
          * @param string $serialized <p>
          * The string representation of the object.
          * </p>
-         *
-         * @return void
          *
          * @since 5.1.0
          */

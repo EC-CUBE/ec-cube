@@ -27,9 +27,6 @@ if (!class_exists(MailTemplate::class)) {
     #[ORM\Entity(repositoryClass: MailTemplateRepository::class)]
     class MailTemplate extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -92,8 +89,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -102,8 +97,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set name.
-         *
-         * @return MailTemplate
          */
         public function setName(?string $name = null): MailTemplate
         {
@@ -114,8 +107,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
         public function getName(): ?string
         {
@@ -124,8 +115,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set fileName.
-         *
-         * @return MailTemplate
          */
         public function setFileName(?string $fileName = null): MailTemplate
         {
@@ -136,8 +125,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get fileName.
-         *
-         * @return string|null
          */
         public function getFileName(): ?string
         {
@@ -146,8 +133,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set mailSubject.
-         *
-         * @return MailTemplate
          */
         public function setMailSubject(?string $mailSubject = null): MailTemplate
         {
@@ -158,8 +143,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get mailSubject.
-         *
-         * @return string|null
          */
         public function getMailSubject(): ?string
         {
@@ -168,8 +151,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return MailTemplate
          */
         public function setCreateDate(\DateTime $createDate): MailTemplate
         {
@@ -180,8 +161,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -190,8 +169,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return MailTemplate
          */
         public function setUpdateDate(\DateTime $updateDate): MailTemplate
         {
@@ -202,8 +179,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -212,8 +187,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Set creator.
-         *
-         * @return MailTemplate
          */
         public function setCreator(?Member $creator = null): MailTemplate
         {
@@ -224,17 +197,12 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
         public function getCreator(): ?Member
         {
             return $this->Creator;
         }
 
-        /**
-         * @return bool
-         */
         public function isDeletable(): bool
         {
             return $this->deletable;

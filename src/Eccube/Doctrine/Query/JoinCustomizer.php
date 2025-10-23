@@ -22,8 +22,6 @@ abstract class JoinCustomizer implements QueryCustomizer
 {
     /**
      * @param array<mixed>|null $params
-     *
-     * @return void
      */
     #[\Override]
     final public function customize(QueryBuilder $builder, ?array $params, string $queryKey): void

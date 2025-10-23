@@ -41,9 +41,6 @@ class CartServiceExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return Cart|null
-     */
     public function get_cart(): ?Cart
     {
         return $this->cartService->getCart();
@@ -57,9 +54,6 @@ class CartServiceExtension extends AbstractExtension
         return $this->cartService->getCarts();
     }
 
-    /**
-     * @return string
-     */
     public function get_carts_total_price(): string
     {
         $Carts = $this->cartService->getCarts();
@@ -72,9 +66,6 @@ class CartServiceExtension extends AbstractExtension
         return $totalPrice;
     }
 
-    /**
-     * @return string
-     */
     public function get_carts_total_quantity(): string
     {
         $Carts = $this->cartService->getCarts();

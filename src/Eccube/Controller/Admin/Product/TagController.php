@@ -122,8 +122,6 @@ class TagController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse
-     *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/tag/{id}/delete', name: 'admin_product_tag_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -156,9 +154,6 @@ class TagController extends AbstractController
         return $this->redirectToRoute('admin_product_tag');
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/%eccube_admin_route%/product/tag/sort_no/move', name: 'admin_product_tag_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request): Response
     {
@@ -177,9 +172,6 @@ class TagController extends AbstractController
         return new Response();
     }
 
-    /**
-     * @return void
-     */
     protected function dispatchComplete(Request $request, FormInterface $form, Tag $Tag): void
     {
         $event = new EventArgs(

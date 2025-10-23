@@ -42,8 +42,6 @@ class StringUtil
      *
      * Generate a more truly "random" alpha-numeric string.
      *
-     * @return string
-     *
      * @throws \RuntimeException
      */
     public static function random(int $length = 16): string
@@ -88,8 +86,6 @@ class StringUtil
      * Generate a "random" alpha-numeric string.
      *
      * Should not be considered sufficient for cryptography, etc.
-     *
-     * @return string
      */
     public static function quickRandom(int $length = 16): string
     {
@@ -100,8 +96,6 @@ class StringUtil
 
     /**
      * 改行コードの変換
-     *
-     * @return string
      */
     public static function convertLineFeed(?string $value, string $lf = "\n"): string
     {
@@ -116,8 +110,6 @@ class StringUtil
      * 文字コードの判定
      *
      * @param string[] $encoding
-     *
-     * @return string|null
      */
     public static function characterEncoding(string $value, array $encoding = ['UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win']): ?string
     {
@@ -133,8 +125,6 @@ class StringUtil
     /**
      * 指定した文字列以上ある場合、「...」を付加する
      * lengthに7を指定すると、「1234567890」は「1234567...」と「...」を付与して出力される
-     *
-     * @return string
      */
     public static function ellipsis(string $value, int $length = 100, string $end = '...'): string
     {
@@ -147,8 +137,6 @@ class StringUtil
 
     /**
      * 現在からの経過時間を書式化する.
-     *
-     * @return string
      */
     public static function timeAgo(string|\DateTimeInterface|null $date): string
     {
@@ -267,9 +255,6 @@ class StringUtil
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public static function isNotBlank(mixed $value, bool $greedy = false): bool
     {
         return !self::isBlank($value, $greedy);
@@ -277,8 +262,6 @@ class StringUtil
 
     /**
      * 両端にある全角スペース、半角スペースを取り除く
-     *
-     * @return string|int|null
      */
     public static function trimAll(mixed $value): string|int|null
     {
@@ -299,8 +282,6 @@ class StringUtil
      * envファイルのコンテンツを更新または追加する.
      *
      * @param array<mixed> $replacement
-     *
-     * @return string
      */
     public static function replaceOrAddEnv(string $env, array $replacement): string
     {

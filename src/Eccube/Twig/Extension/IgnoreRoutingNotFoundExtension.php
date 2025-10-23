@@ -54,8 +54,6 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      *
      * @param array<string,mixed> $parameters
      *
-     * @return string
-     *
      * @throws RouteNotFoundException
      */
     public function getPath(string $name, array $parameters = [], bool $relative = false): string
@@ -75,8 +73,6 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
      * @param array<string,mixed> $parameters
-     *
-     * @return string
      *
      * @throws RouteNotFoundException
      */

@@ -38,9 +38,6 @@ class TaxRuleEventSubscriber
         $this->taxRuleService = $taxRuleService;
     }
 
-    /**
-     * @return object|null
-     */
     public function getTaxRuleService(): ?object
     {
         return $this->taxRuleService;
@@ -48,8 +45,6 @@ class TaxRuleEventSubscriber
 
     /**
      * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
-     *
-     * @return void
      */
     public function prePersist(LifecycleEventArgs $args): void
     {
@@ -65,8 +60,6 @@ class TaxRuleEventSubscriber
 
     /**
      * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
-     *
-     * @return void
      */
     public function postLoad(LifecycleEventArgs $args): void
     {
@@ -82,8 +75,6 @@ class TaxRuleEventSubscriber
 
     /**
      * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
-     *
-     * @return void
      */
     public function postPersist(LifecycleEventArgs $args): void
     {
@@ -99,8 +90,6 @@ class TaxRuleEventSubscriber
 
     /**
      * @param LifecycleEventArgs<\Doctrine\ORM\EntityManagerInterface> $args
-     *
-     * @return void
      */
     public function postUpdate(LifecycleEventArgs $args): void
     {

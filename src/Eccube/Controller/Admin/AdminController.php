@@ -263,8 +263,6 @@ class AdminController extends AbstractController
 
     /**
      * 売上状況の取得
-     *
-     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
     public function sale(Request $request): JsonResponse
@@ -357,8 +355,6 @@ class AdminController extends AbstractController
 
     /**
      * 在庫なし商品の検索結果を表示する.
-     *
-     * @return Response
      */
     #[Route('/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
     public function searchNonStockProducts(Request $request): Response
@@ -376,8 +372,6 @@ class AdminController extends AbstractController
 
     /**
      * 本会員の検索結果を表示する.
-     *
-     * @return Response
      */
     #[Route('/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
     public function searchCustomer(Request $request): Response
@@ -499,8 +493,6 @@ class AdminController extends AbstractController
     /**
      * 在庫切れ商品数を取得
      *
-     * @return int|string|null
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function countNonStockProducts(): int|string|null
@@ -519,8 +511,6 @@ class AdminController extends AbstractController
     /**
      * 商品数を取得
      *
-     * @return int|string|null
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function countProducts(): int|string|null
@@ -535,8 +525,6 @@ class AdminController extends AbstractController
 
     /**
      * 本会員数を取得
-     *
-     * @return int|string|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

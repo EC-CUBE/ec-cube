@@ -39,8 +39,6 @@ class NewsRepository extends AbstractRepository
      * 新着情報を登録します.
      *
      * @param News $News
-     *
-     * @return void
      */
     #[\Override]
     public function save(AbstractEntity $News): void
@@ -54,8 +52,6 @@ class NewsRepository extends AbstractRepository
      * 新着情報を削除します.
      *
      * @param News $News
-     *
-     * @return void
      */
     #[\Override]
     public function delete($News): void
@@ -65,9 +61,6 @@ class NewsRepository extends AbstractRepository
         $em->flush();
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getQueryBuilderAll(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('n');

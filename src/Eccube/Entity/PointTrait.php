@@ -43,8 +43,6 @@ trait PointTrait
 
     /**
      * Get addPoint
-     *
-     * @return string
      */
     public function getAddPoint(): string
     {
@@ -65,8 +63,6 @@ trait PointTrait
 
     /**
      * Get usePoint
-     *
-     * @return string|null
      */
     public function getUsePoint(): ?string
     {

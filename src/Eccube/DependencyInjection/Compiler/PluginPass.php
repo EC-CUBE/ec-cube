@@ -28,8 +28,6 @@ class PluginPass implements CompilerPassInterface
      * プラグインが作成しているEventListener等の拡張機構が呼び出されないようにする.
      *
      * サービスタグが収集されるタイミング(一般的にPassConfig::TYPE_BEFORE_OPTIMIZATIONの0)より先に実行される必要があります.
-     *
-     * @return void
      */
     #[\Override]
     public function process(ContainerBuilder $container): void

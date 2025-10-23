@@ -31,9 +31,6 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class AutoConfigurationTagPass implements CompilerPassInterface
 {
-    /**
-     * @return void
-     */
     #[\Override]
     public function process(ContainerBuilder $container): void
     {
@@ -44,9 +41,6 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
     }
 
-    /**
-     * @return void
-     */
     protected function configureDoctrineEventSubscriberTag(Definition $definition): void
     {
         $class = $definition->getClass();
@@ -61,9 +55,6 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         $definition->addTag('doctrine.event_subscriber');
     }
 
-    /**
-     * @return void
-     */
     protected function configureRateLimiterTag(string|int $id, Definition $definition): void
     {
         if (\str_starts_with((string) $id, 'limiter')
@@ -74,9 +65,6 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
     }
 
-    /**
-     * @return void
-     */
     protected function configurePaymentMethodTag(string $id, Definition $definition): void
     {
         $class = $definition->getClass();

@@ -30,9 +30,6 @@ if (!class_exists(Tag::class)) {
     #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class Tag extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
@@ -87,8 +84,6 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Get id.
-         *
-         * @return int|null
          */
         public function getId(): ?int
         {
@@ -109,8 +104,6 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
         public function getName(): ?string
         {
@@ -131,8 +124,6 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Get sort_no.
-         *
-         * @return int
          */
         public function getSortNo(): int
         {
@@ -141,8 +132,6 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Add productTag.
-         *
-         * @return Tag
          */
         public function addProductTag(ProductTag $productTag): Tag
         {

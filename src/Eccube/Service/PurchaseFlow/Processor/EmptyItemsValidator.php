@@ -40,8 +40,6 @@ class EmptyItemsValidator extends ItemHolderValidator
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 商品明細がない場合
      */
     #[\Override]

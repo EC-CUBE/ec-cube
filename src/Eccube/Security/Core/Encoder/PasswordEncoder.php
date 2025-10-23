@@ -41,8 +41,6 @@ class PasswordEncoder
 
     /**
      * Set Auth Magic.
-     *
-     * @return void
      */
     public function setAuthMagic(string $authMagic): void
     {
@@ -116,8 +114,6 @@ class PasswordEncoder
 
     /**
      * saltを生成する.
-     *
-     * @return string
      */
     public function createSalt(int $length = 5): string
     {

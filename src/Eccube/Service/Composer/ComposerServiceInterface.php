@@ -26,8 +26,6 @@ interface ComposerServiceInterface
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
      * @param string|null $from Path of composer repository
-     *
-     * @return string
      */
     public function execRequire(string $packageName, ?OutputInterface $output = null, ?string $from = null): string;
 
@@ -35,8 +33,6 @@ interface ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     *
-     * @return string
      */
     public function execRemove(string $packageName, ?OutputInterface $output = null): string;
 
@@ -45,13 +41,7 @@ interface ComposerServiceInterface
      */
     public function execConfig(string $key, ?string $value = null): ?array;
 
-    /**
-     * @return void
-     */
     public function configureRepository(BaseInfo $BaseInfo): void;
 
-    /**
-     * @return void
-     */
     public function foreachRequires(string $packageName, ?string $version, callable $callback, ?string $typeFilter = null, int $level = 0): void;
 }

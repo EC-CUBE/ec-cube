@@ -77,8 +77,6 @@ class TaxRuleRepository extends AbstractRepository
      *
      * 現在適用されている丸め規則を設定する.
      * 現在適用されている丸め規則が取得できない場合は四捨五入を設定する.
-     *
-     * @return TaxRule
      */
     public function newTaxRule(): TaxRule
     {
@@ -285,8 +283,6 @@ class TaxRuleRepository extends AbstractRepository
      *
      * getByRule() をコールすると、結果をキャッシュし、2回目以降はデータベースへアクセスしない.
      * このメソッドをコールすると、キャッシュをクリアし、再度データベースを参照して結果を取得する.
-     *
-     * @return void
      */
     public function clearCache(): void
     {

@@ -29,9 +29,6 @@ class SessionProcessor
         $this->session = $session;
     }
 
-    /**
-     * @return LogRecord
-     */
     public function __invoke(LogRecord $record): LogRecord
     {
         $sessionId = 'N/A';

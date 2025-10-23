@@ -10,12 +10,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Monolog\Logger;
+
 use Eccube\DependencyInjection\Facade\LoggerFacade;
+use Monolog\Logger;
 
 /**
  * @param array<mixed> $context
- *
  *
  * @throws Exception
  */
@@ -28,7 +28,6 @@ function log_emergency(string $message, array $context = []): void
 /**
  * @param array<mixed> $context
  *
- *
  * @throws Exception
  */
 function log_alert(string $message, array $context = []): void
@@ -39,7 +38,6 @@ function log_alert(string $message, array $context = []): void
 
 /**
  * @param array<mixed> $context
- *
  *
  * @throws Exception
  */
@@ -52,7 +50,6 @@ function log_critical(string $message, array $context = []): void
 /**
  * @param array<mixed> $context
  *
- *
  * @throws Exception
  */
 function log_error(string $message, array $context = []): void
@@ -63,7 +60,6 @@ function log_error(string $message, array $context = []): void
 
 /**
  * @param array<mixed> $context
- *
  *
  * @throws Exception
  */
@@ -76,7 +72,6 @@ function log_warning(string $message, array $context = []): void
 /**
  * @param array<mixed> $context
  *
- *
  * @throws Exception
  */
 function log_notice(string $message, array $context = []): void
@@ -88,7 +83,6 @@ function log_notice(string $message, array $context = []): void
 /**
  * @param array<mixed> $context
  *
- *
  * @throws Exception
  */
 function log_info(string $message, array $context = []): void
@@ -99,7 +93,6 @@ function log_info(string $message, array $context = []): void
 
 /**
  * @param array<mixed> $context
- *
  *
  * @throws Exception
  */

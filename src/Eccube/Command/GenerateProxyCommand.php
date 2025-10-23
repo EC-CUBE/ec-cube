@@ -40,9 +40,6 @@ class GenerateProxyCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function configure(): void
     {
