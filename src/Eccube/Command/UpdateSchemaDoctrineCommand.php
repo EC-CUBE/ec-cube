@@ -114,7 +114,7 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
             $Plugins = $this->pluginRepository->findAll();
             foreach ($Plugins as $Plugin) {
                 $config = ['code' => $Plugin->getCode()];
-                $this->pluginService->generateProxyAndCallback(function ($generateFiles) use (&$generateAllFiles) {
+                $this->pluginService->generateProxyAndCallback(function ($generateFiles) use (&$generateAllFiles): void {
                     $generateAllFiles = array_merge($generateAllFiles, $generateFiles);
                 }, $Plugin, $config, false, $tmpProxyOutputDir);
             }
@@ -123,7 +123,7 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
             $command = $this;
 
             // Generate Doctrine metadata and execute schema command
-            $this->schemaService->executeCallback(function (SchemaTool $schemaTool, array $metaData) use ($command, $input, $output, &$result) {
+            $this->schemaService->executeCallback(function (SchemaTool $schemaTool, array $metaData) use ($command, $input, $output, &$result): void {
                 $ui = new SymfonyStyle($input, $output);
                 if (empty($metaData)) {
                     $ui->success('No Metadata Classes to process.');
@@ -140,9 +140,6 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
         }
     }
 
-    /**
-     * @return void
-     */
     protected function removeOutputDir(string $outputDir): void
     {
         if (file_exists($outputDir)) {

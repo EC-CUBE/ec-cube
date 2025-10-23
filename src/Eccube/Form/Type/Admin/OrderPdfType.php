@@ -51,8 +51,6 @@ class OrderPdfType extends AbstractType
      * Build config type form.
      *
      * @param array<string, mixed>         $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -154,7 +152,7 @@ class OrderPdfType extends AbstractType
                 'label' => 'admin.order.delivery_note_save_input',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
                 if (!isset($data['ids']) || !is_string($data['ids'])) {
@@ -179,8 +177,6 @@ class OrderPdfType extends AbstractType
 
     /**
      * Get name method (form factory name).
-     *
-     * @return string
      */
     public function getName(): string
     {

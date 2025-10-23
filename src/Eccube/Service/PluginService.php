@@ -139,7 +139,6 @@ class PluginService
      *
      * @param string $path   path to tar.gz/zip plugin file
      *
-     * @return bool
      *
      * @throws PluginException
      * @throws \Exception
@@ -194,7 +193,6 @@ class PluginService
     /**
      * @param string $code プラグインコード
      *
-     * @return bool
      *
      * @throws ConnectionException
      * @throws Exception
@@ -242,10 +240,6 @@ class PluginService
     }
 
     // インストール事前処理
-
-    /**
-     * @return void
-     */
     public function preInstall(): void
     {
         // キャッシュの削除
@@ -256,7 +250,6 @@ class PluginService
     /**
      * @param array<string, string|int> $config
      *
-     * @return void
      *
      * @throws PluginException
      * @throws ConnectionException
@@ -316,12 +309,10 @@ class PluginService
      * @param array<string, string|int> $config プラグインの composer.json の配列
      * @param bool $uninstall アンインストールする場合は true
      * @param bool $saveMode SQL を即時実行する場合は true
-     *
-     * @return void
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, array $config, bool $uninstall = false, bool $saveMode = true): void
     {
-        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode): void {
             $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
         }, $plugin, $config, $uninstall);
     }
@@ -337,8 +328,6 @@ class PluginService
      * @param array<string, int|string> $config プラグインの composer.json の配列
      * @param bool $uninstall アンインストールする場合は true
      * @param string $tmpProxyOutputDir Proxy ファイルを出力する一時ディレクトリ
-     *
-     * @return void
      */
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, array $config, bool $uninstall = false, ?string $tmpProxyOutputDir = null): void
     {
@@ -399,8 +388,6 @@ class PluginService
     }
 
     /**
-     * @return string
-     *
      * @throws PluginException
      */
     public function createTempDir(): string
@@ -418,8 +405,6 @@ class PluginService
 
     /**
      * @param array<int, string> $arr
-     *
-     * @return void
      */
     public function deleteDirs(array $arr): void
     {
@@ -432,8 +417,6 @@ class PluginService
     }
 
     /**
-     * @return void
-     *
      * @throws PluginException
      */
     public function unpackPluginArchive(string $archive, string $dir): void
@@ -457,7 +440,6 @@ class PluginService
     /**
      * @param array<string, string|int> $config_cache
      *
-     * @return void
      *
      * @throws PluginException
      */
@@ -515,9 +497,6 @@ class PluginService
         ];
     }
 
-    /**
-     * @return bool
-     */
     public function checkSymbolName(string $string): bool
     {
         return strlen($string) < 256 && preg_match('/^\w+$/', $string);
@@ -526,9 +505,6 @@ class PluginService
         // ディレクトリ名などに使われれるので厳しめ
     }
 
-    /**
-     * @return void
-     */
     public function deleteFile(string $path): void
     {
         $f = new Filesystem();
@@ -536,8 +512,6 @@ class PluginService
     }
 
     /**
-     * @return void
-     *
      * @throws PluginException
      */
     public function checkSamePlugin(string $code): void
@@ -549,17 +523,12 @@ class PluginService
         }
     }
 
-    /**
-     * @return string
-     */
     public function calcPluginDir(string $code): string
     {
         return $this->projectRoot.'/app/Plugin/'.$code;
     }
 
     /**
-     * @return void
-     *
      * @throws PluginException
      */
     public function createPluginDir(string $d): void
@@ -573,7 +542,6 @@ class PluginService
     /**
      * @param array<string, string|int> $meta
      *
-     * @return Plugin
      *
      * @throws PluginException
      */
@@ -601,8 +569,6 @@ class PluginService
 
     /**
      * @param array<string, string|int> $meta
-     *
-     * @return void
      */
     public function callPluginManagerMethod(array $meta, string $method): void
     {
@@ -616,8 +582,6 @@ class PluginService
     }
 
     /**
-     * @return bool
-     *
      * @throws \Exception
      */
     public function uninstall(Plugin $plugin, bool $force = true): bool
@@ -657,8 +621,6 @@ class PluginService
     }
 
     /**
-     * @return void
-     *
      * @throws \Exception
      */
     public function unregisterPlugin(Plugin $p): void
@@ -669,8 +631,6 @@ class PluginService
     }
 
     /**
-     * @return true
-     *
      * @throws \Exception
      */
     public function disable(Plugin $plugin): true
@@ -728,7 +688,6 @@ class PluginService
     }
 
     /**
-     * @return true
      *
      * @throws Exception
      * @throws PluginException
@@ -768,7 +727,6 @@ class PluginService
     /**
      * Update plugin
      *
-     * @return bool
      *
      * @throws PluginException
      * @throws \Exception
@@ -812,7 +770,6 @@ class PluginService
      *
      * @param array<string, string|int>  $meta     Config data
      *
-     * @return void
      *
      * @throws \Exception
      */
@@ -868,7 +825,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.strtolower((string) $pluginCode), $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/'.strtolower((string) $pluginCode), $pluginVersion, function ($package) use (&$results): void {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -984,8 +941,6 @@ class PluginService
      * コピー元となるファイルの置き場所は固定であり、
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
-     *
-     * @return void
      */
     public function copyAssets(string $pluginCode): void
     {
@@ -1000,8 +955,6 @@ class PluginService
 
     /**
      * コピーしたリソースファイル等を削除
-     *
-     * @return void
      */
     public function removeAssets(string $pluginCode): void
     {

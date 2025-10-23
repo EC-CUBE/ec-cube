@@ -39,7 +39,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    protected function createFormData()
+    protected function createFormData(): array
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;

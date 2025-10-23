@@ -54,8 +54,6 @@ class SchemaService
      * @param array<mixed> $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
      * @param string $outputDir Metadata の出力先ディレクトリ
-     *
-     * @return void
      */
     public function executeCallback(callable $callback, array $generatedFiles, string $proxiesDirectory, ?string $outputDir = null): void
     {
@@ -126,12 +124,10 @@ class SchemaService
      * @param array<mixed> $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
      * @param bool $saveMode UpdateSchema を即時実行する場合 true
-     *
-     * @return void
      */
     public function updateSchema(array $generatedFiles, string $proxiesDirectory, bool $saveMode = false): void
     {
-        $this->executeCallback(function (SchemaTool $tool, array $metaData) {
+        $this->executeCallback(function (SchemaTool $tool, array $metaData): void {
             $tool->updateSchema($metaData);
         }, $generatedFiles, $proxiesDirectory);
     }
@@ -140,8 +136,6 @@ class SchemaService
      * ネームスペースに含まれるEntityのテーブルを削除する
      *
      * @param  string $targetNamespace 削除対象のネームスペース
-     *
-     * @return void
      */
     public function dropTable(string $targetNamespace): void
     {

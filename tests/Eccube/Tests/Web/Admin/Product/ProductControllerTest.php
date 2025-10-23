@@ -1075,7 +1075,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public static function dataEditProductProvider()
+    public static function dataEditProductProvider(): array
     {
         return [
             ['0', '0', '0'],
@@ -1096,7 +1096,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public static function dataEditRoundingTypeProvider()
+    public static function dataEditRoundingTypeProvider(): array
     {
         return [
             [null, null, RoundingType::ROUND, false],
@@ -1109,7 +1109,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array
      */
-    private function createSearchForm()
+    private function createSearchForm(): array
     {
         return [
             Constant::TOKEN_NAME => 'dummy',

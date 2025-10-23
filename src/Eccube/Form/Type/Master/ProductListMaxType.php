@@ -27,13 +27,11 @@ class ProductListMaxType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $options = $event->getForm()->getConfig()->getOptions();
             if ($event->getData() === null) {
                 $event->setData((string) $options['choices'][0]->getId());
@@ -43,8 +41,6 @@ class ProductListMaxType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

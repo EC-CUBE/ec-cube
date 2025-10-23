@@ -94,7 +94,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testCompleteWithXssInjectionAttack()
+    public function testCompleteWithXssInjectionAttack(): void
     {
         // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
         $Customer = $this->createCustomer();
@@ -707,7 +707,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testDeliveryPageWithNoTradeLawsEnabled()
+    public function testDeliveryPageWithNoTradeLawsEnabled(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findAll();
@@ -739,7 +739,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testDeliveryPageWithTradeLawsEnabled()
+    public function testDeliveryPageWithTradeLawsEnabled(): void
     {
         // Enable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -779,7 +779,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testConfirmationPageWithNoTradeLawsEnabled()
+    public function testConfirmationPageWithNoTradeLawsEnabled(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findAll();
@@ -822,7 +822,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testConfirmationPageWithTradeLawsEnabled()
+    public function testConfirmationPageWithTradeLawsEnabled(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -875,7 +875,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testDeliveryPageInvalidTradeLawDataEmptyName()
+    public function testDeliveryPageInvalidTradeLawDataEmptyName(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -911,7 +911,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testDeliveryPageInvalidTradeLawDataEmptyDescription()
+    public function testDeliveryPageInvalidTradeLawDataEmptyDescription(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -946,7 +946,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testConfirmationPageInvalidTradeLawDataEmptyName()
+    public function testConfirmationPageInvalidTradeLawDataEmptyName(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -994,7 +994,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @return void
      */
-    public function testConfirmationPageInvalidTradeLawDataEmptyDescription()
+    public function testConfirmationPageInvalidTradeLawDataEmptyDescription(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);

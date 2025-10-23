@@ -58,8 +58,6 @@ class OrderStatusSettingType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -92,7 +90,7 @@ class OrderStatusSettingType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             $form = $event->getForm();
 
@@ -113,8 +111,6 @@ class OrderStatusSettingType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

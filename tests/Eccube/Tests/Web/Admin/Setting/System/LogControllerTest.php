@@ -117,7 +117,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array
      */
-    public static function dataProvider()
+    public static function dataProvider(): array
     {
         return [
             // FIXME 以下のメッセージが翻訳されない

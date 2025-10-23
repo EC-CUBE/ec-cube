@@ -30,7 +30,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     /**
      * @return mixed
      */
-    public function createDelivery()
+    public function createDelivery(): mixed
     {
         $faker = $this->getFaker();
         // create new delivery

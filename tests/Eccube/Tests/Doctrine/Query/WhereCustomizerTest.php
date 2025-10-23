@@ -55,7 +55,7 @@ class WhereCustomizerTest extends EccubeTestCase
     /**
      * @return QueryBuilder
      */
-    private function createQueryBuilder()
+    private function createQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')

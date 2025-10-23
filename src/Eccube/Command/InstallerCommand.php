@@ -139,8 +139,6 @@ class InstallerCommand extends Command
 
             /**
              * envファイル更新処理
-             *
-             * @return void
              */
             public function updateEnvFile(): void
             {
@@ -159,17 +157,11 @@ class InstallerCommand extends Command
         };
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function configure(): void
     {
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
@@ -257,7 +249,7 @@ class InstallerCommand extends Command
         $question = new ConfirmationQuestion('Is it OK?');
         if (!$this->io->askQuestion($question)) {
             // `no`の場合はキャンセルメッセージを出力して終了する
-            $this->setCode(function () {
+            $this->setCode(function (): void {
                 $this->io->success('EC-CUBE installation stopped.');
             });
 
@@ -269,9 +261,6 @@ class InstallerCommand extends Command
         $this->envFileUpdater->updateEnvFile();
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -328,9 +317,6 @@ class InstallerCommand extends Command
         return 0;
     }
 
-    /**
-     * @return string
-     */
     protected function getDatabaseName(string $databaseUrl): string
     {
         if (str_starts_with($databaseUrl, 'sqlite')) {

@@ -45,8 +45,6 @@ class TaxRuleType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -78,7 +76,7 @@ class TaxRuleType extends AbstractType
                 ],
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var TaxRule $TaxRule */
             $TaxRule = $event->getData();
             $qb = $this->taxRuleRepository->createQueryBuilder('t');
@@ -104,8 +102,6 @@ class TaxRuleType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

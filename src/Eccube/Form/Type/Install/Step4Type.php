@@ -47,7 +47,6 @@ class Step4Type extends AbstractType
      *
      * @param array<string, mixed> $options
      *
-     * @return void
      *
      * @throws \Exception
      */
@@ -100,7 +99,7 @@ class Step4Type extends AbstractType
                 'required' => false,
                 'purify_html' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 
@@ -142,8 +141,6 @@ class Step4Type extends AbstractType
     /**
      * @param array<mixed> $data
      * @param mixed|null $param
-     *
-     * @return void
      */
     public function validate(array $data, ExecutionContext $context, mixed $param = null): void
     {

@@ -70,7 +70,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @return Product
      */
-    protected function createTestProduct(?Member $TestCreator = null)
+    protected function createTestProduct(?Member $TestCreator = null): Product
     {
         if (!$TestCreator) {
             $TestCreator = $this->createMember();
@@ -121,7 +121,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @return ClassName
      */
-    protected function createClassName(?Member $Creator = null)
+    protected function createClassName(?Member $Creator = null): ClassName
     {
         if (!$Creator) {
             $Creator = $this->createMember();
@@ -146,7 +146,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @return ClassCategory
      */
-    protected function createClassCategory(Member $Creator, ClassName &$TestClassName)
+    protected function createClassCategory(Member $Creator, ClassName &$TestClassName): ClassCategory
     {
         if (!$Creator) {
             $Creator = $this->createMember();
@@ -181,7 +181,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         Product &$TestProduct,
         ClassCategory $TestClassCategory1,
         ClassCategory $TestClassCategory2,
-    ) {
+    ): ProductClass {
         if (!$Creator) {
             $Creator = $this->createMember();
         }
@@ -227,7 +227,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      *
      * @return ProductStock
      */
-    protected function createProductStock(Member $Creator, ProductClass &$TestProductClass)
+    protected function createProductStock(Member $Creator, ProductClass &$TestProductClass): ProductStock
     {
         if (!$Creator) {
             $Creator = $this->createMember();

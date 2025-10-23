@@ -106,7 +106,7 @@ abstract class CommandTestCase extends EccubeTestCase
      *
      * @throws \Exception
      */
-    protected function getLastContent()
+    protected function getLastContent(): string
     {
         $display = $this->tester->getDisplay();
         $displayCnt = mb_strlen($display);
@@ -160,7 +160,7 @@ abstract class CommandTestCase extends EccubeTestCase
      *
      * @return string
      */
-    protected function getQuestionMark(int $no)
+    protected function getQuestionMark(int $no): string
     {
         return AbstractPluginGenerator::INPUT_OPEN.$no.AbstractPluginGenerator::INPUT_CLOSE;
     }

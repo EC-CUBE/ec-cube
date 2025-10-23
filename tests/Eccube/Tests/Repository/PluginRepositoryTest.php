@@ -82,7 +82,7 @@ class PluginRepositoryTest extends EccubeTestCase
      *
      * @return Plugin
      */
-    private function createPlugin(string $code)
+    private function createPlugin(string $code): Plugin
     {
         $faker = $this->getFaker();
         $Plugin = new Plugin();

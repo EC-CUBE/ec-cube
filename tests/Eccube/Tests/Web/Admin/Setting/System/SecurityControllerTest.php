@@ -113,7 +113,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createFormData()
+    public function createFormData(): array
     {
         return [
             '_token' => 'dummy',

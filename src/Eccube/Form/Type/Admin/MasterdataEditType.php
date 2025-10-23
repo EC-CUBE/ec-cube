@@ -27,8 +27,6 @@ class MasterdataEditType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -41,7 +39,7 @@ class MasterdataEditType extends AbstractType
                 'prototype' => true,
             ])
             ->add('masterdata_name', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $data = $event->getData();
 

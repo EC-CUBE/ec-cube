@@ -48,7 +48,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    protected function deliveryFormData()
+    protected function deliveryFormData(): array
     {
         $faker = $this->getFaker();
 

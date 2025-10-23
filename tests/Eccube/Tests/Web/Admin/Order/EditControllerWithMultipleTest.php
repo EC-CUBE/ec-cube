@@ -463,7 +463,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      *
      * @return array
      */
-    public function createFormDataForMultiple(Customer $Customer, array $Shippings)
+    public function createFormDataForMultiple(Customer $Customer, array $Shippings): array
     {
         $formData = parent::createFormData($Customer, null);
         $formData['Shippings'] = $Shippings;
@@ -500,7 +500,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      *
      * @return array
      */
-    public function createShipping(array $ProductClasses)
+    public function createShipping(array $ProductClasses): array
     {
         $faker = $this->getFaker();
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');

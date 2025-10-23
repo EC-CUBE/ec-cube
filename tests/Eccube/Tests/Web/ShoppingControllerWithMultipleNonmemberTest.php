@@ -1458,7 +1458,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     /**
      * @return Order
      */
-    private function getLastOrder()
+    private function getLastOrder(): Order
     {
         return $this->orderRepository->findOneBy([], ['id' => 'desc']);
     }

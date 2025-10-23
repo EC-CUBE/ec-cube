@@ -32,7 +32,7 @@ class PriceTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public static function getValidTestData()
+    public static function getValidTestData(): array
     {
         return [
             ['data' => 0],

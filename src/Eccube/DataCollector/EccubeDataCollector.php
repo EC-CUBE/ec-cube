@@ -52,9 +52,6 @@ class EccubeDataCollector extends DataCollector
         $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         return $this->data['version'];
@@ -68,33 +65,21 @@ class EccubeDataCollector extends DataCollector
         return $this->data['plugins'];
     }
 
-    /**
-     * @return string
-     */
     public function getCurrencyCode(): string
     {
         return $this->data['currency_code'];
     }
 
-    /**
-     * @return string
-     */
     public function getLocaleCode(): string
     {
         return $this->data['locale_code'];
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultCurrencyCode(): string
     {
         return $this->data['base_currency_code'];
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultLocaleCode(): string
     {
         return $this->data['default_locale_code'];
@@ -102,11 +87,9 @@ class EccubeDataCollector extends DataCollector
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $this->data['base_currency_code'] = $this->eccubeConfig->get('currency');
         $this->data['currency_code'] = $this->eccubeConfig->get('currency');
@@ -145,11 +128,8 @@ class EccubeDataCollector extends DataCollector
         }
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -158,7 +138,7 @@ class EccubeDataCollector extends DataCollector
      * {@inheritdoc}
      */
     #[\Override]
-    public function getName()
+    public function getName(): string
     {
         return 'eccube_core';
     }

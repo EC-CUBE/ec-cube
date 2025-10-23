@@ -44,8 +44,6 @@ class MailType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -86,7 +84,7 @@ class MailType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             if (null === $data->getId()) {
                 $form = $event->getForm();
@@ -100,7 +98,7 @@ class MailType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $data = $event->getData();
             if (null === $data->getId()) {
                 $filename = 'Mail/'.$data->getFileName().'.twig';

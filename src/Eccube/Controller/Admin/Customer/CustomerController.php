@@ -189,7 +189,6 @@ class CustomerController extends AbstractController
     /**
      * @param string $id
      *
-     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
@@ -234,8 +233,6 @@ class CustomerController extends AbstractController
 
     /**
      * @param string $id
-     *
-     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, $id, TranslatorInterface $translator): RedirectResponse
@@ -284,8 +281,6 @@ class CustomerController extends AbstractController
 
     /**
      * 会員CSVの出力.
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/customer/export', name: 'admin_customer_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
@@ -298,7 +293,7 @@ class CustomerController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
@@ -311,7 +306,7 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var \Eccube\Entity\Customer $Customer */

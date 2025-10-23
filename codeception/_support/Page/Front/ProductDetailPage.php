@@ -26,7 +26,7 @@ class ProductDetailPage extends AbstractFrontPage
      *
      * @return ProductDetailPage
      */
-    public static function go($I, $id)
+    public static function go($I, $id): ProductDetailPage
     {
         $page = new self($I);
 
@@ -74,7 +74,7 @@ class ProductDetailPage extends AbstractFrontPage
      *
      * @return ProductDetailPage
      */
-    public function カートに入れる(int $num, ?array $category1 = null, ?array $category2 = null)
+    public function カートに入れる(int $num, ?array $category1 = null, ?array $category2 = null): ProductDetailPage
     {
         $this->tester->fillField(['id' => 'quantity'], $num);
         if (!is_null($category1)) {
@@ -106,7 +106,7 @@ class ProductDetailPage extends AbstractFrontPage
     /**
      * @return CartPage
      */
-    public function カートへ進む()
+    public function カートへ進む(): CartPage
     {
         $this->tester->click('div.ec-modal-box > div > a');
 

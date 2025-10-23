@@ -92,8 +92,6 @@ class ShippingMultipleItemType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -112,7 +110,7 @@ class ShippingMultipleItemType extends AbstractType
                     new Assert\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -148,7 +146,7 @@ class ShippingMultipleItemType extends AbstractType
                     ],
                 ]);
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 /** @var \Eccube\Entity\Shipping|null $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */

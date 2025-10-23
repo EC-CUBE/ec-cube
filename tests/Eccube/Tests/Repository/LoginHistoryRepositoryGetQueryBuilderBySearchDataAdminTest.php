@@ -116,7 +116,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     /**
      * @return array[]
      */
-    public static function dataStatusProvider()
+    public static function dataStatusProvider(): array
     {
         return [
             [[LoginHistoryStatus::SUCCESS], 1],
@@ -149,7 +149,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      *
      * @return array
      */
-    public static function dataFormDateProvider()
+    public static function dataFormDateProvider(): array
     {
         return [
             ['create_date_start', 'today', 3],
@@ -178,7 +178,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      *
      * @return array
      */
-    public static function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): array
     {
         return [
             ['create_datetime_start', '- 1 hour', 3],

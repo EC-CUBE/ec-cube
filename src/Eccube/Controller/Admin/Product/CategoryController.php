@@ -219,7 +219,6 @@ class CategoryController extends AbstractController
     /**
      * @param string $id
      *
-     * @return RedirectResponse
      *
      * @throws \Exception
      */
@@ -269,8 +268,6 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @return Response
-     *
      * @throws BadRequestHttpException|\Exception
      */
     #[Route('/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
@@ -301,8 +298,6 @@ class CategoryController extends AbstractController
 
     /**
      * カテゴリCSVの出力.
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/category/export', name: 'admin_product_category_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
@@ -315,7 +310,7 @@ class CategoryController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CATEGORY);
 
@@ -328,7 +323,7 @@ class CategoryController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var Category $Category */

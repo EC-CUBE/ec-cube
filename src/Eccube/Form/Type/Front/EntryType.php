@@ -54,8 +54,6 @@ class EntryType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -100,7 +98,7 @@ class EntryType extends AbstractType
                 'required' => false,
             ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $Customer = $event->getData();
             if ($Customer instanceof Customer && !$Customer->getId()) {
                 $form = $event->getForm();
@@ -117,7 +115,7 @@ class EntryType extends AbstractType
         }
         );
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
@@ -129,8 +127,6 @@ class EntryType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

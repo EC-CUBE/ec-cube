@@ -39,7 +39,7 @@ class ShoppingLoginPage extends AbstractFrontPage
     /**
      * @return ShoppingNonmemberPage
      */
-    public function ゲスト購入()
+    public function ゲスト購入(): ShoppingNonmemberPage
     {
         $this->tester->click('div.ec-guest a.ec-blockBtn--cancel');
 

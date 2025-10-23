@@ -99,8 +99,6 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレート一覧からのダウンロード
-     *
-     * @return BinaryFileResponse
      */
     #[Route('/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
@@ -143,7 +141,7 @@ class TemplateController extends AbstractController
             $tmpDir,
             $tarFile,
             $tarGzFile
-        ) {
+        ): void {
             log_debug('remove temp file: '.$tmpDir);
             log_debug('remove temp file: '.$tarFile);
             log_debug('remove temp file: '.$tarGzFile);
@@ -159,9 +157,6 @@ class TemplateController extends AbstractController
         return $response;
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, \Eccube\Entity\Template $Template): RedirectResponse
     {

@@ -63,8 +63,6 @@ class SecurityType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -139,7 +137,7 @@ class SecurityType extends AbstractType
                 ],
                 'data' => env('TRUSTED_HOSTS'),
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 
@@ -229,8 +227,6 @@ class SecurityType extends AbstractType
 
     /**
      * フロントURL一覧を取得
-     *
-     * @return string
      */
     private function getRouteCollection(): string
     {

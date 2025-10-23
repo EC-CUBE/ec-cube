@@ -57,8 +57,6 @@ class CustomerType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string,mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -152,7 +150,7 @@ class CustomerType extends AbstractType
                 ],
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
@@ -161,7 +159,7 @@ class CustomerType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $Customer = $event->getData();
 
             // ポイント数が入力されていない場合0を登録
@@ -173,8 +171,6 @@ class CustomerType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

@@ -128,7 +128,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testSelectMailTemplate()
+    public function testSelectMailTemplate(): void
     {
         $form = $this->createFormData();
         // 注文完了メール

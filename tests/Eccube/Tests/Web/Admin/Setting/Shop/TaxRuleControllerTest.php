@@ -21,7 +21,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     /**
      * @return TaxRule
      */
-    public function createTaxRule()
+    public function createTaxRule(): TaxRule
     {
         $faker = $this->getFaker();
         $TargetTaxRule = $this->entityManager->getRepository(TaxRule::class)->newTaxRule();

@@ -79,7 +79,7 @@ class LogController extends AbstractController
             $response->headers->set('Content-Length', (string) $fileSizeLogFile);
             $response->headers->set('Content-Disposition', 'attachment; filename='.basename($logFile));
             $response->headers->set('Content-Type', 'application/octet-stream');
-            $response->setCallback(function () use ($logFile, $bufferSize) {
+            $response->setCallback(function () use ($logFile, $bufferSize): void {
                 if ($fh = fopen($logFile, 'r')) {
                     while (!feof($fh)) {
                         echo fread($fh, $bufferSize);

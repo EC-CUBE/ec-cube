@@ -82,7 +82,7 @@ class JoinClauseTest extends EccubeTestCase
     /**
      * @return QueryBuilder
      */
-    private function queryBuilder()
+    private function queryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')->from('Product', 'p');

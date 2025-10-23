@@ -112,7 +112,7 @@ if (!class_exists(Cart::class)) {
         /** @phpstan-ignore-next-line */
         private $errors = [];
 
-        public function __wakeup()
+        public function __wakeup(): void
         {
             $this->errors = [];
         }
@@ -130,17 +130,11 @@ if (!class_exists(Cart::class)) {
             return $this->id;
         }
 
-        /**
-         * @return string
-         */
         public function getCartKey(): string
         {
             return $this->cart_key;
         }
 
-        /**
-         * @return Cart
-         */
         public function setCartKey(string $cartKey): Cart
         {
             $this->cart_key = $cartKey;
@@ -149,8 +143,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return bool
-         *
          * @deprecated 使用しないので削除予定
          */
         public function getLock(): bool
@@ -159,8 +151,6 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return Cart
-         *
          * @deprecated 使用しないので削除予定
          */
         public function setLock(bool $lock): Cart
@@ -170,17 +160,11 @@ if (!class_exists(Cart::class)) {
             return $this;
         }
 
-        /**
-         * @return string|null
-         */
         public function getPreOrderId(): ?string
         {
             return $this->pre_order_id;
         }
 
-        /**
-         * @return Cart
-         */
         public function setPreOrderId(?string $pre_order_id): Cart
         {
             $this->pre_order_id = $pre_order_id;
@@ -188,9 +172,6 @@ if (!class_exists(Cart::class)) {
             return $this;
         }
 
-        /**
-         * @return Cart
-         */
         public function addCartItem(CartItem $CartItem): Cart
         {
             $this->CartItems[] = $CartItem;
@@ -208,9 +189,6 @@ if (!class_exists(Cart::class)) {
             return new ArrayCollection();
         }
 
-        /**
-         * @return Cart
-         */
         public function clearCartItems(): Cart
         {
             $this->CartItems->clear();
@@ -239,8 +217,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @param  Collection<int,CartItem> $CartItems
-         *
-         * @return Cart
          */
         public function setCartItems(Collection $CartItems): Cart
         {
@@ -261,9 +237,6 @@ if (!class_exists(Cart::class)) {
             return $this;
         }
 
-        /**
-         * @return string
-         */
         public function getTotalPrice(): string
         {
             return $this->total_price;
@@ -284,8 +257,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Alias of getTotalPrice
-         *
-         * @return string
          */
         #[\Override]
         public function getTotal(): string
@@ -293,9 +264,6 @@ if (!class_exists(Cart::class)) {
             return $this->getTotalPrice();
         }
 
-        /**
-         * @return string
-         */
         public function getTotalQuantity(): string
         {
             $totalQuantity = '0';
@@ -306,9 +274,6 @@ if (!class_exists(Cart::class)) {
             return $totalQuantity;
         }
 
-        /**
-         * @return void
-         */
         #[\Override]
         public function addItem(ItemInterface $item): void
         {
@@ -317,9 +282,6 @@ if (!class_exists(Cart::class)) {
             }
         }
 
-        /**
-         * @return void
-         */
         public function removeItem(ItemInterface $item): void
         {
             if ($item instanceof CartItem) {
@@ -329,8 +291,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * 個数の合計を返します。
-         *
-         * @return string
          */
         #[\Override]
         public function getQuantity(): string
@@ -362,17 +322,11 @@ if (!class_exists(Cart::class)) {
             return $this->delivery_fee_total;
         }
 
-        /**
-         * @return Customer|null
-         */
         public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
 
-        /**
-         * @return Cart
-         */
         public function setCustomer(?Customer $Customer = null): Cart
         {
             $this->Customer = $Customer;
@@ -382,8 +336,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @return Cart
          */
         public function setSortNo(?int $sortNo = null): Cart
         {
@@ -394,8 +346,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int|null
          */
         public function getSortNo(): ?int
         {
@@ -404,8 +354,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Set createDate.
-         *
-         * @return Cart
          */
         public function setCreateDate(\DateTime $createDate): Cart
         {
@@ -416,8 +364,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime|null
          */
         public function getCreateDate(): ?\DateTime
         {
@@ -426,8 +372,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Set updateDate.
-         *
-         * @return Cart
          */
         public function setUpdateDate(\DateTime $updateDate): Cart
         {
@@ -438,8 +382,6 @@ if (!class_exists(Cart::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime|null
          */
         public function getUpdateDate(): ?\DateTime
         {
@@ -494,8 +436,6 @@ if (!class_exists(Cart::class)) {
          * 注文ではないので、nullを返します。
          *
          * Rectorのルール対策のためOrderStatus|nullとしています。
-         *
-         * @return OrderStatus|null
          */
         public function getOrderStatus(): ?OrderStatus
         {

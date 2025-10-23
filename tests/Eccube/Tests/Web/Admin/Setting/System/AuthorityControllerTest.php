@@ -185,7 +185,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     /**
      * @return AuthorityRole
      */
-    private function newTestAuthorityRole()
+    private function newTestAuthorityRole(): AuthorityRole
     {
         $TestCreator = $this->memberRepository->find(1);
         $AuthorityRole = new AuthorityRole();

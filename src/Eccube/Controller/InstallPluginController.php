@@ -51,8 +51,6 @@ class InstallPluginController extends InstallController
 
     /**
      * 有効化可能なプラグイン一覧を返します.
-     *
-     * @return JsonResponse
      */
     #[Route('/install/plugins', name: 'install_plugins', methods: ['GET'])]
     public function plugins(Request $request): JsonResponse
@@ -77,7 +75,6 @@ class InstallPluginController extends InstallController
      *
      * @param string $code
      *
-     * @return JsonResponse
      *
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
@@ -132,8 +129,6 @@ class InstallPluginController extends InstallController
 
     /**
      * トランザクションファイルを削除し, 管理画面に遷移します.
-     *
-     * @return RedirectResponse
      */
     #[Route('/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
     public function redirectAdmin(Request $request): RedirectResponse
@@ -161,8 +156,6 @@ class InstallPluginController extends InstallController
 
     /**
      * トランザクションチェックファイルの有効期限を確認する
-     *
-     * @return bool
      */
     public function isValidTransaction(string $token): bool
     {
@@ -184,7 +177,6 @@ class InstallPluginController extends InstallController
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
      *
-     * @return JsonResponse
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
@@ -220,14 +212,11 @@ class InstallPluginController extends InstallController
         return $this->json(['success' => true]);
     }
 
-    /**
-     * @return void
-     */
     private function clearCacheOnTerminate(): void
     {
         // KernelEvents::TERMINATE で強制的にキャッシュを削除する
         // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083
-        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () {
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function (): void {
             $fs = new Filesystem();
             $fs->remove($this->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
         });

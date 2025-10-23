@@ -34,7 +34,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testIndexView()
+    public function testIndexView(): void
     {
         $response = $this->client->request('GET', $this->generateUrl('admin_setting_shop_tradelaw'));
         // Has success code response
@@ -83,7 +83,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testValidationNameMoreThan255Characters()
+    public function testValidationNameMoreThan255Characters(): void
     {
         $form = $this->createBaseForm();
         $form['TradeLaws'][0]['name'] = ByteString::fromRandom(256)->toString();
@@ -109,7 +109,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testValidationDescriptionMoreThan4000Characters()
+    public function testValidationDescriptionMoreThan4000Characters(): void
     {
         $form = $this->createBaseForm();
         $form['TradeLaws'][0]['description'] = ByteString::fromRandom(4001)->toString();
@@ -135,7 +135,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $form = $this->createBaseForm();
         $form['TradeLaws'][10]['name'] = 'UTテスト：名称';

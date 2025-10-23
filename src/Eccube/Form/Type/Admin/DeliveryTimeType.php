@@ -31,8 +31,6 @@ class DeliveryTimeType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string,mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -60,7 +58,7 @@ class DeliveryTimeType extends AbstractType
                 'expanded' => false,
             ])
         ;
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var DeliveryTime $DeliveryTime */
             $DeliveryTime = $event->getData();
             $DeliveryTime->setVisible(true);
@@ -69,8 +67,6 @@ class DeliveryTimeType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

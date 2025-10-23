@@ -42,7 +42,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
      *
      * @return void
      */
-    public function testTradeLawsNotEmpty()
+    public function testTradeLawsNotEmpty(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -67,7 +67,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
      *
      * @return void
      */
-    public function testTradeLawsEmpty()
+    public function testTradeLawsEmpty(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;

@@ -37,7 +37,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     /**
      * @return Calendar
      */
-    public function createCalendar()
+    public function createCalendar(): Calendar
     {
         $TargetCalendar = new Calendar();
         $TargetCalendar->setTitle('春分の日')

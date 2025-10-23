@@ -28,7 +28,7 @@ class EntryPage extends AbstractFrontPage
      *
      * @return EntryPage
      */
-    public static function go($I)
+    public static function go($I): EntryPage
     {
         $page = new self($I);
         $page->goPage('/entry');

@@ -74,7 +74,7 @@ class CalendarRepositoryTest extends EccubeTestCase
      *
      * @return Calendar
      */
-    public function createCalendar(string $title = 'title', ?\DateTime $holiday = null)
+    public function createCalendar(string $title = 'title', ?\DateTime $holiday = null): Calendar
     {
         /** @var Calendar $Calendar */
         $Calendar = new Calendar();

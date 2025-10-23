@@ -31,8 +31,6 @@ class AuthorityRoleType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string,mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -54,7 +52,7 @@ class AuthorityRoleType extends AbstractType
                     ]),
                 ],
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 $Authority = $form['Authority']->getData();
@@ -71,8 +69,6 @@ class AuthorityRoleType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

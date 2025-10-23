@@ -59,7 +59,7 @@ class SearchProductTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public static function dataFormDateProvider()
+    public static function dataFormDateProvider(): array
     {
         return [
             ['create_date_start'],
@@ -90,7 +90,7 @@ class SearchProductTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public static function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): array
     {
         return [
             ['create_datetime_start'],

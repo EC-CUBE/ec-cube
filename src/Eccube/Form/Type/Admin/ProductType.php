@@ -65,8 +65,6 @@ class ProductType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string,mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -188,7 +186,7 @@ class ProductType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var FormInterface $form */
             $form = $event->getForm();
             $saveImgDir = $this->eccubeConfig['eccube_save_image_dir'];
@@ -202,8 +200,6 @@ class ProductType extends AbstractType
      * 指定された複数ディレクトリのうち、いずれかのディレクトリ以下にファイルが存在するかを確認。
      *
      * @param array<int,string> $dirs
-     *
-     * @return void
      */
     private function validateFilePath(FormInterface $form, array $dirs): void
     {
@@ -226,8 +222,6 @@ class ProductType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

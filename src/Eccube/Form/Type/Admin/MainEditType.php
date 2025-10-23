@@ -66,8 +66,6 @@ class MainEditType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -186,7 +184,7 @@ class MainEditType extends AbstractType
                         ->orderBy('l.id', 'DESC');
                 },
             ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 $Page = $event->getData();
                 if (is_null($Page->getId())) {
                     return;
@@ -202,7 +200,7 @@ class MainEditType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 /** @var Page $Page */
@@ -283,8 +281,6 @@ class MainEditType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

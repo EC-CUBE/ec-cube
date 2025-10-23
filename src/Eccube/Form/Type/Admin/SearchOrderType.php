@@ -48,8 +48,6 @@ class SearchOrderType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -422,7 +420,7 @@ class SearchOrderType extends AbstractType
                 'label' => 'admin.list.sort.type',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 // 注文日

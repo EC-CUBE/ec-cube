@@ -53,15 +53,13 @@ class AbstractCsvImportController extends AbstractController
 
     /**
      * @param array<int,mixed> $columns
-     *
-     * @return StreamedResponse
      */
     protected function sendTemplateResponse(Request $request, array $columns, string $filename): StreamedResponse
     {
         set_time_limit(0);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($columns) {
+        $response->setCallback(function () use ($columns): void {
             // ヘッダ行の出力
             $row = [];
             foreach ($columns as $column) {
@@ -81,8 +79,6 @@ class AbstractCsvImportController extends AbstractController
 
     /**
      * アップロードされたCSVファイルの削除
-     *
-     * @return void
      */
     protected function removeUploadedFile(): void
     {

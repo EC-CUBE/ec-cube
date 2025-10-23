@@ -79,8 +79,6 @@ class ProductClassEditType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -151,8 +149,6 @@ class ProductClassEditType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -164,15 +160,13 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の個別税率設定の制御.
-     *
-     * @return void
      */
     protected function setTaxRate(FormBuilderInterface $builder): void
     {
         if (!$this->baseInfoRepository->get()->isOptionProductTaxRule()) {
             return;
         }
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             if (!$data instanceof ProductClass) {
                 return;
@@ -186,12 +180,10 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の登録チェックボックスの制御.
-     *
-     * @return void
      */
     protected function setCheckbox(FormBuilderInterface $builder): void
     {
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             if (!$data instanceof ProductClass) {
                 return;
@@ -202,19 +194,16 @@ class ProductClassEditType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
             $data->setVisible($form['checked']->getData() ? true : false);
         });
     }
 
-    /**
-     * @return void
-     */
     protected function addValidations(FormBuilderInterface $builder): void
     {
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $form->getData();
 
@@ -277,9 +266,6 @@ class ProductClassEditType extends AbstractType
         });
     }
 
-    /**
-     * @return void
-     */
     protected function addErrors(string $key, FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         foreach ($errors as $error) {

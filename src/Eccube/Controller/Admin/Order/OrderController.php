@@ -321,9 +321,6 @@ class OrderController extends AbstractController
         ];
     }
 
-    /**
-     * @return RedirectResponse
-     */
     #[Route('/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
     public function bulkDelete(Request $request): RedirectResponse
     {
@@ -347,8 +344,6 @@ class OrderController extends AbstractController
 
     /**
      * 受注CSVの出力.
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/export/order', name: 'admin_order_export_order', methods: ['GET'])]
     public function exportOrder(Request $request): StreamedResponse
@@ -362,8 +357,6 @@ class OrderController extends AbstractController
 
     /**
      * 配送CSVの出力.
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/order/export/shipping', name: 'admin_order_export_shipping', methods: ['GET'])]
     public function exportShipping(Request $request): StreamedResponse
@@ -375,9 +368,6 @@ class OrderController extends AbstractController
         return $response;
     }
 
-    /**
-     * @return StreamedResponse
-     */
     protected function exportCsv(Request $request, int $csvTypeId, string $fileName): StreamedResponse
     {
         // タイムアウトを無効にする.
@@ -388,7 +378,7 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request, $csvTypeId) {
+        $response->setCallback(function () use ($request, $csvTypeId): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType($csvTypeId);
 
@@ -401,7 +391,7 @@ class OrderController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 $Order = $entity;
@@ -452,8 +442,6 @@ class OrderController extends AbstractController
 
     /**
      * Update to order status
-     *
-     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/order_status', name: 'admin_shipping_update_order_status', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function updateOrderStatus(Request $request, Shipping $Shipping): JsonResponse
@@ -547,8 +535,6 @@ class OrderController extends AbstractController
 
     /**
      * Update to Tracking number.
-     *
-     * @return Response
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/tracking_number', name: 'admin_shipping_update_tracking_number', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function updateTrackingNumber(Request $request, Shipping $shipping): Response
@@ -643,9 +629,6 @@ class OrderController extends AbstractController
         ];
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]
     #[Template('@admin/Order/order_pdf.twig')]
     public function exportPdfDownload(Request $request, OrderPdfService $orderPdfService): Response

@@ -179,7 +179,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
      *
      * @return void
      */
-    public function testOrderMailXSSAttackPrevention()
+    public function testOrderMailXSSAttackPrevention(): void
     {
         // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
         $Customer = $this->createCustomer();

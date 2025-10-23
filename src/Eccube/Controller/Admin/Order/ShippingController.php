@@ -163,7 +163,7 @@ class ShippingController extends AbstractController
             ]);
 
         // 配送先の追加フラグが立っている場合は新しいお届け先を追加
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $data = $event->getData();
             if ($data['add_shipping']) {
                 $Shippings = $data['shippings'];
@@ -291,18 +291,12 @@ class ShippingController extends AbstractController
         ];
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/%eccube_admin_route%/shipping/preview_notify_mail/{id}', requirements: ['id' => '\d+'], name: 'admin_shipping_preview_notify_mail', methods: ['GET'])]
     public function previewShippingNotifyMail(Shipping $Shipping): Response
     {
         return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder(), null, true));
     }
 
-    /**
-     * @return JsonResponse
-     */
     #[Route('/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function notifyMail(Shipping $Shipping): JsonResponse
     {

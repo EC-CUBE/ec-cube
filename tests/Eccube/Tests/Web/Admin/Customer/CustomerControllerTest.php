@@ -185,7 +185,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array[]
      */
-    public static function indexWithPostSearchByProductNameProvider()
+    public static function indexWithPostSearchByProductNameProvider(): array
     {
         return [
             [OrderStatus::NEW, '検索結果：1件が該当しました'], // 新規受付

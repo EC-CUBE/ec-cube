@@ -37,7 +37,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testRouting()
+    public function testRouting(): void
     {
         $this->client->request('GET', $this->generateUrl('admin_setting_shop_mail'));
         $this->assertTrue($this->client->getResponse()->isOk());
@@ -48,7 +48,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -64,7 +64,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testValidationError()
+    public function testValidationError(): void
     {
         // 必須項目を空で登録し、バリデーションエラーを発生させる
         $crawler = $this->senarioCreate(['file_name' => '']);
@@ -79,7 +79,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testFileAlreadyExists()
+    public function testFileAlreadyExists(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate(['file_name' => 'test_exists']);
@@ -103,7 +103,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testEdit()
+    public function testEdit(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -143,7 +143,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testEditClearHtml()
+    public function testEditClearHtml(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate([
@@ -182,7 +182,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testEditNotExists()
+    public function testEditNotExists(): void
     {
         $id = 99999;
         $crawler = $this->senarioEdit($id);
@@ -198,7 +198,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -225,7 +225,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      *
      * @return void
      */
-    public function testDeleteNotDeletable()
+    public function testDeleteNotDeletable(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();

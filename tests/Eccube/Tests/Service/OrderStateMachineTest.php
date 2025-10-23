@@ -306,7 +306,7 @@ class OrderStateMachineTest extends EccubeTestCase
      *
      * @return OrderItem
      */
-    private function getProductOrderItem(Order $Order, ProductClass $ProductClass)
+    private function getProductOrderItem(Order $Order, ProductClass $ProductClass): OrderItem
     {
         return (new ArrayCollection($Order->getProductOrderItems()))->filter(function (OrderItem $item) use ($ProductClass) {
             return $item->getProductClass()->getId() == $ProductClass->getId();
@@ -318,7 +318,7 @@ class OrderStateMachineTest extends EccubeTestCase
      *
      * @return OrderStatus
      */
-    private function statusOf(int $statusId)
+    private function statusOf(int $statusId): OrderStatus
     {
         return $this->entityManager->find(OrderStatus::class, $statusId);
     }

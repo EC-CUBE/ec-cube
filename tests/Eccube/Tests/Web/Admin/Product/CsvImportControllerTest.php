@@ -77,7 +77,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @see CsvImportController::getProductCsvHeader()
      */
-    public function createCsvAsArray(bool $has_header = true)
+    public function createCsvAsArray(bool $has_header = true): array
     {
         $faker = $this->getFaker();
 
@@ -785,7 +785,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public static function dataProductIdProvider()
+    public static function dataProductIdProvider(): array
     {
         return [
             [99999, '2行目の商品IDが存在しません'],
@@ -798,7 +798,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public static function dataStatusProvider()
+    public static function dataStatusProvider(): array
     {
         return [
             [99, '2行目の公開ステータス\(ID\)が存在しません'],
@@ -816,7 +816,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @return Crawler
      */
-    protected function scenario(string $bind = 'admin_product_csv_import', string $original_name = 'products.csv', mixed $isXmlHttpRequest = false)
+    protected function scenario(string $bind = 'admin_product_csv_import', string $original_name = 'products.csv', mixed $isXmlHttpRequest = false): Crawler
     {
         $file = new UploadedFile(
             $this->filepath,    // file path

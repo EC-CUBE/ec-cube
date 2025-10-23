@@ -2533,7 +2533,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return mixed
      */
-    protected function scenarioCartIn(Customer $Customer, ProductClass $ProductClass, int $num = 1)
+    protected function scenarioCartIn(Customer $Customer, ProductClass $ProductClass, int $num = 1): mixed
     {
         $this->loginTo($Customer);
 
@@ -2554,7 +2554,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return mixed
      */
-    protected function scenarioConfirm(Customer $Customer, ProductClass $ProductClass)
+    protected function scenarioConfirm(Customer $Customer, ProductClass $ProductClass): mixed
     {
         $this->loginTo($Customer);
         $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();
@@ -2569,7 +2569,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return mixed
      */
-    protected function scenarioComplete(Customer $Customer, string $confirmUrl = '', array $arrShopping = [])
+    protected function scenarioComplete(Customer $Customer, string $confirmUrl = '', array $arrShopping = []): mixed
     {
         $faker = $this->getFaker();
         if (strlen($confirmUrl) == 0) {
@@ -2604,7 +2604,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return mixed
      */
-    protected function scenarioCartUp(Customer $Customer, ProductClass $ProductClass)
+    protected function scenarioCartUp(Customer $Customer, ProductClass $ProductClass): mixed
     {
         $this->loginTo($Customer);
 
@@ -2620,7 +2620,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return Crawler
      */
-    protected function scenarioCartDown(Customer $Customer, ProductClass $ProductClass)
+    protected function scenarioCartDown(Customer $Customer, ProductClass $ProductClass): Crawler
     {
         $this->loginTo($Customer);
 
@@ -2636,7 +2636,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return Product
      */
-    protected function changeStatus(Product $Product, int $display = ProductStatus::DISPLAY_SHOW)
+    protected function changeStatus(Product $Product, int $display = ProductStatus::DISPLAY_SHOW): Product
     {
         $Product = $this->entityManager->find(Product::class, $Product->getId());
         $ProductStatus = $this->productStatusRepository->find($display);
@@ -2654,7 +2654,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return ProductClass
      */
-    protected function changeStock(ProductClass $ProductClass, int $stock = 0)
+    protected function changeStock(ProductClass $ProductClass, int $stock = 0): ProductClass
     {
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $ProductClass->setStock($stock);
@@ -2694,7 +2694,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return Product
      */
-    public function createProduct(?string $productName = null, int $productClassNum = 3, int $stock = 0)
+    public function createProduct(?string $productName = null, int $productClassNum = 3, int $stock = 0): Product
     {
         $Product = parent::createProduct($productName, $productClassNum);
         $ProductClass = $Product->getProductClasses()->first();
@@ -2711,7 +2711,7 @@ class CartValidationTest extends AbstractWebTestCase
      *
      * @return string
      */
-    private function getProductName(ProductClass $ProductClass)
+    private function getProductName(ProductClass $ProductClass): string
     {
         $productName = $ProductClass->getProduct()->getName();
 

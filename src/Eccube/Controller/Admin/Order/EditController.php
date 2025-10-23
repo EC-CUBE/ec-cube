@@ -268,7 +268,7 @@ class EditController extends AbstractController
                         if ($TargetOrder->getId() && $OldStatus->getId() != $NewStatus->getId()) {
                             // 発送済に変更された場合は, 発送日をセットする.
                             if ($NewStatus->getId() == OrderStatus::DELIVERED) {
-                                $TargetOrder->getShippings()->map(function (Shipping $Shipping) {
+                                $TargetOrder->getShippings()->map(function (Shipping $Shipping): void {
                                     if (!$Shipping->isShipped()) {
                                         $Shipping->setShippingDate(new \DateTime());
                                     }
@@ -517,8 +517,6 @@ class EditController extends AbstractController
 
     /**
      * 顧客情報を検索する.
-     *
-     * @return JsonResponse
      */
     #[Route('/%eccube_admin_route%/order/search/customer/id', name: 'admin_order_search_customer_by_id', methods: ['POST'])]
     public function searchCustomerById(Request $request): JsonResponse

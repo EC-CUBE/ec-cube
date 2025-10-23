@@ -68,8 +68,6 @@ class AddCartType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -132,7 +130,7 @@ class AddCartType extends AbstractType
                 }
             }
 
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product): void {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (isset($data['classcategory_id1']) && !is_null($Product->getClassName2())) {
@@ -146,7 +144,7 @@ class AddCartType extends AbstractType
                 }
             });
 
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 /** @var CartItem $CartItem */
                 $CartItem = $event->getData();
                 $ProductClass = $CartItem->getProductClass();
@@ -162,8 +160,6 @@ class AddCartType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -181,8 +177,6 @@ class AddCartType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function finishView(FormView $view, FormInterface $form, array $options): void

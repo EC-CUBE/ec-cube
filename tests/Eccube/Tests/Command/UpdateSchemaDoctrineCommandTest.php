@@ -393,7 +393,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      *
      * @return CommandTester
      */
-    private function getCommandTester(string $name)
+    private function getCommandTester(string $name): CommandTester
     {
         $kernel = static::createKernel();
         $command = new UpdateSchemaDoctrineCommand(
@@ -411,7 +411,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * @return AbstractSchemaManager
      */
-    private function getSchemaManager()
+    private function getSchemaManager(): AbstractSchemaManager
     {
         return $this->entityManager->getConnection()->getSchemaManager();
     }
@@ -476,7 +476,7 @@ EOT
      *
      * @return array
      */
-    private function createComposerJsonFile($config)
+    private function createComposerJsonFile($config): array
     {
         /** @var Generator $faker */
         $faker = $this->getFaker();
@@ -507,7 +507,7 @@ EOT
      *
      * @return string output
      */
-    private function executeExternalProcess(string $command)
+    private function executeExternalProcess(string $command): string
     {
         StaticDriver::commit();
         StaticDriver::beginTransaction();

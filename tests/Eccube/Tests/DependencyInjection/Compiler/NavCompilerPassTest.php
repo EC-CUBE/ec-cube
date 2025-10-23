@@ -97,7 +97,7 @@ class NavCompilerPassTest extends EccubeTestCase
     /**
      * @return ContainerBuilder
      */
-    public function createContainer()
+    public function createContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();
 

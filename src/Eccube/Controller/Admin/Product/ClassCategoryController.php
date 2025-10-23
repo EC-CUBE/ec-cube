@@ -173,7 +173,6 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string $id
      *
-     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
@@ -225,7 +224,6 @@ class ClassCategoryController extends AbstractController
      * @param string $class_name_id
      * @param string $id
      *
-     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
@@ -271,8 +269,6 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
-     * @return Response
-     *
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_category/sort_no/move', name: 'admin_product_class_category_sort_no_move', methods: ['POST'])]
@@ -302,8 +298,6 @@ class ClassCategoryController extends AbstractController
      * 規格分類CSVの出力.
      *
      * @param string $class_name_id
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/class_category/export/{class_name_id}', name: 'admin_product_class_category_export', requirements: ['class_name_id' => '\d+'], methods: ['GET'])]
     public function export(Request $request, $class_name_id): StreamedResponse
@@ -316,7 +310,7 @@ class ClassCategoryController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request, $class_name_id) {
+        $response->setCallback(function () use ($request, $class_name_id): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CLASS_CATEGORY);
             // ヘッダ行の出力.
@@ -330,7 +324,7 @@ class ClassCategoryController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var ClassCategory $ClassCategory */

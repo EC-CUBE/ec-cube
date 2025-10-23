@@ -34,8 +34,6 @@ class ProductClassMatrixType extends AbstractType
      * {@inheritDoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -68,7 +66,7 @@ class ProductClassMatrixType extends AbstractType
                 'constraints' => new Callback(function (
                     ?ClassName $ClassName2,
                     ExecutionContextInterface $context,
-                ) {
+                ): void {
                     $ClassName1 = $context->getRoot()->get('class_name1')->getData();
                     if ($ClassName1 && $ClassName2) {
                         if ($ClassName1->getId() === $ClassName2->getId()) {
@@ -88,7 +86,7 @@ class ProductClassMatrixType extends AbstractType
             ->add('save', SubmitType::class);
 
         if ($options['product_classes_exist']) {
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $ProductClasses = $form['product_classes']->getData();
                 $hasVisible = false;
@@ -108,8 +106,6 @@ class ProductClassMatrixType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

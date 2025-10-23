@@ -60,8 +60,6 @@ class ShippingType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -78,7 +76,7 @@ class ShippingType extends AbstractType
         // 配送業者のプルダウンを生成
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            function (FormEvent $event): void {
                 /* @var Shipping $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
@@ -120,7 +118,7 @@ class ShippingType extends AbstractType
         // お届け日のプルダウンを生成
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            function (FormEvent $event): void {
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
@@ -197,7 +195,7 @@ class ShippingType extends AbstractType
         // お届け時間のプルダウンを生成
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            function (FormEvent $event): void {
                 /** @var Shipping|null $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
@@ -241,7 +239,7 @@ class ShippingType extends AbstractType
 
         // POSTされないデータをエンティティにセットする.
         // TODO PurchaseFlow で行うのが適切.
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Shipping $Shipping */
             $Shipping = $event->getData();
             $form = $event->getForm();
@@ -272,8 +270,6 @@ class ShippingType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

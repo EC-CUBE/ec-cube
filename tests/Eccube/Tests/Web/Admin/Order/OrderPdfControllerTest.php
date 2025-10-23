@@ -244,7 +244,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public static function dataDownloadMaxLengthProvider()
+    public static function dataDownloadMaxLengthProvider(): array
     {
         return [
             ['order_pdf[title]', 'この値は、255文字以内で入力してください。'],
@@ -415,7 +415,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @return Form
      */
-    private function getForm(Crawler $crawler)
+    private function getForm(Crawler $crawler): Form
     {
         $form = $crawler->selectButton('作成')->form();
         $form['order_pdf[_token]'] = 'dummy';
@@ -428,7 +428,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @return Order
      */
-    private function createOrderForSearch()
+    private function createOrderForSearch(): Order
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);

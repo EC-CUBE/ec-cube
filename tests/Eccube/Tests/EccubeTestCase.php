@@ -30,6 +30,7 @@ use Faker\Factory as Faker;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -95,7 +96,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see https://github.com/fzaninotto/Faker
      */
-    public function getFaker(string $locale = 'ja_JP')
+    public function getFaker(string $locale = 'ja_JP'): \Faker\Generator
     {
         return Faker::create($locale);
     }
@@ -119,7 +120,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Member
      */
-    public function createMember(?string $username = null)
+    public function createMember(?string $username = null): Member
     {
         return static::getContainer()->get(Generator::class)->createMember($username);
     }
@@ -131,7 +132,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Customer
      */
-    public function createCustomer(?string $email = null)
+    public function createCustomer(?string $email = null): Customer
     {
         return static::getContainer()->get(Generator::class)->createCustomer($email);
     }
@@ -144,7 +145,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return CustomerAddress
      */
-    public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false)
+    public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false): CustomerAddress
     {
         return static::getContainer()->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
     }
@@ -156,7 +157,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Customer
      */
-    public function createNonMember(?string $email = null)
+    public function createNonMember(?string $email = null): Customer
     {
         return static::getContainer()->get(Generator::class)->createNonMember($email);
     }
@@ -169,7 +170,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Product
      */
-    public function createProduct(?string $product_name = null, int $product_class_num = 3)
+    public function createProduct(?string $product_name = null, int $product_class_num = 3): Product
     {
         return static::getContainer()->get(Generator::class)->createProduct($product_name, $product_class_num);
     }
@@ -181,7 +182,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Order
      */
-    public function createOrder(Customer $Customer)
+    public function createOrder(Customer $Customer): Order
     {
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
@@ -198,7 +199,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Order
      */
-    public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)
+    public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses): Order
     {
         return static::getContainer()->get(Generator::class)->createOrder($Customer, $ProductClasses);
     }
@@ -214,7 +215,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Payment
      */
-    public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999)
+    public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999): Payment
     {
         return static::getContainer()->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
@@ -224,7 +225,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return Page
      */
-    public function createPage()
+    public function createPage(): Page
     {
         return static::getContainer()->get(Generator::class)->createPage();
     }
@@ -239,7 +240,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return LoginHistory
      */
-    public function createLoginHistory(mixed $user_name, mixed $client_ip = null, mixed $status = 0, mixed $Member = null)
+    public function createLoginHistory(mixed $user_name, mixed $client_ip = null, mixed $status = 0, mixed $Member = null): LoginHistory
     {
         return static::getContainer()->get(Generator::class)->createLoginHistory($user_name, $client_ip, $status, $Member);
     }
@@ -252,7 +253,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param array $tables 削除対象のテーブル名の配列
      */
-    public function deleteAllRows(array $tables)
+    public function deleteAllRows(array $tables): void
     {
         /** @var Connection $conn */
         $conn = $this->entityManager->getConnection();
@@ -280,7 +281,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
-    protected function cleanUpProperties()
+    protected function cleanUpProperties(): void
     {
         $refl = new \ReflectionObject($this);
         foreach ($refl->getProperties() as $prop) {
@@ -302,7 +303,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @see UrlGeneratorInterface
      * @see \Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait::generateUrl
      */
-    protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         return static::getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
@@ -320,7 +321,7 @@ abstract class EccubeTestCase extends WebTestCase
      * @see \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
      * @see https://stackoverflow.com/a/38661340/4956633
      */
-    protected function getCsrfToken(string $csrfTokenId)
+    protected function getCsrfToken(string $csrfTokenId): CsrfToken
     {
         return static::getContainer()->get('security.csrf.token_manager')->getToken($csrfTokenId);
     }

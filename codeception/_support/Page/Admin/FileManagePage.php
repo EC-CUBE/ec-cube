@@ -113,7 +113,7 @@ class FileManagePage extends AbstractAdminPageStyleGuide
      *
      * @return string
      */
-    public function パンくず($index)
+    public function パンくず($index): string
     {
         return "//*[@id=\"bread\"]/li[{$index}]";
     }

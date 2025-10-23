@@ -43,8 +43,6 @@ class PasswordResetType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -59,7 +57,7 @@ class PasswordResetType extends AbstractType
             ],
         ])->add('password', RepeatedPasswordType::class);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             if ($form['password']['first']->getData() == $form['login_email']->getData()) {
                 $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));

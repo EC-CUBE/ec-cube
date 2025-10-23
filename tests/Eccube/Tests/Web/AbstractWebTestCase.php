@@ -58,7 +58,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      *
      * @see EccubeTestCase::getCsrfToken()
      */
-    public function loginTo(UserInterface $User)
+    public function loginTo(UserInterface $User): KernelBrowser|\Symfony\Component\BrowserKit\AbstractBrowser
     {
         $firewallContext = $User instanceof Customer ? 'customer' : 'admin';
         $this->client->loginUser($User, $firewallContext);

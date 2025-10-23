@@ -83,8 +83,6 @@ class ShippingType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -212,7 +210,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'data' => true,
             ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 /** @var Shipping|null $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
@@ -256,7 +254,7 @@ class ShippingType extends AbstractType
                     'mapped' => false,
                 ]);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
                 $form = $event->getForm();
 
@@ -289,7 +287,7 @@ class ShippingType extends AbstractType
                     'mapped' => false,
                 ]);
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $Shipping = $event->getData();
                 $Delivery = $Shipping->getDelivery();
@@ -303,7 +301,7 @@ class ShippingType extends AbstractType
                     $Shipping->setTimeId(null);
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 // 出荷編集画面のみバリデーションをする。
                 if ($event->getForm()->getParent()->getName() != 'shippings') {
                     return;
@@ -330,8 +328,6 @@ class ShippingType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

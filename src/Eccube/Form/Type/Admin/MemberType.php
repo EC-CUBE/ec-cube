@@ -57,8 +57,6 @@ class MemberType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -113,7 +111,7 @@ class MemberType extends AbstractType
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
 
@@ -145,7 +143,7 @@ class MemberType extends AbstractType
             $form->add('login_id', TextType::class, $options);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Member $Member */
             $Member = $event->getData();
 
@@ -172,8 +170,6 @@ class MemberType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

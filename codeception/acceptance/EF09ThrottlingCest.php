@@ -318,7 +318,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function 注文完了_非会員購入(AcceptanceTester $I)
+    public function 注文完了_非会員購入(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T10_注文完了_非会員購入');
 
@@ -363,7 +363,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function 注文完了_会員購入(AcceptanceTester $I)
+    public function 注文完了_会員購入(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T11_注文完了_会員購入');
 
@@ -401,7 +401,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function 会員情報編集(AcceptanceTester $I)
+    public function 会員情報編集(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T12_会員情報編集');
         $createCustomer = Fixtures::get('createCustomer');
@@ -435,7 +435,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function 配送先情報_追加(AcceptanceTester $I)
+    public function 配送先情報_追加(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
         $createCustomer = Fixtures::get('createCustomer');
@@ -494,7 +494,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function 配送先情報_編集(AcceptanceTester $I)
+    public function 配送先情報_編集(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T14_配送先情報_編集');
         $createCustomer = Fixtures::get('createCustomer');
@@ -574,7 +574,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function 配送先情報_削除(AcceptanceTester $I)
+    public function 配送先情報_削除(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T15_配送先情報_削除');
         $createCustomer = Fixtures::get('createCustomer');
@@ -639,7 +639,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function order_お届け先追加(AcceptanceTester $I)
+    public function order_お届け先追加(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T16_order_お届け先追加');
         $I->logoutAsMember();
@@ -705,7 +705,7 @@ class EF09ThrottlingCest
      *
      * @return void
      */
-    public function order_お届け先変更(AcceptanceTester $I)
+    public function order_お届け先変更(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T17_order_お届け先変更');
         $I->logoutAsMember();

@@ -32,7 +32,7 @@ class Step5TypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public static function getValidTestData()
+    public static function getValidTestData(): array
     {
         return [
             [

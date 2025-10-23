@@ -46,8 +46,6 @@ class PaymentRegisterType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -96,7 +94,7 @@ class PaymentRegisterType extends AbstractType
             ->add('charge', PriceType::class, [
             ])
             ->add('fixed', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
@@ -109,8 +107,6 @@ class PaymentRegisterType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

@@ -30,7 +30,7 @@ class ForgotTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public static function getInvalidTestData()
+    public static function getInvalidTestData(): array
     {
         return [
             [

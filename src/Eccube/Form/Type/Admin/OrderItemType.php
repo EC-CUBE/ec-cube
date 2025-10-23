@@ -113,8 +113,6 @@ class OrderItemType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -176,7 +174,7 @@ class OrderItemType extends AbstractType
                 )));
 
         // 受注明細フォームの税率を補完する
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $OrderItem = $event->getData();
 
             if (!isset($OrderItem['tax_rate']) || StringUtil::isBlank($OrderItem['tax_rate'])) {
@@ -207,7 +205,7 @@ class OrderItemType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var OrderItem $OrderItem */
             $OrderItem = $event->getData();
 
@@ -251,7 +249,7 @@ class OrderItemType extends AbstractType
         });
 
         // price, quantityのバリデーション
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             /** @var OrderItem $OrderItem */
             $OrderItem = $event->getData();
@@ -291,8 +289,6 @@ class OrderItemType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -311,9 +307,6 @@ class OrderItemType extends AbstractType
         return 'order_item';
     }
 
-    /**
-     * @return void
-     */
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         if (count($errors) < 1) {

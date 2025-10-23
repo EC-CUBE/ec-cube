@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\NoResultException;
@@ -150,8 +151,9 @@ class ProductClassController extends AbstractController
                 $this->isTokenValid();
 
                 // 登録,更新ボタンが押下されたかどうか.
-                /** @var ClickableInterface $form['save'] */
-                $isSave = $form['save']->isClicked();
+                /** @var ClickableInterface $saveForm */
+                $saveForm = $form['save'];
+                $isSave = $saveForm->isClicked();
 
                 // 規格名1/2から商品規格の組み合わせを生成する.
                 $ClassName1 = $form['class_name1']->getData();
@@ -197,7 +199,6 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を初期化する.
      *
-     * @return RedirectResponse
      *
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
@@ -327,7 +328,6 @@ class ProductClassController extends AbstractController
      *
      * @param array|ProductClass[] $ProductClasses
      *
-     * @return void
      *
      * @throws NoResultException
      */
@@ -422,15 +422,13 @@ class ProductClassController extends AbstractController
      *
      * @param array<int,ProductClass> $ProductClasses
      * @param array<string,mixed> $options
-     *
-     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createMatrixForm(
         array $ProductClasses = [],
         ?ClassName $ClassName1 = null,
         ?ClassName $ClassName2 = null,
         array $options = [],
-    ) {
+    ): FormInterface {
         $options = array_merge(['csrf_protection' => false], $options);
         $builder = $this->formFactory->createBuilder(ProductClassMatrixType::class, [
             'product_classes' => $ProductClasses,
@@ -445,7 +443,6 @@ class ProductClassController extends AbstractController
      * 商品を取得する.
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
      *
-     * @return Product|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

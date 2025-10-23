@@ -85,8 +85,6 @@ class OrderType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -123,7 +121,7 @@ class OrderType extends AbstractType
         }
 
         // 支払い方法のプルダウンを生成
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             /** @var Order|null $Order */
             $Order = $event->getData();
             if (null === $Order || !$Order->getId()) {
@@ -142,7 +140,7 @@ class OrderType extends AbstractType
 
         // 支払い方法のプルダウンを生成(Submit時)
         // 配送方法の選択によって使用できる支払い方法がかわるため, フォームを再生成する.
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             /** @var Order $Order */
             $Order = $event->getForm()->getData();
             $data = $event->getData();
@@ -168,7 +166,7 @@ class OrderType extends AbstractType
             $this->addPaymentForm($form, $Payments);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Order $Order */
             $Order = $event->getData();
             $Payment = $Order->getPayment();
@@ -180,8 +178,6 @@ class OrderType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -202,8 +198,6 @@ class OrderType extends AbstractType
 
     /**
      * @param Payment[] $choices
-     *
-     * @return void
      */
     private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null): void
     {

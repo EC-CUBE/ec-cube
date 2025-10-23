@@ -50,7 +50,6 @@ class Step3Type extends AbstractType
      *
      * @param array<string, mixed> $options
      *
-     * @return void
      *
      * @throws \Exception
      */
@@ -147,7 +146,7 @@ class Step3Type extends AbstractType
                 'label' => trans('install.smtp_password'),
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 

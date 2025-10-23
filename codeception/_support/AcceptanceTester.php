@@ -178,7 +178,7 @@ class AcceptanceTester extends Actor
      *
      * @throws FileNotFoundException 指定したパターンにマッチするファイルがない場合
      */
-    public function getLastDownloadFile($fileNameRegex, mixed $retryCount = 3)
+    public function getLastDownloadFile($fileNameRegex, mixed $retryCount = 3): string
     {
         $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);

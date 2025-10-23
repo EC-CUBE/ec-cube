@@ -61,8 +61,6 @@ class CalendarType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string,mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -96,7 +94,7 @@ class CalendarType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             // 日付重複チェック
             /** @var Calendar $Calendar */
             $Calendar = $event->getData();
@@ -137,8 +135,6 @@ class CalendarType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void

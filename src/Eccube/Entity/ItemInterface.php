@@ -59,24 +59,12 @@ interface ItemInterface
      */
     public function isTax(): bool;
 
-    /**
-     * @return OrderItemType|null
-     */
     public function getOrderItemType(): ?OrderItemType;
 
-    /**
-     * @return ?ProductClass
-     */
-    public function getProductClass();
+    public function getProductClass(): ?ProductClass;
 
-    /**
-     * @return string|null
-     */
     public function getPrice(): ?string;
 
-    /**
-     * @return string
-     */
     public function getQuantity(): string;
 
     /**
@@ -84,14 +72,8 @@ interface ItemInterface
      */
     public function setQuantity(string $quantity): static;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int;
 
-    /**
-     * @return string|null
-     */
     public function getPointRate(): ?string;
 
     /**
@@ -99,8 +81,5 @@ interface ItemInterface
      */
     public function setPrice(?string $price): static;
 
-    /**
-     * @return string
-     */
     public function getPriceIncTax(): string;
 }

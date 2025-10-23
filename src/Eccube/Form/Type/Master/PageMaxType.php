@@ -27,20 +27,18 @@ class PageMaxType extends AbstractType
      * {@inheritdoc}
      *
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $options = $event->getForm()->getConfig()->getOptions();
             if (!$event->getData()) {
                 $data = current($options['choice_loader']->loadChoiceList()->getChoices());
                 $event->setData($data);
             }
         });
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $options = $event->getForm()->getConfig()->getOptions();
             $values = $options['choice_loader']->loadChoiceList()->getValues();
             if (!in_array($event->getData(), $values)) {
@@ -52,8 +50,6 @@ class PageMaxType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
@@ -65,8 +61,6 @@ class PageMaxType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
     public function getBlockPrefix(): string

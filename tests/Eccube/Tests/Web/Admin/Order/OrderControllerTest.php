@@ -385,7 +385,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array
      */
-    public static function dataBulkOrderStatusProvider()
+    public static function dataBulkOrderStatusProvider(): array
     {
         return [
             [OrderStatus::PAID],

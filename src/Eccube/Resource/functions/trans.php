@@ -16,11 +16,10 @@ use Eccube\DependencyInjection\Facade\TranslatorFacade;
 /**
  * @param array<string, mixed> $parameters
  *
- * @return string
  *
  * @throws Exception
  */
-function trans(string|int $id, array $parameters = [], ?string $domain = null, ?string $locale = null)
+function trans(string|int $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
 {
     $Translator = TranslatorFacade::create();
 
@@ -31,11 +30,10 @@ function trans(string|int $id, array $parameters = [], ?string $domain = null, ?
  * @param mixed $number - 不要引数
  * @param array<mixed> $parameters
  *
- * @return string
  *
  * @deprecated  transを使用してください。
  */
-function transChoice(string|int $id, mixed $number, array $parameters = [], ?string $domain = null, ?string $locale = null)
+function transChoice(string|int $id, mixed $number, array $parameters = [], ?string $domain = null, ?string $locale = null): string
 {
     return trans($id, $parameters, $domain, $locale);
 }

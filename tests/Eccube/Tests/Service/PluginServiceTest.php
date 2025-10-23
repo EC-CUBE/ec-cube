@@ -711,7 +711,7 @@ EOD;
      *
      * @return array
      */
-    private function createComposerJsonFile($config)
+    private function createComposerJsonFile($config): array
     {
         /** @var Generator $faker */
         $faker = $this->getFaker();

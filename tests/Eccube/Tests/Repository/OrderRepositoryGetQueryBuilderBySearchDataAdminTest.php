@@ -433,7 +433,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public static function dataFormDateProvider()
+    public static function dataFormDateProvider(): array
     {
         return [
             ['order_date_start', 'today', 2],
@@ -481,7 +481,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public static function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): array
     {
         return [
             ['order_datetime_start', '- 1 hour', 2],
@@ -598,7 +598,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public static function dataPaymentProvider()
+    public static function dataPaymentProvider(): array
     {
         return [
             [[1], 1],
@@ -678,7 +678,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      *
      * @return array
      */
-    public static function dataShippingMailProvider()
+    public static function dataShippingMailProvider(): array
     {
         return [
             [[], 2],

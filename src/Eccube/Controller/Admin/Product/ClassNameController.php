@@ -151,8 +151,6 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse
-     *
      * @throws \Exception
      */
     #[Route('/%eccube_admin_route%/product/class_name/{id}/delete', name: 'admin_product_class_name_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
@@ -182,8 +180,6 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @return Response
-     *
      * @throws BadRequestHttpException
      */
     #[Route('/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
@@ -211,8 +207,6 @@ class ClassNameController extends AbstractController
 
     /**
      * 規格CSVの出力.
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/class_name/export', name: 'admin_product_class_name_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
@@ -225,7 +219,7 @@ class ClassNameController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CLASS_NAME);
 
@@ -238,7 +232,7 @@ class ClassNameController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var ClassName $ClassName */

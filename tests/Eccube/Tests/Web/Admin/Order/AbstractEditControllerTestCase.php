@@ -42,7 +42,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createFormData(Customer $Customer, ?Product $Product = null, ?int $charge = null)
+    public function createFormData(Customer $Customer, ?Product $Product = null, ?int $charge = null): array
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail();
@@ -90,7 +90,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createShippingFormData(?Product $Product = null)
+    public function createShippingFormData(?Product $Product = null): array
     {
         $faker = $this->getFaker();
 
@@ -131,7 +131,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createOrderItemFormData(?Product $Product, ?int $charge = null)
+    public function createOrderItemFormData(?Product $Product, ?int $charge = null): array
     {
         $faker = $this->getFaker();
 
@@ -168,7 +168,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createFormDataForEdit(Order $Order)
+    public function createFormDataForEdit(Order $Order): array
     {
         // 受注アイテム
         $orderItem = $this->createOrderItemsFormDataEdit($Order->getOrderItems());
@@ -226,7 +226,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createShippingFormDataForEdit(Shipping $Shipping)
+    public function createShippingFormDataForEdit(Shipping $Shipping): array
     {
         $shipping = [
             'name' => [
@@ -259,7 +259,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function createOrderItemsFormDataEdit(mixed $OrderItems)
+    public function createOrderItemsFormDataEdit(mixed $OrderItems): array
     {
         $orderItem = [];
 

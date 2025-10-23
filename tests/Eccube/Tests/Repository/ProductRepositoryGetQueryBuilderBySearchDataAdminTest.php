@@ -258,7 +258,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      *
      * @return array
      */
-    public static function dataFormDateProvider()
+    public static function dataFormDateProvider(): array
     {
         return [
             ['create_date_start', 'today', 3],
@@ -296,7 +296,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      *
      * @return array
      */
-    public static function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): array
     {
         return [
             ['create_datetime_start', '- 1 hour', 3],

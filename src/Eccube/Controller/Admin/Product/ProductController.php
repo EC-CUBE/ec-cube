@@ -316,7 +316,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
      *
-     * @return Response
      *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
@@ -371,7 +370,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     * @return BinaryFileResponse
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
@@ -409,7 +407,6 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
      *
-     * @return Response
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
@@ -773,7 +770,6 @@ class ProductController extends AbstractController
     /**
      * @param int|string|null $id
      *
-     * @return RedirectResponse|JsonResponse
      *
      * @throws \Exception
      */
@@ -869,7 +865,6 @@ class ProductController extends AbstractController
     /**
      * @param int|string|null $id
      *
-     * @return RedirectResponse
      *
      * @throws \Exception
      */
@@ -981,8 +976,6 @@ class ProductController extends AbstractController
 
     /**
      * 商品CSVの出力.
-     *
-     * @return StreamedResponse
      */
     #[Route('/%eccube_admin_route%/product/export', name: 'admin_product_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
@@ -995,7 +988,7 @@ class ProductController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -1032,7 +1025,7 @@ class ProductController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
 
-            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var Product $Product */
@@ -1086,8 +1079,6 @@ class ProductController extends AbstractController
 
     /**
      * ProductCategory作成
-     *
-     * @return ProductCategory
      */
     private function createProductCategory(Product $Product, Category $Category, int $count): ProductCategory
     {
@@ -1102,8 +1093,6 @@ class ProductController extends AbstractController
 
     /**
      * Bulk public action
-     *
-     * @return RedirectResponse
      */
     #[Route('/%eccube_admin_route%/product/bulk/product-status/{id}', requirements: ['id' => '\d+'], name: 'admin_product_bulk_product_status', methods: ['POST'])]
     public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil): RedirectResponse

@@ -45,7 +45,7 @@ class PaymentTotalNegativeValidatorTest extends EccubeTestCase
     /**
      * @return PaymentTotalNegativeValidator
      */
-    private function newValidator()
+    private function newValidator(): PaymentTotalNegativeValidator
     {
         return static::getContainer()->get(PaymentTotalNegativeValidator::class);
     }
