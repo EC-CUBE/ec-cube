@@ -115,7 +115,7 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Get backend_name.
          */
-        public function getBackendName(): string
+        public function getBackendName(): ?string
         {
             return $this->backend_name;
         }
