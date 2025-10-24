@@ -199,7 +199,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      * @param string $field
      * @param string $message
      */
-    #[DataProvider('dataDownloadMaxLengthProvider')]
+    #[DataProvider(methodName: 'dataDownloadMaxLengthProvider')]
     public function testDownloadMaxLength($field, $message)
     {
         $Order = $this->createOrderForSearch();
@@ -241,8 +241,6 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Data provider for max length test.
-     *
-     * @return array
      */
     public static function dataDownloadMaxLengthProvider(): array
     {
@@ -410,11 +408,6 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($OrderPdf->getNote3());
     }
 
-    /**
-     * @param Crawler $crawler
-     *
-     * @return Form
-     */
     private function getForm(Crawler $crawler): Form
     {
         $form = $crawler->selectButton('作成')->form();
@@ -425,8 +418,6 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Create order data for search function.
-     *
-     * @return Order
      */
     private function createOrderForSearch(): Order
     {

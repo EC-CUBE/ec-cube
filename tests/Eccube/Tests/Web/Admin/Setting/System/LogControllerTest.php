@@ -91,7 +91,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * @param string $expected
      * @param string $message
      */
-    #[DataProvider('dataProvider')]
+    #[DataProvider(methodName: 'dataProvider')]
     public function testSystemLogValidate($value, $expected, $message)
     {
         $this->createTestFile(1);
@@ -114,9 +114,6 @@ class LogControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public static function dataProvider(): array
     {
         return [

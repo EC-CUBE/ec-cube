@@ -182,9 +182,6 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($AuthorityRole->getId());
     }
 
-    /**
-     * @return AuthorityRole
-     */
     private function newTestAuthorityRole(): AuthorityRole
     {
         $TestCreator = $this->memberRepository->find(1);
@@ -200,11 +197,6 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         return $AuthorityRole;
     }
 
-    /**
-     * @param AuthorityRole|null $AuthorityRole
-     *
-     * @return array
-     */
     protected function createFormData(?AuthorityRole $AuthorityRole = null): array
     {
         if (!$AuthorityRole) {

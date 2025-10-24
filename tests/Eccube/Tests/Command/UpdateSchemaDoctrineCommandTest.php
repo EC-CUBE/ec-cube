@@ -55,8 +55,6 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      * 連続してテストを実行すると、プロキシ関係でテストが失敗する。
      * １メソッドごとに実行すること。
      *
-     * @return void
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function setUp(): void
@@ -97,8 +95,6 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     /**
      * 中のプロパティをクリアしている
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -388,11 +384,6 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNull($pluginA);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return CommandTester
-     */
     private function getCommandTester(string $name): CommandTester
     {
         $kernel = static::createKernel();
@@ -408,9 +399,6 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         return new CommandTester($application->find($name));
     }
 
-    /**
-     * @return AbstractSchemaManager
-     */
     private function getSchemaManager(): AbstractSchemaManager
     {
         return $this->entityManager->getConnection()->getSchemaManager();
@@ -473,8 +461,6 @@ EOT
 
     /**
      * @param $config
-     *
-     * @return array
      */
     private function createComposerJsonFile($config): array
     {
@@ -502,8 +488,6 @@ EOT
      *
      * Execute ALTER TABLE command, Once commit the transaction.
      * Ignore exceptions.
-     *
-     * @param string $command
      *
      * @return string output
      */

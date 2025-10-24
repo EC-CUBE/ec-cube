@@ -249,7 +249,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
      * @param mixed $errorMessage
      * @param mixed $exists
      */
-    #[DataProvider('dataProviderUploadIgnoreFiles')]
+    #[DataProvider(methodName: 'dataProviderUploadIgnoreFiles')]
     public function testUploadIgnoreFiles($fileName, $mimeType, $errorMessage, $exists)
     {
         $file = $this->getUserDataDir().'/../'.$fileName;

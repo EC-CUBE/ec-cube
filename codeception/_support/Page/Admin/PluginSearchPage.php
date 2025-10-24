@@ -29,8 +29,6 @@ class PluginSearchPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
-     * @return PluginStoreInstallPage
      */
     public function 入手する($pluginCode): PluginStoreInstallPage
     {

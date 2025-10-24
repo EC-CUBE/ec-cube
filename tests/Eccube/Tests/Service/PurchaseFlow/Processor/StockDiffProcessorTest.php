@@ -55,7 +55,7 @@ class StockDiffProcessorTest extends EccubeTestCase
      * @param $beforeOrderStatus int 編集前の受注ステータス
      * @param $afterOrderStatus int 編集後の受注ステータス
      */
-    #[DataProvider('validateProvider')]
+    #[DataProvider(methodName: 'validateProvider')]
     public function testValidate($stock, $beforeQuantity, $afterQuantity, $isError, $beforeOrderStatus, $afterOrderStatus)
     {
         $Customer = new Customer();
@@ -155,7 +155,7 @@ class StockDiffProcessorTest extends EccubeTestCase
      *
      * @throws PurchaseException
      */
-    #[DataProvider('prepareProvider')]
+    #[DataProvider(methodName: 'prepareProvider')]
     public function testPrepare($beforeStock, $afterStock, $beforeQuantity, $afterQuantity, $beforeOrderStatus, $afterOrderStatus)
     {
         $Customer = new Customer();

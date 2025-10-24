@@ -31,8 +31,6 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 正式的に設定画面が読み込まれ、正しい初期入力フィールドが表示されることを確認するテスト
      * Test to confirm settings index page loads and displays the correct initial input fields
-     *
-     * @return void
      */
     public function testIndexView(): void
     {
@@ -80,8 +78,6 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 名称入力欄が255文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 255
-     *
-     * @return void
      */
     public function testValidationNameMoreThan255Characters(): void
     {
@@ -106,8 +102,6 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 説明入力欄が4000文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 4000
-     *
-     * @return void
      */
     public function testValidationDescriptionMoreThan4000Characters(): void
     {
@@ -132,8 +126,6 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 正しいデータでフォーム内容が更新されるかどうかのチェック
      * With correct input entries, check if the data is correctly saved.
-     *
-     * @return void
      */
     public function testUpdate(): void
     {

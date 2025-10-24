@@ -112,9 +112,6 @@ CODE_SAMPLE
 
         // Attribute のクラス名を取得
         $className = $this->resolveAttributeClassName($attribute);
-        if ($className === null) {
-            return false;
-        }
 
         // コンストラクタのパラメータ順序を取得
         $parameterOrder = $this->getConstructorParameterOrder($className);
@@ -126,13 +123,11 @@ CODE_SAMPLE
         $originalArgs = $attribute->args;
 
         // 第一引数が名前なし引数の場合、第一パラメータ名を付与
-        $firstArg = $attribute->args[0] ?? null;
-        if ($firstArg instanceof Arg && $firstArg->name === null) {
+        $firstArg = $attribute->args[0];
+        if ($firstArg->name === null) {
             $firstParameterName = array_key_first($parameterOrder);
-            if ($firstParameterName !== null) {
-                $firstArg->name = new Identifier($firstParameterName);
-                $hasChanged = true;
-            }
+            $firstArg->name = new Identifier($firstParameterName);
+            $hasChanged = true;
         }
 
         // 引数を名前でグループ化
@@ -177,7 +172,7 @@ CODE_SAMPLE
     /**
      * Attribute のクラス名を解決する
      */
-    private function resolveAttributeClassName(Attribute $attribute): ?string
+    private function resolveAttributeClassName(Attribute $attribute): string
     {
         $name = $attribute->name;
 
@@ -187,14 +182,10 @@ CODE_SAMPLE
         }
 
         // 相対名の場合は use 文を考慮して解決
-        if ($name instanceof Name) {
-            $nameString = $name->toString();
+        $nameString = $name->toString();
 
-            // use 文から完全修飾名を取得
-            return $this->nodeNameResolver->getName($name);
-        }
-
-        return null;
+        // use 文から完全修飾名を取得
+        return $this->nodeNameResolver->getName($name);
     }
 
     /**

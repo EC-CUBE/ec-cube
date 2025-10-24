@@ -347,7 +347,7 @@ class ConfigController extends AbstractController
         \$this->configRepository = \$configRepository;
     }
 
-     #[Route('/%eccube_admin_route%/{$snakecased}/config', name: '{$snakecased}_admin_config', methods: ['GET', 'POST'])]
+     #[Route(path: '/%eccube_admin_route%/{$snakecased}/config', name: '{$snakecased}_admin_config', methods: ['GET', 'POST'])]
      #[Template("@{$code}/admin/config.twig")]
     public function index(Request \$request)
     {

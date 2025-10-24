@@ -34,9 +34,6 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $this->calendarRepository = $this->entityManager->getRepository(Calendar::class);
     }
 
-    /**
-     * @return Calendar
-     */
     public function createCalendar(): Calendar
     {
         $TargetCalendar = new Calendar();

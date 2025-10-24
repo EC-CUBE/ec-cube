@@ -152,7 +152,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertEquals($Order, $actual[0]);
     }
 
-    #[DataProvider('dataGetQueryBuilderBySearchDataForAdmin_nameProvider')]
+    #[DataProvider(methodName: 'dataGetQueryBuilderBySearchDataForAdmin_nameProvider')]
     public function testGetQueryBuilderBySearchDataForAdminName(string $formName, string $searchWord, int $expected)
     {
         $this->Order
@@ -224,7 +224,7 @@ class OrderRepositoryTest extends EccubeTestCase
      *
      * すべて一致する検索条件を、1項目ずつ一致しない値に置き換えて確認します。
      */
-    #[DataProvider('dataGetQueryBuilderBySearchDataForAdmin_testAndCondition')]
+    #[DataProvider(methodName: 'dataGetQueryBuilderBySearchDataForAdmin_testAndCondition')]
     public function testGetQueryBuilderBySearchDataForAdminTestAndCondition(array $searchWord, int $expected)
     {
         // 基本の検索条件に一致するデータを作成します

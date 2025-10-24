@@ -69,10 +69,10 @@ class ForgotController extends AbstractController
     /**
      * パスワードリマインダ.
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
-    #[Template('Forgot/index.twig')]
+    #[Route(path: '/forgot', name: 'forgot', methods: ['GET', 'POST'])]
+    #[Template(template: 'Forgot/index.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -146,8 +146,8 @@ class ForgotController extends AbstractController
      *
      * @throws HttpException\NotFoundHttpException
      */
-    #[Route('/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
-    #[Template('Forgot/complete.twig')]
+    #[Route(path: '/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
+    #[Template(template: 'Forgot/complete.twig')]
     public function complete(Request $request): array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -162,12 +162,12 @@ class ForgotController extends AbstractController
      *
      * @param string $reset_key
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws HttpException\NotFoundHttpException
      */
-    #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
-    #[Template('Forgot/reset.twig')]
+    #[Route(path: '/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
+    #[Template(template: 'Forgot/reset.twig')]
     public function reset(Request $request, $reset_key): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {

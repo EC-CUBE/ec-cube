@@ -62,7 +62,7 @@ class ForwardOnlyListener implements EventSubscriberInterface
     /**
      * Return the events to subscribe to.
      *
-     * @return array<string,string>
+     * @return array<string, string>
      */
     #[\Override]
     public static function getSubscribedEvents(): array

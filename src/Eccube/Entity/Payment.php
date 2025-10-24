@@ -111,7 +111,7 @@ if (!class_exists(Payment::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,PaymentOption>
+         * @var Collection<int, PaymentOption>
          */
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
         private $PaymentOptions;
@@ -354,7 +354,7 @@ if (!class_exists(Payment::class)) {
         /**
          * Get paymentOptions.
          *
-         * @return Collection<int,PaymentOption>
+         * @return Collection<int, PaymentOption>
          */
         public function getPaymentOptions(): Collection
         {

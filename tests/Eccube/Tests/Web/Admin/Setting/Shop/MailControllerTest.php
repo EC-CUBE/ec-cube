@@ -34,8 +34,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * メール設定画面の表示
-     *
-     * @return void
      */
     public function testRouting(): void
     {
@@ -45,8 +43,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 新規登録
-     *
-     * @return void
      */
     public function testCreate(): void
     {
@@ -61,8 +57,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * バリデーションエラー
-     *
-     * @return void
      */
     public function testValidationError(): void
     {
@@ -76,8 +70,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * ファイル名が既に使用されている
-     *
-     * @return void
      */
     public function testFileAlreadyExists(): void
     {
@@ -100,8 +92,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 編集
-     *
-     * @return void
      */
     public function testEdit(): void
     {
@@ -140,8 +130,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * HTMLを空で登録すると、HTMLテンプレートファイルが削除されることを確認
-     *
-     * @return void
      */
     public function testEditClearHtml(): void
     {
@@ -179,8 +167,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 存在しないテンプレートIDを指定
-     *
-     * @return void
      */
     public function testEditNotExists(): void
     {
@@ -195,8 +181,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 削除
-     *
-     * @return void
      */
     public function testDelete(): void
     {
@@ -222,8 +206,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 削除不可のテンプレートを削除
-     *
-     * @return void
      */
     public function testDeleteNotDeletable(): void
     {

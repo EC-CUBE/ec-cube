@@ -31,9 +31,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      */
     public function ストアプラグイン_有効化($pluginCode, string $message = '有効にしました。'): PluginManagePage
     {
@@ -45,9 +42,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      */
     public function ストアプラグイン_無効化($pluginCode, string $message = '無効にしました。'): PluginManagePage
     {
@@ -59,9 +53,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      *
      * @throws \Exception
      */
@@ -79,8 +70,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
-     * @return PluginStoreUpgradePage
      */
     public function ストアプラグイン_アップデート($pluginCode): PluginStoreUpgradePage
     {

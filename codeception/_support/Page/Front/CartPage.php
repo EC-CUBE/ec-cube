@@ -83,9 +83,6 @@ class CartPage extends AbstractFrontPage
         return $this->tester->grabTextFrom(['css' => 'div.ec-cartRole__error div.ec-alert-warning__text']);
     }
 
-    /**
-     * @return ShoppingPage
-     */
     public function レジに進む(): ShoppingPage
     {
         $this->tester->click(['css' => 'div.ec-cartRole__actions a.ec-blockBtn--action']);
@@ -93,9 +90,6 @@ class CartPage extends AbstractFrontPage
         return new ShoppingPage($this->tester);
     }
 
-    /**
-     * @return TopPage
-     */
     public function お買い物を続ける(): TopPage
     {
         $this->tester->click(['css' => 'div.ec-cartRole__actions a.ec-blockBtn--cancel']);

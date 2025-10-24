@@ -39,10 +39,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/security.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/security.twig')]
     public function index(Request $request, CacheUtil $cacheUtil): RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(SecurityType::class);

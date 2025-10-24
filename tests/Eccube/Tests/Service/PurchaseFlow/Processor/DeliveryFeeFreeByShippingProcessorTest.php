@@ -72,7 +72,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('deliveryFreeAmountProvider')]
+    #[DataProvider(methodName: 'deliveryFreeAmountProvider')]
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
         $this->newBaseInfo('1000.00', '0');
@@ -108,7 +108,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('deliveryFreeQuantityProvider')]
+    #[DataProvider(methodName: 'deliveryFreeQuantityProvider')]
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
         $this->newBaseInfo('0', '10');

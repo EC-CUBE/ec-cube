@@ -94,10 +94,10 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
-    #[Template('@admin/Content/layout_list.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
+    #[Template(template: '@admin/Content/layout_list.twig')]
     public function index(): array
     {
         $qb = $this->layoutRepository->createQueryBuilder('l');
@@ -113,7 +113,7 @@ class LayoutController extends AbstractController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Layout $Layout, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
@@ -140,13 +140,13 @@ class LayoutController extends AbstractController
      * @param string|null $id
      * @param string|null $previewPageId
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/content/layout/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_layout_edit', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/content/layout/new', name: 'admin_content_layout_new', methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/layout.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/layout/{id}/edit', name: 'admin_content_layout_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/layout/new', name: 'admin_content_layout_new', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/layout.twig')]
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null, $previewPageId = null): RedirectResponse|array
     {
         if (is_null($id)) {
@@ -233,7 +233,7 @@ class LayoutController extends AbstractController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/content/layout/view_block', name: 'admin_content_layout_view_block', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/layout/view_block', name: 'admin_content_layout_view_block', methods: ['GET'])]
     public function viewBlock(Request $request, Twig $twig): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
@@ -265,9 +265,9 @@ class LayoutController extends AbstractController
     /**
      * @param string $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/content/layout/{id}/preview', requirements: ['id' => '\d+'], name: 'admin_content_layout_preview', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/layout/{id}/preview', name: 'admin_content_layout_preview', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function preview(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse|array
     {
         $form = $request->get('admin_layout');

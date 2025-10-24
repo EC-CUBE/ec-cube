@@ -50,7 +50,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
      *
      * @throws \Exception
      */
-    #[DataProvider('dataProcessorProvider')]
+    #[DataProvider(methodName: 'dataProcessorProvider')]
     public function testProcess($class, $id, $tagName)
     {
         $Customer = $this->createCustomer();

@@ -48,12 +48,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
-    #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/csv_shipping.twig')]
+    #[Route(path: '/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/csv_shipping.twig')]
     public function csvShipping(Request $request): array
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -97,8 +97,8 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @param CsvImportService<int,mixed>|bool $csv
-     * @param array<int,string> $errors
+     * @param CsvImportService<int, mixed>|bool $csv
+     * @param array<int, string> $errors
      */
     protected function loadCsv(CsvImportService|bool $csv, array &$errors): void
     {
@@ -198,7 +198,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      */
-    #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
     public function csvTemplate(Request $request): StreamedResponse
     {
         $columns = array_column($this->getColumnConfig(), 'name');
@@ -207,7 +207,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @return array<string,array<string,bool|string>>
+     * @return array<string, array<string, bool|string>>
      */
     protected function getColumnConfig(): array
     {

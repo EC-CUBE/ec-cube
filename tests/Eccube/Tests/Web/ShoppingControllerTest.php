@@ -91,8 +91,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *     ・ <script> スクリプトインジェクション
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
-     *
-     * @return void
      */
     public function testCompleteWithXssInjectionAttack(): void
     {
@@ -704,8 +702,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * 取引法を無効にすると、配信設定ページに取引法テスト文字が表示されないことを確認すること。
      * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
-     *
-     * @return void
      */
     public function testDeliveryPageWithNoTradeLawsEnabled(): void
     {
@@ -736,8 +732,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * Check that with all trade laws enabled that trade law text will appear on the delivery settings page.
      * すべての取引法を有効にすると、取引法のテキストがご注文手続きページに表示されることを確認すること。
-     *
-     * @return void
      */
     public function testDeliveryPageWithTradeLawsEnabled(): void
     {
@@ -776,8 +770,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     /**
      * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
-     *
-     * @return void
      */
     public function testConfirmationPageWithNoTradeLawsEnabled(): void
     {
@@ -819,8 +811,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     /**
      * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
-     *
-     * @return void
      */
     public function testConfirmationPageWithTradeLawsEnabled(): void
     {
@@ -872,8 +862,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *  Delivery Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when name is empty or null
-     *
-     * @return void
      */
     public function testDeliveryPageInvalidTradeLawDataEmptyName(): void
     {
@@ -908,8 +896,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      * Delivery Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when description is empty or null
-     *
-     * @return void
      */
     public function testDeliveryPageInvalidTradeLawDataEmptyDescription(): void
     {
@@ -943,8 +929,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      * Confirmation Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when name is empty or null
-     *
-     * @return void
      */
     public function testConfirmationPageInvalidTradeLawDataEmptyName(): void
     {
@@ -991,8 +975,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      * Confirmation Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when description is empty or null
-     *
-     * @return void
      */
     public function testConfirmationPageInvalidTradeLawDataEmptyDescription(): void
     {
@@ -1110,7 +1092,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
-     * @param Delivery $Delivery
      * @param Payment[] $Payments
      */
     private function setUpPayments(Delivery $Delivery, array $Payments)

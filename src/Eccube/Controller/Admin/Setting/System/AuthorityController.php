@@ -40,10 +40,10 @@ class AuthorityController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/authority.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/authority', name: 'admin_setting_system_authority', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/authority.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         $AuthorityRoles = $this->authorityRoleRepository->findAllSort();

@@ -25,8 +25,6 @@ class EntryPage extends AbstractFrontPage
     /**
      * @param $I
      * @param $id
-     *
-     * @return EntryPage
      */
     public static function go($I): EntryPage
     {

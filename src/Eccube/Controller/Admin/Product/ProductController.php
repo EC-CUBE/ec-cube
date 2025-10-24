@@ -142,11 +142,11 @@ class ProductController extends AbstractController
     /**
      * @param string|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
-    #[Route('/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
-    #[Template('@admin/Product/index.twig')]
+    #[Route(path: '/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
+    #[Route(path: '/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
+    #[Template(template: '@admin/Product/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
     {
         $builder = $this->formFactory
@@ -281,12 +281,12 @@ class ProductController extends AbstractController
     /**
      * @param Product $Product
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[Template('@admin/Product/product_class_popup.twig')]
+    #[Route(path: '/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template(template: '@admin/Product/product_class_popup.twig')]
     public function loadProductClasses(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] ?Product $Product): array
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -318,7 +318,7 @@ class ProductController extends AbstractController
      *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
-    #[Route('/%eccube_admin_route%/product/product/image/process', name: 'admin_product_image_process', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/image/process', name: 'admin_product_image_process', methods: ['POST'])]
     public function imageProcess(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -371,7 +371,7 @@ class ProductController extends AbstractController
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
     public function imageLoad(Request $request): BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
@@ -407,7 +407,7 @@ class ProductController extends AbstractController
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/product/product/image/revert', name: 'admin_product_image_revert', methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/image/revert', name: 'admin_product_image_revert', methods: ['DELETE'])]
     public function imageRevert(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -428,13 +428,13 @@ class ProductController extends AbstractController
     /**
      * @param int|string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|\Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/product/product/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_product_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Product/product.twig')]
+    #[Route(path: '/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/{id}/edit', name: 'admin_product_product_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/product.twig')]
     public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
     {
         $has_class = false;
@@ -769,7 +769,7 @@ class ProductController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
@@ -863,7 +863,7 @@ class ProductController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/{id}/copy', name: 'admin_product_product_copy', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/{id}/copy', name: 'admin_product_product_copy', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function copy(Request $request, $id = null): RedirectResponse
     {
         $this->isTokenValid();
@@ -972,7 +972,7 @@ class ProductController extends AbstractController
     /**
      * 商品CSVの出力.
      */
-    #[Route('/%eccube_admin_route%/product/export', name: 'admin_product_export', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/product/export', name: 'admin_product_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.
@@ -1089,7 +1089,7 @@ class ProductController extends AbstractController
     /**
      * Bulk public action
      */
-    #[Route('/%eccube_admin_route%/product/bulk/product-status/{id}', requirements: ['id' => '\d+'], name: 'admin_product_bulk_product_status', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/bulk/product-status/{id}', name: 'admin_product_bulk_product_status', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();

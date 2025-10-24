@@ -231,8 +231,8 @@ class AbstractController extends Controller
      * Forwards the request to another controller.
      *
      * @param string $route The name of the route
-     * @param array<string,string>  $path An array of path parameters
-     * @param array<string,string>  $query An array of query parameters
+     * @param array<string, string>  $path An array of path parameters
+     * @param array<string, string>  $query An array of query parameters
      *
      * @return Response A Response instance
      */

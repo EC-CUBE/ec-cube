@@ -513,7 +513,7 @@ class StringUtilTest extends TestCase
      * @param mixed $replacement
      * @param mixed $expected
      */
-    #[DataProvider('replaceOrAddEnvProvider')]
+    #[DataProvider(methodName: 'replaceOrAddEnvProvider')]
     public function testReplaceOrAddEnv($env, $replacement, $expected)
     {
         self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));

@@ -111,11 +111,11 @@ class EntryController extends AbstractController
     /**
      * 会員登録画面.
      *
-     * @return Response|RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      */
-    #[Route('/entry', name: 'entry', methods: ['GET', 'POST'])]
-    #[Route('/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
-    #[Template('Entry/index.twig')]
+    #[Route(path: '/entry', name: 'entry', methods: ['GET', 'POST'])]
+    #[Route(path: '/entry', name: 'entry_complete', methods: ['GET', 'POST'])]
+    #[Template(template: 'Entry/index.twig')]
     public function index(Request $request): Response|RedirectResponse|array
     {
         if ($this->isGranted('ROLE_USER')) {
@@ -217,8 +217,8 @@ class EntryController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/entry/complete', name: 'entry_complete', methods: ['GET'])]
-    #[Template('Entry/complete.twig')]
+    #[Route(path: '/entry/complete', name: 'entry_complete', methods: ['GET'])]
+    #[Template(template: 'Entry/complete.twig')]
     public function complete(): array
     {
         return [];
@@ -230,12 +230,12 @@ class EntryController extends AbstractController
      * @param string $secret_key
      * @param string|null $qtyInCart
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws HttpException\NotFoundHttpException
      */
-    #[Route('/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
-    #[Template('Entry/activate.twig')]
+    #[Route(path: '/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
+    #[Template(template: 'Entry/activate.twig')]
     public function activate(Request $request, $secret_key, $qtyInCart = null): array
     {
         $errors = $this->recursiveValidator->validate(

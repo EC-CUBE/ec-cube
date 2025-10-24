@@ -38,10 +38,7 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    /**
-     * @param string $formName
-     */
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
@@ -54,8 +51,6 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
     public static function dataFormDateTimeProvider(): array
     {

@@ -52,7 +52,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      * @param $customerPoint int 保有ポイント
      * @param $isError boolean エラーかどうか
      */
-    #[DataProvider('usePointOverCustomerPointProvider')]
+    #[DataProvider(methodName: 'usePointOverCustomerPointProvider')]
     public function testUsePointOverCustomerPoint($beforeUsePoint, $afterUsePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
@@ -121,7 +121,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      * @param $afterUsePoint int 編集後の利用ポイント
      * @param $isError boolean エラーかどうか
      */
-    #[DataProvider('usePointOverPriceProvider')]
+    #[DataProvider(methodName: 'usePointOverPriceProvider')]
     public function testUsePointOverPrice($beforeUsePoint, $afterUsePoint, $isError)
     {
         $price = 100; // 商品の値段
@@ -183,7 +183,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      *
      * @throws PurchaseException
      */
-    #[DataProvider('useReduceCustomerPointProvider')]
+    #[DataProvider(methodName: 'useReduceCustomerPointProvider')]
     public function testReduceCustomerPoint($beforeUsePoint, $afterUsePoint, $userUsePoint)
     {
         $Customer = new Customer();
@@ -235,7 +235,7 @@ class PointDiffProcessorTest extends EccubeTestCase
      *
      * @throws PurchaseException
      */
-    #[DataProvider('usePointEachOrderStatusProvider')]
+    #[DataProvider(methodName: 'usePointEachOrderStatusProvider')]
     public function testUsePointEachOrderStatus($orderStatusId, $isChange)
     {
         $Customer = new Customer();

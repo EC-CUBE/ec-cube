@@ -94,19 +94,19 @@ if (!class_exists(Delivery::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,PaymentOption>
+         * @var Collection<int, PaymentOption>
          */
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $PaymentOptions;
 
         /**
-         * @var Collection<int,DeliveryFee>
+         * @var Collection<int, DeliveryFee>
          */
         #[ORM\OneToMany(targetEntity: DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $DeliveryFees;
 
         /**
-         * @var Collection<int,DeliveryTime>
+         * @var Collection<int, DeliveryTime>
          */
         #[ORM\OneToMany(targetEntity: DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
@@ -323,7 +323,7 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get deliveryFees.
          *
-         * @return Collection<int,DeliveryFee>
+         * @return Collection<int, DeliveryFee>
          */
         public function getDeliveryFees(): Collection
         {
@@ -353,7 +353,7 @@ if (!class_exists(Delivery::class)) {
         /**
          * Get deliveryTimes.
          *
-         * @return Collection<int,DeliveryTime>
+         * @return Collection<int, DeliveryTime>
          */
         public function getDeliveryTimes(): Collection
         {

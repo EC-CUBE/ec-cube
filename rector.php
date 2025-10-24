@@ -66,7 +66,7 @@ return RectorConfig::configure()
                // 特定のルールを除外する場合
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
                //RemoveUselessParamTagRector::class, // まだ @param に頼っているケースがありそうなので除外
-               RemoveUselessReturnTagRector::class, // まだ @return に頼っているケースがありそうなので除外
+               //RemoveUselessReturnTagRector::class, // まだ @return に頼っているケースがありそうなので除外
                RemoveUselessVarTagRector::class, // まだ @var に頼っているケースがありそうなので除外
                SimplifyUselessVariableRector::class, // まだ不要な変数が多いので除外
                RemoveAlwaysTrueIfConditionRector::class, // 条件式の簡略化はまだ慎重に行う必要があるため除外

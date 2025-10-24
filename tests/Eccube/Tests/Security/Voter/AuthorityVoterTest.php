@@ -47,7 +47,7 @@ class AuthorityVoterTest extends EccubeTestCase
      * @param mixed $accessUrl
      * @param mixed $expected
      */
-    #[DataProvider('voteProvider')]
+    #[DataProvider(methodName: 'voteProvider')]
     public function testVote(array $deniedUrls, $accessUrl, $expected)
     {
         $request = $this->createMock(Request::class);

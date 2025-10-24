@@ -39,8 +39,6 @@ class TradeLawControllerTest extends AbstractWebTestCase
     /**
      * Ensure that the line with both the name/description registered appears on the specific transaction law page.
      * 名称/説明の両方が登録されている行が、特定商取引法ページに表示されることを確認する。
-     *
-     * @return void
      */
     public function testTradeLawsNotEmpty(): void
     {
@@ -64,8 +62,6 @@ class TradeLawControllerTest extends AbstractWebTestCase
     /**
      * Ensure that lines that do not have both a name/description registered do not appear on the specific transaction law page.
      * 名称/説明の両方が登録されていない行は、特定商取引法ページに表示されないことを確認する。
-     *
-     * @return void
      */
     public function testTradeLawsEmpty(): void
     {

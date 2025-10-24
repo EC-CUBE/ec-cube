@@ -60,10 +60,10 @@ class DeliveryController extends AbstractController
     /**
      * お届け先一覧画面.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
-    #[Template('Mypage/delivery.twig')]
+    #[Route(path: '/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
+    #[Template(template: 'Mypage/delivery.twig')]
     public function index(Request $request): array
     {
         $Customer = $this->getUser();
@@ -78,13 +78,13 @@ class DeliveryController extends AbstractController
      *
      * @param string|int|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws \Exception
      */
-    #[Route('/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
-    #[Route('/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('Mypage/delivery_edit.twig')]
+    #[Route(path: '/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Mypage/delivery_edit.twig')]
     public function edit(Request $request, $id = null): RedirectResponse|array
     {
         /** @var Customer $Customer */
@@ -184,7 +184,7 @@ class DeliveryController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, CustomerAddress $CustomerAddress): RedirectResponse
     {
         $this->isTokenValid();

@@ -52,9 +52,6 @@ class WhereCustomizerTest extends EccubeTestCase
         self::assertSame('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());
     }
 
-    /**
-     * @return QueryBuilder
-     */
     private function createQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
@@ -76,7 +73,6 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
     }
 
     /**
-     * @param array $params
      * @param $queryKey
      *
      * @return WhereClause[]
@@ -90,8 +86,6 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     public function getQueryKey(): string
     {

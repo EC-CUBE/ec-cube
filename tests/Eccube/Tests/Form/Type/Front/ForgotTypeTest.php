@@ -27,8 +27,6 @@ class ForgotTypeTest extends AbstractTypeTestCase
 
     /**
      * 異常系のデータパターンを返す
-     *
-     * @return array
      */
     public static function getInvalidTestData(): array
     {
@@ -76,7 +74,7 @@ class ForgotTypeTest extends AbstractTypeTestCase
     /**
      * @param mixed $data
      */
-    #[DataProvider('getInvalidTestData')]
+    #[DataProvider(methodName: 'getInvalidTestData')]
     public function testInvalidData($data)
     {
         $this->form->submit($data);

@@ -18,7 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 abstract class WhereCustomizer implements QueryCustomizer
 {
     /**
-     * @param array<string,mixed>|null $params
+     * @param array<string, mixed>|null $params
      */
     #[\Override]
     final public function customize(QueryBuilder $builder, ?array $params, string $queryKey): void
@@ -30,7 +30,7 @@ abstract class WhereCustomizer implements QueryCustomizer
     }
 
     /**
-     * @param array<string,mixed> $params
+     * @param array<string, mixed> $params
      *
      * @return WhereClause[]
      */

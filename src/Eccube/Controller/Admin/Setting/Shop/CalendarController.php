@@ -43,11 +43,11 @@ class CalendarController extends AbstractController
     /**
      * カレンダー設定の初期表示・登録
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/calendar', name: 'admin_setting_shop_calendar', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/shop/calendar/new', name: 'admin_setting_shop_calendar_new', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/calendar.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/calendar', name: 'admin_setting_shop_calendar', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/calendar/new', name: 'admin_setting_shop_calendar_new', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/calendar.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         $Calendar = new Calendar();
@@ -118,7 +118,7 @@ class CalendarController extends AbstractController
      *
      * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\Exception\ORMException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Calendar $Calendar): RedirectResponse
     {
         $this->isTokenValid();

@@ -23,8 +23,8 @@ class HelpController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/help/guide', name: 'help_guide', methods: ['GET'])]
-    #[Template('Help/guide.twig')]
+    #[Route(path: '/help/guide', name: 'help_guide', methods: ['GET'])]
+    #[Template(template: 'Help/guide.twig')]
     public function guide(): array
     {
         return [];
@@ -35,8 +35,8 @@ class HelpController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/help/about', name: 'help_about', methods: ['GET'])]
-    #[Template('Help/about.twig')]
+    #[Route(path: '/help/about', name: 'help_about', methods: ['GET'])]
+    #[Template(template: 'Help/about.twig')]
     public function about(): array
     {
         return [];
@@ -47,8 +47,8 @@ class HelpController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/help/privacy', name: 'help_privacy', methods: ['GET'])]
-    #[Template('Help/privacy.twig')]
+    #[Route(path: '/help/privacy', name: 'help_privacy', methods: ['GET'])]
+    #[Template(template: 'Help/privacy.twig')]
     public function privacy(): array
     {
         return [];
@@ -59,8 +59,8 @@ class HelpController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/help/agreement', name: 'help_agreement', methods: ['GET'])]
-    #[Template('Help/agreement.twig')]
+    #[Route(path: '/help/agreement', name: 'help_agreement', methods: ['GET'])]
+    #[Template(template: 'Help/agreement.twig')]
     public function agreement(): array
     {
         return [];

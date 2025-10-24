@@ -28,7 +28,7 @@ interface PurchaseInterface
     public function getTotal(): string;
 
     /**
-     * @return ItemCollection<int,ItemInterface>
+     * @return ItemCollection<int, ItemInterface>
      */
     public function getItems(): ItemCollection;
 }

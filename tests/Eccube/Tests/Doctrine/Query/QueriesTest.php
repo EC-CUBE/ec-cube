@@ -42,9 +42,6 @@ class QueriesTest extends EccubeTestCase
         self::assertFalse($customizer->customized);
     }
 
-    /**
-     * @return QueryBuilder
-     */
     private function queryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
@@ -56,12 +53,6 @@ class QueriesTest_Customizer implements QueryCustomizer
 {
     public $customized = false;
 
-    /**
-     * @param mixed $params
-     * @param mixed $queryKey
-     *
-     * @return void
-     */
     public function customize(QueryBuilder $builder, mixed $params, mixed $queryKey): void
     {
         $this->customized = true;
@@ -69,8 +60,6 @@ class QueriesTest_Customizer implements QueryCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     public function getQueryKey(): string
     {
@@ -80,19 +69,10 @@ class QueriesTest_Customizer implements QueryCustomizer
 
 class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
 {
-    /**
-     * @param mixed $params
-     * @param mixed $queryKey
-     *
-     * @return void
-     */
     public function customize(QueryBuilder $builder, mixed $params, mixed $queryKey): void
     {
     }
 
-    /**
-     * @return string
-     */
     public function getQueryKey(): string
     {
         return '';

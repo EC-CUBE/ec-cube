@@ -117,8 +117,6 @@ abstract class EccubeTestCase extends WebTestCase
      * Member オブジェクトを生成して返す.
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
-     *
-     * @return Member
      */
     public function createMember(?string $username = null): Member
     {
@@ -129,8 +127,6 @@ abstract class EccubeTestCase extends WebTestCase
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
     public function createCustomer(?string $email = null): Customer
     {
@@ -142,8 +138,6 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param Customer $Customer 対象の Customer インスタンス
      * @param bool $is_nonmember 非会員の場合 true
-     *
-     * @return CustomerAddress
      */
     public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false): CustomerAddress
     {
@@ -154,8 +148,6 @@ abstract class EccubeTestCase extends WebTestCase
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
     public function createNonMember(?string $email = null): Customer
     {
@@ -167,8 +159,6 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param int $product_class_num 商品規格の生成数
-     *
-     * @return Product
      */
     public function createProduct(?string $product_name = null, int $product_class_num = 3): Product
     {
@@ -179,8 +169,6 @@ abstract class EccubeTestCase extends WebTestCase
      * Order オブジェクトを生成して返す.
      *
      * @param Customer $Customer Customer インスタンス
-     *
-     * @return Order
      */
     public function createOrder(Customer $Customer): Order
     {
@@ -196,8 +184,6 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param Customer $Customer Customer インスタンス
      * @param ProductClass[] $ProductClasses
-     *
-     * @return Order
      */
     public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses): Order
     {
@@ -212,8 +198,6 @@ abstract class EccubeTestCase extends WebTestCase
      * @param int $charge 手数料
      * @param int $rule_min 下限金額
      * @param int $rule_max 上限金額
-     *
-     * @return Payment
      */
     public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999): Payment
     {
@@ -222,8 +206,6 @@ abstract class EccubeTestCase extends WebTestCase
 
     /**
      * Page オブジェクトを生成して返す
-     *
-     * @return Page
      */
     public function createPage(): Page
     {
@@ -233,12 +215,8 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * LoginHistory オブジェクトを生成して返す
      *
-     * @param mixed $user_name
      * @param mixed|null $client_ip
-     * @param mixed $status
      * @param mixed|null $Member
-     *
-     * @return LoginHistory
      */
     public function createLoginHistory(mixed $user_name, mixed $client_ip = null, mixed $status = 0, mixed $Member = null): LoginHistory
     {

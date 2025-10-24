@@ -35,15 +35,15 @@ if (!class_exists(Product::class)) {
          */
         private $_calc = false;
         /**
-         * @var array<int,bool>
+         * @var array<int, bool>
          */
         private $stockFinds = [];
         /**
-         * @var array<int,string|null>
+         * @var array<int, string|null>
          */
         private $stocks = [];
         /**
-         * @var array<int,bool>
+         * @var array<int, bool>
          */
         private $stockUnlimiteds = [];
         /**
@@ -201,7 +201,7 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return array<string,int>
+         * @return array<string, int>
          */
         public function getClassCategories1AsFlip(): array
         {
@@ -221,7 +221,7 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return array<string,int>
+         * @return array<string, int>
          */
         public function getClassCategories2AsFlip(string $class_category1): array
         {
@@ -510,32 +510,32 @@ if (!class_exists(Product::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,ProductCategory>
+         * @var Collection<int, ProductCategory>
          */
         #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductCategories;
 
         /**
-         * @var Collection<int,ProductClass>
+         * @var Collection<int, ProductClass>
          */
         #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductClasses;
 
         /**
-         * @var Collection<int,ProductImage>
+         * @var Collection<int, ProductImage>
          */
         #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $ProductImage;
 
         /**
-         * @var Collection<int,ProductTag>
+         * @var Collection<int, ProductTag>
          */
         #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
         private $ProductTag;
 
         /**
-         * @var Collection<int,CustomerFavoriteProduct>
+         * @var Collection<int, CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
@@ -854,7 +854,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productImage.
          *
-         * @return Collection<int,ProductImage>
+         * @return Collection<int, ProductImage>
          */
         public function getProductImage(): Collection
         {
@@ -884,7 +884,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productTag.
          *
-         * @return Collection<int,ProductTag>
+         * @return Collection<int, ProductTag>
          */
         public function getProductTag(): Collection
         {
@@ -935,7 +935,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return Collection<int,CustomerFavoriteProduct>
+         * @return Collection<int, CustomerFavoriteProduct>
          */
         public function getCustomerFavoriteProducts(): Collection
         {

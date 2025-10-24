@@ -399,11 +399,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertFalse($actual->isDisplayOrderCount());
     }
 
-    /**
-     * @param string $entity
-     *
-     * @return array
-     */
     protected function createFormData(string $entity = 'Eccube-Entity-Master-Sex'): array
     {
         return [
@@ -412,11 +407,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    /**
-     * @param string $entity
-     *
-     * @return array
-     */
     protected function createFormDataEdit(string $entity = 'Eccube-Entity-Master-Sex'): array
     {
         $entityName = str_replace('-', '\\', $entity);

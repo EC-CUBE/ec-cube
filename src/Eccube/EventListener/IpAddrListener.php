@@ -80,7 +80,7 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @param array<int,string> $hostList
+     * @param array<int, string> $hostList
      */
     private function isClientIpInList(array $hostList, ?string $clientIp): bool
     {
@@ -97,7 +97,7 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string,array<int, string|int>>
+     * @return array<string, array<int, string|int>>
      */
     #[\Override]
     public static function getSubscribedEvents(): array

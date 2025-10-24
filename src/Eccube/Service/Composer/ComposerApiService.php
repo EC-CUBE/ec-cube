@@ -254,7 +254,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $key
      * @param string[]|null $value
      *
-     * @return array<int|string,array<int,string>>|null
+     * @return array<int|string, array<int, string>>|null
      *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException

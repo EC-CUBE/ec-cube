@@ -458,10 +458,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * createFormData() との違いは、 $Shipping[N]['OrderItems'] がフォームに追加されている.
      * OrderItems は、 $Shippings[N]['OrderItems] から生成される.
      *
-     * @param Customer $Customer
      * @param array $Shippings お届け先情報の配列
-     *
-     * @return array
      */
     public function createFormDataForMultiple(Customer $Customer, array $Shippings): array
     {
@@ -497,8 +494,6 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * 引数に渡した商品規格のお届け商品明細が生成される.
      *
      * @param array $ProductClasses 商品規格の配列.
-     *
-     * @return array
      */
     public function createShipping(array $ProductClasses): array
     {

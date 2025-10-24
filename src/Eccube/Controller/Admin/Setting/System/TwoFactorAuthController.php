@@ -54,10 +54,10 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/two_factor_auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
-    #[Template('@admin/two_factor_auth.twig')]
+    #[Route(path: '/%eccube_admin_route%/two_factor_auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/two_factor_auth.twig')]
     public function auth(Request $request): RedirectResponse|array
     {
         /** @var \Eccube\Entity\Member $Member */
@@ -98,8 +98,8 @@ class TwoFactorAuthController extends AbstractController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
-    #[Template('@admin/two_factor_auth_set.twig')]
+    #[Route(path: '/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/two_factor_auth_set.twig')]
     public function set(Request $request): RedirectResponse
     {
         /** @var \Eccube\Entity\Member $Member */
@@ -112,8 +112,8 @@ class TwoFactorAuthController extends AbstractController
         return $res;
     }
 
-    #[Route('/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/two_factor_auth_edit.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/two_factor_auth_edit.twig')]
     public function edit(Request $request): RedirectResponse
     {
         /** @var \Eccube\Entity\Member $Member */
@@ -130,7 +130,7 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
     private function createResponse(Request $request): array|RedirectResponse
     {

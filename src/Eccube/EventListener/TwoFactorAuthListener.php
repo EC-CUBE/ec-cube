@@ -106,7 +106,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string,array<int|string>>
+     * @return array<string, array<int|string>>
      */
     #[\Override]
     public static function getSubscribedEvents(): array

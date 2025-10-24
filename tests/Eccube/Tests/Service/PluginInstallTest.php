@@ -93,8 +93,6 @@ class PluginInstallTest extends AbstractServiceTestCase
 
     /**
      * ファイルを削除
-     *
-     * @param mixed $path
      */
     private function deleteFile(mixed $path)
     {

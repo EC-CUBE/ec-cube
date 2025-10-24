@@ -53,11 +53,11 @@ class TaxRuleController extends AbstractController
     /**
      * 税率設定の初期表示・登録
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/tax_rule.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/tax_rule.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
@@ -151,7 +151,7 @@ class TaxRuleController extends AbstractController
      *
      * @throws \Doctrine\ORM\NoResultException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, TaxRule $TaxRule): RedirectResponse
     {
         $this->isTokenValid();

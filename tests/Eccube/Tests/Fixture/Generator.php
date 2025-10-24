@@ -209,8 +209,6 @@ class Generator
      * Member オブジェクトを生成して返す.
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
-     *
-     * @return Member
      */
     public function createMember(?string $username = null): Member
     {
@@ -249,8 +247,6 @@ class Generator
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
     public function createCustomer(?string $email = null): Customer
     {
@@ -301,8 +297,6 @@ class Generator
      *
      * @param Customer $Customer 対象の Customer インスタンス
      * @param bool $is_nonmember 非会員の場合 true
-     *
-     * @return CustomerAddress
      */
     public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false): CustomerAddress
     {
@@ -344,8 +338,6 @@ class Generator
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
     public function createNonMember(?string $email = null): Customer
     {
@@ -392,8 +384,6 @@ class Generator
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param int $product_class_num 商品規格の生成数
      * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
-     *
-     * @return Product
      */
     public function createProduct(?string $product_name = null, int $product_class_num = 3, bool $with_image = false): Product
     {
@@ -582,8 +572,6 @@ class Generator
      * @param int $add_charge Order に加算される手数料
      * @param int $add_discount Order に加算される値引き額
      * @param int $statusTypeId OrderStatus:id
-     *
-     * @return Order
      */
     public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, int $add_charge = 0, int $add_discount = 0, ?int $statusTypeId = null): Order
     {
@@ -771,8 +759,6 @@ class Generator
      * @param int $charge 手数料
      * @param int $rule_min 下限金額
      * @param int $rule_max 上限金額
-     *
-     * @return Payment
      */
     public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999): Payment
     {
@@ -811,8 +797,6 @@ class Generator
      * 配送方法を生成する.
      *
      * @param int $delivery_time_max_pattern 配送時間の最大パターン数
-     *
-     * @return Delivery
      */
     public function createDelivery(int $delivery_time_max_pattern = 5): Delivery
     {
@@ -870,8 +854,6 @@ class Generator
 
     /**
      * ページを生成する
-     *
-     * @return Page
      */
     public function createPage(): Page
     {
@@ -902,13 +884,6 @@ class Generator
 
     /**
      * ログイン履歴を生成する
-     *
-     * @param string $user_name
-     * @param string|null $client_ip
-     * @param int|LoginHistoryStatus|null $status
-     * @param Member|null $Member
-     *
-     * @return LoginHistory
      */
     public function createLoginHistory(
         string $user_name,
@@ -935,8 +910,6 @@ class Generator
 
     /**
      * Faker を生成する.
-     *
-     * @return \Faker\Generator
      */
     protected function getFaker(): \Faker\Generator
     {

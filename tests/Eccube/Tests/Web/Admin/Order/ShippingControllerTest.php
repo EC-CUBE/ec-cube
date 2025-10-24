@@ -267,7 +267,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4193
      */
-    #[Group('decimal')]
+    #[Group(name: 'decimal')]
     public function testCalculateTax()
     {
         /** @var Product $Product */

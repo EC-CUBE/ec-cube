@@ -105,10 +105,10 @@ class ProductController extends AbstractController
     /**
      * 商品一覧画面.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/products/list', name: 'product_list', methods: ['GET'])]
-    #[Template('Product/list.twig')]
+    #[Route(path: '/products/list', name: 'product_list', methods: ['GET'])]
+    #[Template(template: 'Product/list.twig')]
     public function index(Request $request, PaginatorInterface $paginator): array
     {
         // Doctrine SQLFilter
@@ -204,12 +204,12 @@ class ProductController extends AbstractController
     /**
      * 商品詳細画面.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/products/detail/{id}', name: 'product_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[Template('Product/detail.twig')]
+    #[Route(path: '/products/detail/{id}', name: 'product_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template(template: 'Product/detail.twig')]
     public function detail(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] Product $Product): array
     {
         if (!$this->checkVisibility($Product)) {
@@ -254,7 +254,7 @@ class ProductController extends AbstractController
     /**
      * お気に入り追加.
      */
-    #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addFavorite(Request $request, Product $Product): RedirectResponse
     {
         $this->checkVisibility($Product);
@@ -303,7 +303,7 @@ class ProductController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route(path: '/products/add_cart/{id}', name: 'product_add_cart', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function addCart(Request $request, Product $Product): RedirectResponse|JsonResponse|Response
     {
         // エラーメッセージの配列

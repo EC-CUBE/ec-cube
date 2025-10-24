@@ -30,7 +30,6 @@ abstract class AbstractPage
      * ページに移動。
      *
      * @param $url string URL
-     * @param mixed $pageTitle
      *
      * @return $this
      */

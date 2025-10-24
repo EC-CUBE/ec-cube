@@ -53,9 +53,6 @@ class JoinCustomizerTest extends EccubeTestCase
         self::assertSame($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c');
     }
 
-    /**
-     * @return QueryBuilder
-     */
     private function createQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
@@ -74,7 +71,6 @@ class JoinCustomizerTest_Customizer extends JoinCustomizer
     }
 
     /**
-     * @param array $params
      * @param $queryKey
      *
      * @return JoinClause[]
@@ -88,8 +84,6 @@ class JoinCustomizerTest_Customizer extends JoinCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     public function getQueryKey(): string
     {

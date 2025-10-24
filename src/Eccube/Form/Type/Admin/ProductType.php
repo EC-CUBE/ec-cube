@@ -64,7 +64,7 @@ class ProductType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param array<string,mixed> $options
+     * @param array<string, mixed> $options
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -199,7 +199,7 @@ class ProductType extends AbstractType
     /**
      * 指定された複数ディレクトリのうち、いずれかのディレクトリ以下にファイルが存在するかを確認。
      *
-     * @param array<int,string> $dirs
+     * @param array<int, string> $dirs
      */
     private function validateFilePath(FormInterface $form, array $dirs): void
     {

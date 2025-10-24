@@ -81,7 +81,7 @@ if (!class_exists(Block::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,BlockPosition>
+         * @var Collection<int, BlockPosition>
          */
         #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
         private $BlockPositions;
@@ -254,7 +254,7 @@ if (!class_exists(Block::class)) {
         /**
          * Get blockPositions
          *
-         * @return Collection<int,BlockPosition>
+         * @return Collection<int, BlockPosition>
          */
         public function getBlockPositions(): Collection
         {

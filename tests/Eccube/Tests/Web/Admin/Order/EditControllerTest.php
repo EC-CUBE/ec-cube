@@ -176,8 +176,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
      *     ・ <script> スクリプトインジェクション
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
-     *
-     * @return void
      */
     public function testOrderMailXSSAttackPrevention(): void
     {

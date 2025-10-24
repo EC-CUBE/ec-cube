@@ -24,7 +24,7 @@ class DeliveryFeeType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param array<string,mixed> $options
+     * @param array<string, mixed> $options
      */
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

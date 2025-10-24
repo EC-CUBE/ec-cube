@@ -51,10 +51,10 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
-    #[Template('@admin/Setting/Shop/payment.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
+    #[Template(template: '@admin/Setting/Shop/payment.twig')]
     public function index(Request $request): array
     {
         $Payments = $this->paymentRepository
@@ -77,11 +77,11 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_payment_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/payment_edit.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/edit', name: 'admin_setting_shop_payment_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/payment_edit.twig')]
     public function edit(Request $request, ?Payment $Payment = null): RedirectResponse|array
     {
         if (is_null($Payment)) {
@@ -168,7 +168,7 @@ class PaymentController extends AbstractController
      *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
     public function imageProcess(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -218,7 +218,7 @@ class PaymentController extends AbstractController
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
     public function imageLoad(Request $request): BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
@@ -251,7 +251,7 @@ class PaymentController extends AbstractController
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
     public function imageRevert(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -269,7 +269,7 @@ class PaymentController extends AbstractController
         throw new NotFoundHttpException();
     }
 
-    #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Payment $TargetPayment): RedirectResponse
     {
         $this->isTokenValid();
@@ -303,7 +303,7 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
-    #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function visible(Payment $Payment): RedirectResponse
     {
         $this->isTokenValid();
@@ -324,7 +324,7 @@ class PaymentController extends AbstractController
     /**
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {

@@ -59,14 +59,14 @@ class CategoryController extends AbstractController
      * @param string|null $parent_id
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|BadRequestHttpException|\Exception
      */
-    #[Route('/%eccube_admin_route%/product/category', name: 'admin_product_category', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Product/category.twig')]
+    #[Route(path: '/%eccube_admin_route%/product/category', name: 'admin_product_category', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/category.twig')]
     public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null): RedirectResponse|array
     {
         if ($parent_id) {
@@ -221,7 +221,7 @@ class CategoryController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
@@ -269,7 +269,7 @@ class CategoryController extends AbstractController
     /**
      * @throws BadRequestHttpException|\Exception
      */
-    #[Route('/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request, CacheUtil $cacheUtil): Response
     {
         if (!$request->isXmlHttpRequest()) {
@@ -298,7 +298,7 @@ class CategoryController extends AbstractController
     /**
      * カテゴリCSVの出力.
      */
-    #[Route('/%eccube_admin_route%/product/category/export', name: 'admin_product_category_export', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/export', name: 'admin_product_category_export', methods: ['GET'])]
     public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.

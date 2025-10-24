@@ -54,10 +54,10 @@ class OrderStatusController extends AbstractController
     /**
      * 受注ステータス編集画面.
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/order_status.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/order_status', name: 'admin_setting_shop_order_status', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/order_status.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);

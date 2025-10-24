@@ -100,7 +100,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      * @param $status
      * @param $expected
      */
-    #[DataProvider('dataStatusProvider')]
+    #[DataProvider(methodName: 'dataStatusProvider')]
     public function testStatus($status, $expected)
     {
         $this->searchData = [
@@ -125,7 +125,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
         ];
     }
 
-    #[DataProvider('dataFormDateProvider')]
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -146,8 +146,6 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      * - today: 今日の00:00:00
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
-     *
-     * @return array
      */
     public static function dataFormDateProvider(): array
     {
@@ -159,7 +157,7 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
         ];
     }
 
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -175,8 +173,6 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
     public static function dataFormDateTimeProvider(): array
     {

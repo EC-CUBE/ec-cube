@@ -39,7 +39,7 @@ class OrderStateMachineTest extends EccubeTestCase
      * @param $toId
      * @param $expected
      */
-    #[DataProvider('canProvider')]
+    #[DataProvider(methodName: 'canProvider')]
     public function testCan($fromId, $toId, $expected)
     {
         $fromStatus = $this->statusOf($fromId);
@@ -300,12 +300,6 @@ class OrderStateMachineTest extends EccubeTestCase
         self::assertSame('1090', $Customer->getPoint(), '返品キャンセルになれば利用ポイント分が減らされ、加算ポイント分が増えるはず');
     }
 
-    /**
-     * @param Order $Order
-     * @param ProductClass $ProductClass
-     *
-     * @return OrderItem
-     */
     private function getProductOrderItem(Order $Order, ProductClass $ProductClass): OrderItem
     {
         return (new ArrayCollection($Order->getProductOrderItems()))->filter(function (OrderItem $item) use ($ProductClass) {
@@ -313,11 +307,6 @@ class OrderStateMachineTest extends EccubeTestCase
         })->first();
     }
 
-    /**
-     * @param int $statusId
-     *
-     * @return OrderStatus
-     */
     private function statusOf(int $statusId): OrderStatus
     {
         return $this->entityManager->find(OrderStatus::class, $statusId);

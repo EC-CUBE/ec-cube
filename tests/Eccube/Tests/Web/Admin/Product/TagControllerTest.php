@@ -68,7 +68,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
      * @param $isSuccess
      * @param $expected
      */
-    #[DataProvider('dataSubmitProvider')]
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testAddNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();

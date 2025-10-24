@@ -91,10 +91,10 @@ class MypageController extends AbstractController
     /**
      * ログイン画面.
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
-    #[Template('Mypage/login.twig')]
+    #[Route(path: '/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
+    #[Template(template: 'Mypage/login.twig')]
     public function login(Request $request, AuthenticationUtils $utils): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -135,10 +135,10 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
-    #[Template('Mypage/index.twig')]
+    #[Route(path: '/mypage/', name: 'mypage', methods: ['GET'])]
+    #[Template(template: 'Mypage/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator): array
     {
         /** @var Customer $Customer */
@@ -177,10 +177,10 @@ class MypageController extends AbstractController
      *
      * @param string|int $order_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
-    #[Template('Mypage/history.twig')]
+    #[Route(path: '/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
+    #[Template(template: 'Mypage/history.twig')]
     public function history(Request $request, $order_no): array
     {
         $this->entityManager->getFilters()
@@ -228,7 +228,7 @@ class MypageController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
+    #[Route(path: '/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
     public function order(Request $request, $order_no): RedirectResponse|Response
     {
         $this->isTokenValid();
@@ -316,12 +316,12 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を表示する.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
-    #[Template('Mypage/favorite.twig')]
+    #[Route(path: '/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
+    #[Template(template: 'Mypage/favorite.twig')]
     public function favorite(Request $request, PaginatorInterface $paginator): array
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
@@ -359,7 +359,7 @@ class MypageController extends AbstractController
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Product $Product): RedirectResponse
     {
         $this->isTokenValid();

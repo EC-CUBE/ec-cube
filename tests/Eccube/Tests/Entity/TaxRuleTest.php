@@ -121,13 +121,7 @@ class TaxRuleTest extends EccubeTestCase
     }
 
     /**
-     * @param string $taxRate
-     * @param int $sortNo
-     * @param \DateTime|null $applyDate
-     * @param ProductClass|null $ProductClass
      * @param Product|null $Product;
-     *
-     * @return TaxRule
      */
     private function createTaxRule(string $taxRate, int $sortNo = 0, ?\DateTime $applyDate = null, ?ProductClass $ProductClass = null, ?Product $Product = null): TaxRule
     {

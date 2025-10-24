@@ -28,8 +28,6 @@ class PluginStoreUpgradePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @return PluginManagePage
-     *
      * @throws \Exception
      */
     public function アップデート(): PluginManagePage

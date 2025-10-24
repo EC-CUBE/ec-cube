@@ -119,7 +119,7 @@ if (!class_exists(Layout::class)) {
         }
 
         /**
-         * @return Collection<int,BlockPosition>
+         * @return Collection<int, BlockPosition>
          */
         public function getBlockPositionsByTargetId(int $targetId): Collection
         {
@@ -273,13 +273,13 @@ if (!class_exists(Layout::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,BlockPosition>
+         * @var Collection<int, BlockPosition>
          */
         #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
         /**
-         * @var Collection<int,PageLayout>
+         * @var Collection<int, PageLayout>
          */
         #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]

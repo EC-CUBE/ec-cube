@@ -45,10 +45,10 @@ class SystemController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
-    #[Template('@admin/Setting/System/system.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
+    #[Template(template: '@admin/Setting/System/system.twig')]
     public function index(Request $request): array
     {
         $info = [];
@@ -67,7 +67,7 @@ class SystemController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
     public function phpinfo(Request $request): Response
     {
         ob_start();

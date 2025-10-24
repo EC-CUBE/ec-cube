@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController
 {
-    #[Route('/hogeplugin/hello')]
+    #[Route(path: '/hogeplugin/hello')]
     #[Template('HogePlugin/Resource/template/index.twig')]
     public function index(Request $request)
     {

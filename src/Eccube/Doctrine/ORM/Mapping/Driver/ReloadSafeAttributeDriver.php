@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
 {
     /**
-     * @var array<int,string|false> 新しく生成されたProxyファイルのリスト
+     * @var array<int, string|false> 新しく生成されたProxyファイルのリスト
      */
     protected $newProxyFiles;
     /**
@@ -36,7 +36,7 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
     protected $outputDir;
 
     /**
-     * @param array<int,string> $newProxyFiles
+     * @param array<int, string> $newProxyFiles
      */
     public function setNewProxyFiles(array $newProxyFiles): void
     {
@@ -123,7 +123,7 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
      *
      * @param string $sourceFile  ソースファイル
      *
-     * @return array<int,string> ソースファイルに含まれるクラス名のリスト
+     * @return array<int, string> ソースファイルに含まれるクラス名のリスト
      */
     private function getClassNamesFromTokens(string $sourceFile): array
     {

@@ -37,7 +37,7 @@ interface ComposerServiceInterface
     public function execRemove(string $packageName, ?OutputInterface $output = null): string;
 
     /**
-     * @return array<int|string,array<int,string>>|null
+     * @return array<int|string, array<int, string>>|null
      */
     public function execConfig(string $key, ?string $value = null): ?array;
 

@@ -70,7 +70,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
      * @param $isSuccess
      * @param $expected
      */
-    #[DataProvider('dataSubmitProvider')]
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -101,7 +101,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
      * @param $isSuccess
      * @param $expected
      */
-    #[DataProvider('dataSubmitProvider')]
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();

@@ -69,14 +69,14 @@ class MailController extends AbstractController
     }
 
     /**
-     * @return Response|RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
      */
-    #[Route('/%eccube_admin_route%/order/{id}/mail', requirements: ['id' => '\d+'], name: 'admin_order_mail', methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/mail.twig')]
+    #[Route(path: '/%eccube_admin_route%/order/{id}/mail', name: 'admin_order_mail', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/mail.twig')]
     public function index(Request $request, Order $Order): Response|RedirectResponse|array
     {
         $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);

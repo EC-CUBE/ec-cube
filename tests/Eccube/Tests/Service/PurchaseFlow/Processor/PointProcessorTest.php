@@ -78,7 +78,7 @@ class PointProcessorTest extends EccubeTestCase
      * @param $customerPoint int 保有ポイント
      * @param $isError boolean エラーかどうか
      */
-    #[DataProvider('usePointOverCustomerPointProvider')]
+    #[DataProvider(methodName: 'usePointOverCustomerPointProvider')]
     public function testUsePointOverCustomerPointShoppingFlow($usePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
@@ -123,7 +123,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('usePointOverPriceProvider')]
+    #[DataProvider(methodName: 'usePointOverPriceProvider')]
     public function testUsePointOverPrice($usePoint, $isError)
     {
         $price = 100; // 商品の値段
@@ -160,7 +160,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('usePointOverPriceProvider')]
+    #[DataProvider(methodName: 'usePointOverPriceProvider')]
     public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
     {
         $price = '100'; // 商品の値段
@@ -235,7 +235,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('useAddPointProvider')]
+    #[DataProvider(methodName: 'useAddPointProvider')]
     public function testAddPoint($price, $usePoint, $addPoint)
     {
         $Customer = new Customer();
@@ -277,7 +277,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('useAddPointExcludeShippingFeeProvider')]
+    #[DataProvider(methodName: 'useAddPointExcludeShippingFeeProvider')]
     public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
     {
         $Customer = new Customer();
@@ -333,7 +333,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('pointConversionRateProvider')]
+    #[DataProvider(methodName: 'pointConversionRateProvider')]
     public function testPointConversionRate($pointConversionRate)
     {
         $productPrice = 1000;
@@ -388,7 +388,7 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @group decimal
      */
-    #[DataProvider('basicPointRateProvider')]
+    #[DataProvider(methodName: 'basicPointRateProvider')]
     public function testBasicPointRate($basicPointRate)
     {
         $ProductPrice = 1000;

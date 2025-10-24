@@ -708,8 +708,6 @@ EOD;
 
     /**
      * @param $config
-     *
-     * @return array
      */
     private function createComposerJsonFile($config): array
     {

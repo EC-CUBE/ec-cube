@@ -39,7 +39,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
      *
      * @group cache-clear
      */
-    #[DataProvider('dataSubmitProvider')]
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testSubmit($isSuccess, $expected)
     {
         $formData = $this->createFormData();

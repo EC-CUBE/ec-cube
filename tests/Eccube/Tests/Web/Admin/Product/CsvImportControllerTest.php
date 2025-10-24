@@ -128,8 +128,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 引数の配列から CSV を生成し, リソースを返す.
-     *
-     * @param mixed $filename
      */
     public function createCsvFromArray(array $csv, mixed $filename = 'products.csv')
     {
@@ -706,7 +704,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $id
      * @param $expectedMessage
      */
-    #[DataProvider('dataProductIdProvider')]
+    #[DataProvider(methodName: 'dataProductIdProvider')]
     public function testImportProductWithIdIsWrong($id, $expectedMessage)
     {
         $Products = $this->productRepo->findAll();
@@ -729,7 +727,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $status
      * @param $expectedMessage
      */
-    #[DataProvider('dataStatusProvider')]
+    #[DataProvider(methodName: 'dataStatusProvider')]
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
     {
         /** @var Generator $faker */
@@ -749,7 +747,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $optionDeliveryFee
      * @param mixed $expected
      */
-    #[DataProvider('dataDeliveryFeeProvider')]
+    #[DataProvider(methodName: 'dataDeliveryFeeProvider')]
     public function testImportDeliveryFee($optionDeliveryFee, $expected)
     {
         /** @var BaseInfo $BaseInfo */
@@ -782,8 +780,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Data for case check product id.
-     *
-     * @return array
      */
     public static function dataProductIdProvider(): array
     {
@@ -795,8 +791,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Data for case check product status flg.
-     *
-     * @return array
      */
     public static function dataStatusProvider(): array
     {
@@ -809,12 +803,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
     /**
      * $this->filepath のファイルを CSV アップロードし, 完了画面の crawler を返す.
-     *
-     * @param string $bind
-     * @param string $original_name
-     * @param mixed $isXmlHttpRequest
-     *
-     * @return Crawler
      */
     protected function scenario(string $bind = 'admin_product_csv_import', string $original_name = 'products.csv', mixed $isXmlHttpRequest = false): Crawler
     {
@@ -880,7 +868,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $selector
      * @param mixed $pattern
      */
-    #[DataProvider('dataDescriptionDetailProvider')]
+    #[DataProvider(methodName: 'dataDescriptionDetailProvider')]
     public function testImportDescriptionetail($length, $selector, $pattern)
     {
         $csv = [];
@@ -912,7 +900,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @group decimal
      */
-    #[DataProvider('dataTaxRuleProvider')]
+    #[DataProvider(methodName: 'dataTaxRuleProvider')]
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {
         /** @var BaseInfo $BaseInfo */
@@ -1082,7 +1070,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param mixed $lineNo
      * @param mixed $expecedFileNo
      */
-    #[DataProvider('splitCsvDataProvider')]
+    #[DataProvider(methodName: 'splitCsvDataProvider')]
     public function testSplitCsv($lineNo, $expecedFileNo)
     {
         [$header, $row] = $this->createCsvAsArray();

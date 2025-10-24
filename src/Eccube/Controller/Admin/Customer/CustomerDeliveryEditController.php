@@ -45,13 +45,13 @@ class CustomerDeliveryEditController extends AbstractController
      *
      * @param string|null $did
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/customer/{id}/delivery/new', name: 'admin_customer_delivery_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/edit', name: 'admin_customer_delivery_edit', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Customer/delivery_edit.twig')]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/delivery/new', name: 'admin_customer_delivery_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/delivery/{did}/edit', name: 'admin_customer_delivery_edit', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Customer/delivery_edit.twig')]
     public function edit(Request $request, Customer $Customer, $did = null): array|RedirectResponse
     {
         // 配送先住所最大値判定
@@ -131,7 +131,7 @@ class CustomerDeliveryEditController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/delete', name: 'admin_customer_delivery_delete', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/delivery/{did}/delete', name: 'admin_customer_delivery_delete', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, Customer $Customer, $did): RedirectResponse
     {
         $this->isTokenValid();

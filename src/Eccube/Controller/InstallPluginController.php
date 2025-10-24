@@ -52,7 +52,7 @@ class InstallPluginController extends InstallController
     /**
      * 有効化可能なプラグイン一覧を返します.
      */
-    #[Route('/install/plugins', name: 'install_plugins', methods: ['GET'])]
+    #[Route(path: '/install/plugins', name: 'install_plugins', methods: ['GET'])]
     public function plugins(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
@@ -79,7 +79,7 @@ class InstallPluginController extends InstallController
      * @throws NotFoundHttpException
      * @throws PluginException
      */
-    #[Route('/install/plugin/{code}/enable', name: 'install_plugin_enable', requirements: ['code' => '\w+'], methods: ['PUT'])]
+    #[Route(path: '/install/plugin/{code}/enable', name: 'install_plugin_enable', requirements: ['code' => '\w+'], methods: ['PUT'])]
     public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
@@ -129,7 +129,7 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションファイルを削除し, 管理画面に遷移します.
      */
-    #[Route('/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
+    #[Route(path: '/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
     public function redirectAdmin(Request $request): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
@@ -178,7 +178,7 @@ class InstallPluginController extends InstallController
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
+    #[Route(path: '/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
     public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {

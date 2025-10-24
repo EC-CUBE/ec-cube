@@ -68,13 +68,13 @@ class CustomerEditController extends AbstractController
     /**
      * @param string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/customer/new', name: 'admin_customer_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/customer/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_customer_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Customer/edit.twig')]
+    #[Route(path: '/%eccube_admin_route%/customer/new', name: 'admin_customer_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/edit', name: 'admin_customer_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Customer/edit.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $id = null): RedirectResponse|array
     {
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');

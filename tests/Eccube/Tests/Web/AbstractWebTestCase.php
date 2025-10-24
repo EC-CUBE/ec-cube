@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -54,11 +55,9 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      *
      * @param UserInterface $User ログインさせる User
      *
-     * @return KernelBrowser|\Symfony\Component\BrowserKit\AbstractBrowser
-     *
      * @see EccubeTestCase::getCsrfToken()
      */
-    public function loginTo(UserInterface $User): KernelBrowser|\Symfony\Component\BrowserKit\AbstractBrowser
+    public function loginTo(UserInterface $User): KernelBrowser|AbstractBrowser
     {
         $firewallContext = $User instanceof Customer ? 'customer' : 'admin';
         $this->client->loginUser($User, $firewallContext);
@@ -68,8 +67,6 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
     /**
      * https://github.com/symfony/symfony/discussions/46961
-     *
-     * @param KernelBrowser $client
      */
     public function createSession(KernelBrowser $client): Session
     {

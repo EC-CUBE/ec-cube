@@ -29,8 +29,6 @@ class PriceTypeTest extends AbstractTypeTestCase
      * getValidTestData
      *
      * 正常系のデータパターンを返す
-     *
-     * @return array
      */
     public static function getValidTestData(): array
     {
@@ -53,7 +51,7 @@ class PriceTypeTest extends AbstractTypeTestCase
     /**
      * @param mixed $data
      */
-    #[DataProvider('getValidTestData')]
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

@@ -45,8 +45,6 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
 
     /**
      * createFormData
-     *
-     * @return array
      */
     protected function deliveryFormData(): array
     {

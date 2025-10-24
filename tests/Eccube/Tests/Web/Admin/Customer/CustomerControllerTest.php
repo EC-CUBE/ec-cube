@@ -156,7 +156,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * testIndexWithPostSearchByProductName
      */
-    #[DataProvider('indexWithPostSearchByProductNameProvider')]
+    #[DataProvider(methodName: 'indexWithPostSearchByProductNameProvider')]
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);

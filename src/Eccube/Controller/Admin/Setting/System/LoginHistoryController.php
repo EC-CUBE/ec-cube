@@ -56,11 +56,11 @@ class LoginHistoryController extends AbstractController
      *
      * @param int|null $page_no
      *
-     * @return Response|array<string,mixed>
+     * @return Response|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/system/login_history/{page_no}', name: 'admin_setting_system_login_history_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/login_history.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/system/login_history/{page_no}', name: 'admin_setting_system_login_history_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/login_history.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null): Response|array
     {
         $session = $request->getSession();

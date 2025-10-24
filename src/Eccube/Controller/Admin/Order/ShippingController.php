@@ -116,12 +116,12 @@ class ShippingController extends AbstractController
     /**
      * 出荷登録/編集画面.
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/shipping/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_shipping_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/shipping.twig')]
+    #[Route(path: '/%eccube_admin_route%/shipping/{id}/edit', name: 'admin_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/shipping.twig')]
     public function index(Request $request, Order $Order): RedirectResponse|array
     {
         $OriginOrder = clone $Order;
@@ -291,13 +291,13 @@ class ShippingController extends AbstractController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/shipping/preview_notify_mail/{id}', requirements: ['id' => '\d+'], name: 'admin_shipping_preview_notify_mail', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/shipping/preview_notify_mail/{id}', name: 'admin_shipping_preview_notify_mail', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function previewShippingNotifyMail(Shipping $Shipping): Response
     {
         return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder(), null, true));
     }
 
-    #[Route('/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    #[Route(path: '/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function notifyMail(Shipping $Shipping): JsonResponse
     {
         $this->isTokenValid();

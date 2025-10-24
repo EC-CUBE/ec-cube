@@ -90,7 +90,7 @@ class AdminController extends AbstractController
     protected $pluginApiService;
 
     /**
-     * @var array<int,int> 売り上げ状況用受注状況
+     * @var array<int, int> 売り上げ状況用受注状況
      */
     private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
@@ -120,10 +120,10 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
-    #[Template('@admin/login.twig')]
+    #[Route(path: '/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/login.twig')]
     public function login(Request $request): RedirectResponse|array
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
@@ -151,13 +151,13 @@ class AdminController extends AbstractController
     /**
      * 管理画面ホーム
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    #[Route('/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
-    #[Template('@admin/index.twig')]
+    #[Route(path: '/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
+    #[Template(template: '@admin/index.twig')]
     public function index(Request $request): array
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
@@ -264,7 +264,7 @@ class AdminController extends AbstractController
     /**
      * 売上状況の取得
      */
-    #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
     public function sale(Request $request): JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -301,10 +301,10 @@ class AdminController extends AbstractController
     /**
      * パスワード変更画面
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
-    #[Template('@admin/change_password.twig')]
+    #[Route(path: '/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/change_password.twig')]
     public function changePassword(Request $request): RedirectResponse|array
     {
         $builder = $this->formFactory
@@ -356,7 +356,7 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      */
-    #[Route('/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
     public function searchNonStockProducts(Request $request): Response
     {
         // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
@@ -373,7 +373,7 @@ class AdminController extends AbstractController
     /**
      * 本会員の検索結果を表示する.
      */
-    #[Route('/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
     public function searchCustomer(Request $request): Response
     {
         $searchData = [];
@@ -387,9 +387,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param array<int,int> $excludes
+     * @param array<int, int> $excludes
      *
-     * @return array<int|string,mixed>|null
+     * @return array<int|string, mixed>|null
      */
     protected function getOrderEachStatus(array $excludes): ?array
     {
@@ -541,7 +541,7 @@ class AdminController extends AbstractController
     /**
      * 期間指定のデータを取得
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     protected function getData(Carbon $fromDate, Carbon $toDate, string $format): array
     {

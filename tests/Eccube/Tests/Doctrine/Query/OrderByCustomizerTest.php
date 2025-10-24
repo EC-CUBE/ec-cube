@@ -68,9 +68,6 @@ class OrderByCustomizerTest extends EccubeTestCase
         self::assertSame('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
     }
 
-    /**
-     * @return QueryBuilder
-     */
     private function createQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
@@ -97,7 +94,6 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
     }
 
     /**
-     * @param array $params
      * @param $queryKey
      *
      * @return OrderByClause[]
@@ -111,8 +107,6 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     public function getQueryKey(): string
     {

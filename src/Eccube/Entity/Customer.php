@@ -207,20 +207,20 @@ if (!class_exists(Customer::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,CustomerFavoriteProduct>
+         * @var Collection<int, CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(mappedBy: 'Customer', targetEntity: CustomerFavoriteProduct::class, cascade: ['remove'])]
         private $CustomerFavoriteProducts;
 
         /**
-         * @var Collection<int,CustomerAddress>
+         * @var Collection<int, CustomerAddress>
          */
         #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
         private $CustomerAddresses;
 
         /**
-         * @var Collection<int,Order>
+         * @var Collection<int, Order>
          */
         #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'Customer')]
         private $Orders;
@@ -773,7 +773,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return Collection<int,CustomerFavoriteProduct>
+         * @return Collection<int, CustomerFavoriteProduct>
          */
         public function getCustomerFavoriteProducts(): Collection
         {
@@ -803,7 +803,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get customerAddresses.
          *
-         * @return Collection<int,CustomerAddress>
+         * @return Collection<int, CustomerAddress>
          */
         public function getCustomerAddresses(): Collection
         {
@@ -833,7 +833,7 @@ if (!class_exists(Customer::class)) {
         /**
          * Get orders.
          *
-         * @return Collection<int,Order>
+         * @return Collection<int, Order>
          */
         public function getOrders(): Collection
         {

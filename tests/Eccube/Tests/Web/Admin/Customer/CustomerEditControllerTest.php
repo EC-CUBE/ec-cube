@@ -36,8 +36,6 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
     /**
      * createFormData
-     *
-     * @return array
      */
     protected function createFormData(): array
     {

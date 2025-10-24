@@ -29,10 +29,10 @@ class TradeLawController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
-    #[Template('Help/tradelaw.twig')]
+    #[Route(path: '/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
+    #[Template(template: 'Help/tradelaw.twig')]
     public function index(): array
     {
         $tradelaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);

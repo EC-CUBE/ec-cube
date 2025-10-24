@@ -171,7 +171,6 @@ class AcceptanceTester extends Actor
     }
 
     /**
-     * @param mixed $retryCount
      * @param string|$fileNameRegex ファイル名のパターン(CI環境で同時実行したときに区別するため)
      *
      * @return string ファイルパス
@@ -264,7 +263,6 @@ class AcceptanceTester extends Actor
      *
      * @see \Codeception\Module\WebDriver::see()
      *
-     * @param mixed $text
      * @param mixed|null $selector
      */
     public function see(mixed $text, mixed $selector = null): void
@@ -277,9 +275,6 @@ class AcceptanceTester extends Actor
      * AcceptanceTesterActions から移植
      *
      * @see \Codeception\Module\WebDriver::seeInField()
-     *
-     * @param mixed $field
-     * @param mixed $value
      */
     public function seeInField(mixed $field, mixed $value): void
     {
@@ -304,8 +299,6 @@ class AcceptanceTester extends Actor
      * AcceptanceTesterActions から移植
      *
      * @see \Codeception\Module\WebDriver::amOnPage()
-     *
-     * @param mixed $page
      */
     public function amOnPage(mixed $page): void
     {
@@ -317,7 +310,6 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @param string|array $link
      * @param mixed|null $context
      *
      * @see \Codeception\Module\WebDriver::click()

@@ -18,9 +18,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @return TaxRule
-     */
     public function createTaxRule(): TaxRule
     {
         $faker = $this->getFaker();

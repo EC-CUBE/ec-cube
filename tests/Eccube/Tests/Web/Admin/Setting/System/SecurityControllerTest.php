@@ -110,8 +110,6 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Submit form
-     *
-     * @return array
      */
     public function createFormData(): array
     {

@@ -36,11 +36,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     /**
      * 受注編集用フォーム作成.
      *
-     * @param Customer $Customer
      * @param Product|null $Product $Product
-     * @param int|null $charge
-     *
-     * @return array
      */
     public function createFormData(Customer $Customer, ?Product $Product = null, ?int $charge = null): array
     {
@@ -87,8 +83,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      * 配送編集用フォーム作成.
      *
      * @param Product $Product
-     *
-     * @return array
      */
     public function createShippingFormData(?Product $Product = null): array
     {
@@ -125,12 +119,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         return $shipping;
     }
 
-    /**
-     * @param Product|null $Product
-     * @param int|null $charge
-     *
-     * @return array
-     */
     public function createOrderItemFormData(?Product $Product, ?int $charge = null): array
     {
         $faker = $this->getFaker();
@@ -163,10 +151,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
     /**
      * 受注再編集用フォーム作成.
-     *
-     * @param Order $Order
-     *
-     * @return array
      */
     public function createFormDataForEdit(Order $Order): array
     {
@@ -221,10 +205,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
     /**
      * 受注再編集用フォーム作成.
-     *
-     * @param Shipping $Shipping
-     *
-     * @return array
      */
     public function createShippingFormDataForEdit(Shipping $Shipping): array
     {
@@ -254,11 +234,6 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         return $shipping;
     }
 
-    /**
-     * @param mixed $OrderItems
-     *
-     * @return array
-     */
     public function createOrderItemsFormDataEdit(mixed $OrderItems): array
     {
         $orderItem = [];

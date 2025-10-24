@@ -75,7 +75,7 @@ class SitemapController extends AbstractController
     /**
      * Output sitemap index
      */
-    #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
+    #[Route(path: '/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
     public function index(PaginatorInterface $paginator): Response
     {
         $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
@@ -117,7 +117,7 @@ class SitemapController extends AbstractController
     /**
      * Output sitemap of product categories
      */
-    #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
+    #[Route(path: '/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
     public function category(): Response
     {
         $Categories = $this->categoryRepository->getList(null, true);
@@ -130,7 +130,7 @@ class SitemapController extends AbstractController
      *
      * Output sitemap of products as status is 1
      */
-    #[Route('/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
     public function product(Request $request, PaginatorInterface $paginator): Response
     {
         // Doctrine SQLFilter
@@ -160,7 +160,7 @@ class SitemapController extends AbstractController
      *
      * Output sitemap of pages without 'noindex' in meta robots.
      */
-    #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
+    #[Route(path: '/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
     public function page(): Response
     {
         $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");
@@ -194,7 +194,7 @@ class SitemapController extends AbstractController
     /**
      * Output XML response by data.
      *
-     * @param array<string,mixed> $data
+     * @param array<string, mixed> $data
      */
     private function outputXml(array $data, string $template_name = 'sitemap.xml.twig'): Response
     {

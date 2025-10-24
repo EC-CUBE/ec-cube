@@ -33,7 +33,7 @@ class AbstractCsvImportController extends AbstractController
     /**
      * アップロードされたCSVファイルの行ごとの処理
      *
-     * @return CsvImportService<int,mixed>|bool
+     * @return CsvImportService<int, mixed>|bool
      */
     protected function getImportData(UploadedFile $formFile): CsvImportService|bool
     {
@@ -52,7 +52,7 @@ class AbstractCsvImportController extends AbstractController
     }
 
     /**
-     * @param array<int,mixed> $columns
+     * @param array<int, mixed> $columns
      */
     protected function sendTemplateResponse(Request $request, array $columns, string $filename): StreamedResponse
     {

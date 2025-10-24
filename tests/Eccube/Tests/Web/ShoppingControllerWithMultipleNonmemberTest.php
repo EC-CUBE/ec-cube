@@ -1455,9 +1455,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->assertEmailTextBodyContains($Message, '◎お届け先', '複数配送のため, お届け先1が存在する');
     }
 
-    /**
-     * @return Order
-     */
     private function getLastOrder(): Order
     {
         return $this->orderRepository->findOneBy([], ['id' => 'desc']);

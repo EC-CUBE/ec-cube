@@ -290,9 +290,6 @@ class EA04OrderCest
         $I->seeInLastEmailSubjectTo('admin@example.com', '[EC-CUBE SHOP] 商品出荷のお知らせ');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
     public function order_一括メール通知(AcceptanceTester $I)
     {
         $I->wantTo('EA0402-UC02-T01 一括メール通知');

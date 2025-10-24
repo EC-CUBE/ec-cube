@@ -74,8 +74,6 @@ abstract class CommandTestCase extends EccubeTestCase
 
     /**
      * $PluginCommand
-     *
-     * @param Command $PluginCommand
      */
     protected function initCommand(Command $PluginCommand)
     {
@@ -85,9 +83,6 @@ abstract class CommandTestCase extends EccubeTestCase
 
     /**
      * executeTester
-     *
-     * @param array $callback
-     * @param array $commandArg
      */
     protected function executeTester(array $callback, array $commandArg)
     {
@@ -101,8 +96,6 @@ abstract class CommandTestCase extends EccubeTestCase
 
     /**
      * getLastContent
-     *
-     * @return string
      *
      * @throws \Exception
      */
@@ -131,8 +124,6 @@ abstract class CommandTestCase extends EccubeTestCase
 
     /**
      * addCommand
-     *
-     * @param Command $command
      */
     protected function addCommand(Command $command)
     {
@@ -142,9 +133,6 @@ abstract class CommandTestCase extends EccubeTestCase
 
     /**
      * mockQuestionHelper
-     *
-     * @param Command $cmd
-     * @param callable $mockHandler
      */
     protected function mockQuestionHelper(Command $cmd, callable $mockHandler)
     {
@@ -155,10 +143,6 @@ abstract class CommandTestCase extends EccubeTestCase
 
     /**
      * getQuestionMark
-     *
-     * @param int $no
-     *
-     * @return string
      */
     protected function getQuestionMark(int $no): string
     {

@@ -341,7 +341,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     /**
      * @param int $orderStatusId
      */
-    #[DataProvider('dataBulkOrderStatusProvider')]
+    #[DataProvider(methodName: 'dataBulkOrderStatusProvider')]
     public function testBulkOrderStatus($orderStatusId)
     {
         $this->markTestIncomplete('使用していないルーティングのためスキップ.');
@@ -382,9 +382,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(count($orderIds), count($result));
     }
 
-    /**
-     * @return array
-     */
     public static function dataBulkOrderStatusProvider(): array
     {
         return [

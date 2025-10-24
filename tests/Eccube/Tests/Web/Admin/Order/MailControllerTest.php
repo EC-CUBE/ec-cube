@@ -125,8 +125,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * メールテンプレートを選択する
-     *
-     * @return void
      */
     public function testSelectMailTemplate(): void
     {

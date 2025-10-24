@@ -79,9 +79,6 @@ class JoinClauseTest extends EccubeTestCase
         return $builder->getParameters()->toArray();
     }
 
-    /**
-     * @return QueryBuilder
-     */
     private function queryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()

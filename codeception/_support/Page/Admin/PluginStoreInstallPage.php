@@ -28,10 +28,6 @@ class PluginStoreInstallPage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @param mixed $message
-     *
-     * @return PluginManagePage
-     *
      * @throws \Exception
      */
     public function インストール(mixed $message = 'インストールが完了しました。'): PluginManagePage

@@ -140,7 +140,7 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * Return the events to subscribe to.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[\Override]
     public static function getSubscribedEvents(): array

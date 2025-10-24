@@ -94,7 +94,7 @@ class EccubeExtensionTest extends EccubeTestCase
      * @param mixed $iconOnly
      * @param mixed $expected
      */
-    #[DataProvider('extensionProvider')]
+    #[DataProvider(methodName: 'extensionProvider')]
     public function testGetExtensionIcon($ext, $iconOnly, $expected)
     {
         $actual = $this->Extension->getExtensionIcon($ext, [], $iconOnly);

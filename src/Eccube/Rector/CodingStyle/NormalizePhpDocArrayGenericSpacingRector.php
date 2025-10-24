@@ -26,7 +26,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * PHPDoc のジェネリクス表記のカンマ後のスペースを統一する Rector ルール
  *
- * @param, @return, @var タグの ClassName<key, value> 形式において、
+ * param, return, var タグの ClassName<key, value> 形式において
  * カンマの後にスペースを1つ入れる形式に統一します。
  *
  * array だけでなく、Collection などの任意のクラスのジェネリクス表記に対応。
@@ -36,9 +36,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  * @param array<string,mixed> $options
  * @param array<string, mixed> $options
  *
- * @var Collection<int,Product> $products
+ * Collection<int,Product> $products
  * ↓
- * @var Collection<int, Product> $products
+ * Collection<int, Product> $products
  */
 final class NormalizePhpDocArrayGenericSpacingRector extends AbstractRector
 {

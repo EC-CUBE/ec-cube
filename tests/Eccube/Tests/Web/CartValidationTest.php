@@ -2526,13 +2526,6 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertNotContains('この商品は同時に購入することはできません。', $message);
     }
 
-    /**
-     * @param Customer $Customer
-     * @param ProductClass $ProductClass
-     * @param int $num
-     *
-     * @return mixed
-     */
     protected function scenarioCartIn(Customer $Customer, ProductClass $ProductClass, int $num = 1): mixed
     {
         $this->loginTo($Customer);
@@ -2551,8 +2544,6 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * @param $client
-     *
-     * @return mixed
      */
     protected function scenarioConfirm(Customer $Customer, ProductClass $ProductClass): mixed
     {
@@ -2564,10 +2555,6 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * @param $Customer
-     * @param string $confirmUrl
-     * @param array $arrShopping
-     *
-     * @return mixed
      */
     protected function scenarioComplete(Customer $Customer, string $confirmUrl = '', array $arrShopping = []): mixed
     {
@@ -2601,8 +2588,6 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * @param $client
      * @param $productClassId
-     *
-     * @return mixed
      */
     protected function scenarioCartUp(Customer $Customer, ProductClass $ProductClass): mixed
     {
@@ -2614,12 +2599,6 @@ class CartValidationTest extends AbstractWebTestCase
         ]));
     }
 
-    /**
-     * @param Customer $Customer
-     * @param ProductClass $ProductClass
-     *
-     * @return Crawler
-     */
     protected function scenarioCartDown(Customer $Customer, ProductClass $ProductClass): Crawler
     {
         $this->loginTo($Customer);
@@ -2630,12 +2609,6 @@ class CartValidationTest extends AbstractWebTestCase
         ]));
     }
 
-    /**
-     * @param Product $Product
-     * @param int     $display
-     *
-     * @return Product
-     */
     protected function changeStatus(Product $Product, int $display = ProductStatus::DISPLAY_SHOW): Product
     {
         $Product = $this->entityManager->find(Product::class, $Product->getId());
@@ -2648,12 +2621,6 @@ class CartValidationTest extends AbstractWebTestCase
         return $Product;
     }
 
-    /**
-     * @param ProductClass $ProductClass
-     * @param int          $stock
-     *
-     * @return ProductClass
-     */
     protected function changeStock(ProductClass $ProductClass, int $stock = 0): ProductClass
     {
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
@@ -2687,13 +2654,6 @@ class CartValidationTest extends AbstractWebTestCase
         ]);
     }
 
-    /**
-     * @param string|null $productName
-     * @param int  $productClassNum
-     * @param int  $stock
-     *
-     * @return Product
-     */
     public function createProduct(?string $productName = null, int $productClassNum = 3, int $stock = 0): Product
     {
         $Product = parent::createProduct($productName, $productClassNum);
@@ -2706,10 +2666,6 @@ class CartValidationTest extends AbstractWebTestCase
 
     /**
      * エラーに表示する商品名を取得
-     *
-     * @param ProductClass $ProductClass
-     *
-     * @return string
      */
     private function getProductName(ProductClass $ProductClass): string
     {

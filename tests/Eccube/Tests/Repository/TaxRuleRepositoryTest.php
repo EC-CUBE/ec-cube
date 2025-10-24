@@ -111,11 +111,6 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     /**
      * Create TaxRule entity
-     *
-     * @param int $tax_rate
-     * @param \DateTime|null $apply_date
-     *
-     * @return TaxRule
      */
     public function createTaxRule(int $tax_rate = 8, ?\DateTime $apply_date = null): TaxRule
     {

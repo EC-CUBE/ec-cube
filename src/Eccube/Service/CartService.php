@@ -233,7 +233,7 @@ class CartService
     }
 
     /**
-     * @param array<int,CartItem>|Collection<int,CartItem> $cartItems
+     * @param array<int, CartItem>|Collection<int, CartItem> $cartItems
      *
      * @return CartItem[]
      */
@@ -250,8 +250,8 @@ class CartService
     }
 
     /**
-     * @param array<int, CartItem>|Collection<int,CartItem> $cartItems
-     * @param array<int, CartItem>|Collection<int,CartItem> $allCartItems
+     * @param array<int, CartItem>|Collection<int, CartItem> $cartItems
+     * @param array<int, CartItem>|Collection<int, CartItem> $allCartItems
      *
      * @return array<mixed>
      */

@@ -68,8 +68,6 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
     /**
      * @param $maxTotalFee
      *
-     * @return PaymentTotalLimitValidator
-     *
      * @throws \ReflectionException
      */
     private function newValidator($maxTotalFee): PaymentTotalLimitValidator

@@ -189,7 +189,7 @@ if (!class_exists(Shipping::class)) {
         private $Order;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,OrderItem>
+         * @var \Doctrine\Common\Collections\Collection<int, OrderItem>
          */
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
         private $OrderItems;

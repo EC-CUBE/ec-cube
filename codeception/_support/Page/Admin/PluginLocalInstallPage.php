@@ -24,8 +24,6 @@ class PluginLocalInstallPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginDirName
-     *
-     * @return PluginManagePage
      */
     public function アップロード($pluginDirName): PluginManagePage
     {

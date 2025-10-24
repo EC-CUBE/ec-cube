@@ -490,7 +490,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param $taxRate
      * @param $expected
      */
-    #[DataProvider('dataNewProductProvider')]
+    #[DataProvider(methodName: 'dataNewProductProvider')]
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
         // Give
@@ -762,7 +762,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $after POST値
      * @param string|null $expected 期待値
      */
-    #[DataProvider('dataEditProductProvider')]
+    #[DataProvider(methodName: 'dataEditProductProvider')]
     public function testEditWithPostTaxRate($before, $after, $expected)
     {
         // Give
@@ -823,7 +823,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      */
-    #[DataProvider('dataEditRoundingTypeProvider')]
+    #[DataProvider(methodName: 'dataEditRoundingTypeProvider')]
     public function testEditWithCurrnetRoundingType($tax_rate, $currentRoundingTypeId, $expected, $isNew)
     {
         // Give
@@ -1072,8 +1072,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * 個別税率編集時のテストデータ
      * 更新前の税率 / POST値 / 期待値の配列を返す
-     *
-     * @return array
      */
     public static function dataEditProductProvider(): array
     {
@@ -1093,8 +1091,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * 個別税率編集時のテストデータ
      * 個別税率 / 現在の RoundingType / RoundingType 期待値 / 新規商品 の配列を返す
-     *
-     * @return array
      */
     public static function dataEditRoundingTypeProvider(): array
     {
@@ -1106,9 +1102,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     private function createSearchForm(): array
     {
         return [
@@ -1234,7 +1227,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param mixed $formName
      * @param mixed $methodName
      */
-    #[DataProvider('purifyTarget')]
+    #[DataProvider(methodName: 'purifyTarget')]
     public function testPurifyXssInput($formName, $methodName): void
     {
         $Product = $this->createProduct(null, 0);

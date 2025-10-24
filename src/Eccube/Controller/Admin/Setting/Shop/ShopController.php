@@ -50,12 +50,12 @@ class ShopController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/shop_master.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/shop_master.twig')]
     public function index(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $BaseInfo = $this->baseInfoRepository->get();

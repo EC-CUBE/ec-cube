@@ -48,13 +48,13 @@ class MailController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws \Twig\Error\LoaderError
      */
-    #[Route('/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/shop/mail/{id}', requirements: ['id' => '\d+'], name: 'admin_setting_shop_mail_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/mail.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}', name: 'admin_setting_shop_mail_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/mail.twig')]
     public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null): RedirectResponse|array
     {
         $Mail ??= new MailTemplate();
@@ -155,10 +155,10 @@ class MailController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
-    #[Template('@admin/Setting/Shop/mail_view.twig')]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
+    #[Template(template: '@admin/Setting/Shop/mail_view.twig')]
     public function preview(Request $request): array
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
@@ -180,7 +180,7 @@ class MailController extends AbstractController
         ];
     }
 
-    #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, MailTemplate $Mail): RedirectResponse
     {
         $this->isTokenValid();

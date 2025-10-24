@@ -17,24 +17,24 @@ use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/arc')]
+#[Route(path: '/arc')]
 class AnnotatedRoutingController
 {
-    #[Route('/')]
+    #[Route(path: '/')]
     #[Template('AnnotatedRouting/Resource/template/index.twig')]
     public function index(Application $app)
     {
         return [];
     }
 
-    #[Route('/form', methods: ['GET'])]
+    #[Route(path: '/form', methods: ['GET'])]
     #[Template('AnnotatedRouting/Resource/template/form.twig')]
     public function form(Application $app)
     {
         return [];
     }
 
-    #[Route('/form', methods: ['POST'])]
+    #[Route(path: '/form', methods: ['POST'])]
     public function submit(Application $app, Request $request)
     {
         return $app->escape('Hello, '.$request->get('value'));

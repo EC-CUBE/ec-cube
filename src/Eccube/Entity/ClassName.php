@@ -75,7 +75,7 @@ if (!class_exists(ClassName::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,ClassCategory>
+         * @var Collection<int, ClassCategory>
          */
         #[ORM\OneToMany(targetEntity: ClassCategory::class, mappedBy: 'ClassName')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
@@ -217,7 +217,7 @@ if (!class_exists(ClassName::class)) {
         /**
          * Get classCategories.
          *
-         * @return Collection<int,ClassCategory>
+         * @return Collection<int, ClassCategory>
          */
         public function getClassCategories(): Collection
         {

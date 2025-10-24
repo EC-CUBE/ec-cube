@@ -52,7 +52,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * \Symfony\Bridge\Twig\Extension\RoutingExtension::getPath の処理を拡張し、
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
-     * @param array<string,mixed> $parameters
+     * @param array<string, mixed> $parameters
      *
      * @throws RouteNotFoundException
      */
@@ -72,7 +72,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * \Symfony\Bridge\Twig\Extension\RoutingExtension::getUrl の処理を拡張し、
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
-     * @param array<string,mixed> $parameters
+     * @param array<string, mixed> $parameters
      *
      * @throws RouteNotFoundException
      */
@@ -90,7 +90,7 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
     /**
      * @param Node<mixed> $argsNode The arguments of the path/url function
      *
-     * @return array<int,mixed> An array with the contexts the URL is safe
+     * @return array<int, mixed> An array with the contexts the URL is safe
      *
      * @see \Symfony\Bridge\Twig\Extension\RoutingExtension
      */

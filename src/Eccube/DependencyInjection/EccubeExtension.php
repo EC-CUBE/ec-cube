@@ -259,7 +259,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @return array<int,string>
+     * @return array<int, string>
      */
     protected function getPluginDirectories(string $pluginDir): array
     {

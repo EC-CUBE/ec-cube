@@ -64,7 +64,7 @@ if (!class_exists(Cart::class)) {
         private $lock = false;
 
         /**
-         * @var Collection<int,CartItem>
+         * @var Collection<int, CartItem>
          */
         #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
@@ -197,7 +197,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @return Collection<int,CartItem>
+         * @return Collection<int, CartItem>
          */
         public function getCartItems(): Collection
         {
@@ -207,7 +207,7 @@ if (!class_exists(Cart::class)) {
         /**
          * Alias of getCartItems()
          *
-         * @return ItemCollection<int,ItemInterface>
+         * @return ItemCollection<int, ItemInterface>
          */
         #[\Override]
         public function getItems(): ItemCollection
@@ -216,7 +216,7 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
-         * @param  Collection<int,CartItem> $CartItems
+         * @param  Collection<int, CartItem> $CartItems
          */
         public function setCartItems(Collection $CartItems): Cart
         {

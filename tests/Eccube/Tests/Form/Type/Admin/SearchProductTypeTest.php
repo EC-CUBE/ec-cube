@@ -40,10 +40,8 @@ class SearchProductTypeTest extends AbstractTypeTestCase
 
     /**
      * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
-     *
-     * @param string $formName
      */
-    #[DataProvider('dataFormDateProvider')]
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDateSearch(string $formName)
     {
         $formData = [
@@ -56,8 +54,6 @@ class SearchProductTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider date form test.
-     *
-     * @return array
      */
     public static function dataFormDateProvider(): array
     {
@@ -71,10 +67,8 @@ class SearchProductTypeTest extends AbstractTypeTestCase
 
     /**
      * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm:ss のフォーマットでの検索機能を追加
-     *
-     * @param string $formName
      */
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
@@ -87,8 +81,6 @@ class SearchProductTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
     public static function dataFormDateTimeProvider(): array
     {

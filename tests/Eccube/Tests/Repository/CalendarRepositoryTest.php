@@ -68,11 +68,6 @@ class CalendarRepositoryTest extends EccubeTestCase
 
     /**
      * Create Calendar entity
-     *
-     * @param string $title
-     * @param \DateTime|null $holiday
-     *
-     * @return Calendar
      */
     public function createCalendar(string $title = 'title', ?\DateTime $holiday = null): Calendar
     {

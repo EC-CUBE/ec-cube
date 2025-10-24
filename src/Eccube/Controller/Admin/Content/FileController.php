@@ -39,7 +39,7 @@ class FileController extends AbstractController
     public const UTF = 'UTF-8';
 
     /**
-     * @var array<int,array<string,string>>
+     * @var array<int, array<string, string>>
      */
     private $errors = [];
     /**
@@ -59,10 +59,10 @@ class FileController extends AbstractController
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/file.twig')]
+    #[Route(path: '/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/file.twig')]
     public function index(Request $request): array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -130,7 +130,7 @@ class FileController extends AbstractController
     /**
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
     public function view(Request $request): BinaryFileResponse
     {
         $file = $this->convertStrToServer($this->getUserDataDir($request->get('file')));
@@ -212,7 +212,7 @@ class FileController extends AbstractController
         }
     }
 
-    #[Route('/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
     public function delete(Request $request): RedirectResponse
     {
         $this->isTokenValid();
@@ -239,7 +239,7 @@ class FileController extends AbstractController
     /**
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
     public function download(Request $request): BinaryFileResponse
     {
         $topDir = $this->getUserDataDir();
@@ -351,9 +351,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param array<int,array<string, mixed>> $tree
+     * @param array<int, array<string, mixed>> $tree
      *
-     * @return array<int,array<int, mixed>>
+     * @return array<int, array<int, mixed>>
      */
     private function getTreeToArray(array $tree): array
     {
@@ -373,9 +373,9 @@ class FileController extends AbstractController
     }
 
     /**
-     * @param array<int,array<string, mixed>> $tree
+     * @param array<int, array<string, mixed>> $tree
      *
-     * @return array<int<0,max>,mixed>
+     * @return array<int<0, max>,mixed>
      */
     private function getPathsToArray(array $tree): array
     {
@@ -388,7 +388,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @return array<int,array<string,mixed>>
+     * @return array<int, array<string, mixed>>
      */
     private function getTree(string $topDir, Request $request): array
     {

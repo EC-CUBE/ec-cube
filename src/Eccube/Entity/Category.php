@@ -99,7 +99,7 @@ if (!class_exists(Category::class)) {
         }
 
         /**
-         * @return array<int,mixed>
+         * @return array<int, mixed>
          */
         public function getDescendants(): array
         {
@@ -186,13 +186,13 @@ if (!class_exists(Category::class)) {
         private $update_date;
 
         /**
-         * @var Collection<int,ProductCategory>
+         * @var Collection<int, ProductCategory>
          */
         #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
         private $ProductCategories;
 
         /**
-         * @var Collection<int,Category>
+         * @var Collection<int, Category>
          */
         #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'Parent')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
@@ -342,7 +342,7 @@ if (!class_exists(Category::class)) {
         /**
          * Get productCategories.
          *
-         * @return Collection<int,ProductCategory>
+         * @return Collection<int, ProductCategory>
          */
         public function getProductCategories(): Collection
         {
@@ -372,7 +372,7 @@ if (!class_exists(Category::class)) {
         /**
          * Get children.
          *
-         * @return Collection<int,Category>
+         * @return Collection<int, Category>
          */
         public function getChildren(): Collection
         {

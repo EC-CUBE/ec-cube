@@ -32,8 +32,6 @@ class ZZ99InstallerCest
 
     /**
      * 権限チェックのテスト.
-     *
-     * @param AcceptanceTester $I
      */
     public function installer_CheckPermission(AcceptanceTester $I)
     {

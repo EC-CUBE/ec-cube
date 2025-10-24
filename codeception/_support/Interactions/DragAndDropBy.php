@@ -22,11 +22,6 @@ use Facebook\WebDriver\WebDriver;
 
 class DragAndDropBy extends WebDriverActions
 {
-    /**
-     * @param RemoteWebElement $source
-     * @param mixed $x_offset
-     * @param mixed $y_offset
-     */
     public function __construct(WebDriver $driver, RemoteWebElement $source, mixed $x_offset, mixed $y_offset)
     {
         parent::__construct($driver);

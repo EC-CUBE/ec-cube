@@ -57,10 +57,10 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧画面
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/template.twig')]
+    #[Route(path: '/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template.twig')]
     public function index(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
@@ -100,7 +100,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧からのダウンロード
      */
-    #[Route('/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
@@ -157,7 +157,7 @@ class TemplateController extends AbstractController
         return $response;
     }
 
-    #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, \Eccube\Entity\Template $Template): RedirectResponse
     {
         $this->isTokenValid();
@@ -197,10 +197,10 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/template_add.twig')]
+    #[Route(path: '/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template_add.twig')]
     public function install(Request $request): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');

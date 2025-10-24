@@ -74,13 +74,13 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集画面.
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws \Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    #[Route('/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
-    #[Template('Mypage/change.twig')]
+    #[Route(path: '/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
+    #[Template(template: 'Mypage/change.twig')]
     public function index(Request $request): RedirectResponse|array
     {
         /** @var Customer $Customer */
@@ -157,8 +157,8 @@ class ChangeController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
-    #[Template('Mypage/change_complete.twig')]
+    #[Route(path: '/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
+    #[Template(template: 'Mypage/change_complete.twig')]
     public function complete(Request $request): array
     {
         return [];

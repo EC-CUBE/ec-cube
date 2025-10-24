@@ -229,12 +229,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->verify();
     }
 
-    /**
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     */
-    #[DataProvider('dataFormDateProvider')]
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -255,8 +250,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * - today: 今日の00:00:00
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
-     *
-     * @return array
      */
     public static function dataFormDateProvider(): array
     {
@@ -272,12 +265,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         ];
     }
 
-    /**
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     */
-    #[DataProvider('dataFormDateTimeProvider')]
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -293,8 +281,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
     public static function dataFormDateTimeProvider(): array
     {
