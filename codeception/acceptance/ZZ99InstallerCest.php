@@ -45,6 +45,7 @@ class ZZ99InstallerCest
         $page->step1_次へボタンをクリック();
 
         // step2
+        $I->wait(3);
         $I->see('権限チェック', InstallPage::$STEP2_タイトル);
         $I->see('アクセス権限は正常です', InstallPage::$STEP2_テキストエリア);
 
