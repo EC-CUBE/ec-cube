@@ -29,27 +29,27 @@ class PluginApiService
      *
      * @var string
      */
-    private $apiUrl;
+    private string $apiUrl;
 
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    private EccubeConfig $eccubeConfig;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @var BaseInfoRepository
      */
-    private $baseInfoRepository;
+    private BaseInfoRepository $baseInfoRepository;
 
     /**
      * @var PluginRepository
      */
-    private $pluginRepository;
+    private PluginRepository $pluginRepository;
 
     /**
      * PluginApiService constructor.

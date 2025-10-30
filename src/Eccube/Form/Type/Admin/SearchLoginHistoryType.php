@@ -26,7 +26,7 @@ class SearchLoginHistoryType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * SearchContactType constructor.

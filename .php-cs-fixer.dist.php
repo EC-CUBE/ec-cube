@@ -36,16 +36,16 @@ $rules = [
     // PHPDocの型をネイティブ型へ
     'phpdoc_to_param_type'   => true,
     'phpdoc_to_return_type'  => true,
-    //'phpdoc_to_property_type'=> true,
+    'phpdoc_to_property_type' => true,
 
     'phpdoc_trim' => true,
 ];
 
 $finder = \PhpCsFixer\Finder::create()
-    ->in(__DIR__.'/src')
-    ->in(__DIR__.'/tests')
-    ->in(__DIR__.'/app')
-    ->in(__DIR__.'/codeception')
+    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/tests')
+    ->in(__DIR__ . '/app')
+    ->in(__DIR__ . '/codeception')
     ->name('*.php')
 ;
 $config = new \PhpCsFixer\Config();

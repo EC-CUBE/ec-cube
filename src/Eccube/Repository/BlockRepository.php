@@ -29,9 +29,9 @@ use Eccube\Entity\Master\DeviceType;
 class BlockRepository extends AbstractRepository
 {
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig|null
      */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * BlockRepository constructor.

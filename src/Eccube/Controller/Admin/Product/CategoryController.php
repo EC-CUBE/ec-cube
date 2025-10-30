@@ -37,12 +37,12 @@ class CategoryController extends AbstractController
     /**
      * @var CsvExportService
      */
-    protected $csvExportService;
+    protected CsvExportService $csvExportService;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * CategoryController constructor.

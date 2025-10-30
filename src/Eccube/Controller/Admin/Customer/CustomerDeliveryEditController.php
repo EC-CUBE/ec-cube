@@ -32,7 +32,7 @@ class CustomerDeliveryEditController extends AbstractController
     /**
      * @var CustomerAddressRepository
      */
-    protected $customerAddressRepository;
+    protected CustomerAddressRepository $customerAddressRepository;
 
     public function __construct(
         CustomerAddressRepository $customerAddressRepository,

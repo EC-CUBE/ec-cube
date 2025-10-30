@@ -16,7 +16,7 @@ namespace Eccube\Exception;
 class PluginApiException extends \Exception
 {
     /** @var array<string, mixed>|null */
-    private $curlInfo;
+    private ?array $curlInfo;
 
     /**
      * PluginApiException constructor.

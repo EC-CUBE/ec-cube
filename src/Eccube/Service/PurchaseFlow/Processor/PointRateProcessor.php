@@ -28,7 +28,7 @@ class PointRateProcessor extends ItemHolderPostValidator
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {

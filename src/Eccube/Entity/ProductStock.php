@@ -33,7 +33,7 @@ if (!class_exists(ProductStock::class)) {
         /**
          * @var int|null
          */
-        private $product_class_id;
+        private ?int $product_class_id = null;
 
         /**
          * Set product_class_id

@@ -19,12 +19,12 @@ if (!class_exists(ExportCsvRow::class)) {
         /**
          * @var array<int, string|null>
          */
-        private $row = [];
+        private array $row = [];
 
         /**
          * @var string|null
          */
-        private $data;
+        private ?string $data;
 
         /**
          * Set data

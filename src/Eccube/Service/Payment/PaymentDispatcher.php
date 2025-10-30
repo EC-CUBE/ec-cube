@@ -23,27 +23,27 @@ class PaymentDispatcher
     /**
      * @var Response|null
      */
-    private $response;
+    private ?Response $response;
 
     /**
      * @var bool
      */
-    private $forward;
+    private bool $forward;
 
     /**
      * @var string
      */
-    private $route;
+    private string $route;
 
     /**
      * @var array<string, string>
      */
-    private $pathParameters = [];
+    private array $pathParameters = [];
 
     /**
      * @var array<string, string>
      */
-    private $queryParameters = [];
+    private array $queryParameters = [];
 
     /**
      * Forward を使用するかどうか.

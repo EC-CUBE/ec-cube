@@ -33,24 +33,24 @@ class SystemService implements EventSubscriberInterface
      *
      * @var bool
      */
-    private $disableMaintenanceAfterResponse = false;
+    private bool $disableMaintenanceAfterResponse = false;
 
     /**
      * メンテナンスモードの識別子
      *
      * @var string
      */
-    private $maintenanceMode;
+    private string $maintenanceMode;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * SystemService constructor.

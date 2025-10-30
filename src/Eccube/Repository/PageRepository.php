@@ -30,30 +30,30 @@ use Eccube\Entity\Page;
 class PageRepository extends AbstractRepository
 {
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig|null
      */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * @var string
      *
      * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
-    protected $userDataRealDir;
+    protected string $userDataRealDir;
 
     /**
      * @var string
      *
      * @path %eccube_theme_app_dir% (app/template)
      */
-    protected $templateRealDir;
+    protected string $templateRealDir;
 
     /**
      * @var string
      *
      * @path %eccube_theme_src_dir% (src/Eccube/Resource/template)
      */
-    protected $templateDefaultRealDir;
+    protected string $templateDefaultRealDir;
 
     /**
      * PageRepository constructor.

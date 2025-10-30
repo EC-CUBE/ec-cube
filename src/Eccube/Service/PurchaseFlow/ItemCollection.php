@@ -29,7 +29,7 @@ class ItemCollection extends ArrayCollection
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * @param array<int, ItemInterface>|array<int, OrderItem>|Collection<int, ItemInterface>|Collection<int, OrderItem>|array<int, CartItem>|Collection<int, CartItem>|null $Items

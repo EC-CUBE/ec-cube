@@ -31,7 +31,7 @@ class PaymentValidator extends ItemHolderPostValidator
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * PaymentProcessor constructor.

@@ -43,41 +43,41 @@ class LayoutController extends AbstractController
     /**
      * @var BlockRepository
      */
-    protected $blockRepository;
+    protected BlockRepository $blockRepository;
     /**
      * @var BlockPositionRepository
      */
-    protected $blockPositionRepository;
+    protected BlockPositionRepository $blockPositionRepository;
 
     /**
      * @var LayoutRepository
      */
-    protected $layoutRepository;
+    protected LayoutRepository $layoutRepository;
 
     /**
      * @var PageLayoutRepository
      */
-    protected $pageLayoutRepository;
+    protected PageLayoutRepository $pageLayoutRepository;
 
     /**
      * @var PageRepository
      */
-    protected $pageRepository;
+    protected PageRepository $pageRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     /**
      * @var bool
      */
-    protected $isPreview = false;
+    protected bool $isPreview = false;
 
     /**
      * LayoutController constructor.

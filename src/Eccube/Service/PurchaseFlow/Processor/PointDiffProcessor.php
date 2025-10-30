@@ -30,12 +30,12 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var PointHelper
      */
-    protected $pointHelper;
+    protected PointHelper $pointHelper;
 
     /**
      * PointDiffProcessor constructor.

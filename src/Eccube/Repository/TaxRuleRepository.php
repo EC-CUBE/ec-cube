@@ -38,22 +38,22 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class TaxRuleRepository extends AbstractRepository
 {
     /** @var array<string, TaxRule> */
-    private $rules = [];
+    private array $rules = [];
 
     /**
      * @var BaseInfo
      */
-    protected $baseInfo;
+    protected BaseInfo $baseInfo;
 
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * TaxRuleRepository constructor.

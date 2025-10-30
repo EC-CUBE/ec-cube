@@ -19,13 +19,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class LoggerFacade
 {
     /** @var self|null */
-    private static $instance;
+    private static ?self $instance = null;
 
     /** @var ContainerInterface */
-    private static $Container;
+    private static ?ContainerInterface $Container = null;
 
     /** @var Logger */
-    private static $Logger;
+    private static ?Logger $Logger = null;
 
     private function __construct(ContainerInterface $container, Logger $Logger)
     {

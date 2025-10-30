@@ -29,7 +29,7 @@ abstract class CreditCard implements PaymentMethodInterface
     /**
      * @var Order
      */
-    protected $Order;
+    protected Order $Order;
 
     /**
      * {@inheritdoc}

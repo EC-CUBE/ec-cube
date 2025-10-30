@@ -27,7 +27,7 @@ class ChangePasswordType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * ChangePasswordType constructor.

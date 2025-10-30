@@ -31,7 +31,7 @@ class BlockPositionRepository extends AbstractRepository
     /**
      * @var BlockRepository
      */
-    protected $blockRepository;
+    protected BlockRepository $blockRepository;
 
     /**
      * BlockPositionRepository constructor.

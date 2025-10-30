@@ -40,17 +40,17 @@ class SearchProductType extends AbstractType
     /**
      * @var ProductStatusRepository
      */
-    protected $productStatusRepository;
+    protected ProductStatusRepository $productStatusRepository;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var TagRepository
      */
-    protected $tagRepository;
+    protected TagRepository $tagRepository;
 
     /**
      * SearchProductType constructor.

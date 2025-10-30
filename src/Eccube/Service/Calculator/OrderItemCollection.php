@@ -27,7 +27,7 @@ class OrderItemCollection extends ArrayCollection
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * @param array<int, OrderItem>|null $OrderItems

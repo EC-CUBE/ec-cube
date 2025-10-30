@@ -27,12 +27,12 @@ class OrderNoProcessor implements ItemHolderPreprocessor
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    private EccubeConfig $eccubeConfig;
 
     /**
      * @var OrderRepository
      */
-    private $orderRepository;
+    private OrderRepository $orderRepository;
 
     /**
      * OrderNoProcessor constructor.

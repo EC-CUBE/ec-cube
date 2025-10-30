@@ -32,7 +32,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     public function __construct(EntityManagerInterface $em)
     {

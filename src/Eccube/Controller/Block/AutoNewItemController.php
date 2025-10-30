@@ -25,12 +25,12 @@ class AutoNewItemController extends AbstractController
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
     /**
      * @var ProductListOrderByRepository
      */
-    private $productListOrderByRepository;
+    private ProductListOrderByRepository $productListOrderByRepository;
 
     public function __construct(
         ProductRepository $productRepository,

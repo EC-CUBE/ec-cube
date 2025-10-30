@@ -29,11 +29,11 @@ class SchemaService
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
     /**
      * @var PluginContext
      */
-    private $pluginContext;
+    private PluginContext $pluginContext;
 
     /**
      * SchemaService constructor.

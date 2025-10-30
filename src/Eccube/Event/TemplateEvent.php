@@ -24,32 +24,32 @@ class TemplateEvent extends Event
     /**
      * @var string|null
      */
-    private $view;
+    private ?string $view;
 
     /**
      * @var string|null
      */
-    private $source;
+    private ?string $source;
 
     /**
      * @var array<mixed>
      */
-    private $parameters;
+    private array $parameters;
 
     /**
      * @var Response|null
      */
-    private $response;
+    private ?Response $response;
 
     /**
      * @var array<mixed>
      */
-    private $assets = [];
+    private array $assets = [];
 
     /**
      * @var array<mixed>
      */
-    private $snippets = [];
+    private array $snippets = [];
 
     /**
      * TemplateEvent constructor.

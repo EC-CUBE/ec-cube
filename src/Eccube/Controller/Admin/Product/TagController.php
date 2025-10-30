@@ -31,7 +31,7 @@ class TagController extends AbstractController
     /**
      * @var TagRepository
      */
-    protected $tagRepository;
+    protected TagRepository $tagRepository;
 
     public function __construct(TagRepository $tagRepository)
     {

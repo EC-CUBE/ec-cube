@@ -52,23 +52,23 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Number of the row that contains the column names
      *
-     * @var int
+     * @var int|null
      */
-    protected $headerRowNumber;
+    protected ?int $headerRowNumber = null;
 
     /**
      * CSV file
      *
      * @var \SplFileObject
      */
-    protected $file;
+    protected \SplFileObject $file;
 
     /**
      * Column headers as read from the CSV file
      *
      * @var array<int, string|int>
      */
-    protected $columnHeaders = [];
+    protected array $columnHeaders = [];
 
     /**
      * Number of column headers, stored and re-used for performance
@@ -77,28 +77,28 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @var int
      */
-    protected $headersCount;
+    protected int $headersCount = 0;
 
     /**
      * Total number of rows in the CSV file
      *
-     * @var int
+     * @var int|null
      */
-    protected $count;
+    protected ?int $count = null;
 
     /**
      * Faulty CSV rows
      *
      * @var array<int, string>
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     /**
      * How to handle duplicate headers
      *
-     * @var int
+     * @var int|null
      */
-    protected $duplicateHeadersFlag;
+    protected ?int $duplicateHeadersFlag = null;
 
     public function __construct(\SplFileObject $file, string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
     {

@@ -20,17 +20,17 @@ class PasswordEncoder
     /**
      * @var string
      */
-    public $auth_magic;
+    public string $auth_magic;
 
     /**
      * @var string
      */
-    public $auth_type;
+    public string $auth_type;
 
     /**
      * @var string
      */
-    public $password_hash_algos;
+    public string $password_hash_algos;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {

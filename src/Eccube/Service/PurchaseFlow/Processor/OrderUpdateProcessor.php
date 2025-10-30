@@ -27,7 +27,7 @@ class OrderUpdateProcessor extends AbstractPurchaseProcessor
     /**
      * @var OrderStatusRepository
      */
-    private $orderStatusRepository;
+    private OrderStatusRepository $orderStatusRepository;
 
     /**
      * OrderUpdateProcessor constructor.

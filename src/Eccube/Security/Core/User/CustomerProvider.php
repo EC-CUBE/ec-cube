@@ -32,12 +32,12 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $entityManager)
     {

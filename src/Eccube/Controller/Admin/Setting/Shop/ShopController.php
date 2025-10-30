@@ -33,12 +33,12 @@ class ShopController extends AbstractController
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     /**
      * ShopController constructor.

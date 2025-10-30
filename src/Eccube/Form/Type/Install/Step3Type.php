@@ -32,12 +32,12 @@ class Step3Type extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     public function __construct(ValidatorInterface $validator, EccubeConfig $eccubeConfig)
     {

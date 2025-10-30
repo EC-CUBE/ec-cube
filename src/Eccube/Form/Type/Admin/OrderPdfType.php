@@ -33,10 +33,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class OrderPdfType extends AbstractType
 {
     /** @var EccubeConfig */
-    private $eccubeConfig;
+    private EccubeConfig $eccubeConfig;
 
     /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * OrderPdfType constructor.

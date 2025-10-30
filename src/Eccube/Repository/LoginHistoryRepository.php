@@ -32,7 +32,7 @@ class LoginHistoryRepository extends AbstractRepository
     /**
      * @var Queries
      */
-    private $queries;
+    private Queries $queries;
 
     /**
      * LoginHistoryRepository constructor.

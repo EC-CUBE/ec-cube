@@ -26,17 +26,17 @@ class AuthorityVoter implements VoterInterface
     /**
      * @var AuthorityRoleRepository
      */
-    protected $authorityRoleRepository;
+    protected AuthorityRoleRepository $authorityRoleRepository;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     public function __construct(
         AuthorityRoleRepository $authorityRoleRepository,

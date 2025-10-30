@@ -28,12 +28,12 @@ class CustomerLoginType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var AuthenticationUtils
      */
-    protected $authenticationUtils;
+    protected AuthenticationUtils $authenticationUtils;
 
     public function __construct(AuthenticationUtils $authenticationUtils, EccubeConfig $eccubeConfig)
     {

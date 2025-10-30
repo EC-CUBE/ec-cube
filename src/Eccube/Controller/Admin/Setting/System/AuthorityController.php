@@ -29,7 +29,7 @@ class AuthorityController extends AbstractController
     /**
      * @var AuthorityRoleRepository
      */
-    protected $authorityRoleRepository;
+    protected AuthorityRoleRepository $authorityRoleRepository;
 
     /**
      * AuthorityController constructor.

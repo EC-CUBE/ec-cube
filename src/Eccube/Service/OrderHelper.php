@@ -68,62 +68,62 @@ class OrderHelper
     /**
      * @var Session
      */
-    protected $session;
+    protected Session $session;
 
     /**
      * @var PrefRepository
      */
-    protected $prefRepository;
+    protected PrefRepository $prefRepository;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var OrderItemTypeRepository
      */
-    protected $orderItemTypeRepository;
+    protected OrderItemTypeRepository $orderItemTypeRepository;
 
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var PaymentRepository
      */
-    protected $paymentRepository;
+    protected PaymentRepository $paymentRepository;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     /**
      * @var MobileDetect
      */
-    protected $mobileDetector;
+    protected MobileDetect $mobileDetector;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     public function __construct(
         EntityManagerInterface $entityManager,

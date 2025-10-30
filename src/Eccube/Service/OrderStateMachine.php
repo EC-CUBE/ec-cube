@@ -29,21 +29,21 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * @var WorkflowInterface
      */
-    private $machine;
+    private WorkflowInterface $machine;
 
     /**
      * @var OrderStatusRepository
      */
-    private $orderStatusRepository;
+    private OrderStatusRepository $orderStatusRepository;
 
     /**
      * @var PointProcessor
      */
-    private $pointProcessor;
+    private PointProcessor $pointProcessor;
     /**
      * @var StockReduceProcessor
      */
-    private $stockReduceProcessor;
+    private StockReduceProcessor $stockReduceProcessor;
 
     public function __construct(WorkflowInterface $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
     {
@@ -217,10 +217,10 @@ class OrderStateMachine implements EventSubscriberInterface
 class OrderStateMachineContext
 {
     /** @var string */
-    private $status;
+    private string $status;
 
     /** @var Order */
-    private $Order;
+    private Order $Order;
 
     /**
      * OrderStateMachineContext constructor.

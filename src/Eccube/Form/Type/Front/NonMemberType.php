@@ -30,7 +30,7 @@ class NonMemberType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * NonMemberType constructor.

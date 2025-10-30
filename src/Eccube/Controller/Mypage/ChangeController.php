@@ -33,27 +33,27 @@ class ChangeController extends AbstractController
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     private const SESSION_KEY_PRE_EMAIL = 'eccube.front.mypage.change.preEmail';
 

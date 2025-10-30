@@ -26,12 +26,12 @@ class GenerateProxyCommand extends Command
     /**
      * @var EntityProxyService
      */
-    private $entityProxyService;
+    private EntityProxyService $entityProxyService;
 
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    private EccubeConfig $eccubeConfig;
 
     public function __construct(EntityProxyService $entityProxyService, EccubeConfig $eccubeConfig)
     {

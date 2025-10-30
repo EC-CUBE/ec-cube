@@ -30,7 +30,7 @@ class CalendarController extends AbstractController
     /**
      * @var CalendarRepository
      */
-    protected $calendarRepository;
+    protected CalendarRepository $calendarRepository;
 
     /**
      * CalendarController constructor.

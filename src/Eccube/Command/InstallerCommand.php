@@ -32,22 +32,22 @@ class InstallerCommand extends Command
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var SymfonyStyle
      */
-    protected $io;
+    protected SymfonyStyle $io;
 
     /**
      * @var string
      */
-    protected $databaseUrl;
+    protected string $databaseUrl;
 
     /**
      * @var object
      */
-    private $envFileUpdater;
+    private object $envFileUpdater;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -60,62 +60,62 @@ class InstallerCommand extends Command
             /**
              * @var array<mixed>|false|string
              */
-            public $appEnv;
+            public array|bool|string $appEnv;
 
             /**
              * @var array<mixed>|false|string
              */
-            public $appDebug;
+            public array|bool|string $appDebug;
 
             /**
              * @var bool|float|int|string|null
              */
-            public $databaseUrl;
+            public bool|float|int|string|null $databaseUrl;
 
             /**
-             * @var false|mixed|string
+             * @var false|string
              */
-            public $serverVersion;
+            public false|string $serverVersion;
 
             /**
              * @var string
              */
-            public $databaseCharset;
+            public string $databaseCharset;
 
             /**
              * @var string|null
              */
-            public $mailerDsn;
+            public ?string $mailerDsn;
 
             /**
              * @var string|null
              */
-            public $authMagic;
+            public ?string $authMagic;
 
             /**
              * @var string|null
              */
-            public $adminRoute;
+            public ?string $adminRoute;
 
             /**
              * @var string|null
              */
-            public $templateCode;
+            public ?string $templateCode;
 
             /**
              * @var string|null
              */
-            public $locale;
+            public ?string $locale;
 
             /**
              * @var string|null
              */
-            public $trustedHosts;
+            public ?string $trustedHosts;
 
             /**
              * @var string|null
              */
-            public $envDir;
+            public ?string $envDir;
 
             /**
              * @return array<string, mixed>

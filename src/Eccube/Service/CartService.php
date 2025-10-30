@@ -35,61 +35,61 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CartService
 {
     /**
-     * @var Cart[]
+     * @var Cart[]|null
      */
-    protected $carts;
+    protected ?array $carts = null;
 
     /**
      * @var Session
      */
-    protected $session;
+    protected Session $session;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var ItemHolderInterface
      *
      * @deprecated
      */
-    protected $cart;
+    protected ItemHolderInterface $cart;
 
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * @var CartRepository
      */
-    protected $cartRepository;
+    protected CartRepository $cartRepository;
 
     /**
      * @var CartItemComparator
      */
-    protected $cartItemComparator;
+    protected CartItemComparator $cartItemComparator;
 
     /**
      * @var CartItemAllocator
      */
-    protected $cartItemAllocator;
+    protected CartItemAllocator $cartItemAllocator;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * CartService constructor.

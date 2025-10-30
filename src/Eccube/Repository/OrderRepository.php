@@ -39,7 +39,7 @@ class OrderRepository extends AbstractRepository
     /**
      * @var Queries
      */
-    protected $queries;
+    protected Queries $queries;
 
     public const COLUMNS = [
         'order' => 'o.name01', 'orderer' => 'o.id', 'shipping_id' => 's.id', 'purchase_product' => 'oi.product_name', 'quantity' => 'oi.quantity', 'payment_method' => 'o.payment_method', 'order_status' => 'o.OrderStatus', 'purchase_price' => 'o.total', 'shipping_status' => 's.shipping_date', 'tracking_number' => 's.tracking_number', 'delivery' => 's.name01',

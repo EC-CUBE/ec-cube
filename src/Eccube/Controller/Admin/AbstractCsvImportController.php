@@ -28,7 +28,7 @@ class AbstractCsvImportController extends AbstractController
      *
      * @var string
      */
-    protected $csvFileName;
+    protected string $csvFileName;
 
     /**
      * アップロードされたCSVファイルの行ごとの処理

@@ -26,12 +26,12 @@ class SystemController
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var SystemService
      */
-    protected $systemService;
+    protected SystemService $systemService;
 
     /**
      * SystemController constructor.

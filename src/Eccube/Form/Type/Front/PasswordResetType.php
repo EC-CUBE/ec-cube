@@ -29,7 +29,7 @@ class PasswordResetType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * EntryType constructor.

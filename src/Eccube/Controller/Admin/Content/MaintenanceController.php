@@ -28,7 +28,7 @@ class MaintenanceController extends AbstractController
     /**
      * @var SystemService
      */
-    protected $systemService;
+    protected SystemService $systemService;
 
     public function __construct(SystemService $systemService)
     {

@@ -26,7 +26,7 @@ class SearchProductBlockType extends AbstractType
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     public function __construct(CategoryRepository $categoryRepository)
     {

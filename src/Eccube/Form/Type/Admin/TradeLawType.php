@@ -28,7 +28,7 @@ class TradeLawType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {

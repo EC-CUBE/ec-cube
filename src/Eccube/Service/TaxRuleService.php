@@ -27,12 +27,12 @@ class TaxRuleService
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     public function __construct(TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)
     {

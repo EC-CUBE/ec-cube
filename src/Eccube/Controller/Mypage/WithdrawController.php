@@ -35,32 +35,32 @@ class WithdrawController extends AbstractController
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var CustomerStatusRepository
      */
-    protected $customerStatusRepository;
+    protected CustomerStatusRepository $customerStatusRepository;
 
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var CartService
      */
-    private $cartService;
+    private CartService $cartService;
 
     /**
      * @var OrderHelper
      */
-    private $orderHelper;
+    private OrderHelper $orderHelper;
 
     /**
      * @var PageRepository
      */
-    private $pageRepository;
+    private PageRepository $pageRepository;
 
     /**
      * WithdrawController constructor.

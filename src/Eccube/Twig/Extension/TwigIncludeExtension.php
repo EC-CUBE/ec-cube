@@ -23,7 +23,7 @@ class TwigIncludeExtension extends AbstractExtension
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     public function __construct(Environment $twig)
     {

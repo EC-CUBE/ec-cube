@@ -41,11 +41,11 @@ class FileController extends AbstractController
     /**
      * @var array<int, array<string, string>>
      */
-    private $errors = [];
+    private array $errors = [];
     /**
      * @var string
      */
-    private $encode;
+    private string $encode;
 
     /**
      * FileController constructor.

@@ -38,7 +38,7 @@ if (!class_exists(TaxRule::class)) {
         /**
          * @var int
          */
-        private $sort_no;
+        private int $sort_no = 0;
 
         /**
          * is default

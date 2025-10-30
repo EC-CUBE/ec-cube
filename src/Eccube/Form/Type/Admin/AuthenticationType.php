@@ -26,7 +26,7 @@ class AuthenticationType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    private EccubeConfig $eccubeConfig;
 
     /**
      * AuthenticationType constructor.

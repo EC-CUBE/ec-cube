@@ -20,7 +20,7 @@ class Queries
     /**
      * @var QueryCustomizer[]
      */
-    private $customizers = [];
+    private array $customizers = [];
 
     public function addCustomizer(QueryCustomizer $customizer): void
     {

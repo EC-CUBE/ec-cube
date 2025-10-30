@@ -25,7 +25,7 @@ class CartController extends AbstractController
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     public function __construct(
         CartService $cartService,

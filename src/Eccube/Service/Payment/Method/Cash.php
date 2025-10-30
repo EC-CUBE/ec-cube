@@ -27,13 +27,13 @@ use Symfony\Component\Form\FormInterface;
 class Cash implements PaymentMethodInterface
 {
     /** @var Order */
-    private $Order;
+    private Order $Order;
 
     /** @var PurchaseFlow */
-    private $purchaseFlow;
+    private PurchaseFlow $purchaseFlow;
 
     /** @var FormInterface */
-    private $form;
+    private FormInterface $form;
 
     /**
      * Cash constructor.

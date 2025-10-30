@@ -33,27 +33,27 @@ class SitemapController extends AbstractController
     /**
      * @var CategoryRepository
      */
-    private $categoryRepository;
+    private CategoryRepository $categoryRepository;
 
     /**
      * @var PageRepository
      */
-    private $pageRepository;
+    private PageRepository $pageRepository;
 
     /**
      * @var ProductListOrderByRepository
      */
-    private $productListOrderByRepository;
+    private ProductListOrderByRepository $productListOrderByRepository;
 
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * SitemapController constructor.

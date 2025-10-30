@@ -18,10 +18,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TranslatorFacade
 {
     /** @var self|null */
-    private static $instance;
+    private static ?self $instance = null;
 
     /** @var TranslatorInterface */
-    private static $Translator;
+    private static ?TranslatorInterface $Translator = null;
 
     private function __construct(TranslatorInterface $Translator)
     {

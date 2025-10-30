@@ -27,7 +27,7 @@ class DeliverySettingValidator extends ItemValidator
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * DeliverySettingValidator constructor.

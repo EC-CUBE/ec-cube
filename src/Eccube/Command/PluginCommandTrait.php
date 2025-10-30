@@ -25,12 +25,12 @@ trait PluginCommandTrait
     /**
      * @var PluginService
      */
-    protected $pluginService;
+    protected PluginService $pluginService;
 
     /**
      * @var PluginRepository
      */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
     #[Required]
     public function setPluginService(PluginService $pluginService): void

@@ -35,16 +35,16 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * @var mixed
      */
-    private $clearCacheAfterResponse = false;
+    private mixed $clearCacheAfterResponse = false;
 
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    protected KernelInterface $kernel;
     /**
      * @var ContainerInterface
      */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * CacheUtil constructor.

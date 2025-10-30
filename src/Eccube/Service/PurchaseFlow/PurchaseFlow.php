@@ -23,42 +23,42 @@ class PurchaseFlow implements \Stringable
     /**
      * @var string
      */
-    protected $flowType;
+    protected string $flowType = '';
 
     /**
      * @var ArrayCollection<int, ItemPreprocessor>
      */
-    protected $itemPreprocessors;
+    protected ArrayCollection $itemPreprocessors;
 
     /**
      * @var ArrayCollection<int, ItemHolderPreprocessor>
      */
-    protected $itemHolderPreprocessors;
+    protected ArrayCollection $itemHolderPreprocessors;
 
     /**
      * @var ArrayCollection<int, ItemValidator>
      */
-    protected $itemValidators;
+    protected ArrayCollection $itemValidators;
 
     /**
      * @var ArrayCollection<int, ItemHolderValidator>
      */
-    protected $itemHolderValidators;
+    protected ArrayCollection $itemHolderValidators;
 
     /**
      * @var ArrayCollection<int, ItemHolderPostValidator>
      */
-    protected $itemHolderPostValidators;
+    protected ArrayCollection $itemHolderPostValidators;
 
     /**
      * @var ArrayCollection<int, DiscountProcessor>
      */
-    protected $discountProcessors;
+    protected ArrayCollection $discountProcessors;
 
     /**
      * @var ArrayCollection<int, PurchaseProcessor>
      */
-    protected $purchaseProcessors;
+    protected ArrayCollection $purchaseProcessors;
 
     public function __construct()
     {

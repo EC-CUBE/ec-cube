@@ -27,7 +27,7 @@ class Loader
     /**
      * @var CsvFixture[]|FixtureInterface[]
      */
-    protected $fixtures;
+    protected array $fixtures;
 
     /**
      * Load fixtures from directory.

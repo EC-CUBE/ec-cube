@@ -24,10 +24,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class MaintenanceListener implements EventSubscriberInterface
 {
     /** @var Context */
-    protected $requestContext;
+    protected Context $requestContext;
 
     /** @var SystemService */
-    protected $systemService;
+    protected SystemService $systemService;
 
     public function __construct(Context $requestContext, SystemService $systemService)
     {

@@ -34,22 +34,22 @@ class ForgotController extends AbstractController
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * ForgotController constructor.

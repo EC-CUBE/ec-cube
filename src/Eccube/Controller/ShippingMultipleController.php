@@ -42,42 +42,42 @@ class ShippingMultipleController extends AbstractShoppingController
     /**
      * @var PrefRepository
      */
-    protected $prefRepository;
+    protected PrefRepository $prefRepository;
 
     /**
      * @var OrderItemTypeRepository
      */
-    protected $orderItemTypeRepository;
+    protected OrderItemTypeRepository $orderItemTypeRepository;
 
     /**
      * @var OrderHelper
      */
-    protected $orderHelper;
+    protected OrderHelper $orderHelper;
 
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var PurchaseFlow
      */
-    protected $cartPurchaseFlow;
+    protected PurchaseFlow $cartPurchaseFlow;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     /**
      * ShippingMultipleController constructor.

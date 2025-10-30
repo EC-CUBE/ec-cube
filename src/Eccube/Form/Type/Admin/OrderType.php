@@ -50,22 +50,22 @@ class OrderType extends AbstractType
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var OrderStateMachine
      */
-    protected $orderStateMachine;
+    protected OrderStateMachine $orderStateMachine;
 
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
     /**
      * OrderType constructor.

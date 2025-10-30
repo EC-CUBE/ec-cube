@@ -24,7 +24,7 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * StockProcessor constructor.

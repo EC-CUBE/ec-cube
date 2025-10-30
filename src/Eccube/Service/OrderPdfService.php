@@ -37,31 +37,31 @@ use setasign\Fpdi\Tcpdf\Fpdi;
 class OrderPdfService extends Fpdi
 {
     /** @var OrderRepository */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /** @var ShippingRepository */
-    protected $shippingRepository;
+    protected ShippingRepository $shippingRepository;
 
     /** @var OrderPdfRepository */
-    protected $orderPdfRepository;
+    protected OrderPdfRepository $orderPdfRepository;
 
     /** @var TaxRuleService */
-    protected $taxRuleService;
+    protected TaxRuleService $taxRuleService;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var EccubeExtension
      */
-    protected $eccubeExtension;
+    protected EccubeExtension $eccubeExtension;
 
     /**
      * @var TaxExtension
      */
-    protected $taxExtension;
+    protected TaxExtension $taxExtension;
 
     // ====================================
     // 定数宣言
@@ -80,46 +80,46 @@ class OrderPdfService extends Fpdi
     // ====================================
 
     /** @var BaseInfo */
-    public $baseInfoRepository;
+    public BaseInfo $baseInfoRepository;
 
     /** 購入詳細情報 ラベル配列
      * @var array<int, string>
      */
-    protected $labelCell = [];
+    protected array $labelCell = [];
 
     /** 購入詳細情報 幅サイズ配列
      * @var array<int, float|int>
      */
-    protected $widthCell = [];
+    protected array $widthCell = [];
 
     /** @var string|null 最後に処理した注文番号 */
-    protected $lastOrderId;
+    protected ?string $lastOrderId;
 
     // --------------------------------------
     // Font情報のバックアップデータ
     /** @var string フォント名 */
-    protected $bakFontFamily;
+    protected string $bakFontFamily;
     /** @var string フォントスタイル */
-    protected $bakFontStyle;
+    protected string $bakFontStyle;
     /** @var string|float|null フォントサイズ */
-    protected $bakFontSize;
+    protected string|float|null $bakFontSize;
     // --------------------------------------
 
     // lfTextのoffset
     /**
      * @var int
      */
-    protected $baseOffsetX = 0;
+    protected int $baseOffsetX = 0;
     /**
      * @var int
      */
-    protected $baseOffsetY = -4;
+    protected int $baseOffsetY = -4;
 
     /** @var string|null ダウンロードファイル名 */
-    protected $downloadFileName;
+    protected ?string $downloadFileName;
 
     /** @var string 発行日 */
-    protected $issueDate = '';
+    protected string $issueDate = '';
 
     /**
      * OrderPdfService constructor.

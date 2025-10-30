@@ -37,17 +37,17 @@ class MainEditType extends AbstractType
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * MainEditType constructor.

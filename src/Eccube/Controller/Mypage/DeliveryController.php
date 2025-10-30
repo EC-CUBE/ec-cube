@@ -35,17 +35,17 @@ class DeliveryController extends AbstractController
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var CustomerAddressRepository
      */
-    protected $customerAddressRepository;
+    protected CustomerAddressRepository $customerAddressRepository;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     public function __construct(
         BaseInfoRepository $baseInfoRepository,

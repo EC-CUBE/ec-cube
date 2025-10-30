@@ -28,7 +28,7 @@ class RepeatedPasswordType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * RepeatedPasswordType constructor.

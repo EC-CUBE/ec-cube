@@ -40,12 +40,12 @@ class SearchCustomerType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var CustomerStatusRepository
      */
-    protected $customerStatusRepository;
+    protected CustomerStatusRepository $customerStatusRepository;
 
     /**
      * SearchCustomerType constructor.

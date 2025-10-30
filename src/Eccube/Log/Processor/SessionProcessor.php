@@ -22,7 +22,7 @@ class SessionProcessor
     /**
      * @var Session
      */
-    protected $session;
+    protected Session $session;
 
     public function __construct(Session $session)
     {

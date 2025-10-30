@@ -26,7 +26,7 @@ class ComposerInstallCommand extends Command
     /**
      * @var ComposerApiService
      */
-    private $composerService;
+    private ComposerApiService $composerService;
 
     public function __construct(ComposerApiService $composerService)
     {

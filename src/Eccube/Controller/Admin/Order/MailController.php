@@ -37,21 +37,21 @@ class MailController extends AbstractController
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var MailHistoryRepository
      */
-    protected $mailHistoryRepository;
+    protected MailHistoryRepository $mailHistoryRepository;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * MailController constructor.

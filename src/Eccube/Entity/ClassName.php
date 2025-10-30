@@ -107,7 +107,7 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set backend_name.
          */
-        public function setBackendName(string $backendName): ClassName
+        public function setBackendName(?string $backendName): ClassName
         {
             $this->backend_name = $backendName;
 
@@ -125,7 +125,7 @@ if (!class_exists(ClassName::class)) {
         /**
          * Set name.
          */
-        public function setName(string $name): ClassName
+        public function setName(?string $name): ClassName
         {
             $this->name = $name;
 
@@ -137,7 +137,7 @@ if (!class_exists(ClassName::class)) {
          */
         public function getName(): string
         {
-            return $this->name;
+            return $this->name ?? '';
         }
 
         /**

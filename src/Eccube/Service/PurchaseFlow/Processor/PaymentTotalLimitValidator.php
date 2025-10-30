@@ -26,7 +26,7 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
     /**
      * @var int
      */
-    private $maxTotalFee;
+    private int $maxTotalFee;
 
     /**
      * PaymentTotalLimitValidator constructor.

@@ -31,21 +31,21 @@ class SecurityListener implements EventSubscriberInterface
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     public function __construct(
         EntityManagerInterface $em,

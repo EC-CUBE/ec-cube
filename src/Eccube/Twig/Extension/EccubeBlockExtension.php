@@ -22,11 +22,11 @@ class EccubeBlockExtension extends AbstractExtension
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
     /**
      * @var array<int, string|\Eccube\Twig\Template>
      */
-    protected $blockTemplates;
+    protected array $blockTemplates;
 
     /**
      * @param array<int, string|\Eccube\Twig\Template> $blockTemplates

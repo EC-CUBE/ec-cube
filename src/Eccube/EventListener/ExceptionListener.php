@@ -26,12 +26,12 @@ class ExceptionListener implements EventSubscriberInterface
     /**
      * @var Environment
      */
-    private $twig;
+    private Environment $twig;
 
     /**
      * @var Context
      */
-    protected $requestContext;
+    protected Context $requestContext;
 
     /**
      * ExceptionListener constructor.

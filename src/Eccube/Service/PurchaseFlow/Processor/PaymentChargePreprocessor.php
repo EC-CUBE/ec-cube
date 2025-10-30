@@ -31,17 +31,17 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
     /**
      * @var OrderItemTypeRepository
      */
-    protected $orderItemTypeRepository;
+    protected OrderItemTypeRepository $orderItemTypeRepository;
 
     /**
      * @var TaxDisplayTypeRepository
      */
-    protected $taxDisplayTypeRepository;
+    protected TaxDisplayTypeRepository $taxDisplayTypeRepository;
 
     /**
      * @var TaxTypeRepository
      */
-    protected $taxTypeRepository;
+    protected TaxTypeRepository $taxTypeRepository;
 
     /**
      * PaymentChargePreprocessor constructor.

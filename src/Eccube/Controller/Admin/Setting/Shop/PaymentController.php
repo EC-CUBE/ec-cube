@@ -40,7 +40,7 @@ class PaymentController extends AbstractController
     /**
      * @var PaymentRepository
      */
-    protected $paymentRepository;
+    protected PaymentRepository $paymentRepository;
 
     /**
      * PaymentController constructor.

@@ -32,29 +32,29 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var Application
      */
-    private $consoleApplication;
+    private Application $consoleApplication;
 
     /**
      * @var string
      */
-    private $workingDir;
+    private string $workingDir;
     /**
      * @var BaseInfoRepository
      */
-    private $baseInfoRepository;
+    private BaseInfoRepository $baseInfoRepository;
 
     /** @var SchemaService */
-    private $schemaService;
+    private SchemaService $schemaService;
 
     /**
      * @var PluginContext
      */
-    private $pluginContext;
+    private PluginContext $pluginContext;
 
     public function __construct(
         EccubeConfig $eccubeConfig,

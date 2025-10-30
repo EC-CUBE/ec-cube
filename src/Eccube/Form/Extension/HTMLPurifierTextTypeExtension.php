@@ -25,7 +25,7 @@ class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
     /**
      * @var Context
      */
-    private $context;
+    private Context $context;
 
     public function __construct(Context $context)
     {

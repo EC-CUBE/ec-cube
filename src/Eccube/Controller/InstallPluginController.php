@@ -34,13 +34,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class InstallPluginController extends InstallController
 {
     /** @var CacheUtil */
-    protected $cacheUtil;
+    protected CacheUtil $cacheUtil;
 
     /** @var PluginRepository */
-    protected $pluginReposigoty;
+    protected PluginRepository $pluginReposigoty;
 
     /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(CacheUtil $cacheUtil, PluginRepository $pluginRespository, EventDispatcherInterface $eventDispatcher)
     {

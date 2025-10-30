@@ -31,12 +31,12 @@ class EccubeDataCollector extends DataCollector
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var PluginRepository
      */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
     public function __construct(EccubeConfig $eccubeConfig, PluginRepository $pluginRepository)
     {

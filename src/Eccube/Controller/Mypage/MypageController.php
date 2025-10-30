@@ -44,32 +44,32 @@ class MypageController extends AbstractController
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var CustomerFavoriteProductRepository
      */
-    protected $customerFavoriteProductRepository;
+    protected CustomerFavoriteProductRepository $customerFavoriteProductRepository;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * MypageController constructor.

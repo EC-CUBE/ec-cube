@@ -33,55 +33,55 @@ if (!class_exists(Product::class)) {
         /**
          * @var bool
          */
-        private $_calc = false;
+        private bool $_calc = false;
         /**
          * @var array<int, bool>
          */
-        private $stockFinds = [];
+        private array $stockFinds = [];
         /**
          * @var array<int, string|null>
          */
-        private $stocks = [];
+        private array $stocks = [];
         /**
          * @var array<int, bool>
          */
-        private $stockUnlimiteds = [];
+        private array $stockUnlimiteds = [];
         /**
          * @var array<int, string|null>
          */
-        private $price01 = [];
+        private array $price01 = [];
         /**
          * @var array<int, string|null>
          */
-        private $price02 = [];
+        private array $price02 = [];
         /**
          * @var array<int, string|null>
          */
-        private $price01IncTaxs = [];
+        private array $price01IncTaxs = [];
         /**
          * @var array<int, string|null>
          */
-        private $price02IncTaxs = [];
+        private array $price02IncTaxs = [];
         /**
          * @var array<int, string|null>
          */
-        private $codes = [];
+        private array $codes = [];
         /**
          * @var array<string|int, string|null>
          */
-        private $classCategories1 = [];
+        private array $classCategories1 = [];
         /**
          * @var array<string|int, string|null>
          */
-        private $classCategories2 = [];
+        private array $classCategories2 = [];
         /**
-         * @var string
+         * @var string|null
          */
-        private $className1;
+        private ?string $className1 = null;
         /**
-         * @var string
+         * @var string|null
          */
-        private $className2;
+        private ?string $className2 = null;
 
         #[\Override]
         public function __toString(): string

@@ -31,7 +31,7 @@ class Step4Type extends AbstractType
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * Step4Type constructor.

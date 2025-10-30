@@ -42,37 +42,37 @@ class MailService
     /**
      * @var MailerInterface
      */
-    protected $mailer;
+    protected MailerInterface $mailer;
 
     /**
      * @var MailTemplateRepository
      */
-    protected $mailTemplateRepository;
+    protected MailTemplateRepository $mailTemplateRepository;
 
     /**
      * @var MailHistoryRepository
      */
-    protected $mailHistoryRepository;
+    protected MailHistoryRepository $mailHistoryRepository;
 
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * MailService constructor.

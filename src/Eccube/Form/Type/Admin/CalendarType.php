@@ -35,17 +35,17 @@ class CalendarType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var CalendarRepository
      */
-    protected $calendarRepository;
+    protected CalendarRepository $calendarRepository;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * CalendarType constructor.

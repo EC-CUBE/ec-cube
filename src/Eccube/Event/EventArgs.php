@@ -20,13 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
 class EventArgs extends GenericEvent
 {
     /**
-     * @var Request
+     * @var Request|null
      */
-    private $request;
+    private ?Request $request = null;
     /**
-     * @var Response
+     * @var Response|null
      */
-    private $response;
+    private ?Response $response = null;
 
     /**
      * EventArgs constructor.
@@ -49,7 +49,7 @@ class EventArgs extends GenericEvent
         return $this->request;
     }
 
-    public function setResponse(Response $response): void
+    public function setResponse(?Response $response): void
     {
         $this->response = $response;
     }

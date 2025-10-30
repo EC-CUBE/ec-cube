@@ -43,12 +43,12 @@ class ProductType extends AbstractType
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * ProductType constructor.

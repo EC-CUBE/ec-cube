@@ -32,26 +32,26 @@ class LoginHistoryListener implements EventSubscriberInterface
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @var Context
      */
-    private $requestContext;
+    private Context $requestContext;
     /**
      * @var MemberRepository
      */
-    private $memberRepository;
+    private MemberRepository $memberRepository;
 
     /**
      * @var LoginHistoryStatusRepository
      */
-    private $loginHistoryStatusRepository;
+    private LoginHistoryStatusRepository $loginHistoryStatusRepository;
 
     public function __construct(
         EntityManagerInterface $em,

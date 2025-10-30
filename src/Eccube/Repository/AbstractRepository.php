@@ -32,9 +32,9 @@ use Eccube\Entity\AbstractEntity;
 abstract class AbstractRepository extends ServiceEntityRepository
 {
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig|null
      */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * エンティティを削除します。

@@ -18,14 +18,14 @@ use Eccube\Entity\ProductClass;
 class InvalidItemException extends \Exception
 {
     /**
-     * @var array<int|string, string>|mixed
+     * @var array<int|string, string>|null
      */
-    private $messageArgs;
+    private ?array $messageArgs;
 
     /**
      * @var bool
      */
-    private $warning;
+    private bool $warning;
 
     /**
      * @param array<int|string, string>|null $messageArgs

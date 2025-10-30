@@ -57,73 +57,73 @@ class OrderController extends AbstractController
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * @var CsvExportService
      */
-    protected $csvExportService;
+    protected CsvExportService $csvExportService;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var PaymentRepository
      */
-    protected $paymentRepository;
+    protected PaymentRepository $paymentRepository;
 
     /**
      * @var SexRepository
      */
-    protected $sexRepository;
+    protected SexRepository $sexRepository;
 
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
     /**
      * @var PageMaxRepository
      */
-    protected $pageMaxRepository;
+    protected PageMaxRepository $pageMaxRepository;
 
     /**
      * @var ProductStatusRepository
      */
-    protected $productStatusRepository;
+    protected ProductStatusRepository $productStatusRepository;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /** @var OrderPdfRepository */
-    protected $orderPdfRepository;
+    protected OrderPdfRepository $orderPdfRepository;
 
     /**
      * @var ProductStockRepository
      */
-    protected $productStockRepository;
+    protected ProductStockRepository $productStockRepository;
 
     /** @var OrderPdfService */
-    protected $orderPdfService;
+    protected OrderPdfService $orderPdfService;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * @var OrderStateMachine
      */
-    protected $orderStateMachine;
+    protected OrderStateMachine $orderStateMachine;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * OrderController constructor.

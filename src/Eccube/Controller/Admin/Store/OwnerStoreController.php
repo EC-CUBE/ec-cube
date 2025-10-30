@@ -45,12 +45,12 @@ class OwnerStoreController extends AbstractController
     /**
      * @var PluginRepository
      */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
     /**
      * @var PluginService
      */
-    protected $pluginService;
+    protected PluginService $pluginService;
 
     /**
      * @var ValidatorInterface
@@ -60,27 +60,27 @@ class OwnerStoreController extends AbstractController
     /**
      * @var ComposerServiceInterface
      */
-    protected $composerService;
+    protected ComposerServiceInterface $composerService;
 
     /**
      * @var SystemService
      */
-    protected $systemService;
+    protected SystemService $systemService;
 
     /**
      * @var PluginApiService
      */
-    protected $pluginApiService;
+    protected PluginApiService $pluginApiService;
     /**
      * @var string
      */
-    private static $vendorName = 'ec-cube';
+    private static string $vendorName = 'ec-cube';
 
     /** @var BaseInfo */
-    private $BaseInfo;
+    private BaseInfo $BaseInfo;
 
     /** @var CacheUtil */
-    private $cacheUtil;
+    private CacheUtil $cacheUtil;
 
     /**
      * OwnerStoreController constructor.

@@ -27,7 +27,7 @@ class EntityToIdTransformer implements DataTransformerInterface
     /**
      * @var ObjectManager
      */
-    private $om;
+    private ObjectManager $om;
 
     /**
      * @var class-string<T>

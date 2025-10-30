@@ -25,7 +25,7 @@ class AbstractShoppingController extends AbstractController
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     #[Required]
     public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow): void

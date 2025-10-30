@@ -36,12 +36,12 @@ class ClassNameController extends AbstractController
     /**
      * @var ClassNameRepository
      */
-    protected $classNameRepository;
+    protected ClassNameRepository $classNameRepository;
 
     /**
      * @var CsvExportService
      */
-    protected $csvExportService;
+    protected CsvExportService $csvExportService;
 
     /**
      * ClassNameController constructor.

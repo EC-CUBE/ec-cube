@@ -22,17 +22,17 @@ class ProcessResult
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * @var string|null
      */
-    protected $message;
+    protected ?string $message;
 
     /**
      * @var string|null
      */
-    protected $class;
+    protected ?string $class;
 
     /**
      * @param string|null $class 呼び出し元クラス

@@ -28,17 +28,17 @@ class TwoFactorAuthController extends AbstractController
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var MemberRepository
      */
-    protected $memberRepository;
+    protected MemberRepository $memberRepository;
 
     /**
      * @var TwoFactorAuthService
      */
-    protected $twoFactorAuthService;
+    protected TwoFactorAuthService $twoFactorAuthService;
 
     /**
      * TwoFactorAuthController constructor.

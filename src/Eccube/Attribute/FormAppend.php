@@ -19,25 +19,25 @@ final class FormAppend
     /**
      * @var bool
      */
-    public $auto_render;
+    public bool $auto_render;
 
     /**
      * @var string
      */
-    public $form_theme;
+    public string $form_theme;
 
     /**
      * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * @var array<string, mixed>
      */
-    public $options;
+    public array $options;
 
     /**
      * @var string
      */
-    public $style_class;
+    public string $style_class;
 }

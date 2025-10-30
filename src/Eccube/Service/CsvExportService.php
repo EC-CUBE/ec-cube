@@ -46,75 +46,75 @@ class CsvExportService
     /**
      * @var bool
      */
-    protected $closed = false;
+    protected bool $closed = false;
 
     /**
      * @var \Closure|null
      */
-    protected $convertEncodingCallBack;
+    protected ?\Closure $convertEncodingCallBack = null;
 
     /**
      * @var EntityManagerInterface|null
      */
-    protected $entityManager;
+    protected ?EntityManagerInterface $entityManager = null;
 
     /**
      * @var QueryBuilder|null
      */
-    protected $qb;
+    protected ?QueryBuilder $qb = null;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var CsvType|null
      */
-    protected $CsvType;
+    protected ?CsvType $CsvType = null;
 
     /**
      * @var Csv[]|null
      */
-    protected $Csvs;
+    protected ?array $Csvs = null;
 
     /**
      * @var CsvRepository
      */
-    protected $csvRepository;
+    protected CsvRepository $csvRepository;
 
     /**
      * @var CsvTypeRepository
      */
-    protected $csvTypeRepository;
+    protected CsvTypeRepository $csvTypeRepository;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var ShippingRepository
      */
-    protected $shippingRepository;
+    protected ShippingRepository $shippingRepository;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var FormFactoryInterface
      */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
     /** @var PaginatorInterface */
-    protected $paginator;
+    protected PaginatorInterface $paginator;
 
     /**
      * CsvExportService constructor.

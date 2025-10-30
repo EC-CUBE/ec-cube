@@ -25,7 +25,7 @@ class PreOrderIdValidator implements PurchaseProcessor
     /**
      * @var CartService
      */
-    private $cartService;
+    private CartService $cartService;
 
     /**
      * PreOrderIdValidator constructor.

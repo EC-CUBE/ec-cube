@@ -27,12 +27,12 @@ class LoginType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var Session
      */
-    protected $session;
+    protected Session $session;
 
     public function __construct(
         EccubeConfig $eccubeConfig,

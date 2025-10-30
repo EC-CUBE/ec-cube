@@ -22,22 +22,22 @@ class Logger extends AbstractLogger
     /**
      * @var Context
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * @var LoggerInterface
      */
-    protected $frontLogger;
+    protected LoggerInterface $frontLogger;
 
     /**
      * @var LoggerInterface
      */
-    protected $adminLogger;
+    protected LoggerInterface $adminLogger;
 
     public function __construct(
         Context $context,

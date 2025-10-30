@@ -30,12 +30,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @var ShippingRepository
      */
-    private $shippingRepository;
+    private ShippingRepository $shippingRepository;
 
     /**
      * @var OrderStateMachine
      */
-    protected $orderStateMachine;
+    protected OrderStateMachine $orderStateMachine;
 
     public function __construct(
         ShippingRepository $shippingRepository,
@@ -106,6 +106,8 @@ class CsvImportController extends AbstractCsvImportController
 
         if ($csv === false) {
             $errors[] = trans('admin.common.csv_invalid_format');
+
+            return;
         }
 
         // 必須カラムの確認
@@ -115,7 +117,7 @@ class CsvImportController extends AbstractCsvImportController
             return $value['required'];
         }));
         $csvColumns = $csv->getColumnHeaders();
-        if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
+        if (count(array_diff(array_values($requiredColumns), $csvColumns)) > 0) {
             $errors[] = trans('admin.common.csv_invalid_format');
 
             return;

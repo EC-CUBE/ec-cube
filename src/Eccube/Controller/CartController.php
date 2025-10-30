@@ -35,22 +35,22 @@ class CartController extends AbstractController
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * @var BaseInfo
      */
-    protected $baseInfo;
+    protected BaseInfo $baseInfo;
 
     /**
      * CartController constructor.

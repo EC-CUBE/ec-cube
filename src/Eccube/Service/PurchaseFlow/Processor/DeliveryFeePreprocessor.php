@@ -35,22 +35,22 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 {
     /** @var BaseInfo */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     /**
      * @var DeliveryFeeRepository
      */
-    protected $deliveryFeeRepository;
+    protected DeliveryFeeRepository $deliveryFeeRepository;
 
     /**
      * DeliveryFeePreprocessor constructor.

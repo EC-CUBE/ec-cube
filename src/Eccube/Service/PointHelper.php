@@ -28,12 +28,12 @@ class PointHelper
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * PointHelper constructor.

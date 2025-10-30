@@ -31,7 +31,7 @@ class MasterdataType extends AbstractType
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * MasterdataType constructor.

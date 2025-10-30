@@ -34,7 +34,7 @@ class TaxRuleType extends AbstractType
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     public function __construct(TaxRuleRepository $taxRuleRepository)
     {

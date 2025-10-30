@@ -23,17 +23,17 @@ class PaymentResult
     /**
      * @var array<int, string>
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * @var bool
      */
-    private $success;
+    private bool $success;
 
     /**
      * @var Response|null
      */
-    private $response;
+    private ?Response $response = null;
 
     /**
      * 決済が成功したかどうかを設定します.

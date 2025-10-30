@@ -35,12 +35,12 @@ class MemberType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var MemberRepository
      */
-    protected $memberRepository;
+    protected MemberRepository $memberRepository;
 
     /**
      * MemberType constructor.

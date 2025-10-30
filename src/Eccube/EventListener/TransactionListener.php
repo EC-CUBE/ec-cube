@@ -31,12 +31,12 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @var bool
      */
-    protected $isEnabled = true;
+    protected bool $isEnabled = true;
 
     /**
      * TransactionListener constructor.

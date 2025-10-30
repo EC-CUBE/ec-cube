@@ -29,11 +29,11 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
     /**
      * @var array<int, string|false> 新しく生成されたProxyファイルのリスト
      */
-    protected $newProxyFiles;
+    protected array $newProxyFiles;
     /**
      * @var string
      */
-    protected $outputDir;
+    protected string $outputDir;
 
     /**
      * @param array<int, string> $newProxyFiles

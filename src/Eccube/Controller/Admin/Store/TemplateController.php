@@ -36,12 +36,12 @@ class TemplateController extends AbstractController
     /**
      * @var TemplateRepository
      */
-    protected $templateRepository;
+    protected TemplateRepository $templateRepository;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     /**
      * TemplateController constructor.

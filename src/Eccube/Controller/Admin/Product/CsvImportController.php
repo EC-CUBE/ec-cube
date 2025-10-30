@@ -65,78 +65,80 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @var DeliveryDurationRepository
      */
-    protected $deliveryDurationRepository;
+    protected DeliveryDurationRepository $deliveryDurationRepository;
 
     /**
      * @var SaleTypeRepository
      */
-    protected $saleTypeRepository;
+    protected SaleTypeRepository $saleTypeRepository;
 
     /**
      * @var TagRepository
      */
-    protected $tagRepository;
+    protected TagRepository $tagRepository;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var ClassCategoryRepository
      */
-    protected $classCategoryRepository;
+    protected ClassCategoryRepository $classCategoryRepository;
 
     /**
      * @var ClassNameRepository
      */
-    protected $classNameRepository;
+    protected ClassNameRepository $classNameRepository;
 
     /**
      * @var ProductImageRepository
      */
-    protected $productImageRepository;
+    protected ProductImageRepository $productImageRepository;
 
     /**
      * @var ProductStatusRepository
      */
-    protected $productStatusRepository;
+    protected ProductStatusRepository $productStatusRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var TaxRuleRepository
      */
-    private $taxRuleRepository;
+    private TaxRuleRepository $taxRuleRepository;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
     /**
      * @var array<int, mixed>
      */
-    private $errors = [];
+    private array $errors = [];
     /**
      * @var bool
      */
-    protected $isSplitCsv = false;
+    protected bool $isSplitCsv = false;
     /**
-     * @var int
+     * テストデータの生成によりnullが入るため、nullableに設定
+     *
+     * @var int|null
      */
-    protected $csvFileNo = 1;
+    protected ?int $csvFileNo = 1;
     /**
-     * @var int
+     * @var int|null
      */
-    protected $currentLineNo = 1;
+    protected ?int $currentLineNo = 1;
 
     private readonly \HTMLPurifier $purifier;
 
@@ -182,7 +184,11 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\ORM\NoResultException|\Doctrine\DBAL\Exception
      */
-    #[Route(path: '/%eccube_admin_route%/product/product_csv_upload', name: 'admin_product_csv_import', methods: ['GET', 'POST'])]
+    #[Route(
+        path: '/%eccube_admin_route%/product/product_csv_upload',
+        name: 'admin_product_csv_import',
+        methods: ['GET', 'POST'])
+    ]
     #[Template(template: '@admin/Product/csv_product.twig')]
     public function csvProduct(Request $request, CacheUtil $cacheUtil): array|JsonResponse
     {
@@ -250,7 +256,10 @@ class CsvImportController extends AbstractCsvImportController
                             if (preg_match('/^\d+$/', $row[$headerByKey['id']])) {
                                 $Product = $this->productRepository->find($row[$headerByKey['id']]);
                                 if (!$Product) {
-                                    $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['id']]);
+                                    $message = trans(
+                                        'admin.common.csv_invalid_not_found',
+                                        ['%line%' => $line, '%name%' => $headerByKey['id']]
+                                    );
                                     $this->addErrors($message);
 
                                     return $this->renderWithError($form, $headers);
@@ -283,19 +292,28 @@ class CsvImportController extends AbstractCsvImportController
                         }
 
                         if (StringUtil::isBlank($row[$headerByKey['status']])) {
-                            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['status']]);
+                            $message = trans(
+                                'admin.common.csv_invalid_required',
+                                ['%line%' => $line, '%name%' => $headerByKey['status']]
+                            );
                             $this->addErrors($message);
                         } else {
                             if (preg_match('/^\d+$/', $row[$headerByKey['status']])) {
                                 $ProductStatus = $this->productStatusRepository->find($row[$headerByKey['status']]);
                                 if (!$ProductStatus) {
-                                    $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['status']]);
+                                    $message = trans(
+                                        'admin.common.csv_invalid_not_found',
+                                        ['%line%' => $line, '%name%' => $headerByKey['status']]
+                                    );
                                     $this->addErrors($message);
                                 } else {
                                     $Product->setStatus($ProductStatus);
                                 }
                             } else {
-                                $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['status']]);
+                                $message = trans(
+                                    'admin.common.csv_invalid_not_found',
+                                    ['%line%' => $line, '%name%' => $headerByKey['status']]
+                                );
                                 $this->addErrors($message);
                             }
                         }

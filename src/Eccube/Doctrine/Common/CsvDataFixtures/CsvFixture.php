@@ -28,7 +28,7 @@ class CsvFixture implements FixtureInterface
     /**
      * @var \SplFileObject
      */
-    protected $file;
+    protected \SplFileObject $file;
 
     /**
      * CsvFixture constructor.

@@ -30,22 +30,22 @@ class TaxProcessor implements ItemHolderPreprocessor
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     /**
      * @var TaxRuleService
      */
-    protected $taxRuleService;
+    protected TaxRuleService $taxRuleService;
 
     /**
      * @var OrderHelper
      */
-    protected $orderHelper;
+    protected OrderHelper $orderHelper;
 
     /**
      * TaxProcessor constructor.

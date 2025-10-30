@@ -28,12 +28,12 @@ class LogType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    protected KernelInterface $kernel;
 
     /**
      * LogType constructor.

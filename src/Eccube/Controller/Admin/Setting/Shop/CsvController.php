@@ -35,12 +35,12 @@ class CsvController extends AbstractController
     /**
      * @var CsvRepository
      */
-    protected $csvRepository;
+    protected CsvRepository $csvRepository;
 
     /**
      * @var CsvTypeRepository
      */
-    protected $csvTypeRepository;
+    protected CsvTypeRepository $csvTypeRepository;
 
     /**
      * CsvController constructor.

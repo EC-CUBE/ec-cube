@@ -47,32 +47,32 @@ class PluginController extends AbstractController
     /**
      * @var PluginService
      */
-    protected $pluginService;
+    protected PluginService $pluginService;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var PluginRepository
      */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
     /**
      * @var PluginApiService
      */
-    protected $pluginApiService;
+    protected PluginApiService $pluginApiService;
 
     /**
      * @var ComposerServiceInterface
      */
-    private $composerService;
+    private ComposerServiceInterface $composerService;
 
     /**
      * @var SystemService
      */
-    private $systemService;
+    private SystemService $systemService;
 
     /**
      * PluginController constructor.

@@ -35,37 +35,37 @@ class ShippingMultipleItemType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var Session
      */
-    protected $session;
+    protected Session $session;
 
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var PrefRepository
      */
-    protected $prefRepository;
+    protected PrefRepository $prefRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var OrderHelper
      */
-    protected $orderHelper;
+    protected OrderHelper $orderHelper;
 
     /**
      * ShippingMultipleItemType constructor.

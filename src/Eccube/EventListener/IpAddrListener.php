@@ -25,12 +25,12 @@ class IpAddrListener implements EventSubscriberInterface
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var Context
      */
-    protected $requestContext;
+    protected Context $requestContext;
 
     public function __construct(EccubeConfig $eccubeConfig, Context $requestContext)
     {

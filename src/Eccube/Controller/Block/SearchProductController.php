@@ -27,7 +27,7 @@ class SearchProductController extends AbstractController
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     public function __construct(RequestStack $requestStack,
     ) {

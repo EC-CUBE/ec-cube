@@ -28,7 +28,7 @@ class TaxRuleEventSubscriber
     /**
      * @var TaxRuleService
      */
-    protected $taxRuleService;
+    protected TaxRuleService $taxRuleService;
 
     /**
      * TaxRuleEventSubscriber constructor.

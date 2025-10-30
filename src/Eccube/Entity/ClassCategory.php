@@ -34,7 +34,7 @@ if (!class_exists(ClassCategory::class)) {
         }
 
         /**
-         * @var int
+         * @var int|null
          */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
@@ -105,7 +105,7 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set backend_name.
          */
-        public function setBackendName(string $backendName): ClassCategory
+        public function setBackendName(?string $backendName): ClassCategory
         {
             $this->backend_name = $backendName;
 
@@ -123,7 +123,7 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * Set name.
          */
-        public function setName(string $name): ClassCategory
+        public function setName(?string $name): ClassCategory
         {
             $this->name = $name;
 
@@ -135,7 +135,7 @@ if (!class_exists(ClassCategory::class)) {
          */
         public function getName(): string
         {
-            return $this->name;
+            return $this->name ?? '';
         }
 
         /**

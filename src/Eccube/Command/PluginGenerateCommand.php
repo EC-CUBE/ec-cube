@@ -30,17 +30,17 @@ class PluginGenerateCommand extends Command
     /**
      * @var SymfonyStyle
      */
-    protected $io;
+    protected SymfonyStyle $io;
 
     /**
      * @var Filesystem
      */
-    protected $fs;
+    protected Filesystem $fs;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {

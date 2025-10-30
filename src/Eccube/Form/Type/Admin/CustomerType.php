@@ -43,7 +43,7 @@ class CustomerType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * CustomerType constructor.

@@ -34,17 +34,17 @@ class ShippingType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var DeliveryFeeRepository
      */
-    protected $deliveryFeeRepository;
+    protected DeliveryFeeRepository $deliveryFeeRepository;
 
     /**
      * ShippingType constructor.

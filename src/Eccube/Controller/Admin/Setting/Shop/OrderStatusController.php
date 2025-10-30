@@ -29,17 +29,17 @@ class OrderStatusController extends AbstractController
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
     /**
      * @var OrderStatusColorRepository
      */
-    protected $orderStatusColorRepository;
+    protected OrderStatusColorRepository $orderStatusColorRepository;
 
     /**
      * @var CustomerOrderStatusRepository
      */
-    protected $customerOrderStatusRepository;
+    protected CustomerOrderStatusRepository $customerOrderStatusRepository;
 
     public function __construct(
         OrderStatusRepository $orderStatusRepository,

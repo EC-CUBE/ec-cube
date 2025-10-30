@@ -32,17 +32,17 @@ class OrderStatusSettingType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var OrderStatusColorRepository
      */
-    protected $orderStatusColorRepository;
+    protected OrderStatusColorRepository $orderStatusColorRepository;
 
     /**
      * @var CustomerOrderStatusRepository
      */
-    protected $customerOrderStatusRepository;
+    protected CustomerOrderStatusRepository $customerOrderStatusRepository;
 
     public function __construct(
         EccubeConfig $eccubeConfig,

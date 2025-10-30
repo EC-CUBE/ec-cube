@@ -32,17 +32,17 @@ class MemberController extends AbstractController
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var MemberRepository
      */
-    protected $memberRepository;
+    protected MemberRepository $memberRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * MemberController constructor.

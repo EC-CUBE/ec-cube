@@ -30,12 +30,12 @@ class ContactController extends AbstractController
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var PageRepository
      */
-    private $pageRepository;
+    private PageRepository $pageRepository;
 
     /**
      * ContactController constructor.

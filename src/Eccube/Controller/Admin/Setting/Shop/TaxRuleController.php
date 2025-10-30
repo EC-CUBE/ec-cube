@@ -34,12 +34,12 @@ class TaxRuleController extends AbstractController
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     /**
      * TaxRuleController constructor.

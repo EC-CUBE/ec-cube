@@ -282,27 +282,38 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
     }
 }
 
-class SessionMock
+class SessionMock extends \Eccube\Session\Session
 {
     private array $bag = [];
 
-    public function set($key, $value): void
+    public function __construct()
     {
-        $this->bag[$key] = $value;
+        // 親クラスのコンストラクタを呼ばない
     }
 
-    public function get($key, $default = null): mixed
+    #[\Override]
+    public function set(string $name, mixed $value): void
     {
-        return $this->bag[$key] ?? $default;
+        $this->bag[$name] = $value;
     }
 
-    public function has($key): bool
+    #[\Override]
+    public function get(string $name, mixed $default = null): mixed
     {
-        return isset($this->bag[$key]);
+        return $this->bag[$name] ?? $default;
     }
 
-    public function remove($key): void
+    #[\Override]
+    public function has(string $name): bool
     {
-        unset($this->bag[$key]);
+        return isset($this->bag[$name]);
+    }
+
+    #[\Override]
+    public function remove(string $name): mixed
+    {
+        $value = $this->bag[$name] ?? null;
+        unset($this->bag[$name]);
+        return $value;
     }
 }

@@ -42,27 +42,27 @@ class ProductClassController extends AbstractController
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * @var ClassCategoryRepository
      */
-    protected $classCategoryRepository;
+    protected ClassCategoryRepository $classCategoryRepository;
 
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     /**
      * ProductClassController constructor.

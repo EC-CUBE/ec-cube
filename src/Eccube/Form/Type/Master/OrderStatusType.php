@@ -26,7 +26,7 @@ class OrderStatusType extends AbstractType
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * OrderStatusType constructor.

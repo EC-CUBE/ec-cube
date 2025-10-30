@@ -23,39 +23,39 @@ class JoinClause
     /**
      * @var string
      */
-    private $join;
+    private string $join;
 
     /**
      * @var string
      */
-    private $alias;
+    private string $alias;
 
     /**
      * @var string|null
      */
-    private $conditionType;
+    private ?string $conditionType;
     /**
      * @var string|null
      */
-    private $condition;
+    private ?string $condition;
     /**
      * @var string|null
      */
-    private $indexBy;
+    private ?string $indexBy;
     /**
      * @var bool
      */
-    private $leftJoin;
+    private bool $leftJoin;
 
     /**
      * @var JoinClauseWhereCustomizer
      */
-    private $whereCustomizer;
+    private JoinClauseWhereCustomizer $whereCustomizer;
 
     /**
      * @var JoinClauseOrderByCustomizer
      */
-    private $orderByCustomizer;
+    private JoinClauseOrderByCustomizer $orderByCustomizer;
 
     /**
      * JoinClause constructor.
@@ -133,7 +133,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
     /**
      * @var WhereClause[]
      */
-    private $whereClauses = [];
+    private array $whereClauses = [];
 
     public function add(WhereClause $whereClause): void
     {
@@ -167,7 +167,7 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
     /**
      * @var OrderByClause[]
      */
-    private $orderByClauses = [];
+    private array $orderByClauses = [];
 
     public function add(OrderByClause $orderByClause): void
     {

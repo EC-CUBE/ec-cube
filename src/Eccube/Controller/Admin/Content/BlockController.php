@@ -36,12 +36,12 @@ class BlockController extends AbstractController
     /**
      * @var BlockRepository
      */
-    protected $blockRepository;
+    protected BlockRepository $blockRepository;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     public function __construct(
         BlockRepository $blockRepository,

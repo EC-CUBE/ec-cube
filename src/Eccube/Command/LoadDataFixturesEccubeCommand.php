@@ -32,12 +32,12 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(ManagerRegistry $registry, EccubeConfig $eccubeConfig, UserPasswordHasherInterface $passwordHasher)
     {

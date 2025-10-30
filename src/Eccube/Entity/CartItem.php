@@ -70,7 +70,7 @@ if (!class_exists(CartItem::class)) {
          *
          * @var int
          */
-        private $product_class_id;
+        private int $product_class_id;
 
         public function __sleep(): array
         {

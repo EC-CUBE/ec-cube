@@ -37,7 +37,7 @@ class MailController extends AbstractController
     /**
      * @var MailTemplateRepository
      */
-    protected $mailTemplateRepository;
+    protected MailTemplateRepository $mailTemplateRepository;
 
     /**
      * MailController constructor.

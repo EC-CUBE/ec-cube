@@ -28,7 +28,7 @@ class AddressType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $config;
+    protected EccubeConfig $config;
 
     /**
      * {@inheritdoc}

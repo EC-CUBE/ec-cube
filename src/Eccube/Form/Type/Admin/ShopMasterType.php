@@ -40,7 +40,7 @@ class ShopMasterType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * ShopMasterType constructor.

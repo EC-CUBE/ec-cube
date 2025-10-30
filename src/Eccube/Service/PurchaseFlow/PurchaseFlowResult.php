@@ -18,10 +18,10 @@ use Eccube\Entity\ItemHolderInterface;
 class PurchaseFlowResult
 {
     /** @var ItemHolderInterface */
-    private $itemHolder;
+    private ItemHolderInterface $itemHolder;
 
     /** @var ProcessResult[] */
-    private $processResults = [];
+    private array $processResults = [];
 
     /**
      * PurchaseFlowResult constructor.

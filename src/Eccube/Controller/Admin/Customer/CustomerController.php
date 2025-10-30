@@ -44,32 +44,32 @@ class CustomerController extends AbstractController
     /**
      * @var CsvExportService
      */
-    protected $csvExportService;
+    protected CsvExportService $csvExportService;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var PrefRepository
      */
-    protected $prefRepository;
+    protected PrefRepository $prefRepository;
 
     /**
      * @var SexRepository
      */
-    protected $sexRepository;
+    protected SexRepository $sexRepository;
 
     /**
      * @var PageMaxRepository
      */
-    protected $pageMaxRepository;
+    protected PageMaxRepository $pageMaxRepository;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     public function __construct(
         PageMaxRepository $pageMaxRepository,

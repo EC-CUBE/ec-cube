@@ -41,47 +41,47 @@ class EntryController extends AbstractController
     /**
      * @var CustomerStatusRepository
      */
-    protected $customerStatusRepository;
+    protected CustomerStatusRepository $customerStatusRepository;
 
     /**
      * @var ValidatorInterface
      */
-    protected $recursiveValidator;
+    protected ValidatorInterface $recursiveValidator;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var PageRepository
      */
-    protected $pageRepository;
+    protected PageRepository $pageRepository;
 
     /**
      * EntryController constructor.

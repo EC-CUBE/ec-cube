@@ -31,12 +31,12 @@ class EccubeExtension extends AbstractExtension
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
     /**
      * EccubeExtension constructor.

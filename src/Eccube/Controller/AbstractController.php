@@ -34,37 +34,37 @@ class AbstractController extends Controller
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     /**
      * @var FormFactoryInterface
      */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * @var FlashBagAwareSessionInterface
      */
-    protected $session;
+    protected FlashBagAwareSessionInterface $session;
 
     /**
      * @var RouterInterface
      */
-    protected $router;
+    protected RouterInterface $router;
 
     #[Required]
     public function setEccubeConfig(EccubeConfig $eccubeConfig): void

@@ -41,17 +41,17 @@ class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
     /**
      * @var PluginRepository
      */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
     /**
      * @var PluginService
      */
-    protected $pluginService;
+    protected PluginService $pluginService;
 
     /**
      * @var SchemaService
      */
-    protected $schemaService;
+    protected SchemaService $schemaService;
 
     /**
      * @var ManagerRegistry

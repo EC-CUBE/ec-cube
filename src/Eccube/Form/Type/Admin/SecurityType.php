@@ -31,22 +31,22 @@ class SecurityType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * @var RouterInterface
      */
-    protected $router;
+    protected RouterInterface $router;
 
     /**
      * SecurityType constructor.

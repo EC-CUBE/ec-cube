@@ -27,22 +27,22 @@ class MobileTemplatePathListener implements EventSubscriberInterface
     /**
      * @var Context
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * @var MobileDetect
      */
-    protected $detector;
+    protected MobileDetect $detector;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     public function __construct(Context $context, Environment $twig, MobileDetect $detector, EccubeConfig $eccubeConfig)
     {

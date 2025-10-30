@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class TradeLawController extends AbstractController
 {
     /** @var TradeLawRepository */
-    protected $tradeLawRepository;
+    protected TradeLawRepository $tradeLawRepository;
 
     public function __construct(
         TradeLawRepository $tradeLawRepository,

@@ -24,7 +24,7 @@ class ShippingMultipleType extends AbstractType
     /**
      * @var ShippingRepository
      */
-    protected $shippingRepository;
+    protected ShippingRepository $shippingRepository;
 
     /**
      * ShippingMultipleType constructor.

@@ -28,7 +28,7 @@ class ForgotType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * ForgotType constructor.

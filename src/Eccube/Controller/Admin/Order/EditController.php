@@ -61,72 +61,72 @@ class EditController extends AbstractController
     /**
      * @var TaxRuleService
      */
-    protected $taxRuleService;
+    protected TaxRuleService $taxRuleService;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var SerializerInterface
      */
-    protected $serializer;
+    protected SerializerInterface $serializer;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var OrderNoProcessor
      */
-    protected $orderNoProcessor;
+    protected OrderNoProcessor $orderNoProcessor;
 
     /**
      * @var OrderItemTypeRepository
      */
-    protected $orderItemTypeRepository;
+    protected OrderItemTypeRepository $orderItemTypeRepository;
 
     /**
      * @var OrderStateMachine
      */
-    protected $orderStateMachine;
+    protected OrderStateMachine $orderStateMachine;
 
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
     /**
      * @var OrderHelper
      */
-    private $orderHelper;
+    private OrderHelper $orderHelper;
 
     /**
      * EditController constructor.
@@ -488,9 +488,13 @@ class EditController extends AbstractController
             foreach ($Customers as $Customer) {
                 $data[] = [
                     'id' => $Customer->getId(),
-                    'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
+                    'name' => sprintf(
+                        $formatName,
+                        $Customer->getName01(),
+                        $Customer->getName02(),
                         $Customer->getKana01(),
-                        $Customer->getKana02()),
+                        $Customer->getKana02()
+                    ),
                     'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
@@ -580,10 +584,19 @@ class EditController extends AbstractController
      *
      * @return array<string, mixed>
      */
-    #[Route(path: '/%eccube_admin_route%/order/search/product', name: 'admin_order_search_product', methods: ['GET', 'POST'])]
-    #[Route(path: '/%eccube_admin_route%/order/search/product/page/{page_no}', name: 'admin_order_search_product_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(
+        path: '/%eccube_admin_route%/order/search/product',
+        name: 'admin_order_search_product',
+        methods: ['GET', 'POST']
+    )]
+    #[Route(
+        path: '/%eccube_admin_route%/order/search/product/page/{page_no}',
+        name: 'admin_order_search_product_page',
+        requirements: ['page_no' => '\d+'],
+        methods: ['GET', 'POST']
+    )]
     #[Template(template: '@admin/Order/search_product.twig')]
-    public function searchProduct(Request $request, PaginatorInterface $paginator, $page_no = null): array
+    public function searchProduct(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search product start.');

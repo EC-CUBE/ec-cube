@@ -24,14 +24,14 @@ class UTCDateTimeTzType extends DateTimeTzType
      *
      * @var \DateTimeZone|null
      */
-    protected static $utc;
+    protected static ?\DateTimeZone $utc = null;
 
     /**
      * アプリケーションのタイムゾーン
      *
      * @var \DateTimeZone|null
      */
-    protected static $timezone;
+    protected static ?\DateTimeZone $timezone = null;
 
     /**
      * {@inheritdoc}

@@ -30,7 +30,7 @@ class MasterdataDataType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * MasterdataDataType constructor.

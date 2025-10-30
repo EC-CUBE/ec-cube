@@ -32,7 +32,7 @@ class NewsController extends AbstractController
     /**
      * @var NewsRepository
      */
-    protected $newsRepository;
+    protected NewsRepository $newsRepository;
 
     /**
      * NewsController constructor.

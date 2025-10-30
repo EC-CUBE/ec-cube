@@ -27,12 +27,12 @@ class SaveEventSubscriber
     /**
      * @var Context
      */
-    protected $requestContext;
+    protected Context $requestContext;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     public function __construct(Context $requestContext, EccubeConfig $eccubeConfig)
     {

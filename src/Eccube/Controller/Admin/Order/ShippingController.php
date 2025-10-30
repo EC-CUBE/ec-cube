@@ -46,47 +46,47 @@ class ShippingController extends AbstractController
     /**
      * @var OrderItemRepository
      */
-    protected $orderItemRepository;
+    protected OrderItemRepository $orderItemRepository;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var TaxRuleService
      */
-    protected $taxRuleService;
+    protected TaxRuleService $taxRuleService;
 
     /**
      * @var ShippingRepository
      */
-    protected $shippingRepository;
+    protected ShippingRepository $shippingRepository;
 
     /**
      * @var SerializerInterface
      */
-    protected $serializer;
+    protected SerializerInterface $serializer;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var OrderStateMachine
      */
-    protected $orderStateMachine;
+    protected OrderStateMachine $orderStateMachine;
 
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * EditController constructor.

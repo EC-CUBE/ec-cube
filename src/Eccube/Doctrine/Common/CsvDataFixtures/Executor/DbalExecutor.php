@@ -27,7 +27,7 @@ class DbalExecutor extends AbstractExecutor
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * DbalExecutor constructor.

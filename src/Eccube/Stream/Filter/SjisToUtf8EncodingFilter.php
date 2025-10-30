@@ -45,12 +45,12 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
      *
      * @var int
      */
-    private static $bufferSizeLimit = 1024;
+    private static int $bufferSizeLimit = 1024;
 
     /**
      * @var string
      */
-    private $buffer = '';
+    private string $buffer = '';
 
     public static function setBufferSizeLimit(int $bufferSizeLimit): void
     {

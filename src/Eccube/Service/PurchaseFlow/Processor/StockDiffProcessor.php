@@ -31,7 +31,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * StockProcessor constructor.

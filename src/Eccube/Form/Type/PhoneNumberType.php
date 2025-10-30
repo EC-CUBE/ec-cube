@@ -30,7 +30,7 @@ class PhoneNumberType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * PhoneNumberType constructor.

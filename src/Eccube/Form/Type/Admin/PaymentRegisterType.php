@@ -32,7 +32,7 @@ class PaymentRegisterType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * PaymentRegisterType constructor.

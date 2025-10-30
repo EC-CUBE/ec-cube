@@ -37,17 +37,17 @@ class PageController extends AbstractController
     /**
      * @var PageRepository
      */
-    protected $pageRepository;
+    protected PageRepository $pageRepository;
 
     /**
      * @var PageLayoutRepository
      */
-    protected $pageLayoutRepository;
+    protected PageLayoutRepository $pageLayoutRepository;
 
     /**
      * @var DeviceTypeRepository
      */
-    protected $deviceTypeRepository;
+    protected DeviceTypeRepository $deviceTypeRepository;
 
     /**
      * PageController constructor.

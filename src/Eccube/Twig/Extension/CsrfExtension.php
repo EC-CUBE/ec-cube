@@ -23,7 +23,7 @@ class CsrfExtension extends AbstractExtension
     /**
      * @var CsrfTokenManagerInterface
      */
-    protected $tokenManager;
+    protected CsrfTokenManagerInterface $tokenManager;
 
     /**
      * CsrfExtension constructor.

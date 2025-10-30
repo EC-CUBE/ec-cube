@@ -59,7 +59,7 @@ class InstallController extends AbstractController
     /**
      * @var string[]
      */
-    protected $requiredModules = [
+    protected array $requiredModules = [
         'pdo',
         'phar',
         'mbstring',
@@ -79,13 +79,13 @@ class InstallController extends AbstractController
     /**
      * @var string[]
      */
-    protected $recommendedModules = [
+    protected array $recommendedModules = [
         'hash',
     ];
     /**
      * @var string[]
      */
-    protected $eccubeDirs = [
+    protected array $eccubeDirs = [
         'app/Plugin',
         'app/PluginData',
         'app/proxy',
@@ -97,7 +97,7 @@ class InstallController extends AbstractController
     /**
      * @var string[]
      */
-    protected $eccubeFiles = [
+    protected array $eccubeFiles = [
         'composer.json',
         'composer.lock',
     ];
@@ -105,12 +105,12 @@ class InstallController extends AbstractController
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var CacheUtil
      */
-    protected $cacheUtil;
+    protected CacheUtil $cacheUtil;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher, CacheUtil $cacheUtil)
     {

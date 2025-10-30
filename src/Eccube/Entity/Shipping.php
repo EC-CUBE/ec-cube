@@ -218,7 +218,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * @var ProductClass
          */
-        private $ProductClassOfTemp;
+        private ProductClass $ProductClassOfTemp;
 
         /**
          * @var Member|null

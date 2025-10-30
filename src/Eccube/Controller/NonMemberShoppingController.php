@@ -34,22 +34,22 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * @var PrefRepository
      */
-    protected $prefRepository;
+    protected PrefRepository $prefRepository;
 
     /**
      * @var OrderHelper
      */
-    protected $orderHelper;
+    protected OrderHelper $orderHelper;
 
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * NonMemberShoppingController constructor.

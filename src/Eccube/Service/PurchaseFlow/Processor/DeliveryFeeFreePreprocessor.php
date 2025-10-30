@@ -27,7 +27,7 @@ class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * DeliveryFeeProcessor constructor.

@@ -29,36 +29,36 @@ class DeleteCartsCommand extends Command
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var SymfonyStyle
      */
-    protected $io;
+    protected SymfonyStyle $io;
 
     /**
      * @var string
      */
-    protected $locale;
+    protected string $locale;
 
     /**
      * @var \DateTimeZone
      */
-    protected $timezone;
+    protected \DateTimeZone $timezone;
 
     /**
      * @var \IntlDateFormatter
      */
-    protected $formatter;
+    protected \IntlDateFormatter $formatter;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
     /**
      * @var CartRepository
      */
-    private $cartRepository;
+    private CartRepository $cartRepository;
 
     public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, CartRepository $cartRepository)
     {

@@ -42,27 +42,27 @@ class OrderType extends AbstractType
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var PaymentRepository
      */
-    protected $paymentRepository;
+    protected PaymentRepository $paymentRepository;
 
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     /**
      * @var Context
      */
-    protected $requestContext;
+    protected Context $requestContext;
 
     /**
      * OrderType constructor.

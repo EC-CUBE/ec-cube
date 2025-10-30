@@ -40,22 +40,22 @@ class CustomerRepository extends AbstractRepository
     /**
      * @var Queries
      */
-    protected $queries;
+    protected Queries $queries;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig|null
      */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     public const COLUMNS = [
         'customer_id' => 'c.id', 'name' => 'c.name01',

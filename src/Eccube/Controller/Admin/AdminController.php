@@ -49,50 +49,50 @@ class AdminController extends AbstractController
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @var AuthenticationUtils
      */
-    protected $helper;
+    protected AuthenticationUtils $helper;
 
     /**
      * @var MemberRepository
      */
-    protected $memberRepository;
+    protected MemberRepository $memberRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var OrderStatusRepository
      */
-    protected $orderStatusRepository;
+    protected OrderStatusRepository $orderStatusRepository;
 
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /** @var PluginApiService */
-    protected $pluginApiService;
+    protected PluginApiService $pluginApiService;
 
     /**
      * @var array<int, int> 売り上げ状況用受注状況
      */
-    private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
+    private array $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
     /**
      * AdminController constructor.

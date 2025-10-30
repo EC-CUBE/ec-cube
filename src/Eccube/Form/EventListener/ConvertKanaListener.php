@@ -22,12 +22,12 @@ class ConvertKanaListener implements EventSubscriberInterface
     /**
      * @var string
      */
-    protected $option;
+    protected string $option;
 
     /**
      * @var string
      */
-    protected $encoding;
+    protected string $encoding;
 
     public function __construct(string $option = 'a', string $encoding = 'utf-8')
     {

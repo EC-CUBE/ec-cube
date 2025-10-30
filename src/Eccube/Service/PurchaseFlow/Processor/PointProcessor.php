@@ -30,12 +30,12 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var PointHelper
      */
-    protected $pointHelper;
+    protected PointHelper $pointHelper;
 
     /**
      * PointProcessor constructor.

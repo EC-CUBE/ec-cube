@@ -32,9 +32,9 @@ use Eccube\Entity\Category;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig|null
      */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * CategoryRepository constructor.

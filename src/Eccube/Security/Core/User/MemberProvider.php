@@ -32,12 +32,12 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
     /**
      * @var MemberRepository
      */
-    protected $memberRepository;
+    protected MemberRepository $memberRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(MemberRepository $memberRepository, EntityManagerInterface $entityManager)
     {

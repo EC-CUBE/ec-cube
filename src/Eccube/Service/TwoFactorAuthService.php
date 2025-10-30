@@ -36,37 +36,37 @@ class TwoFactorAuthService
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var PasswordHasherFactoryInterface
      */
-    protected $passwordHasherFactory;
+    protected PasswordHasherFactoryInterface $passwordHasherFactory;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * @var Request|null
      */
-    protected $request;
+    protected ?Request $request;
 
     /**
      * @var string
      */
-    protected $cookieName = self::DEFAULT_COOKIE_NAME;
+    protected string $cookieName = self::DEFAULT_COOKIE_NAME;
 
     /**
      * @var int
      */
-    protected $expire = self::DEFAULT_EXPIRE_DATE;
+    protected int $expire = self::DEFAULT_EXPIRE_DATE;
 
     /**
      * @var TwoFactorAuth
      */
-    protected $tfa;
+    protected TwoFactorAuth $tfa;
 
     /**
      * constructor.

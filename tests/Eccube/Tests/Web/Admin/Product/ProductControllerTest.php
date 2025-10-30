@@ -763,7 +763,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param string|null $expected 期待値
      */
     #[DataProvider(methodName: 'dataEditProductProvider')]
-    public function testEditWithPostTaxRate($before, $after, $expected)
+    public function testEditWithPostTaxRate(?string $before, ?string $after, ?string $expected)
     {
         // Give
         $this->baseInfo->setOptionProductTaxRule(true);
@@ -824,7 +824,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @see https://github.com/EC-CUBE/ec-cube/issues/2114
      */
     #[DataProvider(methodName: 'dataEditRoundingTypeProvider')]
-    public function testEditWithCurrnetRoundingType($tax_rate, $currentRoundingTypeId, $expected, $isNew)
+    public function testEditWithCurrnetRoundingType(?string $tax_rate, ?int $currentRoundingTypeId, ?int $expected, ?bool $isNew)
     {
         // Give
         $this->baseInfo->setOptionProductTaxRule(true);

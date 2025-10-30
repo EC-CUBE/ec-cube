@@ -45,41 +45,41 @@ class ProductController extends AbstractController
     /**
      * @var PurchaseFlow
      */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * @var CustomerFavoriteProductRepository
      */
-    protected $customerFavoriteProductRepository;
+    protected CustomerFavoriteProductRepository $customerFavoriteProductRepository;
 
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var AuthenticationUtils
      */
-    protected $helper;
+    protected AuthenticationUtils $helper;
 
     /**
      * @var ProductListMaxRepository
      */
-    protected $productListMaxRepository;
+    protected ProductListMaxRepository $productListMaxRepository;
     /**
      * @var string
      */
-    private $title = '';
+    private string $title = '';
 
     /**
      * ProductController constructor.

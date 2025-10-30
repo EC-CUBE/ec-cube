@@ -61,7 +61,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @var bool
          */
-        private $lock = false;
+        private bool $lock = false;
 
         /**
          * @var Collection<int, CartItem>
@@ -110,7 +110,7 @@ if (!class_exists(Cart::class)) {
          * @var InvalidItemException[]
          */
         /** @phpstan-ignore-next-line */
-        private $errors = [];
+        private array $errors = [];
 
         public function __wakeup(): void
         {

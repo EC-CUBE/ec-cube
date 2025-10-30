@@ -23,7 +23,7 @@ class EccubeConfig implements \ArrayAccess
     /**
      * @var ContainerBagInterface
      */
-    protected $container;
+    protected ContainerBagInterface $container;
 
     public function __construct(ContainerBagInterface $container)
     {

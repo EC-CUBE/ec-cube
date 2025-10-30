@@ -31,22 +31,22 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
     /**
      * @var ComposerApiService
      */
-    private $composerService;
+    private ComposerApiService $composerService;
 
     /**
      * @var PluginApiService
      */
-    private $pluginApiService;
+    private PluginApiService $pluginApiService;
 
     /**
      * @var PluginRepository
      */
-    private $pluginRepository;
+    private PluginRepository $pluginRepository;
 
     /**
      * @var SymfonyStyle
      */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(
         ComposerApiService $composerService,

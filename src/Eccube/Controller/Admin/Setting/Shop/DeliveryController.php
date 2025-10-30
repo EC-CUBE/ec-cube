@@ -47,32 +47,32 @@ class DeliveryController extends AbstractController
     /**
      * @var PaymentOptionRepository
      */
-    protected $paymentOptionRepository;
+    protected PaymentOptionRepository $paymentOptionRepository;
 
     /**
      * @var DeliveryFeeRepository
      */
-    protected $deliveryFeeRepository;
+    protected DeliveryFeeRepository $deliveryFeeRepository;
 
     /**
      * @var PrefRepository
      */
-    protected $prefRepository;
+    protected PrefRepository $prefRepository;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var DeliveryTimeRepository
      */
-    protected $deliveryTimeRepository;
+    protected DeliveryTimeRepository $deliveryTimeRepository;
 
     /**
      * @var SaleTypeRepository
      */
-    protected $saleTypeRepository;
+    protected SaleTypeRepository $saleTypeRepository;
 
     /**
      * DeliveryController constructor.

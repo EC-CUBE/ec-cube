@@ -36,22 +36,22 @@ class CustomerEditController extends AbstractController
     /**
      * @var CustomerRepository
      */
-    protected $customerRepository;
+    protected CustomerRepository $customerRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    protected $passwordHasher;
+    protected UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var PageMaxRepository
      */
-    protected $pageMaxRepository;
+    protected PageMaxRepository $pageMaxRepository;
 
     public function __construct(
         CustomerRepository $customerRepository,

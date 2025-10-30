@@ -27,17 +27,17 @@ class PurchaseContext extends \SplObjectStorage
     /**
      * @var UserInterface|Customer|null 会員情報
      */
-    private $user;
+    private UserInterface|Customer|null $user;
 
     /**
      * @var ItemHolderInterface|null PurchaseFlow実行前の{@link ItemHolderInterface}
      */
-    private $originHolder;
+    private ?ItemHolderInterface $originHolder;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $flowType;
+    private ?string $flowType = null;
 
     public const ORDER_FLOW = 'order';
 

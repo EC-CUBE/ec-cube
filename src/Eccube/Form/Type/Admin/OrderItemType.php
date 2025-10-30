@@ -47,42 +47,42 @@ class OrderItemType extends AbstractType
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * @var OrderItemRepository
      */
-    protected $orderItemRepository;
+    protected OrderItemRepository $orderItemRepository;
 
     /**
      * @var OrderItemTypeRepository
      */
-    protected $orderItemTypeRepository;
+    protected OrderItemTypeRepository $orderItemTypeRepository;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * OrderItemType constructor.

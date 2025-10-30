@@ -32,12 +32,12 @@ class LoginHistoryController extends AbstractController
     /**
      * @var PageMaxRepository
      */
-    protected $pageMaxRepository;
+    protected PageMaxRepository $pageMaxRepository;
 
     /**
      * @var LoginHistoryRepository
      */
-    protected $loginHistoryRepository;
+    protected LoginHistoryRepository $loginHistoryRepository;
 
     /**
      * LoginHistoryController constructor.

@@ -21,12 +21,12 @@ class OrderByClause
     /**
      * @var string
      */
-    private $sort;
+    private string $sort;
 
     /**
      * @var string
      */
-    private $order;
+    private string $order;
 
     /**
      * OrderByClause constructor.

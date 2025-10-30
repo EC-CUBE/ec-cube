@@ -23,17 +23,17 @@ class Context
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var TokenStorageInterface
      */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorageInterface $tokenStorage)
     {

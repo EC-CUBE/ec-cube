@@ -29,7 +29,7 @@ class AddPointProcessor extends ItemHolderPostValidator
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * AddPointProcessor constructor.

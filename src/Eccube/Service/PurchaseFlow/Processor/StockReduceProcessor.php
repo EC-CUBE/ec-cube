@@ -30,12 +30,12 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     /**
      * @var ProductStockRepository
      */
-    protected $productStockRepository;
+    protected ProductStockRepository $productStockRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * StockReduceProcessor constructor.

@@ -40,12 +40,12 @@ class ProductRepository extends AbstractRepository
     /**
      * @var Queries
      */
-    protected $queries;
+    protected Queries $queries;
 
     /**
-     * @var EccubeConfig
+     * @var EccubeConfig|null
      */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     public const COLUMNS = [
         'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'pc.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',

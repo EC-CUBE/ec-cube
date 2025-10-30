@@ -31,22 +31,22 @@ class GenerateDummyDataCommand extends Command
     /**
      * @var Generator
      */
-    protected $generator;
+    protected Generator $generator;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var DeliveryRepository
      */
-    protected $deliveryRepository;
+    protected DeliveryRepository $deliveryRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     public function __construct(?Generator $generator = null, ?EntityManagerInterface $entityManager = null, ?DeliveryRepository $deliveryRepository = null, ?ProductRepository $productRepository = null)
     {

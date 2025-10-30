@@ -65,52 +65,52 @@ class ProductController extends AbstractController
     /**
      * @var CsvExportService
      */
-    protected $csvExportService;
+    protected CsvExportService $csvExportService;
 
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * @var ProductImageRepository
      */
-    protected $productImageRepository;
+    protected ProductImageRepository $productImageRepository;
 
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRuleRepository;
+    protected TaxRuleRepository $taxRuleRepository;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @var BaseInfo
      */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * @var PageMaxRepository
      */
-    protected $pageMaxRepository;
+    protected PageMaxRepository $pageMaxRepository;
 
     /**
      * @var ProductStatusRepository
      */
-    protected $productStatusRepository;
+    protected ProductStatusRepository $productStatusRepository;
 
     /**
      * @var TagRepository
      */
-    protected $tagRepository;
+    protected TagRepository $tagRepository;
 
     /**
      * ProductController constructor.

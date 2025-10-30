@@ -54,32 +54,32 @@ class ShoppingController extends AbstractShoppingController
     /**
      * @var CartService
      */
-    protected $cartService;
+    protected CartService $cartService;
 
     /**
      * @var MailService
      */
-    protected $mailService;
+    protected MailService $mailService;
 
     /**
      * @var OrderHelper
      */
-    protected $orderHelper;
+    protected OrderHelper $orderHelper;
 
     /**
      * @var OrderRepository
      */
-    protected $orderRepository;
+    protected OrderRepository $orderRepository;
 
     /**
      * @var ContainerInterface
      */
-    protected $serviceContainer;
+    protected ContainerInterface $serviceContainer;
 
     /**
      * @var BaseInfoRepository
      */
-    protected $baseInfoRepository;
+    protected BaseInfoRepository $baseInfoRepository;
 
     /**
      * @var TradeLawRepository

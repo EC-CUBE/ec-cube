@@ -25,7 +25,7 @@ class TwigLintValidator extends ConstraintValidator
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * TwigLintValidator constructor.

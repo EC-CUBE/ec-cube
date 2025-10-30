@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * SecurityController constructor.

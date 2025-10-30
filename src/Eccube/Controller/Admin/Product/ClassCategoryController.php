@@ -38,22 +38,22 @@ class ClassCategoryController extends AbstractController
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
 
     /**
      * @var ClassCategoryRepository
      */
-    protected $classCategoryRepository;
+    protected ClassCategoryRepository $classCategoryRepository;
 
     /**
      * @var ClassNameRepository
      */
-    protected $classNameRepository;
+    protected ClassNameRepository $classNameRepository;
 
     /**
      * @var CsvExportService
      */
-    protected $csvExportService;
+    protected CsvExportService $csvExportService;
 
     /**
      * ClassCategoryController constructor.
@@ -188,7 +188,7 @@ class ClassCategoryController extends AbstractController
         log_info('規格分類削除開始', [$id]);
 
         $TargetClassCategory = $this->classCategoryRepository->find($id);
-        if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
+        if (!$TargetClassCategory || !$TargetClassCategory->getClassName() || $TargetClassCategory->getClassName() != $ClassName) {
             $this->deleteMessage();
 
             return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
@@ -238,7 +238,7 @@ class ClassCategoryController extends AbstractController
         log_info('規格分類表示変更開始', [$id]);
 
         $TargetClassCategory = $this->classCategoryRepository->find($id);
-        if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
+        if (!$TargetClassCategory || !$TargetClassCategory->getClassName() || $TargetClassCategory->getClassName() != $ClassName) {
             $this->deleteMessage();
 
             return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);

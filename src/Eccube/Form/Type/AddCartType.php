@@ -37,26 +37,26 @@ class AddCartType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $config;
+    protected EccubeConfig $config;
 
     /**
      * @var EntityManager
      */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * @var \Eccube\Entity\Product
      */
-    protected $Product;
+    protected \Eccube\Entity\Product $Product;
 
     /**
      * @var ProductClassRepository
      */
-    protected $productClassRepository;
+    protected ProductClassRepository $productClassRepository;
     /**
      * @var ManagerRegistry
      */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
 
     public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
     {

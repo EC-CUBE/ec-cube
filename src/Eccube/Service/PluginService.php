@@ -38,32 +38,32 @@ class PluginService
     /**
      * @var EccubeConfig
      */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var PluginRepository
      */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
     /**
      * @var EntityProxyService
      */
-    protected $entityProxyService;
+    protected EntityProxyService $entityProxyService;
 
     /**
      * @var SchemaService
      */
-    protected $schemaService;
+    protected SchemaService $schemaService;
 
     /**
      * @var ComposerServiceInterface
      */
-    protected $composerService;
+    protected ComposerServiceInterface $composerService;
 
     public const VENDOR_NAME = 'ec-cube';
 
@@ -80,30 +80,30 @@ class PluginService
     /**
      * @var string %kernel.project_dir%
      */
-    private $projectRoot;
+    private string $projectRoot;
 
     /**
      * @var string %kernel.environment%
      */
-    private $environment;
+    private string $environment;
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
     /** @var CacheUtil */
-    protected $cacheUtil;
+    protected CacheUtil $cacheUtil;
 
     /**
      * @var PluginApiService
      */
-    private $pluginApiService;
+    private PluginApiService $pluginApiService;
 
     /**
      * @var PluginContext
      */
-    private $pluginContext;
+    private PluginContext $pluginContext;
 
     /**
      * PluginService constructor.

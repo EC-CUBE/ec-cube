@@ -23,7 +23,7 @@ class TaxExtension extends AbstractExtension
     /**
      * @var TaxRuleRepository
      */
-    private $taxRuleRepository;
+    private TaxRuleRepository $taxRuleRepository;
 
     /**
      * TaxExtension constructor.

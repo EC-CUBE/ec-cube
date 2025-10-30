@@ -24,22 +24,22 @@ class PluginContext
     /**
      * @var string
      */
-    private $mode;
+    private string $mode;
 
     /**
      * @var string
      */
-    private $code;
+    private string $code;
 
     /**
      * @var array<string, mixed>
      */
-    private $composerJson;
+    private array $composerJson;
 
     /**
      * @var EccubeConfig
      */
-    private $eccubeConfig;
+    private EccubeConfig $eccubeConfig;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {

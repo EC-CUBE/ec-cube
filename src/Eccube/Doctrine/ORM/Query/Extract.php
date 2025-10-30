@@ -45,20 +45,20 @@ class Extract extends FunctionNode
     /**
      * @var string
      */
-    protected $field;
+    protected string $field;
     /**
      * @var string
      */
-    protected $type;
+    protected string $type = '';
     /**
      * @var \Doctrine\ORM\Query\AST\Node|string
      */
-    protected $source;
+    protected \Doctrine\ORM\Query\AST\Node|string $source;
 
     /**
      * @var string[]
      */
-    protected $formats = [
+    protected array $formats = [
         'YEAR' => '%Y',
         'MONTH' => '%m',
         'DAY' => '%d',
@@ -70,7 +70,7 @@ class Extract extends FunctionNode
     /**
      * @var string[]
      */
-    protected $dateTimeTypes = [
+    protected array $dateTimeTypes = [
         'TIMESTAMP',
         'DATE',
         'TIME',

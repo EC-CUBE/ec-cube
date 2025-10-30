@@ -19,7 +19,7 @@ use Twig\Sandbox\SecurityPolicyInterface;
 class SecurityPolicyDecorator implements SecurityPolicyInterface
 {
     /** @var BasePolicy */
-    private $securityPolicy;
+    private BasePolicy $securityPolicy;
 
     public function __construct(BasePolicy $securityPolicy)
     {

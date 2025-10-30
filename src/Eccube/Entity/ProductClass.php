@@ -31,11 +31,11 @@ if (!class_exists(ProductClass::class)) {
     class ProductClass extends AbstractEntity
     {
         /** @var string|null */
-        private $price01_inc_tax;
+        private ?string $price01_inc_tax;
         /** @var string|null */
-        private $price02_inc_tax;
+        private ?string $price02_inc_tax;
         /** @var string|null */
-        private $tax_rate;
+        private ?string $tax_rate = '';
 
         /**
          * 商品規格名を含めた商品名を返す.
@@ -152,7 +152,7 @@ if (!class_exists(ProductClass::class)) {
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
         /**
          * @var string|null
