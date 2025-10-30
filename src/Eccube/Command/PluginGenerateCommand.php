@@ -27,19 +27,10 @@ use Symfony\Component\Filesystem\Filesystem;
 #[AsCommand(name: 'eccube:plugin:generate', description: 'Generate plugin skeleton.')]
 class PluginGenerateCommand extends Command
 {
-    /**
-     * @var SymfonyStyle
-     */
     protected SymfonyStyle $io;
 
-    /**
-     * @var Filesystem
-     */
     protected Filesystem $fs;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     public function __construct(EccubeConfig $eccubeConfig)

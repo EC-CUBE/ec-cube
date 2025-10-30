@@ -24,10 +24,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class OrderUpdateProcessor extends AbstractPurchaseProcessor
 {
-    /**
-     * @var OrderStatusRepository
-     */
-    private OrderStatusRepository $orderStatusRepository;
+    private readonly OrderStatusRepository $orderStatusRepository;
 
     /**
      * OrderUpdateProcessor constructor.

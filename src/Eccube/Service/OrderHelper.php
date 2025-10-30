@@ -65,64 +65,28 @@ class OrderHelper
      */
     public const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
-    /**
-     * @var Session
-     */
     protected Session $session;
 
-    /**
-     * @var PrefRepository
-     */
     protected PrefRepository $prefRepository;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var OrderItemTypeRepository
-     */
     protected OrderItemTypeRepository $orderItemTypeRepository;
 
-    /**
-     * @var OrderStatusRepository
-     */
     protected OrderStatusRepository $orderStatusRepository;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var PaymentRepository
-     */
     protected PaymentRepository $paymentRepository;
 
-    /**
-     * @var DeviceTypeRepository
-     */
     protected DeviceTypeRepository $deviceTypeRepository;
 
-    /**
-     * @var MobileDetect
-     */
     protected MobileDetect $mobileDetector;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
     public function __construct(

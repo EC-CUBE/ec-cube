@@ -28,24 +28,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'eccube:fixtures:generate', description: 'Dummy data generator')]
 class GenerateDummyDataCommand extends Command
 {
-    /**
-     * @var Generator
-     */
     protected Generator $generator;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
     public function __construct(?Generator $generator = null, ?EntityManagerInterface $entityManager = null, ?DeliveryRepository $deliveryRepository = null, ?ProductRepository $productRepository = null)

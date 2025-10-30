@@ -20,42 +20,18 @@ use Doctrine\ORM\QueryBuilder;
  */
 class JoinClause
 {
-    /**
-     * @var string
-     */
-    private string $join;
+    private readonly string $join;
 
-    /**
-     * @var string
-     */
-    private string $alias;
+    private readonly string $alias;
 
-    /**
-     * @var string|null
-     */
-    private ?string $conditionType;
-    /**
-     * @var string|null
-     */
-    private ?string $condition;
-    /**
-     * @var string|null
-     */
-    private ?string $indexBy;
-    /**
-     * @var bool
-     */
-    private bool $leftJoin;
+    private readonly ?string $conditionType;
+    private readonly ?string $condition;
+    private readonly ?string $indexBy;
+    private readonly bool $leftJoin;
 
-    /**
-     * @var JoinClauseWhereCustomizer
-     */
-    private JoinClauseWhereCustomizer $whereCustomizer;
+    private readonly JoinClauseWhereCustomizer $whereCustomizer;
 
-    /**
-     * @var JoinClauseOrderByCustomizer
-     */
-    private JoinClauseOrderByCustomizer $orderByCustomizer;
+    private readonly JoinClauseOrderByCustomizer $orderByCustomizer;
 
     /**
      * JoinClause constructor.

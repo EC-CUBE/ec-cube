@@ -27,8 +27,7 @@ use Twig\TwigFunction;
  */
 class IgnoreRoutingNotFoundExtension extends AbstractExtension
 {
-    /** @var UrlGeneratorInterface */
-    private UrlGeneratorInterface $generator;
+    private readonly UrlGeneratorInterface $generator;
 
     public function __construct(UrlGeneratorInterface $generator)
     {

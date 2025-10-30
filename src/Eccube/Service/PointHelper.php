@@ -25,14 +25,8 @@ use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 
 class PointHelper
 {
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
     /**

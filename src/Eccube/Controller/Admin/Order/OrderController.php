@@ -54,75 +54,34 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
-    /**
-     * @var CsvExportService
-     */
     protected CsvExportService $csvExportService;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var PaymentRepository
-     */
     protected PaymentRepository $paymentRepository;
 
-    /**
-     * @var SexRepository
-     */
     protected SexRepository $sexRepository;
 
-    /**
-     * @var OrderStatusRepository
-     */
     protected OrderStatusRepository $orderStatusRepository;
 
-    /**
-     * @var PageMaxRepository
-     */
     protected PageMaxRepository $pageMaxRepository;
 
-    /**
-     * @var ProductStatusRepository
-     */
     protected ProductStatusRepository $productStatusRepository;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /** @var OrderPdfRepository */
     protected OrderPdfRepository $orderPdfRepository;
 
-    /**
-     * @var ProductStockRepository
-     */
     protected ProductStockRepository $productStockRepository;
 
-    /** @var OrderPdfService */
     protected OrderPdfService $orderPdfService;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
-    /**
-     * @var OrderStateMachine
-     */
     protected OrderStateMachine $orderStateMachine;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
     /**

@@ -26,9 +26,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
 {
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
     /**

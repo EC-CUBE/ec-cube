@@ -35,34 +35,16 @@ use Symfony\Component\Finder\Finder;
 
 class PluginService
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var PluginRepository
-     */
     protected PluginRepository $pluginRepository;
 
-    /**
-     * @var EntityProxyService
-     */
     protected EntityProxyService $entityProxyService;
 
-    /**
-     * @var SchemaService
-     */
     protected SchemaService $schemaService;
 
-    /**
-     * @var ComposerServiceInterface
-     */
     protected ComposerServiceInterface $composerService;
 
     public const VENDOR_NAME = 'ec-cube';
@@ -80,30 +62,20 @@ class PluginService
     /**
      * @var string %kernel.project_dir%
      */
-    private string $projectRoot;
+    private readonly string $projectRoot;
 
     /**
      * @var string %kernel.environment%
      */
-    private string $environment;
+    private readonly string $environment;
 
-    /**
-     * @var ContainerInterface
-     */
     protected ContainerInterface $container;
 
-    /** @var CacheUtil */
     protected CacheUtil $cacheUtil;
 
-    /**
-     * @var PluginApiService
-     */
-    private PluginApiService $pluginApiService;
+    private readonly PluginApiService $pluginApiService;
 
-    /**
-     * @var PluginContext
-     */
-    private PluginContext $pluginContext;
+    private readonly PluginContext $pluginContext;
 
     /**
      * PluginService constructor.
@@ -847,9 +819,7 @@ class PluginService
         if ($enableOnly) {
             $criteria->andWhere(Criteria::expr()->eq('enabled', Constant::ENABLED));
         }
-        /**
-         * @var Plugin[]
-         */
+
         $plugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
         foreach ($plugins as $plugin) {

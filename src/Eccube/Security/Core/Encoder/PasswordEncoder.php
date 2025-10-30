@@ -17,19 +17,10 @@ use Eccube\Common\EccubeConfig;
 
 class PasswordEncoder
 {
-    /**
-     * @var string
-     */
     public string $auth_magic;
 
-    /**
-     * @var string
-     */
     public string $auth_type;
 
-    /**
-     * @var string
-     */
     public string $password_hash_algos;
 
     public function __construct(EccubeConfig $eccubeConfig)

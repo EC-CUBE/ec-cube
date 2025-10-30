@@ -22,9 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class KanaType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

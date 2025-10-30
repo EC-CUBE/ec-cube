@@ -20,9 +20,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
  */
 class EccubeConfig implements \ArrayAccess
 {
-    /**
-     * @var ContainerBagInterface
-     */
     protected ContainerBagInterface $container;
 
     public function __construct(ContainerBagInterface $container)

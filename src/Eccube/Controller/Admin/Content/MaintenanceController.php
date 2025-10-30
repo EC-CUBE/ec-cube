@@ -25,9 +25,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MaintenanceController extends AbstractController
 {
-    /**
-     * @var SystemService
-     */
     protected SystemService $systemService;
 
     public function __construct(SystemService $systemService)

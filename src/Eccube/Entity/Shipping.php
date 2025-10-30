@@ -215,9 +215,6 @@ if (!class_exists(Shipping::class)) {
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
-        /**
-         * @var ProductClass
-         */
         private ProductClass $ProductClassOfTemp;
 
         /**

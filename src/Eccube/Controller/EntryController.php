@@ -38,49 +38,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EntryController extends AbstractController
 {
-    /**
-     * @var CustomerStatusRepository
-     */
     protected CustomerStatusRepository $customerStatusRepository;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $recursiveValidator;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $passwordHasher;
 
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var PageRepository
-     */
     protected PageRepository $pageRepository;
 
     /**

@@ -29,15 +29,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    /**
-     * @var MemberRepository
-     */
     protected MemberRepository $memberRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
+    private readonly EntityManagerInterface $entityManager;
 
     public function __construct(MemberRepository $memberRepository, EntityManagerInterface $entityManager)
     {

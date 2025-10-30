@@ -71,9 +71,6 @@ if (!class_exists(Member::class)) {
         {
         }
 
-        /**
-         * @var int|null
-         */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]

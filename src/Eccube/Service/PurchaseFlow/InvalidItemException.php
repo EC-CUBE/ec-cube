@@ -20,12 +20,9 @@ class InvalidItemException extends \Exception
     /**
      * @var array<int|string, string>|null
      */
-    private ?array $messageArgs;
+    private readonly ?array $messageArgs;
 
-    /**
-     * @var bool
-     */
-    private bool $warning;
+    private readonly bool $warning;
 
     /**
      * @param array<int|string, string>|null $messageArgs

@@ -81,8 +81,6 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * テンプレートの削除可否。
-         *
-         * @var bool
          */
         #[ORM\Column(name: 'deletable', type: 'boolean', options: ['default' => false])]
         private bool $deletable = false;

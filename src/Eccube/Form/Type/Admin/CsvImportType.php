@@ -26,7 +26,7 @@ class CsvImportType extends AbstractType
     /**
      * @var int CSVの最大アップロードサイズ
      */
-    private int $csvMaxSize;
+    private readonly int $csvMaxSize;
 
     /**
      * CsvImportType constructor.

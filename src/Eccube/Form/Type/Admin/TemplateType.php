@@ -24,9 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TemplateType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     public function __construct(EccubeConfig $eccubeConfig)

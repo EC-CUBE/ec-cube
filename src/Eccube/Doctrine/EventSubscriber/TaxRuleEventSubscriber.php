@@ -25,9 +25,6 @@ use Eccube\Service\TaxRuleService;
 #[AsDoctrineListener(event: Events::postUpdate)]
 class TaxRuleEventSubscriber
 {
-    /**
-     * @var TaxRuleService
-     */
     protected TaxRuleService $taxRuleService;
 
     /**

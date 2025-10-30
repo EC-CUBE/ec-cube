@@ -28,14 +28,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class EccubeDataCollector extends DataCollector
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var PluginRepository
-     */
     protected PluginRepository $pluginRepository;
 
     public function __construct(EccubeConfig $eccubeConfig, PluginRepository $pluginRepository)

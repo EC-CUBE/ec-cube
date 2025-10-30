@@ -20,20 +20,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class Context
 {
-    /**
-     * @var RequestStack
-     */
     protected RequestStack $requestStack;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private TokenStorageInterface $tokenStorage;
+    private readonly TokenStorageInterface $tokenStorage;
 
     public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorageInterface $tokenStorage)
     {

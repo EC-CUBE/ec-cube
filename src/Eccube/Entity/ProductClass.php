@@ -30,11 +30,8 @@ if (!class_exists(ProductClass::class)) {
     #[ORM\Entity(repositoryClass: ProductClassRepository::class)]
     class ProductClass extends AbstractEntity
     {
-        /** @var string|null */
-        private ?string $price01_inc_tax;
-        /** @var string|null */
-        private ?string $price02_inc_tax;
-        /** @var string|null */
+        private ?string $price01_inc_tax = null;
+        private ?string $price02_inc_tax = null;
         private ?string $tax_rate = '';
 
         /**
@@ -145,9 +142,6 @@ if (!class_exists(ProductClass::class)) {
             return isset($this->ClassCategory2);
         }
 
-        /**
-         * @var int|null
-         */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]

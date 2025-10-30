@@ -27,9 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PhoneNumberType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

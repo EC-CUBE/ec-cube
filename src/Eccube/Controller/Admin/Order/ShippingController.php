@@ -43,49 +43,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ShippingController extends AbstractController
 {
-    /**
-     * @var OrderItemRepository
-     */
     protected OrderItemRepository $orderItemRepository;
 
-    /**
-     * @var CategoryRepository
-     */
     protected CategoryRepository $categoryRepository;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var TaxRuleService
-     */
     protected TaxRuleService $taxRuleService;
 
-    /**
-     * @var ShippingRepository
-     */
     protected ShippingRepository $shippingRepository;
 
-    /**
-     * @var SerializerInterface
-     */
     protected SerializerInterface $serializer;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var OrderStateMachine
-     */
     protected OrderStateMachine $orderStateMachine;
 
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
     /**

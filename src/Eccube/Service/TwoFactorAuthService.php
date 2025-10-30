@@ -33,39 +33,18 @@ class TwoFactorAuthService
      */
     public const DEFAULT_COOKIE_NAME = 'eccube_2fa';
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var PasswordHasherFactoryInterface
-     */
     protected PasswordHasherFactoryInterface $passwordHasherFactory;
 
-    /**
-     * @var RequestStack
-     */
     protected RequestStack $requestStack;
 
-    /**
-     * @var Request|null
-     */
     protected ?Request $request;
 
-    /**
-     * @var string
-     */
     protected string $cookieName = self::DEFAULT_COOKIE_NAME;
 
-    /**
-     * @var int
-     */
     protected int $expire = self::DEFAULT_EXPIRE_DATE;
 
-    /**
-     * @var TwoFactorAuth
-     */
     protected TwoFactorAuth $tfa;
 
     /**

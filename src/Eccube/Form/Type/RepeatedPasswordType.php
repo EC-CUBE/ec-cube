@@ -25,9 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RepeatedPasswordType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

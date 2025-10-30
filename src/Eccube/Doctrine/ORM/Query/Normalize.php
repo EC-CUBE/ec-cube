@@ -14,6 +14,7 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
@@ -21,10 +22,7 @@ use Doctrine\ORM\Query\TokenType;
 
 class Normalize extends FunctionNode
 {
-    /**
-     * @var \Doctrine\ORM\Query\AST\Node
-     */
-    protected \Doctrine\ORM\Query\AST\Node $string;
+    protected Node $string;
     public const FROM = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー';
     public const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
 

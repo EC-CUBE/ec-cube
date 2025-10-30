@@ -20,9 +20,6 @@ use Twig\TwigFunction;
 
 class CartServiceExtension extends AbstractExtension
 {
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
     public function __construct(CartService $cartService)

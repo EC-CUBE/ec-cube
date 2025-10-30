@@ -25,10 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'eccube:composer:require')]
 class ComposerRequireCommand extends Command
 {
-    /**
-     * @var ComposerApiService
-     */
-    private ComposerApiService $composerService;
+    private readonly ComposerApiService $composerService;
 
     public function __construct(ComposerApiService $composerService)
     {

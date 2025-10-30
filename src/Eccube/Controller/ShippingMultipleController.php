@@ -39,44 +39,20 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
-    /**
-     * @var PrefRepository
-     */
     protected PrefRepository $prefRepository;
 
-    /**
-     * @var OrderItemTypeRepository
-     */
     protected OrderItemTypeRepository $orderItemTypeRepository;
 
-    /**
-     * @var OrderHelper
-     */
     protected OrderHelper $orderHelper;
 
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $cartPurchaseFlow;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
     /**

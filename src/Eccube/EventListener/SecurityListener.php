@@ -28,23 +28,11 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $em;
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
-    /**
-     * @var RequestStack
-     */
     protected RequestStack $requestStack;
 
     public function __construct(

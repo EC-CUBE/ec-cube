@@ -24,9 +24,6 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class DbalExecutor extends AbstractExecutor
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
     /**

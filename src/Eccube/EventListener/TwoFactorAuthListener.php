@@ -30,24 +30,12 @@ class TwoFactorAuthListener implements EventSubscriberInterface
      */
     public const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var Context
-     */
     protected Context $requestContext;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
     protected UrlGeneratorInterface $router;
 
-    /**
-     * @var TwoFactorAuthService
-     */
     protected TwoFactorAuthService $twoFactorAuthService;
 
     /**

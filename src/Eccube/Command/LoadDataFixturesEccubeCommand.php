@@ -29,14 +29,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures to your database.')]
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(ManagerRegistry $registry, EccubeConfig $eccubeConfig, UserPasswordHasherInterface $passwordHasher)

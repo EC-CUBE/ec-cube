@@ -44,35 +44,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PluginController extends AbstractController
 {
-    /**
-     * @var PluginService
-     */
     protected PluginService $pluginService;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var PluginRepository
-     */
     protected PluginRepository $pluginRepository;
 
-    /**
-     * @var PluginApiService
-     */
     protected PluginApiService $pluginApiService;
 
-    /**
-     * @var ComposerServiceInterface
-     */
-    private ComposerServiceInterface $composerService;
+    private readonly ComposerServiceInterface $composerService;
 
-    /**
-     * @var SystemService
-     */
-    private SystemService $systemService;
+    private readonly SystemService $systemService;
 
     /**
      * PluginController constructor.

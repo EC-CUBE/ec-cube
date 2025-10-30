@@ -29,10 +29,7 @@ use Eccube\Util\StringUtil;
  */
 class LoginHistoryRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
-    private Queries $queries;
+    private readonly Queries $queries;
 
     /**
      * LoginHistoryRepository constructor.

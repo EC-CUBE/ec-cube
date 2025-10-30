@@ -29,29 +29,14 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginHistoryListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
+    private readonly EntityManagerInterface $entityManager;
 
-    /**
-     * @var RequestStack
-     */
-    private RequestStack $requestStack;
+    private readonly RequestStack $requestStack;
 
-    /**
-     * @var Context
-     */
-    private Context $requestContext;
-    /**
-     * @var MemberRepository
-     */
-    private MemberRepository $memberRepository;
+    private readonly Context $requestContext;
+    private readonly MemberRepository $memberRepository;
 
-    /**
-     * @var LoginHistoryStatusRepository
-     */
-    private LoginHistoryStatusRepository $loginHistoryStatusRepository;
+    private readonly LoginHistoryStatusRepository $loginHistoryStatusRepository;
 
     public function __construct(
         EntityManagerInterface $em,

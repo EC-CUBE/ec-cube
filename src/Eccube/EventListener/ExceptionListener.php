@@ -23,14 +23,8 @@ use Twig\Environment;
 
 class ExceptionListener implements EventSubscriberInterface
 {
-    /**
-     * @var Environment
-     */
-    private Environment $twig;
+    private readonly Environment $twig;
 
-    /**
-     * @var Context
-     */
     protected Context $requestContext;
 
     /**

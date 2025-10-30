@@ -20,9 +20,6 @@ use Twig\TwigFunction;
 
 class TwigIncludeExtension extends AbstractExtension
 {
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
     public function __construct(Environment $twig)

@@ -29,14 +29,8 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class LoginHistoryController extends AbstractController
 {
-    /**
-     * @var PageMaxRepository
-     */
     protected PageMaxRepository $pageMaxRepository;
 
-    /**
-     * @var LoginHistoryRepository
-     */
     protected LoginHistoryRepository $loginHistoryRepository;
 
     /**

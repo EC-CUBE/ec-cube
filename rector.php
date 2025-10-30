@@ -16,6 +16,7 @@ declare(strict_types=1);
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedConstructorParamRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodParameterRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
@@ -67,7 +68,7 @@ return RectorConfig::configure()
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
                //RemoveUselessParamTagRector::class, // まだ @param に頼っているケースがありそうなので除外
                //RemoveUselessReturnTagRector::class, // まだ @return に頼っているケースがありそうなので除外
-               RemoveUselessVarTagRector::class, // まだ @var に頼っているケースがありそうなので除外
+               //RemoveUselessVarTagRector::class, // まだ @var に頼っているケースがありそうなので除外
                SimplifyUselessVariableRector::class, // まだ不要な変数が多いので除外
                RemoveAlwaysTrueIfConditionRector::class, // 条件式の簡略化はまだ慎重に行う必要があるため除外
                RemoveDuplicatedCaseInSwitchRector::class, // switch文の重複ケース削除は視認性が悪くなるため除外

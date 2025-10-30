@@ -27,14 +27,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {
-    /**
-     * @var ShippingRepository
-     */
-    private ShippingRepository $shippingRepository;
+    private readonly ShippingRepository $shippingRepository;
 
-    /**
-     * @var OrderStateMachine
-     */
     protected OrderStateMachine $orderStateMachine;
 
     public function __construct(

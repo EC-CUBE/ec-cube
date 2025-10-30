@@ -37,9 +37,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ShopMasterType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

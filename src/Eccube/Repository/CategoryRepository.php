@@ -31,9 +31,6 @@ use Eccube\Entity\Category;
  */
 class CategoryRepository extends AbstractRepository
 {
-    /**
-     * @var EccubeConfig|null
-     */
     protected ?EccubeConfig $eccubeConfig = null;
 
     /**

@@ -14,6 +14,7 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
@@ -42,18 +43,9 @@ use Doctrine\ORM\Query\TokenType;
  */
 class Extract extends FunctionNode
 {
-    /**
-     * @var string
-     */
     protected string $field;
-    /**
-     * @var string
-     */
     protected string $type = '';
-    /**
-     * @var \Doctrine\ORM\Query\AST\Node|string
-     */
-    protected \Doctrine\ORM\Query\AST\Node|string $source;
+    protected Node|string $source;
 
     /**
      * @var string[]
@@ -126,12 +118,12 @@ class Extract extends FunctionNode
             'postgresql' => sprintf(
                 "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
                 $this->field,
-                (string) $this->type,
+                $this->type,
                 $this->source->dispatch($sqlWalker)),
             default => sprintf(
                 "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
                 $this->field,
-                (string) $this->type,
+                $this->type,
                 $this->source->dispatch($sqlWalker)),
         };
 

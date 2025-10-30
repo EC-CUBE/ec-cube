@@ -30,9 +30,6 @@ if (!class_exists(ProductStock::class)) {
         public const IN_STOCK = 1;
         public const OUT_OF_STOCK = 2;
 
-        /**
-         * @var int|null
-         */
         private ?int $product_class_id = null;
 
         /**

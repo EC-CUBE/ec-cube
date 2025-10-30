@@ -37,9 +37,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

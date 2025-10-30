@@ -29,14 +29,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Step3Type extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
     public function __construct(ValidatorInterface $validator, EccubeConfig $eccubeConfig)

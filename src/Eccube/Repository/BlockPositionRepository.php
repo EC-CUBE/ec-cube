@@ -28,9 +28,6 @@ use Eccube\Entity\Layout;
  */
 class BlockPositionRepository extends AbstractRepository
 {
-    /**
-     * @var BlockRepository
-     */
     protected BlockRepository $blockRepository;
 
     /**

@@ -40,24 +40,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductClassEditType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

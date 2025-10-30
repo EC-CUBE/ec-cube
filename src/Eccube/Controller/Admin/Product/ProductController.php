@@ -62,54 +62,24 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProductController extends AbstractController
 {
-    /**
-     * @var CsvExportService
-     */
     protected CsvExportService $csvExportService;
 
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var ProductImageRepository
-     */
     protected ProductImageRepository $productImageRepository;
 
-    /**
-     * @var TaxRuleRepository
-     */
     protected TaxRuleRepository $taxRuleRepository;
 
-    /**
-     * @var CategoryRepository
-     */
     protected CategoryRepository $categoryRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var PageMaxRepository
-     */
     protected PageMaxRepository $pageMaxRepository;
 
-    /**
-     * @var ProductStatusRepository
-     */
     protected ProductStatusRepository $productStatusRepository;
 
-    /**
-     * @var TagRepository
-     */
     protected TagRepository $tagRepository;
 
     /**

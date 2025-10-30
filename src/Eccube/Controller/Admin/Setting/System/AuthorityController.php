@@ -26,9 +26,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AuthorityController extends AbstractController
 {
-    /**
-     * @var AuthorityRoleRepository
-     */
     protected AuthorityRoleRepository $authorityRoleRepository;
 
     /**

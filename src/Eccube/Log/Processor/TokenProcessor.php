@@ -20,9 +20,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class TokenProcessor
 {
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
     public function __construct(TokenStorageInterface $tokenStorage)

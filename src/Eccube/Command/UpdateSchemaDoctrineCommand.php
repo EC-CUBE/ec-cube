@@ -38,24 +38,12 @@ use Symfony\Component\Finder\Finder;
 #[AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]
 class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
 {
-    /**
-     * @var PluginRepository
-     */
     protected PluginRepository $pluginRepository;
 
-    /**
-     * @var PluginService
-     */
     protected PluginService $pluginService;
 
-    /**
-     * @var SchemaService
-     */
     protected SchemaService $schemaService;
 
-    /**
-     * @var ManagerRegistry
-     */
     protected ManagerRegistry $managerRegistry;
 
     public function __construct(

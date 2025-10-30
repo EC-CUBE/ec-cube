@@ -37,19 +37,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
-    /**
-     * @var ProductStatusRepository
-     */
     protected ProductStatusRepository $productStatusRepository;
 
-    /**
-     * @var CategoryRepository
-     */
     protected CategoryRepository $categoryRepository;
 
-    /**
-     * @var TagRepository
-     */
     protected TagRepository $tagRepository;
 
     /**

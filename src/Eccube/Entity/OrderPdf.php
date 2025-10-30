@@ -27,11 +27,8 @@ if (!class_exists(OrderPdf::class)) {
     #[ORM\Entity(repositoryClass: OrderPdfRepository::class)]
     class OrderPdf extends AbstractEntity
     {
-        /** @var mixed */
         public mixed $ids;
-        /** @var \DateTime|string */
         public \DateTime|string $issue_date;
-        /** @var mixed */
         public mixed $default;
 
         /**

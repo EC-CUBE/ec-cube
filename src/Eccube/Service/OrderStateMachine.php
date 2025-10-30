@@ -26,24 +26,12 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
 {
-    /**
-     * @var WorkflowInterface
-     */
-    private WorkflowInterface $machine;
+    private readonly WorkflowInterface $machine;
 
-    /**
-     * @var OrderStatusRepository
-     */
-    private OrderStatusRepository $orderStatusRepository;
+    private readonly OrderStatusRepository $orderStatusRepository;
 
-    /**
-     * @var PointProcessor
-     */
-    private PointProcessor $pointProcessor;
-    /**
-     * @var StockReduceProcessor
-     */
-    private StockReduceProcessor $stockReduceProcessor;
+    private readonly PointProcessor $pointProcessor;
+    private readonly StockReduceProcessor $stockReduceProcessor;
 
     public function __construct(WorkflowInterface $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
     {
@@ -216,11 +204,9 @@ class OrderStateMachine implements EventSubscriberInterface
 
 class OrderStateMachineContext
 {
-    /** @var string */
     private string $status;
 
-    /** @var Order */
-    private Order $Order;
+    private readonly Order $Order;
 
     /**
      * OrderStateMachineContext constructor.

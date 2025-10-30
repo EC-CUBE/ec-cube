@@ -35,24 +35,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ClassCategoryController extends AbstractController
 {
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var ClassCategoryRepository
-     */
     protected ClassCategoryRepository $classCategoryRepository;
 
-    /**
-     * @var ClassNameRepository
-     */
     protected ClassNameRepository $classNameRepository;
 
-    /**
-     * @var CsvExportService
-     */
     protected CsvExportService $csvExportService;
 
     /**

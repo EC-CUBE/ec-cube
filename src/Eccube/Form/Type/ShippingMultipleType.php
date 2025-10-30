@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormEvents;
 
 class ShippingMultipleType extends AbstractType
 {
-    /**
-     * @var ShippingRepository
-     */
     protected ShippingRepository $shippingRepository;
 
     /**

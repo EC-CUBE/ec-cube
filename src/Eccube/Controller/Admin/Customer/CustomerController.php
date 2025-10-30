@@ -41,34 +41,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
-    /**
-     * @var CsvExportService
-     */
     protected CsvExportService $csvExportService;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var PrefRepository
-     */
     protected PrefRepository $prefRepository;
 
-    /**
-     * @var SexRepository
-     */
     protected SexRepository $sexRepository;
 
-    /**
-     * @var PageMaxRepository
-     */
     protected PageMaxRepository $pageMaxRepository;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
     public function __construct(

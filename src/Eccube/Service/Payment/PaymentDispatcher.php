@@ -20,19 +20,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PaymentDispatcher
 {
-    /**
-     * @var Response|null
-     */
-    private ?Response $response;
+    private ?Response $response = null;
 
-    /**
-     * @var bool
-     */
     private bool $forward;
 
-    /**
-     * @var string
-     */
     private string $route;
 
     /**

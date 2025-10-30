@@ -26,9 +26,6 @@ use Symfony\Component\Form\FormInterface;
  */
 abstract class CreditCard implements PaymentMethodInterface
 {
-    /**
-     * @var Order
-     */
     protected Order $Order;
 
     /**

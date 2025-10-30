@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Repository\ProductClassRepository;
@@ -34,28 +35,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AddCartType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $config;
 
-    /**
-     * @var EntityManager
-     */
     protected EntityManager $em;
 
-    /**
-     * @var \Eccube\Entity\Product
-     */
-    protected \Eccube\Entity\Product $Product;
+    protected Product $Product;
 
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
-    /**
-     * @var ManagerRegistry
-     */
     protected ManagerRegistry $doctrine;
 
     public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
@@ -72,7 +58,7 @@ class AddCartType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var \Eccube\Entity\Product $Product */
+        /** @var Product $Product */
         $Product = $options['product'];
         $this->Product = $Product;
         $ProductClasses = $Product->getProductClasses();

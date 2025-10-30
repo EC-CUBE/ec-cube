@@ -135,7 +135,7 @@ abstract class AbstractEntity implements \ArrayAccess
                 $arrResults[$name] = $objProperty->getValue($this);
             } catch (\Error $e) {
                 // 型付きプロパティが初期化されていない場合はスキップ
-                if (strpos($e->getMessage(), 'must not be accessed before initialization') !== false) {
+                if (str_contains($e->getMessage(), 'must not be accessed before initialization')) {
                     continue;
                 }
                 throw $e;

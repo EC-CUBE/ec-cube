@@ -32,39 +32,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingMultipleItemType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var Session
-     */
     protected Session $session;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var PrefRepository
-     */
     protected PrefRepository $prefRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var OrderHelper
-     */
     protected OrderHelper $orderHelper;
 
     /**

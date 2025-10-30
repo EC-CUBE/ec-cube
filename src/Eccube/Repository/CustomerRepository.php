@@ -37,24 +37,12 @@ use Eccube\Util\StringUtil;
  */
 class CustomerRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
     protected Queries $queries;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var EccubeConfig|null
-     */
     protected ?EccubeConfig $eccubeConfig = null;
 
     public const COLUMNS = [

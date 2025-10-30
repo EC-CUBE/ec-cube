@@ -20,9 +20,6 @@ use Eccube\Entity\Order;
 
 class PurchaseFlow implements \Stringable
 {
-    /**
-     * @var string
-     */
     protected string $flowType = '';
 
     /**

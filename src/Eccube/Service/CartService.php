@@ -39,56 +39,27 @@ class CartService
      */
     protected ?array $carts = null;
 
-    /**
-     * @var Session
-     */
     protected Session $session;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
     /**
-     * @var ItemHolderInterface
-     *
      * @deprecated
      */
     protected ItemHolderInterface $cart;
 
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var CartRepository
-     */
     protected CartRepository $cartRepository;
 
-    /**
-     * @var CartItemComparator
-     */
     protected CartItemComparator $cartItemComparator;
 
-    /**
-     * @var CartItemAllocator
-     */
     protected CartItemAllocator $cartItemAllocator;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
     /**

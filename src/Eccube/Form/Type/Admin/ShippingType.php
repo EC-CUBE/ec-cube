@@ -44,24 +44,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var DeliveryTimeRepository
-     */
     protected DeliveryTimeRepository $deliveryTimeRepository;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
     /**

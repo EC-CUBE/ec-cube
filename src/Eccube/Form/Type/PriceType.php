@@ -24,9 +24,6 @@ use Symfony\Component\Validator\Constraints\Range;
 
 class PriceType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

@@ -137,7 +137,7 @@ if (!class_exists(ClassName::class)) {
          */
         public function getName(): string
         {
-            return $this->name ?? '';
+            return $this->name;
         }
 
         /**

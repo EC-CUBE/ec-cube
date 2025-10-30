@@ -31,24 +31,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ForgotController extends AbstractController
 {
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $passwordHasher;
 
     /**

@@ -42,9 +42,6 @@ class FileController extends AbstractController
      * @var array<int, array<string, string>>
      */
     private array $errors = [];
-    /**
-     * @var string
-     */
     private string $encode;
 
     /**

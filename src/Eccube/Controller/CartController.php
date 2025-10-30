@@ -32,24 +32,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $baseInfo;
 
     /**

@@ -37,14 +37,8 @@ use Eccube\Util\StringUtil;
  */
 class ProductRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
     protected Queries $queries;
 
-    /**
-     * @var EccubeConfig|null
-     */
     protected ?EccubeConfig $eccubeConfig = null;
 
     public const COLUMNS = [

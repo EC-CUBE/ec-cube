@@ -30,9 +30,6 @@ if (!class_exists(Product::class)) {
     #[ORM\Entity(repositoryClass: ProductRepository::class)]
     class Product extends AbstractEntity implements \Stringable
     {
-        /**
-         * @var bool
-         */
         private bool $_calc = false;
         /**
          * @var array<int, bool>
@@ -74,13 +71,7 @@ if (!class_exists(Product::class)) {
          * @var array<string|int, string|null>
          */
         private array $classCategories2 = [];
-        /**
-         * @var string|null
-         */
         private ?string $className1 = null;
-        /**
-         * @var string|null
-         */
         private ?string $className2 = null;
 
         #[\Override]

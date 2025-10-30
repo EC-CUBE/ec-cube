@@ -30,29 +30,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ChangeController extends AbstractController
 {
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $passwordHasher;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
     private const SESSION_KEY_PRE_EMAIL = 'eccube.front.mypage.change.preEmail';

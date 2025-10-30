@@ -32,14 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CsvController extends AbstractController
 {
-    /**
-     * @var CsvRepository
-     */
     protected CsvRepository $csvRepository;
 
-    /**
-     * @var CsvTypeRepository
-     */
     protected CsvTypeRepository $csvTypeRepository;
 
     /**

@@ -29,19 +29,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderStatusSettingType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var OrderStatusColorRepository
-     */
     protected OrderStatusColorRepository $orderStatusColorRepository;
 
-    /**
-     * @var CustomerOrderStatusRepository
-     */
     protected CustomerOrderStatusRepository $customerOrderStatusRepository;
 
     public function __construct(

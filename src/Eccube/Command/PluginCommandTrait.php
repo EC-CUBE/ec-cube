@@ -22,14 +22,8 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 trait PluginCommandTrait
 {
-    /**
-     * @var PluginService
-     */
     protected PluginService $pluginService;
 
-    /**
-     * @var PluginRepository
-     */
     protected PluginRepository $pluginRepository;
 
     #[Required]

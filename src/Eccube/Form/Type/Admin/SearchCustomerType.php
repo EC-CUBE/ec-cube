@@ -37,14 +37,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchCustomerType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var CustomerStatusRepository
-     */
     protected CustomerStatusRepository $customerStatusRepository;
 
     /**

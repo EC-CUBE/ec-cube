@@ -39,39 +39,18 @@ use Twig\Error\SyntaxError;
 
 class MailService
 {
-    /**
-     * @var MailerInterface
-     */
     protected MailerInterface $mailer;
 
-    /**
-     * @var MailTemplateRepository
-     */
     protected MailTemplateRepository $mailTemplateRepository;
 
-    /**
-     * @var MailHistoryRepository
-     */
     protected MailHistoryRepository $mailHistoryRepository;
 
-    /**
-     * @var EventDispatcherInterface
-     */
     protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
     /**

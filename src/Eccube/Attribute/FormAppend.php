@@ -16,19 +16,10 @@ namespace Eccube\Attribute;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 final class FormAppend
 {
-    /**
-     * @var bool
-     */
     public bool $auto_render;
 
-    /**
-     * @var string
-     */
     public string $form_theme;
 
-    /**
-     * @var string
-     */
     public string $type;
 
     /**
@@ -36,8 +27,5 @@ final class FormAppend
      */
     public array $options;
 
-    /**
-     * @var string
-     */
     public string $style_class;
 }

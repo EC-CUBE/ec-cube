@@ -31,14 +31,8 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class TaxRuleController extends AbstractController
 {
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var TaxRuleRepository
-     */
     protected TaxRuleRepository $taxRuleRepository;
 
     /**

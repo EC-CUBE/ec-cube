@@ -32,14 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MemberType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var MemberRepository
-     */
     protected MemberRepository $memberRepository;
 
     /**

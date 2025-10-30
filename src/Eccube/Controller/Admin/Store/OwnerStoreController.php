@@ -42,45 +42,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route(path: '/%eccube_admin_route%/store/plugin/api')]
 class OwnerStoreController extends AbstractController
 {
-    /**
-     * @var PluginRepository
-     */
     protected PluginRepository $pluginRepository;
 
-    /**
-     * @var PluginService
-     */
     protected PluginService $pluginService;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
-    /**
-     * @var ComposerServiceInterface
-     */
     protected ComposerServiceInterface $composerService;
 
-    /**
-     * @var SystemService
-     */
     protected SystemService $systemService;
 
-    /**
-     * @var PluginApiService
-     */
     protected PluginApiService $pluginApiService;
-    /**
-     * @var string
-     */
     private static string $vendorName = 'ec-cube';
 
-    /** @var BaseInfo */
-    private BaseInfo $BaseInfo;
+    private readonly BaseInfo $BaseInfo;
 
-    /** @var CacheUtil */
-    private CacheUtil $cacheUtil;
+    private readonly CacheUtil $cacheUtil;
 
     /**
      * OwnerStoreController constructor.

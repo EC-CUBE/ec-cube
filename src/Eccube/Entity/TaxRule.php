@@ -35,9 +35,6 @@ if (!class_exists(TaxRule::class)) {
          */
         public const DEFAULT_TAX_RULE_ID = 1;
 
-        /**
-         * @var int
-         */
         private int $sort_no = 0;
 
         /**

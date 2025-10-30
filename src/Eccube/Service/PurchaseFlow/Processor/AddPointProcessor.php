@@ -26,9 +26,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class AddPointProcessor extends ItemHolderPostValidator
 {
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
     /**
@@ -70,15 +67,15 @@ class AddPointProcessor extends ItemHolderPostValidator
                 // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
                 $point = '0';
                 if ($item->isPoint()) {
-                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), $item->getQuantity(), 2);
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv($pointRate, '100', 2), 2), $item->getQuantity(), 2);
                     $point = (string) round((float) $pointCalc);
                 // Only calc point on product
                 } elseif ($item->isProduct()) {
                     // ポイント = 単価 * ポイント付与率 * 数量
-                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), $item->getQuantity(), 2);
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv($pointRate, '100', 2), 2), $item->getQuantity(), 2);
                     $point = (string) round((float) $pointCalc);
                 } elseif ($item->isDiscount()) {
-                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv((string) $pointRate, '100', 2), 2), $item->getQuantity(), 2);
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv($pointRate, '100', 2), 2), $item->getQuantity(), 2);
                     $point = (string) round((float) $pointCalc);
                 }
 

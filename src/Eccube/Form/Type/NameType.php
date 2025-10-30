@@ -24,9 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NameType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

@@ -44,34 +44,16 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class DeliveryController extends AbstractController
 {
-    /**
-     * @var PaymentOptionRepository
-     */
     protected PaymentOptionRepository $paymentOptionRepository;
 
-    /**
-     * @var DeliveryFeeRepository
-     */
     protected DeliveryFeeRepository $deliveryFeeRepository;
 
-    /**
-     * @var PrefRepository
-     */
     protected PrefRepository $prefRepository;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var DeliveryTimeRepository
-     */
     protected DeliveryTimeRepository $deliveryTimeRepository;
 
-    /**
-     * @var SaleTypeRepository
-     */
     protected SaleTypeRepository $saleTypeRepository;
 
     /**

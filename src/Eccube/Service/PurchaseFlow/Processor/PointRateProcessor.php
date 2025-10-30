@@ -25,9 +25,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class PointRateProcessor extends ItemHolderPostValidator
 {
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
     public function __construct(BaseInfoRepository $baseInfoRepository)

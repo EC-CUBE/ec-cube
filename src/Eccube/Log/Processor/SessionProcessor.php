@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 
 class SessionProcessor
 {
-    /**
-     * @var Session
-     */
     protected Session $session;
 
     public function __construct(Session $session)

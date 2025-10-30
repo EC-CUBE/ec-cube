@@ -22,9 +22,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
     public function __construct(

@@ -28,19 +28,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class PaymentChargePreprocessor implements ItemHolderPreprocessor
 {
-    /**
-     * @var OrderItemTypeRepository
-     */
     protected OrderItemTypeRepository $orderItemTypeRepository;
 
-    /**
-     * @var TaxDisplayTypeRepository
-     */
     protected TaxDisplayTypeRepository $taxDisplayTypeRepository;
 
-    /**
-     * @var TaxTypeRepository
-     */
     protected TaxTypeRepository $taxTypeRepository;
 
     /**

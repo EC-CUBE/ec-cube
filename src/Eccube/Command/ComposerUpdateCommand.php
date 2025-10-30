@@ -22,10 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'eccube:composer:update')]
 class ComposerUpdateCommand extends Command
 {
-    /**
-     * @var ComposerApiService
-     */
-    private ComposerApiService $composerService;
+    private readonly ComposerApiService $composerService;
 
     public function __construct(ComposerApiService $composerService)
     {

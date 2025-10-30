@@ -29,9 +29,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class NewsController extends AbstractController
 {
-    /**
-     * @var NewsRepository
-     */
     protected NewsRepository $newsRepository;
 
     /**

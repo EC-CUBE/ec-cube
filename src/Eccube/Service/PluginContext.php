@@ -21,14 +21,8 @@ class PluginContext
     private const MODE_INSTALL = 'install';
     private const MODE_UNINSTALL = 'uninstall';
 
-    /**
-     * @var string
-     */
     private string $mode;
 
-    /**
-     * @var string
-     */
     private string $code;
 
     /**
@@ -36,10 +30,7 @@ class PluginContext
      */
     private array $composerJson;
 
-    /**
-     * @var EccubeConfig
-     */
-    private EccubeConfig $eccubeConfig;
+    private readonly EccubeConfig $eccubeConfig;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -88,9 +79,6 @@ class PluginContext
             throw new PluginException("{$composerJsonPath} not found.");
         }
         $this->composerJson = json_decode(file_get_contents($composerJsonPath), true);
-        if ($this->composerJson === null) {
-            throw new PluginException("Invalid json format. [{$composerJsonPath}]");
-        }
 
         return $this->composerJson;
     }

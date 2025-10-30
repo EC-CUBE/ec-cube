@@ -44,69 +44,30 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     protected bool $initialized = false;
 
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
-    /**
-     * @var DeviceTypeRepository
-     */
     protected DeviceTypeRepository $deviceTypeRepository;
 
-    /**
-     * @var PageRepository
-     */
     protected PageRepository $pageRepository;
 
-    /**
-     * @var PageLayoutRepository
-     */
     protected PageLayoutRepository $pageLayoutRepository;
 
-    /**
-     * @var BlockPositionRepository
-     */
     protected BlockPositionRepository $blockPositionRepository;
 
-    /**
-     * @var Context
-     */
     protected Context $requestContext;
 
-    /**
-     * @var AuthorityRoleRepository
-     */
-    private AuthorityRoleRepository $authorityRoleRepository;
+    private readonly AuthorityRoleRepository $authorityRoleRepository;
 
-    /**
-     * @var EccubeConfig
-     */
     private EccubeConfig $eccubeConfig;
 
-    /**
-     * @var MobileDetect
-     */
-    private MobileDetect $mobileDetector;
+    private readonly MobileDetect $mobileDetector;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private UrlGeneratorInterface $router;
+    private readonly UrlGeneratorInterface $router;
 
-    /**
-     * @var LayoutRepository
-     */
-    private LayoutRepository $layoutRepository;
+    private readonly LayoutRepository $layoutRepository;
 
-    /**
-     * @var SystemService
-     */
     protected SystemService $systemService;
 
     /**

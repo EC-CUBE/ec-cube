@@ -21,14 +21,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class TemplateEvent extends Event
 {
-    /**
-     * @var string|null
-     */
     private ?string $view;
 
-    /**
-     * @var string|null
-     */
     private ?string $source;
 
     /**
@@ -36,9 +30,6 @@ class TemplateEvent extends Event
      */
     private array $parameters;
 
-    /**
-     * @var Response|null
-     */
     private ?Response $response;
 
     /**

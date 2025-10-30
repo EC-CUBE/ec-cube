@@ -24,9 +24,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliverySettingValidator extends ItemValidator
 {
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
     /**

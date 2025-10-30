@@ -31,39 +31,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var TranslatorInterface
-     */
     protected TranslatorInterface $translator;
 
-    /**
-     * @var FormFactoryInterface
-     */
     protected FormFactoryInterface $formFactory;
 
-    /**
-     * @var EventDispatcherInterface
-     */
     protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var FlashBagAwareSessionInterface
-     */
     protected FlashBagAwareSessionInterface $session;
 
-    /**
-     * @var RouterInterface
-     */
     protected RouterInterface $router;
 
     #[Required]

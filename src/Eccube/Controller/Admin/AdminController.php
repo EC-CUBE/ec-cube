@@ -46,47 +46,22 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends AbstractController
 {
-    /**
-     * @var AuthorizationCheckerInterface
-     */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @var AuthenticationUtils
-     */
     protected AuthenticationUtils $helper;
 
-    /**
-     * @var MemberRepository
-     */
     protected MemberRepository $memberRepository;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $passwordHasher;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var OrderStatusRepository
-     */
     protected OrderStatusRepository $orderStatusRepository;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /** @var PluginApiService */
     protected PluginApiService $pluginApiService;
 
     /**

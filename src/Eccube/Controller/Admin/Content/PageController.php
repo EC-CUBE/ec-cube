@@ -34,19 +34,10 @@ use Twig\Environment;
 
 class PageController extends AbstractController
 {
-    /**
-     * @var PageRepository
-     */
     protected PageRepository $pageRepository;
 
-    /**
-     * @var PageLayoutRepository
-     */
     protected PageLayoutRepository $pageLayoutRepository;
 
-    /**
-     * @var DeviceTypeRepository
-     */
     protected DeviceTypeRepository $deviceTypeRepository;
 
     /**

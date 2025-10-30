@@ -40,19 +40,10 @@ class TaxRuleRepository extends AbstractRepository
     /** @var array<string, TaxRule> */
     private array $rules = [];
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $baseInfo;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
     /**

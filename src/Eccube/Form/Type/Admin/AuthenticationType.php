@@ -23,10 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthenticationType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    private EccubeConfig $eccubeConfig;
+    private readonly EccubeConfig $eccubeConfig;
 
     /**
      * AuthenticationType constructor.

@@ -22,13 +22,12 @@ use Doctrine\ORM\QueryBuilder;
  */
 class WhereClause
 {
-    /** @var Comparison|string */
-    private Comparison|string $expr;
+    private readonly Comparison|string $expr;
 
     /**
      * @var string|int|array<string, int|string|null>|null
      */
-    private string|int|array|null $params;
+    private readonly string|int|array|null $params;
 
     /**
      * WhereClause constructor.

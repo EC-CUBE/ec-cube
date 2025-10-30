@@ -58,75 +58,33 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class EditController extends AbstractController
 {
-    /**
-     * @var TaxRuleService
-     */
     protected TaxRuleService $taxRuleService;
 
-    /**
-     * @var DeviceTypeRepository
-     */
     protected DeviceTypeRepository $deviceTypeRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var CategoryRepository
-     */
     protected CategoryRepository $categoryRepository;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var SerializerInterface
-     */
     protected SerializerInterface $serializer;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var OrderNoProcessor
-     */
     protected OrderNoProcessor $orderNoProcessor;
 
-    /**
-     * @var OrderItemTypeRepository
-     */
     protected OrderItemTypeRepository $orderItemTypeRepository;
 
-    /**
-     * @var OrderStateMachine
-     */
     protected OrderStateMachine $orderStateMachine;
 
-    /**
-     * @var OrderStatusRepository
-     */
     protected OrderStatusRepository $orderStatusRepository;
 
-    /**
-     * @var OrderHelper
-     */
-    private OrderHelper $orderHelper;
+    private readonly OrderHelper $orderHelper;
 
     /**
      * EditController constructor.
@@ -580,9 +538,9 @@ class EditController extends AbstractController
     }
 
     /**
-     * @param string|null $page_no
-     *
      * @return array<string, mixed>
+     *
+     * @throws \Exception
      */
     #[Route(
         path: '/%eccube_admin_route%/order/search/product',

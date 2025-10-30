@@ -28,24 +28,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'eccube:composer:require-already-installed')]
 class ComposerRequireAlreadyInstalledPluginsCommand extends Command
 {
-    /**
-     * @var ComposerApiService
-     */
-    private ComposerApiService $composerService;
+    private readonly ComposerApiService $composerService;
 
-    /**
-     * @var PluginApiService
-     */
-    private PluginApiService $pluginApiService;
+    private readonly PluginApiService $pluginApiService;
 
-    /**
-     * @var PluginRepository
-     */
-    private PluginRepository $pluginRepository;
+    private readonly PluginRepository $pluginRepository;
 
-    /**
-     * @var SymfonyStyle
-     */
     private SymfonyStyle $io;
 
     public function __construct(

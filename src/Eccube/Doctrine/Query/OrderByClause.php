@@ -18,15 +18,9 @@ namespace Eccube\Doctrine\Query;
  */
 class OrderByClause
 {
-    /**
-     * @var string
-     */
-    private string $sort;
+    private readonly string $sort;
 
-    /**
-     * @var string
-     */
-    private string $order;
+    private readonly string $order;
 
     /**
      * OrderByClause constructor.

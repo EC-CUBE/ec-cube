@@ -26,9 +26,6 @@ use Eccube\Entity\OrderItem;
  */
 class ItemCollection extends ArrayCollection
 {
-    /**
-     * @var string
-     */
     protected string $type;
 
     /**

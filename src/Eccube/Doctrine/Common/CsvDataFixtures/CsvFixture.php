@@ -25,9 +25,6 @@ use Doctrine\Persistence\ObjectManager;
  */
 class CsvFixture implements FixtureInterface
 {
-    /**
-     * @var \SplFileObject
-     */
     protected \SplFileObject $file;
 
     /**

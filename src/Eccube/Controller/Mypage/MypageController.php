@@ -41,34 +41,16 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MypageController extends AbstractController
 {
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var CustomerFavoriteProductRepository
-     */
     protected CustomerFavoriteProductRepository $customerFavoriteProductRepository;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
     /**

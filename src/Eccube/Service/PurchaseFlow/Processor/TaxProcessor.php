@@ -27,24 +27,12 @@ use Eccube\Service\TaxRuleService;
 
 class TaxProcessor implements ItemHolderPreprocessor
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var TaxRuleRepository
-     */
     protected TaxRuleRepository $taxRuleRepository;
 
-    /**
-     * @var TaxRuleService
-     */
     protected TaxRuleService $taxRuleService;
 
-    /**
-     * @var OrderHelper
-     */
     protected OrderHelper $orderHelper;
 
     /**

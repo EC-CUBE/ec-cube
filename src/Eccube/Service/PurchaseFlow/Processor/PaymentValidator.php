@@ -28,9 +28,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class PaymentValidator extends ItemHolderPostValidator
 {
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
     /**

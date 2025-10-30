@@ -36,9 +36,6 @@ use Eccube\Util\StringUtil;
  */
 class OrderRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
     protected Queries $queries;
 
     public const COLUMNS = [

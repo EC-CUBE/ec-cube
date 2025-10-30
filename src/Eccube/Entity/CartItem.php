@@ -67,8 +67,6 @@ if (!class_exists(CartItem::class)) {
 
         /**
          * sessionのシリアライズのために使われる
-         *
-         * @var int
          */
         private int $product_class_id;
 

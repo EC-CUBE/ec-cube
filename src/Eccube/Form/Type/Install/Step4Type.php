@@ -28,9 +28,6 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 class Step4Type extends AbstractType
 {
-    /**
-     * @var RequestStack
-     */
     protected RequestStack $requestStack;
 
     /**

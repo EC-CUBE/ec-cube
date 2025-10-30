@@ -31,24 +31,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NonMemberShoppingController extends AbstractShoppingController
 {
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
-    /**
-     * @var PrefRepository
-     */
     protected PrefRepository $prefRepository;
 
-    /**
-     * @var OrderHelper
-     */
     protected OrderHelper $orderHelper;
 
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
     /**

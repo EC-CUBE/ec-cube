@@ -26,9 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PasswordResetType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

@@ -19,24 +19,12 @@ use Psr\Log\LoggerInterface;
 
 class Logger extends AbstractLogger
 {
-    /**
-     * @var Context
-     */
     protected Context $context;
 
-    /**
-     * @var LoggerInterface
-     */
     protected LoggerInterface $logger;
 
-    /**
-     * @var LoggerInterface
-     */
     protected LoggerInterface $frontLogger;
 
-    /**
-     * @var LoggerInterface
-     */
     protected LoggerInterface $adminLogger;
 
     public function __construct(

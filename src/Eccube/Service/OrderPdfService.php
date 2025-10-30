@@ -36,31 +36,18 @@ use setasign\Fpdi\Tcpdf\Fpdi;
  */
 class OrderPdfService extends Fpdi
 {
-    /** @var OrderRepository */
     protected OrderRepository $orderRepository;
 
-    /** @var ShippingRepository */
     protected ShippingRepository $shippingRepository;
 
-    /** @var OrderPdfRepository */
     protected OrderPdfRepository $orderPdfRepository;
 
-    /** @var TaxRuleService */
     protected TaxRuleService $taxRuleService;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var EccubeExtension
-     */
     protected EccubeExtension $eccubeExtension;
 
-    /**
-     * @var TaxExtension
-     */
     protected TaxExtension $taxExtension;
 
     // ====================================
@@ -78,8 +65,6 @@ class OrderPdfService extends Fpdi
     // ====================================
     // 変数宣言
     // ====================================
-
-    /** @var BaseInfo */
     public BaseInfo $baseInfoRepository;
 
     /** 購入詳細情報 ラベル配列
@@ -93,7 +78,7 @@ class OrderPdfService extends Fpdi
     protected array $widthCell = [];
 
     /** @var string|null 最後に処理した注文番号 */
-    protected ?string $lastOrderId;
+    protected ?string $lastOrderId = null;
 
     // --------------------------------------
     // Font情報のバックアップデータ
@@ -102,21 +87,14 @@ class OrderPdfService extends Fpdi
     /** @var string フォントスタイル */
     protected string $bakFontStyle;
     /** @var string|float|null フォントサイズ */
-    protected string|float|null $bakFontSize;
+    protected string|float|null $bakFontSize = null;
     // --------------------------------------
-
     // lfTextのoffset
-    /**
-     * @var int
-     */
     protected int $baseOffsetX = 0;
-    /**
-     * @var int
-     */
     protected int $baseOffsetY = -4;
 
     /** @var string|null ダウンロードファイル名 */
-    protected ?string $downloadFileName;
+    protected ?string $downloadFileName = null;
 
     /** @var string 発行日 */
     protected string $issueDate = '';

@@ -30,14 +30,8 @@ use Twig\Environment;
  */
 class ShopController extends AbstractController
 {
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
     /**

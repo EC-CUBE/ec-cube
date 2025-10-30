@@ -25,14 +25,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserDataController extends AbstractController
 {
-    /**
-     * @var PageRepository
-     */
     protected PageRepository $pageRepository;
 
-    /**
-     * @var DeviceTypeRepository
-     */
     protected DeviceTypeRepository $deviceTypeRepository;
 
     /**

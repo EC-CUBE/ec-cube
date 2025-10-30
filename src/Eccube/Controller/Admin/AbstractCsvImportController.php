@@ -25,8 +25,6 @@ class AbstractCsvImportController extends AbstractController
 {
     /**
      * アップロードされたCSVファイル名
-     *
-     * @var string
      */
     protected string $csvFileName;
 

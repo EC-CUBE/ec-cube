@@ -47,24 +47,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var OrderStateMachine
-     */
     protected OrderStateMachine $orderStateMachine;
 
-    /**
-     * @var OrderStatusRepository
-     */
     protected OrderStatusRepository $orderStatusRepository;
 
     /**

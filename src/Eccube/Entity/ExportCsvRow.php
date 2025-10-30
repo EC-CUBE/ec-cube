@@ -21,10 +21,7 @@ if (!class_exists(ExportCsvRow::class)) {
          */
         private array $row = [];
 
-        /**
-         * @var string|null
-         */
-        private ?string $data;
+        private ?string $data = null;
 
         /**
          * Set data

@@ -33,24 +33,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CustomerEditController extends AbstractController
 {
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $passwordHasher;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var PageMaxRepository
-     */
     protected PageMaxRepository $pageMaxRepository;
 
     public function __construct(

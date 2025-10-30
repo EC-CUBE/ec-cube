@@ -24,14 +24,8 @@ use Eccube\Repository\TaxRuleRepository;
 
 class TaxRuleService
 {
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var TaxRuleRepository
-     */
     protected TaxRuleRepository $taxRuleRepository;
 
     public function __construct(TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)

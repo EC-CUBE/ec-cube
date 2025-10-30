@@ -43,34 +43,16 @@ class CsvExportService
      */
     protected $fp;
 
-    /**
-     * @var bool
-     */
     protected bool $closed = false;
 
-    /**
-     * @var \Closure|null
-     */
     protected ?\Closure $convertEncodingCallBack = null;
 
-    /**
-     * @var EntityManagerInterface|null
-     */
     protected ?EntityManagerInterface $entityManager = null;
 
-    /**
-     * @var QueryBuilder|null
-     */
     protected ?QueryBuilder $qb = null;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var CsvType|null
-     */
     protected ?CsvType $CsvType = null;
 
     /**
@@ -78,42 +60,20 @@ class CsvExportService
      */
     protected ?array $Csvs = null;
 
-    /**
-     * @var CsvRepository
-     */
     protected CsvRepository $csvRepository;
 
-    /**
-     * @var CsvTypeRepository
-     */
     protected CsvTypeRepository $csvTypeRepository;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var ShippingRepository
-     */
     protected ShippingRepository $shippingRepository;
 
-    /**
-     * @var CustomerRepository
-     */
     protected CustomerRepository $customerRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var FormFactoryInterface
-     */
     protected FormFactoryInterface $formFactory;
 
-    /** @var PaginatorInterface */
     protected PaginatorInterface $paginator;
 
     /**

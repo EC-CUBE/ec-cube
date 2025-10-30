@@ -44,44 +44,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderItemType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var OrderItemRepository
-     */
     protected OrderItemRepository $orderItemRepository;
 
-    /**
-     * @var OrderItemTypeRepository
-     */
     protected OrderItemTypeRepository $orderItemTypeRepository;
 
-    /**
-     * @var TaxRuleRepository
-     */
     protected TaxRuleRepository $taxRuleRepository;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
 
     /**

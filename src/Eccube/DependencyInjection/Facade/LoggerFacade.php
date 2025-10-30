@@ -21,10 +21,8 @@ class LoggerFacade
     /** @var self|null */
     private static ?self $instance = null;
 
-    /** @var ContainerInterface */
     private static ?ContainerInterface $Container = null;
 
-    /** @var Logger */
     private static ?Logger $Logger = null;
 
     private function __construct(ContainerInterface $container, Logger $Logger)

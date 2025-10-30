@@ -62,82 +62,38 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CsvImportController extends AbstractCsvImportController
 {
-    /**
-     * @var DeliveryDurationRepository
-     */
     protected DeliveryDurationRepository $deliveryDurationRepository;
 
-    /**
-     * @var SaleTypeRepository
-     */
     protected SaleTypeRepository $saleTypeRepository;
 
-    /**
-     * @var TagRepository
-     */
     protected TagRepository $tagRepository;
 
-    /**
-     * @var CategoryRepository
-     */
     protected CategoryRepository $categoryRepository;
 
-    /**
-     * @var ClassCategoryRepository
-     */
     protected ClassCategoryRepository $classCategoryRepository;
 
-    /**
-     * @var ClassNameRepository
-     */
     protected ClassNameRepository $classNameRepository;
 
-    /**
-     * @var ProductImageRepository
-     */
     protected ProductImageRepository $productImageRepository;
 
-    /**
-     * @var ProductStatusRepository
-     */
     protected ProductStatusRepository $productStatusRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    private TaxRuleRepository $taxRuleRepository;
+    private readonly TaxRuleRepository $taxRuleRepository;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var ValidatorInterface
-     */
     protected ValidatorInterface $validator;
     /**
      * @var array<int, mixed>
      */
     private array $errors = [];
-    /**
-     * @var bool
-     */
     protected bool $isSplitCsv = false;
     /**
      * テストデータの生成によりnullが入るため、nullableに設定
-     *
-     * @var int|null
      */
     protected ?int $csvFileNo = 1;
-    /**
-     * @var int|null
-     */
     protected ?int $currentLineNo = 1;
 
     private readonly \HTMLPurifier $purifier;

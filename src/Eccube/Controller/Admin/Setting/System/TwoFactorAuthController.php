@@ -25,19 +25,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class TwoFactorAuthController extends AbstractController
 {
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var MemberRepository
-     */
     protected MemberRepository $memberRepository;
 
-    /**
-     * @var TwoFactorAuthService
-     */
     protected TwoFactorAuthService $twoFactorAuthService;
 
     /**

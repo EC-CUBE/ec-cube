@@ -28,15 +28,9 @@ use Twig\TwigTest;
 
 class EccubeExtension extends AbstractExtension
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var ProductRepository
-     */
-    private ProductRepository $productRepository;
+    private readonly ProductRepository $productRepository;
 
     /**
      * EccubeExtension constructor.

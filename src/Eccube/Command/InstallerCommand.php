@@ -29,25 +29,13 @@ use Symfony\Component\Process\Process;
 #[AsCommand(name: 'eccube:install', description: 'Install EC-CUBE')]
 class InstallerCommand extends Command
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var SymfonyStyle
-     */
     protected SymfonyStyle $io;
 
-    /**
-     * @var string
-     */
     protected string $databaseUrl;
 
-    /**
-     * @var object
-     */
-    private object $envFileUpdater;
+    private readonly object $envFileUpdater;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -67,55 +55,25 @@ class InstallerCommand extends Command
              */
             public array|bool|string $appDebug;
 
-            /**
-             * @var bool|float|int|string|null
-             */
-            public bool|float|int|string|null $databaseUrl;
+            public bool|float|int|string|null $databaseUrl = null;
 
-            /**
-             * @var false|string
-             */
             public false|string $serverVersion;
 
-            /**
-             * @var string
-             */
             public string $databaseCharset;
 
-            /**
-             * @var string|null
-             */
-            public ?string $mailerDsn;
+            public ?string $mailerDsn = null;
 
-            /**
-             * @var string|null
-             */
-            public ?string $authMagic;
+            public ?string $authMagic = null;
 
-            /**
-             * @var string|null
-             */
-            public ?string $adminRoute;
+            public ?string $adminRoute = null;
 
-            /**
-             * @var string|null
-             */
-            public ?string $templateCode;
+            public ?string $templateCode = null;
 
-            /**
-             * @var string|null
-             */
-            public ?string $locale;
+            public ?string $locale = null;
 
-            /**
-             * @var string|null
-             */
-            public ?string $trustedHosts;
+            public ?string $trustedHosts = null;
 
-            /**
-             * @var string|null
-             */
-            public ?string $envDir;
+            public ?string $envDir = null;
 
             /**
              * @return array<string, mixed>

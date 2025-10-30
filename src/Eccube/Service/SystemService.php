@@ -30,26 +30,16 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * メンテナンスモードを無効にする場合はtrue
-     *
-     * @var bool
      */
     private bool $disableMaintenanceAfterResponse = false;
 
     /**
      * メンテナンスモードの識別子
-     *
-     * @var string
      */
     private string $maintenanceMode;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

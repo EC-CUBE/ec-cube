@@ -40,9 +40,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

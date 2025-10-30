@@ -24,24 +24,12 @@ use Twig\Loader\FilesystemLoader;
 
 class MobileTemplatePathListener implements EventSubscriberInterface
 {
-    /**
-     * @var Context
-     */
     protected Context $context;
 
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
-    /**
-     * @var MobileDetect
-     */
     protected MobileDetect $detector;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     public function __construct(Context $context, Environment $twig, MobileDetect $detector, EccubeConfig $eccubeConfig)

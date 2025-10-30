@@ -34,9 +34,6 @@ use Twig\Environment;
  */
 class MailController extends AbstractController
 {
-    /**
-     * @var MailTemplateRepository
-     */
     protected MailTemplateRepository $mailTemplateRepository;
 
     /**

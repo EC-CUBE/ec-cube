@@ -25,14 +25,8 @@ use Symfony\Component\Finder\Finder;
 
 class EntityProxyService
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

@@ -19,9 +19,6 @@ use Twig\TwigFunction;
 
 class EccubeBlockExtension extends AbstractExtension
 {
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
     /**
      * @var array<int, string|\Eccube\Twig\Template>

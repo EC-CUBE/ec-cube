@@ -39,29 +39,14 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class OrderType extends AbstractType
 {
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var PaymentRepository
-     */
     protected PaymentRepository $paymentRepository;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
-    /**
-     * @var Context
-     */
     protected Context $requestContext;
 
     /**

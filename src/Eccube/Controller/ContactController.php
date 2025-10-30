@@ -27,15 +27,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var PageRepository
-     */
-    private PageRepository $pageRepository;
+    private readonly PageRepository $pageRepository;
 
     /**
      * ContactController constructor.

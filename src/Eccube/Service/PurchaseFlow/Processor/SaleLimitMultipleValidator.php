@@ -21,9 +21,6 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class SaleLimitMultipleValidator extends ItemHolderValidator
 {
-    /**
-     * @var ProductClassRepository
-     */
     protected ProductClassRepository $productClassRepository;
 
     /**

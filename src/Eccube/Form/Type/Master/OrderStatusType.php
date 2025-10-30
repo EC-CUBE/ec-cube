@@ -23,9 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderStatusType extends AbstractType
 {
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
     /**

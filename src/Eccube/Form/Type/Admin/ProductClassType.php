@@ -34,14 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductClassType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

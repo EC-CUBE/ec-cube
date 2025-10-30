@@ -17,8 +17,7 @@ use Eccube\Entity\ItemHolderInterface;
 
 class PurchaseFlowResult
 {
-    /** @var ItemHolderInterface */
-    private ItemHolderInterface $itemHolder;
+    private readonly ItemHolderInterface $itemHolder;
 
     /** @var ProcessResult[] */
     private array $processResults = [];

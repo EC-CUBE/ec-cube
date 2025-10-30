@@ -20,7 +20,6 @@ class TranslatorFacade
     /** @var self|null */
     private static ?self $instance = null;
 
-    /** @var TranslatorInterface */
     private static ?TranslatorInterface $Translator = null;
 
     private function __construct(TranslatorInterface $Translator)

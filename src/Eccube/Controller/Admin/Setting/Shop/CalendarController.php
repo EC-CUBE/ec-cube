@@ -27,9 +27,6 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class CalendarController extends AbstractController
 {
-    /**
-     * @var CalendarRepository
-     */
     protected CalendarRepository $calendarRepository;
 
     /**

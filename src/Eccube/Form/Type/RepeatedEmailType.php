@@ -24,9 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RepeatedEmailType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

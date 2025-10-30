@@ -58,9 +58,6 @@ if (!class_exists(Cart::class)) {
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
-        /**
-         * @var bool
-         */
         private bool $lock = false;
 
         /**

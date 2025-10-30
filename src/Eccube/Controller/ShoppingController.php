@@ -51,39 +51,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
-    /**
-     * @var OrderHelper
-     */
     protected OrderHelper $orderHelper;
 
-    /**
-     * @var OrderRepository
-     */
     protected OrderRepository $orderRepository;
 
-    /**
-     * @var ContainerInterface
-     */
     protected ContainerInterface $serviceContainer;
 
-    /**
-     * @var BaseInfoRepository
-     */
     protected BaseInfoRepository $baseInfoRepository;
 
-    /**
-     * @var TradeLawRepository
-     */
     protected TradeLawRepository $tradeLawRepository;
 
     protected RateLimiterFactory $shoppingConfirmIpLimiter;

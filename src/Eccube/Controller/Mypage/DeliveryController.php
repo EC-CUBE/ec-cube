@@ -32,19 +32,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DeliveryController extends AbstractController
 {
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var CustomerAddressRepository
-     */
     protected CustomerAddressRepository $customerAddressRepository;
 
-    /**
-     * @var MailService
-     */
     protected MailService $mailService;
 
     public function __construct(

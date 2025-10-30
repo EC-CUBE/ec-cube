@@ -29,28 +29,19 @@ use Eccube\Entity\Page;
  */
 class PageRepository extends AbstractRepository
 {
-    /**
-     * @var EccubeConfig|null
-     */
     protected ?EccubeConfig $eccubeConfig = null;
 
     /**
-     * @var string
-     *
      * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
     protected string $userDataRealDir;
 
     /**
-     * @var string
-     *
      * @path %eccube_theme_app_dir% (app/template)
      */
     protected string $templateRealDir;
 
     /**
-     * @var string
-     *
      * @path %eccube_theme_src_dir% (src/Eccube/Resource/template)
      */
     protected string $templateDefaultRealDir;

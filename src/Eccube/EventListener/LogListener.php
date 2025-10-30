@@ -29,9 +29,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class LogListener implements EventSubscriberInterface
 {
-    /**
-     * @var LoggerInterface
-     */
     protected LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger)

@@ -22,9 +22,6 @@ use Twig\Source;
 
 class TwigLintValidator extends ConstraintValidator
 {
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
     /**

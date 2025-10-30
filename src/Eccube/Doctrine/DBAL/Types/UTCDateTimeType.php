@@ -21,15 +21,11 @@ class UTCDateTimeType extends DateTimeType
 {
     /**
      * UTCのタイムゾーン
-     *
-     * @var \DateTimeZone|null
      */
     protected static ?\DateTimeZone $utc = null;
 
     /**
      * アプリケーションのタイムゾーン
-     *
-     * @var \DateTimeZone|null
      */
     protected static ?\DateTimeZone $timezone = null;
 

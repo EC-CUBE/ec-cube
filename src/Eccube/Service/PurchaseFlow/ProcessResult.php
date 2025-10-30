@@ -19,19 +19,10 @@ class ProcessResult
     public const WARNING = 'WARNING';
     public const SUCCESS = 'SUCCESS';
 
-    /**
-     * @var string
-     */
     protected string $type;
 
-    /**
-     * @var string|null
-     */
     protected ?string $message;
 
-    /**
-     * @var string|null
-     */
     protected ?string $class;
 
     /**

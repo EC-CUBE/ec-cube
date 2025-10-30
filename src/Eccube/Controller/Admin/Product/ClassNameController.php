@@ -33,14 +33,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ClassNameController extends AbstractController
 {
-    /**
-     * @var ClassNameRepository
-     */
     protected ClassNameRepository $classNameRepository;
 
-    /**
-     * @var CsvExportService
-     */
     protected CsvExportService $csvExportService;
 
     /**

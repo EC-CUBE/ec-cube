@@ -51,15 +51,11 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
     /**
      * Number of the row that contains the column names
-     *
-     * @var int|null
      */
     protected ?int $headerRowNumber = null;
 
     /**
      * CSV file
-     *
-     * @var \SplFileObject
      */
     protected \SplFileObject $file;
 
@@ -74,15 +70,11 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Number of column headers, stored and re-used for performance
      *
      * In case of duplicate headers, this is always the number of unmerged headers.
-     *
-     * @var int
      */
     protected int $headersCount = 0;
 
     /**
      * Total number of rows in the CSV file
-     *
-     * @var int|null
      */
     protected ?int $count = null;
 
@@ -95,8 +87,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
     /**
      * How to handle duplicate headers
-     *
-     * @var int|null
      */
     protected ?int $duplicateHeadersFlag = null;
 

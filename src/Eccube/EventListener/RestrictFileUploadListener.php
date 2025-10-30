@@ -21,14 +21,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class RestrictFileUploadListener implements EventSubscriberInterface
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var Context
-     */
     protected Context $requestContext;
 
     public function __construct(EccubeConfig $eccubeConfig, Context $requestContext)

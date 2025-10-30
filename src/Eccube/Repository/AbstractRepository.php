@@ -31,9 +31,6 @@ use Eccube\Entity\AbstractEntity;
  */
 abstract class AbstractRepository extends ServiceEntityRepository
 {
-    /**
-     * @var EccubeConfig|null
-     */
     protected ?EccubeConfig $eccubeConfig = null;
 
     /**

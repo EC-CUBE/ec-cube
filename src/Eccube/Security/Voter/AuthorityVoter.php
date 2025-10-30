@@ -23,19 +23,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoter implements VoterInterface
 {
-    /**
-     * @var AuthorityRoleRepository
-     */
     protected AuthorityRoleRepository $authorityRoleRepository;
 
-    /**
-     * @var RequestStack
-     */
     protected RequestStack $requestStack;
 
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     public function __construct(

@@ -29,14 +29,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductType extends AbstractType
 {
-    /**
-     * @var CategoryRepository
-     */
     protected CategoryRepository $categoryRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
     /**

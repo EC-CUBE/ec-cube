@@ -27,10 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'eccube:composer:remove')]
 class ComposerRemoveCommand extends Command
 {
-    /**
-     * @var ComposerApiService
-     */
-    private ComposerApiService $composerService;
+    private readonly ComposerApiService $composerService;
 
     public function __construct(ComposerApiService $composerService)
     {

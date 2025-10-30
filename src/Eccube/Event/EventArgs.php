@@ -19,13 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventArgs extends GenericEvent
 {
-    /**
-     * @var Request|null
-     */
     private ?Request $request = null;
-    /**
-     * @var Response|null
-     */
     private ?Response $response = null;
 
     /**

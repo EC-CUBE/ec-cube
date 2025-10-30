@@ -42,43 +42,19 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProductController extends AbstractController
 {
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
-    /**
-     * @var CustomerFavoriteProductRepository
-     */
     protected CustomerFavoriteProductRepository $customerFavoriteProductRepository;
 
-    /**
-     * @var CartService
-     */
     protected CartService $cartService;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var BaseInfo
-     */
     protected BaseInfo $BaseInfo;
 
-    /**
-     * @var AuthenticationUtils
-     */
     protected AuthenticationUtils $helper;
 
-    /**
-     * @var ProductListMaxRepository
-     */
     protected ProductListMaxRepository $productListMaxRepository;
-    /**
-     * @var string
-     */
     private string $title = '';
 
     /**

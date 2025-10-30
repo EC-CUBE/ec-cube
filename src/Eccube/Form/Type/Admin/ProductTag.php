@@ -21,9 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductTag extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
     /**

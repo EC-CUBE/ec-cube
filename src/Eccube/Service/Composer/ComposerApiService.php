@@ -29,32 +29,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ComposerApiService implements ComposerServiceInterface
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var Application
-     */
     private Application $consoleApplication;
 
-    /**
-     * @var string
-     */
     private string $workingDir;
-    /**
-     * @var BaseInfoRepository
-     */
-    private BaseInfoRepository $baseInfoRepository;
+    private readonly BaseInfoRepository $baseInfoRepository;
 
-    /** @var SchemaService */
-    private SchemaService $schemaService;
+    private readonly SchemaService $schemaService;
 
-    /**
-     * @var PluginContext
-     */
-    private PluginContext $pluginContext;
+    private readonly PluginContext $pluginContext;
 
     public function __construct(
         EccubeConfig $eccubeConfig,

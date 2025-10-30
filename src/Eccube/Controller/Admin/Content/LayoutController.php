@@ -40,43 +40,19 @@ class LayoutController extends AbstractController
 {
     public const DUMMY_BLOCK_ID = 9999999999;
 
-    /**
-     * @var BlockRepository
-     */
     protected BlockRepository $blockRepository;
-    /**
-     * @var BlockPositionRepository
-     */
     protected BlockPositionRepository $blockPositionRepository;
 
-    /**
-     * @var LayoutRepository
-     */
     protected LayoutRepository $layoutRepository;
 
-    /**
-     * @var PageLayoutRepository
-     */
     protected PageLayoutRepository $pageLayoutRepository;
 
-    /**
-     * @var PageRepository
-     */
     protected PageRepository $pageRepository;
 
-    /**
-     * @var ProductRepository
-     */
     protected ProductRepository $productRepository;
 
-    /**
-     * @var DeviceTypeRepository
-     */
     protected DeviceTypeRepository $deviceTypeRepository;
 
-    /**
-     * @var bool
-     */
     protected bool $isPreview = false;
 
     /**

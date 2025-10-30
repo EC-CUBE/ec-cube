@@ -31,19 +31,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ShippingType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var DeliveryRepository
-     */
     protected DeliveryRepository $deliveryRepository;
 
-    /**
-     * @var DeliveryFeeRepository
-     */
     protected DeliveryFeeRepository $deliveryFeeRepository;
 
     /**

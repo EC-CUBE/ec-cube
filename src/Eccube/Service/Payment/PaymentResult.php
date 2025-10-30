@@ -25,14 +25,8 @@ class PaymentResult
      */
     private array $errors = [];
 
-    /**
-     * @var bool
-     */
     private bool $success;
 
-    /**
-     * @var Response|null
-     */
     private ?Response $response = null;
 
     /**

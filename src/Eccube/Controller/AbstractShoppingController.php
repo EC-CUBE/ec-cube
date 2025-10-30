@@ -22,9 +22,6 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractShoppingController extends AbstractController
 {
-    /**
-     * @var PurchaseFlow
-     */
     protected PurchaseFlow $purchaseFlow;
 
     #[Required]

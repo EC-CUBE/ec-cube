@@ -23,14 +23,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SystemController
 {
-    /**
-     * @var EccubeConfig
-     */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var SystemService
-     */
     protected SystemService $systemService;
 
     /**

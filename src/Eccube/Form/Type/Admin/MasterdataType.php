@@ -28,9 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MasterdataType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
     /**

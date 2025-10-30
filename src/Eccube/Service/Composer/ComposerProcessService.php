@@ -32,19 +32,10 @@ class ComposerProcessService implements ComposerServiceInterface
      */
     protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var ComposerApiService
-     */
-    private ComposerApiService $composerApiService;
-    /**
-     * @var BaseInfoRepository
-     */
-    private BaseInfoRepository $baseInfoRepository;
+    private readonly ComposerApiService $composerApiService;
+    private readonly BaseInfoRepository $baseInfoRepository;
 
     /**
      * ComposerProcessService constructor.

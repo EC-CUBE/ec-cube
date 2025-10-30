@@ -24,15 +24,9 @@ use Symfony\Component\String\ByteString;
 
 class OrderNoProcessor implements ItemHolderPreprocessor
 {
-    /**
-     * @var EccubeConfig
-     */
     private EccubeConfig $eccubeConfig;
 
-    /**
-     * @var OrderRepository
-     */
-    private OrderRepository $orderRepository;
+    private readonly OrderRepository $orderRepository;
 
     /**
      * OrderNoProcessor constructor.

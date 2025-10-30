@@ -20,7 +20,6 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class EccubeLogoutSuccessHandler implements EventSubscriberInterface
 {
-    /** @var Context */
     protected Context $context;
 
     public function __construct(Context $context)

@@ -27,35 +27,20 @@ if (!class_exists(TradeLaw::class)) {
     #[ORM\Entity(repositoryClass: TradeLawRepository::class)]
     class TradeLaw extends AbstractEntity implements \Stringable
     {
-        /**
-         * @var int
-         */
         #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private int $id;
 
-        /**
-         * @var ?string
-         */
         #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
         private ?string $name = null;
 
-        /**
-         * @var ?string
-         */
         #[ORM\Column(name: 'description', type: 'string', length: 4000, nullable: true)]
         private ?string $description = null;
 
-        /**
-         * @var int
-         */
         #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: false)]
         private int $sortNo;
 
-        /**
-         * @var bool
-         */
         #[ORM\Column(name: 'display_order_screen', type: 'boolean')]
         private bool $displayOrderScreen = false;
 

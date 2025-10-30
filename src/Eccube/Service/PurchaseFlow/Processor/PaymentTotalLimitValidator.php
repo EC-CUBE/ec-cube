@@ -23,10 +23,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class PaymentTotalLimitValidator extends ItemHolderPostValidator
 {
-    /**
-     * @var int
-     */
-    private int $maxTotalFee;
+    private readonly int $maxTotalFee;
 
     /**
      * PaymentTotalLimitValidator constructor.

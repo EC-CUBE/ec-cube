@@ -37,9 +37,6 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class PaymentController extends AbstractController
 {
-    /**
-     * @var PaymentRepository
-     */
     protected PaymentRepository $paymentRepository;
 
     /**
