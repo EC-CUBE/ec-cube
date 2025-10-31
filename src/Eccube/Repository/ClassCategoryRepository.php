@@ -54,10 +54,9 @@ class ClassCategoryRepository extends AbstractRepository
         if ($ClassName) {
             $qb->where('cc.ClassName = :ClassName')->setParameter('ClassName', $ClassName);
         }
-        $ClassCategories = $qb->getQuery()
-            ->getResult();
 
-        return $ClassCategories;
+        return $qb->getQuery()
+            ->getResult();
     }
 
     /**

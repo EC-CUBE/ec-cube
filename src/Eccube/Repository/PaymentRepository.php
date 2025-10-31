@@ -45,10 +45,9 @@ class PaymentRepository extends AbstractRepository
         $query = $this
             ->getEntityManager()
             ->createQuery('SELECT p FROM Eccube\Entity\Payment p INDEX BY p.id');
-        $result = $query
-            ->getResult(Query::HYDRATE_ARRAY);
 
-        return $result;
+        return $query
+            ->getResult(Query::HYDRATE_ARRAY);
     }
 
     /**

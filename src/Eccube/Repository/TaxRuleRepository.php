@@ -241,11 +241,10 @@ class TaxRuleRepository extends AbstractRepository
         $qb = $this->createQueryBuilder('t')
             ->orderBy('t.apply_date', 'DESC')
             ->where('t.Product IS NULL AND t.ProductClass IS NULL');
-        $TaxRules = $qb
+
+        return $qb
             ->getQuery()
             ->getResult();
-
-        return $TaxRules;
     }
 
     /**

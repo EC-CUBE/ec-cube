@@ -41,7 +41,7 @@ class ShippingRepository extends AbstractRepository
      */
     public function findShippingsProduct(?Order $Order, ?ProductClass $productClass): array
     {
-        $shippings = $this->createQueryBuilder('s')
+        return $this->createQueryBuilder('s')
             ->innerJoin(OrderItem::class, 'si', 'WITH', 'si.Shipping = s.id')
             ->where('si.Order = (:order)')
             ->andWhere('si.ProductClass = (:productClass)')
@@ -49,7 +49,5 @@ class ShippingRepository extends AbstractRepository
             ->setParameter('productClass', $productClass)
             ->getQuery()
             ->getResult();
-
-        return $shippings;
     }
 }

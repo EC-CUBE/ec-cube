@@ -86,14 +86,13 @@ class PageRepository extends AbstractRepository
     public function getByUrl(string $url): Page
     {
         $qb = $this->createQueryBuilder('p');
-        $Page = $qb->select('p')
+
+        return $qb->select('p')
             ->where('p.url = :route')
             ->setParameter('route', $url)
             ->getQuery()
             ->setResultCacheLifetime($this->getCacheLifetime())
             ->getSingleResult();
-
-        return $Page;
     }
 
     public function newPage(): Page
@@ -128,10 +127,8 @@ class PageRepository extends AbstractRepository
             }
         }
 
-        $Pages = $qb
+        return $qb
             ->getQuery()
             ->getResult();
-
-        return $Pages;
     }
 }

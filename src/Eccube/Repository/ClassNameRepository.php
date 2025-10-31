@@ -47,10 +47,9 @@ class ClassNameRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('cn')
             ->orderBy('cn.sort_no', 'DESC');
-        $ClassNames = $qb->getQuery()
-            ->getResult();
 
-        return $ClassNames;
+        return $qb->getQuery()
+            ->getResult();
     }
 
     /**

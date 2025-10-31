@@ -610,9 +610,7 @@ class InstallController extends AbstractController
         $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
         $config->setMetadataDriverImpl($driver);
 
-        $em = new EntityManager($conn, $config);
-
-        return $em;
+        return new EntityManager($conn, $config);
     }
 
     /**
@@ -954,7 +952,8 @@ class InstallController extends AbstractController
     {
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
         $version = $this->getDatabaseVersion($em);
-        $data = [
+
+        return [
             'site_url' => $params['http_url'],
             'shop_name' => $params['shop_name'],
             'cube_ver' => Constant::VERSION,
@@ -962,8 +961,6 @@ class InstallController extends AbstractController
             'db_ver' => $platform.' '.$version,
             'os_type' => php_uname(),
         ];
-
-        return $data;
     }
 
     /**

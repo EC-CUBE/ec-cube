@@ -77,11 +77,9 @@ class ProductRepository extends AbstractRepository
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
 
-        $product = $qb
+        return $qb
             ->getQuery()
             ->getSingleResult();
-
-        return $product;
     }
 
     /**
@@ -113,12 +111,10 @@ class ProductRepository extends AbstractRepository
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
 
-        $products = $qb
+        return $qb
             ->getQuery()
             ->setResultCacheLifetime($this->eccubeConfig['eccube_result_cache_lifetime_short'])
             ->getResult();
-
-        return $products;
     }
 
     /**

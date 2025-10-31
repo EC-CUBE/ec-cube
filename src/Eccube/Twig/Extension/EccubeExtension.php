@@ -313,9 +313,8 @@ class EccubeExtension extends AbstractExtension
         foreach ($attr as $name => $value) {
             $html .= "{$name}=\"$value\" ";
         }
-        $html .= '></i>';
 
-        return $html;
+        return $html . '></i>';
     }
 
     /**
@@ -326,8 +325,7 @@ class EccubeExtension extends AbstractExtension
         if ($currency === null) {
             $currency = $this->eccubeConfig->get('currency');
         }
-        $symbol = Currencies::getSymbol($currency);
 
-        return $symbol;
+        return Currencies::getSymbol($currency);
     }
 }

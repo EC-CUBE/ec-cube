@@ -98,9 +98,8 @@ class TwoFactorAuthController extends AbstractController
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
         }
-        $res = $this->createResponse($request);
 
-        return $res;
+        return $this->createResponse($request);
     }
 
     #[Route(path: '/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]

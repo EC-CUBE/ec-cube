@@ -361,9 +361,8 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     protected function readHeaderRow(int $rowNumber): array|string|false
     {
         $this->file->seek($rowNumber);
-        $headers = $this->file->current();
 
-        return $headers;
+        return $this->file->current();
     }
 
     /**

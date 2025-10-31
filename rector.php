@@ -69,10 +69,10 @@ return RectorConfig::configure()
                //RemoveUselessParamTagRector::class, // まだ @param に頼っているケースがありそうなので除外
                //RemoveUselessReturnTagRector::class, // まだ @return に頼っているケースがありそうなので除外
                //RemoveUselessVarTagRector::class, // まだ @var に頼っているケースがありそうなので除外
-               SimplifyUselessVariableRector::class, // まだ不要な変数が多いので除外
-               RemoveAlwaysTrueIfConditionRector::class, // 条件式の簡略化はまだ慎重に行う必要があるため除外
-               RemoveDuplicatedCaseInSwitchRector::class, // switch文の重複ケース削除は視認性が悪くなるため除外
-               RemoveUnusedPrivateMethodParameterRector::class, // 未使用のパラメータ削除は慎重に行う必要があるため除外
+               //SimplifyUselessVariableRector::class, // まだ不要な変数が多いので除外
+               //RemoveAlwaysTrueIfConditionRector::class, // 条件式の簡略化はまだ慎重に行う必要があるため除外
+               //RemoveDuplicatedCaseInSwitchRector::class, // switch文の重複ケース削除は視認性が悪くなるため除外
+               //RemoveUnusedPrivateMethodParameterRector::class, // 未使用のパラメータ削除は慎重に行う必要があるため除外
                RemoveUnusedConstructorParamRector::class, // コンストラクタの未使用パラメータはプラグインで使用される可能性があるため除外
                RemoveUnusedPrivatePropertyRector::class, // 未使用のプライベートプロパティ削除は慎重に行う必要があるため除外
                ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外

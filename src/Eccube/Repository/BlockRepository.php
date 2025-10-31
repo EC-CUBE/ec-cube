@@ -81,13 +81,11 @@ class BlockRepository extends AbstractRepository
      */
     public function getUnusedBlocks(array $Blocks): ?array
     {
-        $UnusedBlocks = $this->createQueryBuilder('b')
+        return $this->createQueryBuilder('b')
             ->select('b')
             ->where('b not in (:blocks)')
             ->setParameter('blocks', $Blocks)
             ->getQuery()
             ->getResult();
-
-        return $UnusedBlocks;
     }
 }

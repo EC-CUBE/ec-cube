@@ -128,7 +128,7 @@ class TaxRuleService
      */
     public static function roundByRoundingType(string $value, int $RoundingType): string
     {
-        $ret = match ($RoundingType) {
+        return match ($RoundingType) {
             // 四捨五入
             RoundingType::ROUND => bcround($value),
             // 切り捨て
@@ -138,7 +138,5 @@ class TaxRuleService
             // デフォルト:切り上げ
             default => bcceil($value),
         };
-
-        return $ret;
     }
 }

@@ -268,9 +268,7 @@ class PurchaseFlow implements \Stringable
     protected function calculateTotal(ItemHolderInterface $itemHolder): void
     {
         $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
-            $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-
-            return $sum;
+            return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
         }, '0');
         $itemHolder->setTotal($total);
         // TODO
@@ -285,9 +283,7 @@ class PurchaseFlow implements \Stringable
         $total = $itemHolder->getItems()
             ->getProductClasses()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-
-                return $sum;
+                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
             }, '0');
         // TODO
         if ($itemHolder instanceof Order) {
@@ -301,9 +297,7 @@ class PurchaseFlow implements \Stringable
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-
-                return $sum;
+                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
             }, '0');
         $itemHolder->setDeliveryFeeTotal($total);
     }
@@ -313,9 +307,7 @@ class PurchaseFlow implements \Stringable
         $total = $itemHolder->getItems()
             ->getDiscounts()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-
-                return $sum;
+                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
             }, '0');
         // TODO 後方互換のため discount には正の整数を代入する
         $itemHolder->setDiscount(bcmul((string) $total, '-1', 2));
@@ -326,9 +318,7 @@ class PurchaseFlow implements \Stringable
         $total = $itemHolder->getItems()
             ->getCharges()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-
-                return $sum;
+                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
             }, '0');
         $itemHolder->setCharge($total);
     }
@@ -343,9 +333,8 @@ class PurchaseFlow implements \Stringable
             $total = $itemHolder->getItems()
                 ->reduce(function ($sum, ItemInterface $item) {
                     $taxPerItem = bcsub($item->getPriceIncTax(), (string) $item->getPrice(), 2);
-                    $sum = bcadd($sum, bcmul($taxPerItem, $item->getQuantity(), 2), 2);
 
-                    return $sum;
+                    return bcadd($sum, bcmul($taxPerItem, $item->getQuantity(), 2), 2);
                 }, '0');
         }
         $itemHolder->setTax($total);

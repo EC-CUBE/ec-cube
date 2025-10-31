@@ -110,7 +110,7 @@ class Extract extends FunctionNode
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
-        $sql = match ($driver) {
+        return match ($driver) {
             'sqlite' => sprintf(
                 "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
                 $this->formats[$this->field],
@@ -126,7 +126,5 @@ class Extract extends FunctionNode
                 $this->type,
                 $this->source->dispatch($sqlWalker)),
         };
-
-        return $sql;
     }
 }

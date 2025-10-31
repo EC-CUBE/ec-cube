@@ -109,7 +109,7 @@ class TwoFactorAuthService
             'date' => time(),
         ];
 
-        $cookie = new Cookie(
+        return new Cookie(
             $this->cookieName, // name
             json_encode($configs), // value
             $this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60), // expire
@@ -120,8 +120,6 @@ class TwoFactorAuthService
             false, // raw
             $this->eccubeConfig->get('eccube_force_ssl') ? Cookie::SAMESITE_NONE : null // sameSite
         );
-
-        return $cookie;
     }
 
     public function verifyCode(string $authKey, string $token): bool
