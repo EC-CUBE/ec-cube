@@ -314,7 +314,7 @@ class EccubeExtension extends AbstractExtension
             $html .= "{$name}=\"$value\" ";
         }
 
-        return $html . '></i>';
+        return $html.'></i>';
     }
 
     /**
