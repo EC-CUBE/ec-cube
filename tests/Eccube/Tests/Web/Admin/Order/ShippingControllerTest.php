@@ -28,10 +28,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var ShippingRepository
-     */
-    protected $shippingRepository;
+    protected ?ShippingRepository $shippingRepository = null;
 
     /**
      * {@inheritdoc}

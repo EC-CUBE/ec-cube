@@ -31,15 +31,9 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
      */
     protected $memberRepository;
 
-    /**
-     * @var AuthorityRepository
-     */
-    protected $authorityMasterRepository;
+    protected ?AuthorityRepository $authorityMasterRepository = null;
 
-    /**
-     * @var AuthorityRoleRepository
-     */
-    protected $authorityRoleRepository;
+    protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 
     protected function setUp(): void
     {

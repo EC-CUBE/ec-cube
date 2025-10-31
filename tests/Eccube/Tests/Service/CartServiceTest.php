@@ -25,54 +25,28 @@ use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Session\Session;
 use Eccube\Util\StringUtil;
 
 class CartServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product2;
+    protected ?Product $Product2 = null;
 
-    /**
-     * @var SaleType
-     */
-    protected $SaleType1;
+    protected ?SaleType $SaleType1 = null;
 
-    /**
-     * @var SaleType
-     */
-    protected $SaleType2;
+    protected ?SaleType $SaleType2 = null;
 
-    /**
-     * @var CartService
-     */
-    protected $cartService;
+    protected ?CartService $cartService = null;
 
-    /**
-     * @var SaleTypeRepository
-     */
-    protected $saleTypeRepository;
+    protected ?SaleTypeRepository $saleTypeRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
+    protected ?ProductClassRepository $productClassRepository = null;
 
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
+    protected ?PurchaseFlow $purchaseFlow = null;
 
     /**
      * {@inheritdoc}
@@ -282,9 +256,9 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
     }
 }
 
-class SessionMock extends \Eccube\Session\Session
+class SessionMock extends Session
 {
-    private array $bag = [];
+    private ?array $bag = [];
 
     public function __construct()
     {
@@ -314,6 +288,7 @@ class SessionMock extends \Eccube\Session\Session
     {
         $value = $this->bag[$name] ?? null;
         unset($this->bag[$name]);
+
         return $value;
     }
 }

@@ -28,20 +28,11 @@ use Symfony\Component\Finder\Finder;
  */
 class PluginInstallTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $service;
+    private ?PluginService $service = null;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
-    /**
-     * @var string
-     */
-    private $mockServerUrl;
+    private ?string $mockServerUrl = null;
 
     /**
      * {@inheritdoc}

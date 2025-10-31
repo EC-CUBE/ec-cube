@@ -21,15 +21,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class LoaderTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    protected $dir;
+    protected ?string $dir = null;
 
-    /**
-     * @var Loader
-     */
-    protected $loader;
+    protected ?Loader $loader = null;
 
     /**
      * {@inheritdoc}

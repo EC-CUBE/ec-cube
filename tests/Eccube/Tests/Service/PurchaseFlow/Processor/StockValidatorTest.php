@@ -23,25 +23,13 @@ use Eccube\Tests\Fixture\Generator;
 
 class StockValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var StockValidator
-     */
-    protected $validator;
+    protected ?StockValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}

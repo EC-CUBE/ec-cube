@@ -28,43 +28,29 @@ abstract class CommandTestCase extends EccubeTestCase
 {
     public const LOOP_MAX_LIMIT = 5;
 
-    /**
-     * @var Command
-     */
-    protected $command;
+    protected ?Command $command = null;
 
-    /**
-     * @var CommandTester
-     */
-    protected $tester;
+    protected ?CommandTester $tester = null;
 
     /**
      * $contentCnt
-     *
-     * @var int
      */
-    protected $contentCnt = 0;
+    protected ?int $contentCnt = 0;
 
     /**
      * $content
-     *
-     * @var string
      */
-    protected $content = '';
+    protected ?string $content = '';
 
     /**
      * $loopCnt
-     *
-     * @var int
      */
-    protected $loopCnt = 0;
+    protected ?int $loopCnt = 0;
 
     /**
      * $loopCheckSum
-     *
-     * @var int
      */
-    protected $loopCheckSum = 0;
+    protected ?int $loopCheckSum = 0;
 
     protected function tearDown(): void
     {
@@ -108,10 +94,10 @@ abstract class CommandTestCase extends EccubeTestCase
             $this->content = mb_substr($display, $oldDisplayCnt);
             $this->contentCnt = $displayCnt;
         }
-        if (md5($this->content) == $this->loopCheckSum) {
+        if (md5((string) $this->content) == $this->loopCheckSum) {
             $this->loopCnt++;
         } else {
-            $this->loopCheckSum = md5($this->content);
+            $this->loopCheckSum = md5((string) $this->content);
             $this->loopCnt = 0;
         }
 

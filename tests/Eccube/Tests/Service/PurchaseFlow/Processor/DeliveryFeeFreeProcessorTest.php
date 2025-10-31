@@ -22,23 +22,13 @@ use Eccube\Tests\EccubeTestCase;
 
 class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 {
-    /**
-     * @var DeliveryFeeFreePreprocessor
-     */
-    protected $processor;
+    protected ?DeliveryFeeFreePreprocessor $processor = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /** @var BaseInfoRepository */
-    protected $baseInfoRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
     /**
      * {@inheritdoc}

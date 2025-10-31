@@ -20,7 +20,7 @@ use Eccube\Entity\Product;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * ProductRepository#getQueryBuilderBySearchData test cases.
@@ -29,40 +29,19 @@ use Knp\Component\Pager\Paginator;
  */
 class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRepositoryTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var ProductListMax
-     */
-    protected $ProductListMax;
+    protected ?ProductListMax $ProductListMax = null;
 
-    /**
-     * @var ProductListOrderBy
-     */
-    protected $ProductListOrderBy;
+    protected ?ProductListOrderBy $ProductListOrderBy = null;
 
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
-    /**
-     * @var ProductListOrderByRepository
-     */
-    protected $productListOrderByRepository;
+    protected ?ProductListOrderByRepository $productListOrderByRepository = null;
 
-    /**
-     * @var Paginator
-     */
-    protected $paginator;
+    protected ?PaginatorInterface $paginator = null;
 
     /**
      * {@inheritdoc}

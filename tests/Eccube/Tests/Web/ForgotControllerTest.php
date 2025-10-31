@@ -25,15 +25,9 @@ class ForgotControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?CustomerRepository $customerRepository = null;
 
     protected function setUp(): void
     {

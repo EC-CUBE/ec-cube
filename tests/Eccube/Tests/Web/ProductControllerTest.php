@@ -26,20 +26,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private ?ProductRepository $productRepository = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    private $classCategoryRepository;
+    private ?ClassCategoryRepository $classCategoryRepository = null;
 
     protected function setUp(): void
     {

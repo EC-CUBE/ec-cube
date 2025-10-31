@@ -20,11 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerLoginTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'login_email' => 'eccube@example.com',
         'login_pass' => '111111111',
     ];

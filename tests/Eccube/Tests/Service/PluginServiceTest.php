@@ -30,15 +30,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class PluginServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $service;
+    private ?PluginService $service = null;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
     /**
      * {@inheritdoc}

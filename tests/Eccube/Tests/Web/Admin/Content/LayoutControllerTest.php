@@ -25,25 +25,13 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var PageLayoutRepository
-     */
-    private $PageLayoutRepo;
+    private ?PageLayoutRepository $PageLayoutRepo = null;
 
-    /**
-     * @var LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
+    protected ?DeviceTypeRepository $deviceTypeRepository = null;
 
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
+    protected ?PageRepository $pageRepository = null;
 
     /**
      * {@inheritdoc}

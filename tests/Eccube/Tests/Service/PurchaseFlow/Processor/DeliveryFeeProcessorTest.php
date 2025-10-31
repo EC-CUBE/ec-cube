@@ -26,17 +26,10 @@ use Eccube\Tests\Fixture\Generator;
 
 class DeliveryFeeProcessorTest extends EccubeTestCase
 {
-    /** @var BaseInfoRepository */
-    protected $BaseInfoRepository;
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?BaseInfoRepository $BaseInfoRepository = null;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}

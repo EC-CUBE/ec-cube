@@ -23,15 +23,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var ClassNameRepository
-     */
-    protected $classNameRepository;
+    protected ?ClassNameRepository $classNameRepository = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
     protected function setUp(): void
     {

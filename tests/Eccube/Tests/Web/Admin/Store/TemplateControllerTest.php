@@ -24,40 +24,19 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TemplateControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var string
-     */
-    protected $dir;
+    protected ?string $dir = null;
 
-    /**
-     * @var UploadedFile
-     */
-    protected $file;
+    protected ?UploadedFile $file = null;
 
-    /**
-     * @var string
-     */
-    protected $code;
+    protected ?string $code = null;
 
-    /**
-     * @var TemplateRepository
-     */
-    protected $templateRepository;
+    protected ?TemplateRepository $templateRepository = null;
 
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
+    protected ?DeviceTypeRepository $deviceTypeRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $envFile;
+    protected ?string $envFile = null;
 
-    /**
-     * @var string
-     */
-    protected $env;
+    protected ?string $env = null;
 
     protected function setUp(): void
     {

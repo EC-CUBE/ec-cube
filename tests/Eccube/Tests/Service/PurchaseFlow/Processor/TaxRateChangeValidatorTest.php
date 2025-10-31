@@ -21,15 +21,9 @@ use Eccube\Tests\EccubeTestCase;
 
 class TaxRateChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var TaxRateChangeValidator
-     */
-    protected $validator;
+    protected ?TaxRateChangeValidator $validator = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
     protected function setUp(): void
     {

@@ -19,7 +19,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class LoginHistoryListenerTest extends AbstractWebTestCase
 {
-    public function testOnInteractiveLogin()
+    public function activeLogin()
     {
         $this->client->request(
             'POST', $this->generateUrl('admin_login'),

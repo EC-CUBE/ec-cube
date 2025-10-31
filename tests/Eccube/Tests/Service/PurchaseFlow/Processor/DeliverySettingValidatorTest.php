@@ -23,25 +23,13 @@ use Eccube\Tests\EccubeTestCase;
 
 class DeliverySettingValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var DeliverySettingValidator
-     */
-    protected $validator;
+    protected ?DeliverySettingValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}

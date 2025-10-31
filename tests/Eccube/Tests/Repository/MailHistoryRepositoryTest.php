@@ -29,30 +29,18 @@ use Eccube\Tests\EccubeTestCase;
  */
 class MailHistoryRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
     /**
      * @var MailHistory[]
      */
-    protected $MailHistories;
+    protected ?array $MailHistories = null;
 
-    /**
-     * @var MailHistoryRepository
-     */
-    protected $mailHistoryRepo;
+    protected ?MailHistoryRepository $mailHistoryRepo = null;
 
     /**
      * {@inheritdoc}

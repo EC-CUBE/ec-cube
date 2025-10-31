@@ -18,10 +18,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class AbstractTypeTestCase extends EccubeTestCase
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected ?FormFactoryInterface $formFactory = null;
 
     protected function setUp(): void
     {

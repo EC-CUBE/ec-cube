@@ -20,8 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmailValidatorTest extends AbstractTypeTestCase
 {
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected ?ValidatorInterface $validator = null;
 
     protected function setUp(): void
     {

@@ -20,10 +20,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class PluginRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
+    protected ?PluginRepository $pluginRepository = null;
 
     protected function setUp(): void
     {

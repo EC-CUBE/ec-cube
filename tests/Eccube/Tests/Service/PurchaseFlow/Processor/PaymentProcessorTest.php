@@ -27,40 +27,19 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentProcessorTest extends EccubeTestCase
 {
-    /**
-     * @var PaymentValidator
-     */
-    protected $validator;
+    protected ?PaymentValidator $validator = null;
 
-    /**
-     * @var Cart
-     */
-    protected $Cart;
+    protected ?Cart $Cart = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass1;
+    protected ?ProductClass $ProductClass1 = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass2;
+    protected ?ProductClass $ProductClass2 = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass3;
+    protected ?ProductClass $ProductClass3 = null;
 
     /**
      * {@inheritdoc}

@@ -36,16 +36,15 @@ use Eccube\Tests\Fixture\Generator;
  */
 class OrderTest extends EccubeTestCase
 {
-    /** @var Customer */
-    protected $Customer;
-    /** @var Order */
-    protected $Order;
-    /** @var TaxRule */
-    protected $TaxRule;
-    /** @var int */
-    protected $rate;
-    /** @var TaxRuleService */
-    protected $taxRuleService;
+    protected ?Customer $Customer = null;
+
+    protected ?Order $Order = null;
+
+    protected ?TaxRule $TaxRule = null;
+
+    protected ?int $rate = null;
+
+    protected ?TaxRuleService $taxRuleService = null;
 
     protected function setUp(): void
     {

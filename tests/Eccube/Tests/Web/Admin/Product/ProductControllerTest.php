@@ -37,34 +37,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var ProductTagRepository
-     */
-    protected $productTagRepository;
-    /**
-     * @var BaseInfo
-     */
-    protected $baseInfo;
+    protected ?ProductTagRepository $productTagRepository = null;
+    protected ?BaseInfo $baseInfo = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
+    protected ?ProductStatusRepository $productStatusRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $imageDir;
+    protected ?string $imageDir = null;
 
     /**
      * {@inheritdoc}

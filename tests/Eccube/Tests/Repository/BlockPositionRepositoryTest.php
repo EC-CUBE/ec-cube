@@ -27,40 +27,25 @@ use Eccube\Tests\EccubeTestCase;
  */
 class BlockPositionRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
+
+    private ?string $layout_id = null;
 
     /**
-     * @var  string
+     * @var  Block[]|null
      */
-    private $layout_id;
+    private ?array $UsedBlocks = [];
 
     /**
-     * @var  Block
+     * @var  Block[]|null
      */
-    private $UsedBlocks;
+    private ?array $UnusedBlocks = [];
 
-    /**
-     * @var  Block
-     */
-    private $UnusedBlocks;
+    protected ?BlockRepository $blockRepository = null;
 
-    /**
-     * @var  BlockRepository
-     */
-    protected $blockRepository;
+    protected ?BlockPositionRepository $blockPositionRepository = null;
 
-    /**
-     * @var  BlockPositionRepository
-     */
-    protected $blockPositionRepository;
-
-    /**
-     * @var  LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
     /**
      * {@inheritdoc}

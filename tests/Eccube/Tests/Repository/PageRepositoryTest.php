@@ -19,8 +19,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class PageRepositoryTest extends EccubeTestCase
 {
-    /** @var PageRepository */
-    protected $pageRepo;
+    protected ?PageRepository $pageRepo = null;
 
     protected $userDataRealDir;
     protected $templateRealDir;

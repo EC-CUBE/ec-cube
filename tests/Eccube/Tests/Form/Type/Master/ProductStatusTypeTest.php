@@ -21,11 +21,9 @@ use Symfony\Component\Form\FormInterface;
 
 class ProductStatusTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var ProductStatusRepository */
-    protected $productStatusRepo;
+    protected ?ProductStatusRepository $productStatusRepo = null;
 
     protected function setUp(): void
     {

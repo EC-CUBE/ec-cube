@@ -20,15 +20,9 @@ class CssControllerTest extends AbstractAdminWebTestCase
 {
     public const CSS_FILE = 'customize.css';
 
-    /**
-     * @var string
-     */
-    private $dir;
+    private ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    private $contents;
+    private ?string $contents = null;
 
     protected function setUp(): void
     {

@@ -26,8 +26,7 @@ class NewsRepositoryTest extends EccubeTestCase
 {
     protected $Member;
 
-    /** @var NewsRepository */
-    protected $newsRepo;
+    protected ?NewsRepository $newsRepo = null;
 
     protected function setUp(): void
     {

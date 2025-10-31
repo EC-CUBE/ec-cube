@@ -33,55 +33,25 @@ use Eccube\Tests\EccubeTestCase;
  */
 class TaxRuleRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var \DateTime
-     */
-    protected $DateTimeNow;
+    protected ?\DateTime $DateTimeNow = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var TaxRule
-     */
-    protected $TaxRule1;
+    protected ?TaxRule $TaxRule1 = null;
 
-    /**
-     * @var TaxRule
-     */
-    protected $TaxRule2;
+    protected ?TaxRule $TaxRule2 = null;
 
-    /**
-     * @var TaxRule
-     */
-    protected $TaxRule3;
+    protected ?TaxRule $TaxRule3 = null;
 
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
+    protected ?PrefRepository $prefRepository = null;
 
-    /**
-     * @var CountryRepository
-     */
-    protected $countryRepository;
+    protected ?CountryRepository $countryRepository = null;
 
     /**
      * {@inheritdoc}

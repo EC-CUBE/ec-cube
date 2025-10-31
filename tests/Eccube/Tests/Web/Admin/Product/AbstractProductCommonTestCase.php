@@ -33,25 +33,13 @@ use Faker\Generator;
  */
 abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Generator
-     */
-    protected $faker;
+    protected ?Generator $faker = null;
 
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
+    protected ?ProductStatusRepository $productStatusRepository = null;
 
-    /**
-     * @var SaleTypeRepository
-     */
-    protected $saleTypeRepository;
+    protected ?SaleTypeRepository $saleTypeRepository = null;
 
-    /**
-     * @var DeliveryDurationRepository
-     */
-    protected $deliveryDurationRepository;
+    protected ?DeliveryDurationRepository $deliveryDurationRepository = null;
 
     /**
      * Set up function

@@ -22,25 +22,13 @@ use Eccube\Tests\EccubeTestCase;
 
 class PriceChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var PriceChangeValidator
-     */
-    protected $validator;
+    protected ?PriceChangeValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}

@@ -49,14 +49,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 {
     use MailerAssertionsTrait;
 
-    /** @var BaseInfoRepository */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /** @var OrderRepository */
-    private $orderRepository;
+    private ?OrderRepository $orderRepository = null;
 
-    /** @var OrderStatusRepository */
-    private $orderStatusRepository;
+    private ?OrderStatusRepository $orderStatusRepository = null;
 
     protected function setUp(): void
     {

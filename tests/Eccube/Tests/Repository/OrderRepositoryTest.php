@@ -30,13 +30,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class OrderRepositoryTest extends EccubeTestCase
 {
-    /** @var Customer */
-    protected $Customer;
-    /** @var Order */
-    protected $Order;
+    protected ?Customer $Customer = null;
+    protected ?Order $Order = null;
 
-    /** @var OrderRepository */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     protected function setUp(): void
     {

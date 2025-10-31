@@ -20,10 +20,7 @@ use Symfony\Component\Form\FormInterface;
 
 class Step1TypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * getValidTestData

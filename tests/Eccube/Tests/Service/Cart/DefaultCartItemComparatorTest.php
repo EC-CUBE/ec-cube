@@ -20,10 +20,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class DefaultCartItemComparatorTest extends EccubeTestCase
 {
-    /**
-     * @var ProductClassComparator
-     */
-    private $comparator;
+    private ?ProductClassComparator $comparator = null;
 
     /**
      * {@inheritdoc}

@@ -22,20 +22,11 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentChargeChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var PaymentChargeChangeValidator
-     */
-    private $validator;
+    private ?PaymentChargeChangeValidator $validator = null;
 
-    /**
-     * @var Customer
-     */
-    private $Customer;
+    private ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    private $Order;
+    private ?Order $Order = null;
 
     protected function setUp(): void
     {

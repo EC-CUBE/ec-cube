@@ -30,14 +30,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class StockDiffProcessorTest extends EccubeTestCase
 {
-    /** @var StockDiffProcessor */
-    private $processor;
+    private ?StockDiffProcessor $processor = null;
 
-    /** @var OrderItemTypeRepository */
-    private $OrderItemTypeRepository;
+    private ?OrderItemTypeRepository $OrderItemTypeRepository = null;
 
-    /** @var OrderStatusRepository */
-    private $OrderStatusRepository;
+    private ?OrderStatusRepository $OrderStatusRepository = null;
 
     protected function setUp(): void
     {

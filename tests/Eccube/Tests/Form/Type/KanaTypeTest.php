@@ -20,13 +20,12 @@ use Symfony\Component\Form\FormInterface;
 
 class KanaTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected const maxLength = 25;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'kana' => [
             'kana01' => 'たかはし',
             'kana02' => 'しんいち',

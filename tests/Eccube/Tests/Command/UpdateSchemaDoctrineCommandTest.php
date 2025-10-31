@@ -34,20 +34,11 @@ use Symfony\Component\Process\Process;
  */
 class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $pluginService;
+    private ?PluginService $pluginService = null;
 
-    /**
-     * @var SchemaService
-     */
-    private $schemaService;
+    private ?SchemaService $schemaService = null;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
     public const NAME = 'eccube:schema:update';
 

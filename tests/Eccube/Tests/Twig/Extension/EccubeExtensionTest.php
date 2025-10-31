@@ -21,10 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class EccubeExtensionTest extends EccubeTestCase
 {
-    /**
-     * @var EccubeExtension
-     */
-    protected $Extension;
+    protected ?EccubeExtension $Extension = null;
 
     protected function setUp(): void
     {

@@ -20,15 +20,9 @@ class JsControllerTest extends AbstractAdminWebTestCase
 {
     public const JS_FILE = 'customize.js';
 
-    /**
-     * @var string
-     */
-    private $dir;
+    private ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    private $contents;
+    private ?string $contents = null;
 
     protected function setUp(): void
     {

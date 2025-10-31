@@ -28,10 +28,7 @@ class FormUtilTest extends EccubeTestCase
 {
     protected $form;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected ?FormFactoryInterface $formFactory = null;
 
     protected $formData = [
         'pref' => '28',

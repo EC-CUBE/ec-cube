@@ -15,8 +15,7 @@ namespace Page;
 
 abstract class AbstractPage
 {
-    /** @var \AcceptanceTester */
-    protected $tester;
+    protected \AcceptanceTester $tester;
 
     /**
      * AbstractAdminPage constructor.

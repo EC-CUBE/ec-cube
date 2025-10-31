@@ -19,8 +19,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CsvLoaderCommandTest extends CommandTestCase
 {
-    /** @var \SplFileObject */
-    protected $file;
+    protected \SplFileObject $file;
 
     protected function setUp(): void
     {

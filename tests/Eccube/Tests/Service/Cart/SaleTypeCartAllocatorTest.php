@@ -19,10 +19,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
-    /**
-     * @var SaleTypeCartAllocator
-     */
-    private $allocator;
+    private ?SaleTypeCartAllocator $allocator = null;
 
     /**
      * {@inheritdoc}

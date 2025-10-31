@@ -35,26 +35,16 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
-    /** @var Customer */
-    protected $Customer;
-    /** @var Order */
-    protected $Order;
-    /** @var Order */
-    protected $Order1;
-    /** @var Order */
-    protected $Order2;
-    /** @var ArrayCollection */
-    protected $Results;
-    /** @var ArrayCollection */
-    protected $searchData;
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepo;
-    /** @var OrderRepository */
-    protected $orderRepo;
-    /** @var SexRepository */
-    protected $sexRepo;
-    /** @var PaymentRepository */
-    protected $paymentRepo;
+    protected ?Customer $Customer = null;
+    protected ?Order $Order = null;
+    protected ?Order $Order1 = null;
+    protected ?Order $Order2 = null;
+    protected ?array $Results = null;
+    protected ?array $searchData = null;
+    protected ?OrderStatusRepository $orderStatusRepo = null;
+    protected ?OrderRepository $orderRepo = null;
+    protected ?SexRepository $sexRepo = null;
+    protected ?PaymentRepository $paymentRepo = null;
 
     protected function setUp(): void
     {

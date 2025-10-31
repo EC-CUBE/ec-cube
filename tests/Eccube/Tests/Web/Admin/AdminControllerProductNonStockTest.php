@@ -20,10 +20,7 @@ use Symfony\Component\HttpKernel\Client;
  */
 class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var string
-     */
-    protected $target = '#shop-statistical';
+    protected ?string $target = '#shop-statistical';
 
     /**
      * test redirect when click

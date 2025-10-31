@@ -30,15 +30,9 @@ use Eccube\Tests\EccubeTestCase;
  */
 class BaseInfoRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  string
-     */
-    private $id;
+    private ?string $id = null;
 
-    /**
-     * @var  BaseInfoRepository
-     */
-    protected $baseInfoRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
     /**
      * {@inheritdoc}

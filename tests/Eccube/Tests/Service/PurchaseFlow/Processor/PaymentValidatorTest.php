@@ -20,10 +20,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var PaymentValidator
-     */
-    private $validator;
+    private ?PaymentValidator $validator = null;
 
     /**
      * @var

@@ -26,15 +26,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoterTest extends EccubeTestCase
 {
-    /**
-     * @var AuthorityRoleRepository
-     */
-    protected $authorityRoleRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 
     protected function setUp(): void
     {
@@ -53,6 +45,7 @@ class AuthorityVoterTest extends EccubeTestCase
         $request = $this->createMock(Request::class);
         $request->method('getPathInfo')->willReturn($accessUrl);
 
+        /** @var RequestStack&\PHPUnit\Framework\MockObject\MockObject $requestStack */
         $requestStack = $this->createMock(RequestStack::class);
         $requestStack->method('getMainRequest')->willReturn($request);
 
@@ -68,6 +61,7 @@ class AuthorityVoterTest extends EccubeTestCase
             $this->entityManager->flush();
         }
 
+        /** @var TokenInterface&\PHPUnit\Framework\MockObject\MockObject $token */
         $token = $this->createMock(TokenInterface::class);
         $token->method('getUser')->willReturn($Member);
 

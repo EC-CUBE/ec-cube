@@ -19,10 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PluginPassTest extends TestCase
 {
-    /**
-     * @var ContainerBuilder
-     */
-    private $containerBuilder;
+    private ?ContainerBuilder $containerBuilder = null;
 
     protected function setUp(): void
     {

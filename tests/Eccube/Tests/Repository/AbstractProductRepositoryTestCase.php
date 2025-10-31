@@ -28,15 +28,9 @@ use Eccube\Tests\EccubeTestCase;
  */
 abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var TagRepository
-     */
-    protected $tagRepository;
+    protected ?TagRepository $tagRepository = null;
 
     /**
      * {@inheritdoc}

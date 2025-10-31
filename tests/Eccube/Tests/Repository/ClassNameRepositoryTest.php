@@ -29,25 +29,13 @@ use Eccube\Tests\EccubeTestCase;
  */
 class ClassNameRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var  ProductClassRepository
-     */
-    protected $productClassRepository;
+    protected ?ProductClassRepository $productClassRepository = null;
 
-    /**
-     * @var  ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var  ClassNameRepository
-     */
-    protected $classNameRepository;
+    protected ?ClassNameRepository $classNameRepository = null;
 
     /**
      * {@inheritdoc}

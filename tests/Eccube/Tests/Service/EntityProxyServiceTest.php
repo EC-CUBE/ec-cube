@@ -25,15 +25,9 @@ use Symfony\Component\Finder\Finder;
 
 class EntityProxyServiceTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    private $tempOutputDir;
+    private ?string $tempOutputDir = null;
 
-    /**
-     * @var EntityProxyService
-     */
-    protected $entityProxyService;
+    protected ?EntityProxyService $entityProxyService = null;
 
     /**
      * {@inheritdoc}

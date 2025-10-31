@@ -25,8 +25,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderStateMachineTest extends EccubeTestCase
 {
-    /** @var OrderStateMachine */
-    private $stateMachine;
+    private ?OrderStateMachine $stateMachine = null;
 
     protected function setUp(): void
     {

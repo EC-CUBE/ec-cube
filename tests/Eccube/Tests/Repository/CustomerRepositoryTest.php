@@ -28,25 +28,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CustomerRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    protected $email;
+    protected ?string $email = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepo;
+    protected ?CustomerRepository $customerRepo = null;
 
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $masterOrderStatusRepo;
+    protected ?OrderStatusRepository $masterOrderStatusRepo = null;
 
     /**
      * {@inheritdoc}

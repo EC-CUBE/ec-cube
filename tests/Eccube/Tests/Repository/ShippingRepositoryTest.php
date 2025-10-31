@@ -38,50 +38,26 @@ use Eccube\Tests\EccubeTestCase;
  */
 class ShippingRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * @var Shipping[]
      */
-    protected $Shippings;
+    protected ?array $Shippings = null;
 
-    /**
-     * @var Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var ShippingRepository
-     */
-    protected $shippingRepository;
+    protected ?ShippingRepository $shippingRepository = null;
 
     /**
      * {@inheritdoc}

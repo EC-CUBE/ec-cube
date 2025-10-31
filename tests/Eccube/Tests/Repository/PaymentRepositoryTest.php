@@ -24,20 +24,11 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
+    protected ?DeliveryRepository $deliveryRepository = null;
 
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
+    protected ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var PaymentOptionRepository
-     */
-    protected $paymentOptionRepository;
+    protected ?PaymentOptionRepository $paymentOptionRepository = null;
 
     /**
      * {@inheritdoc}

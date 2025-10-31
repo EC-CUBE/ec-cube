@@ -16,25 +16,15 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
-use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\TaxRuleService;
 
 class TaxRuleServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var TaxRuleService
-     */
-    private $taxRuleService;
+    private ?TaxRuleService $taxRuleService = null;
 
-    /**
-     * @var  TaxRuleRepository
-     */
-    protected $TaxRule1;
+    protected ?TaxRule $TaxRule1 = null;
 
-    /**
-     * @var  BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
     /**
      * {@inheritdoc}

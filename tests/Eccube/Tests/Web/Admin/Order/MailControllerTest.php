@@ -26,15 +26,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
     protected function setUp(): void
     {

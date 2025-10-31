@@ -36,8 +36,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static $一括削除エラー = ['id' => 'bulkErrors'];
     public static $アラートメッセージ = ['css' => '.c-contentsArea > .alert'];
 
-    /** @var \AcceptanceTester */
-    protected $tester;
+    protected \AcceptanceTester $tester;
 
     /**
      * ProductListPage constructor.

@@ -24,20 +24,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var LoginHistoryRepository
-     */
-    private $loginHistoryRepository;
+    private ?LoginHistoryRepository $loginHistoryRepository = null;
 
     /**
      * {@inheritdoc}

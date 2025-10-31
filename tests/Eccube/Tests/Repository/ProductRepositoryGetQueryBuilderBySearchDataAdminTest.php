@@ -28,25 +28,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
+    protected ?ProductStatusRepository $productStatusRepository = null;
 
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     /**
      * {@inheritdoc}

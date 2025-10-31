@@ -22,10 +22,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class MypageControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {

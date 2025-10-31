@@ -19,10 +19,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class DeliveryControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {

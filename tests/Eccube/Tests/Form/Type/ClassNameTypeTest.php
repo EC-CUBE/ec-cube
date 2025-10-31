@@ -18,11 +18,10 @@ use Symfony\Component\Form\FormInterface;
 
 class ClassNameTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => '形状',
     ];
 

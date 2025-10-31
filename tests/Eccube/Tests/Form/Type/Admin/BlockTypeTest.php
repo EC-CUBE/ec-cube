@@ -21,11 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BlockTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => 'new/Block_1',
         'file_name' => 'file_name',
         'block_html' => '<p>test</p>',

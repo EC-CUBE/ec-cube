@@ -24,35 +24,17 @@ use Eccube\Tests\EccubeTestCase;
 
 class StockMultipleValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var StockMultipleValidator
-     */
-    protected $validator;
+    protected ?StockMultipleValidator $validator = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var OrderItem
-     */
-    protected $OrderItem1;
+    protected ?OrderItem $OrderItem1 = null;
 
-    /**
-     * @var OrderItem
-     */
-    protected $OrderItem2;
+    protected ?OrderItem $OrderItem2 = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}

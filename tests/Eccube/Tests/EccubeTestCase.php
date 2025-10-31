@@ -45,20 +45,11 @@ abstract class EccubeTestCase extends WebTestCase
     protected $actual;
     protected $expected;
 
-    /**
-     * @var KernelBrowser
-     */
-    protected $client;
+    protected ?KernelBrowser $client = null;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected ?EntityManagerInterface $entityManager = null;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * Client を生成しトランザクションを開始する.

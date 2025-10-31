@@ -13,13 +13,12 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity;
+use Eccube\Entity\Customer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AuthenticationHandlerTest extends AbstractWebTestCase
 {
-    /** @var Entity\Customer */
-    private $Customer;
+    private ?Customer $Customer = null;
 
     protected function setUp(): void
     {

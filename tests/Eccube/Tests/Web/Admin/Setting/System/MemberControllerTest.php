@@ -19,10 +19,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
     /**
      * @{@inheritdoc}

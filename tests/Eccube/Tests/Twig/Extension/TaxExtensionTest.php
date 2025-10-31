@@ -20,15 +20,9 @@ use Eccube\Twig\Extension\TaxExtension;
 
 class TaxExtensionTest extends EccubeTestCase
 {
-    /**
-     * @var TaxExtension
-     */
-    protected $taxExtension;
+    protected ?TaxExtension $taxExtension = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
     protected function setUp(): void
     {

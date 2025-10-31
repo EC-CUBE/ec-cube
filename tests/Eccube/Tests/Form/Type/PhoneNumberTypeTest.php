@@ -20,11 +20,10 @@ use Symfony\Component\Form\FormInterface;
 
 class PhoneNumberTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'phone_number' => '012-345-6789',
     ];
 

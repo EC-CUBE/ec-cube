@@ -27,23 +27,17 @@ use Eccube\Tests\EccubeTestCase;
 
 class TaxProcessorTest extends EccubeTestCase
 {
-    /** @var TaxProcessor */
-    private $processor;
+    private ?TaxProcessor $processor = null;
 
-    /** @var Order */
-    private $Order;
+    private ?Order $Order = null;
 
-    /** @var Product */
-    private $Product;
+    private ?Product $Product = null;
 
-    /** @var ProductClass */
-    private $ProductClass;
+    private ?ProductClass $ProductClass = null;
 
-    /** @var TaxRule */
-    private $TaxRule;
+    private ?TaxRule $TaxRule = null;
 
-    /** @var TaxRuleRepository */
-    private $taxRuleRepository;
+    private ?TaxRuleRepository $taxRuleRepository = null;
 
     protected function setUp(): void
     {

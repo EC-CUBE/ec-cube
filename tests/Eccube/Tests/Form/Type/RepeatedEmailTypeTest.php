@@ -19,15 +19,12 @@ use Symfony\Component\Form\FormInterface;
 
 class RepeatedEmailTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * @var array デフォルト値（正常系）を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         'email' => [
             'first' => 'eccube@example.com',
             'second' => 'eccube@example.com',

@@ -19,15 +19,12 @@ use Symfony\Component\Form\FormInterface;
 
 class Step4TypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * @var array デフォルト値を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         'database' => '',
         'database_host' => '',
         'database_port' => '',

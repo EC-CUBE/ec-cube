@@ -21,10 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TagControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var TagRepository
-     */
-    private $TagRepo;
+    private ?TagRepository $TagRepo = null;
 
     protected function setUp(): void
     {

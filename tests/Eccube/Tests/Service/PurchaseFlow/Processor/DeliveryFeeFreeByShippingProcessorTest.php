@@ -27,13 +27,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 {
-    /** @var OrderItemType */
-    private $ProductType;
+    private ?OrderItemType $ProductType = null;
 
     private $DeliveryFeeType;
 
-    /** @var BaseInfoRepository */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
     protected function setUp(): void
     {

@@ -32,10 +32,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class PurchaseFlowTest extends EccubeTestCase
 {
-    /**
-     * @var PurchaseFlow
-     */
-    protected $flow;
+    protected ?PurchaseFlow $flow = null;
 
     protected $Product;
 

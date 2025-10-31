@@ -33,30 +33,15 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class PaginationTest extends EccubeTestCase
 {
-    /**
-     * @var array
-     */
-    protected $expectedIds = [];
+    protected ?array $expectedIds = null;
 
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var PaginatorInterface
-     */
-    protected $paginator;
+    protected ?PaginatorInterface $paginator = null;
 
-    /**
-     * @var TagRepository
-     */
-    protected $tagRepository;
+    protected ?TagRepository $tagRepository = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
     /**
      * {@inheritdoc}

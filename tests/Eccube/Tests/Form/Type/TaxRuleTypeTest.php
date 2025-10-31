@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormInterface;
 class TaxRuleTypeTest extends AbstractTypeTestCase
 {
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'tax_rate' => 10,
         'calc_rule' => 1,
         'apply_date' => [
@@ -28,8 +28,7 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
         ],
     ];
 
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected function setUp(): void
     {

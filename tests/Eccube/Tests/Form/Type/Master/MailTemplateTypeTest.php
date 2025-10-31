@@ -21,11 +21,9 @@ use Symfony\Component\Form\FormInterface;
 
 class MailTemplateTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var MailTemplateRepository */
-    protected $mailTemplateRepo;
+    protected ?MailTemplateRepository $mailTemplateRepo = null;
 
     protected function setUp(): void
     {

@@ -31,14 +31,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class PointProcessorTest extends EccubeTestCase
 {
-    /** @var PointProcessor */
-    private $processor;
+    private ?PointProcessor $processor = null;
 
-    /** @var AddPointProcessor */
-    private $addPointProcessor;
+    private ?AddPointProcessor $addPointProcessor = null;
 
-    /** @var BaseInfo */
-    private $BaseInfo;
+    private ?BaseInfo $BaseInfo = null;
 
     protected function setUp(): void
     {

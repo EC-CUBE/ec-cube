@@ -24,10 +24,7 @@ use Eccube\Tests\EccubeTestCase;
  */
 class CategoryRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     /**
      * {@inheritdoc}

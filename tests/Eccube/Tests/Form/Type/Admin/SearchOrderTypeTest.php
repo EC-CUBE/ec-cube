@@ -20,10 +20,7 @@ use Symfony\Component\Form\FormInterface;
 
 class SearchOrderTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * {@inheritdoc}

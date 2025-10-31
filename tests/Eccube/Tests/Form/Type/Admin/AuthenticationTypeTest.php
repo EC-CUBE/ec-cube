@@ -19,11 +19,9 @@ use Symfony\Component\Form\FormInterface;
 
 class AuthenticationTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var array */
-    protected $formData = [
+    protected ?array $formData = [
         'php_path' => '/usr/bin/php',
         'authentication_key' => 'abc123ABCZz',
     ];

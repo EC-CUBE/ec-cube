@@ -20,8 +20,7 @@ use Symfony\Component\Form\FormInterface;
 
 class ForgotTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected $formData;
 

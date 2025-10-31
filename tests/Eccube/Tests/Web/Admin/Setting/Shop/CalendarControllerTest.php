@@ -19,10 +19,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CalendarControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
+    protected ?CalendarRepository $calendarRepository = null;
 
     /**
      * {@inheritdoc}

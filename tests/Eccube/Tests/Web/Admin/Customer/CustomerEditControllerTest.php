@@ -22,8 +22,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class CustomerEditControllerTest extends AbstractAdminWebTestCase
 {
-    /** @var Customer */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     /**
      * setUp

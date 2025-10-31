@@ -13,11 +13,13 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\MockObject\Exception;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
@@ -68,15 +70,17 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
     /**
      * @param $maxTotalFee
      *
-     * @throws \ReflectionException
+     * @throws Exception
      */
     private function newValidator($maxTotalFee): PaymentTotalLimitValidator
     {
-        $result = static::getContainer()->get(PaymentTotalLimitValidator::class);
-        $rc = new \ReflectionClass(PaymentTotalLimitValidator::class);
-        $prop = $rc->getProperty('maxTotalFee');
-        $prop->setValue($result, $maxTotalFee);
+        // PaymentTotalLimitValidatorのmaxTotalFeeをreadonlyに設定したため、
+        // EccubeConfigをモックして、指定した値を返すようにする
+        $eccubeConfig = $this->createMock(EccubeConfig::class);
+        $eccubeConfig->method('offsetGet')
+            ->with('eccube_max_total_fee')
+            ->willReturn($maxTotalFee);
 
-        return $result;
+        return new PaymentTotalLimitValidator($eccubeConfig);
     }
 }

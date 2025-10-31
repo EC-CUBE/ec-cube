@@ -77,95 +77,44 @@ class Generator
 {
     protected $locale;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected ?EntityManagerInterface $entityManager = null;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    protected $passwordHasher;
+    protected ?UserPasswordHasherInterface $passwordHasher = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
+    private ?CategoryRepository $categoryRepository = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?CustomerRepository $customerRepository = null;
 
-    /**
-     * @var ClassNameRepository
-     */
-    protected $classNameRepository;
+    protected ?ClassNameRepository $classNameRepository = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var DeliveryDurationRepository
-     */
-    protected $durationRepository;
+    protected ?DeliveryDurationRepository $durationRepository = null;
 
-    /**
-     * @var DeliveryFeeRepository
-     */
-    protected $deliveryFeeRepository;
+    protected ?DeliveryFeeRepository $deliveryFeeRepository = null;
 
     /**
      * @var PaymentRepository;
      */
     protected $paymentRepository;
 
-    /**
-     * @var TagRepository
-     */
-    private $tagRepository;
+    private ?TagRepository $tagRepository = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
+    protected ?PageRepository $pageRepository = null;
 
-    /**
-     * @var PrefRepository
-     */
-    protected $PrefRepository;
+    protected ?PrefRepository $PrefRepository = null;
 
-    /**
-     * @var PrefRepository
-     */
-    private $prefRepository;
+    private ?PrefRepository $prefRepository = null;
 
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected ?SessionInterface $session = null;
 
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected ?RequestStack $requestStack = null;
 
-    /**
-     * @var PurchaseFlow
-     */
-    protected $orderPurchaseFlow;
+    protected ?PurchaseFlow $orderPurchaseFlow = null;
 
     public function __construct(
         EntityManagerInterface $entityManager,

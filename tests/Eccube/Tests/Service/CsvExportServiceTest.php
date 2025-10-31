@@ -23,25 +23,13 @@ use org\bovigo\vfs\vfsStream;
 
 class CsvExportServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var string
-     */
-    protected $url;
+    protected ?string $url = null;
 
-    /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
+    protected ?CsvExportService $csvExportService = null;
 
-    /**
-     * @var CsvRepository
-     */
-    protected $csvRepository;
+    protected ?CsvRepository $csvRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     /**
      * {@inheritdoc}

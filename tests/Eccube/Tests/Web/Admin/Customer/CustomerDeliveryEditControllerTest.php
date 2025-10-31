@@ -22,15 +22,9 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var CustomerAddress
-     */
-    protected $CustomerAddress;
+    protected ?CustomerAddress $CustomerAddress = null;
 
     /**
      * setUp

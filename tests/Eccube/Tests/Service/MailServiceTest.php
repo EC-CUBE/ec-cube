@@ -16,6 +16,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Order;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,29 +30,14 @@ class MailServiceTest extends AbstractServiceTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?Order $Order = null;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var MailService
-     */
-    protected $mailService;
+    protected ?MailService $mailService = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     /**
      * {@inheritdoc}

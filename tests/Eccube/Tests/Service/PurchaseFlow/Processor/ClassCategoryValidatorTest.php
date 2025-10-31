@@ -22,25 +22,13 @@ use Eccube\Tests\EccubeTestCase;
 
 class ClassCategoryValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var ClassCategoryValidator
-     */
-    protected $validator;
+    protected ?ClassCategoryValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     public function setUp(): void
     {

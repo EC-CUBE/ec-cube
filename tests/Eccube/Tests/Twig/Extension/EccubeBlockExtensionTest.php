@@ -28,10 +28,7 @@ class EccubeBlockExtensionTest extends EccubeTestCase
         'test_block2.twig',
     ];
 
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected ?Environment $twig = null;
 
     protected function setUp(): void
     {

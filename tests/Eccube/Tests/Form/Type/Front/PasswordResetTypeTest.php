@@ -19,11 +19,9 @@ use Symfony\Component\Form\FormInterface;
 
 class PasswordResetTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var array */
-    protected $formData = [
+    protected ?array $formData = [
         'login_email' => 'hideki_okajima@ec-cube.co.jp',
         'password' => [
             'first' => 'password1234',

@@ -15,6 +15,7 @@ namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\Install\InstallController;
+use Eccube\Session\Session as EccubeSession;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormView;
@@ -30,30 +31,15 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  */
 class InstallControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var InstallController
-     */
-    protected $controller;
+    protected ?InstallController $controller = null;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected ?Request $request = null;
 
-    /**
-     * @var string
-     */
-    protected $envFile;
+    protected ?string $envFile = null;
 
-    /**
-     * @var string
-     */
-    protected $envFileBackup;
+    protected ?string $envFileBackup = null;
 
-    /**
-     * @var Session
-     */
-    protected $session;
+    protected ?EccubeSession $session = null;
 
     protected function setUp(): void
     {
@@ -78,7 +64,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $request->setSession(new Session(new MockArraySessionStorage()));
         $requestStack = new RequestStack();
         $requestStack->push($request);
-        $this->session = new \Eccube\Session\Session($requestStack);
+        $this->session = new EccubeSession($requestStack);
         $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
         $this->controller->setSession($this->session);

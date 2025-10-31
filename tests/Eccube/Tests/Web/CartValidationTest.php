@@ -26,11 +26,9 @@ use Symfony\Component\HttpKernel\Client;
 
 class CartValidationTest extends AbstractWebTestCase
 {
-    /** @var ProductStatusRepository */
-    private $productStatusRepository;
+    private ?ProductStatusRepository $productStatusRepository = null;
 
-    /** @var BaseInfo */
-    private $BaseInfo;
+    private ?BaseInfo $BaseInfo = null;
 
     /**
      * setup mail

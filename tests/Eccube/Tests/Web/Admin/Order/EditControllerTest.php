@@ -34,35 +34,17 @@ use Eccube\Service\TaxRuleService;
 
 class EditControllerTest extends AbstractEditControllerTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var CartService
-     */
-    protected $cartService;
+    protected ?CartService $cartService = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?CustomerRepository $customerRepository = null;
 
     protected function setUp(): void
     {

@@ -24,20 +24,11 @@ use Symfony\Component\Finder\Finder;
 
 class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $service;
+    private ?PluginService $service = null;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockSchemaService;
+    private \PHPUnit_Framework_MockObject_MockObject $mockSchemaService;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
     /**
      * {@inheritdoc}

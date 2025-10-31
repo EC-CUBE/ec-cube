@@ -26,13 +26,10 @@ use Eccube\Tests\EccubeTestCase;
  */
 class MemberRepositoryTest extends EccubeTestCase
 {
-    /** @var Member */
-    protected $Member;
-    /** @var MemberRepository */
-    protected $memberRepo;
+    protected ?Member $Member = null;
+    protected ?MemberRepository $memberRepo = null;
 
-    /** @var PasswordHasher */
-    protected $passwordHasher;
+    protected ?PasswordHasher $passwordHasher = null;
 
     protected function setUp(): void
     {

@@ -19,10 +19,7 @@ use Eccube\Repository\TradeLawRepository;
 
 class TradeLawControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var TradeLawRepository
-     */
-    private $tradeLawRepository;
+    private ?TradeLawRepository $tradeLawRepository = null;
 
     protected function setUp(): void
     {

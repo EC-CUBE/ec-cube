@@ -21,11 +21,9 @@ use Symfony\Component\Form\FormInterface;
 
 class DeliveryDurationTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var DeliveryDurationRepository */
-    protected $deliveryDurationRepo;
+    protected ?DeliveryDurationRepository $deliveryDurationRepo = null;
 
     protected function setUp(): void
     {

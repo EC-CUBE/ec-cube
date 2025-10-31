@@ -25,25 +25,13 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ClassNameControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Member
-     */
-    private $Member;
+    private ?Member $Member = null;
 
-    /**
-     * @var ProductClassRepository
-     */
-    private $productClassRepo;
+    private ?ProductClassRepository $productClassRepo = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    private $classCategoryRepo;
+    private ?ClassCategoryRepository $classCategoryRepo = null;
 
-    /**
-     * @var ClassNameRepository
-     */
-    private $classNameRepo;
+    private ?ClassNameRepository $classNameRepo = null;
 
     protected function setUp(): void
     {

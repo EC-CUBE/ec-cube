@@ -19,8 +19,7 @@ use Symfony\Component\Form\FormInterface;
 
 class OrderSearchTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected function setUp(): void
     {

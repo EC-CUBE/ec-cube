@@ -26,10 +26,7 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
 {
     protected $Customer;
 
-    /**
-     * @var CustomerAddressRepository
-     */
-    protected $customerAddressRepository;
+    protected ?CustomerAddressRepository $customerAddressRepository = null;
 
     protected function setUp(): void
     {

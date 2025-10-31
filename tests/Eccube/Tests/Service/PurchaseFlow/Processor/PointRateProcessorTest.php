@@ -23,14 +23,11 @@ use Eccube\Tests\EccubeTestCase;
 
 class PointRateProcessorTest extends EccubeTestCase
 {
-    /** @var PointRateProcessor */
-    private $processor;
+    private ?PointRateProcessor $processor = null;
 
-    /** @var BaseInfo */
-    private $BaseInfo;
+    private ?BaseInfo $BaseInfo = null;
 
-    /** @var Order */
-    private $Order;
+    private ?Order $Order = null;
 
     protected function setUp(): void
     {

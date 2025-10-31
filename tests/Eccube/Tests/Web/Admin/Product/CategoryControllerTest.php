@@ -19,10 +19,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CategoryControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     protected function setUp(): void
     {

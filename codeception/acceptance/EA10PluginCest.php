@@ -27,8 +27,7 @@ use Plugin\Horizon\Entity\CartTrait;
 
 class EA10PluginCest
 {
-    /** @var EccubeConfig */
-    private $config;
+    private EccubeConfig $config;
 
     public function _before(AcceptanceTester $I)
     {
@@ -484,20 +483,15 @@ class EA10PluginCest
 
 abstract class Abstract_Plugin
 {
-    /** @var AcceptanceTester */
-    protected $I;
+    protected AcceptanceTester $I;
 
-    /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
 
-    /** @var Connection */
-    protected $conn;
+    protected Connection $conn;
 
-    /** @var PluginRepository */
-    protected $pluginRepository;
+    protected PluginRepository $pluginRepository;
 
-    /** @var EccubeConfig */
-    protected $config;
+    protected EccubeConfig $config;
 
     protected $initialized = false;
 
@@ -611,16 +605,13 @@ abstract class Abstract_Plugin
 
 class Store_Plugin extends Abstract_Plugin
 {
-    /** @var PluginManagePage */
-    protected $ManagePage;
+    protected PluginManagePage $ManagePage;
 
-    /** @var Plugin */
-    protected $Plugin;
+    protected Plugin $Plugin;
 
     protected $code;
 
-    /** @var Store_Plugin */
-    protected $dependency;
+    protected Store_Plugin $dependency;
 
     public function __construct(AcceptanceTester $I, $code, ?Store_Plugin $dependency = null)
     {
@@ -763,14 +754,11 @@ class Store_Plugin extends Abstract_Plugin
 
 class Local_Plugin extends Abstract_Plugin
 {
-    /** @var PluginManagePage */
-    private $ManagePage;
+    private PluginManagePage $ManagePage;
 
-    /** @var Plugin */
-    private $Plugin;
+    private Plugin $Plugin;
 
-    /** @var string */
-    private $code;
+    private readonly string $code;
 
     public function __construct(AcceptanceTester $I, $code)
     {

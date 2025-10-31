@@ -18,10 +18,7 @@ use Eccube\Repository\CategoryRepository;
 
 class SearchProductControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     protected function setUp(): void
     {

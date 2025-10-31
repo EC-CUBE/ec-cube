@@ -20,15 +20,12 @@ use Symfony\Component\Form\FormInterface;
 
 class SecurityTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
-     * @var array デフォルト値（正常系）を設定
+     * @var array|null デフォルト値（正常系）を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         'admin_route_dir' => 'admin',
         'admin_allow_hosts' => '',
         'admin_deny_hosts' => '',

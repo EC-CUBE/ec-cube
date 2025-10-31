@@ -20,10 +20,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var NewsRepository
-     */
-    protected $newsRepository;
+    protected ?NewsRepository $newsRepository = null;
 
     /**
      * {@inheritdoc}

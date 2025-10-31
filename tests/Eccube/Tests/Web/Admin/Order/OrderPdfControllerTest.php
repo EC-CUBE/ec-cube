@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
@@ -32,17 +33,13 @@ use Symfony\Component\HttpKernel\Client;
  */
 class OrderPdfControllerTest extends AbstractAdminWebTestCase
 {
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepo;
+    protected ?OrderStatusRepository $orderStatusRepo = null;
 
-    /** @var OrderRepository */
-    protected $orderRepo;
+    protected ?OrderRepository $orderRepo = null;
 
-    /** @var OrderPdfRepository */
-    protected $orderPdfRepository;
+    protected ?OrderPdfRepository $orderPdfRepository = null;
 
-    /** @var array */
-    protected $config;
+    protected ?EccubeConfig $config = null;
 
     protected function setUp(): void
     {

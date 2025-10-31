@@ -23,10 +23,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderHelperTest extends EccubeTestCase
 {
-    /**
-     * @var OrderHelper
-     */
-    protected $helper;
+    protected ?OrderHelper $helper = null;
 
     protected function setUp(): void
     {

@@ -23,15 +23,9 @@ use Eccube\Tests\EccubeTestCase;
  */
 class LayoutRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
 
-    /**
-     * @var  LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
     /**
      * {@inheritdoc}

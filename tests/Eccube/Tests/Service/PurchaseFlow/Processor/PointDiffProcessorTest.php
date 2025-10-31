@@ -29,14 +29,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class PointDiffProcessorTest extends EccubeTestCase
 {
-    /** @var PointDiffProcessor */
-    private $processor;
+    private ?PointDiffProcessor $processor = null;
 
-    /** @var PointProcessor */
-    private $pointProcessor;
+    private ?PointProcessor $pointProcessor = null;
 
-    /** @var OrderStatusRepository */
-    private $OrderStatusRepository;
+    private ?OrderStatusRepository $OrderStatusRepository = null;
 
     protected function setUp(): void
     {

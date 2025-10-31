@@ -19,7 +19,7 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 class MasterdataTypeTest extends AbstractTypeTestCase
 {
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [];
+    protected ?array $formData = null;
 
     protected function setUp(): void
     {

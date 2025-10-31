@@ -22,14 +22,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
-    /** @var Member */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepository;
+    protected ?OrderStatusRepository $orderStatusRepository = null;
 
-    /** @var OrderRepository */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     protected function setUp(): void
     {

@@ -26,10 +26,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
     protected function setUp(): void
     {

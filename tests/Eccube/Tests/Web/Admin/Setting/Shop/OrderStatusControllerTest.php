@@ -23,20 +23,11 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class OrderStatusControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var OrderStatusRepository
-     */
-    private $orderStatusRepository;
+    private ?OrderStatusRepository $orderStatusRepository = null;
 
-    /**
-     * @var OrderStatusColorRepository
-     */
-    private $orderStatusColorRepository;
+    private ?OrderStatusColorRepository $orderStatusColorRepository = null;
 
-    /**
-     * @var CustomerOrderStatusRepository
-     */
-    private $customerOrderStatusRepository;
+    private ?CustomerOrderStatusRepository $customerOrderStatusRepository = null;
 
     protected function setUp(): void
     {

@@ -27,8 +27,7 @@ use Twig\Loader\LoaderInterface;
 
 class TwigExtensionPassTest extends TestCase
 {
-    /** @var ContainerBuilder */
-    protected $containerBuilder;
+    protected ?ContainerBuilder $containerBuilder = null;
 
     protected function setUp(): void
     {

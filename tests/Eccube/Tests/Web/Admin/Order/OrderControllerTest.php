@@ -36,35 +36,17 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
+    protected ?OrderStatusRepository $orderStatusRepository = null;
 
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
+    protected ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var SexRepository
-     */
-    protected $sexRepository;
+    protected ?SexRepository $sexRepository = null;
 
-    /**
-     * @var CsvTypeRepository
-     */
-    protected $csvTypeRepository;
+    protected ?CsvTypeRepository $csvTypeRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?CustomerRepository $customerRepository = null;
 
     protected function setUp(): void
     {

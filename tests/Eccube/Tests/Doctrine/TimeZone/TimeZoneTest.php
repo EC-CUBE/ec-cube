@@ -19,10 +19,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class TimeZoneTest extends EccubeTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
     /**
      * {@inheritdoc}

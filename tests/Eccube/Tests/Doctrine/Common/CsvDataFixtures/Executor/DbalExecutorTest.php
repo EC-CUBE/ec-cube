@@ -21,20 +21,14 @@ use Eccube\Tests\EccubeTestCase;
 
 class DbalExecutorTest extends EccubeTestCase
 {
-    /**
-     * @var \SplFileObject
-     */
-    protected $file;
+    protected ?\SplFileObject $file = null;
 
     /**
-     * @var CsvFixture[]
+     * @var CsvFixture[]|null
      */
-    protected $fixtures;
+    protected ?array $fixtures = null;
 
-    /**
-     * @var JobRepository
-     */
-    protected $jobRepository;
+    protected ?JobRepository $jobRepository = null;
 
     /**
      * {@inheritdoc}

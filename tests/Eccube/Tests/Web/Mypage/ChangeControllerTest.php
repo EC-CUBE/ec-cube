@@ -18,10 +18,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class ChangeControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {

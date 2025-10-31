@@ -24,10 +24,7 @@ use Eccube\Tests\EccubeTestCase;
  */
 class OrderStatusRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
+    protected ?OrderStatusRepository $orderStatusRepository = null;
 
     /**
      * {@inheritdoc}

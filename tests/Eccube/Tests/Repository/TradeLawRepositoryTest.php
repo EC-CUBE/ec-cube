@@ -19,10 +19,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class TradeLawRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var TradeLawRepository
-     */
-    private $tradeLawRepository;
+    private ?TradeLawRepository $tradeLawRepository = null;
 
     protected function setUp(): void
     {

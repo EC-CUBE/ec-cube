@@ -21,10 +21,7 @@ use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 
 class PasswordMigrationTest extends EccubeTestCase
 {
-    /**
-     * @var LegacyPasswordHasherInterface
-     */
-    private $legacyPasswordHasher;
+    private ?LegacyPasswordHasherInterface $legacyPasswordHasher = null;
 
     public function setUp(): void
     {

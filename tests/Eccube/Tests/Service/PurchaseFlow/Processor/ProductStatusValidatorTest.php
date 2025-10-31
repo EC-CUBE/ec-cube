@@ -23,25 +23,13 @@ use Eccube\Tests\EccubeTestCase;
 
 class ProductStatusValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var ProductStatusValidator
-     */
-    protected $validator;
+    protected ?ProductStatusValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     protected function setUp(): void
     {

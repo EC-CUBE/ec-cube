@@ -23,10 +23,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {

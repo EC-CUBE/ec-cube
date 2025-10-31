@@ -32,55 +32,25 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer1;
+    protected ?Customer $Customer1 = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer2;
+    protected ?Customer $Customer2 = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer3;
+    protected ?Customer $Customer3 = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepo;
+    protected ?CustomerRepository $customerRepo = null;
 
-    /**
-     * @var CustomerAddressRepository
-     */
-    protected $customerAddressRepo;
+    protected ?CustomerAddressRepository $customerAddressRepo = null;
 
-    /**
-     * @var PrefRepository
-     */
-    protected $masterPrefRepo;
+    protected ?PrefRepository $masterPrefRepo = null;
 
-    /**
-     * @var SexRepository
-     */
-    protected $masterSexRepo;
+    protected ?SexRepository $masterSexRepo = null;
 
     /**
      * {@inheritdoc}

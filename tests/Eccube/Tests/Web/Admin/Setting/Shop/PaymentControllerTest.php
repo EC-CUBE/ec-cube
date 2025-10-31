@@ -21,15 +21,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
+    protected ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $imageDir;
+    protected ?string $imageDir = null;
 
     /**
      * {@inheritdoc}

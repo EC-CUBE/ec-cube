@@ -28,15 +28,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
+    protected ?PluginRepository $pluginRepository = null;
 
-    /**
-     * @var PluginService
-     */
-    protected $pluginService;
+    protected ?PluginService $pluginService = null;
 
     /**
      * {@inheritdoc}

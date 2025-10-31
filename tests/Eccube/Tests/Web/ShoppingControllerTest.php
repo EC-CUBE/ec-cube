@@ -37,20 +37,11 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
+    private ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var EntityRepository|ObjectRepository|TradeLawRepository
-     */
-    private $tradeLawRepository;
+    private EntityRepository|ObjectRepository|TradeLawRepository|null $tradeLawRepository = null;
 
     protected function setUp(): void
     {

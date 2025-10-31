@@ -25,30 +25,15 @@ use Eccube\Tests\EccubeTestCase;
  */
 class CalendarRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var \DateTime
-     */
-    protected $DateTimeNow;
+    protected ?\DateTime $DateTimeNow = null;
 
-    /**
-     * @var Calendar
-     */
-    protected $Calendar1;
+    protected ?Calendar $Calendar1 = null;
 
-    /**
-     * @var Calendar
-     */
-    protected $Calendar2;
+    protected ?Calendar $Calendar2 = null;
 
-    /**
-     * @var Calendar
-     */
-    protected $Calendar3;
+    protected ?Calendar $Calendar3 = null;
 
-    /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
+    protected ?CalendarRepository $calendarRepository = null;
 
     /**
      * {@inheritdoc}

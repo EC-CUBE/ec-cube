@@ -22,10 +22,7 @@ class EccubeConfigTest extends TestCase
 {
     private $container;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     protected function setup(): void
     {

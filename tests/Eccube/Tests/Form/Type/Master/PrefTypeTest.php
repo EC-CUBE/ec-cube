@@ -21,11 +21,9 @@ use Symfony\Component\Form\FormInterface;
 
 class PrefTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var PrefRepository */
-    protected $prefRepo;
+    protected ?PrefRepository $prefRepo = null;
 
     protected function setUp(): void
     {

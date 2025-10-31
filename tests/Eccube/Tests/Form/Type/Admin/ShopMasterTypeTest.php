@@ -19,15 +19,12 @@ use Symfony\Component\Form\FormInterface;
 
 class ShopMasterTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
-     * @var array デフォルト値（正常系）を設定
+     * @var array|null デフォルト値（正常系）を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         /*
         'company_name' => '会社名',
         'company_kana' => 'カナ',

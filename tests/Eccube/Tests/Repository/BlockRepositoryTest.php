@@ -25,15 +25,9 @@ use Eccube\Tests\EccubeTestCase;
  */
 class BlockRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
 
-    /**
-     * @var  BlockRepository
-     */
-    protected $blockRepository;
+    protected ?BlockRepository $blockRepository = null;
 
     /**
      * {@inheritdoc}

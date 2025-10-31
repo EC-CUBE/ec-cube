@@ -24,30 +24,15 @@ use Eccube\Tests\EccubeTestCase;
 
 class EmptyItemsValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var StockMultipleValidator
-     */
-    protected $validator;
+    protected ?EmptyItemsValidator $validator = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var OrderItem
-     */
-    protected $OrderItem;
+    protected ?OrderItem $OrderItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}

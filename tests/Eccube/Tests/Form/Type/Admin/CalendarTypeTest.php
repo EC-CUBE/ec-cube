@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormInterface;
 class CalendarTypeTest extends AbstractTypeTestCase
 {
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'title' => 'タイトル',
         'holiday' => [
             'year' => '2021',
@@ -28,8 +28,7 @@ class CalendarTypeTest extends AbstractTypeTestCase
         ],
     ];
 
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected function setUp(): void
     {

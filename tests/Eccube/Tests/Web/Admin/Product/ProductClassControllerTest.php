@@ -31,25 +31,13 @@ use Symfony\Component\DomCrawler\Form;
  */
 class ProductClassControllerTest extends AbstractProductCommonTestCase
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
     /**
      * {@inheritdoc}

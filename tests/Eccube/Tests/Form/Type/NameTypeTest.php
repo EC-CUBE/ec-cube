@@ -19,15 +19,12 @@ use Symfony\Component\Form\FormInterface;
 
 class NameTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected $maxLength = 50;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',

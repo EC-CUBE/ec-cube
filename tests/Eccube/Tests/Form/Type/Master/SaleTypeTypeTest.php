@@ -21,11 +21,9 @@ use Symfony\Component\Form\FormInterface;
 
 class SaleTypeTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var SaleTypeRepository */
-    protected $saleTypeRepo;
+    protected ?SaleTypeRepository $saleTypeRepo = null;
 
     protected function setUp(): void
     {

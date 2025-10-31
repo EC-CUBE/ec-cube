@@ -29,11 +29,9 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 {
     use MailerAssertionsTrait;
 
-    /** @var BaseInfoRepository */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /** @var OrderRepository */
-    private $orderRepository;
+    private ?OrderRepository $orderRepository = null;
 
     protected function setUp(): void
     {

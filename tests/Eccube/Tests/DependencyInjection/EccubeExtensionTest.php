@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class EccubeExtensionTest extends KernelTestCase
 {
-    private EccubeExtension $extension;
+    private ?EccubeExtension $extension = null;
 
     public function setUp(): void
     {

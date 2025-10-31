@@ -21,10 +21,7 @@ use Twig\Loader\ArrayLoader;
 
 class IntlExtensionTest extends TestCase
 {
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected ?Environment $twig = null;
 
     protected function setUp(): void
     {

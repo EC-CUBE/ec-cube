@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TwigLintValidatorTest extends AbstractTypeTestCase
 {
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected ?ValidatorInterface $validator = null;
 
     protected function setUp(): void
     {

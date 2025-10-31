@@ -23,15 +23,12 @@ use Eccube\Tests\Fixture\Generator;
 
 class ItemCollectionTest extends EccubeTestCase
 {
-    /**
-     * @var Order
-     */
-    protected $ItemHolder;
+    protected ?Order $ItemHolder = null;
 
     /**
      * @var OrderItem[]
      */
-    protected $Items;
+    protected ?array $Items = null;
 
     /**
      * {@inheritdoc}
