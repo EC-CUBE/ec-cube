@@ -33,7 +33,7 @@ class ComposerApiService implements ComposerServiceInterface
 
     private Application $consoleApplication;
 
-    private string $workingDir;
+    private ?string $workingDir = null;
     private readonly BaseInfoRepository $baseInfoRepository;
 
     private readonly SchemaService $schemaService;
@@ -303,7 +303,7 @@ class ComposerApiService implements ComposerServiceInterface
         if ($init) {
             $this->init();
         }
-        $commands['--working-dir'] = $this->workingDir;
+        $commands['--working-dir'] = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
         $commands['--no-ansi'] = true;
         $input = new ArrayInput($commands);
         $useBufferedOutput = $output === null;
