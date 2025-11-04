@@ -98,7 +98,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'prod'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
@@ -126,7 +126,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'prod'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
@@ -136,7 +136,7 @@ jobs:
 
       - name: Codeception
         env:
-          APP_ENV: 'prod'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
