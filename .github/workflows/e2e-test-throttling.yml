@@ -59,7 +59,7 @@ jobs:
                   shopping_checkout_customer:
                       route: ~
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
 
       # delivery deleteのテストするため、delivery addの上限値を変更する
       - name: Fix limiter limi for delivery delete
@@ -78,7 +78,7 @@ jobs:
                       method: [ 'DELETE' ]
                       type: customer
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
@@ -119,7 +119,7 @@ jobs:
               cache:
                   pools:
                       rate_limiter.cache:
-                          adapter: cache.adapter.filesystem" > app/config/eccube/packages/codeception/framework.yaml
+                          adapter: cache.adapter.filesystem" > app/config/eccube/packages/codeception/rate_limiter.yml
 
       - name: Install fonts
         run: sudo apt install fonts-ipafont fonts-ipaexfont
