@@ -45,7 +45,7 @@ class EccubeAuthenticationFailureHandler extends DefaultAuthenticationFailureHan
             // ベースパスがある場合は追加
             $basePath = $request->getBasePath();
             if ($basePath && !str_starts_with($path, $basePath)) {
-                $path = $basePath . $path;
+                $path = $basePath.$path;
             }
             $response->setTargetUrl($path);
         }
