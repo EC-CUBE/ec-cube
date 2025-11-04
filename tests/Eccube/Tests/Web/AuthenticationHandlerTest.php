@@ -36,7 +36,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'password',
         ]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping', [], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping', [], UrlGeneratorInterface::ABSOLUTE_PATH)));
     }
 
     public function testAuthenticationFailureHandler()
@@ -48,7 +48,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'foo',
         ]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login', [], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login', [], UrlGeneratorInterface::ABSOLUTE_PATH)));
     }
 
     public function testAuthenticationSuccessHandlerWithInvalidPath()
@@ -61,7 +61,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
             'login_pass' => 'password',
         ]);
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
     }
 
     public function testAuthenticationFailureHandlerWithInvalidPath()
@@ -74,6 +74,6 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
             'login_pass' => 'quux',
         ]);
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
     }
 }

@@ -239,7 +239,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client->submit($loginForm);
 
         // ログイン実行後、お気に入り追加へリダイレクト
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_PATH)));
         $crawler = $client->followRedirect();
 
         // お気に入り追加実行後、商品詳細ページへリダイレクト

@@ -113,6 +113,14 @@ jobs:
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
 
+      - name: Prepare Throttling Test
+        run: |
+          echo "framework:
+              cache:
+                  pools:
+                      rate_limiter.cache:
+                          adapter: cache.adapter.filesystem" > app/config/eccube/packages/codeception/framework.yaml
+
       - name: Install fonts
         run: sudo apt install fonts-ipafont fonts-ipaexfont
 
