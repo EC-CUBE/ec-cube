@@ -38,6 +38,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      # codeception環境ではprodの設定が読み込まれないため、ベース設定を作成
+      - name: Prepare rate limiter config
+        run: |
+          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+
       # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
       - name: Fix limiter limit
         if: startsWith(matrix.method, '注文完了')
