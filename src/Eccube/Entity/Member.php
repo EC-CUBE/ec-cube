@@ -318,7 +318,7 @@ if (!class_exists(Member::class)) {
         /**
          * Get twoFactorAuthKey.
          */
-        public function getTwoFactorAuthKey(): string
+        public function getTwoFactorAuthKey(): ?string
         {
             return $this->two_factor_auth_key;
         }
